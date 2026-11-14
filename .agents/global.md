@@ -43,7 +43,7 @@ alwaysApply: true
   the settings page, and never calls it a screen.
 - **A file the user should see reaches them where they read.** Per-item detail past five items —
   findings, rows — and the user's copy of any plan a skill gates go in a file that reaches the user
-  from the agent's own reply, as `share-captures`' **Harness compatibility** says for the harness,
+  from the agent's own reply, as `share-media`'s **Harness compatibility** says for the harness,
   and the text that reports the result stays the turn's final message. An item with captures stays
   in chat as its text followed by its captures, as a bullet below says, and the file holds only the
   items without them. A text file sent this way reads on its own: it opens with the table or summary
@@ -64,7 +64,7 @@ alwaysApply: true
   rather than offered, as `pre-production`'s **Encountered Issues** says.
 - **A capture of a change reaches the user while the work is still running.** A screenshot, a
   recording, or a generated image that shows something the run changed — the screen after an edit, a
-  before-and-after pair, a design it generated — is shown to the user as `share-captures` says,
+  before-and-after pair, a design it generated — is shown to the user as `share-media` says,
   once the agent that made it has read it as the bullet above says, never held for the final
   report, where it arrives in a pile the user can no longer follow. A capture nobody asked for that shows no
   change — taken while navigating, diagnosing, or recording a baseline before anything changed —
@@ -81,7 +81,7 @@ alwaysApply: true
   pile of captures shown together leaves the reader matching each one to its item. An item put to
   the user in a later message has its captures shown again directly beneath it, even those already
   shown as they were made; a question, asked again or for the first time, has its captures shown
-  just before it, and the question itself goes through the question tool, as `share-captures`'
+  just before it, and the question itself goes through the question tool, as `share-media`'s
   **Previews for a choice** says.
 - **A capture sent to the user shows which page it is.** The reader cannot ask, so a view leads
   with a capture at a width where the product's navigation shows the page's place, for the role
@@ -166,8 +166,9 @@ alwaysApply: true
   scope, a workaround for a
   constraint the user set, and anything touching security, disclosure or authorization. Closing a
   security vulnerability, so the product enforces the access it already intends, is a fix and never
-  waits on this question. **A game's design is the exception**: where `roblox-gameplay` governs the
-  work, what does not make sense in the game — an asset, a room, a placement, a balance value or a
+  waits on this question, and so is moving off a deprecated API or setting onto its supported
+  replacement, even when the replacement tightens access, as `pre-production`'s deprecated-usage
+  bullet says. **A game's design is the exception**: where `roblox-gameplay` governs the work, what does not make sense in the game — an asset, a room, a placement, a balance value or a
   mechanic — is the agent's to redesign as that skill says, without asking; the game's core loop or
   genre, anything players pay for, security, disclosure, authorization and what the user has decided
   stay with the user. Before making one, identify the user's instruction or standing guidance
@@ -313,7 +314,7 @@ alwaysApply: true
   decision the plan or proposal depends on is answered: those decisions go to the user first, on
   their own, and the plan or proposal shown for approval is written for their answers, with nothing
   in it conditional on one. Material too large for the question, such as captures or a long diff,
-  reaches the user as `share-captures` says, in a message they see before the question, and the
+  reaches the user as `share-media` says, in a message they see before the question, and the
   question names it. During unfinished authorized work, retain the question as a pending decision
   while independent work continues; it is not a final task report.
 - **A step only the user can take, which the work waits on, is asked through that tool too, never
@@ -345,7 +346,7 @@ alwaysApply: true
   When the options differ in layout, structure or the controls the reader uses — a list or a grid,
   one column or two, a section moved or removed — the question comes right after a capture of
   each option as the product would draw it, built as an uncommitted preview where it does not
-  exist yet, at the widths where the options differ, shown as `share-captures`' **Previews for a
+  exist yet, at the widths where the options differ, shown as `share-media`'s **Previews for a
   choice** says. Describing an option, or showing only
   the current state, leaves the reader guessing at the one they cannot see, so the question waits
   until every capture is ready. A drawing made of text, such as a sketch in a question tool's
@@ -563,8 +564,18 @@ return records;
   only when evidence shows that it reached an unauthorized recipient, a public surface, or a
   compromised destination. Preserve secret-safe handling; do not surface values unnecessarily.
 
+## Product Forms
+
+- Sections that require user input start expanded. If input in a section becomes required during
+  the flow, expand the section when that requirement takes effect.
+
 ## Product Copy
 
+- **Every line of product text changes what the reader does or understands; anything else is
+  cut.** A label that restates what a control, price or heading already shows, or reassures the
+  reader about a cost they are not paying, such as "Sharing is free" beside a paid plan's share
+  button, adds reading without information and can make the reader doubt what they paid for. Before
+  adding a line, name what it helps the reader do or understand; when there is nothing, leave it out.
 - **Text a person reads sends them to another place with a link, never a route to follow.** "Open
   Library, then Shared albums" makes the reader follow a map; the place's name, linked, takes them
   there in one action. Where the text renders markup, the name is the link. Where it is plain text
@@ -583,11 +594,18 @@ return records;
   an API or tool whose text reaches an end user, a server-side enum or constant that holds the
   text, a test fixture, and wording a brief proposes to a worker.
 - **Text an end user reads speaks in what the reader cares about, never in the system's exact
-  values.** Where a precise number, state or count changes nothing the reader does, say it in plain
-  words: a fuel tank holding a few drops is "empty", a wait of 59 seconds is "a minute". Keep the
-  exact value only where the reader acts on it, such as a price, a quantity they choose or a figure
-  they compare, and never add a qualifier such as "almost" or "about" only to make plain words
-  technically exact.
+  values or its inner workings.** Where a precise number, state or count changes nothing the reader
+  does, say it in plain words: a fuel tank holding a few drops is "empty", a wait of 59 seconds is
+  "a minute". Keep the exact value only where the reader acts on it, such as a price, a quantity
+  they choose or a figure they compare, and never add a qualifier such as "almost" or "about" only
+  to make plain words technically exact. The cause behind a failure or a wait stays out of it too
+  when the cause is the system's own: a version, an update or release, a deployment or rollback, a
+  migration or maintenance, a rate limit, a lock, a queue, a service or component name, an internal
+  state or an error code. A booking that cannot be saved while a service restarts reads "We couldn't
+  save your booking right now. Please try again in a few minutes.", never "The booking service is
+  restarting" or "Error 503 from the calendar API". It holds wherever end-user text is written, as
+  the refusal bullet above lists, and in a status label, a toast or an empty state; the full cause
+  goes to the log and to text only the product's team reads.
 - **Text only the product's own team reads states the observed condition and its values, and
   nothing more.** On an internal panel, an operator or support tool, or an internal API, a refusal
   or a report names what was found and lists the values it concerns, such as "Unrecognized shelf
@@ -604,6 +622,20 @@ return records;
   maintained branch while developing or when no release tag exists. Do not pin dependency manifests,
   shared checkouts, or workflow references to commit hashes. Lockfiles and release records may retain
   the exact resolved commit for reproducibility and provenance.
+
+- **Every project the owner runs or consumes runs the newest stable language runtime, base image
+  and dependency releases it works with.** A change that touches a project's runtime, manifests or
+  lockfile moves what the project actually runs onto them — its version file, container images, CI
+  and lockfile — with whatever code changes the new releases need, including in an owned package
+  that only widened its range to let a consumer move. Neither of these is that move: a CI leg kept on the
+  old release beside the new one, or a dependency held below its newest release. Hold one back only
+  where an install or test shows the newer release failing on the project's runtime, such as
+  another dependency pinning it, and name that failure in a comment beside the constraint; a
+  migration the newer release needs is part of the move, not a reason to hold. Widening a
+  supported range to admit a newer release is fine, since an owned project's range serves the
+  owner's own projects. Raise its minimum once keeping the lower release no longer makes sense,
+  such as when the formatter or the code would stay on the older release's syntax. A library
+  published for consumers outside the owner's projects keeps the range its language rule sets.
 
 - Every repository stands on its own. Never carry another repository's domain vocabulary into this
   one: its product name, its services, its table and column names, its record types, or the nouns

@@ -1,8 +1,7 @@
 ---
 name: research-games
-description: Explicit user-invoked research of Roblox charts for the requested audience and region. Study 25 games by default, in passive mode (pages and popular gameplay videos) or play mode (also a short real session for games whose onboarding no video shows), asking which when the request names neither; or propose three ranked original game ideas from the latest study, shown as a dashboard and, once one is approved, written as a game brief file for building it. Reuse recent records of games studied before, delegate two games per researcher, collect YAML notes on gameplay, UI and onboarding, and wait for all researchers before keeping the records and routing supported themes into the Roblox skills that own them.
-short_description: 'Explicit user-invoked research of Roblox charts for the requested audience and region.'
-disable-model-invocation: true
+description: Research Roblox charts for the requested audience and region. Study 25 games by default, in passive mode (pages and popular gameplay videos) or play mode (also a short real session for games whose onboarding no video shows), asking which when the request names neither; or propose three ranked original game ideas from the latest study, shown as a dashboard and, once one is approved, written as a game brief file for building it. Reuse recent records of games studied before, delegate two games per researcher, collect YAML notes on gameplay, UI and onboarding, and wait for all researchers before keeping the records and routing supported themes into the Roblox skills that own them. Run only when the user asks for it.
+short_description: 'Research Roblox charts for the requested audience and region.'
 ---
 
 # Research Roblox games
@@ -14,8 +13,9 @@ disable-model-invocation: true
 - `roblox-studio`
 - `edit-skill`
 - `roblox-gameplay`
-- `roblox-react`
-- `roblox-building`
+- `roblox-ui`
+- `roblox-worldbuilding`
+- `roblox-characters`
 - `storyline`
 - `interactive-skill`
 - `review-proposal`
@@ -93,7 +93,7 @@ Use this only when the user explicitly chooses play mode. Video evidence comes f
 
 After all assignments have returned, validate/deduplicate the records against the selected chart entries. Compare notes and identify supported common patterns, genre-specific exceptions, and tradeoffs. Use the number of this study's games with relevant evidence, reused records included, as each pattern's denominator; unknown UI/onboarding records are not evidence against a pattern. Popularity is correlation, not proof of causation or a measurement of dopamine. Translate observations into practical design guidance; avoid copying distinctive art, names, layouts, or mechanics wholesale.
 
-Route every supported theme to the skill that owns its subject, found by its description: gameplay systems, progression and onboarding to `roblox-gameplay`, UI conventions to `roblox-react`, narrative, characters and quest content to `storyline`, and maps and world presentation to `roblox-building`. A theme that recurs across games and that no skill owns gets a new skill. A theme that holds for one genre only goes to the owning skill's `references/genres/<genre>.md`, listed in that skill's genre router, which the first genre file creates, as the shared `agent-guidance.md` rule's **Routers** says; a theme that holds across genres goes in the skill's own text. Change a skill where its current text is silent on a theme or contradicted by it, keep each rule in one skill, and replace a conclusion when later observations contradict it rather than accumulating a catalog of trendy features. Keep only lasting, transferable themes in skills; dated ranks, per-game notes and sources stay in the study records. Preserve the user's scope and the game's identity, and never turn research suggestions into new gameplay features.
+Route every supported theme to the skill that owns its subject, found by its description: gameplay systems, progression and onboarding to `roblox-gameplay`, UI conventions to `roblox-ui`, narrative, characters' roles and quest content to `storyline`, how characters look, move and present to `roblox-characters`, and maps and world presentation to `roblox-worldbuilding`. A theme that recurs across games and that no skill owns gets a new skill. A theme that holds for one genre only goes to the owning skill's `references/genres/<genre>.md`, listed in that skill's genre router, which the first genre file creates, as the shared `agent-guidance.md` rule's **Routers** says; a theme that holds across genres goes in the skill's own text. Change a skill where its current text is silent on a theme or contradicted by it, keep each rule in one skill, and replace a conclusion when later observations contradict it rather than accumulating a catalog of trendy features. Keep only lasting, transferable themes in skills; dated ranks, per-game notes and sources stay in the study records. Preserve the user's scope and the game's identity, and never turn research suggestions into new gameplay features.
 
 Invoke `edit-skill` once to deliver the study records and every skill change together as one guidance pull request.
 

@@ -1,8 +1,7 @@
 ---
 name: merge-now
-description: Merge the task's finished source pull requests now, each once acceptance and its check gate pass, then review what merged unreviewed and merge the fixes. Use only when the user directly invokes it.
+description: Merge the task's finished source pull requests now, each once acceptance and its check gate pass, then review what merged unreviewed and merge the fixes. Run only when the user asks for it.
 short_description: 'Merge finished pull requests now, then review what merged unreviewed.'
-disable-model-invocation: true
 ---
 
 # Merge Now
@@ -28,6 +27,7 @@ any fix `merge-gate` makes, and review afterwards whatever merged without an ear
 - `review-pass`
 - `session-ledger`
 - `execute-task`
+- `pre-production`
 
 ## Targets
 
@@ -78,7 +78,7 @@ or says nothing is needed.
 
 | PR | Acceptance | Check gate | Merged at |
 | --- | --- | --- | --- |
-| [<owner>/<repo>#<number>](<url>) | <reused (head unchanged) | accepted on `<sha>`> | <passed | passed; verified exclusion: `<check>` — <gate evidence>> | `<sha>` |
+| [<owner>/<repo>#<number>](<url>) | <reused (head unchanged) | accepted on `<sha>`> | <passed | passed; verified exclusion: `<check>` — <gate evidence>, baseline failures left out> | `<sha>` |
 
 **Review of what merged**
 - <repo>: <nothing unreviewed | clean, no fix PR | <n> confirmed finding(s), <one-line summary>. Fixed in [<repo>#<number>](<url>), accepted, check gate passed, merged at `<sha>`.>

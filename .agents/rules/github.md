@@ -73,8 +73,10 @@ alwaysApply: true
 - **Open every pull request as a draft and keep it draft until it merges.** The user reviews it as
   a draft; it leaves draft once, as the first step of an authorized merge through `merge-gate`, so its
   test jobs run once, on the head about to merge. Never mark one ready to start its tests, to show
-  it finished, or to hand it to the user; a follow-up keeps pushing to the draft.
-- Keep pull requests focused and give them descriptive titles and descriptions; request appropriate reviewers when the repository workflow requires them.
+  it finished, or to hand it to the user.
+- Keep pull requests focused and give them descriptive titles and descriptions: a title stays short,
+  and a body may run long with bullets and validation notes. Request appropriate reviewers when the
+  repository workflow requires them.
 - **A description is written from what is already known, never by re-reading the history.** The
   agent that did or coordinated the work writes it from its own record of the change, the existing
   description, `git log --oneline` subjects and `git diff --stat` against the base. It opens a commit
@@ -94,13 +96,28 @@ alwaysApply: true
   requirement in terms of this repository's own contract; disclose provider PR links and merge
   ordering to the user in chat.
   `merge-gate` still owns the complete dependency inventory and readiness gate.
-- **Each session opens its own source pull request in each repository.** Later source work in the
-  same session joins that pull request rather than creating one per concern or worker. Continue a
-  source pull request from another session only when the user, an applicable invoked skill, or a
-  repository rule explicitly directs that continuation. A matching topic, existing branch, open
-  state, or recorded touch does not supply that instruction. Verify the selected pull request's
-  owner, state and scope before updating it; leave other sessions' pull requests and branches
-  untouched, apart from damaged local Git state `update-skills` backs up and repairs.
+- **Text handed to Git or the hosting service is staged where only its author writes and read back
+  once published.** A commit message, title, description, comment or issue body goes inline, on
+  standard input, or from a file whose path was generated for that one text, such as one `mktemp`
+  creates, never from a name another session or worker could also choose, in any directory. After
+  it is accepted, read the stored text back, with `git log -1` for a commit, and compare it with the
+  text the author wrote, never with the staging file, which may have been overwritten. Correct a
+  difference in that text at once, under the authorization the original post had; a commit message
+  is read back before its push and amended only while unpushed. The current text is what readers
+  act on: earlier revisions in the edit history are left alone and never raised with the user,
+  unless one holds a credential the global rules' **Logging** section counts as exposed.
+- **Put follow-up source work on the session's in-progress source pull request for that repository.**
+  Before proposing a branch, assigning a worker, or starting edits, resolve the session's source
+  pull request from its creation or authorized continuation receipt and verify that it is open.
+  Carry that receipt forward when a follow-up starts a new task in the same session. Keep distinct
+  concerns and worker contributions on that pull request, in separate commits where appropriate.
+  Open a new source pull request only when none is in progress or the user directs a split. Apply
+  the agent-configuration routing below to guidance. Continue a source pull request from another
+  session only when the user, an applicable invoked skill, or a repository rule explicitly directs
+  that continuation. A matching topic, existing branch, open state, or recorded touch does not supply
+  that instruction. Verify the selected pull request's owner, state and scope before updating it;
+  leave other sessions' pull requests and branches untouched, apart from damaged local Git state
+  `update-skills` backs up and repairs.
 - **Each session opens its own agent-configuration pull request in each repository.** Agent
   configuration is the canonical `.agents` tree — skills, each with its own scripts, assets and
   templates; rules; and agent definitions. Nonbehavioral text and guidance-reference corrections in
@@ -155,6 +172,15 @@ alwaysApply: true
   authorization source applies, do not merge or enable auto-merge.
 - Honor the selected workflow's delivery hold before the standing permissions below; a pull
   request held for user review cannot use those exceptions or auto-merge.
+- **Guidance for something the user is still trying out is held for their review.** Once the user
+  says a capability, tool or way of working is on trial, such as that they are still testing it,
+  may drop it, or want its guidance kept from merging for now, the pull request carrying that
+  guidance is held for user review under the bullet above. Its review and checks still run, and it
+  carries an `on trial` label, so a session that never saw the conversation reads the hold on the
+  pull request. **The trial is one decision.** Every guidance edit the trial work makes, including
+  a rule written to govern the trial itself, rides that pull request, and the user's word on the
+  capability decides all of it: keeping it ends the hold and removes the label, and dropping it
+  closes the pull request this session opened.
 - Before reporting a pull request whose merge no instruction authorizes, classify the complete
   actual diff against the standing permissions below; one they cover may merge under them, and any
   other is reported without asking for its merge, as the global rules' merge-authorization bullet
@@ -188,8 +214,9 @@ alwaysApply: true
 - An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization, except each fix pull request a directly user-invoked skill's own authorization names, once that skill's merge gates pass; that authorization ends with the run.
 - An authorized merge is not held for a failing check the current user explicitly waives or an
   established baseline exclusion under `pre-production`'s **Encountered Issues** classification.
-  Name the check and its exclusion evidence in chat, then attempt the authorized merge without
-  asking the user. Preserve that classification rather than excluding a required repair merely
+  Record the check and its exclusion evidence in the task's record, then attempt the authorized
+  merge without asking the user; a baseline exclusion is named to the user only where that
+  classification allows. Preserve that classification rather than excluding a required repair merely
   because the same failure also appears on the default branch.
 - Apply established validation exclusions before repairing failures. An interrupted hosted check
   supplies no validation result for the work it did not complete. When the logs establish a
@@ -215,10 +242,13 @@ alwaysApply: true
   source and commit, or the concrete blocker preventing refresh.
 - Select the refresh route before checking local changes. When the repository supplies the installed
   shared skills, invoke `update-skills`; it keeps pending agent-configuration changes in effect,
-  dirty checkouts and open pull requests alike. The checkout-only restriction below does not apply
-  to this route. For the skill's first merge, read it from the merged commit before invoking it. A
-  session follows the copy it loaded until this refresh completes.
-- For every other repository, refresh its main local checkout, not a task worktree: if it is clean,
+  dirty checkouts and open pull requests alike. Tell it when the caller will clean the source
+  checkout after installation so the installed files stay available independently. For the skill's first merge, read it from the
+  merged commit before invoking it. A session follows the copy it loaded until this refresh completes.
+- When the invoking workflow owns the primary checkout refresh, return the Agent Sync result and
+  any installed shared guidance refresh to that workflow. For other repositories in that case, the
+  invoking workflow performs the checkout refresh and verifies generated guidance there.
+- Otherwise, for a repository without installed shared skills, refresh its primary checkout: if it is clean,
   check out its default branch and pull with `--ff-only`. Never discard or stash dirty files to force
   this checkout-only refresh; report a skipped refresh and leave them untouched.
 
@@ -253,6 +283,10 @@ alwaysApply: true
   as “as requested” or “per your instructions”; apply the instruction to the result itself.
   Record an exchange only when the user explicitly asks to document that exchange, in a document
   whose purpose is that record.
+- Name what a branch, commit or pull request changes by its category of change, in generic nouns
+  such as page, request or button. A branch takes the repository's required prefix and a slug of
+  that description.
+- Leave branch names and pull-request metadata that automation owns unchanged.
 
 ### README
 

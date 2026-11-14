@@ -15,7 +15,7 @@ The reader has ADHD. Output is not just brief. It is shaped so an ADHD brain can
 ## Dependencies
 - `pre-production`
 - `session-ledger`
-- `share-captures`
+- `share-media`
 
 ## Persistence
 
@@ -98,9 +98,12 @@ even when the reply concerns another topic or adds no progress. Reconcile the le
 message before sending; an asynchronous question control or task checklist does not replace this
 visible status list. At meaningful progress updates and handoffs, refresh the same list. Use a
 numbered list: each item starts with a **bold subject**. An evidence-pending item states its pending
-work; a ready item identifies its active question-tool request and the work depending on it.
+work; a ready item identifies the question-tool request already sent for it, in the turn its
+supporting material was ready, and the work depending on it. An item with neither a sent request
+nor pending evidence work is asked now.
 Keep the question and its choices in that request under the global question-tool procedure, with
-any captures it needs shown before it as `share-captures` says, rather than soliciting an answer in
+any captures, table, plan or other material it needs shown before it as `share-media` says for
+the harness, rather than soliciting an answer in
 chat. Where no equivalent tool exists, the
 chat question includes the choices, recommendation or material trade-off and dependent work.
 Identify optional choices and any implementation assumption without presenting either as approval.

@@ -312,7 +312,7 @@ ends with its check:
    `spctl -a -vv` reports a notarized Developer ID. Copy it to `/Applications/Roblox.app`; opening
    it shows its sign-in page. It registers itself as a login item.
 3. **Sign it in by QR code.** Choose Sign In, then QR code. A code expires in about two minutes,
-   so capture it just before the message that shows it, show that capture as `share-captures`
+   so capture it just before the message that shows it, show that capture as `share-media`
    says, then ask through the question tool for the user to scan it, with a Done option, one for
    a new code and one for later. A new-code answer or a timeout captures a fresh code and shows it
    again before asking again. A prompt asking the account to accept something goes to the user,
@@ -345,7 +345,9 @@ wedges and black slabs, while small places look fine. The guest has no OpenGL fa
 host keeps the source copy at `~/.config/roblox-studio/studio-client-settings.json`, and
 `"$runner_ssh" 'mkdir -p "$HOME/Library/Roblox/ClientSettings" && cat > "$HOME/Library/Roblox/ClientSettings/ClientAppSettings.json"' < ~/.config/roblox-studio/studio-client-settings.json`
 restores it under the runner lock. Before a rendering check, confirm the file is present and that
-`settings():GetFVariable("GeometryBufferMaxBytesMesh")` returns `524288` in the editor. With the cap
+`settings():GetFVariable("GeometryBufferMaxBytesMesh")` returns `524288` in the editor. Studio reads
+the file only when it launches, so an editor that reports another value, the game's warm editor
+included, is closed and opened again before the check. With the cap
 in place, a capture of Studio draws the scene correctly, so stretched wedges or black slabs in one
 are a defect to diagnose, never a guest artifact to set aside. The published player in the guest
 has the same driver limit and no such setting, so treat its 3D visuals as untested.

@@ -1,10 +1,37 @@
-import { type ReactNode, useContext, useMemo, useRef, useState } from 'react';
+import { Maximize2 } from 'lucide-react';
+import { type ReactNode, type Ref, useContext, useMemo, useRef, useState } from 'react';
 
 import { SectionDialog } from '@/components/sections';
 import { ReferencesContext } from '@/lib/references';
 import { withKeys } from '@/lib/utils';
 import type { Section } from '@/spec';
 import { ExternalLink } from './external-link';
+
+/** A button that opens a section in a dialog, marked as a link with an open icon. */
+export function DialogOpener({
+  opener,
+  onOpen,
+  className,
+  children,
+}: {
+  opener?: Ref<HTMLButtonElement>;
+  onOpen: (button: HTMLButtonElement) => void;
+  className?: string;
+  children: ReactNode;
+}): ReactNode {
+  return (
+    <button
+      ref={opener}
+      type="button"
+      data-reference
+      onClick={(event) => onOpen(event.currentTarget)}
+      className={className}
+    >
+      {children}
+      <Maximize2 aria-hidden="true" className="ml-1 inline size-3 align-baseline" />
+    </button>
+  );
+}
 
 function DetailsReference({ text, details }: { text: string; details: Section }): ReactNode {
   const references = useContext(ReferencesContext);
@@ -14,9 +41,9 @@ function DetailsReference({ text, details }: { text: string; details: Section })
 
   return (
     <>
-      <button ref={opener} type="button" data-reference onClick={() => setOpen(true)}>
+      <DialogOpener opener={opener} onOpen={() => setOpen(true)}>
         {text}
-      </button>
+      </DialogOpener>
       {open && (
         <ReferencesContext.Provider value={otherReferences}>
           <SectionDialog section={details} open onOpenChange={setOpen} opener={opener} />

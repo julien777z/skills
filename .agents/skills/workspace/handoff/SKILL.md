@@ -1,8 +1,7 @@
 ---
 name: handoff
-description: Move the current session's work to another session with nothing lost and nothing left for the user to do. Stops running workers once their work is pushed and posts their queues, brings every pull request body up to date, closes the pull requests this session made stale, posts a hand-off comment on each pull request carrying every piece of context the next agent needs, releases every subscription and timer, and ends with the exact message the user pastes into the next session. Use when a session is too bloated to continue and the work moves elsewhere.
+description: Move the current session's work to another session with nothing lost and nothing left for the user to do. Stops running workers once their work is pushed and posts their queues, brings every pull request body up to date, closes the pull requests this session made stale, posts a hand-off comment on each pull request carrying every piece of context the next agent needs, releases every subscription and timer, and ends with the exact message the user pastes into the next session. Use when a session is too bloated to continue and the work moves elsewhere. Run only when the user asks for it.
 short_description: 'Move the current session''s work to another session with nothing lost and nothing left for the user to do.'
-disable-model-invocation: true
 ---
 
 # Handoff
@@ -17,6 +16,7 @@ skill ends with.
 - `list-prs`
 - `defer-scope`
 - `session-ledger`
+- `pre-production`
 
 ## Scope
 
@@ -104,7 +104,7 @@ skill ends with.
 ```markdown
 ## Hand-off
 
-Head `<sha>` on `<branch>` → `<base>`. Checks: <green, or red with the failing names> · Mergeable: <yes, or conflict> · Unresolved review threads: <n>
+Head `<sha>` on `<branch>` → `<base>`. Checks: <green, or red with the failing names, baseline failures left out> · Mergeable: <yes, or conflict> · Unresolved review threads: <n>
 
 Task: `<task token>`
 
