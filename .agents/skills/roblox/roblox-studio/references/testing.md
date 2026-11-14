@@ -82,7 +82,9 @@ What every helper must get right:
   `runner_lease(receipt)["remaining"]` with that step's worst case plus the segment's cleanup:
   `CLOSE_BOUND` for each place copy it opened, `CLOUD_CLOSE_BOUND` for each cloud editor,
   `OPERATION_TIMEOUTS[RunnerOperation.STOP]` for the test processes it stops and
-  `OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK]` for the release, all read from `studio_mcp`. End
+  `OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK]` for the release, and add `LEASE_CHECK_BOUND` once
+  for every `studio_mcp` call the step and that cleanup make, since each call checks the lease before
+  it starts; read every bound from `studio_mcp`. End
   the segment there when it does not fit, rather than letting a call or the cleanup after it refuse
   midway. The game's warm editor is the one
   editor a segment leaves open.
@@ -176,9 +178,10 @@ Drive the runner's Studio from scripts through the [studio_mcp](../scripts/studi
 from the installed `roblox-studio` skill's `scripts` folder, put on `sys.path`, importing only the names its
 `__init__.py` exports (`from studio_mcp import Studio, open_place, ...`); no game keeps its own MCP client or copies
 one of these mechanisms. Each `Studio` holds its own MCP session through `runner_ssh.sh`, and the module has no shell
-command line. Every call that reaches the guest first confirms through `agent-lock` that the caller's receipt owns the
-lock on the game's VM name with enough of its lease left for every call it can make, each counted at its full
-timeout, so no call outlives the lease. Project and place file names use only letters, digits, `.`, `_` and `-`,
+command line. Every call that reaches the guest first confirms, once, through `agent-lock` that the caller's receipt
+owns the lock on the game's VM name with enough of its lease left for everything the call does, each operation inside
+it counted at its full timeout, so no call outlives the lease or refuses partway; the few milliseconds a process takes
+to start or stop are not counted. Project and place file names use only letters, digits, `.`, `_` and `-`,
 starting with a letter or digit.
 
 | Call                                                                                          | What it does                                                                                                                                                                                                                 |
