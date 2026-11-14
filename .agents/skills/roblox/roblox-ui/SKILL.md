@@ -49,7 +49,7 @@ Account for visible borders, focus/selection strokes, shadows, and rounded corne
 
 When a transition combines UI with world effects, inspect the effect through the actual scene materials and from the approach camera. Glass can hide translucent geometry behind it; a verified remedy is to hide that surface locally during the effect and restore its previous transparency on cleanup. Own and restore any cinematic camera as well. A component preview proves appearance and cleanup, not successful cross-place travel.
 
-Keep domain state authoritative, and domain data and component props typed. Use stable keys and preserve expensive previews/ViewportFrames while changing selection, health, or enabled state. Own every subscription, tween, animation, timer, model, and render callback; clean them up and cancel stale work on unmount. See the component reference for package typing and artwork adapters.
+Keep domain state authoritative, and domain data and component props typed. Use stable keys, and keep widgets and expensive previews/ViewportFrames alive across frequent snapshots: update text, selection, health, and enabled state in place and rebuild only when layout or content changes, since recreating a preview on every click causes blank flashes and asset reloads. Own every subscription, tween, animation, timer, model, and render callback; clean them up and cancel stale work on unmount. See the component reference for package typing and artwork adapters.
 
 ## Play test: click repeatedly and inspect the result
 

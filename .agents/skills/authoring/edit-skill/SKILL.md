@@ -412,7 +412,8 @@ user's review of the source pull request overlaps it.
       above. No merge here authorizes a release.
    3. **Check prose duplication** through the `code-simplify` pass `review-pass` runs over the delta,
       reading every touched `.agents` file whole, and act on what it reports: guidance duplicated
-      between peer rules or skills, including a caller and a skill it always invokes; a section grown
+      between peer rules or skills, including a caller and a skill it always invokes, or between two
+      files of one skill; a section grown
       around a second subject; a heading named for a category with one member; a rubric left inline
       that the shared `agent-guidance.md` rule's skill shape sends to a
       reference. Prose duplicates as readily as code, and nothing else catches it. Every `.agents`

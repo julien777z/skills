@@ -12,11 +12,11 @@ Retain original artwork through narrowly scoped adapters. Mount a viewport scene
 
 ## Interaction and presentation
 
-- Use a restrained palette, and keep panels from obscuring more of the environment than their content needs.
-- Keep stable widgets alive across frequent snapshots, updating them in place and rebuilding only when layout or content changes; recreating an expensive preview on every click causes blank flashes and asset reloads. Keep hover colors consistent with the current selected/disabled base color.
+- Use a restrained palette.
+- Keep hover colors consistent with the current selected/disabled base color.
 - Give distinct actions recognizable effects and impact timing, and offer reduced camera shake where effects warrant it.
 - Do not add a permanent "E Interact" button when a proximity prompt already explains the action.
-- Offer only valid choices and show only confirmed actions; make an invalid selection understandable without allowing it on the server.
+- Offer only valid choices, show only confirmed actions, and refuse an invalid selection on the server.
 
 ## Nested child dictionaries in React 17.2.1
 
