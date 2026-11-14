@@ -144,6 +144,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   and a changed failure. The cold load changes directly from one complete skeleton to the settled
   section or the failure presentation below; later requests
   keep the settled structure and undismissed feedback visible while pending and apply only the new result.
+- **Load available tabs and disclosures with the page.** Start their display reads when the page
+  opens or as soon as their prerequisites are known. Reuse the loaded results when the reader
+  opens or switches between those sections. The initially visible content loads independently.
 - **A page states that something is missing only once its request has said so.** "Not found", an
   empty list or a "nothing here yet" state shows after the request answers with that result, such
   as a 404 or an empty page of results. Before the first request settles, the skeleton is all the
@@ -331,6 +334,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   footer takes no space, so whatever sits behind it is hidden with nothing in the markup to say so.
   Prefer giving that chrome its own row in a flex or grid column, where the browser reserves the
   space; reach for absolute positioning only where the overlap is the intent.
+  Sticky headings must leave the content beneath them readable at every scroll position.
+- **Align paired comparison values by field.** Place each editable value on the same row as the
+  corresponding read-only value where they appear side by side.
 - **A page takes the content frame of its kind, and every page of that kind takes the same one.**
   The product's page layout has few frames, each set once in a layout component — commonly a
   centered column for a page the reader passes through to finish one task and then leaves, such as a
@@ -583,8 +589,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **Present each failure once.** A terminal error message replaces content only when the whole
   page's subject is unavailable, not when one request or part of a usable page fails. This full-page
   exception owns the specific human-readable reason and recovery action, keeps usable navigation,
-  and shows no banner repeating the same failure or second generic failure heading. Keep its purpose
-  heading short; render the explanation and recovery instruction as normal body text, not as a large
+  and shows no banner repeating the same failure or second generic failure heading. Offer only
+  recovery actions relevant to that state. Keep its purpose heading short; render the explanation
+  and recovery instruction as normal body text, not as a large
   or bold heading containing the whole error message. Unrelated usable content stays available; its
   presence makes a partial resource failure use the shared error-banner route below instead.
   Independent action failures report as the user-action bullet above says.
@@ -698,10 +705,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   association. Opening another surface solely to change that one setting adds a step without a new
   decision. Keep a separate editing flow when coupled fields, detailed validation or sensitive-action
   confirmation require it, and retain the product's save and cancel behavior.
-- **Comparable controls use comparable widths.** Inputs with the same role in a form take the same
+- **Comparable controls use comparable dimensions.** Inputs with the same role in a form take the same
   width or grid span; let the value format or available space justify a difference. A content-sized
   control beside a fixed-width peer reads as a different kind of choice even when both collect the
-  same kind of answer.
+  same kind of answer. Equivalent editable fields use the same inline row layout and control height,
+  including fields enabled by a selection. Preserve masking for sensitive values in that layout.
 - **One act gets one confirmation.** A single checkbox, worded as the whole statement the reader is
   making, stands for it; a second box restating part of the first asks twice.
 - **Long fixed text a reader must accept — a certification, terms, a disclosure — is set in smaller
