@@ -568,7 +568,7 @@ def guest_pids(pids_script: str, config: RunnerConfig) -> set[int]:
     """Run guest shell that sets pids and return the process IDs it found."""
 
     listed = run_guest_command(f"{pids_script}\necho $pids", config,
-                           OPERATION_TIMEOUTS[RunnerOperation.PROCESS_LIST]).decode()
+                               OPERATION_TIMEOUTS[RunnerOperation.PROCESS_LIST]).decode()
 
     return {int(pid) for pid in listed.split()}
 
@@ -618,8 +618,8 @@ def saved_guest_screen(path: Path, config: RunnerConfig) -> Path:
     """Save the whole screen of a runner guest whose lease the caller has already checked to path."""
 
     screen = run_guest_command('f=$(mktemp -t studio-screen) && screencapture -x -t png "$f" && cat "$f"; '
-                           'capture_status=$?; rm -f "$f"; exit $capture_status', config,
-                           OPERATION_TIMEOUTS[RunnerOperation.CAPTURE])
+                               'capture_status=$?; rm -f "$f"; exit $capture_status', config,
+                               OPERATION_TIMEOUTS[RunnerOperation.CAPTURE])
 
     path.parent.mkdir(parents=True, exist_ok=True)
 
@@ -649,7 +649,7 @@ def close_place_copy_on_runner(project: str, place: Path, config: RunnerConfig) 
     folder = shlex.quote(str(Path(guest_path).parent))
 
     run_guest_command(f'cd "$HOME" && rm -f {files}; rmdir {folder} 2>/dev/null; true', config,
-                  OPERATION_TIMEOUTS[RunnerOperation.REMOVAL])
+                      OPERATION_TIMEOUTS[RunnerOperation.REMOVAL])
 
 
 def close_cloud_place(place_id: int, lock_receipt: Path) -> None:
@@ -677,7 +677,7 @@ def open_bound(registration_wait: timedelta) -> timedelta:
     launch = OPERATION_TIMEOUTS[RunnerOperation.COPY] + OPERATION_TIMEOUTS[RunnerOperation.LAUNCH]
     registering_call = (POLL_INTERVAL + OPERATION_TIMEOUTS[RunnerOperation.INITIALIZE]
                         + OPERATION_TIMEOUTS[RunnerOperation.TOOL_CALL])
-    first_probe = OPERATION_TIMEOUTS[RunnerOperation.EDIT_PROBE] + OPERATION_TIMEOUTS[RunnerOperation.SESSION_EXIT]
+    first_probe = tool_call_bound(opens_session=False, timeout=OPERATION_TIMEOUTS[RunnerOperation.EDIT_PROBE])
     failure_cleanup = (OPERATION_TIMEOUTS[RunnerOperation.CAPTURE] + OPERATION_TIMEOUTS[RunnerOperation.SESSION_EXIT]
                        + CLOSE_BOUND)
 
@@ -712,7 +712,7 @@ def launch_editor(launch: str, data: bytes | None, editor_name: str | None, expe
         known = {studio["id"] for studio in awaited_studios(connection, config, EDITOR_LIST_WAIT)}
 
         run_guest_command(launch, config, OPERATION_TIMEOUTS[RunnerOperation.COPY]
-                      + OPERATION_TIMEOUTS[RunnerOperation.LAUNCH], data)
+                          + OPERATION_TIMEOUTS[RunnerOperation.LAUNCH], data)
 
         deadline = time.monotonic() + registration_wait.total_seconds()
         registered = poll_until(lambda: next((studio for studio in listed_studios(connection, config)
