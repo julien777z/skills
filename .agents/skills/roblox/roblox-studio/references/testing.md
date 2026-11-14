@@ -78,9 +78,12 @@ What every helper must get right:
   (900 s), and every client call refuses to start when the lease left cannot cover it. Each segment
   acquires the lock with `acquire_runner_lock`, opens what it needs, does a bounded part of the
   check, closes every editor and test process it started, and releases with `release_runner_lock`;
-  the next segment acquires again and reopens. Before each step of a loop, compare
-  `runner_lease(receipt)["remaining"]` with that step's worst case, `open_bound(registration_wait)` for
-  an open and `editor_wait_bound(wait)` for an editor wait, plus the segment's cleanup:
+  the next segment acquires again and reopens. Open right after acquiring: `open_place` and
+  `open_cloud_place` check `open_bound(registration_wait)` themselves and refuse before they start
+  anything, and that bound already reserves closing the editor after a failed open, so an open needs
+  no check of its own and keeps its registration wait. Before each later step of a loop, compare
+  `runner_lease(receipt)["remaining"]` with that step's worst case, `editor_wait_bound(wait)` for an
+  editor wait, plus the segment's cleanup:
   `CLOSE_BOUND` for each place copy it opened, `CLOUD_CLOSE_BOUND` for each cloud editor,
   `OPERATION_TIMEOUTS[RunnerOperation.STOP]` for the test processes it stops and
   `OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK]` for the release, and add `LEASE_CHECK_BOUND` once
