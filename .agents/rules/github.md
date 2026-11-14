@@ -258,6 +258,13 @@ alwaysApply: true
   as “as requested” or “per your instructions”; apply the instruction to the result itself.
   Record an exchange only when the user explicitly asks to document that exchange, in a document
   whose purpose is that record.
+- **A description of an input, output, option, setting or field tells a person what the value is,
+  in a plain sentence**, such as "Commit the changes are compared against". It never restates the
+  flag or variable the value becomes, such as `--base-sha`, stands a bare value grammar such as
+  `a | b` in place of words, or lists which operation, command or caller uses it, such as
+  `(generate only)`: the code already shows how the value is passed and who reads it, and a list of
+  users goes stale with the next change to the code. Where a value is one of a fixed set, the
+  sentence says what each one does.
 
 ### README
 
