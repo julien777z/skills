@@ -32,18 +32,20 @@ globs:
   client toggle them. Reuse the policy gate in every operation it protects, so later features cannot
   bypass it.
 - **Each permission grants one capability and stands on its own.** No permission requires, implies
-  or outranks another; no role or grant is refused for lacking a companion; and no check passes only
-  on a combination. An operation runs for anyone holding its own permission. Data in its response
-  that another permission guards is withheld or masked unless the caller holds that permission too.
-  A field revealed at several levels gets one permission per level, and the most revealing one held
-  applies. One composition is allowed: an action inside a page or tab that a permission gates may
-  also require that permission beside its own, so its control and its route agree, where the
-  product owner decided the two compose and the repository's project guidance records that
-  decision.
+  or outranks another; and no role or grant is refused for lacking a companion. **An operation
+  requires no permission but its own, and runs for anyone holding it**, whatever page, tab or
+  control groups it and whichever layer checks it: a route, a router, middleware or a shared
+  service check adds no second one. Data in its response that another permission guards is withheld
+  or masked unless the caller holds that permission too. A field revealed at several levels gets one
+  permission per level, never a combination, and the most revealing one held applies.
 - The disclosure rule lives on the response field and is published in the API schema. The server
   sends a masked value already masked. A client works out what is withheld from the caller's
   permissions and that published rule, never from a per-response list. A write to a field the
-  caller cannot see is refused.
+  caller cannot see is refused. So is a request carrying a parameter whose result depends on a value
+  the caller cannot see, the whole field or more of it than their level reveals, such as a filter,
+  search term, sort, grouping or count naming the field, since what matches would reveal it; the
+  same operation without that parameter runs for that caller. A search or default ordering in which
+  the caller names no field runs and leaves that field out for them.
 
 ## Clients
 
