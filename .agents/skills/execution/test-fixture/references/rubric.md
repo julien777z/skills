@@ -175,13 +175,15 @@ character-for-character identical; their ownership hierarchy must be recognizabl
 **One source file has one test module, named for it** by the language's test-file convention: a
 source file `pkg/invoices.py` is tested by `test_invoices.py` at the mirrored path, and
 `src/invoices.ts` by `invoices.test.ts`. That module holds the tests of every function and class
-in the file. A folder named for a source file, holding a test file per function or class, is not a
+in the file, unless the file-boundary test below justifies a behavior folder, whose modules pass
+this check. A folder named for a source file, holding a test file per function or class, is not a
 mirror: its paths resemble the source, but the source file has no test module, so the next test of
 that file gets a file of its own instead of joining the others. Check it mechanically: list every
 test module in scope and compare its name, without the test-file marker, with the source file at the mirrored
-path. A test module named for a function or class inside a source file, or sitting in a folder
-named for one, is a finding; its tests fold into that source file's test module, organized as
-this section's class rule and **Prefer Parametrized Cases** say.
+path. A test module named for a function or class inside a source file is a finding; its tests fold
+into that source file's test module, organized as this section's class rule and **Prefer
+Parametrized Cases** say, within `pre-production`'s size budget, the rest recorded as deferred
+work.
 
 Before placing or moving a test, compare analogous sibling service tests and their corresponding
 source owners. Apply explicit repository guidance first. Otherwise prefer the layout that most
@@ -190,8 +192,7 @@ as corroborating evidence. Existing sibling tests are evidence, not authority. P
 layout only when a real ownership or boundary difference explains it; legacy placement alone is not
 a reason. Siblings that split a source file into a file per function or class are the finding above,
 never the layout a new test copies: the new test goes into the source file's test module, created
-where it is absent, and the siblings fold into it within `pre-production`'s size budget, the rest
-recorded as deferred work. If equally valid patterns remain, the choice goes to a council ruling, as the skill's workflow
+where it is absent. If equally valid patterns remain, the choice goes to a council ruling, as the skill's workflow
 says, instead of moving tests arbitrarily or adding another variation.
 
 Test-owned structures may follow the testing concern rather than a production path:
