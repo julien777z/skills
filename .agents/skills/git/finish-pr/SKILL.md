@@ -143,7 +143,7 @@ head lag and a retryable rate limit are nonterminal.
   with `git merge --ff-only --no-autostash --no-overwrite-ignore <verified-remote-tip>`. If the target branch is already
   checked out elsewhere, switch that worktree to a local preservation branch at its existing
   commit, keeping any in-progress work there. Keep both worktrees on named branches.
-  If the local target branch has diverged, preserve its tip under a separate local branch before
+  If the local target branch has commits outside the fetched tip's history, preserve its tip under a separate local branch before
   moving the target branch to the verified remote tip. Resolve these local conditions and retry
   the switch or fast-forward. A branch mismatch, local edits, or divergence does not end the refresh.
 - Verify the primary checkout is on the target branch at the fetched tip, contains the verified

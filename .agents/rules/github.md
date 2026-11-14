@@ -220,7 +220,8 @@ alwaysApply: true
   source and commit, or the concrete blocker preventing refresh.
 - Select the refresh route before checking local changes. When the repository supplies the installed
   shared skills, invoke `update-skills`; it keeps pending agent-configuration changes in effect,
-  dirty checkouts and open pull requests alike. For the skill's first merge, read it from the
+  dirty checkouts and open pull requests alike. Tell it when the caller will clean the source
+  checkout after installation so the installed files stay available independently. For the skill's first merge, read it from the
   merged commit before invoking it. A session follows the copy it loaded until this refresh completes.
 - When the invoking workflow owns the primary checkout refresh, return the Agent Sync result and
   any installed shared guidance refresh to that workflow. For other repositories in that case, the
