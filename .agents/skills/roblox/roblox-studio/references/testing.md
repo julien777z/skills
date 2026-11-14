@@ -79,8 +79,9 @@ What every helper must get right:
   acquires the lock with `acquire_runner_lock`, opens what it needs, does a bounded part of the
   check, closes every editor and test process it started, and releases with `release_runner_lock`;
   the next segment acquires again and reopens. Before each step of a loop, compare
-  `runner_lease(receipt)["remaining"]` with that step's worst case and end the segment there when
-  it does not fit, rather than letting a call refuse midway. The game's warm editor is the one
+  `runner_lease(receipt)["remaining"]` with that step's worst case plus the time closing what the
+  segment opened and releasing take, and end the segment there when it does not fit, rather than
+  letting a call or the cleanup after it refuse midway. The game's warm editor is the one
   editor a segment leaves open.
 
 Workers use these helpers and extend them for each new repeatable step; a repeatable step is never
