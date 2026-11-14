@@ -378,6 +378,9 @@ def wait_for_studios(connection: StudioMcpConnection, lock_receipt: Path,
 def editor_wait_bound(wait: timedelta) -> timedelta:
     """Return the longest waiting out a new connection's empty editor list can take."""
 
+    if wait < timedelta():
+        raise ValueError("Wait a duration of zero or more for the editor list")
+
     return OPERATION_TIMEOUTS[RunnerOperation.INITIALIZE] + wait + POLL_INTERVAL + TOOL_ATTEMPT_BOUND
 
 
@@ -662,6 +665,9 @@ def closed_cloud_editors(place_id: int, config: RunnerConfig) -> None:
 
 def open_bound(registration_wait: timedelta) -> timedelta:
     """Return the longest an editor launch can take, closing the editor after a failure included."""
+
+    if registration_wait < timedelta():
+        raise ValueError("Wait a duration of zero or more for the editor to register")
 
     editor_snapshot = editor_wait_bound(EDITOR_LIST_WAIT)
     launch = OPERATION_TIMEOUTS[RunnerOperation.COPY] + OPERATION_TIMEOUTS[RunnerOperation.LAUNCH]
