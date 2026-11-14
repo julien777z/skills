@@ -411,6 +411,9 @@ class Studio:
         if (camera_position is None) != (look_at_position is None):
             raise ValueError("Give camera_position and look_at_position together")
 
+        if Path(name).name != name:
+            raise ValueError(f"Name a capture with one file name, not a path: {name!r}")
+
         arguments: dict[str, JsonValue] = {"capture_id": name}
 
         if camera_position is not None and look_at_position is not None:
