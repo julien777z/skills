@@ -165,14 +165,12 @@ alwaysApply: true
 - **Guidance for something the user is still trying out is held for their review.** Once the user
   says a capability, tool or way of working is on trial, such as that they are still testing it,
   may drop it, or want its guidance kept from merging for now, the pull request carrying that
-  guidance is held for user review under the bullet above. Its review and checks still run, and its
-  description opens with a line stating the hold, so a session that never saw the conversation
-  reads it on the pull request. **The trial is one decision.** Every guidance edit the trial work
-  makes, including a rule written to govern the trial itself, rides that pull request, and the
-  user's word on the capability decides all of it: keeping it ends the hold, and dropping it closes
-  the pull request. The user's statement that the capability is on trial is the continuation
-  instruction **Branches and Pull Requests** requires for a later session's edits to join it, and
-  the hold line identifies it.
+  guidance is held for user review under the bullet above. Its review and checks still run, and it
+  carries an `on trial` label, so a session that never saw the conversation reads the hold on the
+  pull request. **The trial is one decision.** Every guidance edit the trial work makes, including
+  a rule written to govern the trial itself, rides that pull request, and the user's word on the
+  capability decides all of it: keeping it ends the hold and removes the label, and dropping it
+  closes the pull request this session opened.
 - Before reporting a pull request whose merge no instruction authorizes, classify the complete
   actual diff against the standing permissions below; one they cover may merge under them, and any
   other is reported without asking for its merge, as the global rules' merge-authorization bullet

@@ -179,8 +179,8 @@ user's review of the source pull request overlaps it.
 - At a checkpoint and before reporting its state, record the complete pull-request head and file
   list, the target repository's lifecycle, its current state, and its next transition. A draft
   confined to canonical agent configuration records `agent-configuration exception`
-  and `merge-gate` as its next action unless a hold under the GitHub rule's **Merge Authorization**
-  holds it; it never records `await user authorization` otherwise.
+  and `merge-gate` as its next action unless the GitHub rule's **Merge Authorization** holds it; it
+  never records `await user authorization` otherwise.
 
 ## Behavior
 
@@ -257,8 +257,8 @@ user's review of the source pull request overlaps it.
      and why. Apply relevant guidance fixes without waiting to be invited to think more broadly;
      product choices still follow the global authorization boundary. **An edit writes only what
      the request and the failure it repairs need.** Two kinds of edit are policy changes, proposed
-     to the user with the standing text they would change and written only once the user's own words
-     approve them: a requirement neither the request nor its failure needs, such as a step, a routing
+     to the user with the standing text they would change and written only once the user's own words,
+     or an invoked skill's explicit instruction for that change, approve them: a requirement neither the request nor its failure needs, such as a step, a routing
      rule or a hold the request never named; and any exception to, or change of, standing guidance
      the user did not ask to change, however necessary the repair makes it look.
    - **When no existing file of the inferred or selected type governs the subject, create the new
@@ -381,7 +381,7 @@ user's review of the source pull request overlaps it.
 7. **Guidance Delivery** delivers the batch in this order, with `review-pass` carrying steps 3–4. Ordinary
    repairs and verification remain authorized throughout this delivery; resolve flagged gates under `acceptance-gate`'s **Bounds** and failing skill-test runs under
    `test-skill`. A pull request confined to agent configuration has merge authorization under the
-   GitHub rule after its stated gates, unless a hold under its **Merge Authorization** holds it; ask neither to repeat that authorization nor to continue
+   GitHub rule after its stated gates, unless its **Merge Authorization** holds it; ask neither to repeat that authorization nor to continue
    an ordinary repair. That merge authority settles no genuine unresolved product, scope, or
    authorization choice: put that concrete choice to the user under **Bounds** while independent
    work continues. It does not authorize a release workflow. A changed output's concrete example, under **Upsert behavior**, is task evidence before writing that output; it does not wait for approval.
@@ -460,7 +460,7 @@ user's review of the source pull request overlaps it.
       **The agent-configuration merge exception decides the conflict with the ordinary merge
       default.** When the GitHub rule classifies every changed path as canonical agent
       configuration, the required gates pass, a skill's changed scripts' own checks included, and no
-      hold under the GitHub rule's **Merge Authorization** holds it, `merge-gate` is the next action in
+      hold the GitHub rule's **Merge Authorization** sets applies, `merge-gate` is the next action in
       this run. Do not record, report, or ask for a permission hold by citing the ordinary default;
       that is not a documented gate for this pull request.
 
@@ -495,8 +495,8 @@ user's review of the source pull request overlaps it.
       merges. Select where dependent guidance goes under the GitHub rule's **Branches and Pull Requests**,
       and report any hold under its **Merge Authorization**. Otherwise a pull request carrying a
       skill change merges once step 6 found every changed output matching its concrete example, and
-      one carrying only rules merges on sight as the GitHub rules say, unless a hold under their
-      **Merge Authorization** holds it. Report a held pull request for the user's review.
+      one carrying only rules merges on sight as the GitHub rules say, unless their **Merge
+      Authorization** holds it. Report a held pull request for the user's review.
    8. **Nothing is copied by hand.** The skills repository is the only copy of a shared skill;
       sessions receive a merged edit through the refresh **After Agent Sync** runs, never through a copy
       placed in another repository or install. A skill that reads generically but was written into one repository's `.agents` is
