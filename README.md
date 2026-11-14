@@ -76,9 +76,8 @@ trusted there.
 
 ## Skills
 
-The two groups differ in who starts a skill: a user-invoked one carries
-`disable-model-invocation: true` in its front matter and stays off the agent's tool surface until you
-name it. Generated from each skill's front matter — edit the skill, not the table.
+The two groups differ in who starts a skill: a user-invoked one says in its description that it runs
+only when the user asks for it. Generated from each skill's front matter — edit the skill, not the table.
 
 <!-- skills:start -->
 

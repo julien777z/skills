@@ -14,6 +14,7 @@ START_MARKER: Final[str] = "<!-- skills:start -->"
 END_MARKER: Final[str] = "<!-- skills:end -->"
 FRONT_MATTER_KEY_PATTERN: Final[re.Pattern[str]] = re.compile(r"^([A-Za-z][\w-]*):\s*(.*)$")
 SENTENCE_PATTERN: Final[re.Pattern[str]] = re.compile(r"(?<=[.!?])\s+")
+USER_ONLY_PATTERN: Final[re.Pattern[str]] = re.compile(r"\bonly\s+when\s+the\s+user\b", re.IGNORECASE)
 
 
 def parse_front_matter(path: Path) -> dict[str, str]:
@@ -54,6 +55,7 @@ def parse_front_matter(path: Path) -> dict[str, str]:
         if len(value) >= 2 and value[0] == value[-1] and value[0] in {'"', "'"}:
             quote = value[0]
             value = value[1:-1]
+
             if quote == "'":
                 value = value.replace("''", "'")
 
@@ -103,8 +105,8 @@ def render_links(skills: list[tuple[Path, dict[str, str]]]) -> str:
 def render_section(skills: list[tuple[Path, dict[str, str]]]) -> str:
     """Render both skill groups, split by how each one is invoked."""
 
-    user_invoked = [skill for skill in skills if skill[1].get("disable-model-invocation") == "true"]
-    model_invoked = [skill for skill in skills if skill[1].get("disable-model-invocation") != "true"]
+    user_invoked = [skill for skill in skills if USER_ONLY_PATTERN.search(skill[1]["description"])]
+    model_invoked = [skill for skill in skills if not USER_ONLY_PATTERN.search(skill[1]["description"])]
 
     return "\n".join(
         [
@@ -112,7 +114,7 @@ def render_section(skills: list[tuple[Path, dict[str, str]]]) -> str:
             "",
             "### User-Invoked",
             "",
-            "These run only when you ask for them by name, such as `/code-slop-doctor`.",
+            "These run only when you ask for them, by name such as `/code-slop-doctor` or in your own words.",
             "",
             render_links(user_invoked),
             "",
@@ -144,6 +146,7 @@ def commit_listing(branch: str) -> None:
 
     subprocess.run(["git", "config", "user.name", BOT_NAME], check=True)
     subprocess.run(["git", "config", "user.email", BOT_EMAIL], check=True)
+
     subprocess.run(["git", "add", "--", str(README_PATH)], check=True)
     subprocess.run(["git", "commit", "-m", COMMIT_MESSAGE], check=True)
 
