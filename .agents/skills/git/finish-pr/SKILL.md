@@ -135,15 +135,17 @@ head lag and a retryable rate limit are nonterminal.
   switching. Record its commit and original branch so it can be restored there. Leave the stash
   in place and keep the original branch and its commits. Preserve ignored or nested files
   separately if they would block the switch, verifying the saved contents before moving them.
-- Switch the primary checkout to the target branch and fast-forward with
-  `git merge --ff-only --no-autostash --no-overwrite-ignore`. If the target branch is already
-  checked out elsewhere, preserve that worktree at its existing commit before freeing the branch.
-  Detach at that commit when clean, or keep its in-progress work on a local preservation branch.
+- Run `git switch --no-overwrite-ignore <target-branch>` in the primary checkout and fast-forward
+  with `git merge --ff-only --no-autostash --no-overwrite-ignore <verified-remote-tip>`. If the target branch is already
+  checked out elsewhere, switch that worktree to a local preservation branch at its existing
+  commit, keeping any in-progress work there. Keep both worktrees on named branches.
   If the local target branch has diverged, preserve its tip under a separate local branch before
   moving the target branch to the verified remote tip. Resolve these local conditions and retry
   the switch or fast-forward. A branch mismatch, local edits, or divergence does not end the refresh.
 - Verify the primary checkout is on the target branch at the fetched tip and contains the verified
-  merge. Record the resulting head and every preservation branch or stash created. If an active Git
+  merge. When the user is viewing another worktree in a Git client, select the primary checkout
+  there and verify the displayed branch. Record the resulting head and every preservation branch
+  or stash created. If an active Git
   operation or unavailable checkout prevents safe recovery, follow the applicable Git recovery
   route and resume the refresh when it is safe. Record any remaining external blocker and the
   saved next action. Continue independent units without reopening a verified merge.
