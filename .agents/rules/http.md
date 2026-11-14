@@ -43,8 +43,7 @@ paths:
   the caller cannot see, the whole field or more of it than their level reveals, such as a filter,
   search term, sort, grouping or count naming the field, since what matches would reveal it; the
   same operation without that parameter runs for that caller. A search or default ordering in which
-  the caller names no field runs and leaves that field out for them. These follow the field's
-  disclosure rule, which decides the field and its parameters, never who may run the operation.
+  the caller names no field runs and leaves that field out for them.
 
 ## Clients
 

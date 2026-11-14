@@ -18,7 +18,7 @@ paths:
 - **No data access or response shaping in handlers**: a handler must not query or persist data directly, nor assemble response models from raw rows or records inline; extract a service function that returns the response model and keep the handler to wrap-and-return.
 - **An `Annotated` dependency alias belongs in the app's dependency module, never in a route file.** The alias names a guard rather than a route, so the next surface needing that guard either imports it or writes its own copy — and a route file is where nobody looks first, so it writes its own. Two files then spell the same protection two ways, and nothing makes them disagree loudly.
 - Keep the whole set in **one module**, so the guards an app offers can be read in one place and a new route picks one instead of inventing it. Routes import each alias by name; the policy body it invokes still lives in `services/` or `lib/`.
-- **A parameterized guard factory is one dependency, not a family of route aliases.** Define the factory in the app's dependency module and let a route state its one permission with `Depends(factory(...))`. The argument states the operation's policy at the call site; wrapping every argument in a named alias would recreate the duplicate guards this rule prevents.
+- **A parameterized guard factory is one dependency, not a family of route aliases.** Define the factory in the app's dependency module and let a route state its policy with `Depends(factory(...))`. The argument states the operation's policy at the call site; wrapping every argument in a named alias would recreate the duplicate guards this rule prevents.
 
 ```python
 # Bad: the route file declares the guard it happens to need
