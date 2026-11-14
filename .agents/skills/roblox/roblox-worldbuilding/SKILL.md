@@ -1,10 +1,10 @@
 ---
-name: roblox-building
-description: Apply when planning, inspecting, creating, modifying, importing, optimizing, or playtesting Roblox maps, worlds, terrain, buildings, props, environmental meshes, or Blender assets. Also apply when handling authored signs or runtime world-space text, regardless of renderer. Require coherent environments, deliberate place architecture, economical measured geometry, readable traversal, preserved artwork, and player-height visual/performance checks.
+name: roblox-worldbuilding
+description: Apply when planning, inspecting, creating, modifying, importing, optimizing, or playtesting anything placed in a Roblox world — maps, terrain, water, roads, buildings, rooms, props, environmental meshes, or Blender assets. Also apply when handling authored signs or runtime world-space text, regardless of renderer. Require coherent environments, deliberate place architecture, economical measured geometry, readable traversal, preserved artwork, and player-height visual/performance checks.
 short_description: 'Build and improve Roblox worlds, terrain, structures, props, and assets.'
 ---
 
-# Roblox building and world design
+# Roblox worldbuilding
 
 ## Dependencies
 
@@ -43,7 +43,17 @@ Keep meshes low in triangles for their visible purpose and expected repetition. 
 
 Remove hidden/internal faces where they cannot become visible, unnecessary edge loops, and excessive subdivisions. Preserve normals, UVs, outline, and important deformation when simplifying. Inspect the exported triangulated result, not only Blender's quad count. Texture/material detail can replace geometry where it remains convincing at player distance; keep texture memory and material splits economical too.
 
-Reuse identical mesh/texture assets and IDs instead of repeatedly uploading duplicates. Prefer appropriate automatic/performance render fidelity, simple collision shapes, and selective shadows. Avoid unnecessary precise collision or a single enormous combined mesh that defeats useful streaming boundaries. These choices follow [Roblox performance guidance](https://create.roblox.com/docs/performance-optimization/improve); measure their effect in the actual scene.
+**Apply the cheap performance defaults to every mesh, prop and light as it is built, never waiting for a measured slowdown.** Each one costs nothing a player sees, and its saving only shows once many pieces carry or lack it, by which point the whole world needs reworking. They follow [Roblox performance guidance](https://create.roblox.com/docs/performance-optimization/improve):
+
+- One upload per distinct geometry, copied in the editor. Each use takes its own color or tint (`Color`, `SurfaceAppearance.Color`), never a recolored re-upload, and one texture or SurfaceAppearance is shared per kind of prop.
+- Decoration, meaning anything players do not stand on, need to be stopped by, or interact with, takes `CollisionFidelity` Box, with `CanCollide`, `CanTouch` and `CanQuery` false. A piece a touch trigger, pickup or raycast relies on keeps the flag that serves it, and where a piece must block movement or the camera, a simple invisible collider does it.
+- `CastShadow` false on small decoration and on anything indoors or under a roof, and `Shadows` false on interior lights the scene does not need.
+- `RenderFidelity` Automatic, never Precise.
+- No decorative part with partial transparency. Glass and glow use an opaque or Neon material or one shared transparent surface.
+- Textures at 512 px or less, 256 px for minor props.
+- Distant models use `LevelOfDetail` where the place streams.
+
+A default is left off only where it visibly breaks the result, such as a shadow the scene's lighting depends on, and the reason goes beside that piece. Enforce the defaults where the project builds or imports pieces, so a new piece cannot skip them. Measurement checks a scene against its budget; it never decides whether a default applies. Avoid a single enormous combined mesh that defeats useful streaming boundaries.
 
 Low triangle counts alone do not guarantee smooth play. Also inspect draw calls, materials, transparency/overdraw, texture memory, particles, lights, physics, scripts, and streaming load. Measure representative busy views and startup using Studio performance tools. Record device/simulator, graphics level, frame time, and memory where available. Do not describe a desktop or simulator result as physical mobile performance.
 
@@ -55,6 +65,6 @@ Trace every affected entrance and activity access route all the way to the estab
 
 For major maps or streaming changes, test stream-out/re-entry, destination preloading, interiors, missing assets, and appropriate mobile coverage. Verify complete activity footprints avoid protected routes. Check the saved or rebuilt artifact for terrain, assets, lighting, source/package closure, and absence of test fixtures; reopen it when serialization needs verification. Report code checks, Studio traversal, simulation, performance measurements, and published-client results separately.
 
-Keep reusable building lessons here, a lesson whose subject another skill owns there, and game-specific world design in the project skill. Update canonical `.agents` sources only; leave provider mirrors to Agent Sync.
+Keep reusable worldbuilding lessons here, a lesson whose subject another skill owns there, and game-specific world design in the project skill. Update canonical `.agents` sources only; leave provider mirrors to Agent Sync.
 
 Sources for place architecture: [Roblox places](https://create.roblox.com/docs/production/publishing/publish-games-and-places), [teleporting](https://create.roblox.com/docs/projects/teleport).

@@ -1,19 +1,20 @@
 ---
-name: roblox-react
-description: Apply whenever a React-rendered Roblox UI is opened, read, reviewed, inspected, designed, created, modified, or playtested, including HUDs, menus, tutorials, selection screens, viewport previews, and React-owned world-space messages. Require readable, visually inspected desktop/touch interfaces, explicit cleanup, and repeated real-input Play tests.
-short_description: 'Design and change React-rendered Roblox interfaces, including HUDs and menus.'
+name: roblox-ui
+description: Apply whenever a Roblox UI is opened, read, reviewed, inspected, designed, created, modified, or playtested, including HUDs, menus, tutorials, selection screens, viewport previews, and UI-owned world-space messages. Require readable, visually inspected desktop/touch interfaces, explicit cleanup, and repeated real-input Play tests.
+short_description: 'Design and change Roblox interfaces, including HUDs and menus.'
 ---
 
-# Roblox React interfaces
+# Roblox UI
 
 ## Dependencies
 
 - `luau`
-- `roblox-building`
+- `roblox-worldbuilding`
+- `roblox-characters`
 
 ## Clarity and visual quality
 
-Follow `luau`'s required UI framework. Make React-rendered interfaces clean, easy to use, beginner friendly, and visually pleasing. Treat these as acceptance criteria, not optional polish after code compiles. Preserve the game's established artwork and visual identity unless a redesign is requested.
+Follow `luau`'s required UI framework. Make every interface clean, easy to use, beginner friendly, and visually pleasing. Treat these as acceptance criteria, not optional polish after code compiles. Preserve the game's established artwork and visual identity unless a redesign is requested.
 
 Apply `luau` whenever reading or editing its Luau code. Return required engine setup and playtest work to the caller. Read [Framework and component practices](references/components.md) before changing architecture, dependencies, lifecycle, or layout.
 
@@ -21,7 +22,7 @@ Give each screen one clear purpose and a recognizable primary action. Use plain 
 
 Give every action control its name, or a one-line effect, beside its icon; an icon or a key letter alone leaves players guessing what an ability does. Show the input that triggers each action for the device in use (the key on keyboard, the button on gamepad, the on-screen control on touch), and update it when the player switches device.
 
-Review the whole screen before individual controls. Identify the focal point and primary action; inspect the composition’s position, proportions, whitespace, and balance against the usable viewport. A centered title does not center an off-center group. A 3D preview, such as a character, vehicle or creature in a viewport, centers its subject on the subject's rendered bounds, recomputed whenever the shown item changes the silhouette, and frames it so the part the preview exists to show, such as a vehicle's new wheels or a pet's saddle, is visible, faces the viewer and fills enough of the frame to judge. For selection screens, bound and align the title, full previews, confirmation, and status as one composition; preserve intentional asymmetry when the design calls for it. Repeated items shown side by side, such as cards in a row, list rows or grid tiles, share one layout: each shared element, such as a name, a bar, an icon or a price, sits at the same position in every item, so it lines up across the set. Content only some items carry, such as a status line or a badge, takes reserved space or goes after the shared elements, never centering that moves them, and the items share one size. Inspect the set with the optional content on some items and off others. Check safe areas and the surrounding world, HUD, notices, and overlays together on wide, narrow, and short screens. Record the visual defect and repair even when every control is clickable and inside its bounds.
+Review the whole screen before individual controls. Identify the focal point and primary action; inspect the composition’s position, proportions, whitespace, and balance against the usable viewport. A centered title does not center an off-center group. A 3D preview, such as a character, vehicle or creature in a viewport, centers its subject on the subject's rendered bounds, recomputed whenever the shown item changes the silhouette, and frames it so the part the preview exists to show, such as a vehicle's new wheels or a pet's saddle, is visible, faces the viewer and fills enough of the frame to judge; a character preview has its rig and accessories fitted as `roblox-characters` says before the camera is fit. For selection screens, bound and align the title, full previews, confirmation, and status as one composition; preserve intentional asymmetry when the design calls for it. Repeated items shown side by side, such as cards in a row, list rows or grid tiles, share one layout: each shared element, such as a name, a bar, an icon or a price, sits at the same position in every item, so it lines up across the set. Content only some items carry, such as a status line or a badge, takes reserved space or goes after the shared elements, never centering that moves them, and the items share one size. Inspect the set with the optional content on some items and off others. Check safe areas and the surrounding world, HUD, notices, and overlays together on wide, narrow, and short screens. Record the visual defect and repair even when every control is clickable and inside its bounds.
 
 Make selected, hovered, focused, disabled, pending, successful, and failed states distinct. Explain why an action is unavailable where useful. Do not rely on color alone. Keep text legible over the world: give it its own contrast with a heavy weight and dark stroke or an opaque panel behind it, and check it against the brightest and busiest backgrounds it can appear over, since thin, gray or small text on a translucent panel loses contrast over bright scenes. Accommodate wrapping and long content, and avoid tiny targets or decorative motion that delays actions. Respect reduced motion and preserve keyboard/gamepad focus where supported.
 
@@ -29,7 +30,7 @@ Text the player must notice goes where their eyes already are: an instruction th
 
 Give artwork, names, costs, and status labels dedicated layout space. Do not place status text over artwork or squeeze long labels into tiny badges. Check the longest real label at the smallest supported component size and in every relevant state; inspect rendered text, not only its container bounds.
 
-For React-owned world-space messages, apply `roblox-building`'s world-space text inspection
+For UI-owned world-space messages, apply `roblox-worldbuilding`'s world-space text inspection
 alongside the component lifecycle and interaction checks below.
 
 Share the theme, controls, modal shell, and preview adapters where the game uses them. Related windows use consistent close behavior, backdrop, focus/input handling, and dimensions appropriate to their content. Every dismissible panel shows its close control in the same place across the game, by convention a high-contrast X at the top-right corner, never covered by other HUD elements, and it closes its panel even while other panels are open. A panel's title row holds only its title and close control at every screen size; its actions sit in their own row under the body, compacted on short screens rather than moved beside the title. Reserve a panel whose only exit is a confirm button for a real decision. A second window replaces the first; repeated triggers follow the game's documented toggle behavior. A window the player carries, such as a journal, map or inventory, leaves movement and the camera working while it is open and takes input only on its panel; a window that belongs to standing somewhere, such as a workbench, board or travel gate, and exclusive start screens and modals block underlying pointer, keyboard, hover, and movement input, then restore it on exit.
@@ -42,7 +43,7 @@ When a game has a persistent objective HUD, prioritize the next useful action ov
 
 Fit panels to their content. Short dialogue or a small set of actions should not leave a large empty box. Use automatic sizing or measured layout content, readable maximum widths, and viewport height limits; introduce scrolling only when content exceeds those limits. Check both short and long copy, and reset scroll position when replacing the content with a new page.
 
-Use anchored containers, list/grid layouts, automatic sizing, constraints, scrolling, and safe insets. Preserve minimum readable text and usable touch targets. Do not shrink a fixed desktop canvas to fit a phone. Check narrow and short landscape viewports, text overflow, scrolling to the last item, and overlap with Roblox's top bar and movement controls.
+Use anchored containers, list/grid layouts, automatic sizing, constraints, scrolling, and safe insets. Preserve minimum readable text and usable touch targets. Do not shrink a fixed desktop canvas to fit a phone. Check narrow and short landscape viewports, text overflow, scrolling to the last item, and overlap with Roblox's top bar and movement controls, such as the thumbstick and jump button.
 
 Account for visible borders, focus/selection strokes, shadows, and rounded corners when placing controls inside clipping or scrolling containers. A control whose rectangle fits can still lose the outer half of its stroke. Reserve inner padding for the largest visual extent and the scrollbar; verify the first and last controls and both side edges.
 
@@ -64,7 +65,7 @@ At those checkpoints, cover each affected flow:
 4. For selection/confirmation flows, change selection repeatedly, confirm, and attempt a duplicate confirmation. Verify the visible selected state and authoritative result agree; a timeout advancing the game is not proof a click registered.
 5. Inspect screenshots at supported desktop, narrow, and landscape phone/tablet sizes when UI changes. Apply the whole-screen composition criteria above; read every instruction, inspect all four button edges and rounded corners, and observe a complete pointer bounce at each affected tutorial step. Check its full motion envelope for text overlap and clipping, including while scrolling. A bounding-box assertion, successful click, or clean lint result is not visual acceptance. Record what was visually inspected; do not infer coverage from a different step or screen. Operate touch controls and scrolling in the simulator, including safe areas. Do not claim physical-device coverage from simulation.
 6. Repeat the flow after character replacement, encounter exit, or another relevant lifecycle boundary. Verify camera/input restore, previews remain stable, and connections or animation work do not accumulate.
-7. For React-owned world-space text, apply `roblox-building`'s world-space inspection to initial and changed presentations; other UI screenshots and successful gameplay do not cover it.
+7. For UI-owned world-space text, apply `roblox-worldbuilding`'s world-space inspection to initial and changed presentations; other UI screenshots and successful gameplay do not cover it.
 
 Fix visible or interaction defects discovered in the affected flow even when lint and builds pass. Keep evidence of actual outcomes. Scale broader gameplay coverage to the change and distinguish Studio, device simulation, persistence, and published-client verification.
 
