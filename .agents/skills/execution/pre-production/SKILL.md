@@ -157,7 +157,12 @@ with an obsolete owned contract or revision.
   consider or an option, recorded as deferred, left as a hardening note, or answered with a
   recommendation to run an audit of any kind later.
 - **Incidental cleanup has a size budget.** Incidental cleanup is everything the request did not
-  ask for that fixes no defect, outside the change's own design and the defect's shape above.
+  ask for that fixes no defect, outside the change's own design and the defect's shape above. A
+  change to a skill edits that skill's whole folder, its `SKILL.md`, references, scripts and
+  templates alike, and cleanup inside that folder is held to neither budget's size limits: an
+  agent reads a skill as one unit, so a rule restated between two of its files is tidied in the
+  change that edits either one, keeping every criterion either copy carries. Cleanup in another
+  skill keeps the budget in force.
   - **The default budget:** cleanup that fixes no defect — duplication, dead code, a misplaced
     helper, an abstraction with one implementation, layout — fits only inside the files the change
     already edits and while it stays small beside the requested part.
