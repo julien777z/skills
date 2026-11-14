@@ -1,13 +1,17 @@
 ---
-name: share-captures
-description: "Show the user what they need to see in the part of the agent's reply the harness shows them: screenshots, recordings and rendered previews as they are read, and any table, plan, list or file a report or question relies on. Use whenever work produces captures of a product, a site, a game or a generated image, whenever a reply points the user to material to look at, and before any question whose supporting material is not inside the question itself."
-short_description: 'Show captures, option previews and the material a reply relies on where the user reads.'
+name: share-media
+description: "Show the user what they need to see in the part of the agent's reply the harness shows them: screenshots, recordings, rendered previews and spoken audio as they are read, and any table, plan, list or file a report or question relies on. Use whenever work produces captures of a product, a site, a game or a generated image, whenever a reply points the user to material to look at, before any question whose supporting material is not inside the question itself, and when the user asks to talk by voice, hear the agent, have replies read aloud, or hold a spoken back-and-forth to clarify what they want."
+short_description: 'Show captures, option previews, spoken replies and the material a reply relies on where the user reads.'
 ---
 
-# Share Captures
+# Share Media
 
 The global rules' **User-Facing Output** says which captures reach the user and when. This skill is how
-they get there, the same way for a web walkthrough, a game playtest or a generated image.
+they get there, the same way for a web walkthrough, a game playtest or a generated image, and how a
+reply reaches the user as speech.
+
+## Dependencies
+- `session-ledger`
 
 ## Send each capture where the reader sees it
 
@@ -47,12 +51,28 @@ as page versions do. This is how those previews are sent.
 3. **Show the option images, then ask through the question tool**, never in chat. Each image goes
    under its caption with a line on what that option does, in a message the reader sees. Where only
    the message that ends a turn is shown, as in T3 Code, record the pending question in the
-   session ledger, end the turn on that message, and ask the question through the question tool as
-   the first action of the next turn; **Harness compatibility** says what starts that turn. The
-   question names each option by its image's caption, never by position, and states in its own text
-   what each does.
+   session ledger through `session-ledger`, end the turn on that message, and ask the question
+   through the question tool as the first action of the next turn; **Harness compatibility** says
+   what starts that turn. The question names each option by its image's caption, never by
+   position, and states in its own text what each does.
 4. **When the user says they cannot see the previews**, the route failed: fix it and show them again
    before re-asking, never re-ask over the same broken route.
+
+## Spoken replies
+
+When the user asks to talk by voice, they speak through the harness's dictation and the agent
+answers with a clip they play where they read the chat, its words written beneath it, so the
+exchange is heard and recorded at once.
+
+- **Speak only the replies that clarify**: one that restates what the agent understood, names what
+  is still unclear, or asks one or two questions about what the user wants, never committing to
+  work the user has not described yet. A report, a progress update or a reply that is mostly links,
+  code or paths stays text only, unless the user asks to hear it.
+- **Make and send each spoken reply** as [the spoken-replies reference](references/spoken-replies.md),
+  this skill's procedure for the voice service and for making and showing a clip, describes. A
+  question the reply asks goes through the question tool once the player and its text are shown,
+  ordered as **Previews for a choice** step 3 orders a question after its images.
+- Never play a clip on the agent machine's speakers as the reply: the user may not be at that machine.
 
 ## Harness compatibility
 
@@ -73,4 +93,8 @@ as page versions do. This is how those previews are sent.
   posts a new message into the thread as the user, so it never carries the agent's own captures.
   A file among that material, such as a plan or a detail file, is a Markdown link to its absolute
   path, `[name](/absolute/path/to/plan.md)`, kept in the working directory **Keep the file** above
-  names; T3 opens it in its files viewer.
+  names; T3 opens it in its files viewer. A spoken reply's player page is shown with `html_render`,
+  at a height of 80 pixels: a Markdown link to an audio file does not play when the user's client
+  connects to the agent's machine remotely, and a player that carries its sound in the page does.
+- **Any other harness:** show a spoken reply's player page the way the harness shows a rendered HTML
+  preview; where it has none, send the page as a file the user opens.

@@ -287,7 +287,7 @@ ends with its check:
    `spctl -a -vv` reports a notarized Developer ID. Copy it to `/Applications/Roblox.app`; opening
    it shows its sign-in page. It registers itself as a login item.
 3. **Sign it in by QR code.** Choose Sign In, then QR code. A code expires in about two minutes,
-   so capture it just before the message that shows it, show that capture as `share-captures`
+   so capture it just before the message that shows it, show that capture as `share-media`
    says, then ask through the question tool for the user to scan it, with a Done option, one for
    a new code and one for later. A new-code answer or a timeout captures a fresh code and shows it
    again before asking again. A prompt asking the account to accept something goes to the user,
