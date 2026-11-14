@@ -4,20 +4,19 @@ Give each UI tree one owner. Keep server gameplay independent from the UI framew
 
 Use maintained [Roblox React Lua](https://github.com/Roblox/react-lua) packages. Inspect the active package manifest and distinguish official packages from community forks. Install compatible pinned React/renderer versions through Wally and commit its lockfile. Generate type forwarding with the pinned [wally-package-types](https://github.com/JohnnyMorganz/wally-package-types) recipe and current Rojo sourcemap rather than manually editing generated aliases.
 
-Keep shared theme, controls, modal shells, and viewport adapters canonical where the UI uses them. Component props and domain data stay typed. React's `Node` and `ReactElement` types are not interchangeable in all package versions: explicit component return types and typed child dictionaries can resolve inference/variance errors without casting to `any`. Inspect the installed package types when diagnosing this.
+React's `Node` and `ReactElement` types are not interchangeable in all package versions: explicit component return types and typed child dictionaries can resolve inference/variance errors without casting to `any`. Inspect the installed package types when diagnosing this.
 
 Measure a tutorial target's actual `AbsolutePosition`/`AbsoluteSize` relative to its overlay instead of converting through an assumed 1280×720 coordinate system.
 
-Retain original artwork through narrowly scoped adapters. Mount a viewport scene once for its asset identity, preserve it across selection changes, and destroy its models, render subscriptions, and animations on unmount. A React wrapper around an unchanged imperative screen is not a screen migration.
+Retain original artwork through narrowly scoped adapters. Mount a viewport scene once for its asset identity and destroy its models, render subscriptions, and animations on unmount. A React wrapper around an unchanged imperative screen is not a screen migration.
 
 ## Interaction and presentation
 
-- Use clear hierarchy, a restrained palette, consistent spacing, legible cards/buttons, and clear state feedback. Avoid excessive panels obscuring the environment.
+- Use a restrained palette, and keep panels from obscuring more of the environment than their content needs.
 - Keep stable widgets alive across frequent snapshots. Destroying and recreating expensive preview components on every click can cause blank flashes and asset reloads. Update text, health, selection, and enabled state in place; rebuild only when layout/content changes. Keep hover colors consistent with the current selected/disabled base color.
-- Use short purposeful transitions; avoid motion that delays basic actions. Give distinct actions recognizable effects and impact timing. Offer reduced camera shake/motion where effects warrant it.
-- Hide/disable movement controls during interfaces or gameplay modes that prohibit movement, then restore them reliably. Clear modal instruction overlays before expecting the user or test driver to press underlying controls.
-- Contextual prompts should appear near relevant NPCs/items. Do not add a permanent "E Interact" button when the proximity prompt already explains the action. Touch must still have an actionable prompt.
-- Display authoritative state, valid choices, and confirmed actions. Use player-facing action names rather than internal content IDs. Make invalid selections understandable without allowing them on the server.
+- Give distinct actions recognizable effects and impact timing, and offer reduced camera shake where effects warrant it.
+- Do not add a permanent "E Interact" button when a proximity prompt already explains the action.
+- Offer only valid choices and show only confirmed actions; make an invalid selection understandable without allowing it on the server.
 
 ## Nested child dictionaries in React 17.2.1
 
@@ -25,14 +24,14 @@ A dictionary nested directly inside another children dictionary (`Content = prop
 
 ## Compact screens and touch controls
 
-Budget each screen against measured usable height and safe insets. Use grid or scrolling layouts when stacked rows would make controls unreachable. Reserve the space needed for any world or character preview, and fit its camera to that region rather than an assumed desktop layout. Inspect text, artwork, focus, and scenery occlusion after resizing and state transitions.
+Budget each screen against measured usable height and safe insets. Reserve the space needed for any world or character preview, and fit its camera to that region rather than an assumed desktop layout. Inspect text, artwork, focus, and scenery occlusion after resizing and state transitions.
 
-Blocking movement input does not necessarily hide Roblox's touch thumbstick and jump button. Own their visibility while a modal or game mode blocks exploration, including late-created touch UI, and restore prior state on exit. Verify with real simulated-device input. Keep the final scroll item and primary action reachable on short screens; avoid nested scroll regions that render outside a clipped ancestor.
+Blocking movement input does not necessarily hide Roblox's touch thumbstick and jump button. Own their visibility while a modal or game mode blocks exploration, including late-created touch UI, and restore prior state on exit. Verify with real simulated-device input. Avoid nested scroll regions that render outside a clipped ancestor.
 
 ## Composition and feature ownership
 
 Separate mounting, feature state, and leaf components. A canonical Core UI mount helper owns the ScreenGui and React root; its caller owns unmounting. Use one root per mounted interface, `ResetOnSpawn = false`, and an explicit safe-inset policy. Inject the PlayerGui from the client entry point so engine tests do not depend on `Players.LocalPlayer`.
 
-Feature App components own subscriptions and UI state. Receive subscriptions as typed props, connect them in effects, and return cleanup. Leaf modules return component functions with exported typed Props; they receive data/actions without requiring networking or fetching the local player. Keep rules, formatting, and state transformations engine-free where useful. Preserve expensive preview identities during snapshot updates.
+Feature App components own subscriptions and UI state. Receive subscriptions as typed props, connect them in effects, and return cleanup. Leaf modules return component functions with exported typed Props; they receive data/actions without requiring networking or fetching the local player. Keep rules, formatting, and state transformations engine-free where useful.
 
 Run React tests in the project's Roblox engine suite; pure presentation policy can use its standalone suite. Automated checks complement the parent skill's real-input, repeated-click, responsive, and visual acceptance checks.
