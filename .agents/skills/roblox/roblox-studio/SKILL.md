@@ -12,8 +12,9 @@ Carry a Roblox game request through implementation, visual polish, real playtest
 
 - `luau`
 - `share-captures`
-- `roblox-react`
-- `roblox-building`
+- `roblox-ui`
+- `roblox-worldbuilding`
+- `roblox-characters`
 - `roblox-gameplay`
 - `agent-lock`
 - `test-fixture`
@@ -38,13 +39,13 @@ Inspect installed tools and project conventions before building. Use Rojo for so
 
 Read the [source, editor, and publication reference](references/studio-workflow.md) when synchronizing source, importing/exporting, running Studio automation, or publishing. Read [source and place delivery](references/source-delivery.md) when synchronizing module/package trees or validating built places.
 
-Apply `roblox-building` and its world-space text reference whenever changing or testing an authored sign or runtime world-space message, regardless of renderer.
+Apply `roblox-worldbuilding` and its world-space text reference whenever changing or testing an authored sign or runtime world-space message, regardless of renderer.
 
 Keep generated scripts separate from imported assets and Studio-authored scenery. Maintain editable source, Blender originals, exported assets, and build instructions. A routine script rebuild must preserve manual art. Test that the saved/rebuilt place contains the actual assets and terrain, rather than relying on the current Studio session or cached meshes.
 
-## Avatars and assets
+## Assets and characters
 
-Read [Asset and avatar standards](references/assets-and-avatars.md) for imported and uploaded assets and character presentation. Preserve the player's avatar unless an override is requested or required by the game. Verify proportions, faces, attachments, locomotion, and action animations in play.
+Read [uploaded asset standards](references/uploaded-assets.md) before uploading an asset for the game. Apply `roblox-characters` for avatars, NPCs, creatures, their rigs and their animation.
 
 ## Record operational lessons as they occur
 
@@ -74,7 +75,7 @@ For visual work, inspect actual screenshots and movement, including camera angle
 
 ## Deliver the verified result
 
-Save the authorized source, artwork, and place artifacts and verify their destination and content. Publish only on the user's request for that publish, to the verified experience, owner, place, and visibility; the user can run `/publish-to-roblox` to publish the session's build. Confirm terminal publication success and version when publishing. Do not infer live-client behavior from Studio evidence; run published-client tests only when requested or needed to investigate a live-only defect. Report any unverified live-only behavior accurately.
+Save the authorized source, artwork, and place artifacts and verify their destination and content. When publishing, publish to the verified experience, owner, place, and visibility, and confirm terminal publication success and version. Do not infer live-client behavior from Studio evidence; run published-client tests only when requested or needed to investigate a live-only defect. Report any unverified live-only behavior accurately.
 
 ## Output
 
