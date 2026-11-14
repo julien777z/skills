@@ -265,7 +265,8 @@ and before acting checks again that the step is still needed. Each step ends wit
    and check them as that section says.
 5. **Sign in and qualify** as [authentication](#authentication-and-user-handoff) and
    [Qualify input and capture](#qualify-input-and-capture) describe, installing the
-   [geometry buffer cap](#cap-studios-geometry-buffers-in-a-tart-guest) and confirming it in the
+   [geometry buffer cap](#cap-studios-geometry-buffers-in-a-tart-guest) and the runner's
+   [fixed graphics quality](#leave-the-shared-runner-as-you-found-it) and confirming both in the
    editor first; a session cloned signed in is confirmed from Studio's start page, not assumed.
    Release the lock before asking the user for a sign-in code, and take it again, with its receipt
    checked and the guest's state read back, before continuing. Then set
@@ -304,8 +305,9 @@ ends with its check:
 5. **Sign in, enable MCP, and qualify** as [authentication](#authentication-and-user-handoff),
    [direct guest control](#direct-guest-control) and
    [Qualify input and capture](#qualify-input-and-capture) describe, with the
-   [geometry buffer cap](#cap-studios-geometry-buffers-in-a-tart-guest) installed and confirmed in
-   the editor; qualification includes a capture of a large place drawing its meshes correctly.
+   [geometry buffer cap](#cap-studios-geometry-buffers-in-a-tart-guest) and the runner's
+   [fixed graphics quality](#leave-the-shared-runner-as-you-found-it) set and confirmed in the
+   editor; qualification includes a capture of a large place drawing its meshes correctly.
    Then set `ROBLOX_STUDIO_QUALIFIED=1` in `games/<game>.env`.
 
 #### Add the published Roblox player
@@ -609,15 +611,20 @@ build, a copy and an editor launch.
 Every session working on one game shares that game's VM, so whatever one leaves behind lands on the next. The
 game's warm session stays, as the section above says; no other task process
 outlives any release of the runner lock, and before the task's last release its own files are gone and
-every setting it changed reads back at the value it found.
+every setting it changed reads back at the runner's configured value.
 
-- **Settings.** A Studio or engine setting changed from a script or a dialog, such as
-  `settings().Rendering`'s quality levels or `UserGameSettings`, persists across editors and applies to
-  every session in the runner. Prefer a route scoped to the test, such as the device simulator's own
-  profile. When a shared setting must change, record its value first, restore it from an Edit-mode
-  editor once the test is done, and read it back from a newly opened editor; a restore issued from a
-  Play client, or one never read back, has not happened. Granting a permission an operation needs is
-  setup, not a setting to restore.
+- **Settings.** A Studio or engine setting, such as `settings().Rendering`'s quality level or
+  `UserGameSettings`, persists across editors and applies to every session in the runner. On the
+  runner VM it is the runner's own configuration, which the agent manages: set it once to the value
+  the tests need, leave it there, and confirm it when the runner is qualified. Graphics quality is a
+  fixed level high enough to draw shadows, never Automatic, which draws less as the guest gets
+  busier, so draw calls, triangles and shadows would move with load. A test that needs another
+  value prefers a route scoped to itself, such as the device simulator's own profile, and otherwise
+  returns the setting to the runner's configured value once it is done. On the host's own Studio
+  the settings are the user's: record each value before changing it and restore it once the test is
+  done. A change or restore is made from an Edit-mode editor and read back from a newly opened
+  editor; one issued from a Play client, or never read back, has not happened. Granting a permission
+  an operation needs is setup, not a setting to restore.
 - **Files.** Everything the task copies or writes in the guest, such as places, captures, scratch
   output, worktrees and lock files, sits under a folder named for the task or its project and is
   removed when the task's runner work ends. `studio_mcp.close_place` deletes the place copy
