@@ -180,8 +180,8 @@ mirror: its paths resemble the source, but the source file has no test module, s
 that file gets a file of its own instead of joining the others. Check it mechanically: list every
 test module in scope and compare its name, without the test-file marker, with the source file at the mirrored
 path. A test module named for a function or class inside a source file, or sitting in a folder
-named for one, is a finding; its tests fold into that source file's test module, under its one
-class, with same-shape cases joined into shared parameter sets.
+named for one, is a finding; its tests fold into that source file's test module, organized as
+this section's class rule and **Prefer Parametrized Cases** say.
 
 Before placing or moving a test, compare analogous sibling service tests and their corresponding
 source owners. Apply explicit repository guidance first. Otherwise prefer the layout that most
