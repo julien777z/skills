@@ -42,15 +42,16 @@ skill never readies, merges or deploys.
 - **Loop** (the user asks for a review loop or "sol loop"): run **Review Loop** over the target
   with fixes, and push only when the user asked to push or update the pull request.
 - **Watch** (the user asks to watch, monitor or babysit a pull request for review feedback): run
-  **Review Threads** and **Checks** over the pull request, then keep running them on every new or
-  updated thread, comment and check result, pushing each fix through the GitHub rule's **Pre-Push
-  Gate**. This mode polls every 30–60 seconds while a check is pending or failing or a thread is
-  open; while any is, each push or new finding restarts a 15-minute quiet window, since automated
-  reviewers post late. It stops as soon as every check that runs is terminal and green and every
-  thread is resolved or outdated, without waiting out a window. When the watch pushed fixes, it
-  then runs **Local Passes** over them and watches the head that leaves the same way. A draft runs
-  no test jobs, so its watch ends on its own checks and reports `draft: watch ended, tests not
-  run`; this mode never readies or merges it.
+  **Review Threads** over the pull request, then again on every new or updated thread and comment;
+  on a check that fails, read its log and fix what the change broke as **Checks** says. Push each
+  fix through the GitHub rule's **Pre-Push Gate**. This mode polls every 30–60 seconds while a
+  check is pending or failing or a thread is open; while any is, each push or new finding restarts
+  a 15-minute quiet window, since automated reviewers post late. It stops as soon as every check
+  that runs is terminal and green and every thread is resolved or outdated, without waiting out a
+  window. When it stops, it runs **Local Passes**' simplification over the pull request's diff,
+  and a fix that pass pushes is watched the same way. A draft runs no test jobs, so its watch ends
+  on its own checks and reports `draft: watch ended, tests not run`; this mode never readies or
+  merges it.
 
 ## Targets
 
