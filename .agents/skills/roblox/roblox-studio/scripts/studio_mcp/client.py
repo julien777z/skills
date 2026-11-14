@@ -52,13 +52,13 @@ MAX_LEASE: Final[timedelta] = timedelta(seconds=900)
 DESCRIBE_TIMEOUT: Final[timedelta] = timedelta(seconds=30)
 SESSION_EXIT_TIMEOUT: Final[timedelta] = timedelta(seconds=5)
 REGISTRATION_POLL: Final[timedelta] = timedelta(seconds=2)
-# The longest default that keeps open_bound within MAX_LEASE.
-DEFAULT_REGISTRATION_WAIT: Final[timedelta] = timedelta(seconds=220)
+DEFAULT_REGISTRATION_WAIT: Final[timedelta] = timedelta(seconds=180)
 # A starved guest can hold an editor's connection to the helper this long before Studio retries it.
 LISTING_RECOVERY_WAIT: Final[timedelta] = timedelta(seconds=260)
 # Reading a starved Studio's windows through System Events can take most of a minute.
 PLUGIN_ALERT_INTERVAL: Final[timedelta] = timedelta(seconds=60)
 PLUGIN_ALERT_TIMEOUT: Final[timedelta] = timedelta(seconds=90)
+DIAGNOSIS_TIMEOUT: Final[timedelta] = timedelta(seconds=15)
 EDITOR_LIST_WAIT: Final[timedelta] = timedelta(seconds=20)
 GUEST_NAME: Final[re.Pattern[str]] = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*")
 EXTENDED_REGEX_SPECIAL: Final[re.Pattern[str]] = re.compile(r"([.^$*+?()\[\]{}|\\])")
@@ -398,7 +398,7 @@ def registration_failure_cause(lock_receipt: Path) -> str:
     """Describe why the runner's Studio MCP does not list an editor whose process runs."""
 
     try:
-        diagnosis = run_in_runner(REGISTRATION_DIAGNOSIS_SCRIPT, lock_receipt, PROCESS_LIST_TIMEOUT).decode()
+        diagnosis = run_in_runner(REGISTRATION_DIAGNOSIS_SCRIPT, lock_receipt, DIAGNOSIS_TIMEOUT).decode()
         state = "; ".join(line.strip() for line in diagnosis.splitlines() if line.strip())
     except (RuntimeError, subprocess.TimeoutExpired) as error:
         state = f"unreadable ({error})"
@@ -714,7 +714,7 @@ def open_bound(registration_wait: timedelta) -> timedelta:
     snapshot = INITIALIZE_TIMEOUT + EDITOR_LIST_WAIT + 2 * TOOL_CALL_TIMEOUT
     # Registering and answering in the Edit data model share registration_wait; each can overrun it by one call.
     registration = registration_wait + TOOL_CALL_TIMEOUT + REGISTRATION_POLL + EDIT_PROBE_TIMEOUT
-    failure = PROCESS_LIST_TIMEOUT + CAPTURE_TIMEOUT + CLOSE_BOUND
+    failure = DIAGNOSIS_TIMEOUT + CAPTURE_TIMEOUT + CLOSE_BOUND
 
     return PROCESS_LIST_TIMEOUT + snapshot + COPY_TIMEOUT + LAUNCH_TIMEOUT + registration + failure
 
