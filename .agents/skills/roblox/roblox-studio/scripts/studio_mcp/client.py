@@ -53,11 +53,12 @@ DESCRIBE_TIMEOUT: Final[timedelta] = timedelta(seconds=30)
 SESSION_EXIT_TIMEOUT: Final[timedelta] = timedelta(seconds=5)
 REGISTRATION_POLL: Final[timedelta] = timedelta(seconds=2)
 # The longest default that keeps open_bound within MAX_LEASE.
-DEFAULT_REGISTRATION_WAIT: Final[timedelta] = timedelta(seconds=190)
+DEFAULT_REGISTRATION_WAIT: Final[timedelta] = timedelta(seconds=220)
 # A starved guest can hold an editor's connection to the helper this long before Studio retries it.
 LISTING_RECOVERY_WAIT: Final[timedelta] = timedelta(seconds=260)
-PLUGIN_ALERT_INTERVAL: Final[timedelta] = timedelta(seconds=20)
-PLUGIN_ALERT_TIMEOUT: Final[timedelta] = timedelta(seconds=30)
+# Reading a starved Studio's windows through System Events can take most of a minute.
+PLUGIN_ALERT_INTERVAL: Final[timedelta] = timedelta(seconds=60)
+PLUGIN_ALERT_TIMEOUT: Final[timedelta] = timedelta(seconds=90)
 EDITOR_LIST_WAIT: Final[timedelta] = timedelta(seconds=20)
 GUEST_NAME: Final[re.Pattern[str]] = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*")
 EXTENDED_REGEX_SPECIAL: Final[re.Pattern[str]] = re.compile(r"([.^$*+?()\[\]{}|\\])")
@@ -73,8 +74,7 @@ for pid in $(pgrep -x RobloxStudio); do
   else
     echo "Studio process $pid holds no connection to the MCP helper"
   fi
-done
-{KEEP_PLUGINS_SCRIPT}'''
+done'''
 
 
 def runner_config() -> RunnerConfig:
@@ -359,8 +359,13 @@ def poll_until[T](probe: Callable[[], T | None], wait: timedelta) -> T | None:
 def keep_studio_plugins(lock_receipt: Path) -> str:
     """Answer every open stalled-plugin alert in the runner's editors with its keep-waiting button."""
 
-    report = run_in_runner(KEEP_PLUGINS_SCRIPT, lock_receipt, PLUGIN_ALERT_TIMEOUT,
-                           data=GUEST_STUDIO_MCP.read_bytes()).decode().strip()
+    try:
+        report = run_in_runner(KEEP_PLUGINS_SCRIPT, lock_receipt, PLUGIN_ALERT_TIMEOUT,
+                               data=GUEST_STUDIO_MCP.read_bytes()).decode().strip()
+    except (RuntimeError, subprocess.TimeoutExpired) as error:
+        logger.warning("Studio's stalled-plugin alerts were not answered: %s", error)
+
+        return ""
 
     if report:
         logger.warning("Studio's stalled-plugin alerts: %s", report)
@@ -371,30 +376,32 @@ def keep_studio_plugins(lock_receipt: Path) -> str:
 def poll_registration[T](probe: Callable[[], T | None], wait: timedelta, lock_receipt: Path) -> T | None:
     """Return the first value probe gives within wait, keeping stalled Studio plugins running meanwhile, or None."""
 
-    answered_at = time.monotonic()
+    deadline = time.monotonic() + wait.total_seconds()
+    next_alert_pass = time.monotonic() + PLUGIN_ALERT_INTERVAL.total_seconds()
 
-    def _probe_keeping_plugins() -> T | None:
-        nonlocal answered_at
-
+    while True:
         value = probe()
+        now = time.monotonic()
 
-        if value is None and time.monotonic() - answered_at >= PLUGIN_ALERT_INTERVAL.total_seconds():
+        if value is not None or now >= deadline:
+            return value
+
+        if now >= next_alert_pass and deadline - now > PLUGIN_ALERT_TIMEOUT.total_seconds():
             keep_studio_plugins(lock_receipt)
 
-            answered_at = time.monotonic()
+            next_alert_pass = time.monotonic() + PLUGIN_ALERT_INTERVAL.total_seconds()
 
-        return value
-
-    return poll_until(_probe_keeping_plugins, wait)
+        time.sleep(REGISTRATION_POLL.total_seconds())
 
 
 def registration_failure_cause(lock_receipt: Path) -> str:
-    """Describe why the runner's Studio MCP does not list an editor whose process runs, answering stalled-plugin
-    alerts on the way."""
+    """Describe why the runner's Studio MCP does not list an editor whose process runs."""
 
-    diagnosis = run_in_runner(REGISTRATION_DIAGNOSIS_SCRIPT, lock_receipt, PLUGIN_ALERT_TIMEOUT,
-                              data=GUEST_STUDIO_MCP.read_bytes()).decode()
-    state = "; ".join(line.strip() for line in diagnosis.splitlines() if line.strip())
+    try:
+        diagnosis = run_in_runner(REGISTRATION_DIAGNOSIS_SCRIPT, lock_receipt, PROCESS_LIST_TIMEOUT).decode()
+        state = "; ".join(line.strip() for line in diagnosis.splitlines() if line.strip())
+    except (RuntimeError, subprocess.TimeoutExpired) as error:
+        state = f"unreadable ({error})"
 
     return (f"each editor reaches Studio MCP through its built-in Assistant plugin, which stalls while the guest is "
             f"starved; guest state: {state}")
@@ -706,9 +713,8 @@ def open_bound(registration_wait: timedelta) -> timedelta:
 
     snapshot = INITIALIZE_TIMEOUT + EDITOR_LIST_WAIT + 2 * TOOL_CALL_TIMEOUT
     # Registering and answering in the Edit data model share registration_wait; each can overrun it by one call.
-    registration = (registration_wait + TOOL_CALL_TIMEOUT + PLUGIN_ALERT_TIMEOUT + REGISTRATION_POLL
-                    + EDIT_PROBE_TIMEOUT)
-    failure = PLUGIN_ALERT_TIMEOUT + CAPTURE_TIMEOUT + CLOSE_BOUND
+    registration = registration_wait + TOOL_CALL_TIMEOUT + REGISTRATION_POLL + EDIT_PROBE_TIMEOUT
+    failure = PROCESS_LIST_TIMEOUT + CAPTURE_TIMEOUT + CLOSE_BOUND
 
     return PROCESS_LIST_TIMEOUT + snapshot + COPY_TIMEOUT + LAUNCH_TIMEOUT + registration + failure
 

@@ -203,9 +203,9 @@ An editor reaches Studio MCP through its built-in Assistant plugin, which connec
 whenever a session has one running. A starved guest can hold that connection for minutes and raise Studio's
 "*plugin* is not responding" alert, and while the alert is open the editor does not answer. Every wait for an editor
 to list, whether registration in either open call, `listed_place_editors`, or a `Studio`'s first call on a new
-connection, answers those alerts with their keep-waiting button and waits out a held connection, up to 260 s for an
-editor already running. An editor still unlisted then raises an error naming the guest's load, whether each Studio
-process holds a connection to the helper, and the alerts answered.
+connection, answers those alerts with their keep-waiting button once a minute, logging each one it answers, and waits
+out a held connection, up to 260 s for an editor already running. An editor still unlisted then raises an error naming
+the guest's load and whether each Studio process holds a connection to the helper.
 
 **No Studio operation reaches the host by falling back.** A client, helper or MCP server that picks its target
 from a variable or setting and drives the host's Studio when that target is missing is not a runner route, even
