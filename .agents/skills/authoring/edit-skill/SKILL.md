@@ -17,6 +17,13 @@ unavailable action is task evidence only: it does not create a ledger correction
 With no other task running and no guidance batch in flight, as `session-ledger`'s **Guidance Batches**
 defines it, first perform the requested action and record it only after it succeeds.
 
+**A process is encoded only once it has worked.** A request to put a new process into guidance — a
+workflow, a procedure, a tool or route, a way of building or delivering something — is first carried
+out on the work in hand and verified to work; the guidance is then written from that run: the steps
+and commands it used, what had to differ from the source that described the process, and what
+failed along the way. Documentation, a plan, a worker's proposal or the request's own description
+of the process is the source to try, never the text to encode.
+
 An open `.agents` pull request is not a delivery result. Processing continues through its source
 check, required review steps, merge or hold, Agent Sync result, and verification of generated root
 instructions and provider output. A genuine gate holds its dependent step while repair or resolution
@@ -83,7 +90,8 @@ Validate skill dependencies and their actual call and policy-read paths under th
   reusable lesson.
 - A direct request to change guidance, such as "use edit-skill to reflect that", is recorded the
   same way. While another task runs, the requested action is the behavior it describes, applied to
-  the current work, and the guidance edit is its record. While a guidance batch is in flight, its
+  the current work, and the guidance edit is its record. A request to encode a process the work has not yet
+  carried out waits for that run, as **A process is encoded only once it has worked** says. While a guidance batch is in flight, its
   delivery is that action and the user's words are its evidence.
 - After verified success, record the correction as a `guidance_correction` entry with
   `session-ledger`: the successful action and its evidence, a reproduction scenario, the intended
