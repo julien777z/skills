@@ -129,11 +129,14 @@ with an obsolete owned contract or revision.
 - **Deprecated usage and printed warnings are defects.** An API, setting, default, input or
   dependency its owner has deprecated, and any warning a test run, build, install or CI log prints,
   is fixed in the change in flight: move to the supported replacement, or turn on the default the
-  owner says is coming; a dependency that itself calls deprecated code is upgraded or replaced. A
+  owner says is coming; a dependency that itself calls deprecated code is upgraded or replaced, and
+  where no release, replacement or repository-side setting resolves it, the testing rule's narrow
+  third-party ignore is the one exception. A
   check a library warns it will start enforcing is deprecated usage when left off, never a missing
   safeguard. The replacement changing behavior, such as a stricter check, a refused token or a
-  different sign-in, is part of the fix in a product not yet released, never a reason to keep the
-  deprecated form, call it pre-existing, or put the move to the user. Only a step the move needs
+  different sign-in, is part of the fix, never a reason to keep the deprecated form, call it
+  pre-existing, or put the move to the user; released users move as **Product State**'s migration
+  bullet says. Only a step the move needs
   that the user alone can take, such as supplying an identifier the session cannot read, goes to
   them, as that step.
 - **A defect the work notices is always fixed, wherever it lives.** It is fixed in the change in

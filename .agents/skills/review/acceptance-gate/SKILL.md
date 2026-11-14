@@ -101,7 +101,9 @@ receives five things and nothing else:
    actual immutable diff;
 3. the item under judgment — an issue or finding, a proposal, a diff, an incoming base diff, or a
    record; a diff that adds or changes tests carries the cost evidence from its verification run
-   under `test-fixture`'s existing-reporting procedure, including any unmeasured attribution;
+   under `test-fixture`'s existing-reporting procedure, including any unmeasured attribution, and
+   every diff carries the warnings and deprecation messages its verification runs printed, or an
+   explicit empty result;
 4. the affected-repository map required by `code-simplify`'s **Trace Changed Flows**. For each
    changed file group, resolve its project guidance, scoped repository rules and installed shared
    rules by path. Supply the complete text and scope of each source inline or in a named file.
@@ -118,12 +120,15 @@ model-dispatch record; never replace it with a generic “largest model” label
 
 **A diff review judges the code as it stands, not only the lines that changed.** Read every module
 the diff adds, moves or rewrites whole; moved and renamed code is judged as if it were new. Before
-the design comparison, answer the plain question: would an experienced reviewer opening these
-modules call any of it slop? Each reason they would give is a flag with its remedy, whether or not a
+the design comparison, answer the plain question: would an experienced reviewer reading the change —
+its code, configuration and prose, and the verification output supplied — call any of it slop, or
+say it does not make sense? Each reason they would give is a flag with its remedy, whether or not a
 narrower rule below names it: layers that each add one tweak, wrappers that only forward or fix a
 value, one-symbol fragments, a file for a slice of a concern another module owns, one thing
 implemented twice, comments narrating code, confusing or near-duplicate names, dead or speculative
-code, hand-written configuration or styling where an owner exists. The list illustrates the question
+code, hand-written configuration or styling where an owner exists, a setting left in the form its
+library warns against, a shortcut a comment or report admits, a result its reader would question.
+The list illustrates the question
 and never bounds it. A rubric exemption that would excuse such a shape is named in the flag. A
 remedy that sends the author to an existing piece judges that piece the same way first: a wrapper or
 a duplicate is not an owner. An increment fixing an earlier flag is judged on the earlier flags it
@@ -336,10 +341,7 @@ mechanisms its gain cannot carry. A confirmed defect remains owed under the fix 
 safeguard or compatibility concern is judged against the target repository's product state and
 contract, not promoted to a defect merely because a reviewer flagged it. Deprecated usage and a
 warning a run prints are never hypothetical: they are defects under `pre-production`, and the gate
-flags each one it meets in the diff or in its checks' output. Past the rubric, the gate flags
-whatever in the change does not make sense on reading, such as a setting left in the form its
-library warns against, a known shortcut a comment or report admits, or a result its reader would
-question, and says why.
+flags each one it meets in the diff or in the verification output the caller supplies.
 
 Escalate only a genuine unresolved product, scope, security, disclosure or authorization choice, stating the concrete
 fork and why authorized remedies cannot settle it. Repair authority and merge authority are separate:
