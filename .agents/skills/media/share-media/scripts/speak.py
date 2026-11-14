@@ -1,39 +1,48 @@
-"""Turn reply text into a spoken clip embedded in a self-contained HTML audio player.
-
-Usage: echo "<text to speak>" | python3 speak.py <output folder> <clip name>
-Prints the path of the HTML page to show in the chat.
-"""
-
-import base64
-import json
-import os
-import sys
-import urllib.request
+from base64 import b64encode
+from json import dumps
+from os import environ
 from pathlib import Path
+from sys import argv, exit, stdin
+from typing import Final, TypedDict
+from urllib.request import Request, urlopen
 
-DEFAULT_SPEECH_URL = "http://localhost:8880/v1/audio/speech"
-DEFAULT_VOICE = "af_bella"
-SPEECH_TIMEOUT_SECONDS = 300
+DEFAULT_SPEECH_URL: Final = "http://localhost:8880/v1/audio/speech"
+DEFAULT_VOICE: Final = "af_bella"
+SPEECH_MODEL: Final = "kokoro"
+SPEECH_TIMEOUT_SECONDS: Final = 300
+
+
+class SpeechRequest(TypedDict):
+    model: str
+    voice: str
+    response_format: str
+    input: str
 
 
 def synthesize_speech(text: str) -> bytes:
-    speech_url = os.environ.get("VOICE_REPLY_SPEECH_URL", DEFAULT_SPEECH_URL)
-    voice = os.environ.get("VOICE_REPLY_VOICE", DEFAULT_VOICE)
+    """Return MP3 audio of the text from the configured OpenAI-compatible speech endpoint."""
 
-    payload = json.dumps(
-        {"model": "kokoro", "voice": voice, "response_format": "mp3", "input": text}
-    ).encode()
+    speech_url = environ.get("VOICE_REPLY_SPEECH_URL", DEFAULT_SPEECH_URL)
+    voice = environ.get("VOICE_REPLY_VOICE", DEFAULT_VOICE)
 
-    request = urllib.request.Request(
-        speech_url, data=payload, headers={"Content-Type": "application/json"}
+    speech_request = SpeechRequest(
+        model=SPEECH_MODEL, voice=voice, response_format="mp3", input=text
     )
 
-    with urllib.request.urlopen(request, timeout=SPEECH_TIMEOUT_SECONDS) as response:
+    request = Request(
+        speech_url,
+        data=dumps(speech_request).encode(),
+        headers={"Content-Type": "application/json"},
+    )
+
+    with urlopen(request, timeout=SPEECH_TIMEOUT_SECONDS) as response:
         return response.read()
 
 
 def build_player_page(audio: bytes) -> str:
-    encoded_audio = base64.b64encode(audio).decode()
+    """Return a self-contained HTML page whose audio player carries the clip in the page."""
+
+    encoded_audio = b64encode(audio).decode()
 
     return (
         '<!doctype html><html><head><meta charset="utf-8">'
@@ -44,18 +53,24 @@ def build_player_page(audio: bytes) -> str:
 
 
 def main() -> None:
-    output_folder = Path(sys.argv[1])
-    clip_name = sys.argv[2]
-    text = sys.stdin.read().strip()
+    """Speak the text on standard input into `<output folder>/<clip name>.html` and print its path."""
+
+    output_folder = Path(argv[1])
+    clip_name = argv[2]
+    text = stdin.read().strip()
+
+    if Path(clip_name).name != clip_name or clip_name in ("", ".", ".."):
+        exit("The clip name must be a plain file name.")
 
     if not text:
-        sys.exit("No text to speak was given on standard input.")
+        exit("No text to speak was given on standard input.")
 
     audio = synthesize_speech(text)
 
     output_folder.mkdir(parents=True, exist_ok=True)
 
     page_path = output_folder / f"{clip_name}.html"
+
     page_path.write_text(build_player_page(audio))
 
     print(page_path)

@@ -10,6 +10,9 @@ The global rules' **User-Facing Output** says which captures reach the user and 
 they get there, the same way for a web walkthrough, a game playtest or a generated image, and how a
 reply reaches the user as speech.
 
+## Dependencies
+- `session-ledger`
+
 ## Send each capture where the reader sees it
 
 - **Read it whole first**, region by region, as the global rules say; a capture you have not read is
@@ -48,7 +51,7 @@ as page versions do. This is how those previews are sent.
 3. **Show the option images, then ask through the question tool**, never in chat. Each image goes
    under its caption with a line on what that option does, in a message the reader sees. Where only
    the message that ends a turn is shown, as in T3 Code, record the pending question in the
-   session ledger, end the turn on that message, and ask the question through the question tool as
+   session ledger through `session-ledger`, end the turn on that message, and ask the question through the question tool as
    the first action of the next turn; **Harness compatibility** says what starts that turn. The
    question names each option by its image's caption, never by position, and states in its own text
    what each does.
@@ -64,26 +67,9 @@ exchange is heard and recorded at once.
 - **Speak only the replies that clarify**: one that restates what the agent understood, or asks the
   user something about what they want. A report, a progress update or a reply that is mostly links,
   code or paths stays text only, unless the user asks to hear it.
-- **The voice is a local text-to-speech service with an OpenAI-compatible speech endpoint**, read
-  from `VOICE_REPLY_SPEECH_URL` (default `http://localhost:8880/v1/audio/speech`) with the voice
-  from `VOICE_REPLY_VOICE` (default `af_bella`). The VoiceMode installer (`uvx voice-mode-install`)
-  sets up Kokoro on that port, and `voicemode service start kokoro` starts it. Before the first
-  clip, check the service answers at its `/health` route beside the endpoint and start it when it
-  does not; the first clip after a start takes far longer while the model warms up.
-
-1. **Write the reply first**, as text the user reads. Shape the spoken part for listening: short
-   sentences, with code, paths, links and tables left to the written text.
-2. **While the user is still describing what they want, the spoken part converses.** It restates
-   what the agent understood in its own words, names what is still unclear, and asks one or two
-   clarifying questions. It never commits to work the user has not described yet.
-3. **Make the clip:** run `scripts/speak.py <output folder> <clip name>` with the spoken text on
-   standard input. It prints the path of a self-contained HTML page holding an audio player with
-   the clip embedded in it. The output folder is the one **Keep the file** above names.
-4. **Show the player, then the reply's text under it**, through the route **Harness
-   compatibility** names. A decision the reply asks still goes through the question tool, as the
-   global rules say; the clip may speak it, and the tool asks it.
-
-Never play a clip on the agent machine's speakers as the reply: the user may not be at that machine.
+- **Make and send each spoken reply** as [the spoken-replies reference](references/spoken-replies.md),
+  this skill's procedure for the voice service, the clip and what the spoken part says, describes.
+- Never play a clip on the agent machine's speakers as the reply: the user may not be at that machine.
 
 ## Harness compatibility
 
@@ -103,7 +89,7 @@ Never play a clip on the agent machine's speakers as the reply: the user may not
   Any other file the user should see, such as a plan or a detail file, is a Markdown link to its
   absolute path, `[name](/absolute/path/to/plan.md)`, kept in the working directory **Keep the
   file** above names, in the turn's final message; T3 opens it in its files viewer. A spoken
-  reply's player page is shown with `html_render`, at about 76 pixels high: a Markdown link to an
+  reply's player page is shown with `html_render`, at a height of 80 pixels: a Markdown link to an
   audio file does not play when the user's client connects to the agent's machine remotely, and a
   player that carries its sound in the page does.
 - **Any other harness:** show a spoken reply's player page the way the harness shows a rendered HTML
