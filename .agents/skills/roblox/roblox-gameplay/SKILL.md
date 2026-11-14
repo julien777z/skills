@@ -85,7 +85,7 @@ When a game sells items, a paid action never looks like free progression or help
 
 Play the affected loop through ordinary controls. Observe how quickly a beginner understands the next action, whether success is visible/audible, whether rewards agree with real state, and whether another attempt feels inviting. Check feedback at normal player pace and during rapid repeated successes, including overlap, audio buildup, cleanup, and performance. Keep stronger milestones distinct from routine hits.
 
-When the work involves React-rendered UI, apply `roblox-ui` for clarity and its scheduled repeated-click checks. Apply `roblox-worldbuilding` for maps and world content, `roblox-characters` for NPCs, creatures and avatars, and `luau` when reading or changing Luau, including authority and cleanup. Return non-interfering Play tests to the caller. Static checks cannot establish enjoyment; short playtests cannot prove long-term retention.
+When the work involves UI, apply `roblox-ui` for clarity and its scheduled repeated-click checks. Apply `roblox-worldbuilding` for maps and world content, `roblox-characters` for NPCs, creatures and avatars, and `luau` when reading or changing Luau, including authority and cleanup. Return non-interfering Play tests to the caller. Static checks cannot establish enjoyment; short playtests cannot prove long-term retention.
 
 ## Learn from evidence
 

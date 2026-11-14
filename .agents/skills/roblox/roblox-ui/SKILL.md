@@ -14,7 +14,7 @@ short_description: 'Design and change Roblox interfaces, including HUDs and menu
 
 ## Clarity and visual quality
 
-Follow `luau`'s required UI framework. Make React-rendered interfaces clean, easy to use, beginner friendly, and visually pleasing. Treat these as acceptance criteria, not optional polish after code compiles. Preserve the game's established artwork and visual identity unless a redesign is requested.
+Follow `luau`'s required UI framework. Make every interface clean, easy to use, beginner friendly, and visually pleasing. Treat these as acceptance criteria, not optional polish after code compiles. Preserve the game's established artwork and visual identity unless a redesign is requested.
 
 Apply `luau` whenever reading or editing its Luau code. Return required engine setup and playtest work to the caller. Read [Framework and component practices](references/components.md) before changing architecture, dependencies, lifecycle, or layout.
 
@@ -30,7 +30,7 @@ Text the player must notice goes where their eyes already are: an instruction th
 
 Give artwork, names, costs, and status labels dedicated layout space. Do not place status text over artwork or squeeze long labels into tiny badges. Check the longest real label at the smallest supported component size and in every relevant state; inspect rendered text, not only its container bounds.
 
-For React-owned world-space messages, apply `roblox-worldbuilding`'s world-space text inspection
+For UI-owned world-space messages, apply `roblox-worldbuilding`'s world-space text inspection
 alongside the component lifecycle and interaction checks below.
 
 Share the theme, controls, modal shell, and preview adapters where the game uses them. Related windows use consistent close behavior, backdrop, focus/input handling, and dimensions appropriate to their content. Every dismissible panel shows its close control in the same place across the game, by convention a high-contrast X at the top-right corner, never covered by other HUD elements, and it closes its panel even while other panels are open. A panel's title row holds only its title and close control at every screen size; its actions sit in their own row under the body, compacted on short screens rather than moved beside the title. Reserve a panel whose only exit is a confirm button for a real decision. A second window replaces the first; repeated triggers follow the game's documented toggle behavior. A window the player carries, such as a journal, map or inventory, leaves movement and the camera working while it is open and takes input only on its panel; a window that belongs to standing somewhere, such as a workbench, board or travel gate, and exclusive start screens and modals block underlying pointer, keyboard, hover, and movement input, then restore it on exit.
@@ -65,7 +65,7 @@ At those checkpoints, cover each affected flow:
 4. For selection/confirmation flows, change selection repeatedly, confirm, and attempt a duplicate confirmation. Verify the visible selected state and authoritative result agree; a timeout advancing the game is not proof a click registered.
 5. Inspect screenshots at supported desktop, narrow, and landscape phone/tablet sizes when UI changes. Apply the whole-screen composition criteria above; read every instruction, inspect all four button edges and rounded corners, and observe a complete pointer bounce at each affected tutorial step. Check its full motion envelope for text overlap and clipping, including while scrolling. A bounding-box assertion, successful click, or clean lint result is not visual acceptance. Record what was visually inspected; do not infer coverage from a different step or screen. Operate touch controls and scrolling in the simulator, including safe areas. Do not claim physical-device coverage from simulation.
 6. Repeat the flow after character replacement, encounter exit, or another relevant lifecycle boundary. Verify camera/input restore, previews remain stable, and connections or animation work do not accumulate.
-7. For React-owned world-space text, apply `roblox-worldbuilding`'s world-space inspection to initial and changed presentations; other UI screenshots and successful gameplay do not cover it.
+7. For UI-owned world-space text, apply `roblox-worldbuilding`'s world-space inspection to initial and changed presentations; other UI screenshots and successful gameplay do not cover it.
 
 Fix visible or interaction defects discovered in the affected flow even when lint and builds pass. Keep evidence of actual outcomes. Scale broader gameplay coverage to the change and distinguish Studio, device simulation, persistence, and published-client verification.
 

@@ -35,8 +35,8 @@ no publish to any other experience.
 
 - Read the experience and its places from the project's guidance and configuration, such as an
   environment module that names a staging or work-in-progress universe and the place IDs its maps
-  record. Publish to the development or staging experience by default; publish to a production
-  experience only when the user's request names it, never at a milestone.
+  record. Publish to the development or staging experience by default, and to a production experience
+  only as **When to publish** allows.
 - When the request names no experience and the project names more than one candidate, ask the
   user which one through the question tool before building anything for it. When the project names
   none, ask whether to create a new experience for the game; only the user's answer authorizes

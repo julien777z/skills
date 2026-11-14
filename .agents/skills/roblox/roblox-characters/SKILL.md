@@ -25,7 +25,7 @@ A walking NPC or creature needs visible locomotion that matches its movement, st
 
 Stand each NPC where its role puts it, on or beside the path a player arrives by or at its own place such as a doorway, stall, bench or garden, never alone in open ground, and face it toward the route the player approaches from, so the player meets its front and its prompt on that side. Ground each walking or standing NPC against the actual authored surface using its rig and foot geometry, rather than a guessed root-height offset. Verify both feet from a low side view after appearance changes and through idle animation; neither floating nor feet sunk into paths is acceptable, unless hovering is the creature's intentional design with the motion **Locomotion** describes.
 
-Give stationary NPCs visible, restrained idle animation: breathing, a small weight shift, or an occasional glance suited to their character. Standing still must not look frozen. Reuse the rig's animation owner, vary poses where appropriate, and keep feet planted. A prop a character carries, such as an umbrella, a book or a lantern, reads as held: pose the arm so the forearm comes forward and place the prop just in front of the palm, resting on it or hanging over the forearm, so it moves with the hand through idle and gestures. A prop passing through the middle of a blocky hand or floating beside a straight arm fails; verify it from the front and side in Play.
+Give stationary NPCs visible, restrained idle animation: breathing, a small weight shift, or an occasional glance suited to their character. Standing still must not look frozen. Vary poses where appropriate and keep feet planted. A prop a character carries, such as an umbrella, a book or a lantern, reads as held: pose the arm so the forearm comes forward and place the prop just in front of the palm, resting on it or hanging over the forearm, so it moves with the hand through idle and gestures. A prop passing through the middle of a blocky hand or floating beside a straight arm fails; verify it from the front and side in Play.
 
 ## Conversations and staged appearances
 
@@ -41,6 +41,6 @@ When a game has repeated creature types, share their definitions and lifecycle. 
 
 ## Lifecycle and verification
 
-Give each character's animation tracks, procedural connections and overhead labels one owner. Restore poses and clean them up after completion, despawn, streaming, encounter transitions and character replacement.
+Give each character's animation tracks, procedural connections and overhead labels one owner, reusing the rig's animation owner where it has one. Restore poses and clean them up after completion, despawn, streaming, encounter transitions and character replacement.
 
 Judge motion from what Play shows. A running animation track, a non-erroring animation call or a successful `Bone.Transform` assignment is not evidence that anything moved: measure visible joint motion and limb deformation. Verify in Play the rig type, proportions and body scale, attachments, accessories, face, collisions, mass, normal locomotion and action animations.
