@@ -21,5 +21,4 @@
    prints the path of a self-contained HTML page holding an audio player with the clip embedded in
    it. The output folder is the one the skill's **Keep the file** bullet names.
 3. **Show the player, then the reply's text under it**, through the route the skill's **Harness
-   compatibility** section names. A decision the reply asks still goes through the question tool,
-   as the global rules say; the clip may speak it, and the tool asks it.
+   compatibility** section names. The clip may speak a question; the question tool asks it.

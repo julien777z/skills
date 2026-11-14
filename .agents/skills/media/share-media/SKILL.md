@@ -69,7 +69,9 @@ exchange is heard and recorded at once.
   work the user has not described yet. A report, a progress update or a reply that is mostly links,
   code or paths stays text only, unless the user asks to hear it.
 - **Make and send each spoken reply** as [the spoken-replies reference](references/spoken-replies.md),
-  this skill's procedure for the voice service and for making and showing a clip, describes.
+  this skill's procedure for the voice service and for making and showing a clip, describes. A
+  question the reply asks goes through the question tool once the player and its text are shown,
+  ordered as **Previews for a choice** step 3 orders a question after its images.
 - Never play a clip on the agent machine's speakers as the reply: the user may not be at that machine.
 
 ## Harness compatibility

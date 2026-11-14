@@ -43,7 +43,7 @@ alwaysApply: true
   the settings page, and never calls it a screen.
 - **A file the user should see reaches them where they read.** Per-item detail past five items —
   findings, rows — and the user's copy of any plan a skill gates go in a file that reaches the user
-  from the agent's own reply, as `share-media`' **Harness compatibility** says for the harness,
+  from the agent's own reply, as `share-media`'s **Harness compatibility** says for the harness,
   and the text that reports the result stays the turn's final message. An item with captures stays
   in chat as its text followed by its captures, as a bullet below says, and the file holds only the
   items without them. A text file sent this way reads on its own: it opens with the table or summary
@@ -81,7 +81,7 @@ alwaysApply: true
   pile of captures shown together leaves the reader matching each one to its item. An item put to
   the user in a later message has its captures shown again directly beneath it, even those already
   shown as they were made; a question, asked again or for the first time, has its captures shown
-  just before it, and the question itself goes through the question tool, as `share-media`'
+  just before it, and the question itself goes through the question tool, as `share-media`'s
   **Previews for a choice** says.
 - **A capture sent to the user shows which page it is.** The reader cannot ask, so a view leads
   with a capture at a width where the product's navigation shows the page's place, for the role
@@ -346,7 +346,7 @@ alwaysApply: true
   When the options differ in layout, structure or the controls the reader uses — a list or a grid,
   one column or two, a section moved or removed — the question comes right after a capture of
   each option as the product would draw it, built as an uncommitted preview where it does not
-  exist yet, at the widths where the options differ, shown as `share-media`' **Previews for a
+  exist yet, at the widths where the options differ, shown as `share-media`'s **Previews for a
   choice** says. Describing an option, or showing only
   the current state, leaves the reader guessing at the one they cannot see, so the question waits
   until every capture is ready. A drawing made of text, such as a sketch in a question tool's

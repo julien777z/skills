@@ -1,23 +1,19 @@
 from argparse import ArgumentParser
 from base64 import b64encode
+from datetime import timedelta
 from json import dumps
 from os import environ
 from pathlib import Path
 from sys import exit, stdin
-from typing import Final, TypedDict
+from typing import Final
 from urllib.request import Request, urlopen
 
-DEFAULT_SPEECH_URL: Final = "http://localhost:8880/v1/audio/speech"
-DEFAULT_VOICE: Final = "af_bella"
-DEFAULT_SPEECH_MODEL: Final = "kokoro"
-SPEECH_TIMEOUT_SECONDS: Final = 300
+from models import SpeechRequest
 
-
-class SpeechRequest(TypedDict):
-    model: str
-    voice: str
-    response_format: str
-    input: str
+DEFAULT_SPEECH_URL: Final[str] = "http://localhost:8880/v1/audio/speech"
+DEFAULT_VOICE: Final[str] = "af_bella"
+DEFAULT_SPEECH_MODEL: Final[str] = "kokoro"
+SPEECH_TIMEOUT: Final[timedelta] = timedelta(minutes=5)
 
 
 def synthesize_speech(text: str) -> bytes:
@@ -37,7 +33,7 @@ def synthesize_speech(text: str) -> bytes:
         headers={"Content-Type": "application/json"},
     )
 
-    with urlopen(request, timeout=SPEECH_TIMEOUT_SECONDS) as response:
+    with urlopen(request, timeout=SPEECH_TIMEOUT.total_seconds()) as response:
         return response.read()
 
 
