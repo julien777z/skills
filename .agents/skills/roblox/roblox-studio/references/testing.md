@@ -188,6 +188,7 @@ starting with a letter or digit.
 | `close_cloud_place(place_id, lock_receipt)`                                                   | Ends, without saving, the `EditPlace` editors on exactly that place; raises when one stays open                                                                                                                              |
 | `stop_guest_processes(pids, lock_receipt)`                                                    | Sends SIGTERM, waits, sends SIGKILL to what remains, and returns the IDs that survive, such as the test server and clients a multiplayer test left                                                                           |
 | `listed_editor_ids(connection, lock_receipt)`, `new_editors(known, connection, lock_receipt)` | A snapshot of the editors listed before a launch, waiting out a new connection's empty list, and the editors listed since on the same connection, such as a multiplayer test's windows                                       |
+| `listed_place_editors(project, place, connection, lock_receipt)`                              | Lists the editors named for a project's place copy once Studio MCP lists one, or none when no editor process has the copy open |
 | `guest_screenshot(path, lock_receipt)`                                                        | Saves the guest's whole screen, for a failure the editor cannot capture                                                                                                                                                      |
 | `run_in_runner(command, lock_receipt, timeout)`                                               | Runs a shell command in the guest                                                                                                                                                                                            |
 
@@ -195,8 +196,16 @@ When either open call fails once its launch starts, it closes the editor, saves 
 and raises. A `Studio` executes Luau, captures, optionally from `camera_position` toward `look_at_position`, reads
 the console, sends keys, holds a key for a duration (`hold_key`), and clicks a button by its instance path through
 the bundled VirtualInput helper, which `run_input` binds as `Input` for other input fixtures;
-`Studio.tool(name, arguments)` calls any other Studio MCP tool on that editor. `luau_string_literal` quotes a value
-for Luau code a helper builds.
+`Studio.tool(name, arguments)` calls any other Studio MCP tool on that editor, first waiting for a new connection to
+list it. `luau_string_literal` quotes a value for Luau code a helper builds.
+
+An editor reaches Studio MCP through its built-in Assistant plugin, which connects to the guest's `StudioMCP` helper
+whenever a session has one running. A starved guest can hold that connection for minutes and raise Studio's
+"*plugin* is not responding" alert, and while the alert is open the editor does not answer. Every wait for an editor
+to list, whether registration in either open call, `listed_place_editors`, or a `Studio`'s first call on a new
+connection, answers those alerts with their keep-waiting button and waits out a held connection, up to 260 s for an
+editor already running. An editor still unlisted then raises an error naming the guest's load, whether each Studio
+process holds a connection to the helper, and the alerts answered.
 
 **No Studio operation reaches the host by falling back.** A client, helper or MCP server that picks its target
 from a variable or setting and drives the host's Studio when that target is missing is not a runner route, even
@@ -524,8 +533,8 @@ build, a copy and an editor launch.
 - **Open it once.** Build the place, open it with `studio_mcp.open_place` under the project name
   `warm`, and leave it open until the VM shuts down as [End of session for a retained VM](#end-of-session-for-a-retained-vm)
   says: it belongs to the game's VM, not to the task that opened it. A session
-  that finds the game's warm editor registered in `list_roblox_studios` uses it, after confirming
-  its place name.
+  finds it with `studio_mcp.listed_place_editors`, which waits for a running warm editor to list,
+  and uses it after confirming its place name; only an editor no process holds open is opened again.
 - **Sync source live, served inside the guest.** Install the Rojo plugin matching the game's
   pinned Rojo version into the guest's Studio plugins folder (`~/Documents/Roblox/Plugins` in a
   macOS guest), and run `rojo serve` in the guest on its loopback address, against a copy of the
@@ -679,7 +688,8 @@ resuming normal controls.
 
 An empty inventory does not establish that MCP is disabled. The intended process may be waiting
 on sign-in, a recovery dialog, Assistant initialization, or the proxy connection. Inspect that
-editor's current UI. Resolve blocking dialogs, then inspect the normal MCP setting before changing
+editor's current UI. Resolve blocking dialogs; in the runner, the `studio_mcp` waits answer Studio's
+"*plugin* is not responding" alerts themselves. Then inspect the normal MCP setting before changing
 it under **Assistant → … → Settings → MCP Servers**; in a guest, the bundled script does both. If remote pointer input cannot open Assistant, use its
 native menu or the installed editor's shortcut configuration; inspect the current binding rather
 than assuming a key. Restore any temporary binding afterward. Keep the proxy alive during bounded

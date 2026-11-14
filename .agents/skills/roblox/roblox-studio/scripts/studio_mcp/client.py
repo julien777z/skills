@@ -3,6 +3,7 @@ from __future__ import annotations
 import atexit
 import base64
 import json
+import logging
 import os
 import re
 import select
@@ -19,16 +20,21 @@ from typing import IO, Final, cast
 from studio_mcp.models import (AgentLockAcquireReport, AgentLockCheckReport, JsonRpcMessage, JsonValue, McpContent,
                                PlaceIds, Position, RunnerConfig, RunnerLease, StudioButton, StudioEntry, ToolArguments)
 
+logger = logging.getLogger(__name__)
+
 # Paths stay on the unresolved install link: installed skills sit side by side there, and a refresh that replaces
 # the linked source mid-run leaves them valid.
 SCRIPTS: Final[Path] = Path(__file__).absolute().parents[1]
 RUNNER_SSH: Final[Path] = SCRIPTS / "runner_ssh.sh"
 VIRTUAL_INPUT: Final[Path] = SCRIPTS / "virtual_input.luau"
+GUEST_STUDIO_MCP: Final[Path] = SCRIPTS / "guest_studio_mcp.js"
 AGENT_LOCK: Final[Path] = SCRIPTS.parents[1] / "agent-lock" / "resources" / "main.py"
 STUDIO_APP: Final[str] = "/Applications/RobloxStudio.app"
 STUDIO_MCP: Final[str] = f"{STUDIO_APP}/Contents/MacOS/StudioMCP"
 GUEST_PLACES: Final[str] = "studio-places"
 PROTOCOL_VERSION: Final[str] = "2024-11-05"
+# The guest helper's port, which each editor's built-in Assistant plugin connects to.
+HELPER_PORT: Final[int] = 13469
 INITIALIZE_TIMEOUT: Final[timedelta] = timedelta(seconds=55)
 TOOL_CALL_TIMEOUT: Final[timedelta] = timedelta(seconds=55)
 COPY_TIMEOUT: Final[timedelta] = timedelta(seconds=120)
@@ -46,11 +52,29 @@ MAX_LEASE: Final[timedelta] = timedelta(seconds=900)
 DESCRIBE_TIMEOUT: Final[timedelta] = timedelta(seconds=30)
 SESSION_EXIT_TIMEOUT: Final[timedelta] = timedelta(seconds=5)
 REGISTRATION_POLL: Final[timedelta] = timedelta(seconds=2)
-DEFAULT_REGISTRATION_WAIT: Final[timedelta] = timedelta(seconds=180)
+# The longest default that keeps open_bound within MAX_LEASE.
+DEFAULT_REGISTRATION_WAIT: Final[timedelta] = timedelta(seconds=190)
+# A starved guest can hold an editor's connection to the helper this long before Studio retries it.
+LISTING_RECOVERY_WAIT: Final[timedelta] = timedelta(seconds=260)
+PLUGIN_ALERT_INTERVAL: Final[timedelta] = timedelta(seconds=20)
+PLUGIN_ALERT_TIMEOUT: Final[timedelta] = timedelta(seconds=30)
 EDITOR_LIST_WAIT: Final[timedelta] = timedelta(seconds=20)
 GUEST_NAME: Final[re.Pattern[str]] = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*")
 EXTENDED_REGEX_SPECIAL: Final[re.Pattern[str]] = re.compile(r"([.^$*+?()\[\]{}|\\])")
 LUAU_STRING_ESCAPE: Final[re.Pattern[str]] = re.compile(r'[\\"\x00-\x1f\x7f]')
+# Guest shell that runs guest_studio_mcp.js, given on stdin, to answer Studio's stalled-plugin alerts.
+KEEP_PLUGINS_SCRIPT: Final[str] = ('script=$(mktemp -t guest-studio-mcp) && cat > "$script" && '
+                                   'osascript -l JavaScript "$script" keep-plugins; status=$?; rm -f "$script"; '
+                                   'exit $status')
+REGISTRATION_DIAGNOSIS_SCRIPT: Final[str] = f'''uptime
+for pid in $(pgrep -x RobloxStudio); do
+  if lsof -nP -a -p "$pid" -iTCP:{HELPER_PORT} -sTCP:ESTABLISHED >/dev/null 2>&1; then
+    echo "Studio process $pid holds a connection to the MCP helper"
+  else
+    echo "Studio process $pid holds no connection to the MCP helper"
+  fi
+done
+{KEEP_PLUGINS_SCRIPT}'''
 
 
 def runner_config() -> RunnerConfig:
@@ -332,6 +356,50 @@ def poll_until[T](probe: Callable[[], T | None], wait: timedelta) -> T | None:
         time.sleep(REGISTRATION_POLL.total_seconds())
 
 
+def keep_studio_plugins(lock_receipt: Path) -> str:
+    """Answer every open stalled-plugin alert in the runner's editors with its keep-waiting button."""
+
+    report = run_in_runner(KEEP_PLUGINS_SCRIPT, lock_receipt, PLUGIN_ALERT_TIMEOUT,
+                           data=GUEST_STUDIO_MCP.read_bytes()).decode().strip()
+
+    if report:
+        logger.warning("Studio's stalled-plugin alerts: %s", report)
+
+    return report
+
+
+def poll_registration[T](probe: Callable[[], T | None], wait: timedelta, lock_receipt: Path) -> T | None:
+    """Return the first value probe gives within wait, keeping stalled Studio plugins running meanwhile, or None."""
+
+    answered_at = time.monotonic()
+
+    def _probe_keeping_plugins() -> T | None:
+        nonlocal answered_at
+
+        value = probe()
+
+        if value is None and time.monotonic() - answered_at >= PLUGIN_ALERT_INTERVAL.total_seconds():
+            keep_studio_plugins(lock_receipt)
+
+            answered_at = time.monotonic()
+
+        return value
+
+    return poll_until(_probe_keeping_plugins, wait)
+
+
+def registration_failure_cause(lock_receipt: Path) -> str:
+    """Describe why the runner's Studio MCP does not list an editor whose process runs, answering stalled-plugin
+    alerts on the way."""
+
+    diagnosis = run_in_runner(REGISTRATION_DIAGNOSIS_SCRIPT, lock_receipt, PLUGIN_ALERT_TIMEOUT,
+                              data=GUEST_STUDIO_MCP.read_bytes()).decode()
+    state = "; ".join(line.strip() for line in diagnosis.splitlines() if line.strip())
+
+    return (f"each editor reaches Studio MCP through its built-in Assistant plugin, which stalls while the guest is "
+            f"starved; guest state: {state}")
+
+
 def wait_for_studios(connection: StudioMcpConnection, lock_receipt: Path,
                      wait: timedelta = EDITOR_LIST_WAIT) -> list[StudioEntry]:
     """List the runner's editors, waiting out the empty list a new MCP connection reports at first."""
@@ -369,9 +437,23 @@ class Studio:
         self.lock_receipt = lock_receipt
         self.connection = connection if connection is not None else StudioMcpConnection()
 
+    def await_listing(self) -> None:
+        """Wait for the connection to list this editor, keeping stalled Studio plugins running meanwhile."""
+
+        def _listed() -> bool | None:
+            return any(studio["id"] == self.studio_id for studio in studios(self.connection, self.lock_receipt)) or None
+
+        if poll_registration(_listed, LISTING_RECOVERY_WAIT, self.lock_receipt) is None:
+            raise RuntimeError(f"Studio MCP has not listed editor {self.studio_id} for "
+                               f"{LISTING_RECOVERY_WAIT.total_seconds():.0f} s: "
+                               f"{registration_failure_cause(self.lock_receipt)}")
+
     def tool(self, name: str, arguments: ToolArguments,
              timeout: timedelta = TOOL_CALL_TIMEOUT) -> list[McpContent]:
-        """Call a Studio MCP tool on this editor."""
+        """Call a Studio MCP tool on this editor, once a new connection lists it."""
+
+        if self.connection.session is None:
+            self.await_listing()
 
         return call_studio_tool(self.connection, name, {**arguments, "studio_id": self.studio_id},
                                 self.lock_receipt, timeout)
@@ -554,6 +636,29 @@ true'''
     return {int(pid) for pid in survivors.split()}
 
 
+def listed_place_editors(project: str, place: Path, connection: StudioMcpConnection,
+                         lock_receipt: Path) -> list[StudioEntry]:
+    """List the editors named for a project's place copy once Studio MCP lists one, or none while none has it open."""
+
+    guest_path = guest_place(project, place)
+    pids = guest_pids(editor_pids_script(guest_path), lock_receipt)
+
+    if not pids:
+        return []
+
+    def _listed() -> list[StudioEntry] | None:
+        return [studio for studio in studios(connection, lock_receipt) if studio.get("name") == place.name] or None
+
+    listed = poll_registration(_listed, LISTING_RECOVERY_WAIT, lock_receipt)
+
+    if listed is None:
+        raise RuntimeError(f"The editor for {guest_path} runs as process {sorted(pids)}, but Studio MCP has not listed "
+                           f"it for {LISTING_RECOVERY_WAIT.total_seconds():.0f} s: "
+                           f"{registration_failure_cause(lock_receipt)}")
+
+    return listed
+
+
 def guest_screenshot(path: Path, lock_receipt: Path) -> Path:
     """Save the runner guest's whole screen to path."""
 
@@ -601,10 +706,11 @@ def open_bound(registration_wait: timedelta) -> timedelta:
 
     snapshot = INITIALIZE_TIMEOUT + EDITOR_LIST_WAIT + 2 * TOOL_CALL_TIMEOUT
     # Registering and answering in the Edit data model share registration_wait; each can overrun it by one call.
-    registration = registration_wait + TOOL_CALL_TIMEOUT + REGISTRATION_POLL + EDIT_PROBE_TIMEOUT
+    registration = (registration_wait + TOOL_CALL_TIMEOUT + PLUGIN_ALERT_TIMEOUT + REGISTRATION_POLL
+                    + EDIT_PROBE_TIMEOUT)
+    failure = PLUGIN_ALERT_TIMEOUT + CAPTURE_TIMEOUT + CLOSE_BOUND
 
-    return (PROCESS_LIST_TIMEOUT + snapshot + COPY_TIMEOUT + LAUNCH_TIMEOUT + registration + CAPTURE_TIMEOUT
-            + CLOSE_BOUND)
+    return PROCESS_LIST_TIMEOUT + snapshot + COPY_TIMEOUT + LAUNCH_TIMEOUT + registration + failure
 
 
 def launch_editor(launch: str, data: bytes | None, editor_name: str | None, expected: PlaceIds | None,
@@ -621,12 +727,12 @@ def launch_editor(launch: str, data: bytes | None, editor_name: str | None, expe
         run_in_runner(launch, lock_receipt, COPY_TIMEOUT + LAUNCH_TIMEOUT, data=data)
 
         deadline = time.monotonic() + registration_wait.total_seconds()
-        registered = poll_until(lambda: next((studio for studio in new_editors(known, connection, lock_receipt)
-                                              if editor_name is None or studio.get("name") == editor_name), None),
-                                registration_wait)
+        registered = poll_registration(lambda: next((studio for studio in new_editors(known, connection, lock_receipt)
+                                                     if editor_name is None or studio.get("name") == editor_name),
+                                                    None), registration_wait, lock_receipt)
 
         if registered is None:
-            failure = "never registered with Studio MCP"
+            failure = f"never registered with Studio MCP: {registration_failure_cause(lock_receipt)}"
         else:
             studio = Studio(registered["id"], lock_receipt, connection)
 
