@@ -118,8 +118,7 @@ alwaysApply: true
   matching topic, branch, open state or batch record alone does not establish creation or authorize
   continuation. Verify its state and scope remotely. If none qualifies, open a new pull request from
   the freshly fetched default branch. Later guidance edits and worker tasks join the selected pull
-  request, apart from guidance for something on trial, which **Merge Authorization** gives a pull
-  request of its own. Consolidate a duplicate this session opened onto it and close the duplicate, saying where
+  request. Consolidate a duplicate this session opened onto it and close the duplicate, saying where
   the work went; never retarget, close or fold in one this session did not open.
 - **Every worker pushes to the branch of the pull request the work continues**, fetching and
   rebasing its unpushed commits onto the remote branch before each push. A branch per worker,
@@ -165,13 +164,14 @@ alwaysApply: true
   request held for user review cannot use those exceptions or auto-merge.
 - **Guidance for something the user is still trying out is held for their review.** Once the user
   says a capability, tool or way of working is on trial, such as that they are still testing it,
-  may drop it, or want its guidance kept from merging for now, every pull request carrying
-  guidance about it is held for user review under the bullet above. Its review and checks still
-  run, and it stays draft. The trial guidance goes on a pull request of its own, never into a
-  batch that merges, and that pull request's description opens with a line stating the hold, so a
-  session that never saw the conversation reads it on the pull request. The hold ends only when
-  the user's own words keep that capability or ask for that merge. When they drop it, the session
-  that opened the pull request closes it.
+  may drop it, or want its guidance kept from merging for now, the pull request carrying that
+  guidance is held for user review under the bullet above. Its review and checks still run, and it
+  stays draft; its description opens with a line stating the hold, so a session that never saw the
+  conversation reads it on the pull request. **The trial is one decision.** Every guidance edit the
+  trial work makes, including a rule written to govern the trial itself, rides the same pull
+  request and is decided by the user's word on the capability: keeping it ends the hold on all of
+  it, and dropping it closes that pull request. Neither the agent's own wording nor a split across
+  pull requests makes a part of it a decision of its own.
 - Before reporting a pull request whose merge no instruction authorizes, classify the complete
   actual diff against the standing permissions below; one they cover may merge under them, and any
   other is reported without asking for its merge, as the global rules' merge-authorization bullet
