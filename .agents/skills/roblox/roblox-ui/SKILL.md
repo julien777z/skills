@@ -1,7 +1,7 @@
 ---
 name: roblox-ui
-description: Apply whenever a Roblox UI is opened, read, reviewed, inspected, designed, created, modified, or playtested, including HUDs, menus, tutorials, selection screens, viewport previews, and UI-owned world-space messages. Roblox UI is built with React by default. Require readable, visually inspected desktop/touch interfaces, explicit cleanup, and repeated real-input Play tests.
-short_description: 'Design and change Roblox interfaces, including HUDs and menus, built with React.'
+description: Apply whenever a Roblox UI is opened, read, reviewed, inspected, designed, created, modified, or playtested, including HUDs, menus, tutorials, selection screens, viewport previews, and UI-owned world-space messages. Require readable, visually inspected desktop/touch interfaces, explicit cleanup, and repeated real-input Play tests.
+short_description: 'Design and change Roblox interfaces, including HUDs and menus.'
 ---
 
 # Roblox UI
