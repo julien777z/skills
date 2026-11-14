@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { ExternalLink, ItemMeta, RichText, SourceLinks, ToneDot } from '@/components';
+import { ExternalLink, ItemMeta, RichText, SourceLinks, StatusBadge, ToneDot } from '@/components';
 import { Grid, Stack, Text } from '@/components/primitives';
 import { withKeys } from '@/lib/utils';
 import type { BoardColumn, BoardSection as BoardSectionSpec } from '@/spec';
@@ -38,6 +38,7 @@ function Column({ column }: { column: BoardColumn }): ReactNode {
                   <RichText text={card.detail} />
                 </Text>
               )}
+              {card.status && <StatusBadge label={card.status.label} tone={card.status.tone} />}
               <ItemMeta tag={card.tag} meta={card.meta} at={card.at} />
               {card.links && <SourceLinks links={card.links} />}
             </Stack>

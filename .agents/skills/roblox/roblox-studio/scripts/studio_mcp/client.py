@@ -15,10 +15,12 @@ import time
 from collections.abc import Callable, Collection, Mapping, Sequence
 from datetime import timedelta
 from pathlib import Path
+from types import MappingProxyType
 from typing import IO, Final, cast
 
-from studio_mcp.models import (AgentLockAcquireReport, AgentLockCheckReport, JsonRpcMessage, JsonValue, McpContent,
-                               PlaceIds, Position, RunnerConfig, RunnerLease, StudioButton, StudioEntry, ToolArguments)
+from studio_mcp.models import (AgentLockAcquireReport, AgentLockCheckReport, CameraView, JsonRpcMessage, JsonValue,
+                               McpContent, PlaceIds, RunnerConfig, RunnerLease, RunnerOperation, StudioButton,
+                               StudioEntry, ToolArguments)
 
 logger = logging.getLogger(__name__)
 
@@ -35,30 +37,36 @@ GUEST_PLACES: Final[str] = "studio-places"
 PROTOCOL_VERSION: Final[str] = "2024-11-05"
 # The guest helper's port, which each editor's built-in Assistant plugin connects to.
 HELPER_PORT: Final[int] = 13469
-INITIALIZE_TIMEOUT: Final[timedelta] = timedelta(seconds=55)
-TOOL_CALL_TIMEOUT: Final[timedelta] = timedelta(seconds=55)
-COPY_TIMEOUT: Final[timedelta] = timedelta(seconds=120)
-LAUNCH_TIMEOUT: Final[timedelta] = timedelta(seconds=60)
-CAPTURE_TIMEOUT: Final[timedelta] = timedelta(seconds=60)
-EDIT_PROBE_TIMEOUT: Final[timedelta] = timedelta(seconds=15)
-PROCESS_LIST_TIMEOUT: Final[timedelta] = timedelta(seconds=30)
-STOP_TIMEOUT: Final[timedelta] = timedelta(seconds=60)
-REMOVAL_TIMEOUT: Final[timedelta] = timedelta(seconds=30)
-CLOSE_BOUND: Final[timedelta] = PROCESS_LIST_TIMEOUT + STOP_TIMEOUT + REMOVAL_TIMEOUT
-LOCK_CHECK_TIMEOUT: Final[timedelta] = timedelta(seconds=30)
+OPERATION_TIMEOUTS: Final[Mapping[RunnerOperation, timedelta]] = MappingProxyType({
+    RunnerOperation.INITIALIZE: timedelta(seconds=55),
+    RunnerOperation.TOOL_CALL: timedelta(seconds=55),
+    RunnerOperation.COPY: timedelta(seconds=120),
+    RunnerOperation.LAUNCH: timedelta(seconds=60),
+    RunnerOperation.CAPTURE: timedelta(seconds=60),
+    RunnerOperation.EDIT_PROBE: timedelta(seconds=15),
+    RunnerOperation.PROCESS_LIST: timedelta(seconds=30),
+    RunnerOperation.STOP: timedelta(seconds=60),
+    RunnerOperation.REMOVAL: timedelta(seconds=30),
+    RunnerOperation.LOCK_CHECK: timedelta(seconds=30),
+    RunnerOperation.DESCRIBE: timedelta(seconds=30),
+    RunnerOperation.SESSION_EXIT: timedelta(seconds=5),
+    # Reading a starved Studio's windows through System Events can take most of a minute.
+    RunnerOperation.PLUGIN_ALERT: timedelta(seconds=90),
+    RunnerOperation.DIAGNOSIS: timedelta(seconds=15),
+})
+CLOUD_CLOSE_BOUND: Final[timedelta] = (OPERATION_TIMEOUTS[RunnerOperation.PROCESS_LIST]
+                                       + OPERATION_TIMEOUTS[RunnerOperation.STOP])
+CLOSE_BOUND: Final[timedelta] = CLOUD_CLOSE_BOUND + OPERATION_TIMEOUTS[RunnerOperation.REMOVAL]
+LEASE_CHECK_BOUND: Final[timedelta] = (OPERATION_TIMEOUTS[RunnerOperation.DESCRIBE]
+                                       + OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK])
 LOCK_WAIT: Final[timedelta] = timedelta(seconds=50)
 # agent-lock refuses a lease longer than this.
 MAX_LEASE: Final[timedelta] = timedelta(seconds=900)
-DESCRIBE_TIMEOUT: Final[timedelta] = timedelta(seconds=30)
-SESSION_EXIT_TIMEOUT: Final[timedelta] = timedelta(seconds=5)
-REGISTRATION_POLL: Final[timedelta] = timedelta(seconds=2)
+POLL_INTERVAL: Final[timedelta] = timedelta(seconds=2)
 DEFAULT_REGISTRATION_WAIT: Final[timedelta] = timedelta(seconds=180)
 # A starved guest can hold an editor's connection to the helper this long before Studio retries it.
 LISTING_RECOVERY_WAIT: Final[timedelta] = timedelta(seconds=260)
-# Reading a starved Studio's windows through System Events can take most of a minute.
 PLUGIN_ALERT_INTERVAL: Final[timedelta] = timedelta(seconds=60)
-PLUGIN_ALERT_TIMEOUT: Final[timedelta] = timedelta(seconds=90)
-DIAGNOSIS_TIMEOUT: Final[timedelta] = timedelta(seconds=15)
 EDITOR_LIST_WAIT: Final[timedelta] = timedelta(seconds=20)
 GUEST_NAME: Final[re.Pattern[str]] = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*")
 EXTENDED_REGEX_SPECIAL: Final[re.Pattern[str]] = re.compile(r"([.^$*+?()\[\]{}|\\])")
@@ -81,7 +89,7 @@ def runner_config() -> RunnerConfig:
     """Return the game's runner configuration as its settings files name it now."""
 
     result = subprocess.run([str(RUNNER_SSH), "--describe"], capture_output=True, text=True,
-                            timeout=DESCRIBE_TIMEOUT.total_seconds())
+                            timeout=OPERATION_TIMEOUTS[RunnerOperation.DESCRIBE].total_seconds())
 
     if result.returncode != 0:
         raise RuntimeError(f"No runner VM resolved for this game:\n{result.stderr}")
@@ -113,7 +121,8 @@ def acquire_runner_lock(lock_receipt: Path, owner: str, activity: str, lease: ti
     result = subprocess.run([sys.executable, str(AGENT_LOCK), "acquire", lock_key, "--owner", owner, "--activity",
                              activity, "--receipt", str(lock_receipt), "--wait-seconds", str(wait.total_seconds()),
                              "--ttl-seconds", str(lease.total_seconds())],
-                            capture_output=True, text=True, timeout=(wait + LOCK_CHECK_TIMEOUT).total_seconds())
+                            capture_output=True, text=True,
+                            timeout=(wait + OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK]).total_seconds())
 
     if result.returncode != 0:
         raise RuntimeError(f"The {lock_key} lock was not acquired ({result.returncode}):\n"
@@ -123,11 +132,11 @@ def acquire_runner_lock(lock_receipt: Path, owner: str, activity: str, lease: ti
 
 
 def release_runner_lock(lock_receipt: Path) -> None:
-    """Release the runner lock the receipt owns, once every process the segment started has exited."""
+    """Release the runner lock the receipt owns, stating to agent-lock that the runner is idle."""
 
     result = subprocess.run([sys.executable, str(AGENT_LOCK), "release", "--receipt", str(lock_receipt),
                              "--resource-idle"], capture_output=True, text=True,
-                            timeout=LOCK_CHECK_TIMEOUT.total_seconds())
+                            timeout=OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK].total_seconds())
 
     if result.returncode != 0:
         raise RuntimeError(f"Receipt {lock_receipt} did not release its lock:\n{result.stderr}")
@@ -140,7 +149,8 @@ def runner_lease(lock_receipt: Path) -> RunnerLease:
     lock_key = config["ROBLOX_STUDIO_VM"]
 
     result = subprocess.run([sys.executable, str(AGENT_LOCK), "check", "--receipt", str(lock_receipt)],
-                            capture_output=True, text=True, timeout=LOCK_CHECK_TIMEOUT.total_seconds())
+                            capture_output=True, text=True,
+                            timeout=OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK].total_seconds())
 
     if result.returncode != 0:
         raise RuntimeError(f"Receipt {lock_receipt} does not own a lock:\n{result.stderr}")
@@ -169,7 +179,11 @@ def assert_runner_lease_covers(lock_receipt: Path, needed: timedelta) -> RunnerC
 def run_in_runner(command: str, lock_receipt: Path, timeout: timedelta, data: bytes | None = None) -> bytes:
     """Run a shell command in the runner guest."""
 
-    config = assert_runner_lease_covers(lock_receipt, timeout)
+    return run_guest_command(command, assert_runner_lease_covers(lock_receipt, timeout), timeout, data)
+
+
+def run_guest_command(command: str, config: RunnerConfig, timeout: timedelta, data: bytes | None = None) -> bytes:
+    """Run a shell command in the guest of a runner whose lease the caller has already checked."""
 
     # The guest's login shell may be zsh, which splits words differently, so commands always run under sh.
     result = subprocess.run([str(RUNNER_SSH), f"/bin/sh -c {shlex.quote(command)}"], input=data,
@@ -202,7 +216,7 @@ class StudioMcpSession:
         try:
             self.request("initialize", {"protocolVersion": PROTOCOL_VERSION, "capabilities": {},
                                         "clientInfo": {"name": "roblox-studio-skill", "version": "1.0"}},
-                         INITIALIZE_TIMEOUT)
+                         OPERATION_TIMEOUTS[RunnerOperation.INITIALIZE])
 
             self.write(JsonRpcMessage(jsonrpc="2.0", method="notifications/initialized"))
 
@@ -260,7 +274,7 @@ class StudioMcpSession:
             self.process.terminate()
 
             try:
-                self.process.wait(timeout=SESSION_EXIT_TIMEOUT.total_seconds())
+                self.process.wait(timeout=OPERATION_TIMEOUTS[RunnerOperation.SESSION_EXIT].total_seconds())
             except subprocess.TimeoutExpired:
                 self.process.kill()
                 self.process.wait()
@@ -312,18 +326,36 @@ class StudioMcpConnection:
             self.session = None
 
 
+class StudioToolError(RuntimeError):
+    """A Studio MCP tool call that Studio answered with an error."""
+
+
 def call_studio_tool(connection: StudioMcpConnection, name: str, arguments: ToolArguments, lock_receipt: Path,
-                     timeout: timedelta = TOOL_CALL_TIMEOUT) -> list[McpContent]:
+                     timeout: timedelta = OPERATION_TIMEOUTS[RunnerOperation.TOOL_CALL]) -> list[McpContent]:
     """Call a Studio MCP tool."""
 
-    opening = INITIALIZE_TIMEOUT if connection.session is None else timedelta()
+    config = assert_runner_lease_covers(lock_receipt, tool_call_bound(connection.session is None, timeout))
 
-    config = assert_runner_lease_covers(lock_receipt, timeout + opening)
+    return studio_tool_reply(connection, name, arguments, config, timeout)
+
+
+def tool_call_bound(opens_session: bool,
+                    timeout: timedelta = OPERATION_TIMEOUTS[RunnerOperation.TOOL_CALL]) -> timedelta:
+    """Return the longest one Studio MCP tool call can take."""
+
+    opening = OPERATION_TIMEOUTS[RunnerOperation.INITIALIZE] if opens_session else timedelta()
+
+    return opening + timeout + OPERATION_TIMEOUTS[RunnerOperation.SESSION_EXIT]
+
+
+def studio_tool_reply(connection: StudioMcpConnection, name: str, arguments: ToolArguments, config: RunnerConfig,
+                      timeout: timedelta = OPERATION_TIMEOUTS[RunnerOperation.TOOL_CALL]) -> list[McpContent]:
+    """Call a Studio MCP tool on a runner whose lease the caller has already checked."""
 
     response = connection.request("tools/call", {"name": name, "arguments": arguments}, timeout, config)
 
     if "error" in response or "result" not in response or response["result"].get("isError"):
-        raise RuntimeError(json.dumps(response))
+        raise StudioToolError(json.dumps(response))
 
     return response["result"]["content"]
 
@@ -337,13 +369,21 @@ def mcp_content_text(content: list[McpContent]) -> str:
 def studios(connection: StudioMcpConnection, lock_receipt: Path) -> list[StudioEntry]:
     """List the editors the runner's Studio MCP knows."""
 
-    listing = mcp_content_text(call_studio_tool(connection, "list_roblox_studios", {}, lock_receipt))
+    config = assert_runner_lease_covers(lock_receipt, tool_call_bound(connection.session is None))
+
+    return listed_studios(connection, config)
+
+
+def listed_studios(connection: StudioMcpConnection, config: RunnerConfig) -> list[StudioEntry]:
+    """List the editors the Studio MCP of a runner whose lease the caller has already checked knows."""
+
+    listing = mcp_content_text(studio_tool_reply(connection, "list_roblox_studios", {}, config))
 
     return json.loads(listing).get("studios", [])
 
 
 def poll_until[T](probe: Callable[[], T | None], wait: timedelta) -> T | None:
-    """Return the first value probe gives within wait, calling it at least once, or None."""
+    """Poll probe until it gives a value or wait runs out."""
 
     deadline = time.monotonic() + wait.total_seconds()
 
@@ -353,15 +393,15 @@ def poll_until[T](probe: Callable[[], T | None], wait: timedelta) -> T | None:
         if value is not None or time.monotonic() >= deadline:
             return value
 
-        time.sleep(REGISTRATION_POLL.total_seconds())
+        time.sleep(POLL_INTERVAL.total_seconds())
 
 
-def keep_studio_plugins(lock_receipt: Path) -> str:
-    """Answer every open stalled-plugin alert in the runner's editors with its keep-waiting button."""
+def keep_studio_plugins(config: RunnerConfig) -> str:
+    """Answer every open stalled-plugin alert in the editors of a runner whose lease the caller has already checked."""
 
     try:
-        report = run_in_runner(KEEP_PLUGINS_SCRIPT, lock_receipt, PLUGIN_ALERT_TIMEOUT,
-                               data=GUEST_STUDIO_MCP.read_bytes()).decode().strip()
+        report = run_guest_command(KEEP_PLUGINS_SCRIPT, config, OPERATION_TIMEOUTS[RunnerOperation.PLUGIN_ALERT],
+                                   GUEST_STUDIO_MCP.read_bytes()).decode().strip()
     except (RuntimeError, subprocess.TimeoutExpired) as error:
         logger.warning("Studio's stalled-plugin alerts were not answered: %s", error)
 
@@ -373,7 +413,7 @@ def keep_studio_plugins(lock_receipt: Path) -> str:
     return report
 
 
-def poll_registration[T](probe: Callable[[], T | None], wait: timedelta, lock_receipt: Path) -> T | None:
+def poll_registration[T](probe: Callable[[], T | None], wait: timedelta, config: RunnerConfig) -> T | None:
     """Return the first value probe gives within wait, keeping stalled Studio plugins running meanwhile, or None."""
 
     deadline = time.monotonic() + wait.total_seconds()
@@ -386,19 +426,21 @@ def poll_registration[T](probe: Callable[[], T | None], wait: timedelta, lock_re
         if value is not None or now >= deadline:
             return value
 
-        if now >= next_alert_pass and deadline - now > PLUGIN_ALERT_TIMEOUT.total_seconds():
-            keep_studio_plugins(lock_receipt)
+        # A pass runs only when it ends inside wait, so the wait's bound holds.
+        if now >= next_alert_pass and deadline - now > OPERATION_TIMEOUTS[RunnerOperation.PLUGIN_ALERT].total_seconds():
+            keep_studio_plugins(config)
 
             next_alert_pass = time.monotonic() + PLUGIN_ALERT_INTERVAL.total_seconds()
 
-        time.sleep(REGISTRATION_POLL.total_seconds())
+        time.sleep(POLL_INTERVAL.total_seconds())
 
 
-def registration_failure_cause(lock_receipt: Path) -> str:
-    """Describe why the runner's Studio MCP does not list an editor whose process runs."""
+def registration_failure_cause(config: RunnerConfig) -> str:
+    """Describe why a checked runner's Studio MCP does not list an editor whose process runs."""
 
     try:
-        diagnosis = run_in_runner(REGISTRATION_DIAGNOSIS_SCRIPT, lock_receipt, DIAGNOSIS_TIMEOUT).decode()
+        diagnosis = run_guest_command(REGISTRATION_DIAGNOSIS_SCRIPT, config,
+                                      OPERATION_TIMEOUTS[RunnerOperation.DIAGNOSIS]).decode()
         state = "; ".join(line.strip() for line in diagnosis.splitlines() if line.strip())
     except (RuntimeError, subprocess.TimeoutExpired) as error:
         state = f"unreadable ({error})"
@@ -411,7 +453,28 @@ def wait_for_studios(connection: StudioMcpConnection, lock_receipt: Path,
                      wait: timedelta = EDITOR_LIST_WAIT) -> list[StudioEntry]:
     """List the runner's editors, waiting out the empty list a new MCP connection reports at first."""
 
-    return poll_until(lambda: studios(connection, lock_receipt) or None, wait) or []
+    return awaited_studios(connection, assert_runner_lease_covers(lock_receipt, editor_wait_bound(wait)), wait)
+
+
+def editor_wait_bound(wait: timedelta) -> timedelta:
+    """Return the longest waiting out a new connection's empty editor list can take."""
+
+    if wait < timedelta():
+        raise ValueError("Wait a duration of zero or more for the editor list")
+
+    return wait + POLL_INTERVAL + tool_call_bound(opens_session=True)
+
+
+def listing_recovery_bound() -> timedelta:
+    """Return the longest waiting for Studio MCP to list a running editor can take, naming the cause included."""
+
+    return editor_wait_bound(LISTING_RECOVERY_WAIT) + OPERATION_TIMEOUTS[RunnerOperation.DIAGNOSIS]
+
+
+def awaited_studios(connection: StudioMcpConnection, config: RunnerConfig, wait: timedelta) -> list[StudioEntry]:
+    """List the editors of a runner whose lease the caller has already checked, waiting out an empty list."""
+
+    return poll_until(lambda: listed_studios(connection, config) or None, wait) or []
 
 
 def listed_editor_ids(connection: StudioMcpConnection, lock_receipt: Path) -> set[str]:
@@ -438,35 +501,40 @@ class Studio:
     """An editor in the runner."""
 
     def __init__(self, studio_id: str, lock_receipt: Path, connection: StudioMcpConnection | None = None) -> None:
-        """Address an editor by its MCP studio ID, over a connection that already lists it when one is given."""
+        """Address an editor by its MCP studio ID."""
 
         self.studio_id = studio_id
         self.lock_receipt = lock_receipt
         self.connection = connection if connection is not None else StudioMcpConnection()
 
-    def await_listing(self) -> None:
+    def await_listing(self, config: RunnerConfig) -> None:
         """Wait for the connection to list this editor, keeping stalled Studio plugins running meanwhile."""
 
         def _listed() -> bool | None:
-            return any(studio["id"] == self.studio_id for studio in studios(self.connection, self.lock_receipt)) or None
+            return any(studio["id"] == self.studio_id for studio in listed_studios(self.connection, config)) or None
 
-        if poll_registration(_listed, LISTING_RECOVERY_WAIT, self.lock_receipt) is None:
+        if poll_registration(_listed, LISTING_RECOVERY_WAIT, config) is None:
             raise RuntimeError(f"Studio MCP has not listed editor {self.studio_id} for "
-                               f"{LISTING_RECOVERY_WAIT.total_seconds():.0f} s: "
-                               f"{registration_failure_cause(self.lock_receipt)}")
+                               f"{LISTING_RECOVERY_WAIT.total_seconds():.0f} s: {registration_failure_cause(config)}")
 
     def tool(self, name: str, arguments: ToolArguments,
-             timeout: timedelta = TOOL_CALL_TIMEOUT) -> list[McpContent]:
+             timeout: timedelta = OPERATION_TIMEOUTS[RunnerOperation.TOOL_CALL]) -> list[McpContent]:
         """Call a Studio MCP tool on this editor, once a new connection lists it."""
 
-        if self.connection.session is None:
-            self.await_listing()
+        arguments = {**arguments, "studio_id": self.studio_id}
 
-        return call_studio_tool(self.connection, name, {**arguments, "studio_id": self.studio_id},
-                                self.lock_receipt, timeout)
+        if self.connection.session is not None:
+            return call_studio_tool(self.connection, name, arguments, self.lock_receipt, timeout)
+
+        config = assert_runner_lease_covers(self.lock_receipt, listing_recovery_bound()
+                                            + tool_call_bound(opens_session=False, timeout=timeout))
+
+        self.await_listing(config)
+
+        return studio_tool_reply(self.connection, name, arguments, config, timeout)
 
     def execute(self, code: str, data_model: str = "Client",
-                timeout: timedelta = TOOL_CALL_TIMEOUT) -> str:
+                timeout: timedelta = OPERATION_TIMEOUTS[RunnerOperation.TOOL_CALL]) -> str:
         """Run Luau in one of the editor's data models."""
 
         return mcp_content_text(self.tool("execute_luau", {"datamodel_type": data_model, "code": code}, timeout))
@@ -476,29 +544,17 @@ class Studio:
 
         return mcp_content_text(self.tool("get_console_output", {}))
 
-    def edit_place_ids(self) -> PlaceIds | None:
-        """Return the place and universe IDs the Edit data model reports, or None while it runs no code yet."""
+    def capture(self, name: str, out_dir: Path, view: CameraView | None = None) -> list[Path]:
+        """Save the editor's screenshots under out_dir."""
 
-        try:
-            reply = self.execute('return game:GetService("HttpService"):JSONEncode({placeId = game.PlaceId, '
-                                 'universeId = game.GameId})', "Edit", EDIT_PROBE_TIMEOUT)
-        except (RuntimeError, TimeoutError):
-            return None
-
-        return json.loads(reply)
-
-    def capture(self, name: str, out_dir: Path, camera_position: Position | None = None,
-                look_at_position: Position | None = None) -> list[Path]:
-        """Save the editor's screenshots under out_dir, seen from camera_position toward look_at_position if given."""
-
-        if (camera_position is None) != (look_at_position is None):
-            raise ValueError("Give camera_position and look_at_position together")
+        if Path(name).name != name:
+            raise ValueError(f"Name a capture with one file name, not a path: {name!r}")
 
         arguments: dict[str, JsonValue] = {"capture_id": name}
 
-        if camera_position is not None and look_at_position is not None:
-            arguments["camera_position"] = camera_position
-            arguments["look_at_position"] = look_at_position
+        if view is not None:
+            arguments["camera_position"] = view["position"]
+            arguments["look_at_position"] = view["look_at"]
 
         out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -521,7 +577,7 @@ class Studio:
 
         return self.tool("user_keyboard_input", {"datamodel_type": "Client", "actions": actions})
 
-    def run_input(self, code: str, timeout: timedelta = TOOL_CALL_TIMEOUT) -> str:
+    def run_input(self, code: str, timeout: timedelta = OPERATION_TIMEOUTS[RunnerOperation.TOOL_CALL]) -> str:
         """Run Luau on the editor's client with the bundled VirtualInput helper bound to Input."""
 
         return self.execute(f"local Input = (function()\n{VIRTUAL_INPUT.read_text()}\nend)()\n{code}", "Client",
@@ -554,7 +610,7 @@ local input = Input.new()
 local held, problem = pcall(input.key, input, keyCode, {duration.total_seconds()})
 input:release()
 if not held then error(problem, 0) end
-return "Key input delivered"''', TOOL_CALL_TIMEOUT + duration)
+return "Key input delivered"''', OPERATION_TIMEOUTS[RunnerOperation.TOOL_CALL] + duration)
 
     def buttons(self, screen: str) -> list[StudioButton]:
         """List the TextButtons on one of the player's screens."""
@@ -610,16 +666,25 @@ for pid in $(pgrep -f 'placeId {place_id}( |$)'); do
 done'''
 
 
-def guest_pids(pids_script: str, lock_receipt: Path) -> set[int]:
+def guest_pids(pids_script: str, config: RunnerConfig) -> set[int]:
     """Run guest shell that sets pids and return the process IDs it found."""
 
-    listed = run_in_runner(f"{pids_script}\necho $pids", lock_receipt, PROCESS_LIST_TIMEOUT).decode()
+    listed = run_guest_command(f"{pids_script}\necho $pids", config,
+                               OPERATION_TIMEOUTS[RunnerOperation.PROCESS_LIST]).decode()
 
     return {int(pid) for pid in listed.split()}
 
 
 def stop_guest_processes(pids: Collection[int], lock_receipt: Path) -> set[int]:
-    """Stop guest processes with SIGTERM, then SIGKILL those still running, and return any that survive both."""
+    """Stop guest processes and return those still running."""
+
+    config = assert_runner_lease_covers(lock_receipt, OPERATION_TIMEOUTS[RunnerOperation.STOP])
+
+    return stopped_survivors(pids, config)
+
+
+def stopped_survivors(pids: Collection[int], config: RunnerConfig) -> set[int]:
+    """Stop processes in the guest of a runner whose lease the caller has already checked, and return survivors."""
 
     if any(pid < 2 for pid in pids):
         raise ValueError("Guest process IDs start at 2")
@@ -638,7 +703,7 @@ for _ in 1 2 3 4 5; do ps -p {listed} >/dev/null || exit 0; sleep 1; done
 ps -o pid= -p {listed}
 true'''
 
-    survivors = run_in_runner(script, lock_receipt, STOP_TIMEOUT).decode()
+    survivors = run_guest_command(script, config, OPERATION_TIMEOUTS[RunnerOperation.STOP]).decode()
 
     return {int(pid) for pid in survivors.split()}
 
@@ -648,20 +713,23 @@ def listed_place_editors(project: str, place: Path, connection: StudioMcpConnect
     """List the editors named for a project's place copy once Studio MCP lists one, or none while none has it open."""
 
     guest_path = guest_place(project, place)
-    pids = guest_pids(editor_pids_script(guest_path), lock_receipt)
+
+    config = assert_runner_lease_covers(lock_receipt, OPERATION_TIMEOUTS[RunnerOperation.PROCESS_LIST]
+                                        + listing_recovery_bound())
+    pids = guest_pids(editor_pids_script(guest_path), config)
 
     if not pids:
         return []
 
     def _listed() -> list[StudioEntry] | None:
-        return [studio for studio in studios(connection, lock_receipt) if studio.get("name") == place.name] or None
+        return [studio for studio in listed_studios(connection, config) if studio.get("name") == place.name] or None
 
-    listed = poll_registration(_listed, LISTING_RECOVERY_WAIT, lock_receipt)
+    listed = poll_registration(_listed, LISTING_RECOVERY_WAIT, config)
 
     if listed is None:
         raise RuntimeError(f"The editor for {guest_path} runs as process {sorted(pids)}, but Studio MCP has not listed "
                            f"it for {LISTING_RECOVERY_WAIT.total_seconds():.0f} s: "
-                           f"{registration_failure_cause(lock_receipt)}")
+                           f"{registration_failure_cause(config)}")
 
     return listed
 
@@ -669,10 +737,20 @@ def listed_place_editors(project: str, place: Path, connection: StudioMcpConnect
 def guest_screenshot(path: Path, lock_receipt: Path) -> Path:
     """Save the runner guest's whole screen to path."""
 
-    screen = run_in_runner('f=$(mktemp -t studio-screen) && screencapture -x -t png "$f" && cat "$f"; '
-                           'capture_status=$?; rm -f "$f"; exit $capture_status', lock_receipt, CAPTURE_TIMEOUT)
+    config = assert_runner_lease_covers(lock_receipt, OPERATION_TIMEOUTS[RunnerOperation.CAPTURE])
+
+    return saved_guest_screen(path, config)
+
+
+def saved_guest_screen(path: Path, config: RunnerConfig) -> Path:
+    """Save the whole screen of a runner guest whose lease the caller has already checked to path."""
+
+    screen = run_guest_command('f=$(mktemp -t studio-screen) && screencapture -x -t png "$f" && cat "$f"; '
+                               'capture_status=$?; rm -f "$f"; exit $capture_status', config,
+                               OPERATION_TIMEOUTS[RunnerOperation.CAPTURE])
 
     path.parent.mkdir(parents=True, exist_ok=True)
+
     path.write_bytes(screen)
 
     return path
@@ -681,11 +759,15 @@ def guest_screenshot(path: Path, lock_receipt: Path) -> Path:
 def close_place(project: str, place: Path, lock_receipt: Path) -> None:
     """Close a project's place copy in the runner."""
 
-    assert_runner_lease_covers(lock_receipt, CLOSE_BOUND)
+    close_place_copy_on_runner(project, place, assert_runner_lease_covers(lock_receipt, CLOSE_BOUND))
+
+
+def close_place_copy_on_runner(project: str, place: Path, config: RunnerConfig) -> None:
+    """Close a project's place copy in a runner whose lease the caller has already checked."""
 
     guest_path = guest_place(project, place)
 
-    survivors = stop_guest_processes(guest_pids(editor_pids_script(guest_path), lock_receipt), lock_receipt)
+    survivors = stopped_survivors(guest_pids(editor_pids_script(guest_path), config), config)
 
     if survivors:
         raise RuntimeError(f"The editor for {guest_path} is still open, so its copy stays in the guest")
@@ -694,15 +776,20 @@ def close_place(project: str, place: Path, lock_receipt: Path) -> None:
     files = f"{shlex.quote(guest_path)} {shlex.quote(f'{guest_path}.lock')}"
     folder = shlex.quote(str(Path(guest_path).parent))
 
-    run_in_runner(f'cd "$HOME" && rm -f {files}; rmdir {folder} 2>/dev/null; true', lock_receipt, REMOVAL_TIMEOUT)
+    run_guest_command(f'cd "$HOME" && rm -f {files}; rmdir {folder} 2>/dev/null; true', config,
+                      OPERATION_TIMEOUTS[RunnerOperation.REMOVAL])
 
 
 def close_cloud_place(place_id: int, lock_receipt: Path) -> None:
     """End, without saving, the runner editors open_cloud_place launched on a published place."""
 
-    assert_runner_lease_covers(lock_receipt, PROCESS_LIST_TIMEOUT + STOP_TIMEOUT)
+    close_cloud_editors_on_runner(place_id, assert_runner_lease_covers(lock_receipt, CLOUD_CLOSE_BOUND))
 
-    survivors = stop_guest_processes(guest_pids(cloud_editor_pids_script(place_id), lock_receipt), lock_receipt)
+
+def close_cloud_editors_on_runner(place_id: int, config: RunnerConfig) -> None:
+    """End, without saving, the cloud editors on a place in a runner whose lease the caller has already checked."""
+
+    survivors = stopped_survivors(guest_pids(cloud_editor_pids_script(place_id), config), config)
 
     if survivors:
         raise RuntimeError(f"The editor for place {place_id} is still open: {sorted(survivors)}")
@@ -711,59 +798,85 @@ def close_cloud_place(place_id: int, lock_receipt: Path) -> None:
 def open_bound(registration_wait: timedelta) -> timedelta:
     """Return the longest an editor launch can take, closing the editor after a failure included."""
 
-    snapshot = INITIALIZE_TIMEOUT + EDITOR_LIST_WAIT + 2 * TOOL_CALL_TIMEOUT
-    # Registering and answering in the Edit data model share registration_wait; each can overrun it by one call.
-    registration = registration_wait + TOOL_CALL_TIMEOUT + REGISTRATION_POLL + EDIT_PROBE_TIMEOUT
-    failure = DIAGNOSIS_TIMEOUT + CAPTURE_TIMEOUT + CLOSE_BOUND
+    if registration_wait < timedelta():
+        raise ValueError("Wait a duration of zero or more for the editor to register")
 
-    return PROCESS_LIST_TIMEOUT + snapshot + COPY_TIMEOUT + LAUNCH_TIMEOUT + registration + failure
+    editor_snapshot = editor_wait_bound(EDITOR_LIST_WAIT)
+    launch = OPERATION_TIMEOUTS[RunnerOperation.COPY] + OPERATION_TIMEOUTS[RunnerOperation.LAUNCH]
+    registering_call = (POLL_INTERVAL + OPERATION_TIMEOUTS[RunnerOperation.INITIALIZE]
+                        + OPERATION_TIMEOUTS[RunnerOperation.TOOL_CALL])
+    first_probe = tool_call_bound(opens_session=False, timeout=OPERATION_TIMEOUTS[RunnerOperation.EDIT_PROBE])
+    failure_cleanup = (OPERATION_TIMEOUTS[RunnerOperation.DIAGNOSIS] + OPERATION_TIMEOUTS[RunnerOperation.CAPTURE]
+                       + OPERATION_TIMEOUTS[RunnerOperation.SESSION_EXIT] + CLOSE_BOUND)
+
+    return (OPERATION_TIMEOUTS[RunnerOperation.PROCESS_LIST] + editor_snapshot + launch + registration_wait
+            + registering_call + first_probe + failure_cleanup)
+
+
+def reported_place_ids(connection: StudioMcpConnection, studio_id: str, config: RunnerConfig) -> PlaceIds | None:
+    """Return the place and universe IDs an editor's Edit data model reports, or None while it runs no code yet."""
+
+    # An editor still loading its place answers with an error or not at all.
+    try:
+        reply = studio_tool_reply(connection, "execute_luau", {
+            "studio_id": studio_id, "datamodel_type": "Edit",
+            "code": 'return game:GetService("HttpService"):JSONEncode({place_id = game.PlaceId, '
+                    'universe_id = game.GameId})'}, config, OPERATION_TIMEOUTS[RunnerOperation.EDIT_PROBE])
+    except (StudioToolError, TimeoutError):
+        return None
+
+    return json.loads(mcp_content_text(reply))
 
 
 def launch_editor(launch: str, data: bytes | None, editor_name: str | None, expected: PlaceIds | None,
-                  failure_screen: Path, close: Callable[[], None], lock_receipt: Path,
-                  registration_wait: timedelta) -> Studio:
-    """Run a guest command that launches an editor, and return it once it registers and its Edit data model answers."""
+                  failure_screen: Path, close: Callable[[RunnerConfig], None], config: RunnerConfig,
+                  lock_receipt: Path, registration_wait: timedelta) -> Studio:
+    """Launch an editor through a guest command and return it once its Edit data model answers."""
 
     connection = StudioMcpConnection()
     opened = False
 
     try:
-        known = listed_editor_ids(connection, lock_receipt)
+        known = {studio["id"] for studio in awaited_studios(connection, config, EDITOR_LIST_WAIT)}
 
-        run_in_runner(launch, lock_receipt, COPY_TIMEOUT + LAUNCH_TIMEOUT, data=data)
+        run_guest_command(launch, config, OPERATION_TIMEOUTS[RunnerOperation.COPY]
+                          + OPERATION_TIMEOUTS[RunnerOperation.LAUNCH], data)
 
         deadline = time.monotonic() + registration_wait.total_seconds()
-        registered = poll_registration(lambda: next((studio for studio in new_editors(known, connection, lock_receipt)
-                                                     if editor_name is None or studio.get("name") == editor_name),
-                                                    None), registration_wait, lock_receipt)
+        registered = poll_registration(lambda: next((studio for studio in listed_studios(connection, config)
+                                                     if studio["id"] not in known
+                                                     and (editor_name is None or studio.get("name") == editor_name)),
+                                                    None), registration_wait, config)
 
         if registered is None:
-            failure = f"never registered with Studio MCP: {registration_failure_cause(lock_receipt)}"
+            failure = f"never registered with Studio MCP: {registration_failure_cause(config)}"
         else:
-            studio = Studio(registered["id"], lock_receipt, connection)
+            studio_id = registered["id"]
 
-            def answered() -> PlaceIds | None:
-                ids = studio.edit_place_ids()
+            def _answered() -> PlaceIds | None:
+                """Return the IDs the editor reports once they match the expected place."""
+
+                ids = reported_place_ids(connection, studio_id, config)
 
                 return ids if ids is not None and (expected is None or ids == expected) else None
 
             remaining = timedelta(seconds=max(0.0, deadline - time.monotonic()))
 
-            if poll_until(answered, remaining) is not None:
+            if poll_until(_answered, remaining) is not None:
                 opened = True
 
-                return studio
+                return Studio(studio_id, lock_receipt, connection)
 
             failure = ("never ran code in its Edit data model" if expected is None
-                       else f"never reported place {expected['placeId']} of universe {expected['universeId']}")
+                       else f"never reported place {expected['place_id']} of universe {expected['universe_id']}")
 
-        guest_screenshot(failure_screen, lock_receipt)
+        saved_guest_screen(failure_screen, config)
 
         raise RuntimeError(f"The editor {failure}; screen saved to {failure_screen}")
     finally:
         if not opened:
             connection.close()
-            close()
+            close(config)
 
 
 def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path,
@@ -772,9 +885,9 @@ def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path,
 
     guest_path = guest_place(project, place)
 
-    assert_runner_lease_covers(lock_receipt, open_bound(registration_wait))
+    config = assert_runner_lease_covers(lock_receipt, open_bound(registration_wait))
 
-    if guest_pids(editor_pids_script(guest_path), lock_receipt):
+    if guest_pids(editor_pids_script(guest_path), config):
         raise RuntimeError(f"An editor already has {guest_path} open; use it or close it with close_place first")
 
     launch = (f'cd "$HOME" && mkdir -p {shlex.quote(str(Path(guest_path).parent))} && '
@@ -782,7 +895,8 @@ def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path,
               f'--localPlaceFile "$HOME"/{shlex.quote(guest_path)}')
 
     return launch_editor(launch, place.read_bytes(), place.name, None, out_dir / f"launch-failure-{place.stem}.png",
-                         lambda: close_place(project, place, lock_receipt), lock_receipt, registration_wait)
+                         lambda checked: close_place_copy_on_runner(project, place, checked), config, lock_receipt,
+                         registration_wait)
 
 
 def open_cloud_place(place_id: int, universe_id: int, out_dir: Path, lock_receipt: Path,
@@ -792,15 +906,16 @@ def open_cloud_place(place_id: int, universe_id: int, out_dir: Path, lock_receip
     if place_id < 1 or universe_id < 1:
         raise ValueError("Published places have positive place and universe IDs")
 
-    assert_runner_lease_covers(lock_receipt, open_bound(registration_wait))
+    config = assert_runner_lease_covers(lock_receipt, open_bound(registration_wait))
 
-    if guest_pids(cloud_editor_pids_script(place_id), lock_receipt):
+    if guest_pids(cloud_editor_pids_script(place_id), config):
         raise RuntimeError(f"An editor already has place {place_id} open; use it or close it with close_cloud_place "
                            "first")
 
     launch = (f"open -n -a {shlex.quote(STUDIO_APP)} --args --task EditPlace --placeId {place_id} "
               f"--universeId {universe_id}")
 
-    return launch_editor(launch, None, None, PlaceIds(placeId=place_id, universeId=universe_id),
+    return launch_editor(launch, None, None, PlaceIds(place_id=place_id, universe_id=universe_id),
                          out_dir / f"launch-failure-place-{place_id}.png",
-                         lambda: close_cloud_place(place_id, lock_receipt), lock_receipt, registration_wait)
+                         lambda checked: close_cloud_editors_on_runner(place_id, checked), config, lock_receipt,
+                         registration_wait)

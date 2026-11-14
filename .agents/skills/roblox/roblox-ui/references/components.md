@@ -1,0 +1,37 @@
+# Framework and component practices
+
+Give each UI tree one owner. Keep server gameplay independent from the UI framework required by `luau`.
+
+Use maintained [Roblox React Lua](https://github.com/Roblox/react-lua) packages. Inspect the active package manifest and distinguish official packages from community forks. Install compatible pinned React/renderer versions through Wally and commit its lockfile. Generate type forwarding with the pinned [wally-package-types](https://github.com/JohnnyMorganz/wally-package-types) recipe and current Rojo sourcemap rather than manually editing generated aliases.
+
+React's `Node` and `ReactElement` types are not interchangeable in all package versions: explicit component return types and typed child dictionaries can resolve inference/variance errors without casting to `any`. Inspect the installed package types when diagnosing this.
+
+Measure a tutorial target's actual `AbsolutePosition`/`AbsoluteSize` relative to its overlay instead of converting through an assumed 1280×720 coordinate system.
+
+Retain original artwork through narrowly scoped adapters. Mount a viewport scene once for its asset identity. A React wrapper around an unchanged imperative screen is not a screen migration.
+
+## Interaction and presentation
+
+- Use a restrained palette.
+- Keep hover colors consistent with the current selected/disabled base color.
+- Give distinct actions recognizable effects and impact timing, and offer reduced camera shake where effects warrant it.
+- Do not add a permanent "E Interact" button when a proximity prompt already explains the action.
+- Offer only valid choices, show only confirmed actions, and refuse an invalid selection on the server.
+
+## Nested child dictionaries in React 17.2.1
+
+A dictionary nested directly inside another children dictionary (`Content = props.children`) produced `createTextInstance is unimplemented`; the renderer attempted to render the dictionary key as raw text. Wrap the nested collection in `React.createElement(React.Fragment, nil, props.children)` or merge children into the owning dictionary. Host text belongs in a TextLabel/TextButton `Text` property. Verify nested child rendering on the affected screen; startup success alone does not validate later screens.
+
+## Compact screens and touch controls
+
+Budget each screen against measured usable height and safe insets. Reserve the space needed for any world or character preview, and fit its camera to that region rather than an assumed desktop layout. Inspect text, artwork, focus, and scenery occlusion after resizing and state transitions.
+
+Blocking movement input does not necessarily hide Roblox's touch thumbstick and jump button. Own their visibility while a modal or game mode blocks exploration, including late-created touch UI, and restore prior state on exit. Verify with real simulated-device input. Avoid nested scroll regions that render outside a clipped ancestor.
+
+## Composition and feature ownership
+
+Separate mounting, feature state, and leaf components. A canonical Core UI mount helper owns the ScreenGui and React root; its caller owns unmounting. Use one root per mounted interface, `ResetOnSpawn = false`, and an explicit safe-inset policy. Inject the PlayerGui from the client entry point so engine tests do not depend on `Players.LocalPlayer`.
+
+Feature App components own subscriptions and UI state. Receive subscriptions as typed props, connect them in effects, and return cleanup. Leaf modules return component functions with exported typed Props; they receive data/actions without requiring networking or fetching the local player. Keep rules, formatting, and state transformations engine-free where useful.
+
+Run React tests in the project's Roblox engine suite; pure presentation policy can use its standalone suite. Automated checks complement the parent skill's real-input, repeated-click, responsive, and visual acceptance checks.

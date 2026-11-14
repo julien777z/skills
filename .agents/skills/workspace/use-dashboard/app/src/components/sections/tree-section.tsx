@@ -1,7 +1,7 @@
 import { ChevronRight } from 'lucide-react';
 import { type ReactNode, useRef, useState } from 'react';
 
-import { RichText, StatusBadge, ToneDot } from '@/components';
+import { DialogOpener, RichText, StatusBadge, ToneDot } from '@/components';
 import { Stack, Text } from '@/components/primitives';
 import { cn, withKeys } from '@/lib/utils';
 import type { TreeNode, TreeSection as TreeSectionSpec } from '@/spec';
@@ -25,6 +25,7 @@ function TreeItem({ node, depth, openDepth }: { node: TreeNode; depth: number; o
   const [showDetails, setShowDetails] = useState(false);
   const opener = useRef<HTMLButtonElement | null>(null);
   const children = node.children ?? [];
+  const tone = node.tone ?? node.status?.tone;
 
   return (
     <li>
@@ -40,27 +41,38 @@ function TreeItem({ node, depth, openDepth }: { node: TreeNode; depth: number; o
             <ChevronRight className={cn('size-4 transition-transform', open && 'rotate-90')} />
           </button>
         ) : null}
-        {(node.tone || children.length === 0) && <ToneDot tone={node.tone} offset />}
+        {(tone || children.length === 0) && <ToneDot tone={tone} offset />}
         <Stack gap="none" grow>
           <Text size="sm" breakAnywhere>
             {node.details ? (
-              <button
-                ref={opener}
-                type="button"
-                onClick={() => setShowDetails(true)}
-                className="text-left font-medium underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
+              <DialogOpener
+                opener={opener}
+                onOpen={() => setShowDetails(true)}
+                className="text-left focus-visible:underline focus-visible:outline-none"
               >
                 {node.label}
-              </button>
+              </DialogOpener>
             ) : (
               <Text as="span" size="sm" weight="medium">
                 <RichText text={node.label} />
               </Text>
             )}
+            {node.tag && (
+              <>
+                {' '}
+                <StatusBadge label={node.tag} dot={false} />
+              </>
+            )}
             {node.figure && (
               <>
                 {' '}
                 <StatusBadge label={node.figure} dot={false} />
+              </>
+            )}
+            {node.status && (
+              <>
+                {' '}
+                <StatusBadge label={node.status.label} tone={node.status.tone} />
               </>
             )}
             {node.meta && (

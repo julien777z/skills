@@ -11,9 +11,10 @@ Carry a Roblox game request through implementation, visual polish, real playtest
 ## Dependencies
 
 - `luau`
-- `share-captures`
-- `roblox-react`
-- `roblox-building`
+- `share-media`
+- `roblox-ui`
+- `roblox-worldbuilding`
+- `roblox-characters`
 - `roblox-gameplay`
 - `agent-lock`
 - `test-fixture`
@@ -38,13 +39,13 @@ Inspect installed tools and project conventions before building. Use Rojo for so
 
 Read the [source, editor, and publication reference](references/studio-workflow.md) when synchronizing source, importing/exporting, running Studio automation, or publishing. Read [source and place delivery](references/source-delivery.md) when synchronizing module/package trees or validating built places.
 
-Apply `roblox-building` and its world-space text reference whenever changing or testing an authored sign or runtime world-space message, regardless of renderer.
+Apply `roblox-worldbuilding` and its world-space text reference whenever changing or testing an authored sign or runtime world-space message, regardless of renderer.
 
 Keep generated scripts separate from imported assets and Studio-authored scenery. Maintain editable source, Blender originals, exported assets, and build instructions. A routine script rebuild must preserve manual art. Test that the saved/rebuilt place contains the actual assets and terrain, rather than relying on the current Studio session or cached meshes.
 
-## Avatars and assets
+## Assets and characters
 
-Read [Asset and avatar standards](references/assets-and-avatars.md) for imported and uploaded assets and character presentation. Preserve the player's avatar unless an override is requested or required by the game. Verify proportions, faces, attachments, locomotion, and action animations in play.
+Read [uploaded asset standards](references/uploaded-assets.md) before uploading an asset for the game. Apply `roblox-characters` for avatars, NPCs, creatures, their rigs and their animation.
 
 ## Record operational lessons as they occur
 
@@ -68,13 +69,13 @@ Verify the intended editor and place before every operation. If a tool is unavai
 
 **A repeatable check step runs through the game repository's committed, tested helpers**, and a worker extends them rather than writing a throwaway script, as [the game's test helpers](references/testing.md#keep-the-games-test-helpers-in-its-repository) describes. Use relevant automated checks and one focused Studio playtest for the affected behavior. Exercise normal player controls and inspect the visible result; direct server calls provide different evidence. Add device, multiplayer, or persistence coverage when the change affects those behaviors. Reuse passing evidence when the tested source, packages, and assets match the delivery build. Repeat checks only after an invalidating change or observed failure. Follow [delivery build acceptance](references/source-delivery.md#test-the-delivery-build-directly) for artifact identity.
 
-**Show the game as each capture arrives.** Every capture of the game the work produces and reads is sent: the state a change reached, each screen a playtest, device-simulator or multiplayer check passes through, a defect a check finds and then the capture showing it fixed, an asset render. Captures a script saves are read and sent the same way; one left on disk is a check the user never saw. Only a capture of the runner itself, such as its desktop taken to diagnose a launch, stays on disk. Prefer the gameplay camera with runtime lighting and terrain, and a short recording from the runner for motion such as animation, effects, camera moves or a walkthrough. A stretch of visible work that reaches the user without media is the failure. Send each through `share-captures`, and render a choice between looks as its **Previews for a choice** says. A brief for visual work asks the worker for its captures, each with the caption `share-captures` requires.
+**Show the game as each capture arrives.** Every capture of the game the work produces and reads is sent: the state a change reached, each screen a playtest, device-simulator or multiplayer check passes through, a defect a check finds and then the capture showing it fixed, an asset render. Captures a script saves are read and sent the same way; one left on disk is a check the user never saw. Only a capture of the runner itself, such as its desktop taken to diagnose a launch, stays on disk. Prefer the gameplay camera with runtime lighting and terrain, and a short recording from the runner for motion such as animation, effects, camera moves or a walkthrough. A stretch of visible work that reaches the user without media is the failure. Send each through `share-media`, and render a choice between looks as its **Previews for a choice** says. A brief for visual work asks the worker for its captures, each with the caption `share-media` requires.
 
 For visual work, inspect actual screenshots and movement, including camera angles and approaches relevant to the change. Record whether evidence came from Studio, a published client, a device simulator, or physical hardware. Remove temporary fixtures, and leave the runner's files and settings as [leaving the shared runner as you found it](references/testing.md#leave-the-shared-runner-as-you-found-it) describes. Checks run in the game's one warm editor, with source synced live, as [keeping the game's editor warm](references/testing.md#keep-the-games-editor-warm) describes; it belongs to the game's VM and stays open. **Every other Studio process closes as soon as the operation that needed it ends**, never kept for a later step and never left behind when the runner lock is released: another editor, a Play or local-server session, and every test server and client it started are closed and their exit verified before the lock goes back, and reopened when the next segment needs them. Every stray editor costs the VM memory that other sessions' tests need. Preserve unrelated user sessions and retained runner state.
 
 ## Deliver the verified result
 
-Save the authorized source, artwork, and place artifacts and verify their destination and content. Publish only on the user's request for that publish, to the verified experience, owner, place, and visibility; the user can run `/publish-to-roblox` to publish the session's build. Confirm terminal publication success and version when publishing. Do not infer live-client behavior from Studio evidence; run published-client tests only when requested or needed to investigate a live-only defect. Report any unverified live-only behavior accurately.
+Save the authorized source, artwork, and place artifacts and verify their destination and content. When publishing, publish to the verified experience, owner, place, and visibility, and confirm terminal publication success and version. Do not infer live-client behavior from Studio evidence; run published-client tests only when requested or needed to investigate a live-only defect. Report any unverified live-only behavior accurately.
 
 ## Output
 

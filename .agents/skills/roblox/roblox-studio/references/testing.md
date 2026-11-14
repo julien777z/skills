@@ -78,9 +78,22 @@ What every helper must get right:
   (900 s), and every client call refuses to start when the lease left cannot cover it. Each segment
   acquires the lock with `acquire_runner_lock`, opens what it needs, does a bounded part of the
   check, closes every editor and test process it started, and releases with `release_runner_lock`;
-  the next segment acquires again and reopens. Before each step of a loop, compare
-  `runner_lease(receipt)["remaining"]` with that step's worst case and end the segment there when
-  it does not fit, rather than letting a call refuse midway. The game's warm editor is the one
+  the next segment acquires again and reopens. Open right after acquiring: `open_place` and
+  `open_cloud_place` check `open_bound(registration_wait)` themselves and refuse before they start
+  anything, and that bound already reserves closing the editor after a failed open, so an open needs
+  no check of its own and keeps its registration wait. Before each later step of a loop, compare
+  `runner_lease(receipt)["remaining"]` with that step's worst case, plus the segment's cleanup. A
+  `Studio` call's worst case is `tool_call_bound(opens_session=False, timeout)` on an open connection,
+  plus `listing_recovery_bound()` when an earlier timeout may have closed it, since the call then
+  waits for the new connection to list the editor; `listed_place_editors` takes
+  `OPERATION_TIMEOUTS[RunnerOperation.PROCESS_LIST] + listing_recovery_bound()`, `listed_editor_ids`
+  `editor_wait_bound(EDITOR_LIST_WAIT)` and `wait_for_studios` `editor_wait_bound(wait)`. The cleanup is
+  `CLOSE_BOUND` for each place copy it opened, `CLOUD_CLOSE_BOUND` for each cloud editor,
+  `OPERATION_TIMEOUTS[RunnerOperation.STOP]` for the test processes it stops and
+  `OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK]` for the release. Add `LEASE_CHECK_BOUND` once for
+  every call the step and that cleanup make that reaches the guest, since each of those checks the
+  lease before it starts, and read every bound from `studio_mcp`. End the segment there when it does
+  not fit, rather than letting a call or the cleanup after it refuse midway. The game's warm editor is the one
   editor a segment leaves open.
 
 Workers use these helpers and extend them for each new repeatable step; a repeatable step is never
@@ -172,18 +185,19 @@ Drive the runner's Studio from scripts through the [studio_mcp](../scripts/studi
 from the installed `roblox-studio` skill's `scripts` folder, put on `sys.path`, importing only the names its
 `__init__.py` exports (`from studio_mcp import Studio, open_place, ...`); no game keeps its own MCP client or copies
 one of these mechanisms. Each `Studio` holds its own MCP session through `runner_ssh.sh`, and the module has no shell
-command line. Every call that reaches the guest first confirms through `agent-lock` that the caller's receipt owns the
-lock on the game's VM name with enough of its lease left for every call it can make, each counted at its full
-timeout, so no call outlives the lease. Project and place file names use only letters, digits, `.`, `_` and `-`,
+command line. Every call that reaches the guest first confirms, once, through `agent-lock` that the caller's receipt
+owns the lock on the game's VM name with enough of its lease left for everything the call does, each operation inside
+it counted at its full timeout, so no call outlives the lease or refuses partway; the few milliseconds a process takes
+to start or stop are not counted. Project and place file names use only letters, digits, `.`, `_` and `-`,
 starting with a letter or digit.
 
 | Call                                                                                          | What it does                                                                                                                                                                                                                 |
 | --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `acquire_runner_lock(lock_receipt, owner, activity, lease=MAX_LEASE)`                         | Takes the lock on the game's VM for one segment and returns the acquire report, whose `expired_owner` names a predecessor whose leftovers must be stopped first; raises when the lock stays busy                             |
-| `release_runner_lock(lock_receipt)`                                                           | Releases it once every process the segment started has exited                                                                                                                                                                |
+| `release_runner_lock(lock_receipt)`                                                           | Releases it, telling `agent-lock` the runner is idle, so the caller first closes every editor and process the segment started                                                                                                |
 | `runner_lease(lock_receipt)`                                                                  | The runner's configuration and the time the lease has left, as `{"config", "remaining"}`                                                                                                                                     |
-| `open_place(project, place, out_dir, lock_receipt)`                                           | Copies a built place into the guest under `studio-places/<project>/`, launches an editor for it and returns a `Studio` once the editor registers and its Edit data model runs code, over the connection that saw it register |
-| `open_cloud_place(place_id, universe_id, out_dir, lock_receipt)`                              | Opens a published place in an editor the same way, returning it once its Edit data model reports that place and universe; it is never saved or published from there                                                          |
+| `open_place(project, place, out_dir, lock_receipt, registration_wait)`                        | Copies a built place into the guest under `studio-places/<project>/`, launches an editor for it and returns a `Studio` once the editor registers and its Edit data model runs code, over the connection that saw it register |
+| `open_cloud_place(place_id, universe_id, out_dir, lock_receipt, registration_wait)`           | Opens a published place in an editor the same way, returning it once its Edit data model reports that place and universe; it is never saved or published from there                                                          |
 | `close_place(project, place, lock_receipt)`                                                   | Ends the editor that has exactly that copy open and deletes the copy; raises, keeping the copy, when the editor stays open                                                                                                   |
 | `close_cloud_place(place_id, lock_receipt)`                                                   | Ends, without saving, the `EditPlace` editors on exactly that place; raises when one stays open                                                                                                                              |
 | `stop_guest_processes(pids, lock_receipt)`                                                    | Sends SIGTERM, waits, sends SIGKILL to what remains, and returns the IDs that survive, such as the test server and clients a multiplayer test left                                                                           |
@@ -192,8 +206,10 @@ starting with a letter or digit.
 | `guest_screenshot(path, lock_receipt)`                                                        | Saves the guest's whole screen, for a failure the editor cannot capture                                                                                                                                                      |
 | `run_in_runner(command, lock_receipt, timeout)`                                               | Runs a shell command in the guest                                                                                                                                                                                            |
 
-When either open call fails once its launch starts, it closes the editor, saves the guest's screen under `out_dir`,
-and raises. A `Studio` executes Luau, captures, optionally from `camera_position` toward `look_at_position`, reads
+When the editor either open call launched never registers or never answers in its Edit data model, the call saves
+the guest's screen under `out_dir`, closes the editor and raises; any other failure once the launch starts closes
+the editor and raises. A `Studio` executes Luau, captures, optionally from a `CameraView` of a camera position and the
+point it looks at, reads
 the console, sends keys, holds a key for a duration (`hold_key`), and clicks a button by its instance path through
 the bundled VirtualInput helper, which `run_input` binds as `Input` for other input fixtures;
 `Studio.tool(name, arguments)` calls any other Studio MCP tool on that editor, first waiting for a new connection to
@@ -326,7 +342,7 @@ ends with its check:
    `spctl -a -vv` reports a notarized Developer ID. Copy it to `/Applications/Roblox.app`; opening
    it shows its sign-in page. It registers itself as a login item.
 3. **Sign it in by QR code.** Choose Sign In, then QR code. A code expires in about two minutes,
-   so capture it just before the message that shows it, show that capture as `share-captures`
+   so capture it just before the message that shows it, show that capture as `share-media`
    says, then ask through the question tool for the user to scan it, with a Done option, one for
    a new code and one for later. A new-code answer or a timeout captures a fresh code and shows it
    again before asking again. A prompt asking the account to accept something goes to the user,
@@ -359,7 +375,9 @@ wedges and black slabs, while small places look fine. The guest has no OpenGL fa
 host keeps the source copy at `~/.config/roblox-studio/studio-client-settings.json`, and
 `"$runner_ssh" 'mkdir -p "$HOME/Library/Roblox/ClientSettings" && cat > "$HOME/Library/Roblox/ClientSettings/ClientAppSettings.json"' < ~/.config/roblox-studio/studio-client-settings.json`
 restores it under the runner lock. Before a rendering check, confirm the file is present and that
-`settings():GetFVariable("GeometryBufferMaxBytesMesh")` returns `524288` in the editor. With the cap
+`settings():GetFVariable("GeometryBufferMaxBytesMesh")` returns `524288` in the editor. Studio reads
+the file only when it launches, so an editor that reports another value, the game's warm editor
+included, is closed and opened again before the check. With the cap
 in place, a capture of Studio draws the scene correctly, so stretched wedges or black slabs in one
 are a defect to diagnose, never a guest artifact to set aside. The published player in the guest
 has the same driver limit and no such setting, so treat its 3D visuals as untested.

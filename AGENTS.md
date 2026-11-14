@@ -44,7 +44,7 @@ Canonical guidance lives in `.agents/`.
   the settings page, and never calls it a screen.
 - **A file the user should see reaches them where they read.** Per-item detail past five items —
   findings, rows — and the user's copy of any plan a skill gates go in a file that reaches the user
-  from the agent's own reply, as `share-captures`' **Harness compatibility** says for the harness,
+  from the agent's own reply, as `share-media`'s **Harness compatibility** says for the harness,
   and the text that reports the result stays the turn's final message. An item with captures stays
   in chat as its text followed by its captures, as a bullet below says, and the file holds only the
   items without them. A text file sent this way reads on its own: it opens with the table or summary
@@ -65,7 +65,7 @@ Canonical guidance lives in `.agents/`.
   rather than offered, as `pre-production`'s **Encountered Issues** says.
 - **A capture of a change reaches the user while the work is still running.** A screenshot, a
   recording, or a generated image that shows something the run changed — the screen after an edit, a
-  before-and-after pair, a design it generated — is shown to the user as `share-captures` says,
+  before-and-after pair, a design it generated — is shown to the user as `share-media` says,
   once the agent that made it has read it as the bullet above says, never held for the final
   report, where it arrives in a pile the user can no longer follow. A capture nobody asked for that shows no
   change — taken while navigating, diagnosing, or recording a baseline before anything changed —
@@ -82,7 +82,7 @@ Canonical guidance lives in `.agents/`.
   pile of captures shown together leaves the reader matching each one to its item. An item put to
   the user in a later message has its captures shown again directly beneath it, even those already
   shown as they were made; a question, asked again or for the first time, has its captures shown
-  just before it, and the question itself goes through the question tool, as `share-captures`'
+  just before it, and the question itself goes through the question tool, as `share-media`'s
   **Previews for a choice** says.
 - **A capture sent to the user shows which page it is.** The reader cannot ask, so a view leads
   with a capture at a width where the product's navigation shows the page's place, for the role
@@ -167,8 +167,9 @@ Canonical guidance lives in `.agents/`.
   scope, a workaround for a
   constraint the user set, and anything touching security, disclosure or authorization. Closing a
   security vulnerability, so the product enforces the access it already intends, is a fix and never
-  waits on this question. **A game's design is the exception**: where `roblox-gameplay` governs the
-  work, what does not make sense in the game — an asset, a room, a placement, a balance value or a
+  waits on this question, and so is moving off a deprecated API or setting onto its supported
+  replacement, even when the replacement tightens access, as `pre-production`'s deprecated-usage
+  bullet says. **A game's design is the exception**: where `roblox-gameplay` governs the work, what does not make sense in the game — an asset, a room, a placement, a balance value or a
   mechanic — is the agent's to redesign as that skill says, without asking; the game's core loop or
   genre, anything players pay for, security, disclosure, authorization and what the user has decided
   stay with the user. Before making one, identify the user's instruction or standing guidance
@@ -314,7 +315,7 @@ Canonical guidance lives in `.agents/`.
   decision the plan or proposal depends on is answered: those decisions go to the user first, on
   their own, and the plan or proposal shown for approval is written for their answers, with nothing
   in it conditional on one. Material too large for the question, such as captures or a long diff,
-  reaches the user as `share-captures` says, in a message they see before the question, and the
+  reaches the user as `share-media` says, in a message they see before the question, and the
   question names it. During unfinished authorized work, retain the question as a pending decision
   while independent work continues; it is not a final task report.
 - **A step only the user can take, which the work waits on, is asked through that tool too, never
@@ -346,7 +347,7 @@ Canonical guidance lives in `.agents/`.
   When the options differ in layout, structure or the controls the reader uses — a list or a grid,
   one column or two, a section moved or removed — the question comes right after a capture of
   each option as the product would draw it, built as an uncommitted preview where it does not
-  exist yet, at the widths where the options differ, shown as `share-captures`' **Previews for a
+  exist yet, at the widths where the options differ, shown as `share-media`'s **Previews for a
   choice** says. Describing an option, or showing only
   the current state, leaves the reader guessing at the one they cannot see, so the question waits
   until every capture is ready. A drawing made of text, such as a sketch in a question tool's
@@ -564,8 +565,18 @@ return records;
   only when evidence shows that it reached an unauthorized recipient, a public surface, or a
   compromised destination. Preserve secret-safe handling; do not surface values unnecessarily.
 
+## Product Forms
+
+- Sections that require user input start expanded. If input in a section becomes required during
+  the flow, expand the section when that requirement takes effect.
+
 ## Product Copy
 
+- **Every line of product text changes what the reader does or understands; anything else is
+  cut.** A label that restates what a control, price or heading already shows, or reassures the
+  reader about a cost they are not paying, such as "Sharing is free" beside a paid plan's share
+  button, adds reading without information and can make the reader doubt what they paid for. Before
+  adding a line, name what it helps the reader do or understand; when there is nothing, leave it out.
 - **Text a person reads sends them to another place with a link, never a route to follow.** "Open
   Library, then Shared albums" makes the reader follow a map; the place's name, linked, takes them
   there in one action. Where the text renders markup, the name is the link. Where it is plain text
@@ -584,11 +595,18 @@ return records;
   an API or tool whose text reaches an end user, a server-side enum or constant that holds the
   text, a test fixture, and wording a brief proposes to a worker.
 - **Text an end user reads speaks in what the reader cares about, never in the system's exact
-  values.** Where a precise number, state or count changes nothing the reader does, say it in plain
-  words: a fuel tank holding a few drops is "empty", a wait of 59 seconds is "a minute". Keep the
-  exact value only where the reader acts on it, such as a price, a quantity they choose or a figure
-  they compare, and never add a qualifier such as "almost" or "about" only to make plain words
-  technically exact.
+  values or its inner workings.** Where a precise number, state or count changes nothing the reader
+  does, say it in plain words: a fuel tank holding a few drops is "empty", a wait of 59 seconds is
+  "a minute". Keep the exact value only where the reader acts on it, such as a price, a quantity
+  they choose or a figure they compare, and never add a qualifier such as "almost" or "about" only
+  to make plain words technically exact. The cause behind a failure or a wait stays out of it too
+  when the cause is the system's own: a version, an update or release, a deployment or rollback, a
+  migration or maintenance, a rate limit, a lock, a queue, a service or component name, an internal
+  state or an error code. A booking that cannot be saved while a service restarts reads "We couldn't
+  save your booking right now. Please try again in a few minutes.", never "The booking service is
+  restarting" or "Error 503 from the calendar API". It holds wherever end-user text is written, as
+  the refusal bullet above lists, and in a status label, a toast or an empty state; the full cause
+  goes to the log and to text only the product's team reads.
 - **Text only the product's own team reads states the observed condition and its values, and
   nothing more.** On an internal panel, an operator or support tool, or an internal API, a refusal
   or a report names what was found and lists the values it concerns, such as "Unrecognized shelf
@@ -605,6 +623,20 @@ return records;
   maintained branch while developing or when no release tag exists. Do not pin dependency manifests,
   shared checkouts, or workflow references to commit hashes. Lockfiles and release records may retain
   the exact resolved commit for reproducibility and provenance.
+
+- **Every project the owner runs or consumes runs the newest stable language runtime, base image
+  and dependency releases it works with.** A change that touches a project's runtime, manifests or
+  lockfile moves what the project actually runs onto them — its version file, container images, CI
+  and lockfile — with whatever code changes the new releases need, including in an owned package
+  that only widened its range to let a consumer move. Neither of these is that move: a CI leg kept on the
+  old release beside the new one, or a dependency held below its newest release. Hold one back only
+  where an install or test shows the newer release failing on the project's runtime, such as
+  another dependency pinning it, and name that failure in a comment beside the constraint; a
+  migration the newer release needs is part of the move, not a reason to hold. Widening a
+  supported range to admit a newer release is fine, since an owned project's range serves the
+  owner's own projects. Raise its minimum once keeping the lower release no longer makes sense,
+  such as when the formatter or the code would stay on the older release's syntax. A library
+  published for consumers outside the owner's projects keeps the range its language rule sets.
 
 - Every repository stands on its own. Never carry another repository's domain vocabulary into this
   one: its product name, its services, its table and column names, its record types, or the nouns
@@ -826,8 +858,10 @@ An outcome is what its source of truth shows, never what an action or a worker s
 - **Open every pull request as a draft and keep it draft until it merges.** The user reviews it as
   a draft; it leaves draft once, as the first step of an authorized merge through `merge-gate`, so its
   test jobs run once, on the head about to merge. Never mark one ready to start its tests, to show
-  it finished, or to hand it to the user; a follow-up keeps pushing to the draft.
-- Keep pull requests focused and give them descriptive titles and descriptions; request appropriate reviewers when the repository workflow requires them.
+  it finished, or to hand it to the user.
+- Keep pull requests focused and give them descriptive titles and descriptions: a title stays short,
+  and a body may run long with bullets and validation notes. Request appropriate reviewers when the
+  repository workflow requires them.
 - **A description is written from what is already known, never by re-reading the history.** The
   agent that did or coordinated the work writes it from its own record of the change, the existing
   description, `git log --oneline` subjects and `git diff --stat` against the base. It opens a commit
@@ -847,13 +881,28 @@ An outcome is what its source of truth shows, never what an action or a worker s
   requirement in terms of this repository's own contract; disclose provider PR links and merge
   ordering to the user in chat.
   `merge-gate` still owns the complete dependency inventory and readiness gate.
-- **Each session opens its own source pull request in each repository.** Later source work in the
-  same session joins that pull request rather than creating one per concern or worker. Continue a
-  source pull request from another session only when the user, an applicable invoked skill, or a
-  repository rule explicitly directs that continuation. A matching topic, existing branch, open
-  state, or recorded touch does not supply that instruction. Verify the selected pull request's
-  owner, state and scope before updating it; leave other sessions' pull requests and branches
-  untouched, apart from damaged local Git state `update-skills` backs up and repairs.
+- **Text handed to Git or the hosting service is staged where only its author writes and read back
+  once published.** A commit message, title, description, comment or issue body goes inline, on
+  standard input, or from a file whose path was generated for that one text, such as one `mktemp`
+  creates, never from a name another session or worker could also choose, in any directory. After
+  it is accepted, read the stored text back, with `git log -1` for a commit, and compare it with the
+  text the author wrote, never with the staging file, which may have been overwritten. Correct a
+  difference in that text at once, under the authorization the original post had; a commit message
+  is read back before its push and amended only while unpushed. The current text is what readers
+  act on: earlier revisions in the edit history are left alone and never raised with the user,
+  unless one holds a credential the global rules' **Logging** section counts as exposed.
+- **Put follow-up source work on the session's in-progress source pull request for that repository.**
+  Before proposing a branch, assigning a worker, or starting edits, resolve the session's source
+  pull request from its creation or authorized continuation receipt and verify that it is open.
+  Carry that receipt forward when a follow-up starts a new task in the same session. Keep distinct
+  concerns and worker contributions on that pull request, in separate commits where appropriate.
+  Open a new source pull request only when none is in progress or the user directs a split. Apply
+  the agent-configuration routing below to guidance. Continue a source pull request from another
+  session only when the user, an applicable invoked skill, or a repository rule explicitly directs
+  that continuation. A matching topic, existing branch, open state, or recorded touch does not supply
+  that instruction. Verify the selected pull request's owner, state and scope before updating it;
+  leave other sessions' pull requests and branches untouched, apart from damaged local Git state
+  `update-skills` backs up and repairs.
 - **Each session opens its own agent-configuration pull request in each repository.** Agent
   configuration is the canonical `.agents` tree — skills, each with its own scripts, assets and
   templates; rules; and agent definitions. Nonbehavioral text and guidance-reference corrections in
@@ -908,6 +957,15 @@ An outcome is what its source of truth shows, never what an action or a worker s
   authorization source applies, do not merge or enable auto-merge.
 - Honor the selected workflow's delivery hold before the standing permissions below; a pull
   request held for user review cannot use those exceptions or auto-merge.
+- **Guidance for something the user is still trying out is held for their review.** Once the user
+  says a capability, tool or way of working is on trial, such as that they are still testing it,
+  may drop it, or want its guidance kept from merging for now, the pull request carrying that
+  guidance is held for user review under the bullet above. Its review and checks still run, and it
+  carries an `on trial` label, so a session that never saw the conversation reads the hold on the
+  pull request. **The trial is one decision.** Every guidance edit the trial work makes, including
+  a rule written to govern the trial itself, rides that pull request, and the user's word on the
+  capability decides all of it: keeping it ends the hold and removes the label, and dropping it
+  closes the pull request this session opened.
 - Before reporting a pull request whose merge no instruction authorizes, classify the complete
   actual diff against the standing permissions below; one they cover may merge under them, and any
   other is reported without asking for its merge, as the global rules' merge-authorization bullet
@@ -941,8 +999,9 @@ An outcome is what its source of truth shows, never what an action or a worker s
 - An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization, except each fix pull request a directly user-invoked skill's own authorization names, once that skill's merge gates pass; that authorization ends with the run.
 - An authorized merge is not held for a failing check the current user explicitly waives or an
   established baseline exclusion under `pre-production`'s **Encountered Issues** classification.
-  Name the check and its exclusion evidence in chat, then attempt the authorized merge without
-  asking the user. Preserve that classification rather than excluding a required repair merely
+  Record the check and its exclusion evidence in the task's record, then attempt the authorized
+  merge without asking the user; a baseline exclusion is named to the user only where that
+  classification allows. Preserve that classification rather than excluding a required repair merely
   because the same failure also appears on the default branch.
 - Apply established validation exclusions before repairing failures. An interrupted hosted check
   supplies no validation result for the work it did not complete. When the logs establish a
@@ -968,10 +1027,13 @@ An outcome is what its source of truth shows, never what an action or a worker s
   source and commit, or the concrete blocker preventing refresh.
 - Select the refresh route before checking local changes. When the repository supplies the installed
   shared skills, invoke `update-skills`; it keeps pending agent-configuration changes in effect,
-  dirty checkouts and open pull requests alike. The checkout-only restriction below does not apply
-  to this route. For the skill's first merge, read it from the merged commit before invoking it. A
-  session follows the copy it loaded until this refresh completes.
-- For every other repository, refresh its main local checkout, not a task worktree: if it is clean,
+  dirty checkouts and open pull requests alike. Tell it when the caller will clean the source
+  checkout after installation so the installed files stay available independently. For the skill's first merge, read it from the
+  merged commit before invoking it. A session follows the copy it loaded until this refresh completes.
+- When the invoking workflow owns the primary checkout refresh, return the Agent Sync result and
+  any installed shared guidance refresh to that workflow. For other repositories in that case, the
+  invoking workflow performs the checkout refresh and verifies generated guidance there.
+- Otherwise, for a repository without installed shared skills, refresh its primary checkout: if it is clean,
   check out its default branch and pull with `--ff-only`. Never discard or stash dirty files to force
   this checkout-only refresh; report a skipped refresh and leave them untouched.
 
@@ -1006,6 +1068,10 @@ An outcome is what its source of truth shows, never what an action or a worker s
   as “as requested” or “per your instructions”; apply the instruction to the result itself.
   Record an exchange only when the user explicitly asks to document that exchange, in a document
   whose purpose is that record.
+- Name what a branch, commit or pull request changes by its category of change, in generic nouns
+  such as page, request or button. A branch takes the repository's required prefix and a slug of
+  that description.
+- Leave branch names and pull-request metadata that automation owns unchanged.
 
 ### README
 

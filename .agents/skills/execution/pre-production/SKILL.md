@@ -31,15 +31,20 @@ Build the clean target contract instead of preserving transitional behavior.
 ## Encountered Issues
 
 - **Classify validation failures first, before the failure is diagnosed, handed to a worker, or
-  mentioned to the user as anything but a baseline.** Read the default branch's latest run of the
+  mentioned to the user.** Read the default branch's latest run of the
   same check, hosted or local, and reproduce there only when no such run exists. When that evidence
   establishes the same failure under comparable inputs, and the change neither introduces nor
-  worsens it, report the check and that evidence as a baseline failure. Continue the requested work
+  worsens it, record the check and that evidence as a baseline failure in the task's record, which
+  every later gate receives. Continue the requested work
   and its relevant validation; do not repair, rerun, investigate further, ask a product question, or
-  record a deferral for that failure merely because validation encountered it. Keep the failed
-  result visible and never report the whole check as passing. This exclusion does not cover a defect
-  the user assigned, a suite past its runtime budget, as the testing rule's **Every suite finishes
-  within five minutes of wall time** bullet says, a failure of the behavior the task must establish,
+  record a deferral for that failure merely because validation encountered it. **Nothing the user
+  reads names a baseline failure or says one was left out**: no report, summary, status list, open
+  item or question, apart from a merge that branch protection rejects for it, whose rejection is
+  reported with its provider evidence. No report claims the excluded check passed either; it
+  covers the checks the change answers for. This exclusion does not cover a defect the user assigned, a suite past its
+  runtime budget, as the testing rule's **Every suite finishes within five minutes of wall time**
+  bullet says, deprecated usage or a printed warning, as the
+  deprecated-usage bullet below says, a failure of the behavior the task must establish,
   or a confirmed finding independently established by a review or source inspection apart from
   diagnosis of the excluded check. Do not reopen an exclusion by relabeling that same failure as a
   review or source finding. Assigned defects and independent findings remain fix responsibilities
@@ -50,8 +55,7 @@ Build the clean target contract instead of preserving transitional behavior.
   A brief that hands a validation failure to a worker carries the classification's result, and
   never asks the worker to fix a baseline failure. A baseline failure's cause, even one only the
   user could remove such as a provider setting or credential, is never put to the user as a gate or
-  a request, apart from the branch-protection rejection the GitHub rules' **Merge Authorization**
-  says to report.
+  a request, apart from that rejection.
 
 Fix and validate every defect that remains in the task, even when it predates the task or sits
 outside the initial file set; cleanup that fixes no defect follows the size budget below.
@@ -125,6 +129,17 @@ with an obsolete owned contract or revision.
   exempt one; a system that is right and too slow to use is broken. A missing safeguard is not a
   defect, since the system does what it was built to do, unless its absence is an exploitable
   security finding, because what the system does includes what an attacker can make it do.
+- **Deprecated usage and printed warnings are defects.** An API, setting, default, input or
+  dependency its owner has deprecated, and any warning a test run, build, install or CI log prints,
+  is fixed in the change in flight: move to the supported replacement, or turn on the default the
+  owner says is coming; a dependency that itself calls deprecated code is upgraded or replaced,
+  apart from the testing rule's narrow third-party ignore. A check a library warns it will start
+  enforcing is deprecated usage when left off, never a missing safeguard. The replacement changing
+  behavior, such as a stricter check, a refused token or a different sign-in, is part of the fix,
+  never a reason to keep the deprecated form, call it pre-existing, or put the move to the user;
+  released users move as **Product State**'s migration bullet says. Only a step the move needs that
+  the user alone can take, such as supplying an identifier the session cannot read, goes to them,
+  as that step.
 - **A defect the work notices is always fixed, wherever it lives.** It is fixed in the change in
   flight, outside both the hop limit and the size budget below, however many files its fix takes.
   Sitting in a shared
@@ -145,7 +160,12 @@ with an obsolete owned contract or revision.
   consider or an option, recorded as deferred, left as a hardening note, or answered with a
   recommendation to run an audit of any kind later.
 - **Incidental cleanup has a size budget.** Incidental cleanup is everything the request did not
-  ask for that fixes no defect, outside the change's own design and the defect's shape above.
+  ask for that fixes no defect, outside the change's own design and the defect's shape above. A
+  change to a skill edits that skill's whole folder, its `SKILL.md`, references, scripts and
+  templates alike, and cleanup inside that folder is held to neither budget's size limits: an
+  agent reads a skill as one unit, so a rule restated between two of its files is tidied in the
+  change that edits either one, keeping every criterion either copy carries. Cleanup in another
+  skill keeps the budget in force.
   - **The default budget:** cleanup that fixes no defect — duplication, dead code, a misplaced
     helper, an abstraction with one implementation, layout — fits only inside the files the change
     already edits and while it stays small beside the requested part.
@@ -287,10 +307,9 @@ with an obsolete owned contract or revision.
   started from.
 - Do not weaken a compatibility gate to hide an intentional break. Report the exact failure and the
   contract change it detected so a reviewer can distinguish intended from accidental breakage.
-- For disposable development records, follow the repository's stated policy. A one-time conversion
-  of explicitly identified tester data may run outside shipped code when it is more useful than a
-  reset; verify its result and remove the conversion script. Never assume released user data is
-  disposable or carry a tester conversion as a runtime compatibility path.
+- For disposable development records, follow the repository's stated policy: it decides which
+  values a change may discard, never how the change reaches a deployed database. Never assume
+  released user data is disposable or carry a tester conversion as a runtime compatibility path.
 
 ## Owned And Third-Party Contracts
 
@@ -321,8 +340,8 @@ with an obsolete owned contract or revision.
   a validation error at a read site answered by widening the reader instead of asking what the store
   allows.
 - For a requiredness change, establish the affected data's retention scope under **Product State**
-  before selecting a migration or reset; required columns do not themselves create an obligation to
-  preserve disposable or nonexistent rows.
+  before deciding what its revision keeps or clears; required columns do not themselves create an
+  obligation to preserve disposable or nonexistent rows.
 - For retained values, use the authoritative source where one exists and a type-valid placeholder
   only where none exists. Never overwrite a known retained value, fabricate a placeholder in runtime
   code, or keep a permanent schema default solely to make a migration convenient.
