@@ -144,9 +144,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   and a changed failure. The cold load changes directly from one complete skeleton to the settled
   section or the failure presentation below; later requests
   keep the settled structure and undismissed feedback visible while pending and apply only the new result.
-- **Load available tabs and disclosures with the page.** Start their display reads when the page
-  opens or as soon as their prerequisites are known. Reuse the loaded results when the reader
-  opens or switches between those sections. The initially visible content loads independently.
+- **Load available tabs and disclosures with the page.** Start authorized display reads on page
+  entry as soon as their prerequisites are met. Give initially visible data priority and defer
+  reads that would compete with it until they can run without delaying it. Reuse the loaded
+  results when the reader opens or switches between those sections.
 - **A page states that something is missing only once its request has said so.** "Not found", an
   empty list or a "nothing here yet" state shows after the request answers with that result, such
   as a 404 or an empty page of results. Before the first request settles, the skeleton is all the
@@ -589,11 +590,12 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **Present each failure once.** A terminal error message replaces content only when the whole
   page's subject is unavailable, not when one request or part of a usable page fails. This full-page
   exception owns the specific human-readable reason and recovery action, keeps usable navigation,
-  and shows no banner repeating the same failure or second generic failure heading. Offer only
-  recovery actions relevant to that state. Keep its purpose heading short; render the explanation
-  and recovery instruction as normal body text, not as a large
-  or bold heading containing the whole error message. Unrelated usable content stays available; its
-  presence makes a partial resource failure use the shared error-banner route below instead.
+  and shows no banner repeating the same failure or second generic failure heading. Show the
+  recovery actions that apply and omit controls that require the unavailable subject. Keep its
+  purpose heading short; render the explanation and recovery instruction as normal body text, not
+  as a large or bold heading containing the whole error message. Unrelated usable content stays
+  available; its presence makes a partial resource failure use the shared error-banner route below
+  instead.
   Independent action failures report as the user-action bullet above says.
 - **Resource and data load failures on otherwise usable surfaces keep a persistent native error
   banner with retry, using the standard shared component's frame and error visual tone.** On a page,
