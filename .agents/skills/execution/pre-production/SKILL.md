@@ -39,7 +39,8 @@ Build the clean target contract instead of preserving transitional behavior.
   record a deferral for that failure merely because validation encountered it. Keep the failed
   result visible and never report the whole check as passing. This exclusion does not cover a defect
   the user assigned, a suite past its runtime budget, as the testing rule's **Every suite finishes
-  within five minutes of wall time** bullet says, a failure of the behavior the task must establish,
+  within five minutes of wall time** bullet says, deprecated usage or a printed warning, as the
+  deprecated-usage bullet below says, a failure of the behavior the task must establish,
   or a confirmed finding independently established by a review or source inspection apart from
   diagnosis of the excluded check. Do not reopen an exclusion by relabeling that same failure as a
   review or source finding. Assigned defects and independent findings remain fix responsibilities
@@ -125,6 +126,17 @@ with an obsolete owned contract or revision.
   exempt one; a system that is right and too slow to use is broken. A missing safeguard is not a
   defect, since the system does what it was built to do, unless its absence is an exploitable
   security finding, because what the system does includes what an attacker can make it do.
+- **Deprecated usage and printed warnings are defects.** An API, setting, default, input or
+  dependency its owner has deprecated, and any warning a test run, build, install or CI log prints,
+  is fixed in the change in flight: move to the supported replacement, or turn on the default the
+  owner says is coming; a dependency that itself calls deprecated code is upgraded or replaced,
+  apart from the testing rule's narrow third-party ignore. A check a library warns it will start
+  enforcing is deprecated usage when left off, never a missing safeguard. The replacement changing
+  behavior, such as a stricter check, a refused token or a different sign-in, is part of the fix,
+  never a reason to keep the deprecated form, call it pre-existing, or put the move to the user;
+  released users move as **Product State**'s migration bullet says. Only a step the move needs that
+  the user alone can take, such as supplying an identifier the session cannot read, goes to them,
+  as that step.
 - **A defect the work notices is always fixed, wherever it lives.** It is fixed in the change in
   flight, outside both the hop limit and the size budget below, however many files its fix takes.
   Sitting in a shared

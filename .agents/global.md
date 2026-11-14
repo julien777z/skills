@@ -166,8 +166,9 @@ alwaysApply: true
   scope, a workaround for a
   constraint the user set, and anything touching security, disclosure or authorization. Closing a
   security vulnerability, so the product enforces the access it already intends, is a fix and never
-  waits on this question. **A game's design is the exception**: where `roblox-gameplay` governs the
-  work, what does not make sense in the game — an asset, a room, a placement, a balance value or a
+  waits on this question, and so is moving off a deprecated API or setting onto its supported
+  replacement, even when the replacement tightens access, as `pre-production`'s deprecated-usage
+  bullet says. **A game's design is the exception**: where `roblox-gameplay` governs the work, what does not make sense in the game — an asset, a room, a placement, a balance value or a
   mechanic — is the agent's to redesign as that skill says, without asking; the game's core loop or
   genre, anything players pay for, security, disclosure, authorization and what the user has decided
   stay with the user. Before making one, identify the user's instruction or standing guidance
@@ -616,6 +617,20 @@ return records;
   maintained branch while developing or when no release tag exists. Do not pin dependency manifests,
   shared checkouts, or workflow references to commit hashes. Lockfiles and release records may retain
   the exact resolved commit for reproducibility and provenance.
+
+- **Every project the owner runs or consumes runs the newest stable language runtime, base image
+  and dependency releases it works with.** A change that touches a project's runtime, manifests or
+  lockfile moves what the project actually runs onto them — its version file, container images, CI
+  and lockfile — with whatever code changes the new releases need, including in an owned package
+  that only widened its range to let a consumer move. Neither of these is that move: a CI leg kept on the
+  old release beside the new one, or a dependency held below its newest release. Hold one back only
+  where an install or test shows the newer release failing on the project's runtime, such as
+  another dependency pinning it, and name that failure in a comment beside the constraint; a
+  migration the newer release needs is part of the move, not a reason to hold. Widening a
+  supported range to admit a newer release is fine, since an owned project's range serves the
+  owner's own projects. Raise its minimum once keeping the lower release no longer makes sense,
+  such as when the formatter or the code would stay on the older release's syntax. A library
+  published for consumers outside the owner's projects keeps the range its language rule sets.
 
 - Every repository stands on its own. Never carry another repository's domain vocabulary into this
   one: its product name, its services, its table and column names, its record types, or the nouns
