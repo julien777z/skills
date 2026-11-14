@@ -82,15 +82,16 @@ What every helper must get right:
   `open_cloud_place` check `open_bound(registration_wait)` themselves and refuse before they start
   anything, and that bound already reserves closing the editor after a failed open, so an open needs
   no check of its own and keeps its registration wait. Before each later step of a loop, compare
-  `runner_lease(receipt)["remaining"]` with that step's worst case, `editor_wait_bound(wait)` for an
-  editor wait, plus the segment's cleanup:
+  `runner_lease(receipt)["remaining"]` with that step's worst case, plus the segment's cleanup. A
+  `Studio` call's worst case is `tool_call_bound(opens_session, timeout)`, with `opens_session=True`
+  when an earlier timeout may have closed its connection; `listed_editor_ids` takes
+  `editor_wait_bound(EDITOR_LIST_WAIT)` and `wait_for_studios` `editor_wait_bound(wait)`. The cleanup is
   `CLOSE_BOUND` for each place copy it opened, `CLOUD_CLOSE_BOUND` for each cloud editor,
   `OPERATION_TIMEOUTS[RunnerOperation.STOP]` for the test processes it stops and
-  `OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK]` for the release, and add `LEASE_CHECK_BOUND` once
-  for every call the step and that cleanup make that reaches the guest, since each of those checks the
-  lease before it starts; read every bound from `studio_mcp`. End
-  the segment there when it does not fit, rather than letting a call or the cleanup after it refuse
-  midway. The game's warm editor is the one
+  `OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK]` for the release. Add `LEASE_CHECK_BOUND` once for
+  every call the step and that cleanup make that reaches the guest, since each of those checks the
+  lease before it starts, and read every bound from `studio_mcp`. End the segment there when it does
+  not fit, rather than letting a call or the cleanup after it refuse midway. The game's warm editor is the one
   editor a segment leaves open.
 
 Workers use these helpers and extend them for each new repeatable step; a repeatable step is never
