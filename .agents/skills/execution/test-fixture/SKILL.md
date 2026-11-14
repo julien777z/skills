@@ -43,7 +43,7 @@ Apply `pre-production` to the scope of issues encountered while tracing a test s
    After a test-only change, run the relevant test target; do not repeat source, manual, or external
    validation unless the test exposes a source defect that changes the implementation. Existing tests
    may still be run to diagnose development failures.
-4. Identify the source file and its test module, the one named for that file under the rubric's **Mirror Source Ownership**, beneath the corresponding suite and classification. Extend that module before creating another; where it is absent, create it at that path, even when sibling tests split a source file into a file per function or class, and fold those siblings into it as the rubric says; apply the rubric's class/file boundary test before splitting or relocating a suite. When the rubric leaves equally valid layouts, put the choice to `council` in **Ask** mode and follow its ruling.
+4. Identify the source file and its test module, the one named for that file under the rubric's **Mirror Source Ownership**, beneath the corresponding suite and classification. Extend that module before creating another; where it is absent, create it at that path and handle sibling tests as that section says; apply the rubric's class/file boundary test before splitting or relocating a suite. When the rubric leaves equally valid layouts, put the choice to `council` in **Ask** mode and follow its ruling.
    Extend an existing module only when its organization and framework comply with the applicable
    guidance. When it conflicts, write the coverage in the required framework and organization;
    an existing test or missing runner does not make the conflicting pattern canonical. Trace reused
