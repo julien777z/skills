@@ -45,7 +45,7 @@ Remove hidden/internal faces where they cannot become visible, unnecessary edge 
 
 **Apply the cheap performance defaults to every mesh, prop and light as it is built, never waiting for a measured slowdown.** Each one costs nothing a player sees, and its saving only shows once many pieces carry or lack it, by which point the whole world needs reworking. They follow [Roblox performance guidance](https://create.roblox.com/docs/performance-optimization/improve):
 
-- One upload per distinct geometry, copied in the editor. Each use takes its own color or tint (`Color`, `SurfaceAppearance.Color`), never a recolored re-upload, and one texture or SurfaceAppearance is shared per kind of prop.
+- One upload per distinct geometry, placed in levels as a marker as **Reused art** below says. Each use takes its own color or tint (`Color`, `SurfaceAppearance.Color`), never a recolored re-upload, and one texture or SurfaceAppearance is shared per kind of prop.
 - Decoration, meaning anything players do not stand on, need to be stopped by, or interact with, takes `CollisionFidelity` Box, with `CanCollide`, `CanTouch` and `CanQuery` false. A piece a touch trigger, pickup or raycast relies on keeps the flag that serves it, and where a piece must block movement or the camera, a simple invisible collider does it.
 - `CastShadow` false on small decoration and on anything indoors or under a roof, and `Shadows` false on interior lights the scene does not need.
 - `RenderFidelity` Automatic, never Precise.
@@ -53,13 +53,27 @@ Remove hidden/internal faces where they cannot become visible, unnecessary edge 
 - Textures at 512 px or less, 256 px for minor props.
 - Distant models use `LevelOfDetail` where the place streams.
 
-A default is left off only where it visibly breaks the result, such as a shadow the scene's lighting depends on, and the reason goes beside that piece. Enforce the defaults where the project builds or imports pieces, so a new piece cannot skip them. Measurement checks a scene against its budget; it never decides whether a default applies. Avoid a single enormous combined mesh that defeats useful streaming boundaries.
+A default is left off only where it visibly breaks the result, such as a shadow the scene's lighting depends on, and the reason goes beside that piece. Enforce the defaults where the project places and imports pieces, so a new piece cannot skip them: the marker swap applies the placement defaults, and a setting a running script cannot change, such as `CollisionFidelity` or `RenderFidelity`, is baked into the asset when it is installed. Measurement checks a scene against its budget; it never decides whether a default applies. Avoid a single enormous combined mesh that defeats useful streaming boundaries.
 
 Low triangle counts alone do not guarantee smooth play. Also inspect draw calls, materials, transparency/overdraw, texture memory, particles, lights, physics, scripts, and streaming load. Measure representative busy views and startup using Studio performance tools. Record device/simulator, graphics level, frame time, and memory where available. Do not describe a desktop or simulator result as physical mobile performance.
 
+## Reused art
+
+Art a level uses more than once is placed as a marker, never as a copy, as Roblox's [fully managed project layout](https://create.roblox.com/docs/projects/rojo/fully-managed) recommends: a built place has no package-style links, so a copy keeps whatever the asset was when it was placed.
+
+- **A marker is a Model**, not the tagged Part Roblox's page suggests: a running game cannot set `LevelOfDetail`, so the level sets it and `ModelStreamingMode` on the marker, and the swap keeps them by cloning the marker rather than writing them. The marker holds one small invisible handle Part an editor can select, and is tagged for the swap.
+- **A marker stands at the placed model's pivot**, so an editor sees it where the object is, never where the asset's own pivot would fall, which can be far from its geometry.
+- **A marker records only what differs from a plain copy**: scale, a stretch along one axis, where the asset's pivot goes when it is not at the marker, whether the piece is solid, the model's own attributes and tags, its streaming and detail settings when they differ from the defaults, and one entry per changed part holding the changed properties and what hangs on that part, such as a SurfaceGui or a light. It skips `RBX_`-prefixed attributes, which Roblox reserves and a game script cannot set.
+- **Characters are never markers**: an outfit fitted to one body and accessories held by welds do not survive a swap, so a model holding a Humanoid stays as it is.
+- **The server swaps every marker at world start**, from an art library in ServerStorage, after terrain is restored and before anything stands on the art, such as NPCs grounded on its floors, and before the world reports ready. Clients only stream in finished models; Edit shows the markers and Play shows the art.
+- **Placement defaults live in the swap**, so every placement gets them from one place, and authoring builds pieces through the same swap code the server runs.
+- **Packages cannot replace markers**: a package updates only when a place is opened in Studio, never in a `rojo build`, scripts cannot create its link, and any edit to a copy beyond its root's name and position stops its updates.
+
+A conversion from copies proves each marker by building it and comparing every part's frame, size and changeable properties with the copy it replaces, plus a whole-tree inventory; a copy the comparison refuses stays a copy until the marker records what it lacks.
+
 ## Build and Play test
 
-Return imports, terrain preservation, source synchronization, background MCP tests, and authorized delivery to the caller. Apply `luau` when opening or modifying builders/scripts.
+Return imports, terrain preservation, saving area and asset files, background MCP tests, and authorized delivery to the caller. Apply `luau` when opening or modifying builders/scripts.
 
 Trace every affected entrance and activity access route all the way to the established traversal network; a reachable destination or walkable grass does not prove its authored path connects. Apply the route-continuity criteria in the map-making reference. Walk the arrival route, every changed connection, bridges/ramps, doors, and activity boundaries in both directions. Inspect at player height and supported camera zoom/pitch from multiple approaches. Check clipping, floating props, flicker, inaccessible steps, collision snags, misleading paths, bland sightlines, and accidental views of other maps. Fix defects in the canonical builder and saved artwork so rebuilding preserves the repair.
 

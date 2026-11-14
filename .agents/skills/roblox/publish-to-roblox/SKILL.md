@@ -54,7 +54,7 @@ no publish to any other experience.
    push it, so the build carries every destination and the next publish finds them.
 2. **Freeze the build.** Take the latest pushed head of the session's branch, and record it.
    Build the publishable places from that head with the project's own build command and its
-   integrity check, so they hold exactly that head's code, artwork, world and terrain archives,
+   integrity check, so they hold exactly that head's code, art, area and terrain files,
    never a previously saved place copy.
 3. **Publish from the isolated runner**, as `roblox-studio` sets up, holding its runner lock: open
    each built place in the runner's signed-in Studio and publish it over its place in the chosen
