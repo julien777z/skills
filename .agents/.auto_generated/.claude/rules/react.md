@@ -146,10 +146,15 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   and a changed failure. The cold load changes directly from one complete skeleton to the settled
   section or the failure presentation below; later requests
   keep the settled structure and undismissed feedback visible while pending and apply only the new result.
-- **Load available tabs and disclosures with the page.** Start authorized display reads on page
-  entry as soon as their prerequisites are met. Give initially visible data priority and defer
-  reads that would compete with it until they can run without delaying it. Reuse the loaded
-  results when the reader opens or switches between those sections.
+- **Load available tabs, disclosures, and row actions with the page.** Start authorized display
+  reads on page entry as soon as their prerequisites are met, including for inactive tabs and
+  shared or inexpensive data needed by their row actions. Use the navigation rule below for
+  costly per-row reads. Give initially visible data priority and defer reads that would compete
+  with it until they can run without delaying it. Reuse the loaded results when
+  the reader opens or switches sections. If the action opens another window or frame, deliver the
+  loaded data to that destination; a warm cache in the opener alone does not count. Verify from
+  page entry through opening the action. When there are tabs, start on a different tab; when
+  there is a separate destination cache, start it empty.
 - **A page states that something is missing only once its request has said so.** "Not found", an
   empty list or a "nothing here yet" state shows after the request answers with that result, such
   as a 404 or an empty page of results. Before the first request settles, the skeleton is all the

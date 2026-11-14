@@ -989,8 +989,9 @@ An outcome is what its source of truth shows, never what an action or a worker s
 - An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization, except each fix pull request a directly user-invoked skill's own authorization names, once that skill's merge gates pass; that authorization ends with the run.
 - An authorized merge is not held for a failing check the current user explicitly waives or an
   established baseline exclusion under `pre-production`'s **Encountered Issues** classification.
-  Name the check and its exclusion evidence in chat, then attempt the authorized merge without
-  asking the user. Preserve that classification rather than excluding a required repair merely
+  Record the check and its exclusion evidence in the task's record, then attempt the authorized
+  merge without asking the user; a baseline exclusion is named to the user only where that
+  classification allows. Preserve that classification rather than excluding a required repair merely
   because the same failure also appears on the default branch.
 - Apply established validation exclusions before repairing failures. An interrupted hosted check
   supplies no validation result for the work it did not complete. When the logs establish a

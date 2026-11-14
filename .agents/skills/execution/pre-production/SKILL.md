@@ -31,15 +31,19 @@ Build the clean target contract instead of preserving transitional behavior.
 ## Encountered Issues
 
 - **Classify validation failures first, before the failure is diagnosed, handed to a worker, or
-  mentioned to the user as anything but a baseline.** Read the default branch's latest run of the
+  mentioned to the user.** Read the default branch's latest run of the
   same check, hosted or local, and reproduce there only when no such run exists. When that evidence
   establishes the same failure under comparable inputs, and the change neither introduces nor
-  worsens it, report the check and that evidence as a baseline failure. Continue the requested work
+  worsens it, record the check and that evidence as a baseline failure in the task's record, which
+  every later gate receives. Continue the requested work
   and its relevant validation; do not repair, rerun, investigate further, ask a product question, or
-  record a deferral for that failure merely because validation encountered it. Keep the failed
-  result visible and never report the whole check as passing. This exclusion does not cover a defect
-  the user assigned, a suite past its runtime budget, as the testing rule's **Every suite finishes
-  within five minutes of wall time** bullet says, deprecated usage or a printed warning, as the
+  record a deferral for that failure merely because validation encountered it. **Nothing the user
+  reads names a baseline failure or says one was left out**: no report, summary, status list, open
+  item or question, apart from a merge that branch protection rejects for it, whose rejection is
+  reported with its provider evidence. No report claims the excluded check passed either; it
+  covers the checks the change answers for. This exclusion does not cover a defect the user assigned, a suite past its
+  runtime budget, as the testing rule's **Every suite finishes within five minutes of wall time**
+  bullet says, deprecated usage or a printed warning, as the
   deprecated-usage bullet below says, a failure of the behavior the task must establish,
   or a confirmed finding independently established by a review or source inspection apart from
   diagnosis of the excluded check. Do not reopen an exclusion by relabeling that same failure as a
@@ -51,8 +55,7 @@ Build the clean target contract instead of preserving transitional behavior.
   A brief that hands a validation failure to a worker carries the classification's result, and
   never asks the worker to fix a baseline failure. A baseline failure's cause, even one only the
   user could remove such as a provider setting or credential, is never put to the user as a gate or
-  a request, apart from the branch-protection rejection the GitHub rules' **Merge Authorization**
-  says to report.
+  a request, apart from that rejection.
 
 Fix and validate every defect that remains in the task, even when it predates the task or sits
 outside the initial file set; cleanup that fixes no defect follows the size budget below.
