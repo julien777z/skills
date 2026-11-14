@@ -35,7 +35,15 @@ any guidance already active for the task.
 
 ## Choose the tooling and protect the artwork
 
-Inspect installed tools and project conventions before building. Use Rojo for source/place synchronization, a suitable Studio connector/API for editor operations, and authorized computer control for Studio-only UI. Blender is encouraged for original editable assets; its background Python mode is useful for repeatable modeling, export, and contact-sheet renders. Python and the Luau CLI are useful for build orchestration, artifact validation, and pure rules tests.
+**Roblox's documented recommended workflow is the project's only workflow.** Before building or changing how the game's source, art, levels or places are stored, synchronized, edited, tested or published, read Roblox's current Creator Hub guidance for that work and follow it. A project convention, tool or pipeline that departs from it is converted to it, never extended, and a case the guidance leaves open is settled the way its closest documented workflow implies. Today that guidance is a [fully managed Rojo](https://create.roblox.com/docs/projects/rojo/fully-managed) project:
+
+- Code, art and levels are files in the repository, and every place is built from them with `rojo build`.
+- Art and levels are binary `.rbxm`, one file per asset and one per area, so a change touches only its own file. Terrain keeps its own file.
+- A kit piece a level reuses is placed there as a marker that a runtime script replaces with the asset, never as a copy, so a new asset revision reaches every level without editing them.
+- An asset or area is edited in Studio, through Studio's [MCP server](https://create.roblox.com/docs/ai/accelerated-workflows) for an agent, and saved back to its file with Save to File; the place is then rebuilt and reopened.
+- `rbx-merge` diffs and merges `.rbxm` files.
+
+Inspect installed tools and project conventions against that guidance before building. Use Rojo for source/place synchronization, Studio's MCP server for editor operations, and authorized computer control for Studio-only UI. Blender is encouraged for original editable assets; its background Python mode is useful for repeatable modeling, export, and contact-sheet renders. Python and the Luau CLI are useful for build orchestration, artifact validation, and pure rules tests.
 
 Read the [source, editor, and publication reference](references/studio-workflow.md) when synchronizing source, importing/exporting, running Studio automation, or publishing. Read [source and place delivery](references/source-delivery.md) when synchronizing module/package trees or validating built places.
 
