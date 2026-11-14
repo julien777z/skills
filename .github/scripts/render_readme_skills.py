@@ -14,7 +14,7 @@ START_MARKER: Final[str] = "<!-- skills:start -->"
 END_MARKER: Final[str] = "<!-- skills:end -->"
 FRONT_MATTER_KEY_PATTERN: Final[re.Pattern[str]] = re.compile(r"^([A-Za-z][\w-]*):\s*(.*)$")
 SENTENCE_PATTERN: Final[re.Pattern[str]] = re.compile(r"(?<=[.!?])\s+")
-USER_ONLY_PATTERN: Final[re.Pattern[str]] = re.compile(r"\bonly when the user\b", re.IGNORECASE)
+USER_ONLY_PATTERN: Final[re.Pattern[str]] = re.compile(r"\bonly\s+when\s+the\s+user\b", re.IGNORECASE)
 
 
 def parse_front_matter(path: Path) -> dict[str, str]:
