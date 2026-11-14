@@ -1,10 +1,28 @@
 from collections.abc import Mapping, Sequence
 from datetime import timedelta
+from enum import StrEnum, auto
 from typing import Literal, NotRequired, TypedDict
 
 type JsonValue = str | int | float | bool | None | Sequence[JsonValue] | Mapping[str, JsonValue]
 type ToolArguments = Mapping[str, JsonValue]
 type Position = tuple[float, float, float]
+
+
+class RunnerOperation(StrEnum):
+    """An operation in the runner that has its own time limit."""
+
+    INITIALIZE = auto()
+    TOOL_CALL = auto()
+    COPY = auto()
+    LAUNCH = auto()
+    CAPTURE = auto()
+    EDIT_PROBE = auto()
+    PROCESS_LIST = auto()
+    STOP = auto()
+    REMOVAL = auto()
+    LOCK_CHECK = auto()
+    DESCRIBE = auto()
+    SESSION_EXIT = auto()
 
 
 class RunnerConfig(TypedDict):
@@ -113,5 +131,12 @@ class StudioButton(TypedDict):
 class PlaceIds(TypedDict):
     """The place and universe IDs an editor's Edit data model reports."""
 
-    placeId: int
-    universeId: int
+    place_id: int
+    universe_id: int
+
+
+class CameraView(TypedDict):
+    """A camera position and the point it looks at."""
+
+    position: Position
+    look_at: Position
