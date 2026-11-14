@@ -102,10 +102,10 @@ alwaysApply: true
   creates, never from a name another session or worker could also choose, in any directory. After
   it is accepted, read the stored text back, with `git log -1` for a commit, and compare it with the
   text the author wrote, never with the staging file, which may have been overwritten. Correct a
-  difference in that text at once, under the authorization the original post had. The current text
-  is what readers act on: earlier revisions in the edit history are left alone and never raised with
-  the user, unless one holds a credential, which the global rules' **Logging** section treats as
-  exposed.
+  difference in that text at once, under the authorization the original post had; a commit message
+  is read back before its push and amended only while unpushed. The current text is what readers
+  act on: earlier revisions in the edit history are left alone and never raised with the user,
+  unless one holds a credential the global rules' **Logging** section counts as exposed.
 - **Put follow-up source work on the session's in-progress source pull request for that repository.**
   Before proposing a branch, assigning a worker, or starting edits, resolve the session's source
   pull request from its creation or authorized continuation receipt and verify that it is open.

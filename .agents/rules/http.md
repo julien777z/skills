@@ -35,15 +35,16 @@ paths:
   control groups it and whichever layer checks it: a route, a router, middleware or a shared
   service check adds no second one. Data in its response that another permission guards is withheld
   or masked unless the caller holds that permission too. A field revealed at several levels gets one
-  permission per level, and the most revealing one held applies.
+  permission per level, never a combination, and the most revealing one held applies.
 - The disclosure rule lives on the response field and is published in the API schema. The server
   sends a masked value already masked. A client works out what is withheld from the caller's
   permissions and that published rule, never from a per-response list. A write to a field the
-  caller cannot see, or past the level they see it at, is refused, and so is any parameter the
-  caller supplies whose result depends on that value, such as a filter, search term, sort, grouping
-  or count naming the field, since what matches would reveal it. A search or ordering across several
-  fields runs and leaves that field out for that caller. These follow the field's disclosure rule,
-  which decides the field and its parameters, never whether the operation runs.
+  caller cannot see is refused. So is a request carrying a parameter whose result depends on a value
+  the caller cannot see, the whole field or more of it than their level reveals, such as a filter,
+  search term, sort, grouping or count naming the field, since what matches would reveal it; the
+  same operation without that parameter runs for that caller. A search or default ordering in which
+  the caller names no field runs and leaves that field out for them. These follow the field's
+  disclosure rule, which decides the field and its parameters, never who may run the operation.
 
 ## Clients
 
