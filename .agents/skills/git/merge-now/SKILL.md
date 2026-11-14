@@ -86,3 +86,5 @@ or says nothing is needed.
 
 **Next:** <one action, or nothing needed>
 ```
+
+A check failing the same way on the default branch appears in no cell or line of this report.

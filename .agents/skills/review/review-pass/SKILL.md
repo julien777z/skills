@@ -50,7 +50,8 @@ skill never readies, merges or deploys.
   an exclusion under **Checks**, and every thread is resolved, outdated or put to the user. It then
   runs `code-simplify` once over the pull request's whole diff, in process or by slice as **Local
   Passes** says; a fix that pass pushes is watched to the same end, and the watch then stops. The
-  report names each exclusion and each thread waiting on the user. A draft runs no test jobs, so
+  report names each exclusion other than a baseline failure, which it leaves out as
+  `pre-production`'s **Encountered Issues** says, and each thread waiting on the user. A draft runs no test jobs, so
   its watch reports `draft: watch ended, tests not run`; this mode never readies or merges a pull
   request.
 
@@ -236,7 +237,7 @@ changed. Make the smallest changes that answer real findings, and push back on t
 - **Review loop:** <n> round(s) with <model> — <approved | waiting on the user for <ids> | review only> · panel <round 1 | ruled on <ids> | not used> · diff <shortstat before> → <shortstat after>
 - **Fixed:** <one line per fix, marking those review surfaced rather than the task required, or none>
 - **Threads:** <disposition per thread, or none>
-- **Checks:** <passed | exclusions with evidence>
+- **Checks:** <passed | exclusions with evidence, baseline failures left out>
 - **Security:** <Diff Review result | not applicable>
 - **Acceptance:** <accept | flag and what it named>
 - **Deferred:** <record link: what it covers, or none>
