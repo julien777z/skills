@@ -1,14 +1,15 @@
+from argparse import ArgumentParser
 from base64 import b64encode
 from json import dumps
 from os import environ
 from pathlib import Path
-from sys import argv, exit, stdin
+from sys import exit, stdin
 from typing import Final, TypedDict
 from urllib.request import Request, urlopen
 
 DEFAULT_SPEECH_URL: Final = "http://localhost:8880/v1/audio/speech"
 DEFAULT_VOICE: Final = "af_bella"
-SPEECH_MODEL: Final = "kokoro"
+DEFAULT_SPEECH_MODEL: Final = "kokoro"
 SPEECH_TIMEOUT_SECONDS: Final = 300
 
 
@@ -23,10 +24,11 @@ def synthesize_speech(text: str) -> bytes:
     """Return MP3 audio of the text from the configured OpenAI-compatible speech endpoint."""
 
     speech_url = environ.get("VOICE_REPLY_SPEECH_URL", DEFAULT_SPEECH_URL)
+    speech_model = environ.get("VOICE_REPLY_MODEL", DEFAULT_SPEECH_MODEL)
     voice = environ.get("VOICE_REPLY_VOICE", DEFAULT_VOICE)
 
     speech_request = SpeechRequest(
-        model=SPEECH_MODEL, voice=voice, response_format="mp3", input=text
+        model=speech_model, voice=voice, response_format="mp3", input=text
     )
 
     request = Request(
@@ -55,11 +57,17 @@ def build_player_page(audio: bytes) -> str:
 def main() -> None:
     """Speak the text on standard input into `<output folder>/<clip name>.html` and print its path."""
 
-    output_folder = Path(argv[1])
-    clip_name = argv[2]
+    parser = ArgumentParser(description="Speak standard input into an HTML audio player page.")
+    parser.add_argument("output_folder", type=Path)
+    parser.add_argument("clip_name")
+
+    arguments = parser.parse_args()
+
+    output_folder: Path = arguments.output_folder
+    clip_name: str = arguments.clip_name
     text = stdin.read().strip()
 
-    if Path(clip_name).name != clip_name or clip_name in ("", ".", ".."):
+    if Path(clip_name).name != clip_name or clip_name in ("", ".."):
         exit("The clip name must be a plain file name.")
 
     if not text:

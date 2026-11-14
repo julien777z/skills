@@ -51,10 +51,10 @@ as page versions do. This is how those previews are sent.
 3. **Show the option images, then ask through the question tool**, never in chat. Each image goes
    under its caption with a line on what that option does, in a message the reader sees. Where only
    the message that ends a turn is shown, as in T3 Code, record the pending question in the
-   session ledger through `session-ledger`, end the turn on that message, and ask the question through the question tool as
-   the first action of the next turn; **Harness compatibility** says what starts that turn. The
-   question names each option by its image's caption, never by position, and states in its own text
-   what each does.
+   session ledger through `session-ledger`, end the turn on that message, and ask the question
+   through the question tool as the first action of the next turn; **Harness compatibility** says
+   what starts that turn. The question names each option by its image's caption, never by
+   position, and states in its own text what each does.
 4. **When the user says they cannot see the previews**, the route failed: fix it and show them again
    before re-asking, never re-ask over the same broken route.
 
@@ -64,11 +64,12 @@ When the user asks to talk by voice, they speak through the harness's dictation 
 answers with a clip they play where they read the chat, its words written beneath it, so the
 exchange is heard and recorded at once.
 
-- **Speak only the replies that clarify**: one that restates what the agent understood, or asks the
-  user something about what they want. A report, a progress update or a reply that is mostly links,
+- **Speak only the replies that clarify**: one that restates what the agent understood, names what
+  is still unclear, or asks one or two questions about what the user wants, never committing to
+  work the user has not described yet. A report, a progress update or a reply that is mostly links,
   code or paths stays text only, unless the user asks to hear it.
 - **Make and send each spoken reply** as [the spoken-replies reference](references/spoken-replies.md),
-  this skill's procedure for the voice service, the clip and what the spoken part says, describes.
+  this skill's procedure for the voice service and for making and showing a clip, describes.
 - Never play a clip on the agent machine's speakers as the reply: the user may not be at that machine.
 
 ## Harness compatibility
