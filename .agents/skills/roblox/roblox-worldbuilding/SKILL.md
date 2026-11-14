@@ -51,7 +51,7 @@ Remove hidden/internal faces where they cannot become visible, unnecessary edge 
 - `RenderFidelity` Automatic, never Precise.
 - No decorative part with partial transparency. Glass and glow use an opaque or Neon material or one shared transparent surface.
 - Textures at 512 px or less, 256 px for minor props.
-- Distant models in a streamed place use `LevelOfDetail` where the place streams.
+- Distant models use `LevelOfDetail` where the place streams.
 
 A default is left off only where it visibly breaks the result, such as a shadow the scene's lighting depends on, and the reason goes beside that piece. Enforce the defaults where the project builds or imports pieces, so a new piece cannot skip them. Measurement checks a scene against its budget; it never decides whether a default applies. Avoid a single enormous combined mesh that defeats useful streaming boundaries.
 
@@ -65,6 +65,6 @@ Trace every affected entrance and activity access route all the way to the estab
 
 For major maps or streaming changes, test stream-out/re-entry, destination preloading, interiors, missing assets, and appropriate mobile coverage. Verify complete activity footprints avoid protected routes. Check the saved or rebuilt artifact for terrain, assets, lighting, source/package closure, and absence of test fixtures; reopen it when serialization needs verification. Report code checks, Studio traversal, simulation, performance measurements, and published-client results separately.
 
-Keep reusable building lessons here, a lesson whose subject another skill owns there, and game-specific world design in the project skill. Update canonical `.agents` sources only; leave provider mirrors to Agent Sync.
+Keep reusable worldbuilding lessons here, a lesson whose subject another skill owns there, and game-specific world design in the project skill. Update canonical `.agents` sources only; leave provider mirrors to Agent Sync.
 
 Sources for place architecture: [Roblox places](https://create.roblox.com/docs/production/publishing/publish-games-and-places), [teleporting](https://create.roblox.com/docs/projects/teleport).
