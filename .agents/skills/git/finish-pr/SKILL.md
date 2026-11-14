@@ -125,15 +125,19 @@ head lag and a retryable rate limit are nonterminal.
   merged repository. Fetch the pull request's target branch from that remote and confirm the
   fetched tip contains the verified merge. For a guidance merge, keep the Agent Sync and installed
   guidance results from `merge-gate`. Verify the generated guidance in the refreshed checkout.
+- Before changing an index, working tree, or branch, check for an in-progress Git operation in
+  each affected checkout. Resume the refresh after that operation finishes or is safely recovered.
 - Inspect the current branch, index, working tree, and untracked files. Remove a local edit only
   when the fetched tree already has it or the exact change landed in the target branch's history
   and was not subsequently reverted. Compare staged and unstaged changes, including file mode and binary
   changes, before restoring anything. For a file with mixed or uncertain changes, preserve the
   entire file unless the landed and local-only changes can be verified independently.
-- Stage the remaining local-only edits by path, including untracked files that belong to the
-  work. Save them in a named local stash with untracked files and verify its contents before
-  switching. Record its commit and original branch so it can be restored there. Leave the stash
-  in place and keep the original branch and its commits. Preserve ignored or nested files
+- Stage the remaining local-only edits by path, including untracked files that belong to the work.
+  When a path has different staged and working-tree edits, keep its index entry intact. Save the
+  index, working tree, and untracked files in a named local stash and verify the saved versions
+  before switching. Record its commit and original branch so it can be restored there. Leave the stash
+  in place and keep the original branch and its commits. Give a detached starting commit a local
+  preservation branch if no retained branch contains it. Preserve ignored or nested files
   separately if they would block the switch, verifying the saved contents before moving them.
 - Run `git switch --no-overwrite-ignore <target-branch>` in the primary checkout and fast-forward
   with `git merge --ff-only --no-autostash --no-overwrite-ignore <verified-remote-tip>`. If the target branch is already
@@ -149,6 +153,10 @@ head lag and a retryable rate limit are nonterminal.
   operation or unavailable checkout prevents safe recovery, follow the applicable Git recovery
   route and resume the refresh when it is safe. Record any remaining external blocker and the
   saved next action. Continue independent units without reopening a verified merge.
+- For the shared skills repository, keep the installed overlay produced by `merge-gate`. Any
+  local guidance parked by this checkout refresh remains recoverable from its branch or stash.
+  Record that a later installation refresh reads pending guidance from its ordinary inputs,
+  including eligible open pull requests and the current checkout.
 
 ## Report
 
