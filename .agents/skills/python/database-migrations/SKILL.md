@@ -290,7 +290,8 @@ or
    Inspect the project's revision directory.
    Find which file has no other file pointing to it as `down_revision` — that is the current head.
 
-2. Update your migration's `down_revision` to that head:
+2. When your revision is unlocked, as **Applied Is What Makes History** defines, update its
+   `down_revision` to that head; a locked revision follows that section instead:
    ```python
    down_revision: Union[str, None] = "<actual-head-on-main>"
    ```
