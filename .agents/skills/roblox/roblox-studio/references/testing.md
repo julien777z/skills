@@ -79,9 +79,12 @@ What every helper must get right:
   acquires the lock with `acquire_runner_lock`, opens what it needs, does a bounded part of the
   check, closes every editor and test process it started, and releases with `release_runner_lock`;
   the next segment acquires again and reopens. Before each step of a loop, compare
-  `runner_lease(receipt)["remaining"]` with that step's worst case plus the time closing what the
-  segment opened and releasing take, and end the segment there when it does not fit, rather than
-  letting a call or the cleanup after it refuse midway. The game's warm editor is the one
+  `runner_lease(receipt)["remaining"]` with that step's worst case plus the segment's cleanup:
+  `CLOSE_BOUND` for each place copy it opened, `CLOUD_CLOSE_BOUND` for each cloud editor,
+  `OPERATION_TIMEOUTS[RunnerOperation.STOP]` for the test processes it stops and
+  `OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK]` for the release, all read from `studio_mcp`. End
+  the segment there when it does not fit, rather than letting a call or the cleanup after it refuse
+  midway. The game's warm editor is the one
   editor a segment leaves open.
 
 Workers use these helpers and extend them for each new repeatable step; a repeatable step is never
@@ -181,7 +184,7 @@ starting with a letter or digit.
 | Call                                                                                          | What it does                                                                                                                                                                                                                 |
 | --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `acquire_runner_lock(lock_receipt, owner, activity, lease=MAX_LEASE)`                         | Takes the lock on the game's VM for one segment and returns the acquire report, whose `expired_owner` names a predecessor whose leftovers must be stopped first; raises when the lock stays busy                             |
-| `release_runner_lock(lock_receipt)`                                                           | Releases it once every process the segment started has exited                                                                                                                                                                |
+| `release_runner_lock(lock_receipt)`                                                           | Releases it, telling `agent-lock` the runner is idle, so the caller first closes every editor and process the segment started                                                                                                |
 | `runner_lease(lock_receipt)`                                                                  | The runner's configuration and the time the lease has left, as `{"config", "remaining"}`                                                                                                                                     |
 | `open_place(project, place, out_dir, lock_receipt)`                                           | Copies a built place into the guest under `studio-places/<project>/`, launches an editor for it and returns a `Studio` once the editor registers and its Edit data model runs code, over the connection that saw it register |
 | `open_cloud_place(place_id, universe_id, out_dir, lock_receipt)`                              | Opens a published place in an editor the same way, returning it once its Edit data model reports that place and universe; it is never saved or published from there                                                          |
@@ -192,8 +195,10 @@ starting with a letter or digit.
 | `guest_screenshot(path, lock_receipt)`                                                        | Saves the guest's whole screen, for a failure the editor cannot capture                                                                                                                                                      |
 | `run_in_runner(command, lock_receipt, timeout)`                                               | Runs a shell command in the guest                                                                                                                                                                                            |
 
-When either open call fails once its launch starts, it closes the editor, saves the guest's screen under `out_dir`,
-and raises. A `Studio` executes Luau, captures, optionally from `camera_position` toward `look_at_position`, reads
+When the editor either open call launched never registers or never answers in its Edit data model, the call saves
+the guest's screen under `out_dir`, closes the editor and raises; any other failure once the launch starts closes
+the editor and raises. A `Studio` executes Luau, captures, optionally from a `CameraView` of a camera position and the
+point it looks at, reads
 the console, sends keys, holds a key for a duration (`hold_key`), and clicks a button by its instance path through
 the bundled VirtualInput helper, which `run_input` binds as `Input` for other input fixtures;
 `Studio.tool(name, arguments)` calls any other Studio MCP tool on that editor. `luau_string_literal` quotes a value
