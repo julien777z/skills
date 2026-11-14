@@ -1,13 +1,14 @@
 ---
-name: share-captures
-description: "Show screenshots, recordings and rendered previews to the user in the agent's own reply, as they are read and with the questions that need them. Use whenever work produces captures of a product, a site, a game or a generated image, and before asking the user to choose between options that differ in how something looks."
-short_description: 'Show captures and option previews where the user reads.'
+name: share-media
+description: "Show screenshots, recordings, rendered previews and spoken audio to the user in the agent's own reply, as they are read and with the questions that need them. Use whenever work produces captures of a product, a site, a game or a generated image, before asking the user to choose between options that differ in how something looks, and when the user asks to talk by voice, hear the agent, have replies read aloud, or hold a spoken back-and-forth to clarify what they want."
+short_description: 'Show captures, option previews and spoken replies where the user reads.'
 ---
 
-# Share Captures
+# Share Media
 
 The global rules' **User-Facing Output** says which captures reach the user and when. This skill is how
-they get there, the same way for a web walkthrough, a game playtest or a generated image.
+they get there, the same way for a web walkthrough, a game playtest or a generated image, and how a
+reply reaches the user as speech.
 
 ## Send each capture where the reader sees it
 
@@ -54,6 +55,36 @@ as page versions do. This is how those previews are sent.
 4. **When the user says they cannot see the previews**, the route failed: fix it and show them again
    before re-asking, never re-ask over the same broken route.
 
+## Spoken replies
+
+When the user asks to talk by voice, they speak through the harness's dictation and the agent
+answers with a clip they play where they read the chat, its words written beneath it, so the
+exchange is heard and recorded at once.
+
+- **Speak only the replies that clarify**: one that restates what the agent understood, or asks the
+  user something about what they want. A report, a progress update or a reply that is mostly links,
+  code or paths stays text only, unless the user asks to hear it.
+- **The voice is a local text-to-speech service with an OpenAI-compatible speech endpoint**, read
+  from `VOICE_REPLY_SPEECH_URL` (default `http://localhost:8880/v1/audio/speech`) with the voice
+  from `VOICE_REPLY_VOICE` (default `af_bella`). The VoiceMode installer (`uvx voice-mode-install`)
+  sets up Kokoro on that port, and `voicemode service start kokoro` starts it. Before the first
+  clip, check the service answers at its `/health` route beside the endpoint and start it when it
+  does not; the first clip after a start takes far longer while the model warms up.
+
+1. **Write the reply first**, as text the user reads. Shape the spoken part for listening: short
+   sentences, with code, paths, links and tables left to the written text.
+2. **While the user is still describing what they want, the spoken part converses.** It restates
+   what the agent understood in its own words, names what is still unclear, and asks one or two
+   clarifying questions. It never commits to work the user has not described yet.
+3. **Make the clip:** run `scripts/speak.py <output folder> <clip name>` with the spoken text on
+   standard input. It prints the path of a self-contained HTML page holding an audio player with
+   the clip embedded in it. The output folder is the one **Keep the file** above names.
+4. **Show the player, then the reply's text under it**, through the route **Harness
+   compatibility** names. A decision the reply asks still goes through the question tool, as the
+   global rules say; the clip may speak it, and the tool asks it.
+
+Never play a clip on the agent machine's speakers as the reply: the user may not be at that machine.
+
 ## Harness compatibility
 
 - **T3 Code:** write each capture into the reply as a Markdown image with its absolute path,
@@ -71,4 +102,9 @@ as page versions do. This is how those previews are sent.
   posts a new message into the thread as the user, so it never carries the agent's own captures.
   Any other file the user should see, such as a plan or a detail file, is a Markdown link to its
   absolute path, `[name](/absolute/path/to/plan.md)`, kept in the working directory **Keep the
-  file** above names, in the turn's final message; T3 opens it in its files viewer.
+  file** above names, in the turn's final message; T3 opens it in its files viewer. A spoken
+  reply's player page is shown with `html_render`, at about 76 pixels high: a Markdown link to an
+  audio file does not play when the user's client connects to the agent's machine remotely, and a
+  player that carries its sound in the page does.
+- **Any other harness:** show a spoken reply's player page the way the harness shows a rendered HTML
+  preview; where it has none, send the page as a file the user opens.
