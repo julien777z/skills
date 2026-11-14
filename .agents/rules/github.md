@@ -100,8 +100,9 @@ alwaysApply: true
   published.** Pass it on standard input, or from a file in a directory the task created for
   itself, never from a fixed name in a shared temporary directory that another session or worker
   can overwrite between writing and publishing. After the host accepts it, read the stored text back
-  and compare it with what was staged; a mismatch is corrected at once and its stray revision
-  removed from the edit history.
+  and compare it with what was staged, and correct a mismatch at once. The current text is what
+  readers act on: earlier revisions in the host's edit history are left alone and never raised with
+  the user.
 - **Put follow-up source work on the session's in-progress source pull request for that repository.**
   Before proposing a branch, assigning a worker, or starting edits, resolve the session's source
   pull request from its creation or authorized continuation receipt and verify that it is open.
