@@ -172,12 +172,26 @@ An ordinary test mirrors the source path for the concern it exercises after remo
 test roots and test-classification segments such as unit or integration. The paths need not be
 character-for-character identical; their ownership hierarchy must be recognizable in both trees.
 
+**One source file has one test module, named for it** by the language's test-file convention: a
+source file `pkg/invoices.py` is tested by `test_invoices.py` at the mirrored path, and
+`src/invoices.ts` by `invoices.test.ts`. That module holds the tests of every function and class
+in the file. A folder named for a source file, holding a test file per function or class, is not a
+mirror: its paths resemble the source, but the source file has no test module, so the next test of
+that file gets a file of its own instead of joining the others. Check it mechanically: list every
+test module in scope and compare its name, without the test-file marker, with the source file at the mirrored
+path. A test module named for a function or class inside a source file, or sitting in a folder
+named for one, is a finding; its tests fold into that source file's test module, under its one
+class, with same-shape cases joined into shared parameter sets.
+
 Before placing or moving a test, compare analogous sibling service tests and their corresponding
 source owners. Apply explicit repository guidance first. Otherwise prefer the layout that most
 directly mirrors source ownership, using the majority pattern among analogous sibling service tests
 as corroborating evidence. Existing sibling tests are evidence, not authority. Preserve a different
 layout only when a real ownership or boundary difference explains it; legacy placement alone is not
-a reason. If equally valid patterns remain, the choice goes to a council ruling, as the skill's workflow
+a reason. Siblings that split a source file into a file per function or class are the finding above,
+never the layout a new test copies: the new test goes into the source file's test module, created
+where it is absent, and the siblings fold into it within `pre-production`'s size budget, the rest
+recorded as deferred work. If equally valid patterns remain, the choice goes to a council ruling, as the skill's workflow
 says, instead of moving tests arbitrarily or adding another variation.
 
 Test-owned structures may follow the testing concern rather than a production path:
@@ -186,6 +200,7 @@ Test-owned structures may follow the testing concern rather than a production pa
 - integration or end-to-end flows that deliberately span several source modules;
 - a behavior folder that replaces one heavily tested source module with several focused test
   modules named for independently maintained behaviors, when the file-boundary test below justifies a split.
+  A function or class is never such a behavior on its own account.
 
 Place a cross-module test at the nearest shared source owner.
 
