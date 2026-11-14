@@ -96,13 +96,16 @@ alwaysApply: true
   requirement in terms of this repository's own contract; disclose provider PR links and merge
   ordering to the user in chat.
   `merge-gate` still owns the complete dependency inventory and readiness gate.
-- **Text published to the host is staged where only its author writes and read back once
-  published.** Pass it on standard input, or from a file in a directory the task created for
-  itself, never from a fixed name in a shared temporary directory that another session or worker
-  can overwrite between writing and publishing. After the host accepts it, read the stored text back
-  and compare it with what was staged, and correct a mismatch at once. The current text is what
-  readers act on: earlier revisions in the host's edit history are left alone and never raised with
-  the user.
+- **Text handed to Git or the hosting service is staged where only its author writes and read back
+  once published.** A commit message, title, description, comment or issue body goes inline, on
+  standard input, or from a file whose path was generated for that one text, such as one `mktemp`
+  creates, never from a name another session or worker could also choose, in any directory. After
+  it is accepted, read the stored text back, with `git log -1` for a commit, and compare it with the
+  text the author wrote, never with the staging file, which may have been overwritten. Correct a
+  difference in that text at once, under the authorization the original post had. The current text
+  is what readers act on: earlier revisions in the edit history are left alone and never raised with
+  the user, unless one holds a credential, which the global rules' **Logging** section treats as
+  exposed.
 - **Put follow-up source work on the session's in-progress source pull request for that repository.**
   Before proposing a branch, assigning a worker, or starting edits, resolve the session's source
   pull request from its creation or authorized continuation receipt and verify that it is open.

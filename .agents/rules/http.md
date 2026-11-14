@@ -30,17 +30,20 @@ paths:
   client toggle them. Reuse the policy gate in every operation it protects, so later features cannot
   bypass it.
 - **Each permission grants one capability and stands on its own.** No permission requires, implies
-  or outranks another; no role or grant is refused for lacking a companion; and no check passes only
-  on a combination. **An action requires exactly one permission, its own**: no action names a
-  second permission as a prerequisite, whatever page, tab or control groups it. An operation runs
-  for anyone holding its own permission. Data in its response that another permission guards is
-  withheld or masked unless the caller holds that permission too. A field revealed at several
-  levels gets one permission per level, and the most revealing one held applies.
+  or outranks another; and no role or grant is refused for lacking a companion. **An operation
+  requires no permission but its own, and runs for anyone holding it**, whatever page, tab or
+  control groups it and whichever layer checks it: a route, a router, middleware or a shared
+  service check adds no second one. Data in its response that another permission guards is withheld
+  or masked unless the caller holds that permission too. A field revealed at several levels gets one
+  permission per level, and the most revealing one held applies.
 - The disclosure rule lives on the response field and is published in the API schema. The server
   sends a masked value already masked. A client works out what is withheld from the caller's
   permissions and that published rule, never from a per-response list. A write to a field the
-  caller cannot see is refused, and so is a filter, selection or search the caller supplies over
-  one, since what matches would reveal it.
+  caller cannot see, or past the level they see it at, is refused, and so is any parameter the
+  caller supplies whose result depends on that value, such as a filter, search term, sort, grouping
+  or count naming the field, since what matches would reveal it. A search or ordering across several
+  fields runs and leaves that field out for that caller. These follow the field's disclosure rule,
+  which decides the field and its parameters, never whether the operation runs.
 
 ## Clients
 

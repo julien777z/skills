@@ -124,6 +124,9 @@ Ask in this order:
    narrowing who a feature serves. That decision is not the auditor's, so the finding carries it as
    an option for whoever decides, priced honestly against the code fix — never silently taken and
    never silently dropped. It is reported alongside the code fix that ships and never replaces it.
+   An option a standing rule forbids, such as gating an operation on a second permission, is not a
+   decision anyone has left to make: it is neither offered nor recommended, and the fix follows the
+   rule.
 4. **Only then, new enforcement.** A guard, a policy object, a claim check, a schema change.
 
 **Report the alternative whenever it is materially simpler, even when it is not the one recommended.**
