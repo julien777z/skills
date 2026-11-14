@@ -79,12 +79,13 @@ What every helper must get right:
   acquires the lock with `acquire_runner_lock`, opens what it needs, does a bounded part of the
   check, closes every editor and test process it started, and releases with `release_runner_lock`;
   the next segment acquires again and reopens. Before each step of a loop, compare
-  `runner_lease(receipt)["remaining"]` with that step's worst case plus the segment's cleanup:
+  `runner_lease(receipt)["remaining"]` with that step's worst case, `open_bound(registration_wait)` for
+  an open and `editor_wait_bound(wait)` for an editor wait, plus the segment's cleanup:
   `CLOSE_BOUND` for each place copy it opened, `CLOUD_CLOSE_BOUND` for each cloud editor,
   `OPERATION_TIMEOUTS[RunnerOperation.STOP]` for the test processes it stops and
   `OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK]` for the release, and add `LEASE_CHECK_BOUND` once
-  for every `studio_mcp` call the step and that cleanup make, since each call checks the lease before
-  it starts; read every bound from `studio_mcp`. End
+  for every call the step and that cleanup make that reaches the guest, since each of those checks the
+  lease before it starts; read every bound from `studio_mcp`. End
   the segment there when it does not fit, rather than letting a call or the cleanup after it refuse
   midway. The game's warm editor is the one
   editor a segment leaves open.
@@ -189,8 +190,8 @@ starting with a letter or digit.
 | `acquire_runner_lock(lock_receipt, owner, activity, lease=MAX_LEASE)`                         | Takes the lock on the game's VM for one segment and returns the acquire report, whose `expired_owner` names a predecessor whose leftovers must be stopped first; raises when the lock stays busy                             |
 | `release_runner_lock(lock_receipt)`                                                           | Releases it, telling `agent-lock` the runner is idle, so the caller first closes every editor and process the segment started                                                                                                |
 | `runner_lease(lock_receipt)`                                                                  | The runner's configuration and the time the lease has left, as `{"config", "remaining"}`                                                                                                                                     |
-| `open_place(project, place, out_dir, lock_receipt)`                                           | Copies a built place into the guest under `studio-places/<project>/`, launches an editor for it and returns a `Studio` once the editor registers and its Edit data model runs code, over the connection that saw it register |
-| `open_cloud_place(place_id, universe_id, out_dir, lock_receipt)`                              | Opens a published place in an editor the same way, returning it once its Edit data model reports that place and universe; it is never saved or published from there                                                          |
+| `open_place(project, place, out_dir, lock_receipt, registration_wait)`                        | Copies a built place into the guest under `studio-places/<project>/`, launches an editor for it and returns a `Studio` once the editor registers and its Edit data model runs code, over the connection that saw it register |
+| `open_cloud_place(place_id, universe_id, out_dir, lock_receipt, registration_wait)`           | Opens a published place in an editor the same way, returning it once its Edit data model reports that place and universe; it is never saved or published from there                                                          |
 | `close_place(project, place, lock_receipt)`                                                   | Ends the editor that has exactly that copy open and deletes the copy; raises, keeping the copy, when the editor stays open                                                                                                   |
 | `close_cloud_place(place_id, lock_receipt)`                                                   | Ends, without saving, the `EditPlace` editors on exactly that place; raises when one stays open                                                                                                                              |
 | `stop_guest_processes(pids, lock_receipt)`                                                    | Sends SIGTERM, waits, sends SIGKILL to what remains, and returns the IDs that survive, such as the test server and clients a multiplayer test left                                                                           |
