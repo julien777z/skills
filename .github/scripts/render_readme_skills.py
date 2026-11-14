@@ -55,6 +55,7 @@ def parse_front_matter(path: Path) -> dict[str, str]:
         if len(value) >= 2 and value[0] == value[-1] and value[0] in {'"', "'"}:
             quote = value[0]
             value = value[1:-1]
+
             if quote == "'":
                 value = value.replace("''", "'")
 
@@ -145,6 +146,7 @@ def commit_listing(branch: str) -> None:
 
     subprocess.run(["git", "config", "user.name", BOT_NAME], check=True)
     subprocess.run(["git", "config", "user.email", BOT_EMAIL], check=True)
+
     subprocess.run(["git", "add", "--", str(README_PATH)], check=True)
     subprocess.run(["git", "commit", "-m", COMMIT_MESSAGE], check=True)
 
