@@ -22,7 +22,7 @@ paths:
 
 ```python
 # Bad: the route file declares the guard it happens to need
-RequireReportAccess = Annotated[None, Depends(require_permissions(Permission.VIEW_REPORTS))]
+RequireReportAccess = Annotated[None, Depends(require_permission(Permission.VIEW_REPORTS))]
 
 
 @reports_router.get("/summary")
@@ -41,14 +41,14 @@ async def get_report_summary(_: RequireReportAccess) -> ApiEnvelope[ReportSummar
 
 ```python
 # Good: the dependency module owns one reusable parameterized guard
-def require_permissions(*permissions: Permission) -> Callable[..., None]:
+def require_permission(permission: Permission) -> Callable[..., None]:
     ...
 
 
 # Good: the route states its operation-specific policy without defining an alias
 @reports_router.get("/summary")
 async def get_report_summary(
-    _: Annotated[None, Depends(require_permissions(Permission.VIEW_REPORTS))],
+    _: Annotated[None, Depends(require_permission(Permission.VIEW_REPORTS))],
 ) -> ApiEnvelope[ReportSummary]:
     ...
 ```
