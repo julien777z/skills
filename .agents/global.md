@@ -17,7 +17,12 @@ alwaysApply: true
   canonical source. Report it missing only when those sources do not contain it; never substitute a
   manual approximation for an installed action skill.
 
-- In repositories that provide an agent CLI or otherwise interact with agents, store every agent prompt in a dedicated Markdown file rather than inline in application code so it is easy to find, review, and maintain. Application code may load a prompt file and interpolate runtime values into it.
+- **Every prompt is a Markdown file of its own in the application's prompts folder, never text in
+  code.** A prompt is any text written for a model to read as instructions: a system or user prompt
+  template, the instructions an MCP server gives connecting agents, a prompt an MCP server publishes,
+  or an agent definition the application loads. Each one is one file in the application's `prompts`
+  folder, named for what it asks, and code loads it and fills in runtime values. Where the
+  application already keeps prompts in a folder, that folder is the prompts folder.
 
 ## User-Facing Output
 
