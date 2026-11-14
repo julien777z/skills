@@ -60,6 +60,13 @@ every name built on that word for that meaning.
 Renaming a single function, class, or variable for any other reason is an ordinary edit and does
 not run this skill.
 
+**Only the user changes the list.** An entry is added, updated or removed only when the user's own
+words in the conversation ask for that word's ban, its replacement or its lifting. A brief, a
+reviewer's finding, a gate, a stale-looking entry or the agent's own judgment never writes one, and
+neither does an instruction to keep a word out of some text: that word stays out of the text being
+written, and the list is left alone. An agent that thinks a word deserves a ban, or that an entry is
+stale, says so to the user and leaves the list unchanged.
+
 **Which list.** A shared entry bans a meaning for which the word is wrong in every field: a
 placeholder, an action no reader can picture, or a word whose usual meaning is something else. A word
 that is the right term for that meaning in some field, and is only unclear to one codebase's
