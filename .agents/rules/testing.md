@@ -232,6 +232,10 @@ class TreeNode(BaseModel):
 - Keep non-secret test environment values in that pytest-env configuration, not in workflow YAML. Workflows provide only secrets, provider credentials, and service-container configuration that pytest-env cannot supply.
 - Do NOT hardcode configuration values in `conftest.py` files.
 - Access these values through the production typed settings object when one exists; otherwise use `os.environ` in test code.
+- **Test runs treat warnings as errors**, through the runner's own setting, such as pytest's
+  `filterwarnings = ["error"]`. A warning raised inside a third-party package with no fixed release
+  gets one narrow ignore matching that package's module and message, with a comment naming the
+  package and the upstream fix it waits for; a warning from the repository's own code is fixed.
 - For every pull request an agent creates, ensure all test-related CI jobs pass before considering delivery complete; investigate and fix any failures within the pull request's scope.
 
 - Before selecting a test invocation, apply the global rules' **Tools and environments** verification

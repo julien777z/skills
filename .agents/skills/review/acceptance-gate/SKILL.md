@@ -334,7 +334,12 @@ flag count alone satisfies none of them. A non-defect may be deferred only on th
 including when its simplest compliant repair still requires substantial irreducible complexity or
 mechanisms its gain cannot carry. A confirmed defect remains owed under the fix test. A hypothetical
 safeguard or compatibility concern is judged against the target repository's product state and
-contract, not promoted to a defect merely because a reviewer flagged it.
+contract, not promoted to a defect merely because a reviewer flagged it. Deprecated usage and a
+warning a run prints are never hypothetical: they are defects under `pre-production`, and the gate
+flags each one it meets in the diff or in its checks' output. Past the rubric, the gate flags
+whatever in the change does not make sense on reading, such as a setting left in the form its
+library warns against, a known shortcut a comment or report admits, or a result its reader would
+question, and says why.
 
 Escalate only a genuine unresolved product, scope, security, disclosure or authorization choice, stating the concrete
 fork and why authorized remedies cannot settle it. Repair authority and merge authority are separate:

@@ -166,7 +166,8 @@ alwaysApply: true
   scope, a workaround for a
   constraint the user set, and anything touching security, disclosure or authorization. Closing a
   security vulnerability, so the product enforces the access it already intends, is a fix and never
-  waits on this question. **A game's design is the exception**: where `roblox-gameplay` governs the
+  waits on this question, and so is moving off a deprecated API or setting onto its supported
+  replacement, even when the replacement tightens access, as `pre-production`'s defect bullets say. **A game's design is the exception**: where `roblox-gameplay` governs the
   work, what does not make sense in the game — an asset, a room, a placement, a balance value or a
   mechanic — is the agent's to redesign as that skill says, without asking; the game's core loop or
   genre, anything players pay for, security, disclosure, authorization and what the user has decided
