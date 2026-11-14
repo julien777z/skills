@@ -50,8 +50,6 @@ CLOUD_CLOSE_BOUND: Final[timedelta] = (OPERATION_TIMEOUTS[RunnerOperation.PROCES
 CLOSE_BOUND: Final[timedelta] = CLOUD_CLOSE_BOUND + OPERATION_TIMEOUTS[RunnerOperation.REMOVAL]
 LEASE_CHECK_BOUND: Final[timedelta] = (OPERATION_TIMEOUTS[RunnerOperation.DESCRIBE]
                                        + OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK])
-TOOL_ATTEMPT_BOUND: Final[timedelta] = (OPERATION_TIMEOUTS[RunnerOperation.TOOL_CALL]
-                                        + OPERATION_TIMEOUTS[RunnerOperation.SESSION_EXIT])
 LOCK_WAIT: Final[timedelta] = timedelta(seconds=50)
 # agent-lock refuses a lease longer than this.
 MAX_LEASE: Final[timedelta] = timedelta(seconds=900)
@@ -157,10 +155,10 @@ def assert_runner_lease_covers(lock_receipt: Path, needed: timedelta) -> RunnerC
 def run_in_runner(command: str, lock_receipt: Path, timeout: timedelta, data: bytes | None = None) -> bytes:
     """Run a shell command in the runner guest."""
 
-    return guest_command(command, assert_runner_lease_covers(lock_receipt, timeout), timeout, data)
+    return run_guest_command(command, assert_runner_lease_covers(lock_receipt, timeout), timeout, data)
 
 
-def guest_command(command: str, config: RunnerConfig, timeout: timedelta, data: bytes | None = None) -> bytes:
+def run_guest_command(command: str, config: RunnerConfig, timeout: timedelta, data: bytes | None = None) -> bytes:
     """Run a shell command in the guest of a runner whose lease the caller has already checked."""
 
     # The guest's login shell may be zsh, which splits words differently, so commands always run under sh.
@@ -312,11 +310,18 @@ def call_studio_tool(connection: StudioMcpConnection, name: str, arguments: Tool
                      timeout: timedelta = OPERATION_TIMEOUTS[RunnerOperation.TOOL_CALL]) -> list[McpContent]:
     """Call a Studio MCP tool."""
 
-    opening = OPERATION_TIMEOUTS[RunnerOperation.INITIALIZE] if connection.session is None else timedelta()
-    config = assert_runner_lease_covers(lock_receipt,
-                                        opening + timeout + OPERATION_TIMEOUTS[RunnerOperation.SESSION_EXIT])
+    config = assert_runner_lease_covers(lock_receipt, tool_call_bound(connection.session is None, timeout))
 
     return studio_tool_reply(connection, name, arguments, config, timeout)
+
+
+def tool_call_bound(opens_session: bool,
+                    timeout: timedelta = OPERATION_TIMEOUTS[RunnerOperation.TOOL_CALL]) -> timedelta:
+    """Return the longest one Studio MCP tool call can take."""
+
+    opening = OPERATION_TIMEOUTS[RunnerOperation.INITIALIZE] if opens_session else timedelta()
+
+    return opening + timeout + OPERATION_TIMEOUTS[RunnerOperation.SESSION_EXIT]
 
 
 def studio_tool_reply(connection: StudioMcpConnection, name: str, arguments: ToolArguments, config: RunnerConfig,
@@ -340,8 +345,7 @@ def mcp_content_text(content: list[McpContent]) -> str:
 def studios(connection: StudioMcpConnection, lock_receipt: Path) -> list[StudioEntry]:
     """List the editors the runner's Studio MCP knows."""
 
-    config = assert_runner_lease_covers(lock_receipt, OPERATION_TIMEOUTS[RunnerOperation.INITIALIZE]
-                                        + TOOL_ATTEMPT_BOUND)
+    config = assert_runner_lease_covers(lock_receipt, tool_call_bound(connection.session is None))
 
     return listed_studios(connection, config)
 
@@ -381,7 +385,7 @@ def editor_wait_bound(wait: timedelta) -> timedelta:
     if wait < timedelta():
         raise ValueError("Wait a duration of zero or more for the editor list")
 
-    return OPERATION_TIMEOUTS[RunnerOperation.INITIALIZE] + wait + POLL_INTERVAL + TOOL_ATTEMPT_BOUND
+    return wait + POLL_INTERVAL + tool_call_bound(opens_session=True)
 
 
 def awaited_studios(connection: StudioMcpConnection, config: RunnerConfig, wait: timedelta) -> list[StudioEntry]:
@@ -563,7 +567,7 @@ done'''
 def guest_pids(pids_script: str, config: RunnerConfig) -> set[int]:
     """Run guest shell that sets pids and return the process IDs it found."""
 
-    listed = guest_command(f"{pids_script}\necho $pids", config,
+    listed = run_guest_command(f"{pids_script}\necho $pids", config,
                            OPERATION_TIMEOUTS[RunnerOperation.PROCESS_LIST]).decode()
 
     return {int(pid) for pid in listed.split()}
@@ -597,7 +601,7 @@ for _ in 1 2 3 4 5; do ps -p {listed} >/dev/null || exit 0; sleep 1; done
 ps -o pid= -p {listed}
 true'''
 
-    survivors = guest_command(script, config, OPERATION_TIMEOUTS[RunnerOperation.STOP]).decode()
+    survivors = run_guest_command(script, config, OPERATION_TIMEOUTS[RunnerOperation.STOP]).decode()
 
     return {int(pid) for pid in survivors.split()}
 
@@ -613,7 +617,7 @@ def guest_screenshot(path: Path, lock_receipt: Path) -> Path:
 def saved_guest_screen(path: Path, config: RunnerConfig) -> Path:
     """Save the whole screen of a runner guest whose lease the caller has already checked to path."""
 
-    screen = guest_command('f=$(mktemp -t studio-screen) && screencapture -x -t png "$f" && cat "$f"; '
+    screen = run_guest_command('f=$(mktemp -t studio-screen) && screencapture -x -t png "$f" && cat "$f"; '
                            'capture_status=$?; rm -f "$f"; exit $capture_status', config,
                            OPERATION_TIMEOUTS[RunnerOperation.CAPTURE])
 
@@ -627,10 +631,10 @@ def saved_guest_screen(path: Path, config: RunnerConfig) -> Path:
 def close_place(project: str, place: Path, lock_receipt: Path) -> None:
     """Close a project's place copy in the runner."""
 
-    closed_place_copy(project, place, assert_runner_lease_covers(lock_receipt, CLOSE_BOUND))
+    close_place_copy_on_runner(project, place, assert_runner_lease_covers(lock_receipt, CLOSE_BOUND))
 
 
-def closed_place_copy(project: str, place: Path, config: RunnerConfig) -> None:
+def close_place_copy_on_runner(project: str, place: Path, config: RunnerConfig) -> None:
     """Close a project's place copy in a runner whose lease the caller has already checked."""
 
     guest_path = guest_place(project, place)
@@ -644,17 +648,17 @@ def closed_place_copy(project: str, place: Path, config: RunnerConfig) -> None:
     files = f"{shlex.quote(guest_path)} {shlex.quote(f'{guest_path}.lock')}"
     folder = shlex.quote(str(Path(guest_path).parent))
 
-    guest_command(f'cd "$HOME" && rm -f {files}; rmdir {folder} 2>/dev/null; true', config,
+    run_guest_command(f'cd "$HOME" && rm -f {files}; rmdir {folder} 2>/dev/null; true', config,
                   OPERATION_TIMEOUTS[RunnerOperation.REMOVAL])
 
 
 def close_cloud_place(place_id: int, lock_receipt: Path) -> None:
     """End, without saving, the runner editors open_cloud_place launched on a published place."""
 
-    closed_cloud_editors(place_id, assert_runner_lease_covers(lock_receipt, CLOUD_CLOSE_BOUND))
+    close_cloud_editors_on_runner(place_id, assert_runner_lease_covers(lock_receipt, CLOUD_CLOSE_BOUND))
 
 
-def closed_cloud_editors(place_id: int, config: RunnerConfig) -> None:
+def close_cloud_editors_on_runner(place_id: int, config: RunnerConfig) -> None:
     """End, without saving, the cloud editors on a place in a runner whose lease the caller has already checked."""
 
     survivors = stopped_survivors(guest_pids(cloud_editor_pids_script(place_id), config), config)
@@ -707,7 +711,7 @@ def launch_editor(launch: str, data: bytes | None, editor_name: str | None, expe
     try:
         known = {studio["id"] for studio in awaited_studios(connection, config, EDITOR_LIST_WAIT)}
 
-        guest_command(launch, config, OPERATION_TIMEOUTS[RunnerOperation.COPY]
+        run_guest_command(launch, config, OPERATION_TIMEOUTS[RunnerOperation.COPY]
                       + OPERATION_TIMEOUTS[RunnerOperation.LAUNCH], data)
 
         deadline = time.monotonic() + registration_wait.total_seconds()
@@ -763,7 +767,7 @@ def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path,
               f'--localPlaceFile "$HOME"/{shlex.quote(guest_path)}')
 
     return launch_editor(launch, place.read_bytes(), place.name, None, out_dir / f"launch-failure-{place.stem}.png",
-                         lambda checked: closed_place_copy(project, place, checked), config, lock_receipt,
+                         lambda checked: close_place_copy_on_runner(project, place, checked), config, lock_receipt,
                          registration_wait)
 
 
@@ -785,5 +789,5 @@ def open_cloud_place(place_id: int, universe_id: int, out_dir: Path, lock_receip
 
     return launch_editor(launch, None, None, PlaceIds(place_id=place_id, universe_id=universe_id),
                          out_dir / f"launch-failure-place-{place_id}.png",
-                         lambda checked: closed_cloud_editors(place_id, checked), config, lock_receipt,
+                         lambda checked: close_cloud_editors_on_runner(place_id, checked), config, lock_receipt,
                          registration_wait)

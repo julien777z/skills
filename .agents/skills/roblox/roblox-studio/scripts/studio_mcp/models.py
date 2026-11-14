@@ -1,6 +1,6 @@
 from collections.abc import Mapping, Sequence
 from datetime import timedelta
-from enum import StrEnum, auto
+from enum import Enum, auto
 from typing import Literal, NotRequired, TypedDict
 
 type JsonValue = str | int | float | bool | None | Sequence[JsonValue] | Mapping[str, JsonValue]
@@ -8,7 +8,7 @@ type ToolArguments = Mapping[str, JsonValue]
 type Position = tuple[float, float, float]
 
 
-class RunnerOperation(StrEnum):
+class RunnerOperation(Enum):
     """An operation in the runner that has its own time limit."""
 
     INITIALIZE = auto()
