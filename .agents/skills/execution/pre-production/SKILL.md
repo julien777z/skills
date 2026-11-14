@@ -160,7 +160,11 @@ with an obsolete owned contract or revision.
   ask for that fixes no defect, outside the change's own design and the defect's shape above.
   - **The default budget:** cleanup that fixes no defect — duplication, dead code, a misplaced
     helper, an abstraction with one implementation, layout — fits only inside the files the change
-    already edits and while it stays small beside the requested part.
+    already edits and while it stays small beside the requested part. A change to a skill edits
+    that skill's whole folder, its `SKILL.md`, references, scripts and templates alike, and
+    cleanup inside that folder is not held to staying small: an agent reads a skill as one unit,
+    so a rule restated between two of its files is tidied in the change that edits either one.
+    Cleanup in another skill keeps this budget.
   - **The widened budget**, which holds instead while a decision the user scoped to the whole
     session widens it, until they withdraw it: such cleanup fits when its fix touches about five
     files or fewer, needs no design decision from the user, does not change what the product does
