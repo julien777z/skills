@@ -8,12 +8,12 @@ React's `Node` and `ReactElement` types are not interchangeable in all package v
 
 Measure a tutorial target's actual `AbsolutePosition`/`AbsoluteSize` relative to its overlay instead of converting through an assumed 1280×720 coordinate system.
 
-Retain original artwork through narrowly scoped adapters. Mount a viewport scene once for its asset identity and destroy its models, render subscriptions, and animations on unmount. A React wrapper around an unchanged imperative screen is not a screen migration.
+Retain original artwork through narrowly scoped adapters. Mount a viewport scene once for its asset identity. A React wrapper around an unchanged imperative screen is not a screen migration.
 
 ## Interaction and presentation
 
 - Use a restrained palette, and keep panels from obscuring more of the environment than their content needs.
-- Keep stable widgets alive across frequent snapshots. Destroying and recreating expensive preview components on every click can cause blank flashes and asset reloads. Update text, health, selection, and enabled state in place; rebuild only when layout/content changes. Keep hover colors consistent with the current selected/disabled base color.
+- Keep stable widgets alive across frequent snapshots, updating them in place and rebuilding only when layout or content changes; recreating an expensive preview on every click causes blank flashes and asset reloads. Keep hover colors consistent with the current selected/disabled base color.
 - Give distinct actions recognizable effects and impact timing, and offer reduced camera shake where effects warrant it.
 - Do not add a permanent "E Interact" button when a proximity prompt already explains the action.
 - Offer only valid choices and show only confirmed actions; make an invalid selection understandable without allowing it on the server.
