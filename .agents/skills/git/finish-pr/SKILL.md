@@ -146,8 +146,9 @@ head lag and a retryable rate limit are nonterminal.
   If the local target branch has diverged, preserve its tip under a separate local branch before
   moving the target branch to the verified remote tip. Resolve these local conditions and retry
   the switch or fast-forward. A branch mismatch, local edits, or divergence does not end the refresh.
-- Verify the primary checkout is on the target branch at the fetched tip and contains the verified
-  merge. When the user is viewing another worktree in a Git client, select the primary checkout
+- Verify the primary checkout is on the target branch at the fetched tip, contains the verified
+  merge, and is clean in `git status --porcelain --untracked-files=all`. Preserve any remaining
+  local work and recheck. When the user is viewing another worktree in a Git client, select the primary checkout
   there and verify the displayed branch. Record the resulting head and every preservation branch
   or stash created. If an active Git
   operation or unavailable checkout prevents safe recovery, follow the applicable Git recovery
