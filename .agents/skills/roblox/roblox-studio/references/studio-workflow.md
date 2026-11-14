@@ -32,9 +32,9 @@ A command queue file disappearing means it was consumed, not that a long Studio 
 
 Editor `require()` caches ModuleScript values even after source synchronization. Recreate or clone the relevant module instances before relying on changed content in an editor build operation; do not mistake stale cached values for a failed source update.
 
-## Native UI fallback
+## Studio's interface and native UI fallback
 
-Read fresh accessibility state and screenshots. Native menus often expose a `Cancel` secondary action that works when a generic Escape keystroke does not. An automation click can move the cursor without delivering a game click; verify the resulting UI state, not the tool's success status.
+**Anything chosen through Studio's interface is chosen from fresh accessibility state and a fresh screenshot, never from a position remembered from an earlier run**: an experience tile, a place row, an asset, a menu item or a dialog button. Studio reorders its lists by recent use, so the spot that held one game's experience last time can hold another's now. Read the label under the pointer in a capture before clicking it, and before a destructive confirmation such as Overwrite, capture the dialog again and check that it names the intended experience and place. Native menus often expose a `Cancel` secondary action that works when a generic Escape keystroke does not. An automation click can move the cursor without delivering a game click; verify the resulting UI state, not the tool's success status.
 
 Use AppleScript/System Events or another native fallback only within the user's authorization and active tool policy. With authorized native HID input, activate and verify the exact target process immediately before sending input. Release all held keys/buttons. Identify the named main window: window 1 can be a tooltip or tiny auxiliary window. Convert downscaled screenshot coordinates to the actual window bounds before clicking. A PID-targeted event may behave differently from a foreground HID event.
 
@@ -68,7 +68,7 @@ A locked desktop affects operations that depend on that desktop. Independent gue
 
 ## Delivery
 
-**Anything chosen through Studio's interface is chosen from what a fresh capture shows, never from a position remembered from an earlier run**: an experience tile, a place row, an asset, a menu item or a dialog button. Studio reorders its lists by recent use, so the spot that held one game's experience last time can hold another's now. Read the label under the pointer in a capture before clicking it, and before a destructive confirmation such as Overwrite, capture the dialog again and check that it names the intended experience and place. To add a newly built map to an existing experience, use Studio’s Publish to Roblox As, select the verified experience, then Add as a new place. The dashboard’s Add A Place flow may list existing places to move instead. A Rojo project name does not guarantee the published place name; inspect and update the child place’s metadata after creation.
+To add a newly built map to an existing experience, use Studio’s Publish to Roblox As, select the verified experience, then Add as a new place. The dashboard’s Add A Place flow may list existing places to move instead. A Rojo project name does not guarantee the published place name; inspect and update the child place’s metadata after creation.
 
 Save the actual Studio place, compare expected source revisions, and confirm temporary fixtures/bridge commands are absent. Retain a reproducible build and editable asset originals. Publish only to the authorized place, owner, and visibility. Inspect terminal publication success, destination, and version. Do not routinely launch the published client; use the narrow live-test criteria in [testing guidance](testing.md). A saved file, successful upload, Studio test, and live-client test are distinct evidence.
 
