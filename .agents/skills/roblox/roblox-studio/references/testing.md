@@ -125,6 +125,15 @@ world's data first and in captures second:
   places them, and match parts across the two. Every difference must be one the change intends; an
   area or object that differs for any other reason is a defect. Captures alone never establish
   placement: a pair can look the same while parts moved, and look different while nothing did.
+- **The diff runs for every published place, each against its own build.** Build that place's own
+  project at the commit just before the change and at the change, each with that commit's world,
+  art and terrain, dump each build in its own runner lease, waiting for a busy runner rather than
+  sharing one, and report each place separately. One combined build, such as a development place
+  holding every map, never stands in for them: when it carries a stale copy of a map on both sides,
+  the diff shows nothing while the map's own place loses or regains content. Two matching rules keep
+  a layout change from reading as moves: a world from before the area files exist is read as one
+  unfiled area, and an older copy of an asset that nests its model under a model of the same name
+  matches the marker that replaced it.
 - **A view that looks different gets a Play dump** of the parts around it, read on the server and on
   a client, in both places: present, anchored and in place on both sides means the capture, not the
   world, differs.

@@ -28,10 +28,10 @@ Fully managed Rojo leaves several choices open; settle them this way:
 
 A pipeline that keeps whole-world archives, splices parts of them in place or exports maps by cutting a world apart is converted, never extended:
 
-1. Measure the starting world from a `rojo build` of each place: how reused art is copied, which per-placement changes the copies carry, which role folders hold them, and whether every asset name is a safe file name.
+1. Measure the starting world from a `rojo build` of each place: how reused art is copied, which per-placement changes the copies carry, which role folders hold them, and whether every asset name is a safe file name. Where the same map's content lives in more than one source, such as a combined development place and the map's own place, compare those sources first: a fix saved to only one leaves the other stale, and the conversion reads each map from the source its published place builds from.
 2. Move the runtime first: the shared lookup helper and every consumer of the old role folders, and the server's marker swap wired into world start.
 3. Write the authoring steps that turn each copy into a marker, proving each against the copy it replaces, and that file a built world into map, area and role. The project's world builder ends with both.
-4. Run the conversion once from a script kept outside the repository: build the old place, run both steps in an Edit session, and save every area and asset file. Keep each Studio call short enough for the runner lease.
+4. Run the conversion once from a script kept outside the repository: build each published place from its old project, run both steps in an Edit session, and save every area and asset file. Keep each Studio call short enough for the runner lease.
 5. Mount the art and area directories in every Rojo project, and delete what the layout supersedes: the whole-world archives, splice and export tools, and any receiver that carried files back from Studio.
 6. Verify as the testing reference's [placement and before-and-after verification](testing.md#placement-and-before-and-after-verification) says.
 
