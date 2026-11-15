@@ -21,7 +21,7 @@ Fully managed Rojo leaves several choices open; settle them this way:
 - **Lookups go through one shared helper** that finds an object by role and name across every area, and observes role folders as they stream in on the client; no code indexes a role folder of the world directly.
 - **Area files live outside the code tree**, such as `world/<map>/<area>.rbxm` beside it, because the linters, the type checker and the Rojo sourcemap own the code tree.
 - **Every object is filed by one deterministic rule**, most specific region first: the interior a door leads into, then a named area, then a district, then the map's base area. An object named for a world point, such as an NPC's post or an encounter's arena, files at that point; any other model files at its bounding-box center. An object no area holds is refused with its name and position and the map volume widened, never silently dropped.
-- **A builder change reaches a level only once that level is rebuilt, or edited and saved.** Changing a builder changes no saved area file. Apply it by running the builder over the affected areas in an editor opened on the built place and saving those areas; re-saving rewrites only the files that changed, so the diff shows exactly the edit.
+- **A builder change reaches a level only once that level is rebuilt, or edited and saved.** Changing a builder changes no saved area file. Apply it by running the builder over the affected pieces in an editor opened on the built place and saving their areas as [saving files through MCP](#saving-files-through-mcp) says, so the diff holds only the builder's change.
 - **`rbx-merge`** is pinned with the project's tools (`rokit add kennethloeffler/rbx-merge`). One person runs `rbx-merge install --write-gitattributes` once and commits the `.gitattributes` block; every clone runs `rbx-merge install`, which belongs in the project's install recipe. In a git worktree it writes to the main clone's `.git/info/attributes`, which covers every worktree. Where no prebuilt binary exists, such as Linux arm64, the bootstrap builds it with `cargo install --git <rbx-merge repository> --tag <pinned tag> rbx_merge_cli`, which needs Rust 1.85 or newer. `git diff` on an area file then shows a readable instance tree.
 
 ### Converting an older pipeline
@@ -130,6 +130,25 @@ way:
 3. Reassemble and decode, then check the byte count and that the file starts with the `<roblox!`
    signature before replacing the file. Keep the original until the check passes, and clear the
    value in `shared` even after a failure.
+
+A save writes a whole file from what the editor holds, so it carries everything that differs from
+the file, not only the edit; on a branch other workers also edit, a stale or wide save silently
+overwrites their work:
+
+- **Start from the current branch head.** Fetch, restore each file the change touches to its
+  committed copy, and open a fresh build of the head; a build of an older checkout carries that
+  checkout's copy of every area into the save.
+- **Save only the area files the change touches**, never every area. An edit to one piece saves the
+  one area that holds it.
+- **Change only the intended pieces.** Select a piece by an exact identity, such as its name and
+  prior position, never by a search that can match a similar piece, and stop before saving when the
+  selection is not the one expected. A builder rerun that would rebuild more than the intended
+  pieces is narrowed to those pieces, so drift elsewhere in its area stays out of the file.
+- **Check the diff before committing.** Every area file the change does not touch is byte-identical
+  (`git diff --stat` lists only the touched files), and each touched file differs only by the
+  intended change, read through `rbx-merge`'s diff. A change wider than a few pieces also runs the
+  per-place placement diff the [testing reference](testing.md#placement-and-before-and-after-verification)
+  describes.
 
 Wrap these steps in one repository helper that runs a script in an editor and saves named area and
 asset files, so a conversion, a builder rerun and an ordinary edit all save the same way.
