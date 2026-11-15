@@ -2,7 +2,7 @@
 
 ## Identity, source, and assets
 
-Record the intended experience (universe), place IDs, owner, local file, and build paths. Verify the active Studio title and place ID before writing or publishing. Create a new experience when requested; never copy an excluded recent project. Updates must preserve existing saved progress and authored artwork.
+Record the intended experience (universe), place IDs, owner, local file, and build paths. Verify the active Studio title and place ID before writing or publishing from Studio. Create a new experience when requested; never copy an excluded recent project. Updates must preserve existing saved progress and authored artwork.
 
 Every place, for iteration and for delivery alike, is a `rojo build` of the repository's code, art, area and terrain files, laid out as [the project layout](#project-layout) says; test a built place's contents in a fresh session when serialization is affected. Check serializer compatibility against the installed versions and current official releases before diagnosing an asset as corrupt.
 
@@ -88,6 +88,14 @@ above says.
 A locked desktop affects operations that depend on that desktop. Independent guest access follows the [testing reference](testing.md); independent file, build, and API work can continue.
 
 ## Delivery
+
+**Existing places publish through Open Cloud from the project's deploy workflow**, and need no Studio runner:
+
+- **Triggers.** A push to the default branch publishes to staging; a manual dispatch takes an environment input and publishes the dispatched branch. The job runs under that GitHub environment, runs the project's tests and integrity check, builds every place with `rojo build` as a binary `.rbxl`, and calls one checked-in script.
+- **The script** reads the universe and place IDs from the project's own configuration, and stops with a clear message for an environment that names no universe. It publishes each place, maps before the start place, with `POST https://apis.roblox.com/universes/v1/{universeId}/places/{placeId}/versions?versionType=Published`, the place file as the body and the key in the `x-api-key` header. It then reads each place's update time back through Open Cloud v2 `GetPlace` and writes a table of places and times to the run's summary.
+- **Binary builds.** The endpoint refuses a place over 10 MiB, and an XML `.rbxlx` of the same place is far larger.
+- **Key scope.** The project's Open Cloud key gets `universe-places` write on each experience the workflow publishes to, added in the Creator Dashboard. Adding a permission keeps the key's secret, so the stored secret keeps working. The Assets API's place route is never used: its key permission covers every asset the account can reach.
+- **Setting it up.** A project without the workflow gets it as source work, landed on the default branch skeleton-first as the GitHub rules' **Workflows** section says, so the real workflow can be tested by dispatching it on its branch.
 
 To add a newly built map to an existing experience, use Studio’s Publish to Roblox As, select the verified experience, then Add as a new place. The dashboard’s Add A Place flow may list existing places to move instead. A Rojo project name does not guarantee the published place name; inspect and update the child place’s metadata after creation.
 

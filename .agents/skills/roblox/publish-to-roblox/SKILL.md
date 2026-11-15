@@ -54,16 +54,23 @@ no publish to any other experience.
    push it, so the build carries every destination and the next publish finds them.
 2. **Freeze the build.** Take the latest pushed head of the session's branch, and record it.
    Build the publishable places from that head with the project's own build command and its
-   integrity check, so they hold exactly that head's code, art, area and terrain files,
+   integrity check, which the deploy workflow does in its own run, so they hold exactly that head's code, art, area and terrain files,
    never a previously saved place copy.
-3. **Publish from the isolated runner**, as `roblox-studio` sets up, holding its runner lock: open
-   each built place in the runner's signed-in Studio and publish it over its place in the chosen
-   universe, maps before the start place. Read the place and universe IDs in that editor before
-   and after each publish. Grant asset permissions the publish dialog asks for when they cover the
-   project's own assets; leave the audience setting as it is.
-4. **Verify** each place's new version or update time from Roblox, not from the dialog's success.
-5. **Clean up, then release.** Close the editors the publish opened and confirm the runner is idle,
-   then release its lock; a failed publish ends the same way.
+3. **Publish through the project's deploy workflow** when it has one, as the Open Cloud route in
+   `roblox-studio`'s source, editor, and publication reference describes: a push to the default
+   branch already publishes to staging, and otherwise dispatch the workflow on the frozen head's
+   branch with the chosen environment. Follow the run to its end and confirm it ran on the frozen
+   head. A project with no such workflow gets one set up as that reference says, so later publishes
+   leave Studio out; until it is on the default branch, publish this run from Studio as step 4 says.
+4. **Publish from the isolated runner** only where no deploy workflow exists yet, as `roblox-studio`
+   sets up, holding its runner lock: open each built place in the runner's signed-in Studio and
+   publish it over its place in the chosen universe, maps before the start place. Read the place
+   and universe IDs in that editor before and after each publish. Grant asset permissions the
+   publish dialog asks for when they cover the project's own assets; leave the audience setting as
+   it is. Close the editors the publish opened and confirm the runner is idle, then release its
+   lock; a failed publish ends the same way.
+5. **Verify** each place's new version or update time from Roblox, not from the run's or the
+   dialog's success, and compare it with the times the workflow run's summary reports.
 
 ## Output
 
@@ -74,6 +81,7 @@ no publish to any other experience.
 | --- | --- | --- |
 | [<place>](<place URL>) | <id> | <time> |
 
+Route: [<deploy workflow run>](<run URL>) | Studio from the isolated runner
 Created: <each experience or place this run created, as a link, or none>
 Play: [<start place>](<game URL>)
 Not included: <each commit after the frozen head as a link to it, or none>

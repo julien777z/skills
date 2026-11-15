@@ -16,7 +16,10 @@ alwaysApply: true
   where needed for that branch route, and execute the selected branch's workflow and checked-in
   entrypoint. Preserve scheduled and default-branch automatic behavior and repository, environment
   and source authorization bindings. Default-branch-only execution or merging is never a substitute
-  for an available selected-branch route.
+  for an available selected-branch route. GitHub offers a manual dispatch only for a workflow file
+  the default branch holds, so a new dispatchable workflow lands there first as its own first
+  version, with its final file name and triggers and one step that reports what it would do; the
+  real workflow is then built on its branch and tested by dispatching it there.
 
 - Build, publish, and deploy through the repository's existing entrypoint and supported ref
   selection. Use its GitHub Actions workflow when that is the designated route; a native CLI the
