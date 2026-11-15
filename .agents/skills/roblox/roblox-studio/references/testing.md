@@ -14,7 +14,7 @@ Mobile testing is selective, not a required step in every iteration. For a game 
 
 - **UI changes:** test the affected screens and interactions on desktop and mobile, including layout, touch targets, safe areas, scrolling, and modal behavior. A shared UI component change should cover its affected consumers; it does not require replaying the whole game.
 - **Significant changes:** include mobile coverage for an entire new map, a substantial world expansion, major gameplay/input changes, or changes to streaming/rendering/performance that can behave differently on mobile. Choose representative journeys and device checks for the actual impact.
-- **Small shared-world fixes:** grass clipping, a misplaced prop, a sign support, or a local terrain seam normally need desktop visual inspection and relevant walking/collision checks only. Do not repeat the same verification on mobile when the geometry and behavior are shared and there is no device-specific concern.
+- **Small shared-world fixes:** grass clipping, a misplaced prop, a sign support, or a local terrain seam normally need the grounding and blocking audit below, desktop visual inspection and relevant walking checks only. Do not repeat the same verification on mobile when the geometry and behavior are shared and there is no device-specific concern.
 - **Mobile defects or explicit requests:** reproduce and verify on the affected mobile layout/device regardless of change size.
 
 After the relevant checks pass, continue to delivery. Repeat or broaden testing only when a subsequent change invalidates passing evidence or an observed failure requires investigation; do not restart a blanket desktop/mobile suite at every follow-up.
@@ -134,6 +134,20 @@ world's data first and in captures second:
   a layout change from reading as moves: a world from before the area files exist is read as one
   unfiled area, and an older copy of an asset that nests its model under a model of the same name
   matches the marker that replaced it.
+- **A grounding and blocking audit in Play decides whether pieces rest and block.** Any change to a
+  world runs it, never a visual pass, after the runtime swap has placed every piece. It checks every
+  placed art piece, water piece, resting single part and pickup, and skips characters and creatures,
+  actors staged to hover, worn items, and pieces that hang, whether marked as hanging or with
+  geometry below their own origin. For each piece it casts down from 2.5 studs above each foot, a
+  plant's feet being its stem bottoms and any other piece's its lowest parts, then from its middle,
+  then a terrain-only cast from high above. Terrain, solid or visible structural parts, a solid
+  resting piece, flat kit meshes at most 1 stud tall and floors count as support; plants, other
+  box-collision kit meshes and invisible colliders do not. A piece floats when its base is more than
+  0.3 studs above its support, a pickup more than 1.2 and a water piece more than 0.25 off the water
+  either way, and is buried when it sinks by more than a set share of its own height. A blocking pass
+  reports every floor-standing piece at least 2 studs tall whose collision reaches less than 70% of
+  its height. Findings group by piece, area and problem, each with its count, the worst gap and three
+  sample positions. Fix them in the builders and rerun until the audit reports none.
 - **A view that looks different gets a Play dump** of the parts around it, read on the server and on
   a client, in both places: present, anchored and in place on both sides means the capture, not the
   world, differs.
