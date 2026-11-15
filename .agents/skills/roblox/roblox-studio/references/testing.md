@@ -148,6 +148,11 @@ world's data first and in captures second:
   reports every floor-standing piece at least 2 studs tall whose collision reaches less than 70% of
   its height. Findings group by piece, area and problem, each with its count, the worst gap and three
   sample positions. Fix them in the builders and rerun until the audit reports none.
+- **A quest-gate audit in Play decides whether quest objects are staged.** It lists every object a
+  quest step references that has no gate, and every one a fresh profile can see. A change to quests
+  or to the objects they use runs it until it reports none, then confirms in Play with a fresh
+  profile and with a profile at each affected step that each object appears when its step becomes
+  active and stays once the quest is done.
 - **A view that looks different gets a Play dump** of the parts around it, read on the server and on
   a client, in both places: present, anchored and in place on both sides means the capture, not the
   world, differs.
