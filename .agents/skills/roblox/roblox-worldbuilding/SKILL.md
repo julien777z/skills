@@ -33,7 +33,16 @@ space before adding decorative props. Apply the functional-placement criteria in
 the map-making reference; isolated asset quality, collision checks, and successful
 interactions do not establish a coherent arrangement.
 
-Read [Map making and surface integration](references/map-making.md) for composition, traversal, terrain joins, collision, and inspection. Before accepting a new map or a visual pass, a new or rebuilt interior included, run its **Scene audit** and then a fresh-eye review: invoke `subagent-matrix` at its standard capability level for one reviewer given only the audit's captures, with places of one kind side by side, and the game's stated art direction or the reference the user gave, never the build notes, and ask what reads as unfinished, repetitive, empty, off-palette or wrongly turned. Fix confirmed findings and recapture; a finding you would reject goes to `council` in **Ask** mode and its ruling is followed. Read [world-space text inspection](references/world-space-text.md) for authored signs or runtime messages in the world. Use shared map/model frames and named anchors as described in `luau`; update geometry and its gameplay consumers together.
+**Every decoration fits the setting it stands in.** It is something the people of that place would
+plausibly have made, used and left there, so its kind, materials and wear match the setting:
+weathered and made for the outdoors outside, indoor furnishings indoors, and together the pieces
+tell what the place is for. A miners' camp on a mountain path holds a pick rack, a lantern on a
+nail, ore carts and a patched canvas tarp, never a velvet armchair from a manor's kit. A piece
+borrowed from another setting's kit is placed only where it would belong in the new one; that it was
+on hand is never the reason. When no fitting piece exists, make one rather than substitute what is
+available.
+
+Read [Map making and surface integration](references/map-making.md) for composition, traversal, terrain joins, collision, and inspection. Before accepting a new map or a visual pass, a new or rebuilt interior included, run its **Scene audit** and then a fresh-eye review: invoke `subagent-matrix` at its standard capability level for one reviewer given only the audit's captures, with places of one kind side by side, and the game's stated art direction or the reference the user gave, never the build notes, and ask what reads as unfinished, repetitive, empty, off-palette or wrongly turned, and of each prop whether a player would expect it in that place; an out-of-place prop is a finding. Fix confirmed findings and recapture; a finding you would reject goes to `council` in **Ask** mode and its ruling is followed. Read [world-space text inspection](references/world-space-text.md) for authored signs or runtime messages in the world. Use shared map/model frames and named anchors as described in `luau`; update geometry and its gameplay consumers together.
 
 ## Blender and economical meshes
 
