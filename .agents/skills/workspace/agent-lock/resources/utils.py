@@ -4,7 +4,7 @@ from datetime import UTC, datetime
 from fcntl import LOCK_EX, LOCK_UN, flock
 from json import loads
 from math import isfinite
-from os import fdopen, fsync, killpg, replace
+from os import fdopen, fsync, kill, killpg, replace
 from pathlib import Path
 from signal import SIGINT, SIGKILL, SIGTERM, signal
 from subprocess import Popen, TimeoutExpired
@@ -72,6 +72,19 @@ def read_text_field(record: Mapping[str, JsonValue], key: str) -> str:
     return value
 
 
+def process_alive(pid: int) -> bool:
+    """Report whether a local process still exists."""
+
+    try:
+        kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+
+    return True
+
+
 def positive_seconds(value: str) -> float:
     """Parse a positive finite duration supplied by a CLI."""
 
@@ -94,8 +107,10 @@ def run_command(
         raise InterruptedError(signum)
 
     previous_handlers = {signum: signal(signum, _interrupt) for signum in (SIGINT, SIGTERM)}
+
     try:
         remaining = (expires_at - datetime.now(UTC)).total_seconds()
+
         if remaining <= 0:
             return CommandResult(status=Outcome.EXPIRED, command_exit_code=124, interrupted_by=None)
 

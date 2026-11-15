@@ -1,6 +1,7 @@
 from datetime import UTC, datetime, timedelta
 from hashlib import sha256
 from json import dumps
+from os import getpid
 from pathlib import Path
 from time import monotonic, sleep
 from typing import Final
@@ -12,16 +13,23 @@ from models.ownership import (
     Outcome,
     Ownership,
     Receipt,
+    Ticket,
+    Waiter,
 )
 from utils import (
+    JsonValue,
     atomic_write,
     exclusive_file,
+    process_alive,
     read_json_record,
     read_text_field,
 )
 
 DEFAULT_TTL: Final = timedelta(minutes=10)
 MAX_TTL: Final = timedelta(minutes=15)
+POLL_SECONDS: Final = 0.25
+TICKET_RENEWAL: Final = timedelta(seconds=5)
+TICKET_GRACE: Final = timedelta(seconds=30)
 
 
 def resource_path(directory: Path, key: str) -> Path:
@@ -39,6 +47,125 @@ def state_path(path: Path) -> Path:
     return path.with_name(path.name + ".json")
 
 
+def queue_path(path: Path) -> Path:
+    """Locate the arrival-order queue beside its persistent mutex."""
+
+    return path.with_name(path.name + ".queue.json")
+
+
+def read_timestamp(record: dict[str, JsonValue], key: str) -> datetime:
+    """Read a timezone-aware ISO-8601 timestamp from a decoded JSON record."""
+
+    value = datetime.fromisoformat(read_text_field(record, key))
+
+    if value.tzinfo is None:
+        raise ValueError(f"{key} must include a timezone")
+
+    return value
+
+
+def read_queue(path: Path) -> list[Ticket]:
+    """Validate the persisted queue of waiters, oldest first."""
+
+    try:
+        record = read_json_record(queue_path(path))
+    except FileNotFoundError:
+        return []
+
+    if record is None:
+        return []
+
+    version = record.get("version")
+    entries = record.get("tickets")
+
+    if (
+        not isinstance(version, int)
+        or isinstance(version, bool)
+        or version != 1
+        or not isinstance(entries, list)
+    ):
+        raise ValueError("Unsupported queue record")
+
+    tickets: list[Ticket] = []
+
+    for entry in entries:
+        if not isinstance(entry, dict):
+            raise ValueError("Queue tickets must be JSON objects")
+
+        pid = entry.get("pid")
+
+        if pid is not None and (not isinstance(pid, int) or isinstance(pid, bool) or pid <= 0):
+            raise ValueError("A queue ticket's pid must be a positive integer or null")
+
+        tickets.append(
+            Ticket(
+                receipt=read_text_field(entry, "receipt"),
+                owner=read_text_field(entry, "owner"),
+                activity=read_text_field(entry, "activity"),
+                pid=pid,
+                enqueued_at=read_timestamp(entry, "enqueued_at"),
+                renewed_at=read_timestamp(entry, "renewed_at"),
+            )
+        )
+
+    return tickets
+
+
+def write_queue(path: Path, tickets: list[Ticket]) -> None:
+    """Persist the queue of waiters, oldest first."""
+
+    atomic_write(queue_path(path), dumps({"version": 1, "tickets": tickets}, default=datetime.isoformat))
+
+
+def is_live(ticket: Ticket, now: datetime) -> bool:
+    """Keep a ticket while its waiter is polling or recently returned between bounded calls."""
+
+    if now - ticket["renewed_at"] > TICKET_GRACE:
+        return False
+
+    return ticket["pid"] is None or process_alive(ticket["pid"])
+
+
+def queued_waiters(tickets: list[Ticket], now: datetime) -> list[Waiter]:
+    """Report live waiters with their one-based queue positions."""
+
+    live = [ticket for ticket in tickets if is_live(ticket, now)]
+
+    return [
+        Waiter(
+            position=position,
+            owner=ticket["owner"],
+            activity=ticket["activity"],
+            enqueued_at=ticket["enqueued_at"],
+        )
+        for position, ticket in enumerate(live, start=1)
+    ]
+
+
+def take_ticket(tickets: list[Ticket], request: Acquisition, now: datetime) -> Ticket:
+    """Return this receipt's place in the queue, joining at the back when it has none."""
+
+    receipt = str(request["receipt_path"])
+    ticket = next((ticket for ticket in tickets if ticket["receipt"] == receipt), None)
+
+    if ticket is None:
+        ticket = Ticket(
+            receipt=receipt,
+            owner=request["owner"],
+            activity=request["activity"],
+            pid=getpid(),
+            enqueued_at=now,
+            renewed_at=now,
+        )
+
+        tickets.append(ticket)
+    elif ticket["pid"] != getpid() or now - ticket["renewed_at"] >= TICKET_RENEWAL:
+        ticket["pid"] = getpid()
+        ticket["renewed_at"] = now
+
+    return ticket
+
+
 def read_ownership(path: Path) -> Ownership | None:
     """Validate persisted ownership before making an access decision."""
 
@@ -51,14 +178,12 @@ def read_ownership(path: Path) -> Ownership | None:
         return None
 
     version = record.get("version")
+
     if not isinstance(version, int) or isinstance(version, bool) or version != 1:
         raise ValueError("Unsupported ownership record")
 
-    acquired_at = datetime.fromisoformat(read_text_field(record, "acquired_at"))
-    expires_at = datetime.fromisoformat(read_text_field(record, "expires_at"))
-
-    if acquired_at.tzinfo is None or expires_at.tzinfo is None:
-        raise ValueError("Ownership timestamps must include a timezone")
+    acquired_at = read_timestamp(record, "acquired_at")
+    expires_at = read_timestamp(record, "expires_at")
 
     if expires_at <= acquired_at:
         raise ValueError("Ownership must expire after it was acquired")
@@ -122,8 +247,11 @@ def acquire_resource(request: Acquisition) -> LockResult:
         with exclusive_file(path):
             current = read_ownership(path)
             now = datetime.now(UTC)
+            stored = read_queue(path)
+            tickets = [ticket.copy() for ticket in stored if is_live(ticket, now)]
+            ticket = take_ticket(tickets, request, now)
 
-            if current is None or now >= current["expires_at"]:
+            if tickets[0] is ticket and (current is None or now >= current["expires_at"]):
                 ownership = Ownership(
                     version=1,
                     key=request["key"],
@@ -135,6 +263,7 @@ def acquire_resource(request: Acquisition) -> LockResult:
                 )
                 receipt = Receipt(lock_file=str(path), key=request["key"], token=ownership["token"])
 
+                write_queue(path, tickets[1:])
                 atomic_write(state_path(path), dumps(ownership, default=datetime.isoformat))
                 atomic_write(receipt_path, dumps(receipt))
 
@@ -145,15 +274,26 @@ def acquire_resource(request: Acquisition) -> LockResult:
                     expired_owner=current["owner"] if current else None,
                 )
 
-        remaining = deadline - monotonic()
+            remaining = deadline - monotonic()
 
-        if remaining <= 0:
-            result = ownership_status(current)
-            result["status"] = Outcome.BUSY
+            if remaining <= 0:
+                ticket["pid"] = None
+                ticket["renewed_at"] = now
 
-            return result
+                write_queue(path, tickets)
 
-        sleep(min(0.25, remaining))
+                result = ownership_status(current)
+                result["status"] = Outcome.BUSY
+                result["queue_position"] = next(
+                    position for position, queued in enumerate(tickets, start=1) if queued is ticket
+                )
+
+                return result
+
+            if tickets != stored:
+                write_queue(path, tickets)
+
+        sleep(min(POLL_SECONDS, remaining))
 
 
 def check_ownership(receipt: Receipt) -> LockResult:

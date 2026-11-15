@@ -39,6 +39,30 @@ class Receipt(TypedDict):
     token: str
 
 
+class Ticket(TypedDict):
+    """One waiter's place in a resource's arrival-order queue.
+
+    `pid` names the process polling for the waiter, or is `None` while the waiter is between
+    bounded calls.
+    """
+
+    receipt: str
+    owner: str
+    activity: str
+    pid: int | None
+    enqueued_at: datetime
+    renewed_at: datetime
+
+
+class Waiter(TypedDict):
+    """A queued waiter as `status` reports it."""
+
+    position: int
+    owner: str
+    activity: str
+    enqueued_at: datetime
+
+
 class Acquisition(TypedDict):
     """Validated settings for waiting on and acquiring a resource."""
 
@@ -59,6 +83,8 @@ class LockResult(TypedDict):
     remaining_seconds: NotRequired[float]
     receipt: NotRequired[str]
     expired_owner: NotRequired[str | None]
+    queue_position: NotRequired[int]
+    waiters: NotRequired[list[Waiter]]
     message: NotRequired[str]
 
 

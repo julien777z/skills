@@ -1,5 +1,5 @@
 from argparse import ArgumentParser, ArgumentTypeError, Namespace
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 from json import dumps
 from os import environ
 from pathlib import Path
@@ -11,7 +11,9 @@ from locks import (
     acquire_resource,
     check_ownership,
     ownership_status,
+    queued_waiters,
     read_ownership,
+    read_queue,
     read_receipt,
     release_ownership,
     resource_path,
@@ -134,6 +136,7 @@ def execute(options: Namespace, child_command: list[str]) -> tuple[LockResult | 
 
             with exclusive_file(path):
                 result = ownership_status(read_ownership(path))
+                result["waiters"] = queued_waiters(read_queue(path), datetime.now(UTC))
 
         case _:
             raise ValueError("Unknown lock command")
