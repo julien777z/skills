@@ -767,6 +767,15 @@ Prefer the [built-in Studio MCP server](https://create.roblox.com/docs/studio/mc
 
 If an installed isolated runner fails a capability, inspect and recover that capability in the runner. A single editor answering MCP does not establish that multiplayer windows or guest rendering work. Keep evidence separate for input, capture, rendering, isolation, Studio Play, and a published client.
 
+**Keep one StudioMCP running in the guest for as long as the VM runs.** Every editor reaches Studio
+MCP through one helper port that the oldest running `StudioMCP` process holds, and when that process
+exits every editor drops its connection and reconnects, losing the calls in flight from every other
+session; Studio's log shows it as `Failed ws recv` on `localhost:13469`, and then `Connection
+refused` while no process holds the port. Checks in several editors at once open and close sessions
+constantly, so each session first makes sure a `StudioMCP` that never exits is running, started
+detached with its input held open (`tail -f /dev/null | StudioMCP`) and its process recorded, as
+`studio_mcp` does; it then holds the port while other sessions come and go.
+
 ## Connect to the intended editor
 
 On macOS installations, the stdio executable may be `/Applications/RobloxStudio.app/Contents/MacOS/StudioMCP`; discover the installed location before connecting.
