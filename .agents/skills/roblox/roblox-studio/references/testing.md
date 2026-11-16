@@ -668,15 +668,15 @@ pool has editors.
   checkout's tree; the copy is its own folder, with the session's record outside it. Never mirror by
   tracked files or by `.gitignore`: installed packages and generated code are ignored by git but are
   Rojo inputs.
-- **Connect each editor's plugin to its own server.** An older Rojo plugin can share the toolbar
+- **Judge each editor's plugin by its own connection.** An older Rojo plugin can share the toolbar
   label, so open the panel whose title shows the pinned version. A local place file has place ID 0,
-  which the plugin's automatic reconnect skips, and nothing but its panel sets the port, so the
-  connection is a short step under the guest's focus lock: bring that editor to the front, end any
-  session the panel shows with another server, enter the editor's port, press **Connect**. Judge
-  the connection by that editor's own process holding a connection to its own port
-  (`lsof -a -p <pid> -iTCP:<port>`); any Studio connected to the port is not evidence, since another
-  editor's plugin can be. When the plugin cannot connect, the sync writes every differing script
-  over Studio MCP instead.
+  which the plugin's automatic reconnect skips, and only its panel sets the port, so a connection
+  takes input posted inside the guest with that editor in front, under the guest's focus lock. Count
+  it only when that editor's own process holds a connection to its own server's port
+  (`lsof -a -p <pid> -iTCP:<port>`): any Studio connected to the port is not evidence, and a panel
+  left on Rojo's default port connects an editor to another editor's server, which then writes
+  another checkout's code into it. An editor whose plugin is not connected that way gets every
+  differing script written over Studio MCP at each sync, which needs no focus.
 - **Check the session's parts, and restore them with one command.** The editor can be gone, the
   server stopped, or the plugin disconnected; read each from the guest: the editor in
   `list_roblox_studios`, the server's process, and the plugin's connection as the bullet above
