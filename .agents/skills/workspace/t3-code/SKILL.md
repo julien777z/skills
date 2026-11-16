@@ -81,13 +81,15 @@ page. The desktop **Environments** list and **Linked environments** are separate
 
 For a desktop connection, open **More actions** for the matching entry and select **Remove from
 this device**. Read the confirmation before applying it: this forgets the pairing, credentials,
-and cached threads on that device. The environment switch only hides its threads. Verify the
-target disappears from the **Environments** page and that the other entries are still present.
+and cached threads on that device. Switch it off to keep the connection saved. A device
+registered with T3 Connect stays on the account and keeps its host space. Verify the target
+disappears from the **Environments** page and that the other entries are still present.
 
 For a server-side link, match the environment ID in `t3 environment list`, use
-`t3 environment unlink <environment-id>`, and read the list again. Revoke the pairing on the
-remote environment only when the request includes ending that remote access and the server is
-reachable. Removing a connection does not retire its host or change its Tailscale registration.
+`t3 environment unlink <environment-id>`, and read the list again. When the request also includes
+ending the pairing session and the server is reachable, revoke it on the remote environment's
+**Sharing & access** page. Removing a connection does not retire its host or change its Tailscale
+registration.
 
 ## Provider cooldown recovery
 
