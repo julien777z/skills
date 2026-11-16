@@ -58,7 +58,7 @@ POLL_INTERVAL: Final[timedelta] = timedelta(seconds=2)
 # Rojo's plugin offers this port first; each editor of the pool serves on its own port above it.
 ROJO_DEFAULT_PORT: Final[int] = 34872
 FOCUS_LEASE: Final[timedelta] = timedelta(seconds=120)
-DEFAULT_REGISTRATION_WAIT: Final[timedelta] = timedelta(seconds=180)
+DEFAULT_REGISTRATION_WAIT: Final[timedelta] = timedelta(seconds=120)
 EDITOR_LIST_WAIT: Final[timedelta] = timedelta(seconds=20)
 GUEST_NAME: Final[re.Pattern[str]] = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*")
 EXTENDED_REGEX_SPECIAL: Final[re.Pattern[str]] = re.compile(r"([.^$*+?()\[\]{}|\\])")
@@ -766,8 +766,8 @@ def close_cloud_editors_on_runner(place_id: int, config: RunnerConfig) -> None:
         raise RuntimeError(f"The editor for place {place_id} is still open: {sorted(survivors)}")
 
 
-def open_bound(registration_wait: timedelta) -> timedelta:
-    """Return the longest an editor launch can take, closing the editor after a failure included."""
+def launch_bound(registration_wait: timedelta) -> timedelta:
+    """Return the longest an editor launch can take once it holds the guest's focus, closing it after a failure."""
 
     if registration_wait < timedelta():
         raise ValueError("Wait a duration of zero or more for the editor to register")
@@ -782,6 +782,12 @@ def open_bound(registration_wait: timedelta) -> timedelta:
 
     return (OPERATION_TIMEOUTS[RunnerOperation.PROCESS_LIST] + editor_snapshot + launch + registration_wait
             + registering_call + first_probe + failure_cleanup)
+
+
+def open_bound(registration_wait: timedelta) -> timedelta:
+    """Return the longest an editor open can take, waiting for the guest's focus and closing it after a failure."""
+
+    return LOCK_WAIT + launch_bound(registration_wait) + OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK]
 
 
 def reported_place_ids(connection: StudioMcpConnection, studio_id: str, config: RunnerConfig) -> PlaceIds | None:
@@ -865,9 +871,12 @@ def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path,
               f'cat > {shlex.quote(guest_path)} && open -n -a {shlex.quote(STUDIO_APP)} --args --task EditFile '
               f'--localPlaceFile "$HOME"/{shlex.quote(guest_path)}')
 
-    return launch_editor(launch, place.read_bytes(), place.name, None, out_dir / f"launch-failure-{place.stem}.png",
-                         lambda checked: close_place_copy_on_runner(project, place, checked), config, lock_receipt,
-                         registration_wait)
+    # Editors starting together refresh Studio's shared sign-in at once, and Roblox revokes a refresh token used twice.
+    with focused_input(lock_receipt, f"Launch {place.name}", launch_bound(registration_wait)):
+        return launch_editor(launch, place.read_bytes(), place.name, None,
+                             out_dir / f"launch-failure-{place.stem}.png",
+                             lambda checked: close_place_copy_on_runner(project, place, checked), config, lock_receipt,
+                             registration_wait)
 
 
 def open_cloud_place(place_id: int, universe_id: int, out_dir: Path, lock_receipt: Path,
@@ -886,7 +895,8 @@ def open_cloud_place(place_id: int, universe_id: int, out_dir: Path, lock_receip
     launch = (f"open -n -a {shlex.quote(STUDIO_APP)} --args --task EditPlace --placeId {place_id} "
               f"--universeId {universe_id}")
 
-    return launch_editor(launch, None, None, PlaceIds(place_id=place_id, universe_id=universe_id),
-                         out_dir / f"launch-failure-place-{place_id}.png",
-                         lambda checked: close_cloud_editors_on_runner(place_id, checked), config, lock_receipt,
-                         registration_wait)
+    with focused_input(lock_receipt, f"Launch place {place_id}", launch_bound(registration_wait)):
+        return launch_editor(launch, None, None, PlaceIds(place_id=place_id, universe_id=universe_id),
+                             out_dir / f"launch-failure-place-{place_id}.png",
+                             lambda checked: close_cloud_editors_on_runner(place_id, checked), config, lock_receipt,
+                             registration_wait)
