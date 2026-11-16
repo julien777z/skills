@@ -212,8 +212,9 @@ alwaysApply: true
 - A hold does not authorize merging the source pull request to unblock the agent-configuration pull request. Finish both pull requests' independent checks, report the dependency, and leave the source pull request reviewable until its merge is separately authorized. After the source pull request merges, continue the held one under the selection rule above: incorporate the updated base and rerun the affected gates before using the agent-configuration merge exception.
 - When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request; one held for a source pull request becomes eligible once that pull request has merged. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, when selected under the ownership rules above. Do not close or leave it open merely because it is draft or conflicts with the base; close only one this session opened, and only when its change is superseded or no longer wanted.
 - An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization, except each fix pull request a directly user-invoked skill's own authorization names, once that skill's merge gates pass; that authorization ends with the run.
-- An authorized merge is not held for a failing check the current user explicitly waives or an
-  established baseline exclusion under `pre-production`'s **Encountered Issues** classification.
+- An authorized merge is not held for a failing check the current user explicitly waives, an
+  established baseline exclusion, or a non-essential check left red on findings the change did not
+  write, each under `pre-production`'s **Encountered Issues** classification.
   Record the check and its exclusion evidence in the task's record, then attempt the authorized
   merge without asking the user; a baseline exclusion is named to the user only where that
   classification allows. Preserve that classification rather than excluding a required repair merely

@@ -141,7 +141,9 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    on the same head using `POST /repos/{owner}/{repo}/actions/jobs/{job_id}/rerun`. Verify the
    retried job's head and required context before using its result. Missing logs or an unknown cancellation cause cannot justify local substitution;
    recover hosted coverage in that case. A canceled attempt alone does not end the gate.
-   Every other failure is relevant. Read its annotations and complete log, fix the repository
+   A non-essential check failing only on findings outside the lines the change writes is excluded
+   the same way, as `pre-production`'s **Encountered Issues** says. Every other failure is
+   relevant. Read its annotations and complete log, fix the repository
    input responsible — code, test, configuration or workflow — and commit it. **Every relevant
    failure on the head goes into one push**: read all of them before fixing any, reproduce each
    with the job's own command where it can run locally, and push only once each reproduced failure
