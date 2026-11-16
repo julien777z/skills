@@ -76,8 +76,8 @@ Apply `security-audit` to configuration changes. Use `proton-pass` for an existi
 ## Remove a remote environment connection
 
 Identify the exact connection on the T3 desktop app's Settings → Connections → Environments
-page. The desktop **Environments** list and **Linked environments** are separate. An empty
-`t3 environment list` only rules out a server-side link.
+page. The desktop **Environments** list is separate from the server-side links reported by
+`t3 environment list` for the selected source environment.
 
 For a desktop connection, open **More actions** for the matching entry and select **Remove from
 this device**. Read the confirmation before applying it: this forgets the pairing, credentials,
@@ -85,11 +85,12 @@ and cached threads on that device. Switch it off to keep the connection saved. A
 registered with T3 Connect stays on the account and keeps its host space. Verify the target
 disappears from the **Environments** page and that the other entries are still present.
 
-For a server-side link, match the environment ID in `t3 environment list`, use
-`t3 environment unlink <environment-id>`, and read the list again. When the request also includes
-ending the pairing session and the server is reachable, revoke it on the remote environment's
-**Sharing & access** page. Removing a connection does not retire its host or change its Tailscale
-registration.
+For a server-side link, use the source environment that owns it, selecting its `--base-dir` when
+needed. Match the ID in `t3 environment list`, use `t3 environment unlink <environment-id>`, and
+read the same source's list again. When the request also includes ending the pairing session,
+revoke the matching entry under **Authorized clients** on the remote environment's **Sharing &
+access** page and verify its removal there. If the server is unreachable, report that revocation
+is pending. Removing a connection does not retire its host or change its Tailscale registration.
 
 ## Provider cooldown recovery
 

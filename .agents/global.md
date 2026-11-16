@@ -383,9 +383,11 @@ alwaysApply: true
 - **Use OrbStack for local containers when it is installed.** Before starting container-backed
   work for any application on macOS, check whether OrbStack is installed even if the current
   Docker context points elsewhere. Start OrbStack if it is stopped, then verify that Docker can
-  reach its engine. Run Docker and Compose through the OrbStack context. If OrbStack is installed
-  but its engine is unavailable, diagnose startup and context selection without falling back to
-  Docker Desktop. When OrbStack is absent, follow the host's configured container runtime.
+  reach its engine. Use the OrbStack context for Docker and Compose. Pass it through
+  `DOCKER_CONTEXT` when an application launcher invokes those commands, then verify the containers
+  are running in OrbStack. If its engine is unavailable, diagnose startup and context selection
+  without falling back to Docker Desktop. When OrbStack is absent, follow the host's configured
+  container runtime.
 
 - Before combining, reordering or parallelizing verification, read its owning runner and lifecycle
   declarations. Preserve their process, session, environment, dependency and resource isolation,
