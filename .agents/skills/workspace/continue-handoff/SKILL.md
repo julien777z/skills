@@ -1,8 +1,7 @@
 ---
 name: continue-handoff
-description: Pick up work another session handed off. Use when the user pastes a hand-off message or names pull requests whose work should continue. Revalidate inherited factual claims against their current sources before using them to choose an action, report an outcome or repeat a question; preserve the user's recorded decisions and continue authorized work.
+description: Pick up work another session handed off. Use when the user pastes a hand-off message or names pull requests whose work should continue. Revalidate inherited factual claims against their current sources before using them to choose an action, report an outcome or repeat a question; preserve the user's recorded decisions and continue authorized work. Run only when the user asks for it.
 short_description: 'Pick up work another session handed off.'
-disable-model-invocation: true
 ---
 
 # Continue Hand-Off
@@ -12,6 +11,7 @@ down, and carry on where it stopped, so the user does nothing but paste the mess
 
 ## Dependencies
 - `session-ledger`
+- `pre-production`
 
 ## Resolving The Targets
 
@@ -70,7 +70,7 @@ After setup, before the first question, return:
 ```markdown
 Continuing
 
-- https://github.com/owner/repository/pull/123 — `<branch>` at `<sha>` · <draft or ready> → `<base>` · Checks: <state> · Mergeable: <yes, or conflict> · Threads: <n> · Queue: <n items>
+- https://github.com/owner/repository/pull/123 — `<branch>` at `<sha>` · <draft or ready> → `<base>` · Checks: <state, baseline failures left out> · Mergeable: <yes, or conflict> · Threads: <n> · Queue: <n items>
 - Skipped: <merged or closed pull requests, or None>
 ```
 

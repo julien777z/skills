@@ -19,7 +19,6 @@ skill change the user asks for, whose plan is a proposed flow.
 - `review-pass`
 - `defer-scope`
 - `acceptance-gate`
-- `generic-push`
 - `merge-conflict`
 - `subagent-matrix`
 - `merge-gate`
@@ -604,7 +603,6 @@ checks it before review.
 When one change spans multiple repositories, treat each repository as an independent delivery
 context, with **Pull Requests** applying inside each of them.
 
-- Invoke `generic-push` separately for each repository before committing or publishing.
 - Write every branch name, commit message, pull-request title, pull-request description, review
   comment, code comment, and repository-local report solely from that repository's perspective.
 - Apply the GitHub rule's independent publishing context to those artifacts, including dependency

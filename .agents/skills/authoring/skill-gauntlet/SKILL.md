@@ -1,8 +1,7 @@
 ---
 name: skill-gauntlet
-description: Audit installed agent skills across every visible scope, then benchmark user-selected skills and propose upgrades or retirement through isolated blind evaluations and a resumable shared dashboard. Use to inventory skill quality, compare a skill with model-only behavior, improve skills experimentally, run a skill-upgrade gauntlet, or maintain this skill directly.
+description: Audit installed agent skills across every visible scope, then benchmark user-selected skills and propose upgrades or retirement through isolated blind evaluations and a resumable shared dashboard. Use to inventory skill quality, compare a skill with model-only behavior, improve skills experimentally, run a skill-upgrade gauntlet, or maintain this skill directly. Run only when the user asks for it.
 short_description: 'Audit installed agent skills and evaluate upgrades or retirement.'
-disable-model-invocation: true
 ---
 
 # Skill Gauntlet

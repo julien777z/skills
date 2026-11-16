@@ -1,8 +1,7 @@
 ---
 name: where-time-went
-description: "Show where the current session's working time went as a dashboard: the main agent, subagents, loops and their rounds, and the longest activities inside them, as expandable trees. Use only when the user invokes it."
+description: "Show where the current session's working time went as a dashboard: the main agent, subagents, loops and their rounds, and the longest activities inside them, as expandable trees. Run only when the user asks for it."
 short_description: 'Show where session working time went, as a dashboard.'
-disable-model-invocation: true
 ---
 
 # Where Time Went

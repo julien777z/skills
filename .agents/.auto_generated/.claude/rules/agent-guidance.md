@@ -161,6 +161,14 @@ Judge a description by substitution: read it without knowing which skill it belo
 says which situations fire the skill, it works. If the remainder names no situation, it was never a
 trigger.
 
+**A skill that runs only at the user's request says so in its description, never by hiding itself.**
+A frontmatter flag that keeps a skill out of the agent's skill listing, such as
+`disable-model-invocation`, hides every route and tool inside it: an agent cannot load it when the
+user asks for it in words, cannot follow another skill that names it, and never finds a script it
+holds when other work needs one. Keep every skill listed and end its description with the exact
+sentence "Run only when the user asks for it.", which is how readers and tools recognize the
+restriction. Gate a single user-only workflow inside an otherwise usable skill in its body.
+
 ### Dependencies
 
 - **Refer to a skill, and to anything inside it, by the skill's name, never by path.** `the `code-simplify` skill's rubric reference` is right; a relative path into another skill's directory is wrong, because the directories move between repositories and user-level roots and the name is the only stable handle.

@@ -126,6 +126,10 @@ Ask in this order:
    never silently dropped. It is reported alongside the code fix that ships and never replaces it.
 4. **Only then, new enforcement.** A guard, a policy object, a claim check, a schema change.
 
+An option a standing rule forbids, at any step, such as gating an operation on a second permission,
+is not a decision anyone has left to make: it is neither offered nor recommended, and the fix
+follows the rule.
+
 **Report the alternative whenever it is materially simpler, even when it is not the one recommended.**
 Materially simpler means fewer moving parts a reader has to hold: fewer new symbols, no new
 abstraction, no migration, no new failure mode. State each option's real cost — the product
