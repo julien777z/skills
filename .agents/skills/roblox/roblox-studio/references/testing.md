@@ -301,8 +301,10 @@ Verify SSH host keys, the intended guest editor, and the source/place before run
 
 A running VM holds its whole memory allocation on the host, and its disk image grows as the guest
 writes. **A VM's default size follows its editors**: 6 CPU cores, a 50 GB disk, and 4 GB of memory for
-the guest plus 3 GB for each editor its game's file names, since an editor holds about 2.5 GB in Edit
-and about 3 GB in Play in the guest; a guest below that swaps once its editors are in Play.
+the guest plus 4 GB for each editor its game's file names, since an editor on a game's built place
+holds 3 to 4 GB in the guest, and Play adds little to it; a guest below that swaps once its editors are
+all open. A guest's free page count reads near zero while its inactive pages hold the slack, so judge
+its memory by swap use and load, never by free pages alone.
 
 **Read the host's actual free memory before starting a VM or raising its memory**, not its total
 (`vm_stat` for free and compressed pages, `sysctl vm.swapusage` for swap). Start one only while every
@@ -356,7 +358,8 @@ and before acting checks again that the step is still needed. Each step ends wit
 5. **Sign in and qualify** as [authentication](#authentication-and-user-handoff) and
    [Qualify input and capture](#qualify-input-and-capture) describe, installing the
    [geometry buffer cap](#cap-studios-geometry-buffers-in-a-tart-guest) and confirming it in the
-   editor first; a session cloned signed in is confirmed from Studio's start page, not assumed.
+   editor first; a session cloned signed in is confirmed from Studio's start page, not assumed, and
+   that start window is closed once read.
    Release the lock before asking the user for a sign-in code, and take it again, with its receipt
    checked and the guest's state read back, before continuing. Then set
    `ROBLOX_STUDIO_QUALIFIED=1` in `games/<game>.env`.
@@ -637,7 +640,7 @@ no sign-out. When Studio shows its sign-in screen, or its log reports `Authentic
 4. **Finish every later screen of the sign-in yourself**, such as choosing the account and its
    **Continue**, leaving an acceptance prompt to the user as the lead above says. Then
    confirm `Authenticated : YES` in the log and the account on Studio's start page before relying on
-   the runner.
+   the runner, then close that start window, which no editor slot owns.
 
 Never ask the user to sign in through a viewer, Screen Sharing or any other route to the guest's
 screen, and never ask for a password or a second factor: a screen inside the runner is one the
@@ -656,6 +659,19 @@ checks run at once as the pool has editors.
   `list_roblox_studios` tells the editors apart, its MCP connection, and its own Play session and test
   processes. `studio_mcp.editor_slots` names them; a check reaches only the editor its receipt holds,
   which `runner_lease` reports.
+- **A slot runs one editor, and the VM no more than its pool has slots.** A check that needs a place
+  of its own, such as a save or a fixture place, closes its slot's warm editor and opens that place in
+  the slot's guest folder; the slot's next session reopens the warm editor. Before any launch, close
+  every Studio process that belongs to no slot: a Studio start window left open, such as one a
+  sign-in check read, and an editor of a place outside every slot's folder, such as one an older
+  layout opened.
+  A cloud place's editor, which has no guest folder, stays with the check that opened it. Refuse a
+  launch while the VM already runs one editor per slot: each extra editor takes a share of the
+  guest's processors even when idle, and with five running, guest commands overran their bounds and
+  editors stopped answering.
+- **Each check names its device, and leaves the default.** Set the device simulator a check needs in
+  Edit before Play and read it back from the editor; once the check ends, return the editor to the
+  game's default device and read that back too, so a later check never inherits a phone layout.
 - **Open each once.** Build the place, open it with `studio_mcp.open_place` under the editor's
   project name as the step's first guest operation, while the lease still covers the open's bound,
   and leave it open until the VM shuts down as [End of session for a retained VM](#end-of-session-for-a-retained-vm)
