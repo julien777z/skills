@@ -1,4 +1,10 @@
-# Spaces publishing
+# Codex
+
+Delivery routes when the user reads the session in Codex, in this order: a Page when the session
+has the Pages tools, as below, applying `pages:write-page`; otherwise the user's own browser through
+`use-browser`'s **Showing A Local Page**, with the full page.
+
+## Spaces publishing
 
 Publish the rendered dashboard as an executable visualization in a text Page. Use the existing
 dashboard's Page when one is recorded. For a new dashboard, honor a named Page or Space; with no
