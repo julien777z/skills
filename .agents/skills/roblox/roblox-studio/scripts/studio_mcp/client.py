@@ -18,9 +18,9 @@ from pathlib import Path
 from types import MappingProxyType
 from typing import IO, Final, cast
 
-from studio_mcp.models import (AgentLockAcquireReport, AgentLockCheckReport, CameraView, EditorSlot, JsonRpcMessage,
-                               JsonValue, McpContent, PlaceIds, RunnerConfig, RunnerLease, RunnerOperation,
-                               StudioButton, StudioEntry, ToolArguments)
+from studio_mcp.models import (AgentLockAcquireReport, AgentLockCheckReport, AgentLockReceipt, CameraView, EditorSlot,
+                               JsonRpcMessage, JsonValue, McpContent, PlaceIds, RunnerConfig, RunnerLease,
+                               RunnerOperation, StudioButton, StudioEntry, ToolArguments)
 
 # Paths stay on the unresolved install link: installed skills sit side by side there, and a refresh that replaces
 # the linked source mid-run leaves them valid.
@@ -248,7 +248,7 @@ def runner_lease(lock_receipt: Path) -> RunnerLease:
     return RunnerLease(config=config, editor=editor, remaining=timedelta(seconds=report["remaining_seconds"]))
 
 
-def assert_runner_lease_covers(lock_receipt: Path, needed: timedelta) -> RunnerLease:
+def assert_runner_lease_covers(lock_receipt: Path, needed: timedelta) -> RunnerConfig:
     """Assert that the receipt owns the game's runner or one of its editors for at least the needed time."""
 
     lease = runner_lease(lock_receipt)
@@ -258,7 +258,7 @@ def assert_runner_lease_covers(lock_receipt: Path, needed: timedelta) -> RunnerL
                            f"{lease['remaining'].total_seconds():.0f} s left; this call can take up to "
                            f"{needed.total_seconds():.0f} s")
 
-    return lease
+    return lease["config"]
 
 
 @contextmanager
@@ -266,7 +266,7 @@ def focused_input(lock_receipt: Path, activity: str, hold: timedelta = FOCUS_LEA
                   wait: timedelta = LOCK_WAIT) -> Iterator[None]:
     """Hold the guest's focus for an editor launch, or input or a capture that reaches only its frontmost window."""
 
-    config = assert_runner_lease_covers(lock_receipt, wait + hold)["config"]
+    config = assert_runner_lease_covers(lock_receipt, wait + hold)
     focus_receipt = lock_receipt.with_name(f"{lock_receipt.stem}.focus.json")
 
     acquire_lock([focus_lock_key(config)], focus_receipt, f"focus for {lock_receipt.stem}", activity, hold, wait)
@@ -281,7 +281,7 @@ def focused_input(lock_receipt: Path, activity: str, hold: timedelta = FOCUS_LEA
 def run_in_runner(command: str, lock_receipt: Path, timeout: timedelta, data: bytes | None = None) -> bytes:
     """Run a shell command in the runner guest."""
 
-    return run_guest_command(command, assert_runner_lease_covers(lock_receipt, timeout)["config"], timeout, data)
+    return run_guest_command(command, assert_runner_lease_covers(lock_receipt, timeout), timeout, data)
 
 
 def run_guest_command(command: str, config: RunnerConfig, timeout: timedelta, data: bytes | None = None) -> bytes:
@@ -439,8 +439,7 @@ def call_studio_tool(connection: StudioMcpConnection, name: str, arguments: Tool
                      timeout: timedelta = OPERATION_TIMEOUTS[RunnerOperation.TOOL_CALL]) -> list[McpContent]:
     """Call a Studio MCP tool."""
 
-    lease = assert_runner_lease_covers(lock_receipt, tool_call_bound(connection.session is None, timeout))
-    config = lease["config"]
+    config = assert_runner_lease_covers(lock_receipt, tool_call_bound(connection.session is None, timeout))
 
     return studio_tool_reply(connection, name, arguments, config, timeout)
 
@@ -475,7 +474,7 @@ def mcp_content_text(content: list[McpContent]) -> str:
 def studios(connection: StudioMcpConnection, lock_receipt: Path) -> list[StudioEntry]:
     """List the editors the runner's Studio MCP knows."""
 
-    config = assert_runner_lease_covers(lock_receipt, tool_call_bound(connection.session is None))["config"]
+    config = assert_runner_lease_covers(lock_receipt, tool_call_bound(connection.session is None))
 
     return listed_studios(connection, config)
 
@@ -506,9 +505,7 @@ def wait_for_studios(connection: StudioMcpConnection, lock_receipt: Path,
                      wait: timedelta = EDITOR_LIST_WAIT) -> list[StudioEntry]:
     """List the runner's editors, waiting out the empty list a new MCP connection reports at first."""
 
-    lease = assert_runner_lease_covers(lock_receipt, editor_wait_bound(wait))
-
-    return awaited_studios(connection, lease["config"], wait)
+    return awaited_studios(connection, assert_runner_lease_covers(lock_receipt, editor_wait_bound(wait)), wait)
 
 
 def editor_wait_bound(wait: timedelta) -> timedelta:
@@ -706,13 +703,17 @@ for pid in $(pgrep -f 'placeId {place_id}( |$)'); do
 done'''
 
 
-def held_editor_slots(lock_receipt: Path, lease: RunnerLease) -> tuple[list[EditorSlot], bool]:
-    """Return the editors of the pool a receipt's lease holds, and whether it holds the whole VM with every editor."""
+def held_editor_slots(lock_receipt: Path, config: RunnerConfig) -> tuple[list[EditorSlot], bool]:
+    """Return the editors of the pool a receipt holds, read from the receipt its caller has checked, and whether it
+    holds the whole VM with every editor."""
 
-    if lease["editor"] is not None:
-        return [lease["editor"]], False
+    receipt: AgentLockReceipt = json.loads(lock_receipt.read_text())
+    slots = editor_slots(config)
+    editor = next((slot for slot in slots if slot["lock_key"] == receipt["key"]), None)
 
-    slots = editor_slots(lease["config"])
+    if editor is not None:
+        return [editor], False
+
     held = [slot for slot in slots if member_receipt(lock_receipt, slot).is_file()]
 
     return held, len(held) == len(slots)
@@ -741,12 +742,12 @@ def editor_launch_refusal(project: str | None, held: Sequence[EditorSlot], whole
     return None
 
 
-def assert_editor_launch_allowed(lock_receipt: Path, lease: RunnerLease, project: str | None,
+def assert_editor_launch_allowed(lock_receipt: Path, config: RunnerConfig, project: str | None,
                                  running: set[int]) -> None:
-    """Raise unless the lease may launch an editor in the project beside the running editors."""
+    """Raise unless the receipt's lease may launch an editor in the project beside the running editors."""
 
-    held, whole_vm = held_editor_slots(lock_receipt, lease)
-    refusal = editor_launch_refusal(project, held, whole_vm, lease["config"]["ROBLOX_STUDIO_EDITORS"], len(running))
+    held, whole_vm = held_editor_slots(lock_receipt, config)
+    refusal = editor_launch_refusal(project, held, whole_vm, config["ROBLOX_STUDIO_EDITORS"], len(running))
 
     if refusal:
         raise RuntimeError(f"{refusal}: running editors {sorted(running)}")
@@ -773,7 +774,7 @@ def guest_pids(pids_script: str, config: RunnerConfig) -> set[int]:
 def stop_guest_processes(pids: Collection[int], lock_receipt: Path) -> set[int]:
     """Stop guest processes and return those still running."""
 
-    config = assert_runner_lease_covers(lock_receipt, OPERATION_TIMEOUTS[RunnerOperation.STOP])["config"]
+    config = assert_runner_lease_covers(lock_receipt, OPERATION_TIMEOUTS[RunnerOperation.STOP])
 
     return stopped_survivors(pids, config)
 
@@ -806,7 +807,7 @@ true'''
 def guest_screenshot(path: Path, lock_receipt: Path) -> Path:
     """Save the runner guest's whole screen to path."""
 
-    config = assert_runner_lease_covers(lock_receipt, OPERATION_TIMEOUTS[RunnerOperation.CAPTURE])["config"]
+    config = assert_runner_lease_covers(lock_receipt, OPERATION_TIMEOUTS[RunnerOperation.CAPTURE])
 
     return saved_guest_screen(path, config)
 
@@ -828,7 +829,7 @@ def saved_guest_screen(path: Path, config: RunnerConfig) -> Path:
 def close_place(project: str, place: Path, lock_receipt: Path) -> None:
     """Close a project's place copy in the runner."""
 
-    close_place_copy_on_runner(project, place, assert_runner_lease_covers(lock_receipt, CLOSE_BOUND)["config"])
+    close_place_copy_on_runner(project, place, assert_runner_lease_covers(lock_receipt, CLOSE_BOUND))
 
 
 def close_place_copy_on_runner(project: str, place: Path, config: RunnerConfig) -> None:
@@ -852,7 +853,7 @@ def close_place_copy_on_runner(project: str, place: Path, config: RunnerConfig) 
 def close_cloud_place(place_id: int, lock_receipt: Path) -> None:
     """End, without saving, the runner editors open_cloud_place launched on a published place."""
 
-    close_cloud_editors_on_runner(place_id, assert_runner_lease_covers(lock_receipt, CLOUD_CLOSE_BOUND)["config"])
+    close_cloud_editors_on_runner(place_id, assert_runner_lease_covers(lock_receipt, CLOUD_CLOSE_BOUND))
 
 
 def close_cloud_editors_on_runner(place_id: int, config: RunnerConfig) -> None:
@@ -960,14 +961,13 @@ def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path,
 
     guest_path = guest_place(project, place)
 
-    lease = assert_runner_lease_covers(lock_receipt, open_bound(registration_wait))
-    config = lease["config"]
+    config = assert_runner_lease_covers(lock_receipt, open_bound(registration_wait))
     holding, running = guest_census(editor_pids_script(guest_path), config)
 
     if holding:
         raise RuntimeError(f"An editor already has {guest_path} open; use it or close it with close_place first")
 
-    assert_editor_launch_allowed(lock_receipt, lease, project, running)
+    assert_editor_launch_allowed(lock_receipt, config, project, running)
 
     launch = (f'cd "$HOME" && mkdir -p {shlex.quote(str(Path(guest_path).parent))} && '
               f'cat > {shlex.quote(guest_path)} && open -n -a {shlex.quote(STUDIO_APP)} --args --task EditFile '
@@ -988,15 +988,14 @@ def open_cloud_place(place_id: int, universe_id: int, out_dir: Path, lock_receip
     if place_id < 1 or universe_id < 1:
         raise ValueError("Published places have positive place and universe IDs")
 
-    lease = assert_runner_lease_covers(lock_receipt, open_bound(registration_wait))
-    config = lease["config"]
+    config = assert_runner_lease_covers(lock_receipt, open_bound(registration_wait))
     holding, running = guest_census(cloud_editor_pids_script(place_id), config)
 
     if holding:
         raise RuntimeError(f"An editor already has place {place_id} open; use it or close it with close_cloud_place "
                            "first")
 
-    assert_editor_launch_allowed(lock_receipt, lease, None, running)
+    assert_editor_launch_allowed(lock_receipt, config, None, running)
 
     launch = (f"open -n -a {shlex.quote(STUDIO_APP)} --args --task EditPlace --placeId {place_id} "
               f"--universeId {universe_id}")

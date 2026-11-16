@@ -38,6 +38,14 @@ class RunnerConfig(TypedDict):
     ROBLOX_STUDIO_EDITORS: int
 
 
+class AgentLockReceipt(TypedDict):
+    """The receipt agent-lock writes for a lock it granted."""
+
+    key: str
+    lock_file: str
+    token: str
+
+
 class EditorSlot(TypedDict):
     """One editor of the game's pool: the lock a check takes for it and its guest folder."""
 

@@ -1,13 +1,13 @@
+import json
 import sys
 import tempfile
 import unittest
-from datetime import timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from studio_mcp.client import editor_launch_refusal, held_editor_slots, member_receipt  # noqa: E402
-from studio_mcp.models import EditorSlot, RunnerConfig, RunnerLease  # noqa: E402
+from studio_mcp.models import AgentLockReceipt, EditorSlot, RunnerConfig  # noqa: E402
 
 SLOTS = [EditorSlot(number=number, lock_key=f"game-vm/editor-{number}", project=f"editor-{number}")
          for number in (1, 2, 3)]
@@ -48,23 +48,24 @@ class EditorLaunchTest(unittest.TestCase):
                 self.assertIsNotNone(editor_launch_refusal("editor-1", held, whole_vm, 3, 3))
 
     def test_the_whole_vm_is_held_only_with_every_editor_receipt(self) -> None:
-        """Test that a lease on the VM's own lock counts as the whole VM only beside a receipt for every editor."""
+        """Test that a receipt for one editor holds that editor, and one for the VM's own lock counts as the whole VM
+        only beside a receipt for every editor."""
 
         with tempfile.TemporaryDirectory() as folder:
             receipt = Path(folder) / "vm.json"
-            lease = RunnerLease(config=CONFIG, editor=None, remaining=timedelta(seconds=600))
+            one = Path(folder) / "editor.json"
 
-            self.assertEqual(held_editor_slots(receipt, lease), ([], False))
+            receipt.write_text(json.dumps(AgentLockReceipt(key="game-vm", lock_file="vm.lock", token="vm-token")))
+            one.write_text(json.dumps(AgentLockReceipt(key="game-vm/editor-3", lock_file="editor.lock",
+                                                       token="editor-token")))
+
+            self.assertEqual(held_editor_slots(receipt, CONFIG), ([], False))
+            self.assertEqual(held_editor_slots(one, CONFIG), ([SLOTS[2]], False))
 
             for slot in SLOTS:
                 member_receipt(receipt, slot).write_text("{}")
 
-            self.assertEqual(held_editor_slots(receipt, lease), (SLOTS, True))
-
-        one = RunnerLease(config=CONFIG, editor=SLOTS[2], remaining=timedelta(seconds=600))
-
-        self.assertEqual(held_editor_slots(Path("editor.json"), one), ([SLOTS[2]], False))
-
+            self.assertEqual(held_editor_slots(receipt, CONFIG), (SLOTS, True))
 
 if __name__ == "__main__":
     unittest.main()
