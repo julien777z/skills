@@ -79,7 +79,7 @@ This is the final quality gate. Do not skip it.
 
 ### Phase 5: Report
 
-Write every finding, ordered by severity, to one file in the session's scratch directory. In chat,
+Write every finding, ordered by severity, to one file in the `.agent_sources/` folder at the root of the worktree the review runs in, never a system temporary directory. In chat,
 give the top five by severity in one line each and the next action, and send that file with the
 summary.
 

@@ -108,7 +108,7 @@ Use the platform's equivalent capabilities while preserving the specified roles,
 
 ## What The Audit Writes
 
-The output is a report: one findings file in the session's scratch directory, sent to the user with
+The output is a report: one findings file in the `.agent_sources/` folder at the root of the worktree the review runs in, never a system temporary directory, sent to the user with
 the chat summary. Nothing is written inside the target repository, and the audit changes no code.
 
 A report is what this run found; it never asserts a codebase is clean. Each run explores different

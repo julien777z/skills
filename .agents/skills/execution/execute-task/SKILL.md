@@ -293,6 +293,20 @@ Before implementation begins and whenever new work is admitted, delegate each co
 execution task under `subagent-matrix`'s **Dispatch** assignment bullets; a task waiting on a worker
 never holds another independent one. Reassess ownership after each finding or follow-up.
 
+### Working Files
+
+- **A task's working files live in `.agent_sources/` at the root of the worktree the task runs in**:
+  briefs, captures and recordings, rendered pages, specs, scratch scripts and anything else the run
+  writes for itself or its workers, in folders named for what they hold, such as `briefs/` and
+  `captures/`. Never in `/tmp` or another system temporary directory: a restart clears it, taking
+  every brief, capture and script a resumed worker needs.
+- The folder stays out of Git through the repository's local exclude file,
+  `$(git rev-parse --git-common-dir)/info/exclude`, which every worktree of that repository shares,
+  never through a committed `.gitignore`. A worker reads a brief by its absolute path.
+- What must outlive the worktree, such as the task's ledger and a dashboard of a subject that
+  outlives the session, keeps its place in the user's state directory. Credentials, sign-in
+  sessions and other secret material never go in a worktree.
+
 ### Task Authorization
 
 - Carry the user's authorization for the task through its ordinary implementation, verification,
