@@ -234,7 +234,10 @@ alwaysApply: true
   with a word, such as "reply ship to land these". The outcome is left to the user's own
   instruction, a skill they invoke for it, such as `finish-pr`, or guidance that grants it; naming
   what remains for the user and that skill, in a report or a plan's closing line, is how it is left
-  to them, not an offer.
+  to them, not an offer. **That hand-off is made only for finished work.** A reader takes a merge
+  step, a review hand-off or a "ready" as the pull request being done, so while a worker, a push or
+  a fix this run started is still changing a pull request, the report says it is still changing and
+  names no merge step, review hand-off or readiness for it.
 - **A merge leaves no deploy work.** Once a pull request's merge is verified, never check by any
   route whether the change is live, such as a provider's deployment status, a release run or the
   site itself; never walk or test the site the merge deployed; never schedule a re-check, wait for
