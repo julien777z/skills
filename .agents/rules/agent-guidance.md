@@ -15,6 +15,12 @@ paths:
   goes, which harnesses it serves, how its generated mirrors are produced, and how a change to it is
   validated. Any other rule or `.agents/global.md` keeps only what its own subject needs and points
   here for the rest.
+- **Guidance lives in skills and rules, never in a harness's memory.** A correction, preference,
+  limit, exception or operating fact that tells agents how to work — such as a cap on workers, a
+  repository that gets only minimal changes, or a machine whose processes may be ended — goes
+  through `edit-skill` into the skill, rule, project guidance or reference that owns it, so every
+  harness and session reads the same copy. A harness's memory, such as an auto-memory file, holds
+  none of it. A memory found holding guidance is moved to its owner and deleted.
 - `.agents/global.md` states guidance that holds in every repository and that no rule's subject
   covers, and every `.agents/rules/*.md` file guidance that holds in any repository using its
   technology. Keep their examples generic —
