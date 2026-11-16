@@ -34,7 +34,7 @@ Use ProfileStore through one typed server-side owner for structured player data.
 
 ## Data compatibility
 
-Use versioned, append-only saved-data migrations and ProfileStore reconciliation when saved data changes. Append and test a migration for renamed, removed, split, or reinterpreted fields. A disposable development profile may be reset only when the project authorizes that operation and identifies the affected keys. Never turn a failed or unavailable DataStore read into a default profile save.
+**A save refers to content by a fixed save key, never by its name or code identifier.** An item, spell, quest or any other content a profile stores a reference to carries a key written once into its own definition, never computed from its name or ID at runtime, and the profile reads and writes only that key through one lookup the content's module owns. A key is never changed or reused, and a spec holds every key against a frozen list, so renaming content's display name, code identifier or catalogue ID changes no save. Use versioned, append-only saved-data migrations and ProfileStore reconciliation when saved data changes. Append and test a migration for renamed, removed, split, or reinterpreted fields. A disposable development profile may be reset only when the project authorizes that operation and identifies the affected keys. Never turn a failed or unavailable DataStore read into a default profile save.
 
 ## Spatial ownership
 
