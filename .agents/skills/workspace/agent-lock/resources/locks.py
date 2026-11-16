@@ -97,12 +97,18 @@ def read_queue(path: Path) -> list[Ticket]:
         if pid is not None and (not isinstance(pid, int) or isinstance(pid, bool) or pid <= 0):
             raise ValueError("A queue ticket's pid must be a positive integer or null")
 
+        priority = entry.get("priority", False)
+
+        if not isinstance(priority, bool):
+            raise ValueError("A queue ticket's priority must be a boolean")
+
         tickets.append(
             Ticket(
                 receipt=read_text_field(entry, "receipt"),
                 owner=read_text_field(entry, "owner"),
                 activity=read_text_field(entry, "activity"),
                 pid=pid,
+                priority=priority,
                 enqueued_at=read_timestamp(entry, "enqueued_at"),
                 renewed_at=read_timestamp(entry, "renewed_at"),
             )
@@ -143,7 +149,7 @@ def queued_waiters(tickets: list[Ticket], now: datetime) -> list[Waiter]:
 
 
 def take_ticket(tickets: list[Ticket], request: Acquisition, now: datetime) -> Ticket:
-    """Return this receipt's place in the queue, joining at the back when it has none."""
+    """Return this receipt's place in the queue, joining behind the tickets of its own priority when it has none."""
 
     receipt = str(request["receipt_path"])
     ticket = next((ticket for ticket in tickets if ticket["receipt"] == receipt), None)
@@ -154,11 +160,15 @@ def take_ticket(tickets: list[Ticket], request: Acquisition, now: datetime) -> T
             owner=request["owner"],
             activity=request["activity"],
             pid=getpid(),
+            priority=request["priority"],
             enqueued_at=now,
             renewed_at=now,
         )
 
-        tickets.append(ticket)
+        if ticket["priority"]:
+            tickets.insert(sum(1 for queued in tickets if queued["priority"]), ticket)
+        else:
+            tickets.append(ticket)
     elif ticket["pid"] != getpid() or now - ticket["renewed_at"] >= TICKET_RENEWAL:
         ticket["pid"] = getpid()
         ticket["renewed_at"] = now

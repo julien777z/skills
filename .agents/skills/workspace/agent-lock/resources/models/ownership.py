@@ -40,16 +40,17 @@ class Receipt(TypedDict):
 
 
 class Ticket(TypedDict):
-    """One waiter's place in a resource's arrival-order queue.
+    """One waiter's place in a resource's queue.
 
     `pid` names the process polling for the waiter, or is `None` while the waiter is between
-    bounded calls.
+    bounded calls. A `priority` ticket waits ahead of every ordinary one.
     """
 
     receipt: str
     owner: str
     activity: str
     pid: int | None
+    priority: bool
     enqueued_at: datetime
     renewed_at: datetime
 
@@ -73,6 +74,7 @@ class Acquisition(TypedDict):
     receipt_path: Path
     wait: timedelta
     ttl: timedelta
+    priority: bool
 
 
 class LockResult(TypedDict):

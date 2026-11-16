@@ -50,6 +50,7 @@ def create_parser() -> ArgumentParser:
         acquire_parser.add_argument("--receipt", type=Path, required=True)
         acquire_parser.add_argument("--wait-seconds", type=positive_seconds, default=50)
         acquire_parser.add_argument("--ttl-seconds", type=parse_ttl, default=DEFAULT_TTL.total_seconds())
+        acquire_parser.add_argument("--priority", action="store_true")
 
     status_parser = commands.add_parser("status")
     status_parser.add_argument("key")
@@ -112,6 +113,7 @@ def execute(options: Namespace, child_command: list[str]) -> tuple[LockResult | 
                 receipt_path=options.receipt.expanduser().resolve(),
                 wait=timedelta(seconds=options.wait_seconds),
                 ttl=timedelta(seconds=options.ttl_seconds),
+                priority=options.priority,
             )
             result = acquire_resource(request)
 
