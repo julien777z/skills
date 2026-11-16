@@ -665,10 +665,12 @@ checks run at once as the pool has editors.
   every Studio process that belongs to no slot: a Studio start window left open, such as one a
   sign-in check read, and an editor of a place outside every slot's folder, such as one an older
   layout opened.
-  A cloud place's editor, which has no guest folder, stays with the check that opened it. Refuse a
-  launch while the VM already runs one editor per slot: each extra editor takes a share of the
-  guest's processors even when idle, and with five running, guest commands overran their bounds and
-  editors stopped answering.
+  A cloud place's editor, which has no guest folder, stays with the check that opened it.
+  `open_place` and `open_cloud_place` refuse a launch while the VM already runs one editor per slot,
+  one under an editor's lock in another project than that editor's, and one under the VM's own lock
+  without its editors' receipts beside it, which only tooling from before the pool takes: each extra
+  editor takes a share of the guest's processors even when idle, and with five running, guest
+  commands overran their bounds and editors stopped answering.
 - **Each check names its device, and leaves the default.** Set the device simulator a check needs in
   Edit before Play and read it back from the editor; once the check ends, return the editor to the
   game's default device and read that back too, so a later check never inherits a phone layout.
