@@ -239,13 +239,80 @@ def ownership_status(ownership: Ownership | None) -> LockResult:
     )
 
 
-def acquire_resource(request: Acquisition) -> LockResult:
-    """Acquire one bounded ownership claim or return contention evidence."""
+def leave_queue(path: Path, receipt: str) -> None:
+    """Remove a receipt's ticket from one key's queue."""
 
-    path = resource_path(request["state_directory"], request["key"])
+    with exclusive_file(path):
+        stored = read_queue(path)
+        tickets = [ticket for ticket in stored if ticket["receipt"] != receipt]
+
+        if tickets != stored:
+            write_queue(path, tickets)
+
+
+def claim_or_queue(key: str, path: Path, request: Acquisition, expired: bool) -> LockResult | None:
+    """Claim one key for the request when its ticket leads a free lock; otherwise keep its place in the queue.
+
+    Returns the acquisition, the contention evidence once the wait has expired, or `None` while waiting goes on.
+    """
+
+    with exclusive_file(path):
+        current = read_ownership(path)
+        now = datetime.now(UTC)
+        stored = read_queue(path)
+        tickets = [ticket.copy() for ticket in stored if is_live(ticket, now)]
+        ticket = take_ticket(tickets, request, now)
+
+        if tickets[0] is ticket and (current is None or now >= current["expires_at"]):
+            ownership = Ownership(
+                version=1,
+                key=key,
+                token=str(uuid4()),
+                owner=request["owner"],
+                activity=request["activity"],
+                acquired_at=now,
+                expires_at=now + request["ttl"],
+            )
+            receipt = Receipt(lock_file=str(path), key=key, token=ownership["token"])
+
+            write_queue(path, tickets[1:])
+            atomic_write(state_path(path), dumps(ownership, default=datetime.isoformat))
+            atomic_write(request["receipt_path"], dumps(receipt))
+
+            return LockResult(
+                status=Outcome.ACQUIRED,
+                ownership=ownership,
+                receipt=str(request["receipt_path"]),
+                expired_owner=current["owner"] if current else None,
+            )
+
+        if not expired:
+            if tickets != stored:
+                write_queue(path, tickets)
+
+            return None
+
+        ticket["pid"] = None
+        ticket["renewed_at"] = now
+
+        write_queue(path, tickets)
+
+        result = ownership_status(current)
+        result["status"] = Outcome.BUSY
+        result["queue_position"] = next(
+            position for position, queued in enumerate(tickets, start=1) if queued is ticket
+        )
+
+        return result
+
+
+def acquire_resource(request: Acquisition) -> LockResult:
+    """Acquire the first of the request's keys to come free, or return contention evidence."""
+
+    paths = [(key, resource_path(request["state_directory"], key)) for key in request["keys"]]
     receipt_path = request["receipt_path"]
 
-    if receipt_path in (path, state_path(path)):
+    if any(receipt_path in (path, state_path(path)) for _, path in paths):
         raise ValueError("Receipt must be separate from lock state")
 
     if not request["owner"].strip() or not request["activity"].strip():
@@ -254,56 +321,26 @@ def acquire_resource(request: Acquisition) -> LockResult:
     deadline = monotonic() + request["wait"].total_seconds()
 
     while True:
-        with exclusive_file(path):
-            current = read_ownership(path)
-            now = datetime.now(UTC)
-            stored = read_queue(path)
-            tickets = [ticket.copy() for ticket in stored if is_live(ticket, now)]
-            ticket = take_ticket(tickets, request, now)
+        expired = monotonic() >= deadline
+        contention: list[LockResult] = []
 
-            if tickets[0] is ticket and (current is None or now >= current["expires_at"]):
-                ownership = Ownership(
-                    version=1,
-                    key=request["key"],
-                    token=str(uuid4()),
-                    owner=request["owner"],
-                    activity=request["activity"],
-                    acquired_at=now,
-                    expires_at=now + request["ttl"],
-                )
-                receipt = Receipt(lock_file=str(path), key=request["key"], token=ownership["token"])
+        for key, path in paths:
+            result = claim_or_queue(key, path, request, expired)
 
-                write_queue(path, tickets[1:])
-                atomic_write(state_path(path), dumps(ownership, default=datetime.isoformat))
-                atomic_write(receipt_path, dumps(receipt))
-
-                return LockResult(
-                    status=Outcome.ACQUIRED,
-                    ownership=ownership,
-                    receipt=str(receipt_path),
-                    expired_owner=current["owner"] if current else None,
-                )
-
-            remaining = deadline - monotonic()
-
-            if remaining <= 0:
-                ticket["pid"] = None
-                ticket["renewed_at"] = now
-
-                write_queue(path, tickets)
-
-                result = ownership_status(current)
-                result["status"] = Outcome.BUSY
-                result["queue_position"] = next(
-                    position for position, queued in enumerate(tickets, start=1) if queued is ticket
-                )
+            if result is not None and result["status"] == Outcome.ACQUIRED:
+                for other_key, other_path in paths:
+                    if other_key != key:
+                        leave_queue(other_path, str(receipt_path))
 
                 return result
 
-            if tickets != stored:
-                write_queue(path, tickets)
+            if result is not None:
+                contention.append(result)
 
-        sleep(min(POLL_SECONDS, remaining))
+        if expired:
+            return min(contention, key=lambda result: result["queue_position"])
+
+        sleep(min(POLL_SECONDS, max(0, deadline - monotonic())))
 
 
 def check_ownership(receipt: Receipt) -> LockResult:

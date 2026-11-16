@@ -43,7 +43,8 @@ def create_parser() -> ArgumentParser:
 
     for command in ("acquire", "consume"):
         acquire_parser = commands.add_parser(command)
-        acquire_parser.add_argument("key")
+        acquire_parser.add_argument("key", nargs="+")
+        acquire_parser.add_argument("--any", action="store_true")
         acquire_parser.add_argument("--state-dir", type=Path, default=Path.home() / ".local/state/agent-lock")
         acquire_parser.add_argument("--owner", required=True)
         acquire_parser.add_argument("--activity", required=True)
@@ -106,7 +107,7 @@ def execute(options: Namespace, child_command: list[str]) -> tuple[LockResult | 
     match options.command:
         case "acquire" | "consume":
             request = Acquisition(
-                key=options.key,
+                keys=options.key,
                 state_directory=options.state_dir,
                 owner=options.owner,
                 activity=options.activity,
@@ -161,6 +162,12 @@ def main(arguments: list[str]) -> int:
 
     if options.command == "consume" and not child_command:
         parser.error("consume requires -- followed by a foreground command")
+
+    if options.command in ("acquire", "consume") and len(options.key) > 1 and not options.any:
+        parser.error("several keys take --any, which acquires whichever is free first")
+
+    if options.command in ("acquire", "consume") and len(set(options.key)) != len(options.key):
+        parser.error("each key is named once")
 
     try:
         result, exit_code = execute(options, child_command)

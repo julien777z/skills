@@ -65,9 +65,9 @@ class Waiter(TypedDict):
 
 
 class Acquisition(TypedDict):
-    """Validated settings for waiting on and acquiring a resource."""
+    """Validated settings for waiting on and acquiring one of a set of resources."""
 
-    key: str
+    keys: list[str]
     state_directory: Path
     owner: str
     activity: str
