@@ -235,14 +235,14 @@ def assert_runner_lease_covers(lock_receipt: Path, needed: timedelta) -> RunnerC
 
 
 @contextmanager
-def focused_input(lock_receipt: Path, activity: str) -> Iterator[None]:
-    """Hold the guest's focus for input or a capture that reaches only its frontmost window."""
+def focused_input(lock_receipt: Path, activity: str, hold: timedelta = FOCUS_LEASE,
+                  wait: timedelta = LOCK_WAIT) -> Iterator[None]:
+    """Hold the guest's focus for an editor launch, or input or a capture that reaches only its frontmost window."""
 
-    config = assert_runner_lease_covers(lock_receipt, FOCUS_LEASE)
+    config = assert_runner_lease_covers(lock_receipt, wait + hold)
     focus_receipt = lock_receipt.with_name(f"{lock_receipt.stem}.focus.json")
 
-    acquire_lock([focus_lock_key(config)], focus_receipt, f"focus for {lock_receipt.stem}", activity, FOCUS_LEASE,
-                 FOCUS_LEASE)
+    acquire_lock([focus_lock_key(config)], focus_receipt, f"focus for {lock_receipt.stem}", activity, hold, wait)
 
     try:
         yield
