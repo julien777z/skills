@@ -139,8 +139,8 @@ and reuse procedure is the [picture reference](references/pictures.md); read it 
 
 ## Render And Deliver
 
-Render through `use-dashboard` with the spec, the page and the manifest in private storage outside
-every checkout, one page path per dashboard so every re-render updates the page the reader already
+Render through `use-dashboard` with the spec, the page, the pictures and the manifest in the folder
+`use-dashboard`'s **Render** gives a dashboard that outlives the session, one page path per dashboard so every re-render updates the page the reader already
 has. Deliver through `use-dashboard`'s **Delivery** and its harness router. The dashboard's subject
 outlives the session, so its title is the game's name with "Dashboard" and its topic is
 "Game overview", and an update goes to the page already delivered under them. Before calling the

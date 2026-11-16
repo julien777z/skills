@@ -231,7 +231,11 @@ data exists, or a change to the app — runs on one made-up scenario, never on r
 
 1. Write the spec to a JSON file in private task storage, outside every repository checkout, and
    choose a page path the delivery route below can read, such as the host's scratch directory when
-   its publishing tool reads only there.
+   its publishing tool reads only there. A dashboard of a subject that outlives the session keeps
+   its spec, its page and anything a later render reuses in a private folder that survives a
+   restart, one per dashboard, under the user's state directory (`$XDG_STATE_HOME`, by default
+   `~/.local/state`), never in a temporary directory the system clears, and copies the page to a
+   scratch path only when the delivery route reads from there alone.
 2. Run `python3 -B scripts/render.py --input <spec.json> --output <page.html>`, resolving `scripts/`
    from this skill's directory; `-B` keeps the run from writing bytecode into the skill. Add
    `--fragment` and `--compress` when the harness's delivery route says to. The script prints the written path, or names the first

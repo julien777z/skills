@@ -5,7 +5,7 @@ pictures its dashboard shows.
 
 ## Manifest And Reuse
 
-The manifest is a JSON file beside the spec in private storage. Each picture has one entry: the
+The manifest is a JSON file beside the spec and the pictures, in the dashboard's folder that survives a restart. Each picture has one entry: the
 commit it was captured at, the capture's path, a fingerprint of each kind of input that produced it,
 the hash of each file among them, and a `rejected` flag.
 
