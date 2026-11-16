@@ -34,6 +34,16 @@ class RunnerConfig(TypedDict):
     ROBLOX_STUDIO_SSH_USER: str
     ROBLOX_STUDIO_SSH_KEY: str
     ROBLOX_STUDIO_KNOWN_HOSTS: str
+    ROBLOX_STUDIO_EDITORS: int
+
+
+class EditorSlot(TypedDict):
+    """One editor of the game's pool: the lock a check takes for it, its guest folder and its Rojo port."""
+
+    number: int
+    lock_key: str
+    project: str
+    rojo_port: int
 
 
 class LockOwnership(TypedDict):
@@ -60,9 +70,10 @@ class AgentLockAcquireReport(TypedDict):
 
 
 class RunnerLease(TypedDict):
-    """The game's runner and how long a receipt's lease on its lock has left."""
+    """The game's runner, the editor a receipt holds, or none for the whole VM, and how long its lease has left."""
 
     config: RunnerConfig
+    editor: EditorSlot | None
     remaining: timedelta
 
 

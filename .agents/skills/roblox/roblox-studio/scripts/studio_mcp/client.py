@@ -11,15 +11,16 @@ import subprocess
 import sys
 import tempfile
 import time
-from collections.abc import Callable, Collection, Mapping, Sequence
+from collections.abc import Callable, Collection, Iterator, Mapping, Sequence
+from contextlib import contextmanager
 from datetime import timedelta
 from pathlib import Path
 from types import MappingProxyType
 from typing import IO, Final, cast
 
-from studio_mcp.models import (AgentLockAcquireReport, AgentLockCheckReport, CameraView, JsonRpcMessage, JsonValue,
-                               McpContent, PlaceIds, RunnerConfig, RunnerLease, RunnerOperation, StudioButton,
-                               StudioEntry, ToolArguments)
+from studio_mcp.models import (AgentLockAcquireReport, AgentLockCheckReport, CameraView, EditorSlot, JsonRpcMessage,
+                               JsonValue, McpContent, PlaceIds, RunnerConfig, RunnerLease, RunnerOperation,
+                               StudioButton, StudioEntry, ToolArguments)
 
 # Paths stay on the unresolved install link: installed skills sit side by side there, and a refresh that replaces
 # the linked source mid-run leaves them valid.
@@ -54,6 +55,9 @@ LOCK_WAIT: Final[timedelta] = timedelta(seconds=50)
 # agent-lock refuses a lease longer than this.
 MAX_LEASE: Final[timedelta] = timedelta(seconds=900)
 POLL_INTERVAL: Final[timedelta] = timedelta(seconds=2)
+# Rojo's plugin offers this port first; each editor of the pool serves on its own port above it.
+ROJO_DEFAULT_PORT: Final[int] = 34872
+FOCUS_LEASE: Final[timedelta] = timedelta(seconds=120)
 DEFAULT_REGISTRATION_WAIT: Final[timedelta] = timedelta(seconds=180)
 EDITOR_LIST_WAIT: Final[timedelta] = timedelta(seconds=20)
 GUEST_NAME: Final[re.Pattern[str]] = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*")
@@ -71,13 +75,18 @@ def runner_config() -> RunnerConfig:
         raise RuntimeError(f"No runner VM resolved for this game:\n{result.stderr}")
 
     values = dict(assignment.split("=", 1) for assignment in shlex.split(result.stdout))
+    editors = int(values["ROBLOX_STUDIO_EDITORS"])
+
+    if editors < 1:
+        raise RuntimeError(f"ROBLOX_STUDIO_EDITORS must name at least one editor, not {editors}")
 
     return RunnerConfig(ROBLOX_STUDIO_GAME=values["ROBLOX_STUDIO_GAME"],
                         ROBLOX_STUDIO_TART=values["ROBLOX_STUDIO_TART"],
                         ROBLOX_STUDIO_VM=values["ROBLOX_STUDIO_VM"],
                         ROBLOX_STUDIO_SSH_USER=values["ROBLOX_STUDIO_SSH_USER"],
                         ROBLOX_STUDIO_SSH_KEY=values["ROBLOX_STUDIO_SSH_KEY"],
-                        ROBLOX_STUDIO_KNOWN_HOSTS=values["ROBLOX_STUDIO_KNOWN_HOSTS"])
+                        ROBLOX_STUDIO_KNOWN_HOSTS=values["ROBLOX_STUDIO_KNOWN_HOSTS"],
+                        ROBLOX_STUDIO_EDITORS=editors)
 
 
 def runner_environment(config: RunnerConfig) -> dict[str, str]:
@@ -86,29 +95,52 @@ def runner_environment(config: RunnerConfig) -> dict[str, str]:
     return {**os.environ, "ROBLOX_STUDIO_GAME": config["ROBLOX_STUDIO_GAME"]}
 
 
-def acquire_runner_lock(lock_receipt: Path, owner: str, activity: str, lease: timedelta = MAX_LEASE,
-                        wait: timedelta = LOCK_WAIT) -> AgentLockAcquireReport:
-    """Take the lock on the game's runner VM for one segment of work, writing its receipt to lock_receipt."""
+def editor_slots(config: RunnerConfig) -> list[EditorSlot]:
+    """Return the game's pool of editors."""
 
-    lock_key = runner_config()["ROBLOX_STUDIO_VM"]
+    vm = config["ROBLOX_STUDIO_VM"]
+
+    return [EditorSlot(number=number, lock_key=f"{vm}/editor-{number}", project=f"editor-{number}",
+                       rojo_port=ROJO_DEFAULT_PORT + number)
+            for number in range(1, config["ROBLOX_STUDIO_EDITORS"] + 1)]
+
+
+def focus_lock_key(config: RunnerConfig) -> str:
+    """Return the lock key for input and captures that reach only the guest's frontmost window."""
+
+    return f"{config['ROBLOX_STUDIO_VM']}/focus"
+
+
+def member_receipt(lock_receipt: Path, slot: EditorSlot) -> Path:
+    """Return where a whole-VM lease keeps its receipt for one editor's lock."""
+
+    return lock_receipt.with_name(f"{lock_receipt.stem}.{slot['project']}.json")
+
+
+def acquire_lock(keys: Sequence[str], lock_receipt: Path, owner: str, activity: str, lease: timedelta,
+                 wait: timedelta, priority: bool = False) -> AgentLockAcquireReport:
+    """Take one of the keys through agent-lock, writing its receipt to lock_receipt, or raise when they stay busy."""
 
     lock_receipt.parent.mkdir(parents=True, exist_ok=True)
 
-    result = subprocess.run([sys.executable, str(AGENT_LOCK), "acquire", lock_key, "--owner", owner, "--activity",
-                             activity, "--receipt", str(lock_receipt), "--wait-seconds", str(wait.total_seconds()),
-                             "--ttl-seconds", str(lease.total_seconds())],
+    choice = ["--any"] if len(keys) > 1 else []
+    ordering = ["--priority"] if priority else []
+
+    result = subprocess.run([sys.executable, str(AGENT_LOCK), "acquire", *keys, *choice, *ordering, "--owner", owner,
+                             "--activity", activity, "--receipt", str(lock_receipt), "--wait-seconds",
+                             str(wait.total_seconds()), "--ttl-seconds", str(lease.total_seconds())],
                             capture_output=True, text=True,
                             timeout=(wait + OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK]).total_seconds())
 
     if result.returncode != 0:
-        raise RuntimeError(f"The {lock_key} lock was not acquired ({result.returncode}):\n"
+        raise RuntimeError(f"The {' or '.join(keys)} lock was not acquired ({result.returncode}):\n"
                            f"{result.stdout}{result.stderr}")
 
     return json.loads(result.stdout)
 
 
-def release_runner_lock(lock_receipt: Path) -> None:
-    """Release the runner lock the receipt owns, stating to agent-lock that the runner is idle."""
+def release_lock(lock_receipt: Path) -> None:
+    """Release the lock a receipt owns, stating to agent-lock that its resource is idle."""
 
     result = subprocess.run([sys.executable, str(AGENT_LOCK), "release", "--receipt", str(lock_receipt),
                              "--resource-idle"], capture_output=True, text=True,
@@ -118,11 +150,59 @@ def release_runner_lock(lock_receipt: Path) -> None:
         raise RuntimeError(f"Receipt {lock_receipt} did not release its lock:\n{result.stderr}")
 
 
-def runner_lease(lock_receipt: Path) -> RunnerLease:
-    """Return the game's runner and how long the receipt's lease on its lock has left."""
+def acquire_editor_lock(lock_receipt: Path, owner: str, activity: str, lease: timedelta = MAX_LEASE,
+                        wait: timedelta = LOCK_WAIT) -> AgentLockAcquireReport:
+    """Take whichever of the game's editors comes free first for one segment of a check."""
+
+    keys = [slot["lock_key"] for slot in editor_slots(runner_config())]
+
+    return acquire_lock(keys, lock_receipt, owner, activity, lease, wait)
+
+
+def acquire_runner_lock(lock_receipt: Path, owner: str, activity: str, lease: timedelta = MAX_LEASE,
+                        wait: timedelta = LOCK_WAIT, priority: bool = False) -> AgentLockAcquireReport:
+    """Take the whole runner VM: its own lock, then every editor's lock once that editor is free."""
 
     config = runner_config()
-    lock_key = config["ROBLOX_STUDIO_VM"]
+    vm = config["ROBLOX_STUDIO_VM"]
+    receipts = {vm: lock_receipt, **{slot["lock_key"]: member_receipt(lock_receipt, slot)
+                                     for slot in editor_slots(config)}}
+    taken: list[Path] = []
+    report: AgentLockAcquireReport | None = None
+
+    try:
+        for key in sorted(receipts):
+            acquired = acquire_lock([key], receipts[key], owner, activity, lease, wait, priority)
+            taken.append(receipts[key])
+            report = report or acquired
+    except RuntimeError:
+        for receipt in reversed(taken):
+            release_lock(receipt)
+            receipt.unlink(missing_ok=True)
+
+        raise
+
+    return cast(AgentLockAcquireReport, report)
+
+
+def release_runner_lock(lock_receipt: Path) -> None:
+    """Release the editor or the whole VM a receipt holds, stating to agent-lock that it is idle."""
+
+    for slot in reversed(editor_slots(runner_config())):
+        receipt = member_receipt(lock_receipt, slot)
+
+        if receipt.is_file():
+            release_lock(receipt)
+            receipt.unlink()
+
+    release_lock(lock_receipt)
+
+
+def runner_lease(lock_receipt: Path) -> RunnerLease:
+    """Return the game's runner, the editor the receipt holds, and how long its lease has left."""
+
+    config = runner_config()
+    vm = config["ROBLOX_STUDIO_VM"]
 
     result = subprocess.run([sys.executable, str(AGENT_LOCK), "check", "--receipt", str(lock_receipt)],
                             capture_output=True, text=True,
@@ -132,15 +212,17 @@ def runner_lease(lock_receipt: Path) -> RunnerLease:
         raise RuntimeError(f"Receipt {lock_receipt} does not own a lock:\n{result.stderr}")
 
     report: AgentLockCheckReport = json.loads(result.stdout)
+    key = report["ownership"]["key"]
+    editor = next((slot for slot in editor_slots(config) if slot["lock_key"] == key), None)
 
-    if report["ownership"]["key"] != lock_key:
-        raise RuntimeError(f"Receipt {lock_receipt} owns {report['ownership']['key']}, not {lock_key}")
+    if editor is None and key != vm:
+        raise RuntimeError(f"Receipt {lock_receipt} owns {key}, not {vm} or one of its editors")
 
-    return RunnerLease(config=config, remaining=timedelta(seconds=report["remaining_seconds"]))
+    return RunnerLease(config=config, editor=editor, remaining=timedelta(seconds=report["remaining_seconds"]))
 
 
 def assert_runner_lease_covers(lock_receipt: Path, needed: timedelta) -> RunnerConfig:
-    """Assert that the receipt owns the game's runner lock for at least the needed time, and return that runner."""
+    """Assert that the receipt owns the game's runner or one of its editors for at least the needed time."""
 
     lease = runner_lease(lock_receipt)
 
@@ -150,6 +232,23 @@ def assert_runner_lease_covers(lock_receipt: Path, needed: timedelta) -> RunnerC
                            f"{needed.total_seconds():.0f} s")
 
     return lease["config"]
+
+
+@contextmanager
+def focused_input(lock_receipt: Path, activity: str) -> Iterator[None]:
+    """Hold the guest's focus for input or a capture that reaches only its frontmost window."""
+
+    config = assert_runner_lease_covers(lock_receipt, FOCUS_LEASE)
+    focus_receipt = lock_receipt.with_name(f"{lock_receipt.stem}.focus.json")
+
+    acquire_lock([focus_lock_key(config)], focus_receipt, f"focus for {lock_receipt.stem}", activity, FOCUS_LEASE,
+                 FOCUS_LEASE)
+
+    try:
+        yield
+    finally:
+        release_lock(focus_receipt)
+        focus_receipt.unlink(missing_ok=True)
 
 
 def run_in_runner(command: str, lock_receipt: Path, timeout: timedelta, data: bytes | None = None) -> bytes:
