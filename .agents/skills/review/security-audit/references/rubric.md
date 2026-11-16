@@ -165,6 +165,11 @@ smallest-fix order above, applied before there is anything to fix.
   messages or client bundles; each comes from the configuration owner the repository already uses.
 - **Add no surface the request does not need.** No debug route, permissive fallback, wildcard
   origin, optional bypass or unused mode. A surface that does not exist needs no guard.
+- **A control's own setting is required.** A key, secret, allow-list or limit a
+  control reads is required configuration, as the global rules' **Configuration** section says, so
+  a deployment without it fails to start. A control that skips or weakens itself when its setting
+  is unset is the optional bypass above, a defect of the change that adds it, fixed there; the
+  trusted-inputs precedent covers who sets a value, never what runs when nobody does.
 
 ## Anti-Patterns
 

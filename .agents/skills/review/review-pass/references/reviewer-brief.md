@@ -13,9 +13,11 @@ handling of user input (paths, patterns, queries, markup).
 Flag new code that re-implements a helper the repo already has (cite it), and
 abstractions with a single implementation. Flag workarounds: a remedy that hides
 the symptom (folds away, skips, retries, catches, special-cases) instead of fixing its cause.
+Flag a setting, env var, secret or config key left optional, or code that skips or weakens
+its work when one is unset, unless its owner documents that absence ("tests lack it" does not).
 Flag breaks of the listed rules; skip other style unless it hides a bug. Flag code, tests or guards the intent does not need.
 blocker = intended case wrong. should = a real bug callers will hit, an unsafe input,
-a workaround, a duplicate of an existing helper, or a break of a listed rule. nit = the rest.
+an optional setting above, a workaround, a duplicate of an existing helper, or a break of a listed rule. nit = the rest.
 List problems you see outside the change separately, with the files a fix would touch.
 Reply:
 VERDICT: APPROVE or CHANGES
