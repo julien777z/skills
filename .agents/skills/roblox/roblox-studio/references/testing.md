@@ -231,10 +231,11 @@ This example applies only when the host configures the shared values in `~/.conf
 runner_ssh="<installed roblox-studio skill>/scripts/runner_ssh.sh"
 eval "$("$runner_ssh" --describe)"   # the game's resolved values, from inside its repository
 "$ROBLOX_STUDIO_TART" get "$ROBLOX_STUDIO_VM"
-# Start only when stopped, detached so the VM outlives the agent's own task limits:
+# Start only when stopped, in a session of its own so the VM outlives the agent session that starts it:
 mkdir -p "$HOME/.local/state/roblox-studio"
-nohup "$ROBLOX_STUDIO_TART" run "$ROBLOX_STUDIO_VM" --no-graphics --no-clipboard --no-audio \
-  > "$HOME/.local/state/roblox-studio/$ROBLOX_STUDIO_VM.log" 2>&1 < /dev/null & disown
+nohup python3 -c 'import os, sys; os.setsid(); os.execvp(sys.argv[1], sys.argv[1:])' \
+  "$ROBLOX_STUDIO_TART" run "$ROBLOX_STUDIO_VM" --no-graphics --no-clipboard --no-audio \
+  > "$HOME/.local/state/roblox-studio/$ROBLOX_STUDIO_VM.log" 2>&1 < /dev/null &
 "$ROBLOX_STUDIO_TART" ip "$ROBLOX_STUDIO_VM" --wait 180   # wait until the guest has an address
 ```
 
@@ -292,8 +293,10 @@ for a read: a game repository's helper run with its runner variable unset, or th
 connected to this machine. Before a connection's first call, confirm its target: `list_roblox_studios` names the
 editors `"$runner_ssh" 'pgrep -fl RobloxStudio'` shows in the guest, never the host's.
 
-A harness that stops background commands after a time limit stops a `tart run` it owns, and the
-VM with it, so the VM runs detached and `tart stop` ends it.
+A harness ends a session's background commands, with their whole process group, when a time limit
+passes or the session ends, and the VM stops with its `tart run`. `nohup` and `disown` leave a
+command in that group, so the start above gives `tart run` a session of its own. Confirm it with
+`ps -o pgid=` on the `tart run` process, which shows its own process ID rather than the shell's group.
 
 Verify SSH host keys, the intended guest editor, and the source/place before running tests. The no-graphics, no-clipboard, no-audio options keep the VM from opening a host window or sharing clipboard/audio. Store versions and qualification evidence outside this skill. Do not provision or reset a working retained VM as routine setup.
 
@@ -731,6 +734,12 @@ every setting it changed reads back at the value it found.
   editor once the test is done, and read it back from a newly opened editor; a restore issued from a
   Play client, or one never read back, has not happened. Granting a permission an operation needs is
   setup, not a setting to restore.
+- **Apps reopened at login.** The guest reopens at login the apps its last session had open, from
+  the list in `~/Library/Group Containers/group.com.apple.loginwindow.persistent-apps/persistantApps`,
+  and Studio comes back from it as a start window no editor slot owns. The runner's configuration
+  turns that off: `defaults write com.apple.loginwindow TALLogoutSavesState -bool false`, then that
+  file removed and `sync` run before the next shutdown. Confirm it after a restart: no Studio runs
+  before the first editor opens.
 - **Files.** Everything the task copies or writes in the guest, such as places, captures, scratch
   output, worktrees and lock files, sits under a folder named for the task or its project and is
   removed when the task's runner work ends. `studio_mcp.close_place` deletes the place copy
@@ -762,7 +771,10 @@ user to enter a new code. Powering the guest off is fine, because its automatic 
 
 When the game work is done, hold the VM's lock, save the authorized project artifacts, close Roblox
 Studio normally, the game's warm sessions included,
-and **shut down the guest VM** so it is no longer running locally. Verify that Studio closed and the
+and **shut down the guest VM** so it is no longer running locally: `"$runner_ssh" sudo -n shutdown -h
+now`, then wait until `tart run` exits. `tart stop` can end the guest before it writes recent changes
+to its disk, so a file or setting changed seconds before is lost; use it only when the guest does not
+shut down. A restart is the same shutdown followed by the start above. Verify that Studio closed and the
 VM is stopped. Do not leave the VM running or substitute a suspended/running state for the requested
 shutdown. If an unfinished test must continue, report that explicitly rather than claiming shutdown.
 
