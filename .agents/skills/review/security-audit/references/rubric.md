@@ -25,7 +25,9 @@ These settle findings that look real and are not. A finding that rests on one of
 unless its trace shows the precedent's own condition broken.
 
 - **Trusted inputs.** Environment variables, CLI flags and deployment configuration are set by
-  operators; an attack that needs to control one is not a finding.
+  operators; an attack that needs to control one is not a finding. A control that skips or weakens
+  itself when such a value is unset is not covered: the precedent concerns who sets a value, never
+  what runs when nobody does.
 - **Identifiers.** A random UUID is unguessable and needs no further guard against enumeration.
 - **Framework escaping.** React, Angular and templating engines with auto-escaping on escape output;
   cross-site scripting there needs a bypass such as `dangerouslySetInnerHTML`,
@@ -165,11 +167,11 @@ smallest-fix order above, applied before there is anything to fix.
   messages or client bundles; each comes from the configuration owner the repository already uses.
 - **Add no surface the request does not need.** No debug route, permissive fallback, wildcard
   origin, optional bypass or unused mode. A surface that does not exist needs no guard.
-- **A control's own setting is required.** A key, secret, allow-list or limit a
-  control reads is required configuration, as the global rules' **Configuration** section says,
-  unless a default gives the control its full protection, so a deployment without it fails to start. A control that skips or weakens itself when its setting
-  is unset is the optional bypass above, a defect of the change that adds it, fixed there; the
-  trusted-inputs precedent covers who sets a value, never what runs when nobody does.
+- **A control's own setting is required.** A key, secret, allow-list or limit a control reads is
+  required configuration, as the global rules' **Configuration** section says, so a deployment
+  without it fails to start; only a default that gives the control its full protection may stand
+  in. A control that skips or weakens itself when its setting is unset is the optional bypass
+  above, a defect of the change that adds it, fixed there.
 
 ## Anti-Patterns
 

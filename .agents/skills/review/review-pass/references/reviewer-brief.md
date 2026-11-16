@@ -13,7 +13,7 @@ handling of user input (paths, patterns, queries, markup).
 Flag new code that re-implements a helper the repo already has (cite it), and
 abstractions with a single implementation. Flag workarounds: a remedy that hides
 the symptom (folds away, skips, retries, catches, special-cases) instead of fixing its cause.
-Flag a setting, env var, secret or config key left optional or given an unsafe default, or
+Flag a setting, env var, secret, config key or workflow input left optional or given an unsafe default, or
 code that skips or weakens its work when one is unset, unless its owner documents that absence
 ("tests lack it" does not). A default production gets the full behavior from is fine.
 Flag breaks of the listed rules; skip other style unless it hides a bug. Flag code, tests or guards the intent does not need.

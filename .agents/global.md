@@ -549,7 +549,8 @@ return records;
 
 ## Configuration
 
-- **A configuration value is required unless its owner documents a supported absence.**
+- **A configuration value is required unless it has a safe default or its owner documents a
+  supported absence.**
   Configuration is every value a deployment, environment or operator supplies: an environment
   variable, a settings field, a secret, a key in a config file or deployment manifest, a workflow
   input. A value the code needs takes a default only when that default is safe, meaning a
@@ -566,7 +567,7 @@ return records;
   is set, and no code path falls back to weaker behavior when one is unset: a webhook check that
   passes every request when its verification key is missing, or a rate limit that switches off
   without its store address, is the defect even where the declaration reads as required.
-- The language rules say how each settings owner declares a required value.
+- The technology rules say how each settings owner declares a required value.
 
 ## Logging
 
@@ -801,8 +802,8 @@ An outcome is what its source of truth shows, never what an action or a worker s
   as how a check selects what it checks, and verify that the cause explains the observation through
   direct evidence or a controlled reproduction. A cause read from a component's name, a remembered
   list or what seems likely is not stated as the cause. Track causal diagnosis separately from
-  mitigation, restoration, and regression coverage. If the failure stops reproducing, inspect retained
-  diagnostics and compare the failed and recovered runtimes. Before reporting a hold, exhaust
+  mitigation, restoration, and regression coverage. If the failure stops reproducing, inspect
+  retained diagnostics and compare the failed and recovered runtimes. Before reporting a hold, exhaust
   available safe diagnostic and reproduction paths. Name the missing evidence, why it is
   unavailable, and the specific observation or external action that can resume the investigation.
 - **A status sent to the user states what was just read and where**, never what was reported or
