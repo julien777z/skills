@@ -30,6 +30,10 @@ alwaysApply: true
 
 - Keep `run` steps declarative. Invoke checked-in scripts for control flow, validation, filesystem changes, or other implementation logic instead of embedding arbitrary shell or program code in workflow YAML; place those scripts under `.github/scripts/` and prefer Python.
 - Do not hard-code runtime versions when a shared action, reusable workflow, or repository version file supplies them; omit `python-version` when shared Python automation provides it, and use `node-version-file: ".nvmrc"` for Node.js workflows.
+- **A required workflow or action input is declared `required: true` with no `default`**, and no
+  step is skipped when it is empty; the global rules' **Configuration** section says which inputs
+  are required. An action's checked-in script also fails, naming the input, when the value is
+  empty, since GitHub does not enforce `required` on an action's inputs.
 - Name repository-owned Boolean action and workflow inputs `use-<capability>`, so the name states
   what the toggle enables. Update declarations, conditions and callers together; do not retain a
   bare capability name or an old alias. Preserve external actions' input contracts.
