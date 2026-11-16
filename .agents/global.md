@@ -796,16 +796,17 @@ An outcome is what its source of truth shows, never what an action or a worker s
   remedy remains; a gate must meet **Tools and environments** or **Task execution and authorization**, not merely
   repeat the last failed attempt.
 - **A cause stated to the user is traced first, whether or not they asked for it**: a root cause,
-  and any explanation the agent offers of why something failed, why a value is what it is, or why a
-  check, test, gate or review let something through. Follow the operation from its entry point to
-  the component that produced the outcome, reading the code or configuration that decides it, such
-  as how a check selects what it checks, and verify that the cause explains the observation through
-  direct evidence or a controlled reproduction. A cause read from a component's name, a remembered
-  list or what seems likely is not stated as the cause. Track causal diagnosis separately from
-  mitigation, restoration, and regression coverage. If the failure stops reproducing, inspect
-  retained diagnostics and compare the failed and recovered runtimes. Before reporting a hold, exhaust
-  available safe diagnostic and reproduction paths. Name the missing evidence, why it is
-  unavailable, and the specific observation or external action that can resume the investigation.
+  and any explanation the agent offers of why something failed, why a value is what it is, or why
+  a check, test, gate or review let something through. Follow the operation from its entry point
+  to the component that produced the outcome, reading the code or configuration that decides it,
+  such as how a check selects what it checks, and verify that the cause explains the observation
+  through direct evidence or a controlled reproduction. A cause read from a component's name, a
+  remembered list or what seems likely is not stated as the cause. Track causal diagnosis
+  separately from mitigation, restoration, and regression coverage. If the failure stops
+  reproducing, inspect retained diagnostics and compare the failed and recovered runtimes. Before
+  reporting a hold, exhaust available safe diagnostic and reproduction paths. Name the missing
+  evidence, why it is unavailable, and the specific observation or external action that can resume
+  the investigation.
 - **A status sent to the user states what was just read and where**, never what was reported or
   expected: conflicted, failing, running, or passing, on the head or target named. "Done" or
   "ready" is written only when that read says so, and a file sent with it is checked first as the
