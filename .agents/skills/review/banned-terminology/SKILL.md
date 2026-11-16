@@ -1,6 +1,6 @@
 ---
 name: banned-terminology
-description: Owns the banned-terms list in resources/banned_words.json and enforces it. Use when naming anything, when writing a pull request or a message to the user, when reviewing a name, when the user says a name is unclear or asks for a word to be renamed across one codebase, when they ask for a word to be kept out wherever it appears, when they reject a replacement an entry recommends, when they lift a ban, or whenever the decision is about a word rather than one symbol.
+description: Owns the banned-terms list in resources/banned_words.json and enforces it. Use when naming anything — code, files, assets, and the items, characters, places and objects players or users meet — when writing a pull request or a message to the user, when reviewing a name, when the user says a name is unclear or asks for a word to be renamed across one codebase, when they ask for a word to be kept out wherever it appears, when they reject a replacement an entry recommends, when they lift a ban, or whenever the decision is about a word rather than one symbol.
 short_description: 'Owns the banned-terms list in resources/banned_words.json and enforces it.'
 ---
 
@@ -14,6 +14,8 @@ names, or in any other surface an entry's `applies_to` names, such as pull reque
 the user. Name things for the behavior they actually have. This holds for **new and pre-existing
 code** in every line a change writes or edits; a banned term elsewhere in a file the change touches
 is renamed within `pre-production`'s size budget.
+
+**No name reads or sounds like a profane, sexual, slurring or otherwise inappropriate word.** That covers every name a person reads or hears: product and player-facing text, an item, character, place or creature, an asset, a file, an identifier and an object placed in a world. Before a name is used, read it aloud, as a child would sound it out, misread by one letter, run together with its neighbor, and shortened to its initials; a name that passes as spelled but fails any of those, such as a tree whose name is one letter from a curse, or a title whose initials spell one, is replaced with another word of the same kind. Rename one already in the product on every surface it reaches, as **Adding or updating** does for a banned word.
 
 If you reach for a placeholder-ish term a future reader could not decode from the name alone, pick a
 more intuitive name rather than adding it to the list. An abstraction coined one level above the
