@@ -10,7 +10,9 @@
    active proxy's credential list and resolve its `auth_index`. A pooled Usage total or a matching display name does not
    identify the credential, and a quota refresh can show restored allowance while a routing
    cooldown remains. An upstream quota rejection or a still-exhausted window does not justify
-   clearing the proxy's cooldown.
+   clearing the proxy's cooldown. Inspect the full cooldown list for the credential, including
+   model-specific blocks. The reset clears routing cooldowns for the entire credential. Use it
+   only when every active block it would clear is confirmed stale.
 3. For a confirmed stale cooldown, use **Clear cooldown** on that credential in the active
    proxy's management page. For a supported CLIProxyAPI v8 installation, the management API
    lists credentials with `GET /v8/management/credentials` or the installed version's

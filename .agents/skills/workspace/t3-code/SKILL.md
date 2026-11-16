@@ -78,8 +78,9 @@ Apply `security-audit` to configuration changes. Use `proton-pass` for an existi
 When T3 rejects a request after a usage reset, trace the failing execution environment and provider
 instance to the proxy that serves that request. If it uses CLIProxyAPI, follow the
 [CLIProxyAPI cooldown recovery procedure](references/cliproxyapi-cooldown.md) before clearing
-routing state. Clear only the stale cooldown for the account whose quota recovered. Verify recovery
-with the same model and provider instance in a separate T3 chat on the affected environment.
+routing state. Clear the matched credential only when all cooldowns the operation would remove are
+stale. Verify recovery with the same model and provider instance in a separate T3 chat on the
+affected environment.
 
 ## Node provisioning
 
