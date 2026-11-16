@@ -615,8 +615,7 @@ return records;
 
 ## Repository guidance
 
-- A repository's project guidance is `.agents/project.md` together with the reference files it
-  points to.
+- A repository's project guidance is `.agents/project.md`.
 
 - Reference external code and automation by a maintained version tag when available, or by a
   maintained branch while developing or when no release tag exists. Do not pin dependency manifests,

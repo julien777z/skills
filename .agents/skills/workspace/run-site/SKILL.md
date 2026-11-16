@@ -68,9 +68,8 @@ run, and why, beside the result.
 ## Start and verify the stack
 
 Read each present repository's startup and schema-provisioning commands, services, ports, health
-probes, log locations, and recovery facts from its project guidance, opening every
-`.agents/references/` file its `project.md` points to: such facts usually live there rather than in
-`project.md` itself.
+probes, log locations, and recovery facts from its startup tooling — the command, its help output
+and the README — and the rules its project guidance sets.
 Start the backend first when both are present. Run the owning startup command with the authorized
 environment and inspect actual readiness. Reuse healthy dependencies; repair the startup owner rather
 than relying on an unrecorded workaround. Never conclude the stack is out of reach by reasoning about

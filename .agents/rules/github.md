@@ -271,8 +271,8 @@ alwaysApply: true
 - A README's reader is a person using or developing the project, so a README holds what the
   project is, how to run or use it, where a developer finds its parts, and a Local Development
   section with the commands to install, run, and validate it locally. Anything only an agent acts on
-  goes in the repository's rules and skills instead, with repository-specific facts in
-  `.agents/project.md` or a reference it points to: an environment variable or credential an agent
+  goes in the repository's rules and skills instead, with what one repository's agents must do in
+  `.agents/project.md`: an environment variable or credential an agent
   session reads, even one a person adds to a cloud environment for the agent; a tool installed for
   agents; a procedure only agents follow.
 - After drafting or editing READMEs and other reference documentation, compare each statement with

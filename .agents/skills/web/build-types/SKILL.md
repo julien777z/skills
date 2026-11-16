@@ -6,7 +6,7 @@ short_description: 'Regenerate generated API types from an OpenAPI document, usi
 
 # Build Types
 
-Treat generated API types as output of the canonical OpenAPI contract. Regenerate them instead of hand-editing a stale contract; read the generated-file path and its consumers from the repository's project guidance, opening every `.agents/references/` file its `project.md` points to.
+Treat generated API types as output of the canonical OpenAPI contract. Regenerate them instead of hand-editing a stale contract; read the generated-file path and its consumers from the repository's generation command and the files that import its output.
 
 ## Pick the source of the OpenAPI document
 
