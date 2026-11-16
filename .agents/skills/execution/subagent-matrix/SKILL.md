@@ -169,7 +169,11 @@ context and returns its verdict into the step waiting on it; nothing else does b
   same feature, window, system, files or verification setup, goes to that worker as part of its
   task, not to a new one: one worker owning a game's settings window can take a request to rename
   one of its tabs and another to change a related control. Work that needs a new worker while five
-  are running waits for a slot and is recorded with its brief; a step's required reviewer or gate
+  are running waits for a slot and is recorded with its brief, except work that removes what the
+  running workers are blocked on, such as making a shared runner, tool or service they queue for
+  faster or able to serve them in parallel: it starts at once, in the slot of a running worker it
+  unblocks, which pushes its work, pauses, and resumes once that work lands, and it takes the
+  shared resource ahead of their waits. A step's required reviewer or gate
   waits the same way and is never skipped to stay under the limit. A host or provider limit that
   stops workers lowers the count further until they run cleanly.
 - **Assign one implementation owner per coherent scope, and a fresh worker for each delegated
