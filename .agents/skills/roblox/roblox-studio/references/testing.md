@@ -76,7 +76,7 @@ What every helper must get right:
   already open reads as new.
 - **Run a check longer than one lease in segments.** `agent-lock` grants at most `MAX_LEASE`
   (900 s), and every client call refuses to start when the lease left cannot cover it. Each segment
-  acquires the lock with `acquire_runner_lock`, opens what it needs, does a bounded part of the
+  takes an editor with `acquire_editor_lock`, opens what it needs, does a bounded part of the
   check, closes every editor and test process it started, and releases with `release_runner_lock`;
   the next segment acquires again and reopens. Open right after acquiring: `open_place` and
   `open_cloud_place` check `open_bound(registration_wait)` themselves and refuse before they start
@@ -91,8 +91,9 @@ What every helper must get right:
   `OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK]` for the release. Add `LEASE_CHECK_BOUND` once for
   every call the step and that cleanup make that reaches the guest, since each of those checks the
   lease before it starts, and read every bound from `studio_mcp`. End the segment there when it does
-  not fit, rather than letting a call or the cleanup after it refuse midway. The game's warm editor is the one
-  editor a segment leaves open.
+  not fit, rather than letting a call or the cleanup after it refuse midway. Its editor's warm editor is the one
+  editor a segment leaves open. A segment whose open meets `RunnerLockBusy`, because other editors' launches kept the
+  guest's focus, releases its editor and runs again rather than failing the check.
 
 Workers use these helpers and extend them for each new repeatable step; a repeatable step is never
 a throwaway script in a temporary folder or Luau pasted into one run. Each helper returns a
@@ -217,7 +218,14 @@ Studio work runs in an isolated runner: a Tart VM on a macOS host, the container
 
 ### Retained Tart/macOS runner
 
-This example applies only when the host configures the shared values in `~/.config/roblox-studio/runner.env` (`ROBLOX_STUDIO_TART`, `ROBLOX_STUDIO_SSH_USER` and `ROBLOX_STUDIO_SSH_KEY`) and each game's own in `~/.config/roblox-studio/games/<game>.env` (`ROBLOX_STUDIO_VM`, its VM's name, and `ROBLOX_STUDIO_KNOWN_HOSTS`, that VM's pinned host key). **The game's name**, `<game>` below, is `ROBLOX_STUDIO_GAME` when set, or else the name of the folder holding the main checkout of the repository the command runs in, so every worktree of one game reaches the same VM; a bare or submodule checkout sets `ROBLOX_STUDIO_GAME`. Shared tools and keys live outside game checkouts. Discover the configured machine; do not assume its name or address from another session. **A game's VM is named `<game>-vm`**, such as `example-game-vm`. **The runner lock's key is the VM's configured name**, the `ROBLOX_STUDIO_VM` its game's file sets, shared by every session working on that game; a VM named otherwise keeps working through that file. A rename holds the locks on both the old and the new name, in the order `agent-lock` sets for several keys, through `tart rename`, the settings-file update and moving the host-key pin to the new name, confirmed by a `runner_ssh.sh hostname` that answers; never rename another session's VM while it is in use.
+This example applies only when the host configures the shared values in `~/.config/roblox-studio/runner.env` (`ROBLOX_STUDIO_TART`, `ROBLOX_STUDIO_SSH_USER` and `ROBLOX_STUDIO_SSH_KEY`) and each game's own in `~/.config/roblox-studio/games/<game>.env` (`ROBLOX_STUDIO_VM`, its VM's name, `ROBLOX_STUDIO_KNOWN_HOSTS`, that VM's pinned host key, and `ROBLOX_STUDIO_EDITORS`, how many editors its VM keeps for checks to run in at once). **The game's name**, `<game>` below, is `ROBLOX_STUDIO_GAME` when set, or else the name of the folder holding the main checkout of the repository the command runs in, so every worktree of one game reaches the same VM; a bare or submodule checkout sets `ROBLOX_STUDIO_GAME`. Shared tools and keys live outside game checkouts. Discover the configured machine; do not assume its name or address from another session. **A game's VM is named `<game>-vm`**, such as `example-game-vm`. **Every session working on the game shares the VM's locks**, each named from the `ROBLOX_STUDIO_VM` its game's file sets, so a VM named otherwise keeps working through that file:
+
+| Key                                                                                                                                                                                                                                                                                                                  | Held for                                                                                                                                                                                                                 |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `<vm>/editor-<n>`, one per editor                                                                                                                                                                                                                                                                                    | One check in that editor: its Play sessions, its captures, its guest folder and its code sync. A check takes whichever editor comes free first with `acquire_editor_lock`                                                |
+| `<vm>`                                                                                                                                                                                                                                                                                                               | Work on the whole VM: starting, stopping, restarting or resizing it, updating Studio, signing in, renaming. `acquire_runner_lock` takes it and then every editor's key, so the work starts once no check holds an editor |
+| `<vm>/focus`                                                                                                                                                                                                                                                                                                         | A step that reaches only the guest's frontmost window, held through `focused_input` for that step alone: an editor launch until the editor registers, and a click or capture another editor's window would take          |
+| A rename holds the locks on both the old and the new name, in the order `agent-lock` sets for several keys, through `tart rename`, the settings-file update and moving the host-key pin to the new name, confirmed by a `runner_ssh.sh hostname` that answers; never rename another session's VM while it is in use. |
 
 ```sh
 runner_ssh="<installed roblox-studio skill>/scripts/runner_ssh.sh"
@@ -241,16 +249,19 @@ from the installed `roblox-studio` skill's `scripts` folder, put on `sys.path`, 
 `__init__.py` exports (`from studio_mcp import Studio, open_place, ...`); no game keeps its own MCP client or copies
 one of these mechanisms. Each `Studio` holds its own MCP session through `runner_ssh.sh`, and the module has no shell
 command line. Every call that reaches the guest first confirms, once, through `agent-lock` that the caller's receipt
-owns the lock on the game's VM name with enough of its lease left for everything the call does, each operation inside
+owns the game's VM or one of its editors with enough of its lease left for everything the call does, each operation inside
 it counted at its full timeout, so no call outlives the lease or refuses partway; the few milliseconds a process takes
 to start or stop are not counted. Project and place file names use only letters, digits, `.`, `_` and `-`,
 starting with a letter or digit.
 
 | Call                                                                                          | What it does                                                                                                                                                                                                                 |
 | --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `acquire_runner_lock(lock_receipt, owner, activity, lease=MAX_LEASE)`                         | Takes the lock on the game's VM for one segment and returns the acquire report, whose `expired_owner` names a predecessor whose leftovers must be stopped first; raises when the lock stays busy                             |
-| `release_runner_lock(lock_receipt)`                                                           | Releases it, telling `agent-lock` the runner is idle, so the caller first closes every editor and process the segment started                                                                                                |
-| `runner_lease(lock_receipt)`                                                                  | The runner's configuration and the time the lease has left, as `{"config", "remaining"}`                                                                                                                                     |
+| `acquire_editor_lock(lock_receipt, owner, activity, lease=MAX_LEASE, wait=LOCK_WAIT)`         | Takes whichever of the game's editors comes free first for one segment of a check and returns the acquire report, whose `expired_owner` names a predecessor whose leftovers must be stopped first                            |
+| `acquire_runner_lock(lock_receipt, owner, activity, lease, wait, priority=False)`             | Takes the whole VM, its own key and then every editor's, writing each editor's receipt beside `lock_receipt`; `priority` for work that lets the waiters in                                                                   |
+| `release_runner_lock(lock_receipt)`                                                           | Releases the editor, or the whole VM, a receipt holds, telling `agent-lock` it is idle, so the caller first closes every editor and process the segment started                                                              |
+| `runner_lease(lock_receipt)`                                                                  | The runner's configuration, the editor the receipt holds (`None` for the whole VM) and the time its lease has left, as `{"config", "editor", "remaining"}`                                                                   |
+| `editor_slots(config)`                                                                        | The game's editors, each with its lock key, guest project folder (`editor-<n>`) and Rojo port                                                                                                                                |
+| `focused_input(lock_receipt, activity, hold, wait)`                                           | Holds the guest's focus lock for a step that reaches only the frontmost window; `open_place` and `open_cloud_place` hold it themselves                                                                                       |
 | `open_place(project, place, out_dir, lock_receipt, registration_wait)`                        | Copies a built place into the guest under `studio-places/<project>/`, launches an editor for it and returns a `Studio` once the editor registers and its Edit data model runs code, over the connection that saw it register |
 | `open_cloud_place(place_id, universe_id, out_dir, lock_receipt, registration_wait)`           | Opens a published place in an editor the same way, returning it once its Edit data model reports that place and universe; it is never saved or published from there                                                          |
 | `close_place(project, place, lock_receipt)`                                                   | Ends the editor that has exactly that copy open and deletes the copy; raises, keeping the copy, when the editor stays open                                                                                                   |
@@ -259,6 +270,12 @@ starting with a letter or digit.
 | `listed_editor_ids(connection, lock_receipt)`, `new_editors(known, connection, lock_receipt)` | A snapshot of the editors listed before a launch, waiting out a new connection's empty list, and the editors listed since on the same connection, such as a multiplayer test's windows                                       |
 | `guest_screenshot(path, lock_receipt)`                                                        | Saves the guest's whole screen, for a failure the editor cannot capture                                                                                                                                                      |
 | `run_in_runner(command, lock_receipt, timeout)`                                               | Runs a shell command in the guest                                                                                                                                                                                            |
+
+Each lock call raises `RunnerLockBusy`, a `RuntimeError`, when the lock stays held for the whole wait, so a step
+can give its editor back and retry. An open holds the guest's focus lock from the launch until the editor
+registers, so editors launch one at a time: editors starting together each refresh the account's shared sign-in
+token, and Roblox revokes the session when one rotated token is used twice, which signs every editor out; several
+launching at once also starve the guest until none registers. `open_bound` counts the wait for that lock.
 
 When the editor either open call launched never registers or never answers in its Edit data model, the call saves
 the guest's screen under `out_dir`, closes the editor and raises; any other failure once the launch starts closes
@@ -283,14 +300,26 @@ Verify SSH host keys, the intended guest editor, and the source/place before run
 #### Size the host for its VMs
 
 A running VM holds its whole memory allocation on the host, and its disk image grows as the guest
-writes. Budget each game's VM at 6 CPU cores, 12 GB of memory and a 50 GB disk: a guest with less
-memory swaps with one editor and a Play session open. Before starting or creating a VM, read the
-host's free memory and disk. Start one only while every running VM's memory plus 8 GB for the host
-fits in the host's memory, and create one only while the host's free disk exceeds the new VM's disk
-size plus 20 GB. macOS runs at most two macOS guests at once, whatever the host's size. When the
-budget leaves no room, or `tart run` or `tart clone` fails for lack of it, this game's Studio work
-waits, as a pending result does, until room appears or the user frees it, and the rest of the work
-continues; it never stops a VM whose lock it does not hold.
+writes. **A VM's default size follows its editors**: 6 CPU cores, a 50 GB disk, and 4 GB of memory for
+the guest plus 3 GB for each editor its game's file names, since an editor holds about 2.5 GB in Edit
+and about 3 GB in Play in the guest; a guest below that swaps once its editors are in Play.
+
+**Read the host's actual free memory before starting a VM or raising its memory**, not its total
+(`vm_stat` for free and compressed pages, `sysctl vm.swapusage` for swap). Start one only while every
+running VM's memory fits in what the host has free, leaving 8 GB for the host itself; a host already
+swapping pages the VM's memory out, and the guest then stalls whatever its own free memory reads:
+SSH takes tens of seconds, the load average climbs past the guest's cores, editors stop answering
+Studio MCP and Play sessions drop. Create a VM only while the host's free disk exceeds its disk size
+plus 20 GB. macOS runs at most two macOS guests at once, whatever the host's size.
+
+**A VM's size is a setting the user approves, never a wall.** When the measured need differs from the
+VM's size, or the host cannot back it, propose the change to the user with the measurement: the
+guest's memory with its editors in Play, the host's free memory and swap, and what else holds the
+host's memory. Once they approve it, take the whole VM with `acquire_runner_lock(priority=True)`,
+stop the VM, run `tart set <vm> --memory <MB> --cpu <cores>`, start it as above and confirm the new
+size with `tart get <vm>` and Studio signed in. Meanwhile the game's Studio work waits only on what
+the VM cannot run, and the rest of the work continues; work never stops a VM whose lock it does not
+hold.
 
 #### Add a VM for a game
 
@@ -316,7 +345,8 @@ and before acting checks again that the step is still needed. Each step ends wit
 2. **Pin its host key.** Record the clone's host key under the game's VM name in
    `~/.config/roblox-studio/games/<game>_known_hosts` and verify its fingerprint through
    `tart exec`, as step 3 of provisioning says, then confirm a `BatchMode=yes` login.
-3. **Write `games/<game>.env`** with `ROBLOX_STUDIO_VM`, `ROBLOX_STUDIO_KNOWN_HOSTS` and
+3. **Write `games/<game>.env`** with `ROBLOX_STUDIO_VM`, `ROBLOX_STUDIO_KNOWN_HOSTS`,
+   `ROBLOX_STUDIO_EDITORS`, the number of editors the VM was sized for in step 1, and
    `ROBLOX_STUDIO_QUALIFIED=0`; `"$runner_ssh" --describe` from the game's repository prints them,
    and `"$runner_ssh" hostname` answers from the new guest. These are the only files written on the
    host.
@@ -415,9 +445,9 @@ wedges and black slabs, while small places look fine. The guest has no OpenGL fa
 `FIntSuperClusterFastClusterMeshVertexSize` at `60000`. That folder survives Studio updates. The
 host keeps the source copy at `~/.config/roblox-studio/studio-client-settings.json`, and
 `"$runner_ssh" 'mkdir -p "$HOME/Library/Roblox/ClientSettings" && cat > "$HOME/Library/Roblox/ClientSettings/ClientAppSettings.json"' < ~/.config/roblox-studio/studio-client-settings.json`
-restores it under the runner lock. Before a rendering check, confirm the file is present and that
+restores it under the VM's own lock. Before a rendering check, confirm the file is present and that
 `settings():GetFVariable("GeometryBufferMaxBytesMesh")` returns `524288` in the editor. Studio reads
-the file only when it launches, so an editor that reports another value, the game's warm editor
+the file only when it launches, so an editor that reports another value, the game's warm editors
 included, is closed and opened again before the check. With the cap
 in place, a capture of Studio draws the scene correctly, so stretched wedges or black slabs in one
 are a defect to diagnose, never a guest artifact to set aside. The published player in the guest
@@ -496,6 +526,15 @@ a movement key briefly, then capture the result. Permission checks and screensho
 qualify input: include this active test in the plan and execute it before calling control usable.
 Verify the intended application, account, and place. Keep input and
 capture entirely inside the VM, retain the shared desktop lock, and release every held key/button.
+**A check needs no window in front; only input and captures through the guest's window system do.**
+Studio MCP's input and the [VirtualInput helper](../scripts/virtual_input.luau) reach an editor's Client data model
+whichever window is in front, and `screencapture -o -l <window-id>` grabs an editor's window while another covers
+it, drawn as it is now, and a covered editor keeps running and drawing. So a check sends input through its editor's
+own MCP connection, captures its own editor's window by ID, and records motion as a run of those window grabs. Input
+posted through CoreGraphics or System Events, a whole-screen capture or recording, and an editor launch reach or take
+the front window, so each runs as a short step under the guest's focus lock (`studio_mcp.focused_input`) while the
+other editors' checks go on; a whole-screen capture serves runner diagnostics, never a check's evidence.
+
 A helper should refuse host execution, target a verified process/window, confirm foreground focus
 before input, and bound key holds. Check existing guest Accessibility and Screen Recording access;
 use normal guest permission/login UI when required, never disable authentication or edit privacy
@@ -566,8 +605,18 @@ another, and a viewer connection dialog is not a connected desktop.
 **Roblox sign-in in a runner is the agent's to drive.** The user's part is entering the code on
 their own device, and deciding any prompt that asks the account to accept something, such as
 updated terms; everything else is the agent's.
-Reuse a retained Roblox session first. When Studio shows its sign-in screen, or its log reports
-`Authenticated : NO`:
+Reuse a retained Roblox session first. **The session survives the VM**: Studio keeps it in the guest's
+own cookie store and login keychain, so a restart, stop or resize of the VM leaves it signed in,
+as a Mac's own restart does; a Studio that starts signed out after one has another cause. **Read the
+cause from Studio's logs before signing in again**: the newest
+`~/Library/Logs/Roblox/*Studio*.log` with `Authenticated : NO` and no later `YES`, and the error it
+logged with it. `Token has been revoked` means Roblox ended the session: several editors starting
+together each refresh the account's rotating sign-in token, and a token presented twice revokes it,
+so every Studio launch in the runner goes through `open_place` or `open_cloud_place`, which launch
+one editor at a time, never through another route at the same moment. Fix what started the
+editors together before asking for a new sign-in, or the next launches revoke it again. A Play
+test's client process (`-playerEmulator`) runs as a test player and never signs in, so its log is
+no sign-out. When Studio shows its sign-in screen, or its log reports `Authenticated : NO`:
 
 1. **Choose Quick Sign-in yourself**, through input posted inside the guest as
    [direct guest control](#direct-guest-control) describes, or the Linux runner's display input.
@@ -577,7 +626,11 @@ Reuse a retained Roblox session first. When Studio shows its sign-in screen, or 
 3. **Ask through the question tool** for that one step: enter the code at
    <https://www.roblox.com/crossdevicelogin/ConfirmCode>, or in the Roblox app under More, then
    Quick Sign In, on a device already signed in to Roblox, with a Done option, one for a new code
-   and one for later. A new-code answer, or a timeout, goes back to step 2.
+   and one for later. A new-code answer, or a timeout, goes back to step 2. **A question that can
+   reach the user minutes late**, such as one a delegated worker asks, goes first as its own
+   question, asking the user to open the page and say when they are ready, with a Ready option;
+   step 2 then reads a fresh code the moment they answer, under the guest's focus lock alone, and
+   this step asks for it at once.
 4. **Finish every later screen of the sign-in yourself**, such as choosing the account and its
    **Continue**, leaving an acceptance prompt to the user as the lead above says. Then
    confirm `Authenticated : YES` in the log and the account on Studio's start page before relying on
@@ -588,42 +641,60 @@ screen, and never ask for a password or a second factor: a screen inside the run
 agent's input reaches. Do not transfer
 session cookies. Continue independent work while the question waits.
 
-## Keep the game's editor warm
+## Keep the game's editors warm
 
-The default check loop reuses one Studio editor kept open in the game's VM on the game's built
-place, with source synced into it live, so a check costs a sync and a Play session rather than a
-build, a copy and an editor launch.
+The default check loop reuses the editors kept open in the game's VM on the game's built place, one
+per editor of its pool, each with source synced into it live, so a check costs a sync and a Play
+session rather than a build, a copy and an editor launch, and as many checks run at once as the
+pool has editors.
 
-- **Open it once.** Build the place, open it with `studio_mcp.open_place` under the project name
-  `warm`, and leave it open until the VM shuts down as [End of session for a retained VM](#end-of-session-for-a-retained-vm)
-  says: it belongs to the game's VM, not to the task that opened it. A session
-  that finds the game's warm editor registered in `list_roblox_studios` uses it, after confirming
-  its place name.
+- **Each editor of the pool has its own of everything a check touches.** Its lock key, its guest
+  folder `studio-places/editor-<n>/` holding its place copy, code copy and Rojo server, its Rojo
+  port on the guest's loopback, its place file named for the editor, so `list_roblox_studios` tells
+  the editors apart, and its own Play session and test processes. `studio_mcp.editor_slots` names
+  them; a check reaches only the editor its receipt holds, which `runner_lease` reports.
+- **Open each once.** Build the place, open it with `studio_mcp.open_place` under the editor's
+  project name as the step's first guest operation, while the lease still covers the open's bound,
+  and leave it open until the VM shuts down as [End of session for a retained VM](#end-of-session-for-a-retained-vm)
+  says: it belongs to the game's VM, not to the task that opened it. A session that finds its
+  editor's warm editor registered in `list_roblox_studios` uses it, after confirming its place name.
 - **Sync source live, served inside the guest.** Install the Rojo plugin matching the game's
   pinned Rojo version into the guest's Studio plugins folder (`~/Documents/Roblox/Plugins` in a
-  macOS guest), and run `rojo serve` in the guest on its loopback address, against a copy of the
-  session's checkout in the guest that each sync updates. Serving from the host instead needs a
-  listener on the VM network, which can raise a firewall prompt on the user's desktop. The session
-  holding the VM's lock mirrors its own working tree into that copy with `rsync --delete`,
-  excluding only `.git` and the build's own output, so the editor holds that checkout's tree; the
-  copy is its own folder, with the session's record outside it. Never mirror by tracked files or by
-  `.gitignore`: installed packages and generated code are ignored by git but are Rojo inputs.
-- **Connect the right plugin.** An older Rojo plugin can share the toolbar label, so open the panel
-  whose title shows the pinned version. A local place file has place ID 0, which the plugin's
-  automatic reconnect skips, so press **Connect** through input posted inside the guest each time
-  the editor opens.
+  macOS guest), and run `rojo serve` in the guest on the editor's loopback port, against the
+  editor's copy of the session's checkout, which each sync updates. Serving from the host instead
+  needs a listener on the VM network, which can raise a firewall prompt on the user's desktop. The
+  session holding an editor's lock mirrors its own working tree into that editor's copy alone with
+  `rsync --delete`, excluding only `.git` and the build's own output, so the editor holds that
+  checkout's tree; the copy is its own folder, with the session's record outside it. Never mirror by
+  tracked files or by `.gitignore`: installed packages and generated code are ignored by git but are
+  Rojo inputs.
+- **Connect each editor's plugin to its own server.** An older Rojo plugin can share the toolbar
+  label, so open the panel whose title shows the pinned version. A local place file has place ID 0,
+  which the plugin's automatic reconnect skips, and nothing but its panel sets the port, so the
+  connection is a short step under the guest's focus lock: bring that editor to the front, end any
+  session the panel shows with another server, enter the editor's port, press **Connect**. Judge
+  the connection by that editor's own process holding a connection to its own port
+  (`lsof -a -p <pid> -iTCP:<port>`); any Studio connected to the port is not evidence, since another
+  editor's plugin can be. When the plugin cannot connect, the sync writes every differing script
+  over Studio MCP instead.
 - **Check the session's parts, and restore them with one command.** The editor can be gone, the
   server stopped, or the plugin disconnected; read each from the guest: the editor in
-  `list_roblox_studios`, the server's process, and the plugin's open TCP connection to the
-  server's port (`lsof` shows Studio's process name cut short, such as `RobloxStu`). The game's
-  start command for its warm session brings back whichever is missing, never only one.
+  `list_roblox_studios`, the server's process, and the plugin's connection as the bullet above
+  reads it. The game's start command for an editor's warm session brings back whichever is missing, never
+  only one.
+- **Recover an editor left in Play inside its own lease.** A step that ended mid-Play can leave an
+  editor that Studio MCP lists only as its Play session, which answers in no Edit data model. Stop
+  Play through each entry listed under that editor's place; when none answers in Edit after that,
+  close that editor's place copy and its test processes, and open it again. Only that editor is
+  touched, and the other editors' checks go on.
 - **Record what the session holds inside it**: the source revision, a manifest of the synced files
-  and a digest of the built world, kept in the guest beside the session, so a later session reads
+  and a digest of the built world, kept in the editor beside the session, so a later session reads
   whether the warm editor matches its checkout instead of guessing, and compares that manifest with
   its checkout before each check.
 - **Confirm each sync before a check.** Read each changed script's source back from the Edit data
   model through `execute_luau`; a plugin showing connected does not show that a change landed.
-  Then start Play from that editor, and stop it when the check ends.
+  Then start Play from that editor, and stop it when the check ends, closing the test processes that
+  editor launched, which name it by their `-editpid`, never another editor's.
 - **Rebuild only for what the plugin cannot write.** Content the place's build step makes rather
   than a file maps, such as terrain or generated models; properties scripts cannot set, such as a
   mesh part's mesh; a project-file change to which containers are mapped; and a sync the plugin
@@ -637,8 +708,8 @@ build, a copy and an editor launch.
 ## Leave the shared runner as you found it
 
 Every session working on one game shares that game's VM, so whatever one leaves behind lands on the next. The
-game's warm session stays, as the section above says; no other task process
-outlives any release of the runner lock, and before the task's last release its own files are gone and
+game's warm sessions stay, as the section above says; no other task process
+outlives any release of an editor's or the VM's lock, and before the task's last release its own files are gone and
 every setting it changed reads back at the value it found.
 
 - **Settings.** A Studio or engine setting changed from a script or a dialog, such as
@@ -652,7 +723,7 @@ every setting it changed reads back at the value it found.
   output, worktrees and lock files, sits under a folder named for the task or its project and is
   removed when the task's runner work ends. `studio_mcp.close_place` deletes the place copy
   `open_place` made. The runner's persistent setup is not task output and stays, as the next section
-  says, and so is the game's warm session: its editor, its `rojo serve`, its place copy, the guest
+  says, and so are the game's warm sessions: each editor, its `rojo serve`, its place copy, its guest
   copy of the checkout and the record of what it holds belong to the game's VM.
 - **Resources.** Before a heavy run, such as Play, a multiplayer test or a device simulation, read the
   guest's free disk and swap (`df -h /` with `sysctl vm.swapusage` in a Tart guest, `free -h` in the
@@ -662,7 +733,7 @@ every setting it changed reads back at the value it found.
   (`ps -o rss= -p <pid>`) of each process running the task's Play session every few seconds and,
   past a ceiling well under the guest's memory, stops that Play session, killing the process only
   when the stop does not take, so one run cannot push the shared guest into swap. A warm editor
-  killed this way is brought back with the game's start command for its warm session.
+  killed this way is brought back with the game's start command for that editor's warm session.
 
 ## End of session for a retained VM
 
@@ -678,7 +749,7 @@ the host, a guest state only a host viewer could recreate, or a Roblox session t
 user to enter a new code. Powering the guest off is fine, because its automatic login brings the desktop back.
 
 When the game work is done, hold the VM's lock, save the authorized project artifacts, close Roblox
-Studio normally, the game's warm session included,
+Studio normally, the game's warm sessions included,
 and **shut down the guest VM** so it is no longer running locally. Verify that Studio closed and the
 VM is stopped. Do not leave the VM running or substitute a suspended/running state for the requested
 shutdown. If an unfinished test must continue, report that explicitly rather than claiming shutdown.
@@ -763,7 +834,7 @@ undocumented preference-file keys are not a stable setup API. This uses the norm
 
 A normal quit can stop at an unsaved-changes dialog. Verify closure before reopening, and avoid
 repeated duplicate launches. Stop any Play session or multiplayer test through MCP first. An editor
-`studio_mcp.open_place` made, other than [the game's warm editor](#keep-the-games-editor-warm), is
+`studio_mcp.open_place` made, other than [the game's warm editors](#keep-the-games-editors-warm), is
 then closed with `close_place`: its place is a disposable copy, so
 ending the process is the same as Don't Save. The test server and client windows a multiplayer test
 starts are separate processes `close_place` does not match, so list them with `pgrep` before and after
