@@ -130,6 +130,17 @@ def member_receipt(lock_receipt: Path, slot: EditorSlot) -> Path:
     return lock_receipt.with_name(f"{lock_receipt.stem}.{slot['project']}.json")
 
 
+def agent_lock_status(output: str) -> str | None:
+    """Return the status agent-lock printed, or None when it printed no report, as when Python cannot start it."""
+
+    try:
+        report = json.loads(output)
+    except json.JSONDecodeError:
+        return None
+
+    return report.get("status") if isinstance(report, dict) else None
+
+
 def acquire_lock(keys: Sequence[str], lock_receipt: Path, owner: str, activity: str, lease: timedelta,
                  wait: timedelta, priority: bool = False) -> AgentLockAcquireReport:
     """Take one of the keys through agent-lock, writing its receipt to lock_receipt, or raise when they stay busy."""
@@ -145,7 +156,7 @@ def acquire_lock(keys: Sequence[str], lock_receipt: Path, owner: str, activity: 
                             capture_output=True, text=True,
                             timeout=(wait + OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK]).total_seconds())
 
-    if result.returncode == AGENT_LOCK_BUSY:
+    if result.returncode == AGENT_LOCK_BUSY and agent_lock_status(result.stdout) == "busy":
         raise RunnerLockBusy(f"The {' or '.join(keys)} lock stayed held:\n{result.stdout}")
 
     if result.returncode != 0:
