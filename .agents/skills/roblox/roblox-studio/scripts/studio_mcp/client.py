@@ -45,6 +45,7 @@ OPERATION_TIMEOUTS: Final[Mapping[RunnerOperation, timedelta]] = MappingProxyTyp
     RunnerOperation.LOCK_CHECK: timedelta(seconds=30),
     RunnerOperation.DESCRIBE: timedelta(seconds=30),
     RunnerOperation.SESSION_EXIT: timedelta(seconds=5),
+    RunnerOperation.HELPER_CHECK: timedelta(seconds=10),
 })
 CLOUD_CLOSE_BOUND: Final[timedelta] = (OPERATION_TIMEOUTS[RunnerOperation.PROCESS_LIST]
                                        + OPERATION_TIMEOUTS[RunnerOperation.STOP])
@@ -52,13 +53,22 @@ CLOSE_BOUND: Final[timedelta] = CLOUD_CLOSE_BOUND + OPERATION_TIMEOUTS[RunnerOpe
 LEASE_CHECK_BOUND: Final[timedelta] = (OPERATION_TIMEOUTS[RunnerOperation.DESCRIBE]
                                        + OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK])
 LOCK_WAIT: Final[timedelta] = timedelta(seconds=50)
+SESSION_OPEN_BOUND: Final[timedelta] = (OPERATION_TIMEOUTS[RunnerOperation.HELPER_CHECK]
+                                        + OPERATION_TIMEOUTS[RunnerOperation.INITIALIZE])
+# Studio's editors reach MCP through a helper port the oldest running StudioMCP process holds, and every editor drops
+# its connection when that process exits; a StudioMCP that never exits keeps the port while sessions come and go.
+MCP_HELPER_KEEPER: Final[str] = """pidfile="$HOME/Library/Caches/studio-mcp-keeper.pid"
+if [ -f "$pidfile" ] && kill -0 "$(cat "$pidfile")" 2>/dev/null; then exit 0; fi
+nohup /bin/sh -c 'tail -f /dev/null | /Applications/RobloxStudio.app/Contents/MacOS/StudioMCP' > /dev/null 2>&1 < /dev/null &
+echo $! > "$pidfile"
+"""
 # agent-lock refuses a lease longer than this.
 MAX_LEASE: Final[timedelta] = timedelta(seconds=900)
 POLL_INTERVAL: Final[timedelta] = timedelta(seconds=2)
 FOCUS_LEASE: Final[timedelta] = timedelta(seconds=120)
 # agent-lock's exit status for a lock that stayed held through the wait.
 AGENT_LOCK_BUSY: Final[int] = 2
-DEFAULT_REGISTRATION_WAIT: Final[timedelta] = timedelta(seconds=120)
+DEFAULT_REGISTRATION_WAIT: Final[timedelta] = timedelta(seconds=100)
 EDITOR_LIST_WAIT: Final[timedelta] = timedelta(seconds=20)
 GUEST_NAME: Final[re.Pattern[str]] = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*")
 EXTENDED_REGEX_SPECIAL: Final[re.Pattern[str]] = re.compile(r"([.^$*+?()\[\]{}|\\])")
@@ -283,6 +293,9 @@ class StudioMcpSession:
         """Open an initialized session to the configured runner."""
 
         self.vm = config["ROBLOX_STUDIO_VM"]
+
+        run_guest_command(MCP_HELPER_KEEPER, config, OPERATION_TIMEOUTS[RunnerOperation.HELPER_CHECK])
+
         self.server_errors = tempfile.TemporaryFile()
         self.process = subprocess.Popen([str(RUNNER_SSH), STUDIO_MCP], stdin=subprocess.PIPE,
                                         stdout=subprocess.PIPE, stderr=self.server_errors, bufsize=0,
@@ -424,7 +437,7 @@ def tool_call_bound(opens_session: bool,
                     timeout: timedelta = OPERATION_TIMEOUTS[RunnerOperation.TOOL_CALL]) -> timedelta:
     """Return the longest one Studio MCP tool call can take."""
 
-    opening = OPERATION_TIMEOUTS[RunnerOperation.INITIALIZE] if opens_session else timedelta()
+    opening = SESSION_OPEN_BOUND if opens_session else timedelta()
 
     return opening + timeout + OPERATION_TIMEOUTS[RunnerOperation.SESSION_EXIT]
 
@@ -780,7 +793,7 @@ def launch_bound(registration_wait: timedelta) -> timedelta:
 
     editor_snapshot = editor_wait_bound(EDITOR_LIST_WAIT)
     launch = OPERATION_TIMEOUTS[RunnerOperation.COPY] + OPERATION_TIMEOUTS[RunnerOperation.LAUNCH]
-    registering_call = (POLL_INTERVAL + OPERATION_TIMEOUTS[RunnerOperation.INITIALIZE]
+    registering_call = (POLL_INTERVAL + SESSION_OPEN_BOUND
                         + OPERATION_TIMEOUTS[RunnerOperation.TOOL_CALL])
     first_probe = tool_call_bound(opens_session=False, timeout=OPERATION_TIMEOUTS[RunnerOperation.EDIT_PROBE])
     failure_cleanup = (OPERATION_TIMEOUTS[RunnerOperation.CAPTURE] + OPERATION_TIMEOUTS[RunnerOperation.SESSION_EXIT]
