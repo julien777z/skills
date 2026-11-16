@@ -260,7 +260,7 @@ starting with a letter or digit.
 | `acquire_runner_lock(lock_receipt, owner, activity, lease, wait, priority=False)`             | Takes the whole VM, its own key and then every editor's, writing each editor's receipt beside `lock_receipt`; `priority` for work that lets the waiters in                                                                   |
 | `release_runner_lock(lock_receipt)`                                                           | Releases the editor, or the whole VM, a receipt holds, telling `agent-lock` it is idle, so the caller first closes every editor and process the segment started                                                              |
 | `runner_lease(lock_receipt)`                                                                  | The runner's configuration, the editor the receipt holds (`None` for the whole VM) and the time its lease has left, as `{"config", "editor", "remaining"}`                                                                   |
-| `editor_slots(config)`                                                                        | The game's editors, each with its lock key, guest project folder (`editor-<n>`) and Rojo port                                                                                                                                |
+| `editor_slots(config)`                                                                        | The game's editors, each with its lock key and guest project folder (`editor-<n>`)                                                                                                                                           |
 | `focused_input(lock_receipt, activity, hold, wait)`                                           | Holds the guest's focus lock for a step that reaches only the frontmost window; `open_place` and `open_cloud_place` hold it themselves                                                                                       |
 | `open_place(project, place, out_dir, lock_receipt, registration_wait)`                        | Copies a built place into the guest under `studio-places/<project>/`, launches an editor for it and returns a `Studio` once the editor registers and its Edit data model runs code, over the connection that saw it register |
 | `open_cloud_place(place_id, universe_id, out_dir, lock_receipt, registration_wait)`           | Opens a published place in an editor the same way, returning it once its Edit data model reports that place and universe; it is never saved or published from there                                                          |
@@ -626,7 +626,10 @@ no sign-out. When Studio shows its sign-in screen, or its log reports `Authentic
 3. **Ask through the question tool** for that one step: enter the code at
    <https://www.roblox.com/crossdevicelogin/ConfirmCode>, or in the Roblox app under More, then
    Quick Sign In, on a device already signed in to Roblox, with a Done option, one for a new code
-   and one for later. A new-code answer, or a timeout, goes back to step 2. **A question that can
+   and one for later. **First try the guest's own browser**: when the guest's Safari is signed in to
+   the same Roblox account, which `https://www.roblox.com/home` shows by its account name, open the
+   confirmation page there with input posted inside the guest under its focus lock, enter the code
+   and confirm, and ask the user only when that page asks for something only they can give. A new-code answer, or a timeout, goes back to step 2. **A question that can
    reach the user minutes late**, such as one a delegated worker asks, goes first as its own
    question, asking the user to open the page and say when they are ready, with a Ready option;
    step 2 then reads a fresh code the moment they answer, under the guest's focus lock alone, and
@@ -644,44 +647,36 @@ session cookies. Continue independent work while the question waits.
 ## Keep the game's editors warm
 
 The default check loop reuses the editors kept open in the game's VM on the game's built place, one
-per editor of its pool, each with source synced into it live, so a check costs a sync and a Play
-session rather than a build, a copy and an editor launch, and as many checks run at once as the
-pool has editors.
+per editor of its pool, each with source synced into it over its own Studio MCP connection, so a
+check costs a sync and a Play session rather than a build, a copy and an editor launch, and as many
+checks run at once as the pool has editors.
 
 - **Each editor of the pool has its own of everything a check touches.** Its lock key, its guest
-  folder `studio-places/editor-<n>/` holding its place copy, code copy and Rojo server, its Rojo
-  port on the guest's loopback, its place file named for the editor, so `list_roblox_studios` tells
-  the editors apart, and its own Play session and test processes. `studio_mcp.editor_slots` names
-  them; a check reaches only the editor its receipt holds, which `runner_lease` reports.
+  folder `studio-places/editor-<n>/` holding its place copy, its place file named for the editor, so
+  `list_roblox_studios` tells the editors apart, its MCP connection, and its own Play session and test
+  processes. `studio_mcp.editor_slots` names them; a check reaches only the editor its receipt holds,
+  which `runner_lease` reports.
 - **Open each once.** Build the place, open it with `studio_mcp.open_place` under the editor's
   project name as the step's first guest operation, while the lease still covers the open's bound,
   and leave it open until the VM shuts down as [End of session for a retained VM](#end-of-session-for-a-retained-vm)
   says: it belongs to the game's VM, not to the task that opened it. A session that finds its
   editor's warm editor registered in `list_roblox_studios` uses it, after confirming its place name.
-- **Sync source live, served inside the guest.** Install the Rojo plugin matching the game's
-  pinned Rojo version into the guest's Studio plugins folder (`~/Documents/Roblox/Plugins` in a
-  macOS guest), and run `rojo serve` in the guest on the editor's loopback port, against the
-  editor's copy of the session's checkout, which each sync updates. Serving from the host instead
-  needs a listener on the VM network, which can raise a firewall prompt on the user's desktop. The
-  session holding an editor's lock mirrors its own working tree into that editor's copy alone with
-  `rsync --delete`, excluding only `.git` and the build's own output, so the editor holds that
-  checkout's tree; the copy is its own folder, with the session's record outside it. Never mirror by
-  tracked files or by `.gitignore`: installed packages and generated code are ignored by git but are
-  Rojo inputs.
-- **Judge each editor's plugin by its own connection.** An older Rojo plugin can share the toolbar
-  label, so open the panel whose title shows the pinned version. A local place file has place ID 0,
-  which the plugin's automatic reconnect skips, and only its panel sets the port, so a connection
-  takes input posted inside the guest with that editor in front, under the guest's focus lock. Count
-  it only when that editor's own process holds a connection to its own server's port
-  (`lsof -a -p <pid> -iTCP:<port>`): any Studio connected to the port is not evidence, and a panel
-  left on Rojo's default port connects an editor to another editor's server, which then writes
-  another checkout's code into it. An editor whose plugin is not connected that way gets every
-  differing script written over Studio MCP at each sync, which needs no focus.
-- **Check the session's parts, and restore them with one command.** The editor can be gone, the
-  server stopped, or the plugin disconnected; read each from the guest: the editor in
-  `list_roblox_studios`, the server's process, and the plugin's connection as the bullet above
-  reads it. The game's start command for an editor's warm session brings back whichever is missing, never
-  only one.
+- **Sync code over the editor's own MCP connection.** Read a digest of every script's source in
+  the editor's Edit data model through `execute_luau`, compare it with the session's checkout, and
+  write only the scripts that differ, creating a missing one under its parent; a file removed since
+  the last sync, or a sync that failed, resends the whole code tree and prunes what the checkout no
+  longer holds. Record in the editor which files the sync covered, so the next one sees a removal.
+  On a warm editor holding about 600 scripts, comparing every digest takes about a second, one
+  changed script about 3 seconds, and the whole tree with its prune about 30 seconds. Rojo's live
+  sync does not fit a pool: its Studio plugin reconnects by itself only to a place with a place ID,
+  which a local place file lacks, so connecting it takes clicks in the editor's front window, and the
+  port it connects to is set only in its panel, so an editor left on Rojo's default port takes
+  another editor's server and with it another checkout's code. The sync needs no window in front, no
+  server in the guest and no copy of the checkout there.
+- **Check the session's parts, and restore them with one command.** The editor can be gone, or its
+  code behind the checkout; read the editor in `list_roblox_studios` and its sources as the bullet
+  above reads them. The game's start command for an editor's warm session reopens a missing editor
+  and syncs a present one.
 - **Recover an editor left in Play inside its own lease.** A step that ended mid-Play can leave an
   editor that Studio MCP lists only as its Play session, which answers in no Edit data model. Stop
   Play through each entry listed under that editor's place; when none answers in Edit after that,
@@ -691,14 +686,13 @@ pool has editors.
   and a digest of the built world, kept in the editor beside the session, so a later session reads
   whether the warm editor matches its checkout instead of guessing, and compares that manifest with
   its checkout before each check.
-- **Confirm each sync before a check.** Read each changed script's source back from the Edit data
-  model through `execute_luau`; a plugin showing connected does not show that a change landed.
-  Then start Play from that editor, and stop it when the check ends, closing the test processes that
+- **Confirm each sync before a check.** Read each written script's digest back from the Edit data
+  model; a write call returning does not show that a change landed. Then start Play from that editor, and stop it when the check ends, closing the test processes that
   editor launched, which name it by their `-editpid`, never another editor's.
-- **Rebuild only for what the plugin cannot write.** Content the place's build step makes rather
+- **Rebuild only for what the sync cannot write.** Content the place's build step makes rather
   than a file maps, such as terrain or generated models; properties scripts cannot set, such as a
-  mesh part's mesh; a project-file change to which containers are mapped; and a sync the plugin
-  reports as failed or partial. Then rebuild the place, close the warm editor with
+  mesh part's mesh; a project-file change to which containers are mapped; and a sync that
+  cannot confirm its writes. Then rebuild the place, close the warm editor with
   `close_place`, and open the new build the same way. A check that left fixtures or state it
   cannot remove is a reason to reopen it too.
 - **Delivery evidence still comes from the built place.** A warm editor proves behavior of the
@@ -723,8 +717,8 @@ every setting it changed reads back at the value it found.
   output, worktrees and lock files, sits under a folder named for the task or its project and is
   removed when the task's runner work ends. `studio_mcp.close_place` deletes the place copy
   `open_place` made. The runner's persistent setup is not task output and stays, as the next section
-  says, and so are the game's warm sessions: each editor, its `rojo serve`, its place copy, its guest
-  copy of the checkout and the record of what it holds belong to the game's VM.
+  says, and so are the game's warm sessions: each editor, its place copy and the record of what it
+  holds belong to the game's VM.
 - **Resources.** Before a heavy run, such as Play, a multiplayer test or a device simulation, read the
   guest's free disk and swap (`df -h /` with `sysctl vm.swapusage` in a Tart guest, `free -h` in the
   Linux runner). Low disk or swap already in use is investigated before the run: remove what the task

@@ -38,12 +38,11 @@ class RunnerConfig(TypedDict):
 
 
 class EditorSlot(TypedDict):
-    """One editor of the game's pool: the lock a check takes for it, its guest folder and its Rojo port."""
+    """One editor of the game's pool: the lock a check takes for it and its guest folder."""
 
     number: int
     lock_key: str
     project: str
-    rojo_port: int
 
 
 class LockOwnership(TypedDict):

@@ -55,8 +55,6 @@ LOCK_WAIT: Final[timedelta] = timedelta(seconds=50)
 # agent-lock refuses a lease longer than this.
 MAX_LEASE: Final[timedelta] = timedelta(seconds=900)
 POLL_INTERVAL: Final[timedelta] = timedelta(seconds=2)
-# Rojo's plugin offers this port first; each editor of the pool serves on its own port above it.
-ROJO_DEFAULT_PORT: Final[int] = 34872
 FOCUS_LEASE: Final[timedelta] = timedelta(seconds=120)
 # agent-lock's exit status for a lock that stayed held through the wait.
 AGENT_LOCK_BUSY: Final[int] = 2
@@ -106,8 +104,7 @@ def editor_slots(config: RunnerConfig) -> list[EditorSlot]:
 
     vm = config["ROBLOX_STUDIO_VM"]
 
-    return [EditorSlot(number=number, lock_key=f"{vm}/editor-{number}", project=f"editor-{number}",
-                       rojo_port=ROJO_DEFAULT_PORT + number)
+    return [EditorSlot(number=number, lock_key=f"{vm}/editor-{number}", project=f"editor-{number}")
             for number in range(1, config["ROBLOX_STUDIO_EDITORS"] + 1)]
 
 
