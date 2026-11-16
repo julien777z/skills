@@ -58,11 +58,17 @@ POLL_INTERVAL: Final[timedelta] = timedelta(seconds=2)
 # Rojo's plugin offers this port first; each editor of the pool serves on its own port above it.
 ROJO_DEFAULT_PORT: Final[int] = 34872
 FOCUS_LEASE: Final[timedelta] = timedelta(seconds=120)
+# agent-lock's exit status for a lock that stayed held through the wait.
+AGENT_LOCK_BUSY: Final[int] = 2
 DEFAULT_REGISTRATION_WAIT: Final[timedelta] = timedelta(seconds=120)
 EDITOR_LIST_WAIT: Final[timedelta] = timedelta(seconds=20)
 GUEST_NAME: Final[re.Pattern[str]] = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*")
 EXTENDED_REGEX_SPECIAL: Final[re.Pattern[str]] = re.compile(r"([.^$*+?()\[\]{}|\\])")
 LUAU_STRING_ESCAPE: Final[re.Pattern[str]] = re.compile(r'[\\"\x00-\x1f\x7f]')
+
+
+class RunnerLockBusy(RuntimeError):
+    """A runner lock other sessions kept held for the whole wait."""
 
 
 def runner_config() -> RunnerConfig:
@@ -131,6 +137,9 @@ def acquire_lock(keys: Sequence[str], lock_receipt: Path, owner: str, activity: 
                              str(wait.total_seconds()), "--ttl-seconds", str(lease.total_seconds())],
                             capture_output=True, text=True,
                             timeout=(wait + OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK]).total_seconds())
+
+    if result.returncode == AGENT_LOCK_BUSY:
+        raise RunnerLockBusy(f"The {' or '.join(keys)} lock stayed held:\n{result.stdout}")
 
     if result.returncode != 0:
         raise RuntimeError(f"The {' or '.join(keys)} lock was not acquired ({result.returncode}):\n"
