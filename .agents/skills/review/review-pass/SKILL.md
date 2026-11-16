@@ -64,6 +64,11 @@ skill never readies, merges or deploys.
 - **No pull request:** the local task diff against its merge base is the target; description
   refresh and review threads do not apply, and fixes are committed in the task's own checkout
   without pushing.
+- **A repository the owner does not own**, as the global rules' **Repository guidance** defines it:
+  the pass fixes the request's own issues and the defects it finds. **Local Passes** do not run, the
+  reviewer brief's rules are that repository's own guidance, the final acceptance brief names the
+  repository as someone else's, and a finding that rests only on a shared standard is declined with
+  that reason. Cleanup outside the change is neither fixed nor recorded.
 
 ## Range
 

@@ -106,7 +106,10 @@ receives five things and nothing else:
    explicit empty result;
 4. the affected-repository map required by `code-simplify`'s **Trace Changed Flows**. For each
    changed file group, resolve its project guidance, scoped repository rules and installed shared
-   rules by path. Supply the complete text and scope of each source inline or in a named file.
+   rules by path. Supply the complete text and scope of each source inline or in a named file. In a
+   repository the owner does not own, as the global rules' **Repository guidance** defines it, the
+   brief says so: the gate judges the change against the request, its defects and that repository's
+   own guidance and conventions, and a shared rule's standard is no flag there.
    When the Python rules apply, run `scripts/python_rule_findings.py` with the project's Python
    interpreter on the in-scope Python files. Supply the file list and every finding, including an
    explicit empty result. The reader verifies each reported shape against the source and rule;

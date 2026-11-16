@@ -637,6 +637,16 @@ return records;
   such as when the formatter or the code would stay on the older release's syntax. A library
   published for consumers outside the owner's projects keeps the range its language rule sets.
 
+- **The owner's standards govern the owner's repositories.** A repository is the owner's when it
+  lives under their own account or an organization they run; any other, such as a project they
+  open a pull request to, is someone else's. There a change carries what the request asks for and
+  the defects it meets — a bug, a vulnerability, behavior that breaks for that project's users —
+  written in that repository's own conventions. The style, structure, naming, testing, tooling, CI,
+  runtime and documentation standards these rules and skills set, and `pre-production`'s incidental
+  cleanup, are not applied there: an item only they would raise is left out, neither fixed nor
+  recorded as deferred work in that repository, and named to the user in chat only when it bears on
+  the request. The rules on how the agent acts hold in every repository: authorization, merging,
+  posting, the publishing context, secrets and reporting.
 - Every repository stands on its own. Never carry another repository's domain vocabulary into this
   one: its product name, its services, its table and column names, its record types, or the nouns
   its business speaks in. That holds for source, tests, fixtures, examples, and documentation
