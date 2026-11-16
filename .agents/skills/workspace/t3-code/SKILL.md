@@ -1,6 +1,6 @@
 ---
 name: t3-code
-description: Inspect and configure T3 Code environments, providers, and settings. Use for provider environment variables, including bulk imports, merges, individual changes, and removals, or other T3 Code configuration work.
+description: Inspect and configure T3 Code environments, providers, and settings. Use for provider environment variables, including bulk imports, merges, individual changes, and removals, or other T3 Code configuration work. Use when T3 rejects requests after a usage reset or reports a provider quota or cooldown error.
 short_description: 'Manage T3 Code configuration and provider environment variables.'
 ---
 
@@ -72,6 +72,15 @@ Apply `security-audit` to configuration changes. Use `proton-pass` for an existi
    procedure through the current native CLI/API. Inspect the current schema before using an
    operation not implemented by the variable helper; never invent a command or directly rewrite
    T3's persisted settings to bypass its secret handling.
+
+## Provider cooldown recovery
+
+When T3 rejects a request after a usage reset, trace the failing execution environment and provider
+instance to the proxy that serves that request. If it uses CLIProxyAPI, follow the
+[CLIProxyAPI cooldown recovery procedure](references/cliproxyapi-cooldown.md) before clearing
+routing state. Clear the matched credential only when all cooldowns the operation would remove are
+stale. Verify recovery with the same model and provider instance in a separate T3 chat on the
+affected environment.
 
 ## Node provisioning
 

@@ -33,6 +33,10 @@ alwaysApply: true
 
 - Keep `run` steps declarative. Invoke checked-in scripts for control flow, validation, filesystem changes, or other implementation logic instead of embedding arbitrary shell or program code in workflow YAML; place those scripts under `.github/scripts/` and prefer Python.
 - Do not hard-code runtime versions when a shared action, reusable workflow, or repository version file supplies them; omit `python-version` when shared Python automation provides it, and use `node-version-file: ".nvmrc"` for Node.js workflows.
+- **A required workflow or action input is declared `required: true` with no `default`**, and no
+  step is skipped when it is empty; the global rules' **Configuration** section says which inputs
+  are required. An action's checked-in script also fails, naming the input, when the value is
+  empty, since GitHub does not enforce `required` on an action's inputs.
 - Name repository-owned Boolean action and workflow inputs `use-<capability>`, so the name states
   what the toggle enables. Update declarations, conditions and callers together; do not retain a
   bare capability name or an old alias. Preserve external actions' input contracts.
@@ -99,6 +103,16 @@ alwaysApply: true
   requirement in terms of this repository's own contract; disclose provider PR links and merge
   ordering to the user in chat.
   `merge-gate` still owns the complete dependency inventory and readiness gate.
+- **Text handed to Git or the hosting service is staged where only its author writes and read back
+  once published.** A commit message, title, description, comment or issue body goes inline, on
+  standard input, or from a file whose path was generated for that one text, such as one `mktemp`
+  creates, never from a name another session or worker could also choose, in any directory. After
+  it is accepted, read the stored text back, with `git log -1` for a commit, and compare it with the
+  text the author wrote, never with the staging file, which may have been overwritten. Correct a
+  difference in that text at once, under the authorization the original post had; a commit message
+  is read back before its push and amended only while unpushed. The current text is what readers
+  act on: earlier revisions in the edit history are left alone and never raised with the user,
+  unless one holds a credential the global rules' **Logging** section counts as exposed.
 - **Put follow-up source work on the session's in-progress source pull request for that repository.**
   Before proposing a branch, assigning a worker, or starting edits, resolve the session's source
   pull request from its creation or authorized continuation receipt and verify that it is open.
