@@ -66,12 +66,13 @@ batch's pictures are rendered into it as the batch lands.
 
 Before capturing, measure the subject in the held view:
 
-- **Find the subject by walking the world's character models**, nearest the point where the actor
-  actually stands, or the small props around the target when no character stands there. Spatial
-  queries skip parts that turn querying off, which characters and props often do, so a query finds
-  the wrong model or none: it passed an actor hidden behind the avatar and failed props standing in
-  plain view. The point is where the actor stands, which can be well away from its encounter's
-  named point.
+- **Find the subject by walking the world's character models** and picking the actor the scene
+  stages by its own name or encounter, or the small props around the target when the scene stages
+  no character. Spatial queries skip parts that turn querying off, which characters and props often
+  do, so a query finds the wrong model or none: it passed an actor hidden behind the avatar and
+  failed props standing in plain view. Nearness alone misleads too: an actor that walks its ground
+  stands away from its encounter's named point, and the nearest model there can be another one, so a
+  check that measures that neighbor passes a frame that cuts the real subject off.
 - **Project every visible part's corners** through the camera to get the subject's screen box.
 - **Judge it**:
   - in frame: the whole box sits inside the frame, clear of each edge by a small margin. A check on
