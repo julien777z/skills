@@ -72,6 +72,15 @@ def read_text_field(record: Mapping[str, JsonValue], key: str) -> str:
     return value
 
 
+def assert_supported_version(record: Mapping[str, JsonValue], record_kind: str) -> None:
+    """Assert that a decoded record carries the one supported format version."""
+
+    version = record.get("version")
+
+    if not isinstance(version, int) or isinstance(version, bool) or version != 1:
+        raise ValueError(f"Unsupported {record_kind} record")
+
+
 def process_alive(pid: int) -> bool:
     """Report whether a local process still exists."""
 
@@ -80,7 +89,7 @@ def process_alive(pid: int) -> bool:
     except ProcessLookupError:
         return False
     except PermissionError:
-        return True
+        pass
 
     return True
 

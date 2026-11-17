@@ -55,6 +55,13 @@ class Ticket(TypedDict):
     renewed_at: datetime
 
 
+class QueueRecord(TypedDict):
+    """A resource's persisted queue of waiters, oldest first."""
+
+    version: Literal[1]
+    tickets: list[Ticket]
+
+
 class Waiter(TypedDict):
     """A queued waiter as `status` reports it."""
 

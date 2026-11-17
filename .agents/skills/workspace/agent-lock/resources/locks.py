@@ -12,12 +12,14 @@ from models.ownership import (
     LockResult,
     Outcome,
     Ownership,
+    QueueRecord,
     Receipt,
     Ticket,
     Waiter,
 )
 from utils import (
     JsonValue,
+    assert_supported_version,
     atomic_write,
     exclusive_file,
     process_alive,
@@ -75,15 +77,11 @@ def read_queue(path: Path) -> list[Ticket]:
     if record is None:
         return []
 
-    version = record.get("version")
+    assert_supported_version(record, "queue")
+
     entries = record.get("tickets")
 
-    if (
-        not isinstance(version, int)
-        or isinstance(version, bool)
-        or version != 1
-        or not isinstance(entries, list)
-    ):
+    if not isinstance(entries, list):
         raise ValueError("Unsupported queue record")
 
     tickets: list[Ticket] = []
@@ -120,7 +118,7 @@ def read_queue(path: Path) -> list[Ticket]:
 def write_queue(path: Path, tickets: list[Ticket]) -> None:
     """Persist the queue of waiters, oldest first."""
 
-    atomic_write(queue_path(path), dumps({"version": 1, "tickets": tickets}, default=datetime.isoformat))
+    atomic_write(queue_path(path), dumps(QueueRecord(version=1, tickets=tickets), default=datetime.isoformat))
 
 
 def is_live(ticket: Ticket, now: datetime) -> bool:
@@ -187,10 +185,7 @@ def read_ownership(path: Path) -> Ownership | None:
     if record is None:
         return None
 
-    version = record.get("version")
-
-    if not isinstance(version, int) or isinstance(version, bool) or version != 1:
-        raise ValueError("Unsupported ownership record")
+    assert_supported_version(record, "ownership")
 
     acquired_at = read_timestamp(record, "acquired_at")
     expires_at = read_timestamp(record, "expires_at")
@@ -261,6 +256,7 @@ def claim_or_queue(key: str, path: Path, request: Acquisition, expired: bool) ->
         now = datetime.now(UTC)
         stored = read_queue(path)
         tickets = [ticket.copy() for ticket in stored if is_live(ticket, now)]
+
         ticket = take_ticket(tickets, request, now)
 
         if tickets[0] is ticket and (current is None or now >= current["expires_at"]):
@@ -312,7 +308,7 @@ def acquire_resource(request: Acquisition) -> LockResult:
     paths = [(key, resource_path(request["state_directory"], key)) for key in request["keys"]]
     receipt_path = request["receipt_path"]
 
-    if any(receipt_path in (path, state_path(path)) for _, path in paths):
+    if any(receipt_path in (path, state_path(path), queue_path(path)) for _, path in paths):
         raise ValueError("Receipt must be separate from lock state")
 
     if not request["owner"].strip() or not request["activity"].strip():
