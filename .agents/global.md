@@ -213,8 +213,7 @@ alwaysApply: true
   changing it, and the suggested rewording goes to the user for approval. Do not silently reclassify
   a condition, reinterpret a rule, or conceal a conflict to make the implementation fit. Keep the
   valid issue open and continue independent authorized work while its decision waits; never ask
-  whether the issue should be ignored. A choice already settled by the user or guidance needs no
-  repeated question, and routine internal fixes proceed within that choice.
+  whether the issue should be ignored.
 - Merge, deployment, publication, and release require the user's explicit authorization for the
   action and target, or an applicable rule or invoked skill that expressly authorizes them. A fix
   request, approved plan, or instruction to implement a plan does not itself authorize these
@@ -271,8 +270,7 @@ alwaysApply: true
   they require, and whether the proposal follows it. Correct a proposal that contradicts them;
   carry out an already-settled authorized remedy rather than offering its omission or retention as
   a choice. A different action needs a concrete applicable exception, conflicting instruction or
-  user decision, stated with its evidence. A genuine unresolved product, security, disclosure or
-  authorization choice follows the decision boundary above while independent work continues.
+  user decision, stated with its evidence.
   **A rule about how the product looks or reads is a default that records earlier design
   judgment, never the argument for a design.** Rank design options by what serves the reader and
   the flow. Where the better option departs from such a rule, recommend it on those merits, name
@@ -401,8 +399,7 @@ alwaysApply: true
   limitation before arranging an exclusive window with the affected writers, readers and check
   owners. Hold that window through exact restoration and the successful control; a short mutation or later restore
   does not make concurrent exposure safe. Never claim isolation is impossible without checking it.
-- Treat an inventory or availability error as scoped to the surface it names. A native-app lock or failure does not block browser automation, and a browser failure does not block terminal or API work.
-- Before reporting a task blocked by a surface warning, inspect the requested surface directly and retry its normal recovery path.
+- Treat an inventory or availability error as scoped to the surface it names. A native-app lock or failure does not block browser automation, and a browser failure does not block terminal or API work. Before reporting a task blocked by a surface warning, inspect the requested surface directly and retry its normal recovery path.
 - Before reading page content, navigating or interacting, inventory the browser metadata the tool
   exposes and select the surface most relevant to the task. Preserve every explicitly selected
   browser, profile, window or tab constraint the tool can identify and control; within those
@@ -446,14 +443,18 @@ alwaysApply: true
   terminal. Keep the task active under **Task execution and authorization** while resolving its gate.
 
 - **Local stack resources are disposable, and repairing them is part of the work, never a question for the user.** Local databases and their migration state, Redis, Docker containers, volumes, networks, images and the daemon itself can be repaired, reset, dropped or recreated whenever the task needs them working. A database stuck on a revision a branch has since regenerated, a stale cache, a wedged container: fix it and carry on. The records a local stack holds are the same: create, edit, reset, reopen or convert them whenever the work needs them in a given state — a test account to sign in with, a submission held in review to show a banner, a record a new rule no longer accepts — as the repository's data policy says, report what was done, and never put the choice to the user. The tooling that brings a local stack to a state is the agent's in the same way: a scenario command, the test accounts and records it creates, and what each scenario seeds are added, changed or redesigned as the work needs, never put to the user in a plan, a question or a gate's remedy, and never a product choice, since no user of the product meets them. The same holds for what the session's own work leaves behind when disk, memory or a port runs short: build caches and the leases and snapshots holding them, stopped containers, orphaned processes and build output. The one limit is a resource another run is actively using, such as a test runner holding the stack's lock. Wait for it or use a separate resource; never stop it. A route that limit rules out, such as restarting a daemon a running test still uses, leaves narrower ones, such as removing only the leases, records or processes the session's own work created; recovery is exhausted, and reported as a gate, only once no route remains. **Development data in a non-production deployment is the agent's the same way** when the project's guidance or its release stage marks it disposable: an unreleased product's staging saves, its test profiles and accounts, and the records a staging environment holds for its testers are reset, converted or recreated whenever the work needs them, such as a test save that no longer loads after an item's ID changed, then reported, never put to the user. Production data, and records real users or other people own, stay with the user. Deployed and shared remote environments are otherwise not local; the following live-deployment rules govern them.
-- **A copy a file-sync service or the operating system made is deleted on sight, never kept,
-  skipped or put to the user**, wherever the agent meets one and whoever's work it sits in: a file,
-  a folder or whole repository clone, a ref, object or index file in a Git directory, or an entry
-  in an installed or generated tree. It goes before anything reads, stages, stashes or snapshots
-  it, and the report names it. The check is its name alone: an original's name plus the service's
-  copy suffix, such as `budget 2.csv` or `budget (conflicted copy).csv` beside `budget.csv`, or a
-  copy of a transient file Git or a tool creates and removes, such as a lock or merge scratch file.
-  Who made it and how it differs from its original are never asked.
+- **A copy a file-sync service or the operating system made is deleted without asking, never kept,
+  skipped or put to the user**: a file, a folder or repository clone, or an entry in a Git directory
+  or an installed or generated tree. An entry is one only when its name is an original's plus the
+  service's copy suffix, such as `budget 2.csv` or `budget (conflicted copy).csv`, and a check
+  beyond the name confirms it: it matches the original, or a version of it Git holds, byte for byte;
+  it sits in a Git directory, which never makes such a name; it copies a transient file Git or a
+  tool creates and removes, such as a lock or merge scratch file; or it is an untracked folder or
+  clone whose remote and history match the original's. Left unconfirmed, it is an ordinary file,
+  kept and never asked about as a copy. Before deleting, check that nothing uses it: no process's
+  working directory or open file inside it, no worktree or session claiming it. One in use falls
+  under the limit above and goes once idle, through the host's event route; any other goes before
+  anything reads, stages, stashes or snapshots it. The report names each deletion.
 
 - Do not rebuild, republish, or redeploy an already validated artifact solely because its source
   head advanced. Compare the edits with the artifact's actual source: cleanup proven to preserve
@@ -806,8 +807,7 @@ return records;
 - Before a milestone report, gate classification or final response, read the authorized outcome's
   current state and owning diagnostics, then reconcile every required step with the task record.
   A successful substep does not establish the parent outcome: resume its saved next action when
-  that outcome remains unmet. A gate must meet **Tools and environments** or **Task execution and
-  authorization**, not merely repeat the last failed attempt.
+  that outcome remains unmet.
 - **A cause stated to the user is traced first, whether or not they asked for it**: a root cause,
   and any explanation the agent offers of why something failed, why a value is what it is, or why
   a check, test, gate or review let something through. Follow the operation from its entry point
