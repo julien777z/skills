@@ -71,7 +71,6 @@ EDITOR_LIST_WAIT: Final[timedelta] = timedelta(seconds=20)
 GUEST_NAME: Final[re.Pattern[str]] = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]*")
 EXTENDED_REGEX_SPECIAL: Final[re.Pattern[str]] = re.compile(r"([.^$*+?()\[\]{}|\\])")
 LUAU_STRING_ESCAPE: Final[re.Pattern[str]] = re.compile(r'[\\"\x00-\x1f\x7f]')
-# Guest shell that runs guest_studio_mcp.js, given on stdin, to answer Studio's stalled-plugin alerts.
 KEEP_PLUGINS_SCRIPT: Final[str] = ('script=$(mktemp -t guest-studio-mcp) && cat > "$script" && '
                                    'osascript -l JavaScript "$script" keep-plugins; status=$?; rm -f "$script"; '
                                    'exit $status')
@@ -396,7 +395,7 @@ def poll_until[T](probe: Callable[[], T | None], wait: timedelta) -> T | None:
         time.sleep(POLL_INTERVAL.total_seconds())
 
 
-def keep_studio_plugins(config: RunnerConfig) -> str:
+def keep_studio_plugins(config: RunnerConfig) -> None:
     """Answer every open stalled-plugin alert in the editors of a runner whose lease the caller has already checked."""
 
     try:
@@ -405,12 +404,10 @@ def keep_studio_plugins(config: RunnerConfig) -> str:
     except (RuntimeError, subprocess.TimeoutExpired):
         logger.warning("Studio's stalled-plugin alerts were not answered", exc_info=True)
 
-        return ""
+        return
 
     if report:
         logger.warning("Studio's stalled-plugin alerts: %s", report)
-
-    return report
 
 
 def poll_registration[T](probe: Callable[[], T | None], wait: timedelta, config: RunnerConfig) -> T | None:
@@ -424,10 +421,9 @@ def poll_registration[T](probe: Callable[[], T | None], wait: timedelta, config:
 
         value = probe()
         now = time.monotonic()
+        alert_pass_fits = deadline - now > OPERATION_TIMEOUTS[RunnerOperation.PLUGIN_ALERT].total_seconds()
 
-        # A pass runs only when it ends inside wait, so the wait's bound holds.
-        if (value is None and now >= next_alert_pass
-                and deadline - now > OPERATION_TIMEOUTS[RunnerOperation.PLUGIN_ALERT].total_seconds()):
+        if value is None and now >= next_alert_pass and alert_pass_fits:
             keep_studio_plugins(config)
 
             next_alert_pass = time.monotonic() + PLUGIN_ALERT_INTERVAL.total_seconds()
@@ -443,6 +439,7 @@ def registration_failure_cause(config: RunnerConfig) -> str:
     try:
         diagnosis = run_guest_command(REGISTRATION_DIAGNOSIS_SCRIPT, config,
                                       OPERATION_TIMEOUTS[RunnerOperation.DIAGNOSIS]).decode()
+
         state = "; ".join(line.strip() for line in diagnosis.splitlines() if line.strip())
     except (RuntimeError, subprocess.TimeoutExpired) as error:
         logger.warning("The guest's Studio MCP state could not be read", exc_info=True)
@@ -732,6 +729,7 @@ def listed_place_editors(project: str, place: Path, connection: StudioMcpConnect
 
     config = assert_runner_lease_covers(lock_receipt, OPERATION_TIMEOUTS[RunnerOperation.PROCESS_LIST]
                                         + listing_recovery_bound())
+
     pids = guest_pids(editor_pids_script(guest_path), config)
 
     if not pids:
@@ -858,33 +856,57 @@ def launch_editor(launch: str, data: bytes | None, editor_name: str | None, expe
         run_guest_command(launch, config, OPERATION_TIMEOUTS[RunnerOperation.COPY]
                           + OPERATION_TIMEOUTS[RunnerOperation.LAUNCH], data)
 
-        deadline = time.monotonic() + registration_wait.total_seconds()
-        registered = poll_registration(lambda: next((studio for studio in listed_studios(connection, config)
-                                                     if studio["id"] not in known
-                                                     and (editor_name is None or studio.get("name") == editor_name)),
-                                                    None), registration_wait, config)
+        if expected is not None:
+            probed: list[str] = []
 
-        if registered is None:
-            failure = f"never registered with Studio MCP: {registration_failure_cause(config)}"
-        else:
-            studio_id = registered["id"]
+            def _next_reporting() -> str | None:
+                """Probe the least recently probed unlisted-before editor, returning it once it reports the place."""
 
-            def _answered() -> PlaceIds | None:
-                """Return the IDs the editor reports once they match the expected place."""
+                listed = listed_studios(connection, config)
+                candidates = [studio["id"] for studio in listed if studio["id"] not in known]
 
-                ids = reported_place_ids(connection, studio_id, config)
+                if not candidates:
+                    return None
 
-                return ids if ids is not None and (expected is None or ids == expected) else None
+                fresh = [candidate for candidate in candidates if candidate not in probed]
+                studio_id = fresh[0] if fresh else next(candidate for candidate in probed if candidate in candidates)
 
-            remaining = timedelta(seconds=max(0.0, deadline - time.monotonic()))
+                if studio_id in probed:
+                    probed.remove(studio_id)
 
-            if poll_until(_answered, remaining) is not None:
+                probed.append(studio_id)
+
+                return studio_id if reported_place_ids(connection, studio_id, config) == expected else None
+
+            studio_id = poll_registration(_next_reporting, registration_wait, config)
+
+            if studio_id is not None:
                 opened = True
 
                 return Studio(studio_id, lock_receipt, connection)
 
-            failure = ("never ran code in its Edit data model" if expected is None
-                       else f"never reported place {expected['place_id']} of universe {expected['universe_id']}")
+            failure = (f"never reported place {expected['place_id']} of universe {expected['universe_id']}: "
+                       f"{registration_failure_cause(config)}")
+        else:
+            deadline = time.monotonic() + registration_wait.total_seconds()
+            registered = poll_registration(lambda: next((studio for studio in listed_studios(connection, config)
+                                                         if studio["id"] not in known
+                                                         and (editor_name is None
+                                                              or studio.get("name") == editor_name)),
+                                                        None), registration_wait, config)
+
+            if registered is None:
+                failure = f"never registered with Studio MCP: {registration_failure_cause(config)}"
+            else:
+                studio_id = registered["id"]
+                remaining = timedelta(seconds=max(0.0, deadline - time.monotonic()))
+
+                if poll_until(lambda: reported_place_ids(connection, studio_id, config), remaining) is not None:
+                    opened = True
+
+                    return Studio(studio_id, lock_receipt, connection)
+
+                failure = "never ran code in its Edit data model"
 
         saved_guest_screen(failure_screen, config)
 
