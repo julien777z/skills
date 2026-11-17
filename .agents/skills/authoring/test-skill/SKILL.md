@@ -32,8 +32,8 @@ confuse those conclusions.
   words moved. Write scenarios for the semantic instruction or behavior delta and any dependencies
   it concretely affects, not for unchanged behavior merely because it shares a skill, file, batch,
   or head; a result already retained follows the carry-forward bullet below. Verify moved unchanged
-  text against its source, links, and reachability; replay behavior only where meaning or
-  reachability changed.
+  text against its source, links, and reachability, and write a scenario for moved text only where
+  meaning or reachability changed.
 - **An invocation that names several heads is tested in one coordinated round.** Freeze the exact
   head and guidance package for every named pull request, use one edited reader across their
   isolated scenarios, and retain results per head. Run an isolated original control when an
@@ -62,8 +62,7 @@ Run after `code-simplify` completes its pass.
    it suffices, each mapped to the changed boundary with its observable pass criteria. A failure that came from real work is tested on a fixture built from
    that real case; a reproduction scenario the caller supplies is the writer's input, never a
    scenario itself. Include relevant conflicting guidance in the edited reading list and, when a
-   control is required, in its matching reading list. Keep expected answers and criteria outside
-   everything the readers read.
+   control is required, in its matching reading list.
 2. **Choose and verify the environment.** Use the smallest environment that exercises the actual
    decision or operation. A review can inspect a relevant live codebase read-only, a frozen diff,
    or an isolated repository with known defects. An action workflow needs a task-owned synthetic
@@ -85,8 +84,7 @@ Run after `code-simplify` completes its pass.
    loaded, or the reader's listing where it keeps none, checked against the reading list. When
    neither route is available, the round is a concrete gate under the global rules' **Tools and
    environments**, recorded with each route tried, its receipt and the saved next action of
-   launching the reader once one exists; it never passes in process or with a reader that saw
-   another variant.
+   launching the reader once one exists; it never passes with a reader that saw another variant.
    Before freezing the reader package, exercise its required fixture interfaces in a disposable
    copy: discovery must expose the identifiers the task needs, operations must be available, and
    state changes and failures must reach the intended records. This checks the fixture contract,
@@ -99,8 +97,9 @@ Run after `code-simplify` completes its pass.
    substantiated findings, not recitation of new wording, and name each step the workflow under
    test requires: a run that compressed, merged or skipped one misses it however right its end
    result looks. Criteria are never amended once a result is seen; a criterion found ambiguous is
-   rewritten by a fresh scenario writer, and every scenario it governs reruns fresh, its earlier results
-   kept for the record and never rescored. Use the branch copy and, when required,
+   rewritten by a fresh scenario writer given step 1's inputs and the ambiguous criterion, never a
+   reader's report or a grade, and every scenario it governs reruns fresh, its earlier results kept
+   for the record and never rescored. Use the branch copy and, when required,
    the original from the freshly fetched default branch. Record their revisions or content digests. Give every
    required control an equivalent independent environment so neither run inherits the other's
    mutations or reports.
@@ -123,8 +122,8 @@ Run after `code-simplify` completes its pass.
    environment and retained evidence. If the edited run passes and the original misses, report
    demonstrated improvement for that case. If both pass, report that both meet the behavior and no
    improvement was demonstrated there; this is a valid conclusion, not a failing test. Never force
-   an original-guidance miss, change criteria to reward wording recall, or claim causation from
-   matching behavior. A failing edited run requires repair regardless of the original's result.
+   an original-guidance miss or claim causation from matching behavior. A failing edited run
+   requires repair regardless of the original's result.
    When both pass, decide whether the guidance still earns its place: an explicit policy, a
    documented failure outside these samples, a clarified boundary or a useful consistency guarantee
    can justify retaining it without demonstrated improvement in this run. Remove or reshape wording
@@ -136,11 +135,12 @@ Run after `code-simplify` completes its pass.
    never decides that a pull request should merge.
 7. **Repair and rerun until verified**, within the global rules' review-round limit of 3 rounds
    per change: after the third failing round over the same edit, that bullet's decision replaces
-   another repair. Diagnose each reported issue at its owner. Fix guidance
-   that permits the wrong behavior; fix an invalid fixture, unavailable simulated operation, wrong
-   reading list, ambiguous criterion or broken runner before judging guidance. Retain the diagnosis
-   and earlier results. Recover missing evidence from the actual run or rerun the affected task;
-   never reconstruct a result from a summary. A worker that ended without a complete result is
+   another repair, and a replacement it chooses is a new change with its own rounds. Diagnose each
+   reported issue at its owner. Fix guidance that permits the wrong behavior; fix an invalid
+   fixture, unavailable simulated operation, wrong reading list, ambiguous criterion or broken
+   runner before judging guidance. Retain the diagnosis and earlier results. Recover missing
+   evidence from the actual run or rerun the affected task; never reconstruct a result from a
+   summary. A worker that ended without a complete result is
    replaced on the same assignment. Every completed run is graded and kept: a rerun follows a
    recorded repair of its cause, never an unchanged scenario rerun for a better result, and covers
    what the carry-forward bullet in **When It Runs** does not carry.
@@ -191,7 +191,7 @@ and any explicit user override. Record the runtime-identity and runtime-label ev
 ## Output
 
 A scenario written, run or graded in process is recorded with the same actions and evidence and
-labeled in process; it never passes, and its verdict stays open until launched agents produce one.
+labeled in process.
 
 Return this shape, one block per skill under test, and in chat nothing after the last verdict line:
 

@@ -313,7 +313,9 @@ covering that code; then the repair, or a settled, out-of-scope or council-dropp
 evidence, goes to a fresh gate under the Diff question, following `subagent-matrix`'s
 **Dispatch**, and only that gate's acceptance closes the flag. The one exception is the decision
 the global rules' review-round limit has `council` make once 3 rounds have failed the change,
-which settles its flags as it rules. Each such gate is one of the change's re-reviews under the
+which settles its flags as it rules. A replacement the ruling chooses is a new change with its own
+rounds; a ruling that names text is applied verbatim, and a fresh gate under the Diff question
+confirms the head carries it. Each such gate is one of the change's re-reviews under the
 global rules' review-round limit, and a repair's gate one of the flag's own repair rounds below.
 
 **Repair rounds are counted per objection and per change.** A change gets at most 3 rounds across
