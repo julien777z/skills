@@ -229,13 +229,11 @@ data exists, or a change to the app — runs on one made-up scenario, never on r
 
 ## Render
 
-1. Write the spec and the page to the `.agent_sources/` folder at the root of the worktree the task
-   runs in, kept out of Git by the repository's local exclude file, never to a system temporary
-   directory, which a restart clears. A dashboard of a subject that outlives the session keeps its
+1. Write the spec and the page to the task's working-files folder, as the global rules' **Tools and
+   environments** section places it. A dashboard of a subject that outlives the session keeps its
    spec, its page and anything a later render reuses in a folder of its own under the user's state
-   directory (`$XDG_STATE_HOME`, by default `~/.local/state`) instead, since a worktree can go when
-   its task ends. Copy the page to the host's scratch directory only when the delivery route reads
-   from there alone.
+   directory (`$XDG_STATE_HOME`, by default `~/.local/state`) instead. Copy the page to the host's
+   scratch directory only when the delivery route reads from there alone.
 2. Run `python3 -B scripts/render.py --input <spec.json> --output <page.html>`, resolving `scripts/`
    from this skill's directory; `-B` keeps the run from writing bytecode into the skill. Add
    `--fragment` and `--compress` when the harness's delivery route says to. The script prints the written path, or names the first
@@ -299,9 +297,11 @@ harness, so one file applies.
 | Claude Code, in the terminal, the desktop app or on the web | [references/harnesses/claude-code.md](references/harnesses/claude-code.md) |
 | Codex | [references/harnesses/codex.md](references/harnesses/codex.md) |
 
-A harness no row names delivers through the user's own browser with the full page, through
-`use-browser`'s **Showing A Local Page** when that route applies, and otherwise sends the full page
-with a tool that sends a file to the user, or, with none, gives its absolute path.
+**The user's own browser is every harness's last route**: open the full page through `use-browser`'s
+**Showing A Local Page**, which refreshes it on every later render. A harness takes it when the
+routes its file lists are unavailable or refuse the session, or beside them where its file says so,
+and a harness no row names takes it alone. Where that route does not apply, send the full page with
+a tool that sends a file to the user, or, with none, give its absolute path.
 
 ## Guardrails
 

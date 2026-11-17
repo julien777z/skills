@@ -8,8 +8,7 @@ Code or Codex, runs inside it. Both routes carry every render.
    the dashboard, and `height` set to the largest value the tool accepts; the frame fits the page's
    content up to that height, and the reader can switch pages and open entries inside it. Show every
    later render the same way, after its re-render, so the conversation holds the current page.
-2. **The user's own browser**, through `use-browser`'s **Showing A Local Page**, with the full page,
-   which refreshes itself on every later render.
+2. **The user's own browser**, the skill's last route, taken beside the conversation on every render.
 
 A publishing tool the agent runtime brings into the session, such as Claude's Artifact tool, is
 used only when the user asks for a published link.
