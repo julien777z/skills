@@ -145,14 +145,14 @@ alwaysApply: true
   follow it. A confirmed defect, an
   exploitable vulnerability or a failing required check is never accepted this way. If the authorized
   outcome still needs work, update the active plan and start the replacement, a new change with its
-  own rounds, at its first permitted step. A different implementation idea is not a new approval boundary. Ask only when
-  the replacement needs an unresolved product, scope, security, disclosure, or authorization decision, and join that
-  question to the questions already open rather than sending it separately. The agent reports the
-  decision in plain words, with current captures where the change is visible. The stop exists to end
-  wasted rounds, never to add questions. It is the user's standing instruction, not a budget the
-  agent declares spent; the task stays active. The per-flag bounds of the skill
-  running the loop still apply within those 3 rounds, and `review-proposal`'s attack rounds on a
-  proposal keep their own count.
+  own rounds, at its first permitted step. A different implementation idea is not a new approval
+  boundary. Ask only when the replacement needs an unresolved product, scope, security, disclosure,
+  or authorization decision, and join that question to the questions already open rather than
+  sending it separately. The agent reports the decision in plain words, with current captures
+  where the change is visible. The stop exists to end wasted rounds, never to add questions. It is
+  the user's standing instruction, not a budget the agent declares spent; the task stays active.
+  The per-flag bounds of the skill running the loop still apply within those 3 rounds, and
+  `review-proposal`'s attack rounds on a proposal keep their own count.
 
 - An authorized task, including a fix request or approved plan, covers ordinary implementation,
   verification, and scoped external mutations, and persists through follow-ups, retries, recovery,

@@ -133,17 +133,16 @@ Run after `code-simplify` completes its pass.
    where authorized; keep coupled instructions and their required repairs together. This assessment
    recommends which changes should merge and decides no merge itself. A passing skill test alone
    never decides that a pull request should merge.
-7. **Repair and rerun until verified**, within the global rules' review-round limit of 3 rounds
-   per change: after the third failing round over the same edit, that bullet's decision replaces
-   another repair. Diagnose each
-   reported issue at its owner. Fix guidance that permits the wrong behavior; fix an invalid
-   fixture, unavailable simulated operation, wrong reading list, ambiguous criterion or broken
-   runner before judging guidance. Retain the diagnosis and earlier results. Recover missing
-   evidence from the actual run or rerun the affected task; never reconstruct a result from a
-   summary. A worker that ended without a complete result is
-   replaced on the same assignment. Every completed run is graded and kept: a rerun follows a
-   recorded repair of its cause, never an unchanged scenario rerun for a better result, and covers
-   what the carry-forward bullet in **When It Runs** does not carry.
+7. **Repair and rerun until verified**, within the global rules' review-round limit of 3 rounds per
+   change: after the third failing round over the same edit, that bullet's decision replaces another
+   repair. Diagnose each reported issue at its owner. Fix guidance that permits the wrong behavior;
+   fix an invalid fixture, unavailable simulated operation, wrong reading list, ambiguous criterion
+   or broken runner before judging guidance. Retain the diagnosis and earlier results. Recover
+   missing evidence from the actual run or rerun the affected task; never reconstruct a result from
+   a summary. A worker that ended without a complete result is replaced on the same assignment.
+   Every completed run is graded and kept: a rerun follows a recorded repair of its cause, never an
+   unchanged scenario rerun for a better result, and covers what the carry-forward bullet in **When
+   It Runs** does not carry.
    Inconclusive, improperly tested and missing-evidence states are work to repair, never final
    skill-test verdicts or reasons to abandon an authorized change. Keep working through recovery;
    genuine external authorization or host boundaries follow the global rules and **Reviewer

@@ -314,9 +314,7 @@ evidence, goes to a fresh gate under the Diff question, following `subagent-matr
 **Dispatch**, and only that gate's acceptance closes the flag. The one exception is the decision
 the global rules' review-round limit has `council` make once 3 rounds have failed the change,
 which settles its flags as it rules. Each such gate is one of the change's re-reviews under the
-global rules' review-round limit, and a repair's gate one of the flag's own repair rounds below. A
-ruling that names text is applied verbatim, and a fresh gate under the Diff question judges only
-whether the head carries it, counting no round.
+global rules' review-round limit, and a repair's gate one of the flag's own repair rounds below.
 
 **Repair rounds are counted per objection and per change.** A change gets at most 3 rounds across
 every kind of check, the first and 2 after repairs, as the global rules' review-round limit counts
