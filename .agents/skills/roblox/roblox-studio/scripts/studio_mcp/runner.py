@@ -105,11 +105,15 @@ def agent_lock_status(output: str) -> str | None:
     """Return the status agent-lock printed, or None when it printed no report, as when Python cannot start it."""
 
     try:
-        report = json.loads(output)
+        report: object = json.loads(output)
     except json.JSONDecodeError:
         return None
 
-    return report.get("status") if isinstance(report, dict) else None
+    match report:
+        case {"status": str() as status}:
+            return status
+        case _:
+            return None
 
 
 def acquire_lock(keys: Sequence[str], lock_receipt: Path, owner: str, activity: str, lease: timedelta,
