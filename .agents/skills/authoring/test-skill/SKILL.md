@@ -29,18 +29,22 @@ confuse those conclusions.
 - Recognize one from the diff rather than from how it is described, and least of all from how small
   it looks: read each changed line against the line it replaces and confirm the instruction is
   identical. A line that gains, loses, sharpens or reorders one is an ordinary edit however few
-  words moved. Test the semantic instruction or behavior delta and any dependencies it concretely
-  affects, not unchanged behavior merely because it shares a skill, file, batch, or head. Verify
-  moved unchanged text against its source, links, and reachability; replay behavior only where
-  meaning or reachability changed.
+  words moved. Write scenarios for the semantic instruction or behavior delta and any dependencies
+  it concretely affects, not for unchanged behavior merely because it shares a skill, file, batch,
+  or head; a result already retained follows the carry-forward bullet below. Verify moved unchanged
+  text against its source, links, and reachability; replay behavior only where meaning or
+  reachability changed.
 - **An invocation that names several heads is tested in one coordinated round.** Freeze the exact
   head and guidance package for every named pull request, use one edited reader across their
   isolated scenarios, and retain results per head. Run an isolated original control when an
   improvement claim or conflicting instruction needs comparison; a straightforward clarification
   may omit it only with that justification recorded. The original control stays blind to the edited
   diff, criteria, and reports. The round runs when, and on the head the caller supplies.
-  Add readers only for a distinct named risk. Retain valid evidence across heads and rerun only
-  scenarios materially invalidated by changed guidance, inputs, or environment, not the whole reader package.
+  Add readers only for a distinct named risk.
+- **A retained result carries to a new head only when every file its scenario depends on is
+  unchanged there**: each guidance file on its reading list, its fixture and its criteria, checked
+  against the frozen record by content digest. Any difference reruns that scenario, never a
+  judgment that the change does not touch what it tests; an unchanged scenario is not rerun.
 - A new skill has no original to run against. Its control runs carry no skill text at all, which
   shows what the skill adds over the model alone.
 
@@ -48,13 +52,15 @@ confuse those conclusions.
 
 Run after `code-simplify` completes its pass.
 
-1. **Define the behavior.** Record the observed miss and the outcome the user requires. Choose the
-   smallest set of scenarios sufficient to cover the changed behavior and its affected dependencies;
-   one scenario may suffice. Map each scenario to the changed boundary and expected outcome before
-   dispatch, adding cases for distinct risks or meaningful boundaries. Include relevant conflicting
-   guidance in the edited reading list and, when a control is required, in its matching reading
-   list. Keep expected answers and scoring criteria
-   outside everything the testing agents read.
+1. **Have someone other than the edit's author define the behavior.** Record the observed miss, the
+   outcome the user requires and the real case the miss came from. A fresh scenario writer launched
+   through `subagent-matrix` receives those, the failure class and the diff, and writes the smallest
+   set of scenarios sufficient to cover the changed behavior and its affected dependencies, one if
+   it suffices, each mapped to the changed boundary with its observable pass criteria. A failure that came from real work is tested on a fixture built from
+   that real case; a reproduction scenario the caller supplies is the writer's input, never a
+   scenario itself. Include relevant conflicting guidance in the edited reading list and, when a
+   control is required, in its matching reading list. Keep expected answers and criteria outside
+   everything the readers read.
 2. **Choose and verify the environment.** Use the smallest environment that exercises the actual
    decision or operation. A review can inspect a relevant live codebase read-only, a frozen diff,
    or an isolated repository with known defects. An action workflow needs a task-owned synthetic
@@ -65,6 +71,11 @@ Run after `code-simplify` completes its pass.
    live mutation targets. When a workflow would revoke a credential, send a message, purchase,
    delete or change access, supply a synthetic boundary that records that action and changes only
    disposable state. Verify which implementation and resources each run actually uses before launch.
+   **A reader sees only the variant it tests.** Installed guidance, such as a user-level skill or
+   rule root a harness loads into every subagent, can already carry the open pull request or the
+   original, so establish what the reader's harness loads and run it where no installed copy of a
+   skill or rule under test reaches it; record that evidence. A reader that saw another variant
+   produced no result.
    Before freezing the reader package, exercise its required fixture interfaces in a disposable
    copy: discovery must expose the identifiers the task needs, operations must be available, and
    state changes and failures must reach the intended records. This checks the fixture contract,
@@ -74,7 +85,11 @@ Run after `code-simplify` completes its pass.
 3. **Freeze the inputs and criteria.** Save the scenario, environment baseline, reading list,
    edited guidance, any required original guidance, and the observable pass criteria needed to judge
    each scenario in private task evidence storage through `session-ledger` before dispatch. Criteria measure actions, resulting state or
-   substantiated findings, not recitation of new wording. Use the branch copy and, when required,
+   substantiated findings, not recitation of new wording, and name each step the workflow under
+   test requires: a run that compressed, merged or skipped one misses it however right its end
+   result looks. Criteria are never amended once a result is seen; a criterion found ambiguous is
+   rewritten by a fresh scenario writer, and every scenario it governs reruns fresh, its earlier results
+   kept for the record and never rescored. Use the branch copy and, when required,
    the original from the freshly fetched default branch. Record their revisions or content digests. Give every
    required control an equivalent independent environment so neither run inherits the other's
    mutations or reports.
@@ -85,10 +100,14 @@ Run after `code-simplify` completes its pass.
    Queue readers when capacity is limited; never duplicate an active assignment. The coordinator
    retains responsibility for setup, repair, evidence and completion rather than asking the user to
    arrange the test.
-5. **Retain and inspect results immediately.** Apply `subagent-matrix`'s **Dispatch** result-handoff
-   checks to each report and dispatch receipt, retain its action record, and inspect the authoritative
-   resulting state before accepting an outcome. Score every criterion with an artifact location or
-   an exact finding and its supporting source, then construct the tables in **Output**.
+5. **Retain results unaltered and have an independent grader judge them.** Apply
+   `subagent-matrix`'s **Dispatch** result-handoff checks to each report and dispatch receipt, and
+   retain the report, its action record and the authoritative resulting state as they are. A fresh
+   grader, launched through `subagent-matrix` and never the edit's author or a reader, judges every
+   criterion from the frozen criteria and those records, citing an artifact location or an exact
+   finding and its supporting source. Nobody rewrites, summarizes or corrects a reader's
+   observation before grading or to match an expected answer. Construct the tables in **Output**
+   from the grader's verdicts.
 6. **Reach a supported conclusion.** Every edited run must meet every criterion, using a valid
    environment and retained evidence. If the edited run passes and the original misses, report
    demonstrated improvement for that case. If both pass, report that both meet the behavior and no
@@ -110,9 +129,10 @@ Run after `code-simplify` completes its pass.
    that permits the wrong behavior; fix an invalid fixture, unavailable simulated operation, wrong
    reading list, ambiguous criterion or broken runner before judging guidance. Retain the diagnosis
    and earlier results. Recover missing evidence from the actual run or rerun the affected task;
-   never reconstruct a result from a summary. A failed worker is replaced on the same assignment.
-   Rerun only edited runs and required controls materially affected by a guidance, environment, or
-   scenario change; a scoring correction rescores all applicable retained results.
+   never reconstruct a result from a summary. A worker that ended without a complete result is
+   replaced on the same assignment. Every completed run is graded and kept: a rerun follows a
+   recorded repair of its cause, never an unchanged scenario rerun for a better result, and covers
+   what the carry-forward bullet in **When It Runs** does not carry.
    Inconclusive, improperly tested and missing-evidence states are work to repair, never final
    skill-test verdicts or reasons to abandon an authorized change. Keep working through recovery;
    genuine external authorization or host boundaries follow the global rules and **Reviewer
@@ -129,8 +149,8 @@ resolve its exact identifier, and launch the actual reader assignment. Advance a
 receives its own explicit unsupported receipt; never move upward or inherit the orchestrator's model. This
 fallback applies to this skill's default, never against the user's explicit model or capability constraint. A
 `dispatch required` result with an exact identifier launches the actual required reader set. When a
-required reader cannot launch, apply `subagent-matrix`'s launch fallback for its scenario; a
-top-level in-process run discloses that the result is not independent or blind.
+required reader, scenario writer or grader cannot launch, apply `subagent-matrix`'s launch
+fallback for its assignment.
 
 Classify a rejected reader dispatch from the host receipt. Only a receipt establishing that the
 requested capability or model is unsupported makes it unavailable for that attempt and permits the
@@ -159,9 +179,8 @@ and any explicit user override. Record the runtime-identity and runtime-label ev
 
 ## Output
 
-When a scenario runs in process, record the same actions and evidence, label its reader as in process,
-and disclose that it was neither independent nor blind. Do not claim an independent control or demonstrated
-improvement from an in-process comparison.
+A scenario written, run or graded in process is recorded with the same actions and evidence and
+labeled in process; it never passes, and its verdict stays open until launched agents produce one.
 
 Return this shape, one block per skill under test, and in chat nothing after the last verdict line:
 
@@ -213,7 +232,7 @@ evidence behind every cell, one section per skill:
 
 ### Scenario <n>: <short name>
 
-<one line on what the scenario contains and what else it carries>
+<one line on what the scenario contains, what else it carries, and the scenario writer's dispatch receipt>
 
 #### <run label> (<edited | original> text[, round <n>])
 
@@ -227,7 +246,7 @@ evidence behind every cell, one section per skill:
 - **Runtime identity, <model | not exposed>:** <host evidence>
 - **Runtime label:** <verbatim generic label | not exposed>
 - **Environment:** <baseline identity, isolated resources, and verified execution boundary>
-- **Retained results:** <raw report, dispatch receipt, action record and resulting-state locators>
+- **Retained results:** <raw report, dispatch receipt, action record, resulting-state and grader-receipt locators>
 - **<criterion>, <pass | miss>:** <artifact location or exact finding with supporting source>
 - **Edit disposition:** <each independent edit, retain/reshape/remove/separate decision, and value evidence>
 - **Round <n>, for the record:** <what the run missed before its rerun>
@@ -253,10 +272,10 @@ in the same evidence file; per-scenario conclusions do not replace that decision
 
 ## Guardrails
 
-- Reviewers never see the expected answer, the criteria, or one another's reports.
+- Readers never see the expected answer, the criteria, or one another's reports.
 - Follow the shared capability selection. Omit a control only under the recorded clarification
   justification above.
-- Never edit any file under test between launching its required readers and scoring them.
+- Never edit any file under test between launching its required readers and grading them.
 - Keep the scenario and raw evidence while the branch is open; reuse valid inputs in later rounds.
 - Never merge with a failing run or stand with a miss: diagnose it, change what caused it, and
   rerun. The decisions are the tester's and are never put to the user; asking holds every later

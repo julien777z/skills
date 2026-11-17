@@ -31,8 +31,8 @@ Apply `session-ledger`'s **Guidance Batches** boundary.
   user asking to change a file the batch is changing included, takes the batch's id and its edit is
   pushed to the batch's pull request. The batch reruns only the checks that edit invalidates and
   keeps every verdict on what it left unchanged: the source check runs on the new head, the review
-  and acceptance gate judge the new increment alone, and the skill-test round covers the new entry's
-  scenario and any entry whose wording the edit changed. A completed stage is not repeated for the
+  and acceptance gate take the new increment as their delta, and the skill-test round covers the new
+  entry's scenario and every scenario `test-skill` does not carry forward to the new head. A completed stage is not repeated for the
   entries it already covers.
 - **Once the batch's pull request has merged**, an entry admitted then starts the next batch, frozen
   when this one is done and delivered with its normal checks; the merged batch is never reopened.
