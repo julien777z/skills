@@ -385,6 +385,17 @@ alwaysApply: true
 
 ## Tools and environments
 
+- **A task's working files live in `.agent_sources/` at the root of the worktree the task runs in**:
+  briefs, captures and recordings, rendered pages, specs, findings, scratch scripts and anything
+  else the run writes for itself or its workers, in folders named for what they hold, such as
+  `briefs/` and `captures/`. Never in `/tmp` or another system temporary directory: a restart
+  clears it, taking every brief, capture and script a resumed worker needs. The folder stays out of
+  Git through the repository's local exclude file, `$(git rev-parse --git-common-dir)/info/exclude`,
+  which every worktree of that repository shares, never through a committed `.gitignore`. What must
+  outlive the worktree, such as the task's ledger or a dashboard of a subject that outlives the
+  session, keeps its place in the user's state directory. Credentials, sign-in sessions and other
+  secret material never go in a worktree.
+
 - **Use OrbStack for local containers when it is installed.** Before starting container-backed
   work for any application on macOS, check whether OrbStack is installed even if the current
   Docker context points elsewhere. Start OrbStack if it is stopped, then verify that Docker can

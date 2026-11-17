@@ -166,16 +166,17 @@ context and returns its verdict into the step waiting on it; nothing else does b
   investigate or test a scope of the task, since each one spends usage on its own. Parallel work is
   worth that cost only for scopes that are truly separate. A reviewer, gate, validator or reader a
   step requires is not an execution worker: it starts when its step reaches it, beside however many
-  workers are running. Before launching a worker, count the workers still running. Work that shares an area with a running worker's scope, such as the
-  same feature, window, system, files or verification setup, goes to that worker as part of its
-  task, not to a new one: one worker owning a game's settings window can take a request to rename
-  one of its tabs and another to change a related control. Work that needs a new worker while five
-  are running waits for a slot and is recorded with its brief, except work that removes what the
-  running workers are blocked on, such as making a shared runner, tool or service they queue for
-  faster or able to serve them in parallel: it starts at once, in the slot of a running worker it
-  unblocks, which pushes its work, pauses, and resumes once that work lands, and it takes the
-  shared resource ahead of their waits. A host or provider limit that
-  stops workers lowers the count further until they run cleanly.
+  workers are running. Before launching a worker, count the workers still running. A host or
+  provider limit that stops workers lowers the count further until they run cleanly.
+- **Work that shares an area with a running worker's scope goes to that worker**, such as the same
+  feature, window, system, files or verification setup, as part of its task, not to a new one: one
+  worker owning a game's settings window can take a request to rename one of its tabs and another
+  to change a related control.
+- **Work that needs a new worker while five are running waits for a slot** and is recorded with its
+  brief, except work that removes what the running workers are blocked on, such as making a shared
+  runner, tool or service they queue for faster or able to serve them in parallel. That work starts
+  at once, in the slot of a running worker it unblocks, which pushes its work, pauses, and resumes
+  once that work lands, and it takes the shared resource with priority.
 - **Assign one implementation owner per coherent scope, and a fresh worker for each delegated
   task.** The primary agent retains integration, dependencies, product decisions and orchestration.
   Delegate work that produces an independent result, not a wrapper that only invokes another
