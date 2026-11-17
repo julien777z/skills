@@ -110,12 +110,12 @@ alwaysApply: true
   performs work. Required checks and independent gates declared by an authorized workflow run
   as dependencies without a separate invocation; an omitted review request is not a waiver.
 - An authorized task stays active until its outcome is verified complete or the user explicitly
-  stops or hands it off. A follow-up, guidance correction, completed milestone, pending decision or
-  reported gate does not close it. For every task authorized to change files, start `execute-task`
-  before recommending an implementation, delegating edits, or editing: discover and read its
-  complete entry point rather than waiting for an edit to load it. Keep its run active and apply
-  its **Work You Have Already Named** procedure before handling the interruption and before any
-  final response.
+  stops or hands it off. A follow-up, retry, recovery, context compaction, guidance correction,
+  completed milestone, pending decision or reported gate does not close it. For every task
+  authorized to change files, start `execute-task` before recommending an implementation,
+  delegating edits, or editing: discover and read its complete entry point rather than waiting for
+  an edit to load it. Keep its run active and apply its **Work You Have Already Named** procedure
+  before handling the interruption and before any final response.
 - Delegate nontrivial execution to subagents when the host supports it. The primary agent coordinates
   the work, retains integration and decisions, and starts independent tasks concurrently when their
   ownership, dependencies and resources permit. A worker hands required independent reviews, gates
@@ -130,9 +130,8 @@ alwaysApply: true
 - For an invoked skill, do not decline, defer, or drop a finding, fix, or validation step because
   the work looks large, difficult, or likely to exceed a guessed time, context, or token budget.
   Only the user declares a budget spent. Work until complete, short of the review-round limit
-  below; a concrete gate holds only its dependent operation and follows **Tools and environments**
-  for live repair or resolution. On an explicit user stop or handoff, report what finished and
-  record precisely what resumption needs.
+  below; a concrete gate holds only its dependent operation. On an explicit user stop or handoff,
+  report what finished and record precisely what resumption needs.
 - **A change gets at most 3 review rounds in total: the first review and 2 re-reviews after
   repairs.** Any change — source, tests, tooling, configuration, guidance or interface — that has
   failed 3 rounds of review, gate, skill test, smoke test or CI, whatever each round raised, is not
@@ -155,11 +154,10 @@ alwaysApply: true
   `review-proposal`'s attack rounds on a proposal keep their own count.
 
 - An authorized task, including a fix request or approved plan, covers ordinary implementation,
-  verification, and scoped external mutations, and persists through follow-ups, retries, recovery,
-  and context compaction until the outcome is complete or the user withdraws it. Never ask the user
-  to restate it with "continue", "proceed" or another intermediate approval question: state
-  progress and take the next ordinary authorized action. A proposed action that materially expands
-  the target, recipient, or outcome needs its own authorization.
+  verification, and scoped external mutations for as long as it stays active. Never ask the user to
+  restate it with "continue", "proceed" or another intermediate approval question: state progress
+  and take the next ordinary authorized action. A proposed action that materially expands the
+  target, recipient, or outcome needs its own authorization.
 - **Fixing an issue does not authorize choosing a new product experience.** A product choice changes
   what the product does or offers: what a feature does or what information it shows, who a surface
   serves, the steps of a workflow or a quantity the reader meets, a new layout, control or surface,
@@ -361,13 +359,11 @@ alwaysApply: true
   safeguards.
 
 - Never poll a PR with background `sleep` or timed self check-ins; act only on delivered PR
-  activity webhooks.
-- An invoked skill overrides this where it says so, only while its run is active and only for the
-  pull request that run is driving; outside it, and for any pull request the session merely
-  watches, this rule holds. A skill that states it polls — a check gate that waits for every check
-  on a head to reach a terminal state, for example — is followed, because waiting on a webhook alone
-  can wait forever: pushing a new commit cancels the in-flight run under a `cancel-in-progress`
-  concurrency group, so the superseded head reaches no terminal state and emits no completion event.
+  activity webhooks, unless an invoked skill states it polls, such as a check gate that waits for
+  every check on a head to reach a terminal state, and then only while its run is active and for the
+  pull request that run is driving. There a webhook alone can wait forever: pushing a new commit
+  cancels the in-flight run under a `cancel-in-progress` concurrency group, so the superseded head
+  reaches no terminal state and emits no completion event.
 
 ## Tools and environments
 
@@ -450,6 +446,14 @@ alwaysApply: true
   terminal. Keep the task active under **Task execution and authorization** while resolving its gate.
 
 - **Local stack resources are disposable, and repairing them is part of the work, never a question for the user.** Local databases and their migration state, Redis, Docker containers, volumes, networks, images and the daemon itself can be repaired, reset, dropped or recreated whenever the task needs them working. A database stuck on a revision a branch has since regenerated, a stale cache, a wedged container: fix it and carry on. The records a local stack holds are the same: create, edit, reset, reopen or convert them whenever the work needs them in a given state — a test account to sign in with, a submission held in review to show a banner, a record a new rule no longer accepts — as the repository's data policy says, report what was done, and never put the choice to the user. The tooling that brings a local stack to a state is the agent's in the same way: a scenario command, the test accounts and records it creates, and what each scenario seeds are added, changed or redesigned as the work needs, never put to the user in a plan, a question or a gate's remedy, and never a product choice, since no user of the product meets them. The same holds for what the session's own work leaves behind when disk, memory or a port runs short: build caches and the leases and snapshots holding them, stopped containers, orphaned processes and build output. The one limit is a resource another run is actively using, such as a test runner holding the stack's lock. Wait for it or use a separate resource; never stop it. A route that limit rules out, such as restarting a daemon a running test still uses, leaves narrower ones, such as removing only the leases, records or processes the session's own work created; recovery is exhausted, and reported as a gate, only once no route remains. **Development data in a non-production deployment is the agent's the same way** when the project's guidance or its release stage marks it disposable: an unreleased product's staging saves, its test profiles and accounts, and the records a staging environment holds for its testers are reset, converted or recreated whenever the work needs them, such as a test save that no longer loads after an item's ID changed, then reported, never put to the user. Production data, and records real users or other people own, stay with the user. Deployed and shared remote environments are otherwise not local; the following live-deployment rules govern them.
+- **A copy a file-sync service or the operating system made is deleted on sight, never kept,
+  skipped or put to the user**, wherever the agent meets one and whoever's work it sits in: a file,
+  a folder or whole repository clone, a ref, object or index file in a Git directory, or an entry
+  in an installed or generated tree. It goes before anything reads, stages, stashes or snapshots
+  it, and the report names it. The check is its name alone: an original's name plus the service's
+  copy suffix, such as `budget 2.csv` or `budget (conflicted copy).csv` beside `budget.csv`, or a
+  copy of a transient file Git or a tool creates and removes, such as a lock or merge scratch file.
+  Who made it and how it differs from its original are never asked.
 
 - Do not rebuild, republish, or redeploy an already validated artifact solely because its source
   head advanced. Compare the edits with the artifact's actual source: cleanup proven to preserve
@@ -459,12 +463,11 @@ alwaysApply: true
   equivalence, or a requested release requiring a new artifact still needs the build and rollout.
 
 - Treat create, update, and delete requests against a live deployment as data mutations, not health
-  checks. Run them only against a target that the repository explicitly designates for mutation
-  testing; when no such target exists, live smoke testing is read-only.
-- When the same artifact and materially equivalent configuration run in several environments, one
-  successful write test on the designated mutation target plus read-only health and routing checks
-  on the others validates the shared path. Never create persistent synthetic records in a stable or
-  shared staging environment merely to smoke-test a deployment.
+  checks: run them only against a target the repository explicitly designates for mutation testing,
+  leaving no persistent synthetic records in a stable or shared staging environment, and keep live
+  smoke testing read-only everywhere else. Where the same artifact and materially equivalent
+  configuration run in several environments, one successful write test on that target plus
+  read-only health and routing checks on the others validates the shared path.
 
 ## Tailscale policy
 
@@ -748,11 +751,9 @@ return records;
   and user-facing labels, including enum and constant names. Code identifiers may encode the whole
   domain with separators, such as `garden.example` becoming `GARDEN_EXAMPLE`. Never drop the domain
   suffix, substitute a bare apex or product label, or append owner or organization aliases. Use
-  the exact domain name for an environment's tailnet too. Repository and service IDs, provider
-  accounts, and projects identify separate resources, not environment aliases.
-- Apply that rule only when a name denotes an environment. Product branding, company names, service
-  names, and their visual marks retain their own canonical terminology even when it shares an apex
-  label with an environment.
+  the exact domain name for an environment's tailnet too. A name for anything else — a repository
+  or service ID, a provider account, a project, a product, company or service name and its visual
+  mark — keeps its own terminology, even when it shares an apex label with an environment.
 
 - **Every document holds only what its reader needs for its purpose.** A README, project guidance, a
   skill, a rule, a design document, a pull request description, a code comment: each has one reader
@@ -779,7 +780,10 @@ return records;
   not the state it left, so read that state where it lives. After a push, that is the pull request
   on the pushed head, or, before one exists, the remote branch head: its mergeable state and the
   checks that run for its state starting — a draft starts no test jobs — since the base can move
-  while the push runs.
+  while the push runs. A status sent to the user states what was just read and where, never what
+  was reported or expected: conflicted, failing, running, or passing, on the head or target named,
+  with "done" or "ready" written only when that read says so and a file sent with it checked first
+  as **User-Facing Output** requires.
 - **Whatever that read shows wrong is the next thing done**, ahead of every queued item, and is
   never carried to "the next push" or bundled behind other work. A conflict is brought in
   through `merge-conflict`, delivered under the GitHub rule’s **Pre-Push Gate**, and read back. A base that only
@@ -816,7 +820,3 @@ return records;
   reporting a hold, exhaust available safe diagnostic and reproduction paths. Name the missing
   evidence, why it is unavailable, and the specific observation or external action that can resume
   the investigation.
-- **A status sent to the user states what was just read and where**, never what was reported or
-  expected: conflicted, failing, running, or passing, on the head or target named. "Done" or
-  "ready" is written only when that read says so, and a file sent with it is checked first as the
-  global rules' **User-Facing Output** requires.

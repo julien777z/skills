@@ -132,10 +132,8 @@ head lag and a retryable rate limit are nonterminal.
   and was not subsequently reverted. Compare staged and unstaged changes, including file mode and binary
   changes, before restoring anything. For a file with mixed or uncertain changes, preserve the
   entire file unless the landed and local-only changes can be verified independently.
-- A copy that a file-sync service or the operating system made of a file is not local work, so
-  delete it rather than saving it: for example, an untracked `install 2.sh` beside a tracked
-  `install.sh`, or a sync service's conflict copy. Before deleting, confirm that its name only
-  adds the copy suffix to a file in the checkout and that no task or person wrote it.
+- A copy a file-sync service or the operating system made is not local work: delete it before
+  saving anything, as the global rules' **Tools and environments** says.
 - Stage the remaining local-only edits by path, including untracked files that belong to the work.
   When a path has different staged and working-tree edits, keep its index entry intact. Save the
   index, working tree, and untracked files in a named local stash and verify the saved versions
