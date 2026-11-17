@@ -438,16 +438,21 @@ function keepPlugins() {
     }
 
     for (const { surface, text } of alerts) {
-      const buttons = surface.buttons();
-      const keep = buttons.find((button) => KEEP_PLUGIN_BUTTON.test(String(button.title() || "")));
+      try {
+        const titles = surface.buttons().map((button) => String(button.title() || ""));
+        const keep = titles.findIndex((title) => KEEP_PLUGIN_BUTTON.test(title));
 
-      if (keep) {
-        keep.click();
-        report.push(`${process.unixId()}: answered "${keep.title()}" to ${text}`);
-      } else {
-        const titles = buttons.map((button) => button.title()).join(", ");
+        if (keep === -1) {
+          const choices = titles.join(", ");
 
-        report.push(`${process.unixId()}: left open, no keep-waiting button among [${titles}]: ${text}`);
+          report.push(`${process.unixId()}: left open, no keep-waiting button among [${choices}]: ${text}`);
+        } else {
+          // The click closes the alert, so its button is read before and never after.
+          surface.buttons()[keep].click();
+          report.push(`${process.unixId()}: answered "${titles[keep]}" to ${text}`);
+        }
+      } catch (error) {
+        report.push(`${process.unixId()}: an alert was not answered: ${error.message}: ${text}`);
       }
     }
   }

@@ -402,8 +402,8 @@ def keep_studio_plugins(config: RunnerConfig) -> str:
     try:
         report = run_guest_command(KEEP_PLUGINS_SCRIPT, config, OPERATION_TIMEOUTS[RunnerOperation.PLUGIN_ALERT],
                                    GUEST_STUDIO_MCP.read_bytes()).decode().strip()
-    except (RuntimeError, subprocess.TimeoutExpired) as error:
-        logger.warning("Studio's stalled-plugin alerts were not answered: %s", error)
+    except (RuntimeError, subprocess.TimeoutExpired):
+        logger.warning("Studio's stalled-plugin alerts were not answered", exc_info=True)
 
         return ""
 
@@ -443,7 +443,9 @@ def registration_failure_cause(config: RunnerConfig) -> str:
                                       OPERATION_TIMEOUTS[RunnerOperation.DIAGNOSIS]).decode()
         state = "; ".join(line.strip() for line in diagnosis.splitlines() if line.strip())
     except (RuntimeError, subprocess.TimeoutExpired) as error:
-        state = f"unreadable ({error})"
+        logger.warning("The guest's Studio MCP state could not be read", exc_info=True)
+
+        state = f"unreadable ({type(error).__name__}: {error})"
 
     return (f"each editor reaches Studio MCP through its built-in Assistant plugin, which stalls while the guest is "
             f"starved; guest state: {state}")
@@ -652,6 +654,18 @@ pids=
 for pid in $(pgrep -f {pattern}); do
   process_command=$(ps -o command= -p "$pid") || continue
   case "$process_command " in *" --localPlaceFile $target "*) pids="$pids $pid";; esac
+done'''
+
+
+def named_editor_pids_script(place_name: str) -> str:
+    """Return guest shell that sets pids to the editors holding any project's copy of a place file name open."""
+
+    pattern = shlex.quote(f"localPlaceFile ([^ ]*/)?{GUEST_PLACES}/[^/ ]+/{extended_regex_literal(place_name)}( |$)")
+
+    return f'''pids=
+for pid in $(pgrep -f {pattern}); do
+  process_command=$(ps -o command= -p "$pid") || continue
+  case "$process_command " in *" --localPlaceFile $HOME/{GUEST_PLACES}/"*"/{place_name} "*) pids="$pids $pid";; esac
 done'''
 
 
@@ -887,8 +901,10 @@ def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path,
 
     config = assert_runner_lease_covers(lock_receipt, open_bound(registration_wait))
 
-    if guest_pids(editor_pids_script(guest_path), config):
-        raise RuntimeError(f"An editor already has {guest_path} open; use it or close it with close_place first")
+    # Studio MCP names an editor by its place's file name alone, so two open copies of one name cannot be told apart.
+    if guest_pids(named_editor_pids_script(place.name), config):
+        raise RuntimeError(f"An editor already has a place named {place.name} open, {guest_path} or another "
+                           "project's copy; use it or close it with close_place first")
 
     launch = (f'cd "$HOME" && mkdir -p {shlex.quote(str(Path(guest_path).parent))} && '
               f'cat > {shlex.quote(guest_path)} && open -n -a {shlex.quote(STUDIO_APP)} --args --task EditFile '
