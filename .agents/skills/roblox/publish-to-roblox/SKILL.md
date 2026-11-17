@@ -54,12 +54,11 @@ no publish to any other experience.
    push it, so the build carries every destination and the next publish finds them.
 2. **Freeze the build.** Take the latest pushed head of the session's branch, and record it.
    Build the publishable places from that head with the project's own build command and its
-   integrity check, which the deploy workflow does in its own run, so they hold exactly that head's code, art, area and terrain files,
-   never a previously saved place copy.
-3. **Publish through the project's deploy workflow** when it has one, as the Open Cloud route in
-   `roblox-studio`'s source, editor, and publication reference describes: a push to the default
-   branch already publishes to staging, and otherwise dispatch the workflow on the frozen head's
-   branch with the chosen environment. Follow the run to its end and confirm it ran on the frozen
+   integrity check, which the deploy workflow does in its own run, so they hold exactly that head's
+   code, art, area and terrain files, never a previously saved place copy.
+3. **Publish through the project's deploy workflow** when it has one, triggered for the frozen head
+   and the chosen environment as the Open Cloud route in `roblox-studio`'s source, editor, and
+   publication reference describes. Follow the run to its end and confirm it ran on the frozen
    head. A project with no such workflow gets one set up as that reference says, so later publishes
    leave Studio out; until it is on the default branch, publish this run from Studio as step 4 says.
 4. **Publish from the isolated runner** only where no deploy workflow exists yet, as `roblox-studio`
