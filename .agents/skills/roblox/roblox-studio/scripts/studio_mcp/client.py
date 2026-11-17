@@ -894,10 +894,11 @@ def launch_editor(launch: str, data: bytes | None, editor_name: str | None, expe
         elif expected is None:
             failure = "never ran code in its Edit data model"
         else:
-            answers = "; ".join(f"{candidate} reported {ids}" for candidate, ids in reports.items())
+            answers = "; ".join(f"{candidate} ran no code" if ids is None else f"{candidate} reported {ids}"
+                                for candidate, ids in reports.items())
 
             failure = (f"never reported place {expected['place_id']} of universe {expected['universe_id']}; "
-                       f"the new editors answered: {answers}")
+                       f"the new editors: {answers}")
 
         saved_guest_screen(failure_screen, config)
 
