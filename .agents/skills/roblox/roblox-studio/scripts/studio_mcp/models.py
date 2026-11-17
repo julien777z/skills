@@ -24,6 +24,8 @@ class RunnerOperation(Enum):
     DESCRIBE = auto()
     SESSION_EXIT = auto()
     HELPER_CHECK = auto()
+    PLUGIN_ALERT = auto()
+    DIAGNOSIS = auto()
 
 
 class RunnerConfig(TypedDict):

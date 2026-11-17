@@ -32,6 +32,9 @@ OPERATION_TIMEOUTS: Final[Mapping[RunnerOperation, timedelta]] = MappingProxyTyp
     RunnerOperation.DESCRIBE: timedelta(seconds=30),
     RunnerOperation.SESSION_EXIT: timedelta(seconds=5),
     RunnerOperation.HELPER_CHECK: timedelta(seconds=10),
+    # Reading a starved Studio's windows through System Events can take most of a minute.
+    RunnerOperation.PLUGIN_ALERT: timedelta(seconds=90),
+    RunnerOperation.DIAGNOSIS: timedelta(seconds=15),
 })
 LEASE_CHECK_BOUND: Final[timedelta] = (OPERATION_TIMEOUTS[RunnerOperation.DESCRIBE]
                                        + OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK])
