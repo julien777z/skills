@@ -31,4 +31,5 @@ O1 [outside] <files> <claim>
 
 A later round sends this brief again with the ledger (`fixed:`, `disagree:`, `declined:`, each with
 evidence), the same base diff and the change since the last round, and asks the reviewer to check
-open ids and changed code only, marking each `resolved` or `still open: <reason>`.
+open ids and changed code, marking each `resolved` or `still open: <reason>`; a `Whole:` skill or
+rule is still read in full at the new head every round.

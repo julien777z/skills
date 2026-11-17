@@ -309,9 +309,11 @@ smallest coherent repair using the existing owner or mechanism.
 
 **No flag is closed by the run that raised it or the agent that answered it.** The agent that made
 a repair re-reads the changed lines against the flag's objection and remedy and runs the checks
-covering that code; then the repair, or a settled or out-of-scope answer with its evidence, goes to
-a fresh gate under the Diff question, following `subagent-matrix`'s **Dispatch**, and only that
-gate's acceptance closes the flag. Each such gate is one of the change's re-reviews under the
+covering that code; then the repair, or a settled, out-of-scope or council-dropped answer with its
+evidence, goes to a fresh gate under the Diff question, following `subagent-matrix`'s
+**Dispatch**, and only that gate's acceptance closes the flag. The one exception is the decision
+the global rules' review-round limit has `council` make once 3 rounds have failed the change,
+which settles its flags as it rules. Each such gate is one of the change's re-reviews under the
 global rules' review-round limit, and a repair's gate one of the flag's own repair rounds below.
 
 **Repair rounds are counted per objection and per change.** A change gets at most 3 rounds across
@@ -332,8 +334,8 @@ reset its history, or keep flagged code because the caller can authorize its mer
 objections and previous remedies into the next review; a remedy that reverses one given earlier
 names it and the evidence it was wrong. If evidence refutes an objection, put the
 objection, that evidence and the code it concerns to `council` in **Ask** mode for a ruling: a
-unanimous `drop` dismisses it, and anything else keeps it open for repair. The caller cannot dismiss
-it unilaterally.
+unanimous `drop` is the evidence a fresh gate closes the flag on, and anything else keeps it open
+for repair. The caller cannot dismiss it unilaterally.
 
 When the intent statement already schedules a flag's remedy as named work with its owner, such as
 a consumer's migration on its own pull request, the gate reports it as a hold on the merge that
