@@ -419,20 +419,22 @@ def poll_registration[T](probe: Callable[[], T | None], wait: timedelta, config:
     deadline = time.monotonic() + wait.total_seconds()
     next_alert_pass = time.monotonic() + PLUGIN_ALERT_INTERVAL.total_seconds()
 
-    while True:
+    def _probe_keeping_plugins() -> T | None:
+        nonlocal next_alert_pass
+
         value = probe()
         now = time.monotonic()
 
-        if value is not None or now >= deadline:
-            return value
-
         # A pass runs only when it ends inside wait, so the wait's bound holds.
-        if now >= next_alert_pass and deadline - now > OPERATION_TIMEOUTS[RunnerOperation.PLUGIN_ALERT].total_seconds():
+        if (value is None and now >= next_alert_pass
+                and deadline - now > OPERATION_TIMEOUTS[RunnerOperation.PLUGIN_ALERT].total_seconds()):
             keep_studio_plugins(config)
 
             next_alert_pass = time.monotonic() + PLUGIN_ALERT_INTERVAL.total_seconds()
 
-        time.sleep(POLL_INTERVAL.total_seconds())
+        return value
+
+    return poll_until(_probe_keeping_plugins, wait)
 
 
 def registration_failure_cause(config: RunnerConfig) -> str:
