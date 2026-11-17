@@ -45,7 +45,7 @@ Use ordinary Studio profiles that cannot overwrite live player progress. When pe
 ## Keep the game's test helpers in its repository
 
 Every step a check repeats has one tested helper, committed in the game repository's test tooling
-area and built on the [studio_mcp](../scripts/studio_mcp/client.py) package for the transport:
+area and built on the [studio_mcp](../scripts/studio_mcp/__init__.py) package for the transport:
 
 - putting a disposable profile into a given state;
 - walking the character to an NPC, prompt or place through real movement around the collision
@@ -268,7 +268,7 @@ finds the guest's address through Tart on every call, so no shell variable has t
 the next. The runner's Studio MCP is `runner_ssh.sh /Applications/RobloxStudio.app/Contents/MacOS/StudioMCP`,
 spoken over stdio: give an MCP client that command.
 
-Drive the runner's Studio from scripts through the [studio_mcp](../scripts/studio_mcp/client.py) package, which every game uses
+Drive the runner's Studio from scripts through the [studio_mcp](../scripts/studio_mcp/__init__.py) package, which every game uses
 from the installed `roblox-studio` skill's `scripts` folder, put on `sys.path`, importing only the names its
 `__init__.py` exports (`from studio_mcp import Studio, open_place, ...`); no game keeps its own MCP client or copies
 one of these mechanisms. Each `Studio` holds its own MCP session through `runner_ssh.sh`, and the module has no shell
