@@ -144,8 +144,8 @@ alwaysApply: true
   the change, or accept it with the remaining findings recorded; record its majority ruling and
   follow it. A confirmed defect, an
   exploitable vulnerability or a failing required check is never accepted this way. If the authorized
-  outcome still needs work, update the active plan and start the first permitted step of the
-  replacement. A different implementation idea is not a new approval boundary. Ask only when
+  outcome still needs work, update the active plan and start the replacement, a new change with its
+  own rounds, at its first permitted step. A different implementation idea is not a new approval boundary. Ask only when
   the replacement needs an unresolved product, scope, security, disclosure, or authorization decision, and join that
   question to the questions already open rather than sending it separately. The agent reports the
   decision in plain words, with current captures where the change is visible. The stop exists to end

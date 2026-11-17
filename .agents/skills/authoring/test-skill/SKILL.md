@@ -135,7 +135,7 @@ Run after `code-simplify` completes its pass.
    never decides that a pull request should merge.
 7. **Repair and rerun until verified**, within the global rules' review-round limit of 3 rounds
    per change: after the third failing round over the same edit, that bullet's decision replaces
-   another repair, and a replacement it chooses is a new change with its own rounds. Diagnose each
+   another repair. Diagnose each
    reported issue at its owner. Fix guidance that permits the wrong behavior; fix an invalid
    fixture, unavailable simulated operation, wrong reading list, ambiguous criterion or broken
    runner before judging guidance. Retain the diagnosis and earlier results. Recover missing
