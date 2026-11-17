@@ -342,10 +342,11 @@ constraints where it specifies them; nothing holds committed work on one machine
 pass pending on it, an integration merge, or a plan that orders one first. The one exception is
 commits that `lock-revision`'s **After Locking** hold keeps local until the user lets revisions
 resume. `code-simplify` and `acceptance-gate` do not run per push; `execute-task` and `review-pass`
-set when they run. A fix pushed for a flag a review or gate raised is checked
-by the agent that made it: it re-reads the changed lines against the flag and reruns the checks
-covering that code, unless `acceptance-gate`'s **Bounds** send it to a fresh gate; that recorded
-check, or that gate's verdict, is what other skills mean by an increment's **Pre-Push Gate** verdict.
+set when they run. A fix pushed for a flag a review or gate raised is pushed once
+the agent that made it has re-read the changed lines against the flag and rerun the checks covering
+that code; that recorded check is what other skills mean by an increment's **Pre-Push Gate**
+verdict. It never closes the flag: the review's next round or, for a gate's flag, the fresh gate
+`acceptance-gate`'s **Bounds** require does.
 
 Read the shared testing rule before planning test runs or briefing an implementation worker.
 Its **Verification Cadence** governs tests, builds, browser walkthroughs and reviews, including

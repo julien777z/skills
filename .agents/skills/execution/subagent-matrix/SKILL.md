@@ -133,10 +133,11 @@ context and returns its verdict into the step waiting on it; nothing else does b
   such as the fix steps a flag names, under the follow-up bullet below. Only the top-level agent,
   with no delegating agent to ask, performs an assignment in process after its own launch fails,
   records the launch outcome, and reports that the result lacked independent review; never describe
-  an in-process result as an independent verdict. A brief never tells a worker to fall back to
-  in-process review or gating.
+  an in-process result as an independent verdict. An in-process result of an independent step
+  never admits the change it judges: that step stays a concrete gate until a launched subagent
+  answers it. A brief never tells a worker to fall back to in-process review or gating.
 - **An independent step gets a newly launched subagent for every question it answers when available.** A gate,
-  finding validator or skill-test reader that has answered about an item is never resumed, messaged or
+  finding validator, skill-test reader or grader that has answered about an item is never resumed, messaged or
   reused for a later round on it — not to judge the repair of its own flag or a revised item — since
   its answer would then rest on its own earlier verdict. A reviewer that a review loop keeps across
   its rounds, carrying the ledger, is a reviewer and not one of these.

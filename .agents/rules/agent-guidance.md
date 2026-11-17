@@ -120,8 +120,8 @@ paths:
   `references/<topic>.md` beside it, named for what it holds — a rubric, a checklist, a catalog,
   a protocol — and `SKILL.md` names the file at the point the workflow reads it. A skill with two
   routes through it (two modes, two kinds of target, two hosts) keeps the shared workflow in
-  `SKILL.md` and gives each route its own reference, so the file a reader loads first stays short
-  enough to be read whole. References may explain the technical steps for a route selected by the
+  `SKILL.md` and gives each route its own reference, so the file a reader loads first stays within
+  the size budget under **Writing**. References may explain the technical steps for a route selected by the
   entry point. They do not select the top-level workflow, hide a decision gate, declare a dependency,
   or invoke another skill. Scripts the skill runs go under `scripts/`; supporting files may live
   under `assets/`, `resources/`, or another directory named for their role. Keep only files the skill
@@ -288,6 +288,10 @@ a template where correct results genuinely vary in shape.
   use, follows the sections on headings and paragraphs that every document uses, even though
   footnotes extend paragraphs.
 - Express each independent requirement once, as one concise statement or bullet, without padding. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
+- **A file read whole, a `SKILL.md` or a rule, has a size budget of 500 lines**, the skill-body
+  target hosts publish. A change that pushes one past it, or grows one already past it, makes its
+  room in the same change by merging what the file states twice or moving text to the reference or
+  file that owns it.
 - Normalize the touched file's nearby structure when needed: combine narrow sections and remove redundant wording.
 - **Prefer the broad statement, and let the request's shape be its example.** A request
   arrives as one symptom, and the rule it needs names the class that symptom belongs to; the

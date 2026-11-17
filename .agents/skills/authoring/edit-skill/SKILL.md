@@ -170,7 +170,7 @@ user's review of the source pull request overlaps it.
    reproduction scenario as an input and entries that share a failure class grouped into one
    scenario, then steps 7.6–7.9. A guidance repair the skill-test round makes, here or on a source pull
    request under step 1, goes back through `review-pass` over its delta, and the skill-test round reruns
-   the scenarios it invalidated on the head that review accepts.
+   every scenario `test-skill` does not carry forward, on the head that review accepts.
 5. After each completed or failed stage, record its exact head, stage result, and first
    nonterminal next stage in each entry. Resume from that stage without repeating completed work.
    After the skill-test round, record the pull request, its head, the skill-test results and the merge or
@@ -291,15 +291,14 @@ user's review of the source pull request overlaps it.
      skills-repository session only when no writable checkout can be obtained, never by editing
      the installed clone.
      The originating session supplies the observed miss and its failure class, original task,
-     relevant diff or small file set, repository commit, original skill text, and the observable
-     pass criteria needed for the scenario.
-     Include a sanitized fixture when the skills session cannot read the originating repository.
-     The skills session tests original and proposed wording against the same case and names the
-     exact proposed pull-request head. For repository-dependent behavior, the originating session
-     then reads that head's `SKILL.md` explicitly and replays the case in its own context before
-     merge; fetch the head when accessible or receive the exact file as a scratch artifact. Retain
-     the replay across heads unless changed guidance, inputs, or environment materially invalidate
-     it. Do not assume a pull request automatically installs its skill.
+     relevant diff or small file set, repository commit, original skill text and the outcome the
+     user requires, with a sanitized fixture when the skills session cannot read the originating
+     repository. The skills session tests original and proposed wording against the same case and
+     names the exact proposed pull-request head. For repository-dependent behavior, the originating
+     session then replays the case against that head before merge as `test-skill` runs a scenario,
+     its reader given that head's files, fetched or received as a scratch artifact, and carries the
+     result across heads only as `test-skill` carries one. Do not assume a pull request
+     automatically installs its skill.
    - Never read or write `.cursor/*`, `.claude/*`, `.codex/*`, or any other non-`.agents` agent or provider folder.
    - Do not manually create, update, or sync mirrored command/skill/rule files in those folders; repository automation propagates changes from `.agents` to Cursor, Claude, Codex, and similar targets. This holds with no exception, including where the change leaves a mirror pointing at a path it renames or deletes: the workflow reconciles those on the default branch, and a branch carrying a stale or broken one meanwhile is expected.
    - This path restriction applies to the agent-content update, not to source changes required to fix an underlying issue from step 3.
@@ -443,16 +442,16 @@ user's review of the source pull request overlaps it.
       workaround in generic guidance is a finding unless the skill's contract depends on it; the
       incident's route must not narrow the durable decision boundary. The brief carries the
       incident's vocabulary — the product, its record and screen nouns, the labels the request
-      quoted — so an example carrying any of it is a finding.
+      quoted — so an example carrying any of it is a finding, and the real case behind the request.
       Resolve each flag through `acceptance-gate`'s **Bounds**: repair the owning instruction, push the
-      changed increment, and check it as those **Bounds** say. Repeated flags do not permit dropping owed work or merging
+      changed increment, and put it to the fresh gate those **Bounds** require. Repeated flags do not permit dropping owed work or merging
       flagged guidance, apart from the decision the global rules' review-round limit calls for after
       3 rounds; acceptance, or that recorded round-limit decision, must cover the final wording
       before delivery.
 
    5. **Run one `test-skill` round over the batch on the head `review-pass` accepted.** Give it every
       entry's reproduction scenario, grouping entries that share a failure class. `test-skill` owns
-      the coverage, package, control, scoring, and rerun procedure.
+      the scenario writing, coverage, package, control, grading, and rerun procedure.
       Record an entry whose run `test-skill` does not require as `not run: <test-skill reason>`;
       the acceptance gate is its check.
 

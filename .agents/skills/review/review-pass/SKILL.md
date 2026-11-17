@@ -87,6 +87,9 @@ Each pass reviews only what no earlier pass reviewed.
   pass records `whole`; every other pass records `delta`.
 - **An empty delta** runs only **Review Threads**; with no thread fix, return the recorded verdict.
   A thread fix is a new delta.
+- **A delta that touches a skill or rule is reviewed as the package it results in.** The **Review
+  Loop** and the final acceptance read every file of each skill and rule it touches whole at the
+  head, judged as `acceptance-gate` judges guidance, with the real case the invocation supplies.
 
 ## Description Refresh
 
@@ -142,9 +145,8 @@ validation exclusion is recorded with its evidence and not repaired, rerun or wa
 7. With a working pull request, run **Description Refresh** once more. Put the complete target diff,
    the merge-base diff or the merged range, and any refreshed prose to `acceptance-gate`'s **Final
    acceptance** question once, with the intent statement and
-   the reviewed delta marked. Fix a flag as one increment under `acceptance-gate`'s **Bounds**: a
-   repair checked in process there needs no second gate, and the head carrying it is the accepted
-   head; a repair those **Bounds** send to a fresh gate is accepted when that gate accepts it.
+   the reviewed delta marked. Answer each flag as one increment under `acceptance-gate`'s
+   **Bounds**, whose fresh gate's acceptance makes that increment's head the accepted head.
 8. Re-read the head, base and merge base where they live: the pull request's remote, or the local
    checkout for a local target; a merged range does not move. When they match the accepted head,
    record it under **Range** and return its **Output**. A moved base is brought in through **Base**
@@ -210,7 +212,9 @@ changed. Make the smallest changes that answer real findings, and push back on t
   - agree: make the smallest fix, preferring to delete or narrow code over a new lock, cache, helper
     or option, and add one focused test that fails without the fix when the repository has a test
     setup and the intent needs it;
-  - disagree: say why, with evidence such as a file and line, a test or output;
+  - disagree: say why, with evidence such as a file and line, a test or output; the finding stays
+    open until the reviewer marks it resolved or a ruling below settles it, so a reply never ends
+    the loop;
   - nit: fix it when it is a one-line change in a line the change already touches, otherwise decline
     it in one line;
   - outside the change: fix every bug, and record cleanup past `pre-production`'s size budget with

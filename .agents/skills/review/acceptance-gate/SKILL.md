@@ -1,6 +1,6 @@
 ---
 name: acceptance-gate
-description: Independent read-only verdict on a pull request's complete diff before merge, run once per pull request; also for a triage or deferral decision, a list of borderline incidental items, and base incorporation; per plan step only for a finished step that later steps build on. Never run per fix, apart from a repair that settles a design, product or security choice of its own.
+description: Independent read-only verdict on a pull request's complete diff before merge, run once per pull request; also for a triage or deferral decision, a list of borderline incidental items, and base incorporation; per plan step only for a finished step that later steps build on. Never run per fix, apart from a fresh gate over each repair of, or answer to, a gate's flag.
 short_description: 'Have an independent reviewer decide whether a proposed change fits the task and the repository.'
 ---
 
@@ -10,7 +10,8 @@ Put a decision the author cannot judge about its own work to a subagent that rea
 state and the change's intent, applies the repository's rubric, and answers one question. It runs
 once over a pull request's complete diff, before its merge, and otherwise only for the questions
 below that a caller cannot settle alone. A plan step or worker task is gated only when later steps
-build on it; every other step, and every fix, is checked by its author against its own checks.
+build on it; every other step, and every fix to a review finding, gets its author's own checks,
+while a gate's flag is closed only by a fresh gate under **Bounds**.
 `references/rubric.md` holds what it judges by; this file holds how it is run.
 
 ## Dependencies
@@ -122,7 +123,12 @@ judging a working tree that other edits may have moved, or nothing at all. Its s
 model-dispatch record; never replace it with a generic “largest model” label.
 
 **A diff review judges the code as it stands, not only the lines that changed.** Read every module
-the diff adds, moves or rewrites whole; moved and renamed code is judged as if it were new. Before
+the diff adds, moves or rewrites whole; moved and renamed code is judged as if it were new. A diff
+that changes a skill or rule is judged as the package it results in: every file of each skill and
+rule it touches is read whole at the head, and a requirement stated in more than one place there,
+or growth past the shared `agent-guidance.md` rule's size budget, is a flag. Where the item
+carries a real case the guidance governs, the gate walks the resulting text through it and flags
+the step a reader would take wrongly. Before
 the design comparison, answer the plain question: would an experienced reviewer reading the change —
 its code, configuration and prose, and the verification output supplied — call any of it slop, or
 say it does not make sense? Each reason they would give is a flag with its remedy, whether or not a
@@ -255,8 +261,8 @@ it:
 - **Admission — may this work be deferred?** The triage question asked of a proposed record.
 - **Proposal — should this be written?**
 - **Diff — should this stand?** A finished plan step or worker task that later steps build on, a
-  correction after base incorporation, or a repair that settles a design, product or security
-  choice of its own, read with the whole branch diff as its originating diff.
+  correction after base incorporation, or the repair of or answer to a gate's flag, read with the
+  whole branch diff as its originating diff.
 - **Base incorporation — what did the base bring in that the change must refactor?** The procedure
   below.
 - **Final acceptance — may this merge?** The complete pull-request diff, read once after review is
@@ -301,12 +307,12 @@ earlier acceptance said: it is repaired as below.
 Read every other objection and remedy against the intent and standing guidance and make the
 smallest coherent repair using the existing owner or mechanism.
 
-**A repair is checked in process.** The agent that made it re-reads the changed lines against the
-flag's objection and remedy, runs the checks covering that code, and records the result with the
-flag; no fresh gate or worker is started for it. The repair counts toward the flag's own repair
-rounds below, while its in-process check is no review round of the change. Only a repair that
-settles a design, product or security choice of its own, or one the in-process check cannot settle,
-goes to one fresh gate under the Diff question, following `subagent-matrix`'s **Dispatch**.
+**No flag is closed by the run that raised it or the agent that answered it.** The agent that made
+a repair re-reads the changed lines against the flag's objection and remedy and runs the checks
+covering that code; then the repair, or a settled or out-of-scope answer with its evidence, goes to
+a fresh gate under the Diff question, following `subagent-matrix`'s **Dispatch**, and only that
+gate's acceptance closes the flag. Each such gate is one of the change's re-reviews under the
+global rules' review-round limit, and a repair's gate one of the flag's own repair rounds below.
 
 **Repair rounds are counted per objection and per change.** A change gets at most 3 rounds across
 every kind of check, the first and 2 after repairs, as the global rules' review-round limit counts
