@@ -291,9 +291,7 @@ Execution starts once a required plan is approved, or immediately when **When A 
 
 Before implementation begins and whenever new work is admitted, delegate each coherent nontrivial
 execution task under `subagent-matrix`'s **Dispatch** assignment bullets; a task waiting on a worker
-never holds another independent one. Reassess ownership after each finding or follow-up. A brief
-goes in the task's working-files folder, as the global rules' **Tools and environments** section
-places it, and a worker reads it by its absolute path.
+never holds another independent one. Reassess ownership after each finding or follow-up.
 
 ### Task Authorization
 
