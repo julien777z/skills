@@ -117,7 +117,11 @@ context and returns its verdict into the step waiting on it; nothing else does b
 - **Never route one elsewhere**: not through a new remote or cloud session, a scheduled trigger or
   routine, or a message asking any session but the delegating agent to run it. Those run outside
   the step, can fail setup or leave branches behind, and their verdict never returns to the run
-  that waits on it.
+  that waits on it. The one exception is a reader whose test requires that it load no installed
+  copy of the guidance under test, when the agent tool's subagents load one: it runs as a local
+  headless harness process the running session starts and waits on, with its user-level skill and
+  rule roots pointed at a scratch root, and hands back its complete original output as the
+  result-retention bullet below requires.
 - **Launch fallback: a worker that cannot launch a subagent its step needs hands the step up; never
   absorb it.** Attempt the native dispatch when available. This covers a host that gives the worker
   no agent tool and a native dispatch that fails other than by a capacity refusal, which step 3 waits out and relaunches, for reviewers, lenses, validators, gates and

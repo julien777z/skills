@@ -41,10 +41,13 @@ confuse those conclusions.
   may omit it only with that justification recorded. The original control stays blind to the edited
   diff, criteria, and reports. The round runs when, and on the head the caller supplies.
   Add readers only for a distinct named risk.
-- **A retained result carries to a new head only when every file its scenario depends on is
-  unchanged there**: each guidance file on its reading list, its fixture and its criteria, checked
-  against the frozen record by content digest. Any difference reruns that scenario, never a
-  judgment that the change does not touch what it tests; an unchanged scenario is not rerun.
+- **A retained result carries to a new head only when every file its scenario depends on and its
+  execution environment are unchanged there**: each guidance file on its reading list, its fixture
+  and its criteria, checked against the frozen record by content digest, and the model and
+  reasoning-effort identifiers, the harness and the guidance it loaded, and the tools and fixture
+  interface the scenario uses, checked against the run's recorded evidence. Any difference reruns
+  that scenario, never a judgment that the change does not touch what it tests; a scenario
+  unchanged in both is not rerun.
 - A new skill has no original to run against. Its control runs carry no skill text at all, which
   shows what the skill adds over the model alone.
 
@@ -73,9 +76,17 @@ Run after `code-simplify` completes its pass.
    disposable state. Verify which implementation and resources each run actually uses before launch.
    **A reader sees only the variant it tests.** Installed guidance, such as a user-level skill or
    rule root a harness loads into every subagent, can already carry the open pull request or the
-   original, so establish what the reader's harness loads and run it where no installed copy of a
-   skill or rule under test reaches it; record that evidence. A reader that saw another variant
-   produced no result.
+   original. List what a subagent of the running session loads: when it carries no copy of a skill
+   or rule under test, launch the reader there. Otherwise launch it as a local headless harness
+   process the running session starts and waits on, its user-level skill and rule roots pointed at
+   a scratch root holding no copy of a skill or rule under test, its complete output written to the
+   run's private evidence. Record as isolation evidence the route, the harness command and its root
+   settings, the scratch root's file list with digests, and the harness's record of the guidance it
+   loaded, or the reader's listing where it keeps none, checked against the reading list. When
+   neither route is available, the round is a concrete gate under the global rules' **Tools and
+   environments**, recorded with each route tried, its receipt and the saved next action of
+   launching the reader once one exists; it never passes in process or with a reader that saw
+   another variant.
    Before freezing the reader package, exercise its required fixture interfaces in a disposable
    copy: discovery must expose the identifiers the task needs, operations must be available, and
    state changes and failures must reach the intended records. This checks the fixture contract,
