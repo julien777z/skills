@@ -856,57 +856,48 @@ def launch_editor(launch: str, data: bytes | None, editor_name: str | None, expe
         run_guest_command(launch, config, OPERATION_TIMEOUTS[RunnerOperation.COPY]
                           + OPERATION_TIMEOUTS[RunnerOperation.LAUNCH], data)
 
-        if expected is not None:
-            probed: list[str] = []
+        probed: list[str] = []
+        reports: dict[str, PlaceIds | None] = {}
 
-            def _next_reporting() -> str | None:
-                """Probe the least recently probed unlisted-before editor, returning it once it reports the place."""
+        def _next_answering() -> str | None:
+            """Probe the least recently probed new editor, returning it once it answers for the expected place."""
 
-                listed = listed_studios(connection, config)
-                candidates = [studio["id"] for studio in listed if studio["id"] not in known]
+            listed = listed_studios(connection, config)
+            candidates = [studio["id"] for studio in listed if studio["id"] not in known
+                          and (editor_name is None or studio.get("name") == editor_name)]
 
-                if not candidates:
-                    return None
+            if not candidates:
+                return None
 
-                fresh = [candidate for candidate in candidates if candidate not in probed]
-                studio_id = fresh[0] if fresh else next(candidate for candidate in probed if candidate in candidates)
+            fresh = [candidate for candidate in candidates if candidate not in probed]
+            studio_id = fresh[0] if fresh else next(candidate for candidate in probed if candidate in candidates)
 
-                if studio_id in probed:
-                    probed.remove(studio_id)
+            if studio_id in probed:
+                probed.remove(studio_id)
 
-                probed.append(studio_id)
+            probed.append(studio_id)
 
-                return studio_id if reported_place_ids(connection, studio_id, config) == expected else None
+            ids = reported_place_ids(connection, studio_id, config)
+            reports[studio_id] = ids
 
-            studio_id = poll_registration(_next_reporting, registration_wait, config)
+            return studio_id if ids is not None and (expected is None or ids == expected) else None
 
-            if studio_id is not None:
-                opened = True
+        studio_id = poll_registration(_next_answering, registration_wait, config)
 
-                return Studio(studio_id, lock_receipt, connection)
+        if studio_id is not None:
+            opened = True
 
-            failure = (f"never reported place {expected['place_id']} of universe {expected['universe_id']}: "
-                       f"{registration_failure_cause(config)}")
+            return Studio(studio_id, lock_receipt, connection)
+
+        if not reports:
+            failure = f"never registered with Studio MCP: {registration_failure_cause(config)}"
+        elif expected is None:
+            failure = "never ran code in its Edit data model"
         else:
-            deadline = time.monotonic() + registration_wait.total_seconds()
-            registered = poll_registration(lambda: next((studio for studio in listed_studios(connection, config)
-                                                         if studio["id"] not in known
-                                                         and (editor_name is None
-                                                              or studio.get("name") == editor_name)),
-                                                        None), registration_wait, config)
+            answers = "; ".join(f"{candidate} reported {ids}" for candidate, ids in reports.items())
 
-            if registered is None:
-                failure = f"never registered with Studio MCP: {registration_failure_cause(config)}"
-            else:
-                studio_id = registered["id"]
-                remaining = timedelta(seconds=max(0.0, deadline - time.monotonic()))
-
-                if poll_until(lambda: reported_place_ids(connection, studio_id, config), remaining) is not None:
-                    opened = True
-
-                    return Studio(studio_id, lock_receipt, connection)
-
-                failure = "never ran code in its Edit data model"
+            failure = (f"never reported place {expected['place_id']} of universe {expected['universe_id']}; "
+                       f"the new editors answered: {answers}")
 
         saved_guest_screen(failure_screen, config)
 
