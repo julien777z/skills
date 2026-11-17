@@ -381,6 +381,15 @@ Canonical guidance lives in `.agents/`.
 
 ## Tools and environments
 
+- **Use OrbStack for local containers when it is installed.** Before starting container-backed
+  work for any application on macOS, check whether OrbStack is installed even if the current
+  Docker context points elsewhere. Start OrbStack if it is stopped, then verify that Docker can
+  reach its engine. Use the OrbStack context for Docker and Compose. Pass it through
+  `DOCKER_CONTEXT` when an application launcher invokes those commands, then verify the containers
+  are running in OrbStack. If its engine is unavailable, diagnose startup and context selection
+  without falling back to Docker Desktop. When OrbStack is absent, follow the host's configured
+  container runtime.
+
 - Before combining, reordering or parallelizing verification, read its owning runner and lifecycle
   declarations. Preserve their process, session, environment, dependency and resource isolation,
   including setup and cleanup order; related inputs or one verification checkpoint do not establish
@@ -547,6 +556,28 @@ return records;
   Move reusable definitions and all their consumers to that owner; keep command orchestration in
   the entrypoint. A test may import a command to exercise that command itself, but not to obtain
   unrelated setup or sample data. Classify the module by its role, not merely its directory name.
+
+## Configuration
+
+- **A configuration value is required unless it has a safe default or its owner documents a
+  supported absence.**
+  Configuration is every value a deployment, environment or operator supplies: an environment
+  variable, a settings field, a secret, a key in a config file or deployment manifest, a workflow
+  input. A value the code needs takes a default only when that default is safe, meaning a
+  production deployment running on it gets the full behavior the value exists for; otherwise it has
+  no default, and loading configuration without it fails at startup or deploy, naming the value. A
+  deployment that forgot it then stops, rather than running without what it provides.
+- **None of these makes absence a supported mode**: the value is new; local runs, tests or a
+  development environment have no use for it, or already behave correctly without it; credentials
+  for it are not yet available; a mock value exists. Those setups set the value in their own
+  configuration, such as the example environment file, the test settings or the local stack, with a
+  synthetic value where the real one is a secret.
+- **A supported absence is a contract its owner documents**, such as ambient credentials a platform
+  provides, and the configuration owner declares and enforces it. No consumer checks whether a value
+  is set, and no code path falls back to weaker behavior when one is unset: a webhook check that
+  passes every request when its verification key is missing, or a rate limit that switches off
+  without its store address, is the defect even where the declaration reads as required.
+- The technology rules say how each settings owner declares a required value.
 
 ## Logging
 
@@ -774,13 +805,18 @@ An outcome is what its source of truth shows, never what an action or a worker s
   that outcome remains unmet. Report intermediate results in commentary while an authorized
   remedy remains; a gate must meet **Tools and environments** or **Task execution and authorization**, not merely
   repeat the last failed attempt.
-- When asked for a root cause, track causal diagnosis separately from mitigation, restoration,
-  and regression coverage. Follow the failing operation from its entry point to the component
-  that produced the failure, and verify that the cause explains the observation through direct
-  evidence or a controlled reproduction. If the failure stops reproducing, inspect retained
-  diagnostics and compare the failed and recovered runtimes. Before reporting a hold, exhaust
-  available safe diagnostic and reproduction paths. Name the missing evidence, why it is
-  unavailable, and the specific observation or external action that can resume the investigation.
+- **A cause stated to the user is traced first, whether or not they asked for it**: a root cause,
+  and any explanation the agent offers of why something failed, why a value is what it is, or why
+  a check, test, gate or review let something through. Follow the operation from its entry point
+  to the component that produced the outcome, reading the code or configuration that decides it,
+  such as how a check selects what it checks, and verify that the cause explains the observation
+  through direct evidence or a controlled reproduction. A cause read from a component's name, a
+  remembered list or what seems likely is not stated as the cause. Track causal diagnosis
+  separately from mitigation, restoration, and regression coverage. If the failure stops
+  reproducing, inspect retained diagnostics and compare the failed and recovered runtimes. Before
+  reporting a hold, exhaust available safe diagnostic and reproduction paths. Name the missing
+  evidence, why it is unavailable, and the specific observation or external action that can resume
+  the investigation.
 - **A status sent to the user states what was just read and where**, never what was reported or
   expected: conflicted, failing, running, or passing, on the head or target named. "Done" or
   "ready" is written only when that read says so, and a file sent with it is checked first as the
@@ -815,6 +851,10 @@ An outcome is what its source of truth shows, never what an action or a worker s
 
 - Keep `run` steps declarative. Invoke checked-in scripts for control flow, validation, filesystem changes, or other implementation logic instead of embedding arbitrary shell or program code in workflow YAML; place those scripts under `.github/scripts/` and prefer Python.
 - Do not hard-code runtime versions when a shared action, reusable workflow, or repository version file supplies them; omit `python-version` when shared Python automation provides it, and use `node-version-file: ".nvmrc"` for Node.js workflows.
+- **A required workflow or action input is declared `required: true` with no `default`**, and no
+  step is skipped when it is empty; the global rules' **Configuration** section says which inputs
+  are required. An action's checked-in script also fails, naming the input, when the value is
+  empty, since GitHub does not enforce `required` on an action's inputs.
 - Name repository-owned Boolean action and workflow inputs `use-<capability>`, so the name states
   what the toggle enables. Update declarations, conditions and callers together; do not retain a
   bare capability name or an old alias. Preserve external actions' input contracts.
