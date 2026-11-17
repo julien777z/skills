@@ -12,8 +12,10 @@ doing other work. An edit that skipped this is unverified, and the report says s
 
 **First perform the requested action.** While another task runs, correct the current work before
 recording a guidance correction. Record only a verified success, or a direct guidance request,
-under **Recording During A Task**, which sets when its edit is delivered. A failed, blocked, or
-unavailable action is task evidence only: it does not create a ledger correction or a guidance edit.
+under **Recording During A Task**, which sets when its edit is delivered. A failed, blocked,
+unavailable or unverified action is task evidence only, kept in the task's verification record
+while its recovery or escalation continues: it creates, amends or processes no ledger correction and
+makes no guidance edit.
 With no other task running and no guidance batch in flight, as `session-ledger`'s **Guidance Batches**
 defines it, first perform the requested action and record it only after it succeeds.
 
@@ -90,8 +92,7 @@ Validate skill dependencies and their actual call and policy-read paths under th
   reusable lesson.
 - A direct request to change guidance, such as "use edit-skill to reflect that", is recorded the
   same way. While another task runs, the requested action is the behavior it describes, applied to
-  the current work, and the guidance edit is its record. A request to encode a process the work has not yet
-  carried out waits for that run, as **A process is encoded only once it has worked** says. While a guidance batch is in flight, its
+  the current work, and the guidance edit is its record. While a guidance batch is in flight, its
   delivery is that action and the user's words are its evidence.
 - After verified success, record the correction as a `guidance_correction` entry with
   `session-ledger`: the successful action and its evidence, a reproduction scenario, the intended
@@ -109,9 +110,6 @@ Validate skill dependencies and their actual call and policy-read paths under th
   session's branch. A brief to any worker whose task a pending entry's subject covers carries that
   entry's intended behavior, with the user's words quoted and the installed text it amends named, as
   the global rules require.
-- When the action fails, is blocked, or cannot be verified, keep its evidence in the task's
-  verification record and continue its recovery or escalation. Do not create, amend, or process a
-  `guidance_correction` entry, and do not edit canonical guidance from that outcome.
 - Write the edit in the checkout step 4 resolves, on the branch step 7.1 selects — the batch's own
   branch while a batch is in flight and its pull request has not merged — commit it, and push it to
   that branch's pull request once the **Pre-Push Gate** passes, opening a draft when the branch has
@@ -237,9 +235,11 @@ user's review of the source pull request overlaps it.
      read what the candidate already says about that subject, and put the change where a reader
      doing that work will meet it, at the breadth the shared `agent-guidance.md` rule asks for. Never ask which file; the search
      is this skill's job.
-   - **A violated instruction calls for causal diagnosis and an application repair.** Trace whether
-     the instruction was absent, its trigger or sequence kept it from the decision, a conflicting
-     instruction overrode it, or the agent failed to apply guidance it had. Read exceptions and
+   - **A violated instruction, or any guidance failure the user points out, calls for causal
+     diagnosis and an application repair.** Before editing, trace the actual path from the request
+     to the missed behavior: whether the instruction was absent, its skill loaded, its trigger or
+     sequence kept it from the decision, a conflicting instruction overrode it, or the agent failed
+     to apply guidance it had. Read exceptions and
      stopping clauses with its callers. When the substantive rule is already correct, inspect the
      step that produced the rejected recommendation, triage, brief or action: what instruction and
      review evidence it used, what next action those required, and how its chosen action differed.
@@ -249,9 +249,6 @@ user's review of the source pull request overlaps it.
      Record missing historical evidence without inventing a cause; it does not prevent repairing
      the observed decision path. When the owning skill was not invoked, harden its frontmatter
      description first; body text cannot control a run that never loads the skill.
-   - When the user points out a guidance failure, trace the actual path from the request to the
-     missed behavior before editing: which instruction applied, whether its skill loaded, and why
-     the agent's decision diverged. Correct the current work and any evidenced guidance gap in this run.
    - Test the proposed instruction against that original decision path before proposing or writing it. If a
      reader could follow it and still repeat the miss, explain the mismatch to the user, name the
      instruction that actually caused or allowed the decision, and correct that owning path and
@@ -388,8 +385,10 @@ user's review of the source pull request overlaps it.
 7. **Guidance Delivery** delivers the batch in this order, with `review-pass` carrying steps 3–4. Ordinary
    repairs and verification remain authorized throughout this delivery; resolve flagged gates under `acceptance-gate`'s **Bounds** and failing skill-test runs under
    `test-skill`. A pull request confined to agent configuration has merge authorization under the
-   GitHub rule after its stated gates, unless its **Merge Authorization** holds it; ask neither to repeat that authorization nor to continue
-   an ordinary repair. That merge authority settles no genuine unresolved product, scope, or
+   GitHub rule after its stated gates, a skill's changed scripts' own checks included, unless its
+   **Merge Authorization** holds it; ask neither to repeat that authorization nor to continue an
+   ordinary repair, and never record, report or ask for a permission hold by citing the ordinary
+   merge default. That merge authority settles no genuine unresolved product, scope, or
    authorization choice: put that concrete choice to the user under **Bounds** while independent
    work continues. It does not authorize a release workflow. A changed output's concrete example, under **Upsert behavior**, is task evidence before writing that output; it does not wait for approval.
    1. **Branch and commit.** Select the edit's pull request under the GitHub rule's **Branches and Pull Requests** — never put it onto a
@@ -442,7 +441,8 @@ user's review of the source pull request overlaps it.
       workaround in generic guidance is a finding unless the skill's contract depends on it; the
       incident's route must not narrow the durable decision boundary. The brief carries the
       incident's vocabulary — the product, its record and screen nouns, the labels the request
-      quoted — so an example carrying any of it is a finding, and the real case behind the request.
+      quoted — so an example carrying any of it is a finding; it also carries the real case behind
+      the request.
       Resolve each flag through `acceptance-gate`'s **Bounds**: repair the owning instruction, push the
       changed increment, and put it to the fresh gate those **Bounds** require. Repeated flags do not permit dropping owed work or merging
       flagged guidance, apart from the decision the global rules' review-round limit calls for after
@@ -463,13 +463,6 @@ user's review of the source pull request overlaps it.
       it draft under an ordinary source-work default or report it as delivered before its merged
       text and generated outputs are verified. The report names either the merged state or a
       concrete documented gate with its evidence; draft alone is neither.
-
-      **The agent-configuration merge exception decides the conflict with the ordinary merge
-      default.** When the GitHub rule classifies every changed path as canonical agent
-      configuration, the required gates pass, a skill's changed scripts' own checks included, and no
-      hold the GitHub rule's **Merge Authorization** sets applies, `merge-gate` is the next action in
-      this run. Do not record, report, or ask for a permission hold by citing the ordinary default;
-      that is not a documented gate for this pull request.
 
       **A skill that arrives by relocation is not a skill the change adds.** Moving one between
       repositories, or generalizing local copies into one every repository can adopt, produces a new
