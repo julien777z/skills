@@ -303,24 +303,23 @@ smallest coherent repair using the existing owner or mechanism.
 
 **A repair is checked in process.** The agent that made it re-reads the changed lines against the
 flag's objection and remedy, runs the checks covering that code, and records the result with the
-flag; no fresh gate or worker is started for it. It still counts as one of the flag's repair
-rounds. Only a repair that settles a design, product or security choice of its own, or one the
-in-process check cannot settle, goes to one fresh gate under the Diff question, following
-`subagent-matrix`'s **Dispatch**.
+flag; no fresh gate or worker is started for it. The repair counts toward the flag's own repair
+rounds below, while its in-process check is no review round of the change. Only a repair that
+settles a design, product or security choice of its own, or one the in-process check cannot settle,
+goes to one fresh gate under the Diff question, following `subagent-matrix`'s **Dispatch**.
 
 **Repair rounds are counted per objection and per change.** A change gets at most 3 rounds across
 every kind of check, the first and 2 after repairs, as the global rules' review-round limit counts
 them: once 3 have failed it, whatever each raised, the decision that bullet calls for replaces
 another repair, and an acceptance with recorded findings that decision makes is the one exception to
-the rules below on flagged diffs; an in-process check of a repair is not one of those 3
-rounds. While the change is under that limit, a flag gets at most two repair rounds of its own, and
-one a fresh gate raises for the first time starts at zero. A flag the gate still raises after its
-own second repair, with the change still under the limit, goes to `council` in **Ask** mode with
-the open flag, each remedy tried and its evidence, and the gate's proposed remedy. Its ruling
-decides the remedy, which is applied and checked as any repair is, and the caller's result names
-the flag and the ruling. A flag the council returns as the user's choice goes to
-the user, as a report of those facts with a recommended next step, never as a choice about whether to
-fix it or leave it in place. Every other flag keeps its own repair and gate meanwhile.
+the rules below on flagged diffs. While the change is under that limit, a flag gets at most two
+repair rounds of its own, and one a fresh gate raises for the first time starts at zero. A flag the
+gate still raises after its own second repair, with the change still under the limit, goes to
+`council` in **Ask** mode with the open flag, each remedy tried and its evidence, and the gate's
+proposed remedy. Its ruling decides the remedy, which is applied and checked as any repair is, and
+the caller's result names the flag and the ruling. A flag the council returns as the user's choice
+goes to the user, as a report of those facts with a recommended next step, never as a choice about
+whether to fix it or leave it in place. Every other flag keeps its own repair and gate meanwhile.
 
 Never rerun an unchanged item hoping for acceptance, argue it through the same gate, rename it to
 reset its history, or keep flagged code because the caller can authorize its merge. Carry unresolved
