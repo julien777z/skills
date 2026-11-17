@@ -13,7 +13,7 @@ the hash of each file among them, and a `rejected` flag.
 | --- | --- |
 | Staging | The scene's progress checkpoint, the side step it sets, everything the game's staging places on stage at that progress, and the target's own definition: its point, interaction or encounter |
 | Looks | The character appearance data, the avatar's rig and outfits, and for a scene that shows a creature, the creatures' definitions, their kit and the client code that draws their nameplates |
-| World | The area and room files the scene stands in, and its map's terrain file |
+| World | The area and room files the scene stands in, every art file a marker in them names, and its map's terrain file |
 | Camera | The scene's own spec: its kind, target, approach side, distances and heights |
 
 Each run, after reading the game:
@@ -31,8 +31,9 @@ whatever its fingerprints say.
 
 ## Staging A Scene
 
-Open a throwaway editor on a built copy of the place that holds every map, start Play with a
-disposable profile, and never save. Reuse the repository's own capture helpers for each step below
+Hold one of the game's editors, as `roblox-studio`'s testing reference says for the game's editor
+pool, and open a built copy of the place that holds every map in that editor's slot, in place of its
+warm editor; start Play with a disposable profile, and never save. Reuse the repository's own capture helpers for each step below
 where it has them.
 
 1. **Move the profile to the scene's progress** through the game's own test or admin route, and set

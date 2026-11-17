@@ -14,7 +14,7 @@ Mobile testing is selective, not a required step in every iteration. For a game 
 
 - **UI changes:** test the affected screens and interactions on desktop and mobile, including layout, touch targets, safe areas, scrolling, and modal behavior. A shared UI component change should cover its affected consumers; it does not require replaying the whole game.
 - **Significant changes:** include mobile coverage for an entire new map, a substantial world expansion, major gameplay/input changes, or changes to streaming/rendering/performance that can behave differently on mobile. Choose representative journeys and device checks for the actual impact.
-- **Small shared-world fixes:** grass clipping, a misplaced prop, a sign support, or a local terrain seam normally need the grounding and blocking audit below, desktop visual inspection and relevant walking checks only. Do not repeat the same verification on mobile when the geometry and behavior are shared and there is no device-specific concern.
+- **Small shared-world fixes:** grass clipping, a misplaced prop, a sign support, or a local terrain seam normally need the grounding, blocking and boundary audit below, desktop visual inspection and relevant walking checks only. Do not repeat the same verification on mobile when the geometry and behavior are shared and there is no device-specific concern.
 - **Mobile defects or explicit requests:** reproduce and verify on the affected mobile layout/device regardless of change size.
 
 After the relevant checks pass, continue to delivery. Repeat or broaden testing only when a subsequent change invalidates passing evidence or an observed failure requires investigation; do not restart a blanket desktop/mobile suite at every follow-up.
@@ -142,40 +142,48 @@ When mobile coverage is warranted by the change, use Studio's device simulator t
 A change to the place layout, to how art is placed, or to where anything stands is verified in the
 world's data first and in captures second:
 
-- **A whole-world placement diff decides it.** Read every part's frame, size and look — color,
-  material, transparency, collision flags, and the appearance and text it carries — from the place
-  before the change and the place after it, in Edit with markers placed exactly as the server
-  places them, and match parts across the two. Every difference must be one the change intends; an
-  area or object that differs for any other reason is a defect. Captures alone never establish
-  placement: a pair can look the same while parts moved, and look different while nothing did.
+- **A whole-world placement diff decides it** for a change to the place layout or to how art is
+  placed, and for one that moves more than a few pieces; a fix to a few pieces, such as a misplaced
+  prop, is checked by its save's own file diff and the audit in Play below. Read every part's frame,
+  size and look — color, material, transparency, collision flags, and the appearance and text it
+  carries — from the place before the change and the place after it, in Edit with markers placed
+  exactly as the server places them, and match parts across the two. Every difference must be one
+  the change intends; an area or object that differs for any other reason is a defect. Captures
+  alone never establish placement: a pair can look the same while parts moved, and look different
+  while nothing did.
 - **The diff runs for every published place, each against its own build.** Build that place's own
-  project at the commit just before the change and at the change, each with that commit's world,
-  art and terrain, dump each build in its own runner lease, waiting for a busy runner rather than
+  project at the commit just before the change and at the change, each with that commit's world, art
+  and terrain, dump each build in its own runner lease, waiting for a busy runner rather than
   sharing one, and report each place separately. One combined build, such as a development place
   holding every map, never stands in for them: when it carries a stale copy of a map on both sides,
   the diff shows nothing while the map's own place loses or regains content. Two matching rules keep
   a layout change from reading as moves: a world from before the area files exist is read as one
   unfiled area, and an older copy of an asset that nests its model under a model of the same name
   matches the marker that replaced it.
-- **A grounding and blocking audit in Play decides whether pieces rest and block.** Any change to a
-  world runs it, never a visual pass, after the runtime swap has placed every piece. It checks every
-  placed art piece, water piece, resting single part and pickup, and skips characters and creatures,
-  actors staged to hover, worn items, and pieces that hang, whether marked as hanging or with
-  geometry below their own origin. For each piece it casts down from 2.5 studs above each foot, a
-  plant's feet being its stem bottoms and any other piece's its lowest parts, then from its middle,
-  then a terrain-only cast from high above. Terrain, solid or visible structural parts, a solid
-  resting piece, flat kit meshes at most 1 stud tall and floors count as support; plants, other
-  box-collision kit meshes and invisible colliders do not. A piece floats when its base is more than
-  0.3 studs above its support, a pickup more than 1.2 and a water piece more than 0.25 off the water
-  either way, and is buried when it sinks by more than a set share of its own height. A blocking pass
-  reports every floor-standing piece at least 2 studs tall whose collision reaches less than 70% of
-  its height. Findings group by piece, area and problem, each with its count, the worst gap and three
-  sample positions. Fix them in the builders and rerun until the audit reports none.
-- **A quest-gate audit in Play decides whether quest objects are staged.** It lists every object a
-  quest step references that has no gate, and every one a fresh profile can see. A change to quests
-  or to the objects they use runs it until it reports none, then confirms in Play with a fresh
-  profile and with a profile at each affected step that each object appears when its step becomes
-  active and stays once the quest is done.
+- **A grounding, blocking and boundary audit in Play decides whether pieces rest and block and
+  whether the player stays inside.** Any change to a world runs it, never a visual pass, after the
+  runtime swap has placed every piece. It checks every placed art piece, water piece, resting single
+  part and pickup, and skips characters and creatures, actors staged to hover, worn items, and
+  pieces their builder marks as hanging. For each piece it casts down from 2.5 studs above each
+  foot, a plant's feet being its stem bottoms and any other piece's its lowest parts, then from its
+  middle, then a terrain-only cast from high above. Terrain, solid or visible structural parts, a
+  solid resting piece, flat kit meshes at most 1 stud tall and floors count as support; plants,
+  other box-collision kit meshes and invisible colliders do not. A piece floats when its base is
+  more than 0.3 studs above its support, a pickup more than 1.2 and a water piece more than 0.25 off
+  the water either way, and is buried when it sinks by more than a set share of its own height. A
+  blocking pass reports every floor-standing piece at least 2 studs tall whose collision reaches
+  less than 70% of its height. A boundary pass walks, jumps and swims toward every map edge, drop
+  and stretch of open water from each reachable side and height, and reports every spot where the
+  player gets past. Findings group by piece, area and problem, each with its count, the worst gap
+  and three sample positions. Fix them in the builders and rerun until the audit reports none.
+- **A quest-gate audit in Play decides whether quest objects are staged.** It covers only the
+  objects that exist for a quest, as `roblox-gameplay` defines them: the pieces a step has the
+  player collect, a prop a step asks them to inspect or use, a quest-only character and a step's
+  marker. Scenery and residents a step also references stay visible to everyone and are not listed.
+  It lists every such object the game's shared gating rule gives no gate, and every one a fresh
+  profile can see. A change to quests or to the objects they use runs it until it reports none, then
+  confirms in Play with a fresh profile and with a profile at each affected step that each object
+  appears when its step becomes active and stays once the quest is done.
 - **A view that looks different gets a Play dump** of the parts around it, read on the server and on
   a client, in both places: present, anchored and in place on both sides means the capture, not the
   world, differs.
@@ -349,8 +357,11 @@ same procedure finishes a VM whose game's file records `ROBLOX_STUDIO_QUALIFIED=
 the first step whose check fails; no other Studio work runs in that VM until it does. A file without the
 variable is a VM set up before this procedure and keeps working as it is. The game's VM name below
 is `<game>-vm` for a VM this procedure creates, or the `ROBLOX_STUDIO_VM` its file sets when
-resuming. Each step runs holding the whole VM through `acquire_runner_lock`, taken for that step within one lease,
-and before acting checks again that the step is still needed. Each step ends with its check:
+resuming. Each step runs holding the whole VM, taken for that step within one lease, and before
+acting checks again that the step is still needed. Until step 3 has written `games/<game>.env`,
+the step takes the VM's own key, the game's VM name, directly through `agent-lock`, since
+`acquire_runner_lock` reads the game's file to find its keys and a VM not yet set up has no editors
+to hold; once the file exists, the step takes `acquire_runner_lock`. Each step ends with its check:
 
 1. **Clone** the retained Cirrus Labs base image, or a stopped qualified VM whose lock this session
    holds for the clone together with the game's, both taken in the order `agent-lock` sets for

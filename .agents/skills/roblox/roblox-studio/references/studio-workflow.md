@@ -26,7 +26,7 @@ Fully managed Rojo leaves several choices open; settle them this way:
 
 ### Converting an older pipeline
 
-A pipeline that keeps whole-world archives, splices parts of them in place or exports maps by cutting a world apart is converted, never extended:
+A pipeline that keeps whole-world archives, splices parts of them in place or exports maps by cutting a world apart converts this way:
 
 1. Measure the starting world from a `rojo build` of each place: how reused art is copied, which per-placement changes the copies carry, which role folders hold them, and whether every asset name is a safe file name. Where the same map's content lives in more than one source, such as a combined development place and the map's own place, compare those sources first: a fix saved to only one leaves the other stale, and the conversion reads each map from the source its published place builds from.
 2. Move the runtime first: the shared lookup helper and every consumer of the old role folders, and the server's marker swap wired into world start.
@@ -135,9 +135,11 @@ A save writes a whole file from what the editor holds, so it carries everything 
 the file, not only the edit; on a branch other workers also edit, a stale or wide save silently
 overwrites their work:
 
-- **Start from the current branch head.** Fetch, restore each file the change touches to its
-  committed copy, and open a fresh build of the head; a build of an older checkout carries that
-  checkout's copy of every area into the save.
+- **Start from the current branch head, built apart from the working tree.** Fetch, and open a
+  fresh build of the head's committed files from a separate checkout, such as a worktree at that
+  commit; a build of an older checkout carries that checkout's copy of every area into the save.
+  Before writing a saved file into the working tree, check it has no uncommitted change: this
+  work's own is committed first, and another writer's holds the save until they commit it.
 - **Save only the area files the change touches**, never every area. An edit to one piece saves the
   one area that holds it.
 - **Change only the intended pieces.** Select a piece by an exact identity, such as its name and
@@ -146,9 +148,9 @@ overwrites their work:
   pieces is narrowed to those pieces, so drift elsewhere in its area stays out of the file.
 - **Check the diff before committing.** Every area file the change does not touch is byte-identical
   (`git diff --stat` lists only the touched files), and each touched file differs only by the
-  intended change, read through `rbx-merge`'s diff. A change wider than a few pieces also runs the
-  per-place placement diff the [testing reference](testing.md#placement-and-before-and-after-verification)
-  describes.
+  intended change, read through `rbx-merge`'s diff. The
+  [testing reference](testing.md#placement-and-before-and-after-verification) says when the change
+  also runs the whole-world placement diff.
 
 Wrap these steps in one repository helper that runs a script in an editor and saves named area and
 asset files, so a conversion, a builder rerun and an ordinary edit all save the same way.

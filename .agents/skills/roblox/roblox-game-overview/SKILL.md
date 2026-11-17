@@ -125,9 +125,9 @@ and reuse procedure is the [picture reference](references/pictures.md); read it 
   A later run keeps every picture whose fingerprint is unchanged and recaptures only the changed,
   new and rejected ones; a picture the reader or the agent rejects is marked so in the manifest, and
   is recaptured whatever its fingerprint says.
-- **Stage in the game.** In the game's isolated Studio runner, under its lock, as `roblox-studio`
-  says, in a throwaway editor that is never saved, with the game's own progress route placing each
-  scene's characters and props.
+- **Stage in the game.** In the game's isolated Studio runner, holding one of its editors as
+  `roblox-studio` says, on a built copy of the place that is never saved, with the game's own
+  progress route placing each scene's characters and props.
 - **Frame the subject, not the avatar.** Check each view's framing before capturing it and reframe
   it in the same lease, as the reference says.
 - **Draw what no scene shows** — a rule, a resource curve, a layout — as a clean SVG in the game's
