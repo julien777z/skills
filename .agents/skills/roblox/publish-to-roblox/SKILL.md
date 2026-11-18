@@ -8,8 +8,8 @@ short_description: 'Publish the session’s game build to its Roblox staging exp
 
 Publish the build the session has produced to the project's own Roblox experience, verify what went
 live, and report how to play it. A run authorizes one publish to the experience and places it
-resolves below; it authorizes no change to the experience's audience, settings or monetization, and
-no publish to any other experience.
+resolves below, with the pictures step 6 gives them; it authorizes no other change to the
+experience's audience, settings or monetization, and no publish to any other experience.
 
 ## When to publish
 
@@ -72,6 +72,12 @@ no publish to any other experience.
    lock; a failed publish ends the same way.
 5. **Verify** each place's new version or update time from Roblox, not from the run's or the
    dialog's success, and compare it with the times the workflow run's summary reports.
+6. **Give the experience and every place it publishes their own pictures.** Read each one's icon
+   and thumbnails through Roblox's thumbnail API. One still showing Roblox's default placeholder
+   icon, or with no thumbnails, gets them in this run: a square icon and a set of 16:9 thumbnails
+   captured in Studio from the frozen build at player height, showing the game's real places,
+   characters and play rather than text alone, each read whole before upload. Read them back
+   through the same API afterward.
 
 ## Output
 
@@ -84,6 +90,7 @@ no publish to any other experience.
 
 Route: [<deploy workflow run>](<run URL>) | Studio from the isolated runner
 Created: <each experience or place this run created, as a link, or none>
+Pictures: <each experience or place given an icon or thumbnails, or none>
 Play: [<start place>](<game URL>)
 Not included: <each commit after the frozen head as a link to it, or none>
 ```
