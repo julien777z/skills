@@ -74,18 +74,16 @@ Run after `code-simplify` completes its pass.
    live mutation targets. When a workflow would revoke a credential, send a message, purchase,
    delete or change access, supply a synthetic boundary that records that action and changes only
    disposable state. Verify which implementation and resources each run actually uses before launch.
-   **A reader sees only the variant it tests.** Installed guidance, such as a user-level skill or
-   rule root a harness loads into every subagent, can already carry the open pull request or the
-   original. List what a subagent of the running session loads: when it carries no copy of a skill
-   or rule under test, launch the reader there. Otherwise launch it as a local headless harness
-   process the running session starts and waits on, its user-level skill and rule roots pointed at
-   a scratch root holding no copy of a skill or rule under test, its complete output written to the
-   run's private evidence. Record as isolation evidence the route, the harness command and its root
-   settings, the scratch root's file list with digests, and the harness's record of the guidance it
-   loaded, or the reader's listing where it keeps none, checked against the reading list. When
-   neither route is available, the round is a concrete gate under the global rules' **Tools and
-   environments**, recorded with each route tried, its receipt and the saved next action of
-   launching the reader once one exists; it never passes with a reader that saw another variant.
+   **A reader sees only the variant it tests, and the variant reaches it only as that run's input.**
+   Launch the reader as a local headless harness process the running session starts and waits on,
+   its user-level skill and rule roots set to an empty scratch root, and pass the frozen variant
+   through the harness's per-run options, such as a plugin or skill directory and an appended system
+   prompt, never by copying it into a user-level root or any folder the harness searches by default.
+   A subagent of the running session stands in only when its loaded guidance lists no copy of a
+   skill or rule under test, with the variant in its brief. Record the route, the command, the
+   scratch root's file list with digests, and the harness's record of the guidance it loaded. With
+   neither route, the round is a concrete gate under the global rules' **Tools and environments**;
+   it never passes with a reader that saw another variant.
    Before freezing the reader package, exercise its required fixture interfaces in a disposable
    copy: discovery must expose the identifiers the task needs, operations must be available, and
    state changes and failures must reach the intended records. This checks the fixture contract,
@@ -120,7 +118,9 @@ Run after `code-simplify` completes its pass.
    observation before grading or to match an expected answer. Every cell in **Output** is a verdict
    the grader stated for that criterion and run, copied as it is. A criterion the grader calls
    ambiguous, or leaves without a verdict, gets no cell from anyone else: it goes to step 3's rewrite
-   once that grade is in, and the table reports it only from the rerun's grade.
+   once that grade is in, and the table reports it only from the rerun's grade. Every run that
+   returned a report goes to the grader, including one the coordinator believes was set up wrongly;
+   that diagnosis is recorded beside its grade, and the repaired rerun is graded as well.
 6. **Reach a supported conclusion.** Every edited run must meet every criterion, using a valid
    environment and retained evidence. If the edited run passes and the original misses, report
    demonstrated improvement for that case. If both pass, report that both meet the behavior and no
