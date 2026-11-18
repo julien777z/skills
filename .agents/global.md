@@ -335,16 +335,15 @@ alwaysApply: true
   the route that leaves the user's
   desktop alone and states any interruption, such as a moving cursor, when it happens. Only what
   needs the user's own identity, device, password or physical presence goes to them.
-- **A choice between substantially different versions of a page shows every option rendered.**
+- - **A choice between substantially different versions of a page shows every option rendered.**
   When the options differ in layout, structure or the controls the reader uses — a list or a grid,
-  one column or two, a section moved or removed — the question comes right after a capture of
-  each option as the product would draw it, built as an uncommitted preview where it does not
-  exist yet, at the widths where the options differ, shown as `share-media`'s **Previews for a
-  choice** says. Describing an option, or showing only
-  the current state, leaves the reader guessing at the one they cannot see, so the question waits
-  until every capture is ready. A drawing made of text, such as a sketch in a question tool's
-  preview, is a description, not a capture. A choice between wordings or between small adjustments
-  of one detail is shown as text or a single capture.
+  one column or two, a section moved or removed — the question comes right after a capture of each
+  option as the product would draw it, built as an uncommitted preview where it does not exist yet,
+  at the widths where the options differ, shown as `share-media`'s **Previews for a choice** says.
+  Describing an option, or showing only the current state, leaves the reader guessing at the one
+  they cannot see, so the question waits until every capture is ready. A drawing made of text, such
+  as a sketch in a question tool's preview, is a description, not a capture. A choice between
+  wordings or between small adjustments of one detail is shown as text or a single capture.
 - After a question-tool request actually times out without an answer, or the user replies with a
   message that states no choice in words — a related correction, a complaint about the subject, a
   new request — invoke it again with the same question, choices and supporting content, in the
@@ -376,14 +375,13 @@ alwaysApply: true
   outlive the worktree, such as the task's ledger or a lasting dashboard, stays in the user's state
   directory. Credentials, sign-in sessions and other secret material never go in a worktree.
 
-- **Use OrbStack for local containers when it is installed.** Before starting container-backed
-  work for any application on macOS, check whether OrbStack is installed even if the current
-  Docker context points elsewhere. Start OrbStack if it is stopped, then verify that Docker can
-  reach its engine. Use the OrbStack context for Docker and Compose. Pass it through
-  `DOCKER_CONTEXT` when an application launcher invokes those commands, then verify the containers
-  are running in OrbStack. If its engine is unavailable, diagnose startup and context selection
-  without falling back to Docker Desktop. When OrbStack is absent, follow the host's configured
-  container runtime.
+- - **Use OrbStack for local containers when it is installed.** Before starting container-backed
+  work for any application on macOS, check whether OrbStack is installed even if the current Docker
+  context points elsewhere. Start OrbStack if it is stopped, then verify that Docker can reach its
+  engine. Use the OrbStack context for Docker and Compose. Pass it through `DOCKER_CONTEXT` when an
+  application launcher invokes those commands, then verify the containers are running in OrbStack.
+  If its engine is unavailable, diagnose startup and context selection without falling back to
+  Docker Desktop. When OrbStack is absent, follow the host's configured container runtime.
 
 - Before combining, reordering or parallelizing verification, read its owning runner and lifecycle
   declarations. Preserve their process, session, environment, dependency and resource isolation,
@@ -443,18 +441,20 @@ alwaysApply: true
   terminal. Keep the task active under **Task execution and authorization** while resolving its gate.
 
 - **Local stack resources are disposable, and repairing them is part of the work, never a question for the user.** Local databases and their migration state, Redis, Docker containers, volumes, networks, images and the daemon itself can be repaired, reset, dropped or recreated whenever the task needs them working. A database stuck on a revision a branch has since regenerated, a stale cache, a wedged container: fix it and carry on. The records a local stack holds are the same: create, edit, reset, reopen or convert them whenever the work needs them in a given state — a test account to sign in with, a submission held in review to show a banner, a record a new rule no longer accepts — as the repository's data policy says, report what was done, and never put the choice to the user. The tooling that brings a local stack to a state is the agent's in the same way: a scenario command, the test accounts and records it creates, and what each scenario seeds are added, changed or redesigned as the work needs, never put to the user in a plan, a question or a gate's remedy, and never a product choice, since no user of the product meets them. The same holds for what the session's own work leaves behind when disk, memory or a port runs short: build caches and the leases and snapshots holding them, stopped containers, orphaned processes and build output. The one limit is a resource another run is actively using, such as a test runner holding the stack's lock. Wait for it or use a separate resource; never stop it. A route that limit rules out, such as restarting a daemon a running test still uses, leaves narrower ones, such as removing only the leases, records or processes the session's own work created; recovery is exhausted, and reported as a gate, only once no route remains. **Development data in a non-production deployment is the agent's the same way** when the project's guidance or its release stage marks it disposable: an unreleased product's staging saves, its test profiles and accounts, and the records a staging environment holds for its testers are reset, converted or recreated whenever the work needs them, such as a test save that no longer loads after an item's ID changed, then reported, never put to the user. Production data, and records real users or other people own, stay with the user. Deployed and shared remote environments are otherwise not local; the following live-deployment rules govern them.
-- **An entry named like an original plus a copy suffix, such as `budget 2.csv`, is checked and, once
-  confirmed, deleted, whatever the task**: a file, folder, clone or Git directory entry a file-sync
-  service or the operating system copied is never kept, left as outside the task or put to the user.
-  Confirmed means it matches the original, or a version Git holds, byte for byte; it sits in a Git
-  directory outside `worktrees` and `modules`; it copies a transient file such as a lock; or it is
-  an untracked folder or clone whose commits and stashes its original's repository already holds,
-  and whose staged and working files each match the original's or a version held there, removed as a
-  plain folder, never through Git inside it. A commit only a copy reaches is first kept on a named
-  branch of the original's repository. Unconfirmed, it is an ordinary file, never asked about.
-  Before deleting, check that no process's working directory or open file is inside it and no
-  worktree or session claims it: one in use goes once idle, under the limit above, and any other
-  before any other operation reads, stages, stashes or snapshots it. The report names each deletion.
+- **A copy a file-sync service or the operating system left behind is deleted, never kept, left as
+  outside the task or put to the user.** Its name is an original's plus a copy suffix, such as
+  `budget 2.csv`, `notes (conflicted copy).md` or `index 2` in a Git directory, and its original
+  sits beside it. On meeting one, list every such entry in the repository, with its Git directory
+  and ignored folders included, and delete each that holds nothing of its own:
+  - a file identical to its original or to any version of it Git holds;
+  - any entry inside the Git directory outside `worktrees` and `modules`, after putting a commit
+    only that entry names on a branch;
+  - a folder or clone whose files, commits and stashes its original already has, removed as a plain
+    folder.
+
+  A copy with content of its own stays as an ordinary file, without a question. One that a process,
+  worktree or session is using goes once it is idle. Delete before anything stages, stashes or
+  snapshots the tree, and name each deletion in the report.
 
 - Do not rebuild, republish, or redeploy an already validated artifact solely because its source
   head advanced. Compare the edits with the artifact's actual source: cleanup proven to preserve
