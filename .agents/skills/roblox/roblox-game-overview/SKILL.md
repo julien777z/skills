@@ -24,16 +24,18 @@ source is the authority; a design document is compared with it, never read in it
 - **With an argument**, it names the game, a repository or a branch; read that one. A request
   naming only part of a game, such as one world, still gets the Overview and How to play pages and
   the audit for that part.
-- Read the game from a fresh worktree of the chosen branch, at its fetched head, and leave the game
-  unchanged: nothing this skill does is committed to the game or saved into its places.
+- Leave the game unchanged: nothing this skill does is committed to the game or saved into its
+  places.
 
 ## Run Order
 
 The page reaches the reader before any picture is staged, and every later step updates that same
 page:
 
-1. **Read the game** and write the spec: text, dialogs, diagrams, tables and the audit, all rebuilt
-   from the source on every run, since they are cheap and must match the head read.
+1. **Fetch the chosen branch and read the game** from a fresh worktree at the fetched head, never
+   from a checkout as it stands, which can sit behind the head. Write the spec: text, dialogs,
+   diagrams, tables and the audit, all rebuilt from the source on every run, since they are cheap
+   and must match the head read.
 2. **Render and deliver at once**, with every picture the picture manifest still accepts already in
    place and the rest left out, as **Render And Deliver** says.
 3. **Stage the pictures still owed**, batch by batch, as **Pictures** says, re-rendering into the

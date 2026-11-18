@@ -19,7 +19,8 @@ the hash of each file among them, and a `rejected` flag.
 Each run, after reading the game:
 
 1. Compute every scene's inputs at the head read and compare them with the manifest.
-2. Keep each picture whose fingerprints all match; it goes into the first render.
+2. Keep each picture whose fingerprints all match, and render and deliver the page with them before
+   staging anything, as the skill's **Run Order** says.
 3. Recapture each scene that is new, rejected, or whose inputs changed, naming the changed input and
    file as the reason in the run's report.
 4. Retire the entry of a scene whose subject no longer exists, and drop its picture.
