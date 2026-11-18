@@ -179,8 +179,8 @@ the required reader set. When one required reader launched, wait for its termina
 only the rejected or unattempted required counterpart, never a duplicate of the accepted reader.
 When that retry cannot complete the required set, record its receipts and apply `subagent-matrix`'s
 launch fallback for the missing assignment. Record every failed attempt separately from reader-run evidence,
-including every required reader's receipt; do not score an incomplete required set as a reader
-result. When an unsupported request has a permitted fallback, wait for any accepted counterpart's
+including every required reader's receipt; grade and retain each run that completed, and withhold
+the comparison and the passing verdict until the required set completes. When an unsupported request has a permitted fallback, wait for any accepted counterpart's
 terminal report, record the incomplete attempt, then launch a fresh required set. When no permitted model fallback remains, record the rejection and apply `subagent-matrix`'s launch
 fallback for the missing assignment.
 
@@ -285,8 +285,9 @@ evidence behind every cell, one section per skill:
 ```
 
 The heading reads `## Evidence: <skill name>` when the file covers several skills; the round in a
-reader-run heading and the round bullet appear only on a run that was rerun. An incomplete required
-reader set omits criterion scoring because it produced no valid result.
+reader-run heading and the round bullet appear only on a run that was rerun. A run that completed
+in an incomplete required set is graded under its own run heading; the attempt section records
+only the dispatch.
 Retain the whole-PR recommendation with its per-edit rationale and supporting artifact locators
 in the same evidence file; per-scenario conclusions do not replace that decision.
 
