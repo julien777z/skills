@@ -255,6 +255,16 @@ severity, and a disguised one besides; the global rules' **A rule is met by doin
 requires** bullet says what counts as one. The remedy is the change the rule asks for; a shape that
 only hides the violation is never accepted.
 
+**Required settings reach their execution owners.** On every question that reads a diff, when a
+change alters a required setting or how a process supplies, loads, projects, or consumes one, trace its
+normal startup or deployment input from the supplier through every affected process to the consumer,
+including names, scope, and serialization. Use authoritative launch or deployment configuration and
+rendered inputs when they establish the projection, or existing native startup or artifact verification
+when static evidence cannot. A declaration, build input, bundled value, local configuration, or test
+fixture alone does not establish that another process receives the setting. Flag a missing input and
+supply it on the affected route; where delivery may already be correct but evidence is missing, request
+the evidence. Preserve the required configuration contract without exposing secrets.
+
 **Triage — what should happen to this?** The item is an issue, a finding, or a proposed record, and
 the answer is one of four dispositions, decided by the tests below in order. The first that holds
 ends the question.
@@ -351,14 +361,6 @@ outside a model-owned module, and a typed parameter built as a dict literal inst
 manifests, policies, provider payloads, and response schemas remain models. All five are the greps
 code-simplify opens with; the gate runs them over the diff's added lines and lists their hits before
 anything else.
-
-**Required settings reach their execution owners.** When a change adds, renames, moves, or makes a
-setting required, trace its normal startup or deployment input from the supplier through every
-affected process to the consumer, including names, scope, and serialization. Flag an affected process
-whose input is missing or whose runtime representation has not been verified. A declaration, build
-input, bundled value, local configuration, or test fixture alone does not establish that another
-process receives the setting. The remedy supplies and verifies the setting on each affected route,
-while preserving the required configuration contract.
 
 **A test is priced by what it costs to run.** Flag a test the diff adds or changes, or the module
 holding it, that `test-fixture`'s cost question calls disproportionate, and any change that absorbs
