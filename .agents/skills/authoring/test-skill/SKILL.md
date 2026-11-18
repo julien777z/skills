@@ -36,13 +36,15 @@ confuse those conclusions.
   meaning or reachability changed.
 - **An invocation that names several heads is tested in one coordinated round.** Freeze the exact
   head and guidance package for every named pull request, use one edited reader across their
-  isolated scenarios, and retain results per head. Run an isolated original control when an
-  improvement claim or conflicting instruction needs comparison; a straightforward clarification
-  may omit it only with that justification recorded. The original control stays blind to the edited
+  isolated scenarios, and retain results per head. Run an isolated original control in a
+  scenario's first round, and in a later round only where the edited run missed and the retained
+  control cannot carry forward; a straightforward clarification may omit it only with that
+  justification recorded. The original control stays blind to the edited
   diff, criteria, and reports. The round runs when, and on the head the caller supplies.
   Add readers only for a distinct named risk.
 - **A retained result carries to a new head only when every file its scenario depends on and its
-  execution environment are unchanged there**: each guidance file on its reading list, its fixture
+  execution environment are unchanged there**: each guidance file on its reading list, or, for a
+  file every reader loads whole, such as the global rules, the sections its criteria cite, its fixture
   and its criteria, checked against the frozen record by content digest, and the model and
   reasoning-effort identifiers, the harness and the guidance it loaded, and the tools and fixture
   interface the scenario uses: the run's recorded values, each compared with the one a rerun would
@@ -57,10 +59,13 @@ confuse those conclusions.
 Run after `code-simplify` completes its pass.
 
 1. **Have someone other than the edit's author define the behavior.** Record the observed miss, the
-   outcome the user requires and the real case the miss came from. A fresh scenario writer launched
-   through `subagent-matrix` receives those, the failure class and the diff, and writes the smallest
-   set of scenarios sufficient to cover the changed behavior and its affected dependencies, one if
-   it suffices, each mapped to the changed boundary with its observable pass criteria. A failure that came from real work is tested on a fixture built from
+   outcome the user requires and the real case the miss came from. One fresh scenario writer,
+   launched through `subagent-matrix` for the round's whole batch of corrections, receives those,
+   each failure class and the diff, and writes in one pass the smallest set of scenarios sufficient
+   to cover the changed behavior and its affected dependencies: one per failure class, corrections
+   that fail the same way sharing it, and a reworded or moved instruction covered by its class's
+   scenario rather than one of its own, each mapped to the changed boundary with its observable
+   pass criteria. A failure that came from real work is tested on a fixture built from
    that real case; a reproduction scenario the caller supplies is the writer's input, never a
    scenario itself. Include relevant conflicting guidance in the edited reading list and, when a
    control is required, in its matching reading list.
@@ -111,9 +116,10 @@ Run after `code-simplify` completes its pass.
    arrange the test.
 5. **Retain results unaltered and have an independent grader judge them.** Apply
    `subagent-matrix`'s **Dispatch** result-handoff checks to each report and dispatch receipt, and
-   retain the report, its action record and the authoritative resulting state as they are. A fresh
-   grader, launched through `subagent-matrix` and never the edit's author or a reader, judges every
-   criterion from the frozen criteria and those records, citing an artifact location or an exact
+   retain the report, its action record and the authoritative resulting state as they are. One
+   fresh grader per batch of up to eight scenarios, launched through `subagent-matrix` and never the
+   edit's author, a writer or a reader, judges every criterion of its batch from copies of the runs
+   labeled at random, the frozen criteria and those records, citing an artifact location or an exact
    finding and its supporting source. Nobody rewrites, summarizes or corrects a reader's
    observation before grading or to match an expected answer. Every cell in **Output** is a verdict
    the grader stated for that criterion and run, copied as it is. A criterion the grader calls
@@ -211,7 +217,7 @@ Miss: <one sentence>
 
 A reads the edited text. B reads the original only when the recorded comparison requires a control.
 
-Comparison: improvement demonstrated | both meet the behavior; no improvement demonstrated | conformance only; control omitted: <recorded clarification justification>
+Comparison: improvement demonstrated | both meet the behavior; no improvement demonstrated | conformance only; control not run: <reason under When It Runs>
 
 Disposition: retain | reshape | remove | separate independent changes — <value judgment and evidence>
 
@@ -287,8 +293,7 @@ in the same evidence file; per-scenario conclusions do not replace that decision
 ## Guardrails
 
 - Readers never see the expected answer, the criteria, or one another's reports.
-- Follow the shared capability selection. Omit a control only under the recorded clarification
-  justification above.
+- Follow the shared capability selection. Run or omit a control only as **When It Runs** says.
 - Never edit any file under test between launching its required readers and grading them.
 - Keep the scenario and raw evidence while the branch is open; reuse valid inputs in later rounds.
 - Never merge with a failing run or stand with a miss: diagnose it, change what caused it, and
