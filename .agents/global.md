@@ -335,7 +335,7 @@ alwaysApply: true
   the route that leaves the user's
   desktop alone and states any interruption, such as a moving cursor, when it happens. Only what
   needs the user's own identity, device, password or physical presence goes to them.
-- - **A choice between substantially different versions of a page shows every option rendered.**
+- **A choice between substantially different versions of a page shows every option rendered.**
   When the options differ in layout, structure or the controls the reader uses — a list or a grid,
   one column or two, a section moved or removed — the question comes right after a capture of each
   option as the product would draw it, built as an uncommitted preview where it does not exist yet,
@@ -375,7 +375,7 @@ alwaysApply: true
   outlive the worktree, such as the task's ledger or a lasting dashboard, stays in the user's state
   directory. Credentials, sign-in sessions and other secret material never go in a worktree.
 
-- - **Use OrbStack for local containers when it is installed.** Before starting container-backed
+- **Use OrbStack for local containers when it is installed.** Before starting container-backed
   work for any application on macOS, check whether OrbStack is installed even if the current Docker
   context points elsewhere. Start OrbStack if it is stopped, then verify that Docker can reach its
   engine. Use the OrbStack context for Docker and Compose. Pass it through `DOCKER_CONTEXT` when an
