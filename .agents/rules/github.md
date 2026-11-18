@@ -279,9 +279,10 @@ alwaysApply: true
 
 - Use conventional commit messages when applicable and keep commits atomic and focused.
 - Commit each small coherent step and push it promptly once the pre-push checks **Pre-Push Gate** defines pass, sub-agents included; work only one machine holds is lost with it.
-- Commit no generated file, bytecode cache, build output or tool state a run left behind unless the
-  repository explicitly requires it: stage the change's files by path, never the whole tree, and
-  read the staged list before committing.
+- Commit only the files the change wrote. Stage each by its own file path — never `git add -A`, `git
+  add .`, `git commit -a` or a directory — then run `git diff --cached --name-only` before
+  committing, and unstage every file it lists that the change did not write, such as a bytecode
+  cache, build output or tool state a run left behind, unless the repository explicitly requires it.
 
 ## Dependency Installation
 
