@@ -141,7 +141,7 @@ and reuse procedure is the [picture reference](references/pictures.md); read it 
   palette.
 - **Size**: compress each capture to a JPEG about 900 px wide and 60 to 90 KB, and keep the rendered
   page well under `use-dashboard`'s size limit.
-- When the captures run long, hand them to a worker under `subagent-matrix` with the scene file, the
+- When the captures run long, hand them to a worker under `subagent-matrix` with the owed scenes, the
   manifest, the runner lock procedure and the output folder; the page is delivered meanwhile.
 
 ## Render And Deliver
