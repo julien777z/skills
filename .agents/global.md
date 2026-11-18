@@ -448,8 +448,8 @@ alwaysApply: true
   name is an original's plus the service's copy suffix, such as `budget 2.csv`, and a check beyond
   the name confirms it: it matches the original, or a version Git holds, byte for byte; it sits in a
   Git directory outside `worktrees` and `modules`; it copies a transient file such as a lock; or it
-  is an untracked folder or clone whose commits and stashes its original's repository holds, and
-  whose staged and working files each match the original's or a version held there, removed as a
+  is an untracked folder or clone whose commits and stashes its original's repository already holds,
+  and whose staged and working files each match the original's or a version held there, removed as a
   plain folder, never through Git inside it. A commit only a copy reaches is first kept on a named
   branch of the original's repository. Unconfirmed, it is an ordinary file, never asked about.
   Before deleting, check that no process's working directory or open file is inside it and no
