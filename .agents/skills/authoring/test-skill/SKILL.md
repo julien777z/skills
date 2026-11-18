@@ -45,7 +45,8 @@ confuse those conclusions.
   execution environment are unchanged there**: each guidance file on its reading list, its fixture
   and its criteria, checked against the frozen record by content digest, and the model and
   reasoning-effort identifiers, the harness and the guidance it loaded, and the tools and fixture
-  interface the scenario uses, checked against the run's recorded evidence. Any difference reruns
+  interface the scenario uses: the run's recorded values, each compared with the one a rerun would
+  resolve now, never with what the host still offers. Any difference reruns
   that scenario, never a judgment that the change does not touch what it tests; a scenario
   unchanged in both is not rerun.
 - A new skill has no original to run against. Its control runs carry no skill text at all, which
@@ -116,8 +117,10 @@ Run after `code-simplify` completes its pass.
    grader, launched through `subagent-matrix` and never the edit's author or a reader, judges every
    criterion from the frozen criteria and those records, citing an artifact location or an exact
    finding and its supporting source. Nobody rewrites, summarizes or corrects a reader's
-   observation before grading or to match an expected answer. Construct the tables in **Output**
-   from the grader's verdicts.
+   observation before grading or to match an expected answer. Every cell in **Output** is a verdict
+   the grader stated for that criterion and run, copied as it is. A criterion the grader calls
+   ambiguous, or leaves without a verdict, gets no cell from anyone else: it goes to step 3's rewrite
+   once that grade is in, and its scenario reruns and is graded before the table reports it.
 6. **Reach a supported conclusion.** Every edited run must meet every criterion, using a valid
    environment and retained evidence. If the edited run passes and the original misses, report
    demonstrated improvement for that case. If both pass, report that both meet the behavior and no
@@ -230,7 +233,8 @@ Verdict: passes (round <n>) | not run: <nonbehavioral change under When It Runs>
   original only when required, or no skill text for a new skill. Each row shows its latest run.
 - **`Result` follows `Run`** and reads `pass` only when every criterion in that row passed; each
   further column is one criterion, headed with a short name for the behavior it checks, never
-  `Run`, `Result`, a run label, or a phrase built on them. Every cell carries `pass` or `miss`.
+  `Run`, `Result`, a run label, or a phrase built on them. Every cell carries the grader's `pass`
+  or `miss`, as step 5 says.
 - **At most five columns**, so at most three criteria per table. More criteria continue in a
   further table under the same scenario title, with the same rows and legend line.
 
