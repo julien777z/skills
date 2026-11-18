@@ -59,8 +59,10 @@ no publish to any other experience.
 3. **Publish through the project's deploy workflow** when it has one, triggered for the frozen head
    and the chosen environment as the Open Cloud route in `roblox-studio`'s source, editor, and
    publication reference describes. Follow the run to its end and confirm it ran on the frozen
-   head. A project with no such workflow gets one set up as that reference says, so later publishes
-   leave Studio out; until it is on the default branch, publish this run from Studio as step 4 says.
+   head. A project with no such workflow gets one set up as that reference says, in the two pull
+   requests the GitHub rules' **Workflows** section sets for a new workflow with a manual dispatch,
+   so later publishes leave Studio out; until it is on the default branch, publish this run from
+   Studio as step 4 says.
 4. **Publish from the isolated runner** only where no deploy workflow exists yet, as `roblox-studio`
    sets up, holding its runner lock: open each built place in the runner's signed-in Studio and
    publish it over its place in the chosen universe, maps before the start place. Read the place
