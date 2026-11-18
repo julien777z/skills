@@ -449,8 +449,8 @@ alwaysApply: true
   the name confirms it: it matches the original, or a version Git holds, byte for byte; it sits in a
   Git directory outside `worktrees` and `modules`, any commit it names that no ref reaches first
   kept on a named branch; it copies a transient file such as a lock; or it is an untracked folder or
-  clone whose commits and stashes the repository it or its `.git` file names already holds, and
-  whose other files each match a version that repository holds, removed as a plain folder, never
+  clone whose commits and stashes its original's repository already holds, and whose other files
+  each match the original's or a version that repository holds, removed as a plain folder, never
   through Git run inside it. Unconfirmed, it is an ordinary file, never asked about. Before
   deleting, check that no process's working directory or open file is inside it and no worktree or
   session claims it: one in use goes once idle, under the limit above, and any other before any
