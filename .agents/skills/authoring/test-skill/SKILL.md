@@ -105,10 +105,17 @@ Run after `code-simplify` completes its pass.
    each scenario in private task evidence storage through `session-ledger` before dispatch. Criteria measure actions, resulting state or
    substantiated findings, not recitation of new wording, and name each step the workflow under
    test requires: a run that compressed, merged or skipped one misses it however right its end
-   result looks. Criteria are never amended once a result is seen; a criterion found ambiguous is
-   rewritten by a fresh scenario writer given step 1's inputs and the ambiguous criterion, never a
-   reader's report or a grade, and every scenario it governs reruns fresh, its earlier results kept
-   for the record and never rescored. Use the branch copy and, when required,
+   result looks. **The frozen scenario and criteria text is the writer's output as it stands**,
+   with at most a line naming the file, scenario or digest: the coordinator never shortens,
+   restates, completes, reorders, drops or adds a scenario line or criterion, however unworkable
+   one looks. Criteria are never amended once a result is seen; a criterion found ambiguous or
+   unworkable, by anyone and whenever, is rewritten by one fresh scenario writer launched for every
+   criterion awaiting a rewrite at that point, given step 1's inputs and those criteria, never a
+   reader's report or a grade. A grader's ambiguity verdict starts that rewrite even when an earlier
+   one ran, and a replacement still unworkable goes back the same way with what is wrong, within
+   step 7's round limit; until a valid one arrives the criterion stays frozen as written. Every
+   scenario a replacement governs reruns fresh, its earlier results kept for the record and never
+   rescored. Use the branch copy and, when required,
    the original from the freshly fetched default branch. Record their revisions or content digests. Give every
    required control an equivalent independent environment so neither run inherits the other's
    mutations or reports.
