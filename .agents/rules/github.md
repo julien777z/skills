@@ -278,7 +278,10 @@ alwaysApply: true
 
 - Use conventional commit messages when applicable and keep commits atomic and focused.
 - Commit each small coherent step and push it promptly once the pre-push checks **Pre-Push Gate** defines pass, sub-agents included; work only one machine holds is lost with it.
-- Do not commit generated files unless the repository explicitly requires them.
+- Do not commit generated files unless the repository explicitly requires them. Stage the change's
+  files by path, never the whole tree, and read the staged list before committing: a bytecode cache,
+  build output or tool state a run left behind is never staged, and where the repository does not
+  ignore it, it goes in the local exclude file rather than a committed ignore entry.
 
 ## Dependency Installation
 

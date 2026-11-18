@@ -25,7 +25,9 @@ skill never readies, merges or deploys.
 ## Invocation
 
 - The invocation names the target and supplies the intent statement: what the change is for and what
-  is out of scope.
+  is out of scope. The intent bounds new behavior and cleanup, never a bug: one the pass finds
+  outside the diff or the intent is fixed in the change, as **Answer each finding** says for one
+  outside the change, and never left to the user because the intent does not name it.
 - The invocation authorizes the declared dependencies over that target, pushing fixes to its
   working pull request, refreshing its title and description, resolving its review threads and
   posting the replies **Review Threads** allows, and, on the merged-range route only, creating the
@@ -65,10 +67,10 @@ skill never readies, merges or deploys.
   refresh and review threads do not apply, and fixes are committed in the task's own checkout
   without pushing.
 - **A repository the owner does not own**, as the global rules' **Repository guidance** defines it:
-  the pass fixes the request's own issues and the defects it finds. **Local Passes** do not run, the
-  reviewer brief's rules are that repository's own guidance, the final acceptance brief names the
-  repository as someone else's, and a finding that rests only on a shared standard is declined with
-  that reason. Cleanup outside the change is neither fixed nor recorded.
+  the pass fixes the request's own issues and the defects it finds, wherever they sit. **Local
+  Passes** do not run, the reviewer brief's rules are that repository's own guidance, the final
+  acceptance brief names the repository as someone else's, and a finding that rests only on a
+  shared standard is declined with that reason. Cleanup outside the change is neither fixed nor recorded.
 
 ## Range
 
