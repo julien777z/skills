@@ -84,9 +84,11 @@ Run after `code-simplify` completes its pass.
    disposable state. Verify which implementation and resources each run actually uses before launch.
    **A reader sees only the variant it tests, and the variant reaches it only as that run's input.**
    Launch the reader as a local headless harness process the running session starts and waits on,
-   its user-level skill and rule roots set to an empty scratch root, and pass the frozen variant
-   through the harness's per-run options, such as a plugin or skill directory and an appended system
-   prompt, never by copying it into a user-level root or any folder the harness searches by default.
+   every user-level skill and rule root it is given set to an empty scratch root, and pass the
+   frozen variant through an option that adds a source for that one run, such as a plugin
+   directory, an appended system prompt or an input file the run reads. An option that sets where
+   the harness reads user-level skills or rules is a user-level root whatever folder it names, so
+   the variant never goes in one, in a folder one points at, or in any folder searched by default.
    A subagent of the running session stands in only when its loaded guidance lists no copy of a
    skill or rule under test, with the variant in its brief. Record the route, the command, the
    scratch root's file list with digests, and the harness's record of the guidance it loaded. With
