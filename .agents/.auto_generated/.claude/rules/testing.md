@@ -311,6 +311,16 @@ overlapping tests, and CI routing; inspect dependency source or types for depend
 
 - Before planning browser walkthroughs or rendered UI inspections, read `run-site`'s **Principles**
   and select its environment applicability. Required automated tests and builds still run.
+- **Tests leave the user's desktop undisturbed.** Before selecting or launching a test that uses
+  windows or apps, choose an isolated desktop, a headless runtime, or hidden test-owned windows.
+  Suppress focus changes, app activation, taskbar or dock appearances, notifications, and sound;
+  apply the same policy to child windows and anything the test launches. A hidden first window
+  alone does not establish isolation. Verify the runtime's window and activation policy before
+  launch, and observe that it stays hidden while it runs. Never minimize, hide, or rearrange the
+  user's own windows to make room. General approval to implement or test a change does not approve
+  interrupting the desktop. When the behavior cannot be tested silently, prepare the test first,
+  explain the specific interruption and ask for explicit permission before that part runs. Continue
+  independent checks through nondisruptive routes and report what still lacks verification.
 - A cloud workspace snapshot restores files, not running processes. A failing `docker info` at session start means the daemon may need to be started; it does not by itself prove Docker is unavailable.
 - Prefer the repository's service-startup helper or skill. Otherwise start the daemon explicitly and wait for `docker info` to succeed:
 
