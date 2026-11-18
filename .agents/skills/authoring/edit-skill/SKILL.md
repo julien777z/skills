@@ -118,8 +118,8 @@ Validate skill dependencies and their actual call and policy-read paths under th
   edit from a separate worktree on the selected branch, leave the task's tree untouched, and stage
   only the guidance files. Record the branch, the `commits` list and the pull request in the entry's
   `data`, bring that pull request's description up to date at the milestone, then run `update-skills` at once for eligible edits under its **What Takes Effect**, so the installed
-  copy every agent loads, subagents included, carries them. A running agent keeps the text it
-  already read: message each one following a changed skill with what changed and where. Nothing else of delivery runs while the task does: no
+  copy every agent loads, subagents included, carries them; agents still running hold no refresh, since each skill is
+  read through its link when it is used. Nothing else of delivery runs while the task does: no
   review, gate, skill-test round, merge or worker, except the checks a batch in flight reruns for an edit
   that joined it, as `session-ledger`'s **Guidance Batches** says. A standing instruction about how guidance
   pull requests are reviewed or merged governs that delivery when it runs, never when. A gate result
