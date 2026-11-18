@@ -34,8 +34,9 @@ skill never readies, merges or deploys.
   posting the replies **Review Threads** allows, and, on the merged-range route only, creating the
   fix pull request **Targets** describes. It authorizes no merge, readying a draft, release,
   deployment or unrelated provider mutation.
-- The one gate this skill holds is an unresolved `acceptance-gate` flag or a finding that waits on
-  the user's decision. Every later gate is the caller's.
+- The gates this skill holds are open recorded work due before review, an unresolved
+  `acceptance-gate` flag and a finding that waits on the user's decision. Every later gate is the
+  caller's.
 
 ## Modes
 
@@ -137,8 +138,9 @@ validation exclusion is recorded with its evidence and not repaired, rerun or wa
 1. Resolve the target and its delta. Before the first round, read the task's ledger through
    `session-ledger` for each decision and answered question whose work is open, and each plan step
    that builds or changes something, whose work goes on this pull request under the GitHub rule's
-   **Branches and Pull Requests**. While any is open, review nothing: return that work to the caller
-   as required work. With a working pull request, run **Description Refresh** and **Review Threads**.
+   **Branches and Pull Requests** and is due before review; work its plan orders after this review,
+   such as a repoint that waits on a dependency's merge, is not. While any is open, review nothing
+   and return the **Output**'s required-work shape. With a working pull request, run **Description Refresh** and **Review Threads**.
 2. Run **Base**, then **Checks**.
 3. When the delta crosses a trust boundary `security-audit` names, run its **Diff Review** at
    `medium` over the delta, with the merge-base diff as context, and fix what it confirms.
@@ -257,4 +259,13 @@ changed. Make the smallest changes that answer real findings, and push back on t
 - **Acceptance:** <accept | flag and what it named>
 - **Deferred:** <record link: what it covers, or none>
 - **Holds:** <the gate that holds, or none>
+```
+
+When open recorded work holds the pass before any review, it returns this instead, claiming no
+accepted head and recording no review:
+
+```markdown
+**Review pass:** not started · open recorded work on <target>
+
+- **Required work:** <one line per ledger entry: its id, the work, its next action>
 ```
