@@ -64,9 +64,10 @@ Apply `session-ledger`'s **Guidance Batches** boundary.
      once the pull request is merged or closed.
    - An unrecognized kind: preserve it only when evidence identifies a concrete owning workflow or
      next action; otherwise remove it as invalid.
-3. A failed, blocked, unavailable, or unverified requested action — which a direct guidance request
-   never is, since its delivery is its action — is not a `guidance_correction` to process. Keep its evidence in the task's verification record, continue recovery or escalate
-   the live task as needed, and do not create, amend, or deliver permanent guidance from it.
+3. A process that failed, was blocked or was never verified on the work is not a
+   `guidance_correction` to process: keep its evidence in the task's verification record, continue
+   recovery or escalate the live task as needed, and encode nothing from it. A correction that
+   encodes no process is processed whatever happened to the current work's repair.
 4. Judge terminality against each record's complete owning outcome, including its required delivery
    and verification. Remove it only when that outcome is verified complete or evidence proves the
    record invalid. Current-work success alone does not complete a pending guidance delivery; retain

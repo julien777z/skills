@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Before proposing or editing guidance, derive the observable failure and test the proposed scope against alternative implementations of it. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. First carry out the requested action; only a verified success, or a direct guidance request in the user's words, is recorded in the session ledger and delivered as a guidance edit. While another task is active, every correction, a direct request to edit guidance included, is pushed to a draft guidance pull request and recorded, with a generic backup comment there, and the rest of its delivery runs in bulk when that task completes; one arriving while a guidance batch is in flight joins that batch's pull request, which reruns only the checks the new edit invalidates. Deliver every behavior-changing guidance edit through `review-pass`, the acceptance gate, and `test-skill` before its pull request merges.
+description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Before proposing or editing guidance, derive the observable failure and test the proposed scope against alternative implementations of it. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. A correction that encodes a new process waits until that process has worked on the work in hand; every other correction is recorded and written at once, whatever happens to the current work's repair. While another task is active, every correction, a direct request to edit guidance included, is pushed to a draft guidance pull request and recorded, with a generic backup comment there, and the rest of its delivery runs in bulk when that task completes; one arriving while a guidance batch is in flight joins that batch's pull request, which reruns only the checks the new edit invalidates. Deliver every behavior-changing guidance edit through `review-pass`, the acceptance gate, and `test-skill` before its pull request merges.
 short_description: 'Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.'
 ---
 
@@ -10,14 +10,13 @@ Upsert `.agents` source-of-truth files for agents, skills, or rules based on use
 every edit through the same delivery whether the user invoked this skill or the edit arose while
 doing other work. An edit that skipped this is unverified, and the report says so.
 
-**First perform the requested action.** While another task runs, correct the current work before
-recording a guidance correction. Record only a verified success, or a direct guidance request,
-under **Recording During A Task**, which sets when its edit is delivered. A failed, blocked,
-unavailable or unverified action is task evidence only, kept in the task's verification record
-while its recovery or escalation continues: it creates, amends or processes no ledger correction and
-makes no guidance edit.
-With no other task running and no guidance batch in flight, as `session-ledger`'s **Guidance Batches**
-defines it, first perform the requested action and record it only after it succeeds.
+**Only a new process waits for its run.** A correction that encodes a process the work has not yet
+carried out waits until it has worked, as the next paragraph says. Every other correction — a gap a
+guidance failure exposed, a rule the user states — depends on nothing the current work does: record
+it and write its edit at once under **Recording During A Task**, which sets when it is delivered,
+while the current work is corrected beside it. A problem the current work meets while it is being
+corrected is that work's own issue, never a reason to hold or drop a correction that does not depend
+on it.
 
 **A process is encoded only once it has worked.** A request to put a new process into guidance — a
 workflow, a procedure, a tool or route, a way of building or delivering something — is first carried
@@ -39,15 +38,16 @@ the same gap, and the session that hit it is the only one holding the evidence.
 
 The tell is a sentence you are about to write to the user about your own process — that you skipped
 a step, that a check did not apply, that you should have done something earlier. Diagnose the route
-before the sentence; when it exposes a guidance gap, first perform and verify the requested action.
+before the sentence; when it exposes a guidance gap, record and write the correction while the work
+is corrected.
 
 **The user pointing out how you work is the same trigger.** "Why did you do it that way", "you
 should have done X", "don't do Y again": each calls for correcting the thing in front of you and
-checking whether guidance allowed the miss. When the correction succeeds, record the owning file
-for permanent guidance so the next session does not repeat it.
+checking whether guidance allowed the miss. Record the owning file's correction at once, beside
+correcting the work, so the next session does not repeat it.
 
-Correct the current behavior and trace its guidance path in the same turn. When a successful
-correction exposes a gap during another task, record it as **Recording During A Task** says;
+Correct the current behavior and trace its guidance path in the same turn. When the trace exposes a
+gap during another task, record it as **Recording During A Task** says;
 **Guidance Delivery** carries it into canonical guidance. Neither the issue nor its verification
 disappears when the surrounding task resumes.
 
@@ -87,15 +87,15 @@ Honor the selected workflow's verification sequence and any delivery or installa
 recording or delivering a batch.
 Validate skill dependencies and their actual call and policy-read paths under the shared agent-guidance rule’s **Dependencies** and **Validation** sections.
 
-- Carry out the user's requested action in the current work first and verify that it achieved the
-  requested result. Do not make a ledger entry merely because the user proposed a method or a
-  reusable lesson.
+- A correction that encodes a new process waits for that process's verified run, as **A process is
+  encoded only once it has worked** says; a method or lesson the work has not yet tried is not a
+  correction until then. Every other correction is recorded as soon as its gap is diagnosed.
 - A direct request to change guidance, such as "use edit-skill to reflect that", is recorded the
   same way. While another task runs, the requested action is the behavior it describes, applied to
   the current work, and the guidance edit is its record. While a guidance batch is in flight, its
   delivery is that action and the user's words are its evidence.
-- After verified success, record the correction as a `guidance_correction` entry with
-  `session-ledger`: the successful action and its evidence, a reproduction scenario, the intended
+- Record the correction as a `guidance_correction` entry with `session-ledger`: the evidence of the
+  gap, and for a process its verified run, a reproduction scenario, the intended
   behavior, the canonical files it will change, and `pending` as its `status`. Steps 1–4
   of **Behavior** run now, while the evidence is fresh, and their result goes into the entry; the
   edit itself (steps 5, 6 and 7.1) is written as the bullet on writing the edit below says, and step
