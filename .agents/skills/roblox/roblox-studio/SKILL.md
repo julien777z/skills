@@ -1,6 +1,6 @@
 ---
 name: roblox-studio
-description: Apply when Roblox work requires editor operations, source/place synchronization, imports, playtests, or authorized place delivery, and when planning or changing how a game's code, art, levels or places are stored, built, edited, tested or published, a plan to convert an older pipeline included. Coordinate implementation, artwork, testing, and relevant technical guidance for the verified place.
+description: Apply when Roblox work requires editor operations, source/place synchronization, imports, playtests, or authorized place delivery, and when planning or changing how a Roblox game's code, art, levels or places are stored, built, edited, tested or published, a plan to convert an older pipeline included. Coordinate implementation, artwork, testing, and relevant technical guidance for the verified place.
 short_description: 'Create, polish, and playtest Roblox games in Studio.'
 ---
 
@@ -40,7 +40,7 @@ any guidance already active for the task.
 - Code, art and levels are files in the repository, and every place is built from them with `rojo build`.
 - Art and levels are binary `.rbxm`, one file per asset and one per area, so a change touches only its own file; terrain keeps a file of its own.
 - A level places reused art as markers the game swaps for the asset at world start, never as copies, as `roblox-worldbuilding` describes.
-- An asset or area is edited in Studio, through Studio's [MCP server](https://create.roblox.com/docs/ai/accelerated-workflows) for an agent, in a build of the freshly fetched branch head, saved back to its file as [saving files through MCP](references/studio-workflow.md#saving-files-through-mcp) says before any save, and the place rebuilt.
+- An asset or area is edited in Studio, through Studio's [MCP server](https://create.roblox.com/docs/ai/accelerated-workflows) for an agent, in a build of the freshly fetched branch head, saved back to its file as [saving files through MCP](references/studio-workflow.md#saving-files-through-mcp) says, read before any save, and the place rebuilt.
 - `rbx-merge` diffs and merges the `.rbxm` files, installed in every clone.
 
 Read the [source, editor, and publication reference](references/studio-workflow.md) for the layout's areas, file locations, area assignment, saving files over MCP and converting an older pipeline, and before importing or exporting, running Studio automation, or publishing. Read [source and place delivery](references/source-delivery.md) when validating built places or updating an asset.

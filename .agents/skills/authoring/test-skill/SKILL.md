@@ -120,7 +120,7 @@ Run after `code-simplify` completes its pass.
    observation before grading or to match an expected answer. Every cell in **Output** is a verdict
    the grader stated for that criterion and run, copied as it is. A criterion the grader calls
    ambiguous, or leaves without a verdict, gets no cell from anyone else: it goes to step 3's rewrite
-   once that grade is in, and its scenario reruns and is graded before the table reports it.
+   once that grade is in, and the table reports it only from the rerun's grade.
 6. **Reach a supported conclusion.** Every edited run must meet every criterion, using a valid
    environment and retained evidence. If the edited run passes and the original misses, report
    demonstrated improvement for that case. If both pass, report that both meet the behavior and no

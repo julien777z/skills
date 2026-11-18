@@ -183,7 +183,7 @@ context and returns its verdict into the step waiting on it; nothing else does b
   not wait for a slot; it takes one in this order: a running worker it unblocks pushes its work and
   is paused, the unblocking work is launched in the freed slot, so the count never passes five, and
   the paused worker resumes once that work lands. Its brief has it take the shared resource with
-  priority, through the lock's own priority option.
+  priority, through its lock's priority option where the resource has one.
 - **Assign one implementation owner per coherent scope, and a fresh worker for each delegated
   task.** The primary agent retains integration, dependencies, product decisions and orchestration.
   Delegate work that produces an independent result, not a wrapper that only invokes another
