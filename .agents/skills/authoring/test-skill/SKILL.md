@@ -37,9 +37,9 @@ confuse those conclusions.
 - **An invocation that names several heads is tested in one coordinated round.** Freeze the exact
   head and guidance package for every named pull request, and retain results per head. The round
   runs when, and on the head the caller supplies.
-- **Each scenario gets its own reader for each variant it runs**, so its context holds one task
-  and its session starts in that scenario's project, loading only that project's instruction file.
-  Add readers only for a distinct named risk.
+- **Each scenario gets its own reader for each variant it runs**, so its context holds that one
+  task: one edited reader per scenario step 1 writes, plus its original control where the next
+  bullet requires one. Add readers only for a distinct named risk.
 - **An original control runs where an improvement claim or conflicting instruction needs
   comparison**: in a scenario's first round, and in a later round only where the edited run missed
   and the retained control cannot carry forward; a straightforward clarification may omit it only
