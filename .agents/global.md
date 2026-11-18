@@ -447,14 +447,14 @@ alwaysApply: true
   put to the user**, a file, folder, clone or Git directory entry alike. It is one only when its
   name is an original's plus the service's copy suffix, such as `budget 2.csv`, and a check beyond
   the name confirms it: it matches the original, or a version Git holds, byte for byte; it sits in a
-  Git directory outside `worktrees` and `modules`, any commit it names that no ref reaches first
-  kept on a named branch; it copies a transient file such as a lock; or it is an untracked folder or
-  clone whose commits and stashes its original's repository already holds, and whose other files
-  each match the original's or a version that repository holds, removed as a plain folder, never
-  through Git run inside it. Unconfirmed, it is an ordinary file, never asked about. Before
-  deleting, check that no process's working directory or open file is inside it and no worktree or
-  session claims it: one in use goes once idle, under the limit above, and any other before any
-  other operation reads, stages, stashes or snapshots it. The report names each deletion.
+  Git directory outside `worktrees` and `modules`; it copies a transient file such as a lock; or it
+  is an untracked folder or clone whose commits and stashes its original's repository holds, and
+  whose staged and working files each match the original's or a version held there, removed as a
+  plain folder, never through Git inside it. A commit only a copy reaches is first kept on a named
+  branch of the original's repository. Unconfirmed, it is an ordinary file, never asked about.
+  Before deleting, check that no process's working directory or open file is inside it and no
+  worktree or session claims it: one in use goes once idle, under the limit above, and any other
+  before any other operation reads, stages, stashes or snapshots it. The report names each deletion.
 
 - Do not rebuild, republish, or redeploy an already validated artifact solely because its source
   head advanced. Compare the edits with the artifact's actual source: cleanup proven to preserve
