@@ -352,6 +352,14 @@ manifests, policies, provider payloads, and response schemas remain models. All 
 code-simplify opens with; the gate runs them over the diff's added lines and lists their hits before
 anything else.
 
+**Required settings reach their execution owners.** When a change adds, renames, moves, or makes a
+setting required, trace its normal startup or deployment input from the supplier through every
+affected process to the consumer, including names, scope, and serialization. Flag an affected process
+whose input is missing or whose runtime representation has not been verified. A declaration, build
+input, bundled value, local configuration, or test fixture alone does not establish that another
+process receives the setting. The remedy supplies and verifies the setting on each affected route,
+while preserving the required configuration contract.
+
 **A test is priced by what it costs to run.** Flag a test the diff adds or changes, or the module
 holding it, that `test-fixture`'s cost question calls disproportionate, and any change that absorbs
 a slow test in a way the testing rules list; the remedy is making it cheap or removing it, as that
