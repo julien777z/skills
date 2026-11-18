@@ -96,13 +96,9 @@ and lock ownership throughout.
 1. Resolve an installed user-level skill link to its Git checkout. When the link resolves into an
    overlay worktree, use the main checkout it is a linked worktree of. Confirm the checkout is the
    shared skills repository and its README identifies `bootstrap/install.sh`.
-2. Delete every copy a file-sync service or the operating system made in the checkout, its Git
-   directory, each `skills-overlay/` worktree and every user-level agent root, confirming and
-   deleting each as the global rules' **Tools and environments** says. Such a copy is neither an
-   uncommitted edit nor damaged Git state: it takes no backup, and step 4.3's snapshot leaves out
-   one still waiting to be deleted. Then record the checkout's current commit, branch, working-tree
-   status, installed source, and each `skills-overlay/` worktree with the built head its marker
-   stores. Fetch the remote default branch and the branch of every pull request in effect.
+2. Record the checkout's current commit, branch, working-tree status, installed source, and each
+   `skills-overlay/` worktree with the built head its marker stores. Fetch the remote default branch
+   and the branch of every pull request in effect.
 3. **With no pull request in effect, the checkout on the default branch, and no caller about to
    clean the source checkout**, fast-forward it in
    place: create a named `git stash push --include-untracked` when the tree is dirty, fast-forward,
