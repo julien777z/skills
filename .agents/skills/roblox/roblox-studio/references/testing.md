@@ -178,14 +178,10 @@ world's data first and in captures second:
   and stretch of open water from each reachable side and height, and reports every spot where the
   player gets past. Findings group by piece, area and problem, each with its count, the worst gap
   and three sample positions. Fix them in the builders and rerun until the audit reports none.
-- **A quest-gate audit in Play decides whether quest objects are staged.** It covers only the
-  objects that exist for a quest, as `roblox-gameplay` defines them: the pieces a step has the
-  player collect, a prop a step asks them to inspect or use, a quest-only character and a step's
-  marker. Scenery and residents a step also references stay visible to everyone and are not listed.
-  It lists every such object the game's shared gating rule gives no gate, and every one a fresh
-  profile can see. A change to quests or to the objects they use runs it until it reports none, then
-  confirms in Play with a fresh profile and with a profile at each affected step that each object
-  appears when its step becomes active and stays once the quest is done.
+- **The quest-gate audit `roblox-gameplay` requires runs in Play**, over the objects that exist for
+  a quest as it defines them, never scenery or residents a step also references. Once it reports
+  none, confirm in Play with a fresh profile and with a profile at each affected step that each
+  object appears when its step becomes active and stays once the quest is done.
 - **A view that looks different gets a Play dump** of the parts around it, read on the server and on
   a client, in both places: present, anchored and in place on both sides means the capture, not the
   world, differs.

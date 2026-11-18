@@ -59,6 +59,7 @@ Where the game allows it, let what the player did stay visible in the world: gro
 - The hidden state wins over every other feature that changes the object's look, such as a fade, a flicker or a glow: their changes are held while it is hidden and applied once it shows.
 - A collected piece hides through its own state, so collecting and the quest's gate combine rather than overwrite each other.
 - A feature that depends on the objects follows the same gate, such as an offer to collect them that appears only while a piece the player can reach remains.
+- A change to quests or to the objects they use audits them: it lists each such object with the gate the shared rule gives it and whether a fresh profile can see it, names every one that has no gate or that a fresh profile sees, and reruns after the fixes until it names none. The report carries that list; a statement that the objects are gated is not an audit.
 
 ## Navigation, movement and travel presentation
 
