@@ -369,11 +369,11 @@ alwaysApply: true
   briefs, captures and recordings, rendered pages, specs, findings, scratch scripts and anything
   else the run writes for itself or its workers, in folders named for what they hold, such as
   `briefs/` and `captures/`; a worker reads its brief there by its absolute path. Never in `/tmp` or
-  another system temporary directory: a restart clears it, taking every brief, capture and script a
-  resumed worker needs. The folder stays out of Git through the repository's local exclude file,
-  `$(git rev-parse --git-common-dir)/info/exclude`, which every worktree of that repository shares,
-  never through a committed `.gitignore`. What must outlive the worktree, such as the task's ledger
-  or a dashboard of a subject that outlives the session, keeps its place in the user's state
+  another system temporary directory, which a restart clears. The folder stays out of Git through
+  the repository's local exclude file, `$(git rev-parse --git-common-dir)/info/exclude`, never a
+  committed `.gitignore`, its line added unasked before the first file lands, even in a task kept to
+  one worktree: that shared file is the worktree's own Git state, as its commits are. What must
+  outlive the worktree, such as the task's ledger or a lasting dashboard, stays in the user's state
   directory. Credentials, sign-in sessions and other secret material never go in a worktree.
 
 - **Use OrbStack for local containers when it is installed.** Before starting container-backed
