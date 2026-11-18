@@ -444,13 +444,15 @@ alwaysApply: true
 - **A copy a file-sync service or the operating system left behind is deleted, never kept, left as
   outside the task or put to the user.** Its name is an original's plus a copy suffix, such as
   `budget 2.csv`, `notes (conflicted copy).md` or `HEAD 2`, beside its original. On meeting one,
-  list every such entry with a name search of the whole tree, such as `find` from the repository
-  root, never `git status` or `ls`, which skip the Git directory and ignored folders, and delete
-  each that holds nothing of its own:
+  list every such entry with a name search of the whole tree and of its Git directories, such as
+  `find` from the repository root and from `git rev-parse --git-dir` and `--git-common-dir`, never
+  `git status` or `ls`, which skip them and ignored folders, and delete each that holds nothing of
+  its own:
   - a file identical to its original or to any version of it Git holds;
-  - any entry inside the Git directory outside `worktrees` and `modules`, after putting a commit
-    only that entry names on a branch;
-  - a folder or clone whose files, commits and stashes its original holds, removed as a plain folder.
+  - any entry inside a Git directory outside `worktrees` and `modules`, after putting a commit only
+    that entry names on a branch;
+  - a folder or clone whose files, commits and stashes its original already holds, removed as a
+    plain folder.
 
   A copy with content of its own stays as an ordinary file, without a question. One that a process,
   worktree or session is using goes once it is idle. Delete before anything stages, stashes or
@@ -766,11 +768,10 @@ return records;
   record of what changed. Never describe what a symbol used to do, what was removed, renamed, or
   deprecated, and never write migration tables, upgrade notes, or "formerly", "replaces", or "kept
   for backwards compatibility" notes.
-- **Behavior another party owns is explained once**, beside the value or line where the code
-  first handles it. Every other place that reuses that value or works around the same behavior
-  restates nothing: a second comment, a docstring, or a comment in another file. A comment above a
-  timeout saying a library sets none, and another at the override that applies it, are one comment
-  too many.
+- **Behavior another party owns is explained once**, beside the value or line where the code first
+  handles it. Every other place that reuses that value or works around the same behavior restates
+  nothing: a second comment, a docstring, or a comment in another file. A comment above a timeout
+  saying a library sets none, and another at the override that applies it, are one comment too many.
 
 - When a request replaces a route, API contract, or behavior, remove the prior alias or fallback. Retain legacy compatibility only when the user explicitly authorizes it in the current request; if retention is unclear, ask before adding it.
 
@@ -809,14 +810,13 @@ return records;
   A successful substep does not establish the parent outcome: resume its saved next action when
   that outcome remains unmet.
 - **A cause stated to the user is traced first, whether or not they asked for it**: a root cause,
-  and any explanation the agent offers of why something failed, why a value is what it is, or why
-  a check, test, gate or review let something through. Follow the operation from its entry point
-  to the component that produced the outcome, reading the code or configuration that decides it,
-  such as how a check selects what it checks, and verify that the cause explains the observation
-  through direct evidence or a controlled reproduction. A cause read from a component's name, a
-  remembered list or what seems likely is not stated as the cause. Track causal diagnosis
-  separately from mitigation, restoration, and regression coverage. If the failure stops
-  reproducing, inspect retained diagnostics and compare the failed and recovered runtimes. Before
-  reporting a hold, exhaust available safe diagnostic and reproduction paths. Name the missing
-  evidence, why it is unavailable, and the specific observation or external action that can resume
-  the investigation.
+  and any explanation the agent offers of why something failed, why a value is what it is, or why a
+  check, test, gate or review let something through. Follow the operation from its entry point to
+  the component that produced the outcome, reading the code or configuration that decides it, such
+  as how a check selects what it checks, and verify that the cause explains the observation through
+  direct evidence or a controlled reproduction. A cause read from a component's name, a remembered
+  list or what seems likely is not stated as the cause. Track causal diagnosis separately from
+  mitigation, restoration, and regression coverage. If the failure stops reproducing, inspect
+  retained diagnostics and compare the failed and recovered runtimes. Before reporting a hold,
+  exhaust available safe diagnostic and reproduction paths. Name the missing evidence, why it is
+  unavailable, and the specific observation or external action that can resume the investigation.
