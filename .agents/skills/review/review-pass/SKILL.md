@@ -25,9 +25,9 @@ skill never readies, merges or deploys.
 ## Invocation
 
 - The invocation names the target and supplies the intent statement: what the change is for and what
-  is out of scope. The intent bounds new behavior and cleanup, never a bug: one the pass finds
-  outside the diff or the intent is fixed in the change, as **Answer each finding** says for one
-  outside the change, and never left to the user because the intent does not name it.
+  is out of scope. An intent that does not name a bug never bounds it: one the pass finds outside
+  the diff or the intent is fixed in the change, as **Answer each finding** says for one outside the
+  change, unless the intent records the user cutting that work.
 - The invocation authorizes the declared dependencies over that target, pushing fixes to its
   working pull request, refreshing its title and description, resolving its review threads and
   posting the replies **Review Threads** allows, and, on the merged-range route only, creating the
