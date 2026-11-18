@@ -35,13 +35,16 @@ confuse those conclusions.
   text against its source, links, and reachability, and write a scenario for moved text only where
   meaning or reachability changed.
 - **An invocation that names several heads is tested in one coordinated round.** Freeze the exact
-  head and guidance package for every named pull request, use one edited reader across their
-  isolated scenarios, and retain results per head. Run an isolated original control in a
-  scenario's first round, and in a later round only where the edited run missed and the retained
-  control cannot carry forward; a straightforward clarification may omit it only with that
-  justification recorded. The original control stays blind to the edited
-  diff, criteria, and reports. The round runs when, and on the head the caller supplies.
+  head and guidance package for every named pull request, and retain results per head. The round
+  runs when, and on the head the caller supplies.
+- **Each scenario gets its own reader for each variant it runs**, so its context holds one task
+  and its session starts in that scenario's project, loading only that project's instruction file.
   Add readers only for a distinct named risk.
+- **An original control runs where an improvement claim or conflicting instruction needs
+  comparison**: in a scenario's first round, and in a later round only where the edited run missed
+  and the retained control cannot carry forward; a straightforward clarification may omit it only
+  with that justification recorded. The original control stays blind to the edited diff, criteria,
+  and reports.
 - **A retained result carries to a new head only when every file its scenario depends on and its
   execution environment are unchanged there**: each guidance file on its reading list, or, for a
   file every reader loads whole, such as the global rules, the sections its criteria cite, its fixture
@@ -107,9 +110,9 @@ Run after `code-simplify` completes its pass.
    the original from the freshly fetched default branch. Record their revisions or content digests. Give every
    required control an equivalent independent environment so neither run inherits the other's
    mutations or reports.
-4. **Run the task.** Launch one edited-guidance agent to run the frozen scenarios in isolated
-   resources and, when required above, one original-guidance control with identical instructions
-   and independent resources. Agents perform the bounded task, including mutations inside their
+4. **Run the task.** Launch each scenario's edited-guidance reader in isolated resources and, when
+   required above, its original-guidance control with identical instructions and independent
+   resources. Agents perform the bounded task, including mutations inside their
    synthetic environments when the task calls for them. Read-only review tasks remain read-only.
    Queue readers when capacity is limited; never duplicate an active assignment. The coordinator
    retains responsibility for setup, repair, evidence and completion rather than asking the user to
@@ -184,8 +187,8 @@ the comparison and the passing verdict until the required set completes. When an
 terminal report, record the incomplete attempt, then launch a fresh required set. When no permitted model fallback remains, record the rejection and apply `subagent-matrix`'s launch
 fallback for the missing assignment.
 
-Run one edited reader across the frozen scenarios and one original control only when the recorded
-comparison requires it, with the same resolved model and reasoning effort where both run. Record
+Run each scenario's edited reader, and its original control only where **When It Runs** requires
+one, with the same resolved model and reasoning effort where both run. Record
 the catalog state, requested capability and family, exact dispatch identifier, resolved reasoning
 effort, selector resolution, and accepted actual-assignment dispatch receipt with those explicit
 parameters in each run's evidence entry. Record catalog state separately
