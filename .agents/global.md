@@ -443,18 +443,18 @@ alwaysApply: true
   terminal. Keep the task active under **Task execution and authorization** while resolving its gate.
 
 - **Local stack resources are disposable, and repairing them is part of the work, never a question for the user.** Local databases and their migration state, Redis, Docker containers, volumes, networks, images and the daemon itself can be repaired, reset, dropped or recreated whenever the task needs them working. A database stuck on a revision a branch has since regenerated, a stale cache, a wedged container: fix it and carry on. The records a local stack holds are the same: create, edit, reset, reopen or convert them whenever the work needs them in a given state — a test account to sign in with, a submission held in review to show a banner, a record a new rule no longer accepts — as the repository's data policy says, report what was done, and never put the choice to the user. The tooling that brings a local stack to a state is the agent's in the same way: a scenario command, the test accounts and records it creates, and what each scenario seeds are added, changed or redesigned as the work needs, never put to the user in a plan, a question or a gate's remedy, and never a product choice, since no user of the product meets them. The same holds for what the session's own work leaves behind when disk, memory or a port runs short: build caches and the leases and snapshots holding them, stopped containers, orphaned processes and build output. The one limit is a resource another run is actively using, such as a test runner holding the stack's lock. Wait for it or use a separate resource; never stop it. A route that limit rules out, such as restarting a daemon a running test still uses, leaves narrower ones, such as removing only the leases, records or processes the session's own work created; recovery is exhausted, and reported as a gate, only once no route remains. **Development data in a non-production deployment is the agent's the same way** when the project's guidance or its release stage marks it disposable: an unreleased product's staging saves, its test profiles and accounts, and the records a staging environment holds for its testers are reset, converted or recreated whenever the work needs them, such as a test save that no longer loads after an item's ID changed, then reported, never put to the user. Production data, and records real users or other people own, stay with the user. Deployed and shared remote environments are otherwise not local; the following live-deployment rules govern them.
-- **A copy a file-sync service or the operating system made is deleted without asking, never kept,
-  skipped or put to the user**: a file, a folder or repository clone, or an entry in a Git directory
-  or an installed or generated tree. An entry is one only when its name is an original's plus the
-  service's copy suffix, such as `budget 2.csv` or `budget (conflicted copy).csv`, and a check
-  beyond the name confirms it: it matches the original, or a version of it Git holds, byte for byte;
-  it sits in a Git directory, which never makes such a name; it copies a transient file Git or a
-  tool creates and removes, such as a lock or merge scratch file; or it is an untracked folder or
-  clone whose remote and history match the original's. Left unconfirmed, it is an ordinary file,
-  kept and never asked about as a copy. Before deleting, check that nothing uses it: no process's
-  working directory or open file inside it, no worktree or session claiming it. One in use falls
-  under the limit above and goes once idle, through the host's event route; any other goes before
-  anything reads, stages, stashes or snapshots it. The report names each deletion.
+- **A copy a file-sync service or the operating system made is deleted without asking, never kept or
+  put to the user**, a file, folder, clone or Git directory entry alike. It is one only when its
+  name is an original's plus the service's copy suffix, such as `budget 2.csv`, and a check beyond
+  the name confirms it: it matches the original, or a version Git holds, byte for byte; it sits in a
+  Git directory outside `worktrees` and `modules`, any commit it names that no ref reaches first
+  kept on a named branch; it copies a transient file such as a lock; or it is an untracked folder or
+  clone whose commits and stashes the repository it or its `.git` file names already holds, and
+  whose other files each match a version that repository holds, removed as a plain folder, never
+  through Git run inside it. Unconfirmed, it is an ordinary file, never asked about. Before
+  deleting, check that no process's working directory or open file is inside it and no worktree or
+  session claims it: one in use goes once idle, under the limit above, and any other before any
+  other operation reads, stages, stashes or snapshots it. The report names each deletion.
 
 - Do not rebuild, republish, or redeploy an already validated artifact solely because its source
   head advanced. Compare the edits with the artifact's actual source: cleanup proven to preserve
