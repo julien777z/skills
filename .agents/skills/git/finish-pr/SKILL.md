@@ -55,9 +55,10 @@ specific set.
   discovery complete; known units can proceed while recovery runs.
 - Verify each target's branch, head and state on the host before starting its review.
 - **A target's recorded decisions are built before its review starts.** Read the task's ledger for
-  every plan step, decision and answered question whose work is still open and whose surface the
-  target's repository holds. That work is done on the target first; a target with any of it open is
-  never reviewed or merged.
+  every decision and answered question whose work is still open, and every plan step that builds or
+  changes something, whose surface the target's repository holds. That work is done on the target
+  first; review, merge and a dependency-held repoint keep their own order under **Workflow** and
+  **Dependent Pull Requests**. A target with such work still open is never reviewed or merged.
 
 Each target is an independent unit with its own range, intent, threads, validation, acceptance, and
 exact-head merge gate. A compact agent-configuration unit may run right after its related source unit
