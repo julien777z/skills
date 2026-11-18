@@ -38,7 +38,9 @@ page:
    place and the rest left out, as **Render And Deliver** says.
 3. **Stage the pictures still owed**, batch by batch, as **Pictures** says, re-rendering into the
    same page as each batch lands.
-4. **Read the finished page** and fix what reads wrong, then re-render once more.
+4. **Review the page after its last render**: open it in a browser through `use-browser`, read
+   every page and at least one dialog of each kind whole, fix what reads wrong, and after that
+   re-render read again each page the fix changed. A read before the last render covers nothing.
 
 ## Read The Game As Data
 
@@ -143,9 +145,8 @@ Render through `use-dashboard` with the spec, the page, the pictures and the man
 `use-dashboard`'s **Render** gives a dashboard that outlives the session, one page path per dashboard so every re-render updates the page the reader already
 has. Deliver through `use-dashboard`'s **Delivery** and its harness router. The dashboard's subject
 outlives the session, so its title is the game's name with "Dashboard" and its topic is
-"Game overview", and an update goes to the page already delivered under them. Before calling the
-page finished, open it in a browser through `use-browser` and read every page and a sample of each
-kind of dialog whole.
+"Game overview", and an update goes to the page already delivered under them. The page is finished
+only once **Run Order**'s review has read it.
 
 ## Output
 
