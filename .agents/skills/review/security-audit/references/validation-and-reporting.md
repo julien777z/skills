@@ -79,8 +79,8 @@ This is the final quality gate. Do not skip it.
 
 ### Phase 5: Report
 
-Write every finding, ordered by severity, to one file in the git-excluded `.agent_sources/` folder
-at the root of the worktree the review runs in. In chat, give the top five by severity in one line
+Write every finding, ordered by severity, to the findings file the skill's **What The Audit
+Writes** places. In chat, give the top five by severity in one line
 each and the next action, and send that file with the summary.
 
 For each finding the file gives its id, severity, the attack in one or two sentences, the impact, the
