@@ -674,9 +674,9 @@ it — the user asking about something else is not the user withdrawing what the
 - **A context summary's pending list is this run's named work**, not background, **and its state is
   read from the record, never from the summary.** After a compaction or handoff, and before
   starting, delegating or reporting any plan work, read each step's state, and each decision or
-  answered question whose work is open, from `session-ledger` and from the repository — merged commits, pushed heads — and let them overrule
-  the summary: a step that the ledger entry or the repository shows done is not started again, and
-  one the summary left out is still owed. The first turn then moves the oldest item still open as
+  answered question whose work is open, from `session-ledger` and from the repository — merged
+  commits, pushed heads — and let them overrule the summary: an item the record shows done is not
+  started again, and one the summary left out is still owed. The first turn then moves the oldest item still open as
   well as whatever the summary's next step names. A constraint it carries, such as "ask before X", is an earlier turn's instruction,
   checked under **Encountered Issues** before it is obeyed.
 - **Commits a remote lacks are undelivered work**; their next step is the pre-push checks and the

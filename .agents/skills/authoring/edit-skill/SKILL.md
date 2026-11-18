@@ -142,8 +142,7 @@ user's review of the source pull request overlaps it.
 
 1. Read every entry in the frozen batch and resume at its recorded first
    nonterminal stage, rebuilding a lost or truncated entry from its backup
-   comment as `session-ledger` accepts it; the comment's existence records that the action
-   succeeded, its Intended behavior stands as the intent statement for step 3, and step 7.5
+   comment as `session-ledger` accepts it; the comment's existence records that the correction was admitted under **Recording During A Task**, its Intended behavior stands as the intent statement for step 3, and step 7.5
    rebuilds the reproduction scenario from its failure class and invariant, with anything else
    unrecoverable handled as `session-ledger` incomplete retrieval. An entry with no recorded commit
    applies its edits under **Behavior** steps 5 and 6, on the branch step 7.1 selects; one with a

@@ -134,8 +134,11 @@ validation exclusion is recorded with its evidence and not repaired, rerun or wa
 
 ## Workflow
 
-1. Resolve the target and its delta. With a working pull request, run **Description Refresh** and
-   **Review Threads**.
+1. Resolve the target and its delta. Before the first round, read the task's ledger through
+   `session-ledger` for each decision and answered question whose work is open, and each plan step
+   that builds or changes something, whose work goes on this pull request under the GitHub rule's
+   **Branches and Pull Requests**. While any is open, review nothing: return that work to the caller
+   as required work. With a working pull request, run **Description Refresh** and **Review Threads**.
 2. Run **Base**, then **Checks**.
 3. When the delta crosses a trust boundary `security-audit` names, run its **Diff Review** at
    `medium` over the delta, with the merge-base diff as context, and fix what it confirms.
