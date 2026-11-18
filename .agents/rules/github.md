@@ -122,7 +122,8 @@ alwaysApply: true
   pull request from its creation or authorized continuation receipt and verify that it is open.
   Carry that receipt forward when a follow-up starts a new task in the same session. Keep distinct
   concerns and worker contributions on that pull request, in separate commits where appropriate.
-  Open a new source pull request only when none is in progress or the user directs a split. Apply
+  Open a new source pull request only when none is in progress, the user directs a split, or the
+  **Workflows** section's dispatch placeholder needs its own. Apply
   the agent-configuration routing below to guidance. Continue a source pull request from another
   session only when the user, an applicable invoked skill, or a repository rule explicitly directs
   that continuation. A matching topic, existing branch, open state, or recorded touch does not supply
@@ -279,9 +280,8 @@ alwaysApply: true
 - Use conventional commit messages when applicable and keep commits atomic and focused.
 - Commit each small coherent step and push it promptly once the pre-push checks **Pre-Push Gate** defines pass, sub-agents included; work only one machine holds is lost with it.
 - Commit no generated file, bytecode cache, build output or tool state a run left behind unless the
-  repository explicitly requires it: stage the change's files by path, never the whole tree, read
-  the staged list before committing, and put such a file the repository does not ignore in the
-  local exclude file rather than a committed ignore entry.
+  repository explicitly requires it: stage the change's files by path, never the whole tree, and
+  read the staged list before committing.
 
 ## Dependency Installation
 
