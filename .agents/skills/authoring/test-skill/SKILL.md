@@ -45,15 +45,17 @@ confuse those conclusions.
   and the retained control cannot carry forward; a straightforward clarification may omit it only
   with that justification recorded. The original control stays blind to the edited diff, criteria,
   and reports.
-- **A retained result carries to a new head only when every file its scenario depends on and its
-  execution environment are unchanged there**: each guidance file on its reading list, or, for a
-  file every reader loads whole, such as the global rules, the sections its criteria cite, its fixture
-  and its criteria, checked against the frozen record by content digest, and the model and
-  reasoning-effort identifiers, the harness and the guidance it loaded, and the tools and fixture
-  interface the scenario uses: the run's recorded values, each compared with the one a rerun would
-  resolve now, never with what the host still offers. Any difference reruns
-  that scenario, never a judgment that the change does not touch what it tests; a scenario
-  unchanged in both is not rerun.
+- **A retained result carries to a new head only when everything its scenario depends on is
+  unchanged there.** For each scenario, record each item's recorded value beside its current one,
+  and carry it, with no rerun, when every pair matches:
+  - by content digest, each guidance file on its reading list, or, for a file every reader loads
+    whole, such as the global rules, the sections its criteria cite; its fixture; its criteria;
+  - the model and reasoning effort **Reviewer selection** resolves for a rerun now, such as the
+    standard tier's current identifier, never one the catalog merely still lists; the harness and
+    the guidance it loads; the tools and fixture interface the scenario uses.
+
+  Any difference reruns that scenario, never a judgment that the change does not touch what it
+  tests, and the evidence names the differing pair as the reason.
 - A new skill has no original to run against. Its control runs carry no skill text at all, which
   shows what the skill adds over the model alone.
 
