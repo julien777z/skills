@@ -234,12 +234,12 @@ restriction. Gate a single user-only workflow inside an otherwise usable skill i
 
 - **Every subagent a skill starts is usage the user pays for, so guidance starts as few as its
   purpose needs.** Before writing or changing text that launches subagents — a writer, reader,
-  reviewer, grader, gate, worker or council member — state how many it starts in a usual run and in
-  each round, and what that count grows with. Prefer one agent serving a batch over one per item, a
-  fresh agent only where independence requires one, and a rerun only of what a change touched; a
-  count that grows with items, findings or files names its cap. An edit that raises a workflow's
-  usual subagent count says so, with its reason, in its pull request description, and a review of
-  the edit judges that count as part of the change.
+  reviewer, grader, gate, worker or council member — state in that text how many it starts in a
+  usual run and in each round, and what that count grows with. Prefer one agent serving a batch over
+  one per item, a fresh agent only where independence requires one, and a rerun only of what a
+  change touched; a count that grows with items, findings or files names its cap. An edit that
+  raises a workflow's usual subagent count says so, with its reason, in its pull request
+  description, and a review of the edit judges that count as part of the change.
 
 ### Output
 
