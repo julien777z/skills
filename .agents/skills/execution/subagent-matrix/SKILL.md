@@ -179,9 +179,11 @@ context and returns its verdict into the step waiting on it; nothing else does b
   to change a related control.
 - **Work that needs a new worker while five are running waits for a slot** and is recorded with its
   brief, except work that removes what the running workers are blocked on, such as making a shared
-  runner, tool or service they queue for faster or able to serve them in parallel. That work starts
-  at once, in the slot of a running worker it unblocks, which pushes its work, pauses, and resumes
-  once that work lands, and it takes the shared resource with priority.
+  runner, tool or service they queue for faster or able to serve them in parallel. That work does
+  not wait for a slot; it takes one in this order: a running worker it unblocks pushes its work and
+  is paused, the unblocking work is launched in the freed slot, so the count never passes five, and
+  the paused worker resumes once that work lands. Its brief has it take the shared resource with
+  priority, through the lock's own priority option.
 - **Assign one implementation owner per coherent scope, and a fresh worker for each delegated
   task.** The primary agent retains integration, dependencies, product decisions and orchestration.
   Delegate work that produces an independent result, not a wrapper that only invokes another
