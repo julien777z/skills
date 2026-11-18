@@ -38,11 +38,14 @@ page:
    and must match the head read.
 2. **Render and deliver at once**, with every picture the picture manifest still accepts already in
    place and the rest left out, as **Render And Deliver** says.
-3. **Stage the pictures still owed**, batch by batch, as **Pictures** says, re-rendering into the
-   same page as each batch lands.
-4. **Review the page after its last render**: open it in a browser through `use-browser`, read
-   every page and at least one dialog of each kind whole, fix what reads wrong, and after that
-   re-render read again each page the fix changed. A read before the last render covers nothing.
+3. **Capture the pictures still owed, one lease at a time.** Each lease is one pass of this loop,
+   and the next lease is not acquired until the pass ends:
+   1. acquire the lease and capture the owed scenes it covers;
+   2. close the editor and release the lease;
+   3. render into the same page and deliver it.
+4. **Review the page after its last render**: open it through `use-browser` and read every page and
+   at least one dialog of each kind whole. A fix means another render, and after any render every
+   page is read again; no earlier read counts.
 
 ## Read The Game As Data
 
@@ -156,7 +159,7 @@ only once **Run Order**'s review has read it.
 **<Game> overview** — <link to the delivered page>
 
 - Pages: <page names in order>
-- Pictures: <n> reused, <n> recaptured (<n> changed, <n> new, <n> rejected), <n> drawn; not captured: <ids and reasons, or "none">
+- Pictures: <n> reused, <n> recaptured (<n> changed, <n> new, <n> rejected), <n> drawn; not captured: <owed scene ids and reasons, or "none">
 - Audit: <n> checks over <n> items; <n> findings
   - <quest or part>: <finding in one line>
 - Source read: <repository>@<commit>

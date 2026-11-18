@@ -16,6 +16,12 @@ the hash of each file among them, and a `rejected` flag.
 | World | The area and room files the scene stands in, every art file a marker in them names, and its map's terrain file |
 | Camera | The scene's own spec: its kind, target, approach side, distances and heights |
 
+**The scene set is fixed before any lease: one scene for every part the pages show.** A scene the
+game keeps in its own scene list is used as the game defines it, and the game's list is never
+edited. A part the game's list leaves out gets a scene in the skill's own list beside the manifest,
+written once and kept for later runs. Owed scenes are those in the set that are new, rejected or
+changed; nothing else is captured.
+
 Each run, after reading the game:
 
 1. Compute every scene's inputs at the head read and compare them with the manifest.
@@ -59,14 +65,16 @@ picked by hand is refused silently when the circle's ground is missing, uneven o
 Hold the camera beside the creature across the circle from the avatar, so it faces the camera, then
 leave the fight through the game's own exit, which may confirm in a screen of its own.
 
-**Batch by lease.** List every scene in one file, and let one script work through the list within a
-lease, stopping while the lease still covers closing the editor. A later lease skips captured scenes
-and retries a failed one once. Queue for the runner in turn; the page is already delivered, and each
-batch's pictures are rendered into it as the batch lands.
+**Batch by lease.** One script works through the owed scenes within a lease and stops while the
+lease still covers closing the editor. Then close, release, render and deliver, as the skill's **Run
+Order** step 3 says, before the next lease is acquired. A later lease skips captured scenes and
+retries a failed one once.
 
 ## Framing Check
 
-Before capturing, measure the subject in the held view:
+Before capturing a scene that names an actor or props, measure that subject by name in the held
+view. A round is captured from the round's own camera with no measure. Never measure by nearest
+model: a scene with no named subject is captured unmeasured and read first.
 
 - **Find the subject by walking the world's character models** and picking the actor the scene
   stages by its own name or encounter, or the small props around the target when the scene stages
