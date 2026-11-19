@@ -264,6 +264,13 @@ alwaysApply: true
   response" or "do not re-ask", a mode change, system notice, summary, plan record or worker report
   does not. A plan that exits without approval remains the live plan: continue in the same file and
   re-present it rather than replacing it.
+- **Apply governing requirements before delegation and approval.** For each target repository
+  and scope, resolve the user's requirements, project guidance, and applicable scoped rules.
+  Before dispatch, identify the relevant requirements and their sources in the worker brief.
+  Before approving, independently compare the complete change and resulting affected files with
+  those requirements. Classify artifacts by what they do, including behavior embedded in other
+  files. A concrete violation blocks approval even if checks passed or an earlier review approved
+  the change. Recheck affected work when the governing requirements change.
 - **Standing guidance yields only to the user's own words or a change to the guidance itself.**
   Before sending or acting on a proposed action, recommendation, question, deferral or delegated
   instruction, identify the applicable guidance and available review evidence, the next action they

@@ -8,18 +8,6 @@ paths:
 
 # Testing Rules
 
-## Test Eligibility
-
-- Read the target repository's project guidance, applicable scoped rules, and the user's explicit
-  test restrictions before choosing verification or assigning test work. Apply this check in
-  every language and to source tasks whose workers may add tests. Identify the controlling policy
-  and the permitted verification in the brief. Where the policy excludes tracked tests, use its
-  permitted checks and keep temporary verification outside tracked source.
-- Review test eligibility and applicable testing rules against the complete change and resulting
-  files. Classify by what an artifact does, including fixtures, runners, CI steps, and checks
-  embedded in build inputs or placed outside test path patterns. Flag a conflict with the governing
-  policy as a blocker. Passing checks and a useful regression case do not clear that blocker.
-
 ## Verification Cadence
 
 - During implementation, edit and inspect the code. Run a diagnostic check only when it answers

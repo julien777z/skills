@@ -109,9 +109,8 @@ receives five things and nothing else:
    package contents and the real case it governs, when supplied;
 4. the affected-repository map required by `code-simplify`'s **Trace Changed Flows**. For each
    changed file group, resolve its project guidance, scoped repository rules and installed shared
-   rules by path. For every complete diff, include the repository's testing policy and the user's
-   explicit test restrictions. Supply the complete text and scope of each source inline or in a
-   named file. In a
+   rules by path. Include the user requirements and governing repository requirements for the
+   complete change. Supply the complete text and scope of each source inline or in a named file. In a
    repository the owner does not own, as the global rules' **Repository guidance** defines it, the
    brief says so: the gate judges the change against the request, its defects and that repository's
    own guidance and conventions, and a shared rule's standard is no flag there.
@@ -147,8 +146,8 @@ shape is named in the flag. A remedy that sends the author to an existing piece 
 a duplicate is not an owner. An increment fixing an earlier flag is judged on the earlier flags it
 answers and on its own lines, read the same way, never only against that flag; the rest of the
 modules it touches and of the originating diff, which the earlier gate judged, is context, open to a
-new flag only where the increment changes what it depends on or it holds a confirmed defect or
-exploitable vulnerability.
+new flag only where the increment changes what it depends on, the governing requirements change,
+or it holds a confirmed defect or exploitable vulnerability.
 
 Before the design comparison, verify that the supplied rule sources are complete and cover the
 file groups in the diff. Check preambles, imports, declarations and executable bodies in the
