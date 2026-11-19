@@ -21,8 +21,8 @@ for an agent-configuration change, Agent Sync handling before this skill finishe
   that is not green, a head that no longer matches the accepted SHA, or a conflict still unresolved.
   Report that gate.
 - An authorized merge includes the repository's automatic merge-triggered workflows. Their
-  publication, rollout, and serving-state checks belong to release or deployment work. Verify
-  the merge at the host and finish the merge workflow there.
+  publication, rollout, and serving-state checks belong to separately authorized release or
+  deployment work.
 - Dispatching a release workflow or creating a deployment is a separate action with its own
   authorization.
 
