@@ -1,6 +1,6 @@
 ---
 name: subagent-matrix
-description: Apply before every subagent launch, including a workflow coordinator or nested reviewer, and when selecting a live skill-verification model. Default reasoning effort to medium unless the user or invoking skill explicitly specifies another effort. Resolve the assignment role and verify the actual model, reasoning and history arguments before dispatch, including a fresh independent or read-only gate, reviewer, validator, or skill-test reader. Resolve cheap, standard, advanced, frontier, and specialist capability levels from the host catalog and current official provider sources. Attempt the assigned work with a catalog-hidden candidate before reporting unavailability or proposing a substitution, select the model explicitly, route independent steps through a subagent of the running session, and give the user complete direct-dispatch diagnostics when the launch cannot start.
+description: Apply before every subagent launch, including a workflow coordinator or nested reviewer, when selecting a live skill-verification model, and when resuming workers stopped by a rate limit or quota. Default reasoning effort to medium unless the user or invoking skill explicitly specifies another effort. Resolve the assignment role and verify the actual model, reasoning and history arguments before dispatch, including a fresh independent or read-only gate, reviewer, validator, or skill-test reader. Resolve cheap, standard, advanced, frontier, and specialist capability levels from the host catalog and current official provider sources. Attempt the assigned work with a catalog-hidden candidate before reporting unavailability or proposing a substitution, select the model explicitly, route independent steps through a subagent of the running session, and give the user complete direct-dispatch diagnostics when the launch cannot start.
 short_description: 'Select a model capability level for live verification chats or subagent delegation.'
 ---
 
@@ -26,8 +26,9 @@ agent; the calling agent launches the actual assignment with the selected model.
    capabilities**; the coordinator's model never overrides it. Use an exact user override only for
    the role, chat, and capability row it expressly governs; one explicitly scoped to every assignment governs
    every row. For every other row, use the latest matching identifier from the host's model-selection
-   surface. **The skill must never hard-code model IDs**, including in references, examples,
-   aliases, or fallback tables. If the host does not supply an exact ID for the selected family,
+   surface for the current selection or permitted fallback step. **The skill must never hard-code
+   model IDs**, including in references, examples, aliases, or fallback tables. If the host does
+   not supply an exact ID matching that choice,
    look online for the current ID in the provider's official model catalog, documentation,
    or release notes for the applicable host or API. Record the source and exact ID. A published ID
    is a candidate for an actual dispatch; host acceptance is separate evidence. Mark this candidate
@@ -55,9 +56,10 @@ agent; the calling agent launches the actual assignment with the selected model.
    receipts and the repair attempted; only that is an explicit unsupported receipt wherever this skill or its
    callers name one. **A rate limit or quota refusal is temporary capacity, never unavailability**, even when it
    names a long reset time: it permits no fallback, no other provider and no absorbing the work into the
-   coordinator's own process. Resume or relaunch the same worker on the same model once the limit no longer
-   holds, read from the request path itself: the coordinator answering on that model, or the relaunch being
-   accepted, shows it has cleared. The accepted worker
+   coordinator's own process, and never a reason to hold work: a reset time the refusal names is a guess, not
+   a wait. Resume or relaunch the same worker on the same model as soon as the coordinator next answers, read
+   from the request path itself: the coordinator answering on that model, or the relaunch being accepted, shows
+   it has cleared, and only a refused relaunch shows it still holds. The accepted worker
    performs the assignment; never launch a throwaway availability probe. Record the runtime identifier only
    when the host exposes its exact value. Generic provider or product
    branding, a worker-reported label, or no runtime identifier is neither confirmation nor a contradiction of

@@ -18,7 +18,8 @@ Canonical guidance lives in `.agents/`.
   canonical source. Report it missing only when those sources do not contain it; never substitute a
   manual approximation for an installed action skill.
 
-- In repositories that provide an agent CLI or otherwise interact with agents, store every agent prompt in a dedicated Markdown file rather than inline in application code so it is easy to find, review, and maintain. Application code may load a prompt file and interpolate runtime values into it.
+- **Every prompt an application gives a model is its own Markdown file in its prompts folder, which
+  code loads and fills, never text in code**: a template, MCP server instructions, an agent definition it loads.
 
 ## User-Facing Output
 
@@ -37,8 +38,8 @@ Canonical guidance lives in `.agents/`.
   table scoped to its own repository carries that repository inside its link text, as above, never as a
   plain name beside a linked number, and a repository named in passing, such as the other half of a
   paired change, is linked too. Every item in a list gets a link, however long the list. A surface
-  that cannot render a link, such as a question tool's option label, carries the address in its
-  supporting text.
+  that cannot render a link, such as a question tool's option, names the item the way people do,
+  such as a pull request by its title, and leaves its link to the text or page sent before it.
 - **A web product's views are pages.** Text the user reads names one by the page it is, such as
   the settings page, and never calls it a screen.
 - **A file the user should see reaches them where they read.** Per-item detail past five items —
@@ -101,15 +102,14 @@ Canonical guidance lives in `.agents/`.
 ## Task execution and authorization
 
 - Run a user-triggered action skill only after the user directly invokes it — by its command or by
-  asking for it in words — in the current request.
-  Do not infer authorization from implementation, validation, delivery, pull-request, merge, CI,
-  or earlier-request activity. Guidance maintenance is the exception: `edit-skill` runs when the
-  user reports a guidance failure or canonical guidance is being changed, so the failure and its
-  owning instruction are repaired together, on the timing `edit-skill`'s **Recording During A
-  Task** sets.
-  Determine a user-only restriction from the skill's entry point, not from the fact that it
-  performs work. Required checks and independent gates declared by an authorized workflow run
-  as dependencies without a separate invocation; an omitted review request is not a waiver.
+  asking for it in words — in the current request. Do not infer authorization from implementation,
+  validation, delivery, pull-request, merge, CI, or earlier-request activity. Guidance maintenance
+  is the exception: `edit-skill` runs when the user reports a guidance failure or canonical guidance
+  is being changed, so the failure and its owning instruction are repaired together, on the timing
+  `edit-skill`'s **Recording During A Task** sets. Determine a user-only restriction from the
+  skill's entry point, not from the fact that it performs work. Required checks and independent
+  gates declared by an authorized workflow run as dependencies without a separate invocation; an
+  omitted review request is not a waiver.
 - An authorized task stays active until its outcome is verified complete or the user explicitly
   stops or hands it off. A follow-up, retry, recovery, context compaction, guidance correction,
   completed milestone, pending decision or reported gate does not close it. For every task
@@ -267,22 +267,21 @@ Canonical guidance lives in `.agents/`.
   re-present it rather than replacing it.
 - **Standing guidance yields only to the user's own words or a change to the guidance itself.**
   Before sending or acting on a proposed action, recommendation, question, deferral or delegated
-  instruction, identify the applicable guidance and available review evidence, the next action
-  they require, and whether the proposal follows it. Correct a proposal that contradicts them;
-  carry out an already-settled authorized remedy rather than offering its omission or retention as
-  a choice. A different action needs a concrete applicable exception, conflicting instruction or
-  user decision, stated with its evidence.
-  **A rule about how the product looks or reads is a default that records earlier design
-  judgment, never the argument for a design.** Rank design options by what serves the reader and
-  the flow. Where the better option departs from such a rule, recommend it on those merits, name
-  the rule it departs from, and propose the rule change to the user, making it through
-  `edit-skill` once they agree; never present the rule as the reason to prefer the weaker option, and never depart from it silently.
-  A brief, correction, review finding, gate's fix step or continuation note never outranks the
-  guidance governing its subject or the scope the user last set: an item outside that scope is
-  answered as out of scope, never relayed as a fix, unless the change itself introduced a defect.
-  That defect remains a required fix. Its sender checks before sending and its receiver before
-  acting; `pre-production`'s **Encountered Issues** holds what each does with an item
-  a rule forbids.
+  instruction, identify the applicable guidance and available review evidence, the next action they
+  require, and whether the proposal follows it. Correct a proposal that contradicts them; carry out
+  an already-settled authorized remedy rather than offering its omission or retention as a choice. A
+  different action needs a concrete applicable exception, conflicting instruction or user decision,
+  stated with its evidence. **A rule about how the product looks or reads is a default that records
+  earlier design judgment, never the argument for a design.** Rank design options by what serves the
+  reader and the flow. Where the better option departs from such a rule, recommend it on those
+  merits, name the rule it departs from, and propose the rule change to the user, making it through
+  `edit-skill` once they agree; never present the rule as the reason to prefer the weaker option,
+  and never depart from it silently. A brief, correction, review finding, gate's fix step or
+  continuation note never outranks the guidance governing its subject or the scope the user last
+  set: an item outside that scope is answered as out of scope, never relayed as a fix, unless the
+  change itself introduced a defect. That defect remains a required fix. Its sender checks before
+  sending and its receiver before acting; `pre-production`'s **Encountered Issues** holds what each
+  does with an item a rule forbids.
 - **A rule is met by doing what it requires, never by changing what a check or a reader can see.**
   When the compliant change is hard, the forbidden thing is not renamed, described in other words,
   wrapped, aliased, split, moved to a file the check does not read, or let through by a narrowed,
@@ -303,15 +302,16 @@ Canonical guidance lives in `.agents/`.
   unseen**: the reader answers the question tool, and chat text around it, or in some harnesses all
   text before a tool call, may never reach them. Ask directly in chat only when the harness has no
   question tool. The question's own text and option descriptions therefore carry what the decision
-  needs: what happens today, what each option changes, and the recommendation with its reason; a
-  short plan put for approval goes into the question whole. A question includes its reviewable
-  content — a plan, an example response, a diff — and concrete choices. The option that approves a
-  plan or proposal reads "Approved", never "Go" or another word, and is asked only once every
-  decision the plan or proposal depends on is answered: those decisions go to the user first, on
-  their own, and the plan or proposal shown for approval is written for their answers, with nothing
-  in it conditional on one. Material too large for the question, such as captures or a long diff,
-  reaches the user as `share-media` says, in a message they see before the question, and the
-  question names it.
+  needs: what happens today, stated as fact and where; what each option changes; and the
+  recommendation with its reason. A hypothetical, such as "if the API sends only IDs", or internals
+  named without what they do leave the reader asking for the facts. A short plan put for approval
+  goes into the question whole. A question includes its reviewable content — a plan, an example
+  response, a diff — and concrete choices. The option that approves a plan or proposal reads
+  "Approved", never "Go" or another word, and is asked only once every decision the plan or proposal
+  depends on is answered: those decisions go to the user first, on their own, and the plan or
+  proposal shown for approval is written for their answers, with nothing in it conditional on one.
+  Material too large for the question, such as captures or a long diff, reaches the user as
+  `share-media` says, in a message they see before the question, and the question names it.
 - **A step only the user can take, which the work waits on, is asked through that tool too, never
   left in chat.** Granting a permission, signing in, approving on another device, or running a
   command that needs their password each goes out as a question once everything the agent can
@@ -442,6 +442,16 @@ Canonical guidance lives in `.agents/`.
   terminal. Keep the task active under **Task execution and authorization** while resolving its gate.
 
 - **Local stack resources are disposable, and repairing them is part of the work, never a question for the user.** Local databases and their migration state, Redis, Docker containers, volumes, networks, images and the daemon itself can be repaired, reset, dropped or recreated whenever the task needs them working. A database stuck on a revision a branch has since regenerated, a stale cache, a wedged container: fix it and carry on. The records a local stack holds are the same: create, edit, reset, reopen or convert them whenever the work needs them in a given state — a test account to sign in with, a submission held in review to show a banner, a record a new rule no longer accepts — as the repository's data policy says, report what was done, and never put the choice to the user. The tooling that brings a local stack to a state is the agent's in the same way: a scenario command, the test accounts and records it creates, and what each scenario seeds are added, changed or redesigned as the work needs, never put to the user in a plan, a question or a gate's remedy, and never a product choice, since no user of the product meets them. The same holds for what the session's own work leaves behind when disk, memory or a port runs short: build caches and the leases and snapshots holding them, stopped containers, orphaned processes and build output. The one limit is a resource another run is actively using, such as a test runner holding the stack's lock. Wait for it or use a separate resource; never stop it. A route that limit rules out, such as restarting a daemon a running test still uses, leaves narrower ones, such as removing only the leases, records or processes the session's own work created; recovery is exhausted, and reported as a gate, only once no route remains. **Development data in a non-production deployment is the agent's the same way** when the project's guidance or its release stage marks it disposable: an unreleased product's staging saves, its test profiles and accounts, and the records a staging environment holds for its testers are reset, converted or recreated whenever the work needs them, such as a test save that no longer loads after an item's ID changed, then reported, never put to the user. Production data, and records real users or other people own, stay with the user. Deployed and shared remote environments are otherwise not local; the following live-deployment rules govern them.
+- **A copy a file-sync service or the operating system left behind is deleted, never kept, left as
+  outside the task or put to the user.** Its name is the original's plus a copy suffix, such as
+  `budget 2.csv` or `HEAD 2`. On meeting one, list all with a name search of the whole tree and its
+  Git directories, such as `find` on the root, `git rev-parse --git-dir` and `--git-common-dir`,
+  never `git status` or `ls`, which miss ignored and hidden ones. A copy with content of its own
+  stays as an ordinary file. Before anything stages, stashes or snapshots the tree, delete each
+  other copy once no process, worktree or session uses it, naming each in the report:
+  - a file identical to its original or to any version of it Git holds;
+  - an entry in a Git directory outside `worktrees` and `modules`, once a branch holds each commit only it names;
+  - a folder or clone whose files, commits and stashes its original holds, removed as a plain folder.
 
 - Do not rebuild, republish, or redeploy an already validated artifact solely because its source
   head advanced. Compare the edits with the artifact's actual source: cleanup proven to preserve
@@ -456,17 +466,6 @@ Canonical guidance lives in `.agents/`.
   smoke testing read-only everywhere else. Where the same artifact and materially equivalent
   configuration run in several environments, one successful write test on that target plus
   read-only health and routing checks on the others validates the shared path.
-
-## Tailscale policy
-
-- Before changing Tailscale authority or its consumers, invoke `tailscale-config`; it owns
-  affected-consumer discovery, execution cutover and verification across repositories and environments.
-- Prefer environment-branded tags over generic role tags whenever a Tailscale resource applies to
-  a particular environment. Add a role suffix only when distinct roles within that environment need
-  separate authority; do not create tags for roles that are not in use.
-- Use groups to grant people access and to own tags. Define service and routing policy in terms of
-  environment-scoped resource tags instead of individual email addresses or broad
-  cross-environment tags.
 
 ## Code layout
 
@@ -496,7 +495,7 @@ return normalized
 ```
 
 ```typescript
-// Good: separate the request, guard, state change, and result.
+// Good: separate the request, guard, and result.
 const response = await fetchRecords();
 
 if (!response.ok) {
@@ -504,8 +503,6 @@ if (!response.ok) {
 }
 
 const records = await response.json();
-
-setRecords(records);
 
 return records;
 ```
@@ -630,7 +627,9 @@ return records;
   or a report names what was found and lists the values it concerns, such as "Unrecognized shelf
   codes: B7, Q2". It assumes no cause, such as "the shelf list is out of date", and asks nothing of
   anyone, such as "Please ask the catalog team to correct the shelf list": its reader is the one
-  who investigates, and a guessed cause or errand sends them the wrong way.
+  who investigates, and a guessed cause or errand sends them the wrong way. It uses plain terms, such
+  as player, account or item, never the product's in-world words for them, apart from a proper name
+  such as its currency.
 
 ## Repository guidance
 
@@ -769,13 +768,14 @@ return records;
   checks that run for its state starting — a draft starts no test jobs — since the base can move
   while the push runs. A status sent to the user states what was just read and where, never what
   was reported or expected: conflicted, failing, running, or passing, on the head or target named,
-  with "done" or "ready" written only when that read says so and a file sent with it checked first
-  as **User-Facing Output** requires.
+  with "done", "ready", a merge step or a review hand-off written only once that read says so and
+  nothing this run started still changes it, the report otherwise saying it is still changing; a
+  file sent with it is checked as **User-Facing Output** requires.
 - **Whatever that read shows wrong is the next thing done**, ahead of every queued item, and is
-  never carried to "the next push" or bundled behind other work. A conflict is brought in
-  through `merge-conflict`, delivered under the GitHub rule’s **Pre-Push Gate**, and read back. A base that only
-  moved, with no conflict, is brought in once, by `review-pass` at the selected workflow’s completion, before the final
-  acceptance.
+  never carried to "the next push" or bundled behind other work. A conflict is brought in through
+  `merge-conflict`, delivered under the GitHub rule’s **Pre-Push Gate**, and read back. A base that
+  only moved, with no conflict, is brought in once, by `review-pass` at the selected workflow’s
+  completion, before the final acceptance.
 - **A delegated worker's report of an outcome is a claim, never evidence.** Before relaying it or
   building on it, check it at its source: "tests pass" against the run or the CI result on that
   commit, "pushed" or "exists" against the branch, "merged" or "refreshed" against the default
@@ -977,6 +977,13 @@ return records;
   request under the ownership rules above before retaining a checkout's branch. If the checkout
   is on the default branch, detached, of the other kind, or owned by another session without a
   continuation instruction, move to the selected branch or create a descriptive non-default branch.
+- **Work is delivered only once the default branch holds it.** Before a pull request is called
+  superseded, stale or done because another pull request carries its change, or is recommended for
+  closing or closed, read the base of every open pull request in the repository: one whose base is
+  its head branch is stacked on it. A pull request with a stack on it is never closed or judged
+  superseded by that stack, since the stacked one carries its change only by building on it, and
+  closing it strands the whole stack off the default branch. Its disposition comes from the
+  default branch alone.
 
 ### Merge Authorization
 
@@ -1029,8 +1036,9 @@ return records;
 - A hold does not authorize merging the source pull request to unblock the agent-configuration pull request. Finish both pull requests' independent checks, report the dependency, and leave the source pull request reviewable until its merge is separately authorized. After the source pull request merges, continue the held one under the selection rule above: incorporate the updated base and rerun the affected gates before using the agent-configuration merge exception.
 - When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request; one held for a source pull request becomes eligible once that pull request has merged. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, when selected under the ownership rules above. Do not close or leave it open merely because it is draft or conflicts with the base; close only one this session opened, and only when its change is superseded or no longer wanted.
 - An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization, except each fix pull request a directly user-invoked skill's own authorization names, once that skill's merge gates pass; that authorization ends with the run.
-- An authorized merge is not held for a failing check the current user explicitly waives or an
-  established baseline exclusion under `pre-production`'s **Encountered Issues** classification.
+- An authorized merge is not held for a failing check the current user explicitly waives, an
+  established baseline exclusion, or a non-essential check left red on findings the change did not
+  write, each under `pre-production`'s **Encountered Issues** classification.
   Record the check and its exclusion evidence in the task's record, then attempt the authorized
   merge without asking the user; a baseline exclusion is named to the user only where that
   classification allows. Preserve that classification rather than excluding a required repair merely
@@ -1104,6 +1112,13 @@ return records;
   as “as requested” or “per your instructions”; apply the instruction to the result itself.
   Record an exchange only when the user explicitly asks to document that exchange, in a document
   whose purpose is that record.
+- **A description of an input, output, option, setting or field tells a person what the value is,
+  in a plain sentence**, such as "Commit the changes are compared against". It never restates the
+  flag or variable the value becomes, such as `--base-sha`, stands a bare value grammar such as
+  `a | b` in place of words, or lists which operation, command or caller uses it, such as
+  `(generate only)`: the code already shows how the value is passed and who reads it, and a list of
+  users goes stale with the next change to the code. Where a value is one of a fixed set, the
+  sentence says what each one does.
 - Name what a branch, commit or pull request changes by its category of change, in generic nouns
   such as page, request or button. A branch takes the repository's required prefix and a slug of
   that description.
@@ -1114,8 +1129,8 @@ return records;
 - A README's reader is a person using or developing the project, so a README holds what the
   project is, how to run or use it, where a developer finds its parts, and a Local Development
   section with the commands to install, run, and validate it locally. Anything only an agent acts on
-  goes in the repository's rules and skills instead, with repository-specific facts in
-  `.agents/project.md` or a reference it points to: an environment variable or credential an agent
+  goes in the repository's rules and skills instead, with what one repository's agents must do in
+  `.agents/project.md`: an environment variable or credential an agent
   session reads, even one a person adds to a cloud environment for the agent; a tool installed for
   agents; a procedure only agents follow.
 - After drafting or editing READMEs and other reference documentation, compare each statement with
@@ -1180,9 +1195,11 @@ checks before delivery; retain evidence that the change has not invalidated.
   disk, memory or ports is recovered as the global rules' local-stack bullet says, and the job runs
   here. Only a hosted service or credentials the session lacks, each established as the testing
   rules' cannot-run bullet says, or runner-specific behavior does.
+  A non-essential check left red on findings the change did not write, as `pre-production`'s
+  essential-checks bullet classifies them, holds no push.
 - **A local variant of a CI check is not that check**, and each of these passes locally and fails
-  in CI: lint or type checks scoped to the changed files, where CI's whole-tree run finds an import
-  another change left unused in a file the branch never touched; a formatter or linter in write
+  in CI: lint or type checks scoped to the changed files, where CI's whole-tree run finds an
+  untouched caller of a signature the change altered; a formatter or linter in write
   mode, which rewrites what CI's check mode reports; a tool at a version or with a config other than
   the one CI resolves; a job left out because the diff looks unrelated to it, such as a
   generated-output drift check or a whole-tree check that every shared component has a docs page.

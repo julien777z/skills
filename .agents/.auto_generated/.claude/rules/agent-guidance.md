@@ -28,16 +28,19 @@ paths:
   technology. Keep their examples generic —
   invented names and placeholder shapes, never this repository's modules, helpers, packages, paths,
   or domain vocabulary, and never the product, tool, or platform whose incident prompted the change.
-- `.agents/project.md` is the home for repository-specific guidance: its base classes, helpers,
-  packages, layout, documentation structure, inventories, and generated sections.
-- Repository facts only some work needs — a local stack, test accounts, deployment targets, a
-  migration layout — go in `.agents/references/<name>.md`, named for their content and read on
-  demand, and `.agents/project.md` points to each file in one line.
+- `.agents/project.md` is the home for repository-specific guidance: the rules and conventions an
+  agent follows there, such as which base classes and helpers to use and its generated sections.
+- **Guidance never keeps a copy of how a repository's tooling behaves today.** Commands, flags,
+  ports, test accounts, deployment targets and file layouts are read from the code, configuration
+  and help output that own them, and from the README a person reads. A copy in guidance reads to the
+  next agent as a contract to preserve, so it holds the tooling back from changing and goes stale
+  when it does. Guidance states what an agent must or must not do; a repository keeps no
+  `.agents/references/` folder.
 - A rule that cannot be stated without naming something this repository owns belongs in
   `.agents/project.md`. Move it there rather than rewording it into something generic but untrue.
 - **A new rule file is only ever a guidance correction**, written through `edit-skill` for guidance
   a rule's subject owns, as the bullets above place it. A system an agent built, such as a booking
-  service's flows, is documented where those bullets place repository facts; repository guidance
+  service's flows, is documented in its code and README, never in guidance; repository guidance
   that says to add a rule per system is itself corrected under `edit-skill`.
 - **Shared or repository-owned.** Generic skills live in one shared skills repository and reach
   every session through a user-level skill root; repository-specific skills, every rule, and
@@ -56,7 +59,7 @@ paths:
   `.agents/hooks/`, and hooks shipped with a skill stay in its package. A hook shared across
   repositories belongs in the shared skills repository; a hook that depends on one repository's
   behavior belongs there. Installed copies and native registrations consume that source.
-- **A skill that reads generically belongs to every repository, so write it that way and put it in the skills repository.** Repository paths, product names, and domain nouns turn a reusable workflow into one repository's copy of it; keep them out unless the skill's correctness depends on that local contract, and where a skill genuinely needs one local fact — a command, an identity, a host, a package, a fixture — take it from the repository's project guidance or a setting rather than baking it in. Live file paths and copied application code go stale when files move or refactors land; use generic placeholders such as `services/<name>/...`, short pattern descriptions, or minimal invented examples instead. Where a shared skill needs a repository-specific collaborator — a migrations skill, a finalization skill, a deployment skill, a deferral label — it names the role and finds the skill by its description in the skill listing, and the repository's `project.md` **Repository Skills** table says which local skill fills the role.
+- **A skill that reads generically belongs to every repository, so write it that way and put it in the skills repository.** Repository paths, product names, and domain nouns turn a reusable workflow into one repository's copy of it; keep them out unless the skill's correctness depends on that local contract, and where a skill genuinely needs one local fact — a command, an identity, a host, a package, a fixture — read it from the repository's tooling, configuration and README, as the tooling bullet above says, or from a setting, rather than baking it in. Live file paths and copied application code go stale when files move or refactors land; use generic placeholders such as `services/<name>/...`, short pattern descriptions, or minimal invented examples instead. Where a shared skill needs a repository-specific collaborator — a migrations skill, a finalization skill, a deployment skill, a deferral label — it names the role and finds the skill by its description in the skill listing, and the repository's `project.md` **Repository Skills** table says which local skill fills the role.
 - **What a skill builds on in the repository it runs in is looked up there, never written into the
   skill.** A structure the skill reads — how skills or files are grouped, which folders exist, which
   skill a workflow starts from, what a page or section is called — comes from the repository when it
@@ -77,11 +80,10 @@ paths:
 - Paths inside a repository's `.agents`:
   - `agent` -> `.agents/agents/<name>.md`
   - `rule` -> `.agents/rules/<name>.md`
+  - `tool` -> `.agents/tools/<name>`, a helper script agents run, found by listing the folder
   - `skill` -> `.agents/skills/<name>/SKILL.md`, or `.agents/skills/<folder>/<name>/SKILL.md`
     where the repository sorts its skills into folders; the folders group the source and never
     change the name a skill installs under.
-  - repository facts only some skills need -> `.agents/references/<name>.md`, as the references
-    bullet above places them; Agent Sync neither mirrors nor validates them.
 
 ## Harnesses
 
