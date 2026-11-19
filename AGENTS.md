@@ -442,6 +442,16 @@ Canonical guidance lives in `.agents/`.
   terminal. Keep the task active under **Task execution and authorization** while resolving its gate.
 
 - **Local stack resources are disposable, and repairing them is part of the work, never a question for the user.** Local databases and their migration state, Redis, Docker containers, volumes, networks, images and the daemon itself can be repaired, reset, dropped or recreated whenever the task needs them working. A database stuck on a revision a branch has since regenerated, a stale cache, a wedged container: fix it and carry on. The records a local stack holds are the same: create, edit, reset, reopen or convert them whenever the work needs them in a given state — a test account to sign in with, a submission held in review to show a banner, a record a new rule no longer accepts — as the repository's data policy says, report what was done, and never put the choice to the user. The tooling that brings a local stack to a state is the agent's in the same way: a scenario command, the test accounts and records it creates, and what each scenario seeds are added, changed or redesigned as the work needs, never put to the user in a plan, a question or a gate's remedy, and never a product choice, since no user of the product meets them. The same holds for what the session's own work leaves behind when disk, memory or a port runs short: build caches and the leases and snapshots holding them, stopped containers, orphaned processes and build output. The one limit is a resource another run is actively using, such as a test runner holding the stack's lock. Wait for it or use a separate resource; never stop it. A route that limit rules out, such as restarting a daemon a running test still uses, leaves narrower ones, such as removing only the leases, records or processes the session's own work created; recovery is exhausted, and reported as a gate, only once no route remains. **Development data in a non-production deployment is the agent's the same way** when the project's guidance or its release stage marks it disposable: an unreleased product's staging saves, its test profiles and accounts, and the records a staging environment holds for its testers are reset, converted or recreated whenever the work needs them, such as a test save that no longer loads after an item's ID changed, then reported, never put to the user. Production data, and records real users or other people own, stay with the user. Deployed and shared remote environments are otherwise not local; the following live-deployment rules govern them.
+- **A copy a file-sync service or the operating system left behind is deleted, never kept, left as
+  outside the task or put to the user.** Its name is the original's plus a copy suffix, such as
+  `budget 2.csv` or `HEAD 2`. On meeting one, list all with a name search of the whole tree and its
+  Git directories, such as `find` on the root, `git rev-parse --git-dir` and `--git-common-dir`,
+  never `git status` or `ls`, which miss ignored and hidden ones. A copy with content of its own
+  stays as an ordinary file. Before anything stages, stashes or snapshots the tree, delete each
+  other copy once no process, worktree or session uses it, naming each in the report:
+  - a file identical to its original or to any version of it Git holds;
+  - an entry in a Git directory outside `worktrees` and `modules`, once a branch holds each commit only it names;
+  - a folder or clone whose files, commits and stashes its original holds, removed as a plain folder.
 
 - Do not rebuild, republish, or redeploy an already validated artifact solely because its source
   head advanced. Compare the edits with the artifact's actual source: cleanup proven to preserve
@@ -456,17 +466,6 @@ Canonical guidance lives in `.agents/`.
   smoke testing read-only everywhere else. Where the same artifact and materially equivalent
   configuration run in several environments, one successful write test on that target plus
   read-only health and routing checks on the others validates the shared path.
-
-## Tailscale policy
-
-- Before changing Tailscale authority or its consumers, invoke `tailscale-config`; it owns
-  affected-consumer discovery, execution cutover and verification across repositories and environments.
-- Prefer environment-branded tags over generic role tags whenever a Tailscale resource applies to
-  a particular environment. Add a role suffix only when distinct roles within that environment need
-  separate authority; do not create tags for roles that are not in use.
-- Use groups to grant people access and to own tags. Define service and routing policy in terms of
-  environment-scoped resource tags instead of individual email addresses or broad
-  cross-environment tags.
 
 ## Code layout
 
@@ -496,7 +495,7 @@ return normalized
 ```
 
 ```typescript
-// Good: separate the request, guard, state change, and result.
+// Good: separate the request, guard, and result.
 const response = await fetchRecords();
 
 if (!response.ok) {
@@ -504,8 +503,6 @@ if (!response.ok) {
 }
 
 const records = await response.json();
-
-setRecords(records);
 
 return records;
 ```
@@ -630,7 +627,9 @@ return records;
   or a report names what was found and lists the values it concerns, such as "Unrecognized shelf
   codes: B7, Q2". It assumes no cause, such as "the shelf list is out of date", and asks nothing of
   anyone, such as "Please ask the catalog team to correct the shelf list": its reader is the one
-  who investigates, and a guessed cause or errand sends them the wrong way.
+  who investigates, and a guessed cause or errand sends them the wrong way. It uses plain terms, such
+  as player, account or item, never the product's in-world words for them, apart from a proper name
+  such as its currency.
 
 ## Repository guidance
 
@@ -769,13 +768,14 @@ return records;
   checks that run for its state starting — a draft starts no test jobs — since the base can move
   while the push runs. A status sent to the user states what was just read and where, never what
   was reported or expected: conflicted, failing, running, or passing, on the head or target named,
-  with "done" or "ready" written only when that read says so and a file sent with it checked first
-  as **User-Facing Output** requires.
+  with "done", "ready", a merge step or a review hand-off written only once that read says so and
+  nothing this run started still changes it, the report otherwise saying it is still changing; a
+  file sent with it is checked as **User-Facing Output** requires.
 - **Whatever that read shows wrong is the next thing done**, ahead of every queued item, and is
-  never carried to "the next push" or bundled behind other work. A conflict is brought in
-  through `merge-conflict`, delivered under the GitHub rule’s **Pre-Push Gate**, and read back. A base that only
-  moved, with no conflict, is brought in once, by `review-pass` at the selected workflow’s completion, before the final
-  acceptance.
+  never carried to "the next push" or bundled behind other work. A conflict is brought in through
+  `merge-conflict`, delivered under the GitHub rule’s **Pre-Push Gate**, and read back. A base that
+  only moved, with no conflict, is brought in once, by `review-pass` at the selected workflow’s
+  completion, before the final acceptance.
 - **A delegated worker's report of an outcome is a claim, never evidence.** Before relaying it or
   building on it, check it at its source: "tests pass" against the run or the CI result on that
   commit, "pushed" or "exists" against the branch, "merged" or "refreshed" against the default

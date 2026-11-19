@@ -80,6 +80,7 @@ paths:
 - Paths inside a repository's `.agents`:
   - `agent` -> `.agents/agents/<name>.md`
   - `rule` -> `.agents/rules/<name>.md`
+  - `tool` -> `.agents/tools/<name>`, a helper script agents run, found by listing the folder
   - `skill` -> `.agents/skills/<name>/SKILL.md`, or `.agents/skills/<folder>/<name>/SKILL.md`
     where the repository sorts its skills into folders; the folders group the source and never
     change the name a skill installs under.
