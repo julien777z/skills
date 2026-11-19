@@ -1,8 +1,7 @@
 ---
 name: new-doctor
-description: Create a doctor skill on the shared doctor-protocol for one class of repository hygiene. Takes the name of the doctor to add.
+description: Create a doctor skill on the shared doctor-protocol for one class of repository hygiene. Takes the name of the doctor to add. Run only when the user asks for it.
 short_description: 'Create a doctor skill on the shared doctor-protocol for one class of repository hygiene.'
-disable-model-invocation: true
 ---
 
 # New Doctor
@@ -65,8 +64,11 @@ against a violation a reviewer has not been told about.
   and the instruction to run the audit phase only: inventory the target, apply every lens, and
   return findings anchored to file and line, each naming the lens and the remedy. No plan, no
   gate, no edits, and never the expected findings.
+- **Who writes and judges.** A fresh agent launched through `subagent-matrix` that did not write
+  the doctor picks or builds the targets and writes the sealed expectations below, and another judges each
+  reviewer's findings against them; the doctor's author does neither.
 - **Targets.** For each lens, first a real example: a place in the current repository where the
-  shape exists today, found by the author and handed to the reviewer as a bounded scope. Where the
+  shape exists today, handed to the reviewer as a bounded scope. Where the
   repository has no live example, or the class is one the user described that has not happened
   yet, write a scratch tree outside the repository that plants exactly one violation per uncovered
   lens, beside one clean control tree that follows every convention and at least one near miss —

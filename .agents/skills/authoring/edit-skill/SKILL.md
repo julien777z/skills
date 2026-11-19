@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Before proposing or editing guidance, derive the observable failure and test the proposed scope against alternative implementations of it. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. First carry out the requested action; only a verified success, or a direct guidance request in the user's words, is recorded in the session ledger and delivered as a guidance edit. While another task is active, every correction, a direct request to edit guidance included, is pushed to a draft guidance pull request and recorded, with a generic backup comment there, and the rest of its delivery runs in bulk when that task completes; one arriving while a guidance batch is in flight joins that batch's pull request, which reruns only the checks the new edit invalidates. Deliver every behavior-changing guidance edit through `review-pass`, the acceptance gate, and `test-skill` before its pull request merges.
+description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Before proposing or editing guidance, derive the observable failure and test the proposed scope against alternative implementations of it. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. A correction that encodes a new process waits until that process has worked on the work in hand; every other correction is recorded and written at once, whatever happens to the current work's repair. While another task is active, every correction, a direct request to edit guidance included, is pushed to a draft guidance pull request and recorded, with a generic backup comment there, and the rest of its delivery runs in bulk when that task completes; one arriving while a guidance batch is in flight joins that batch's pull request, which reruns only the checks the new edit invalidates. Deliver every behavior-changing guidance edit through `review-pass`, the acceptance gate, and `test-skill` before its pull request merges.
 short_description: 'Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.'
 ---
 
@@ -10,12 +10,20 @@ Upsert `.agents` source-of-truth files for agents, skills, or rules based on use
 every edit through the same delivery whether the user invoked this skill or the edit arose while
 doing other work. An edit that skipped this is unverified, and the report says so.
 
-**First perform the requested action.** While another task runs, correct the current work before
-recording a guidance correction. Record only a verified success, or a direct guidance request,
-under **Recording During A Task**, which sets when its edit is delivered. A failed, blocked, or
-unavailable action is task evidence only: it does not create a ledger correction or a guidance edit.
-With no other task running and no guidance batch in flight, as `session-ledger`'s **Guidance Batches**
-defines it, first perform the requested action and record it only after it succeeds.
+**Only a new process waits for its run.** A correction that encodes a process the work has not yet
+carried out waits until it has worked, as the next paragraph says. Every other correction — a gap a
+guidance failure exposed, a rule the user states — depends on nothing the current work does: record
+it and write its edit at once under **Recording During A Task**, which sets when it is delivered,
+while the current work is corrected beside it. A problem the current work meets while it is being
+corrected is that work's own issue, never a reason to hold or drop a correction that does not depend
+on it.
+
+**A process is encoded only once it has worked.** A request to put a new process into guidance — a
+workflow, a procedure, a tool or route, a way of building or delivering something — is first carried
+out on the work in hand and verified to work; the guidance is then written from that run: the steps
+and commands it used, what had to differ from the source that described the process, and what
+failed along the way. Documentation, a plan, a worker's proposal or the request's own description
+of the process is the source to try, never the text to encode.
 
 An open `.agents` pull request is not a delivery result. Processing continues through its source
 check, required review steps, merge or hold, Agent Sync result, and verification of generated root
@@ -30,15 +38,16 @@ the same gap, and the session that hit it is the only one holding the evidence.
 
 The tell is a sentence you are about to write to the user about your own process — that you skipped
 a step, that a check did not apply, that you should have done something earlier. Diagnose the route
-before the sentence; when it exposes a guidance gap, first perform and verify the requested action.
+before the sentence; when it exposes a guidance gap, record and write the correction while the work
+is corrected.
 
 **The user pointing out how you work is the same trigger.** "Why did you do it that way", "you
 should have done X", "don't do Y again": each calls for correcting the thing in front of you and
-checking whether guidance allowed the miss. When the correction succeeds, record the owning file
-for permanent guidance so the next session does not repeat it.
+checking whether guidance allowed the miss. Record the owning file's correction at once, beside
+correcting the work, so the next session does not repeat it.
 
-Correct the current behavior and trace its guidance path in the same turn. When a successful
-correction exposes a gap during another task, record it as **Recording During A Task** says;
+Correct the current behavior and trace its guidance path in the same turn. When the trace exposes a
+gap during another task, record it as **Recording During A Task** says;
 **Guidance Delivery** carries it into canonical guidance. Neither the issue nor its verification
 disappears when the surrounding task resumes.
 
@@ -51,7 +60,8 @@ new owner under **Guidance Changes Proceed Automatically**.
 ## Guidance Changes Proceed Automatically
 
 A user request or an encountered guidance gap, once **Behavior** step 1 confirms its premise,
-authorizes the canonical `.agents` correction. Do not
+authorizes the canonical `.agents` correction, except a policy change, which **Behavior** step 2
+sends to the user. Do not
 ask for a plan or for approval of a guidance-output example; an approval hold the invoking workflow
 sets is that workflow's and still applies. An example renders the settled
 instruction and is task evidence, not a new product experience because a user reads it. A guidance
@@ -77,15 +87,15 @@ Honor the selected workflow's verification sequence and any delivery or installa
 recording or delivering a batch.
 Validate skill dependencies and their actual call and policy-read paths under the shared agent-guidance rule’s **Dependencies** and **Validation** sections.
 
-- Carry out the user's requested action in the current work first and verify that it achieved the
-  requested result. Do not make a ledger entry merely because the user proposed a method or a
-  reusable lesson.
+- A correction that encodes a new process waits for that process's verified run, as **A process is
+  encoded only once it has worked** says; a method or lesson the work has not yet tried is not a
+  correction until then. Every other correction is recorded as soon as its gap is diagnosed.
 - A direct request to change guidance, such as "use edit-skill to reflect that", is recorded the
   same way. While another task runs, the requested action is the behavior it describes, applied to
   the current work, and the guidance edit is its record. While a guidance batch is in flight, its
   delivery is that action and the user's words are its evidence.
-- After verified success, record the correction as a `guidance_correction` entry with
-  `session-ledger`: the successful action and its evidence, a reproduction scenario, the intended
+- Record the correction as a `guidance_correction` entry with `session-ledger`: the evidence of the
+  gap, and for a process its verified run, a reproduction scenario, the intended
   behavior, the canonical files it will change, and `pending` as its `status`. Steps 1–4
   of **Behavior** run now, while the evidence is fresh, and their result goes into the entry; the
   edit itself (steps 5, 6 and 7.1) is written as the bullet on writing the edit below says, and step
@@ -100,9 +110,6 @@ Validate skill dependencies and their actual call and policy-read paths under th
   session's branch. A brief to any worker whose task a pending entry's subject covers carries that
   entry's intended behavior, with the user's words quoted and the installed text it amends named, as
   the global rules require.
-- When the action fails, is blocked, or cannot be verified, keep its evidence in the task's
-  verification record and continue its recovery or escalation. Do not create, amend, or process a
-  `guidance_correction` entry, and do not edit canonical guidance from that outcome.
 - Write the edit in the checkout step 4 resolves, on the branch step 7.1 selects — the batch's own
   branch while a batch is in flight and its pull request has not merged — commit it, and push it to
   that branch's pull request once the **Pre-Push Gate** passes, opening a draft when the branch has
@@ -135,8 +142,7 @@ user's review of the source pull request overlaps it.
 
 1. Read every entry in the frozen batch and resume at its recorded first
    nonterminal stage, rebuilding a lost or truncated entry from its backup
-   comment as `session-ledger` accepts it; the comment's existence records that the action
-   succeeded, its Intended behavior stands as the intent statement for step 3, and step 7.5
+   comment as `session-ledger` accepts it; the comment's existence records that the correction was admitted under **Recording During A Task**, its Intended behavior stands as the intent statement for step 3, and step 7.5
    rebuilds the reproduction scenario from its failure class and invariant, with anything else
    unrecoverable handled as `session-ledger` incomplete retrieval. An entry with no recorded commit
    applies its edits under **Behavior** steps 5 and 6, on the branch step 7.1 selects; one with a
@@ -161,7 +167,7 @@ user's review of the source pull request overlaps it.
    reproduction scenario as an input and entries that share a failure class grouped into one
    scenario, then steps 7.6–7.9. A guidance repair the skill-test round makes, here or on a source pull
    request under step 1, goes back through `review-pass` over its delta, and the skill-test round reruns
-   the scenarios it invalidated on the head that review accepts.
+   every scenario `test-skill` does not carry forward, on the head that review accepts.
 5. After each completed or failed stage, record its exact head, stage result, and first
    nonterminal next stage in each entry. Resume from that stage without repeating completed work.
    After the skill-test round, record the pull request, its head, the skill-test results and the merge or
@@ -178,8 +184,8 @@ user's review of the source pull request overlaps it.
 - At a checkpoint and before reporting its state, record the complete pull-request head and file
   list, the target repository's lifecycle, its current state, and its next transition. A draft
   confined to canonical agent configuration records `agent-configuration exception`
-  and `merge-gate` as its next action unless the selected workflow's delivery hold or step 7.7 holds it for the
-  user or for a source pull request; it never records `await user authorization` otherwise.
+  and `merge-gate` as its next action unless the GitHub rule's **Merge Authorization** holds it; it
+  never records `await user authorization` otherwise.
 
 ## Behavior
 
@@ -228,9 +234,11 @@ user's review of the source pull request overlaps it.
      read what the candidate already says about that subject, and put the change where a reader
      doing that work will meet it, at the breadth the shared `agent-guidance.md` rule asks for. Never ask which file; the search
      is this skill's job.
-   - **A violated instruction calls for causal diagnosis and an application repair.** Trace whether
-     the instruction was absent, its trigger or sequence kept it from the decision, a conflicting
-     instruction overrode it, or the agent failed to apply guidance it had. Read exceptions and
+   - **A violated instruction, or any guidance failure the user points out, calls for causal
+     diagnosis and an application repair.** Before editing, trace the actual path from the request
+     to the missed behavior: whether the instruction was absent, its skill loaded, its trigger or
+     sequence kept it from the decision, a conflicting instruction overrode it, or the agent failed
+     to apply guidance it had. Read exceptions and
      stopping clauses with its callers. When the substantive rule is already correct, inspect the
      step that produced the rejected recommendation, triage, brief or action: what instruction and
      review evidence it used, what next action those required, and how its chosen action differed.
@@ -240,9 +248,6 @@ user's review of the source pull request overlaps it.
      Record missing historical evidence without inventing a cause; it does not prevent repairing
      the observed decision path. When the owning skill was not invoked, harden its frontmatter
      description first; body text cannot control a run that never loads the skill.
-   - When the user points out a guidance failure, trace the actual path from the request to the
-     missed behavior before editing: which instruction applied, whether its skill loaded, and why
-     the agent's decision diverged. Correct the current work and any evidenced guidance gap in this run.
    - Test the proposed instruction against that original decision path before proposing or writing it. If a
      reader could follow it and still repeat the miss, explain the mismatch to the user, name the
      instruction that actually caused or allowed the decision, and correct that owning path and
@@ -254,7 +259,12 @@ user's review of the source pull request overlaps it.
      related callers and dependencies for other gaps needed to solve the same issue. Before
      applying those additional corrections, tell the user which gaps you found, what you will add
      and why. Apply relevant guidance fixes without waiting to be invited to think more broadly;
-     product choices still follow the global authorization boundary.
+     product choices still follow the global authorization boundary. **An edit writes only what
+     the request and the failure it repairs need.** Two kinds of edit are policy changes, proposed
+     to the user with the standing text they would change and written only once the user's own words,
+     or an invoked skill's explicit instruction for that change, approve them: a requirement neither the request nor its failure needs, such as a step, a routing
+     rule or a hold the request never named; and any exception to, or change of, standing guidance
+     the user did not ask to change, however necessary the repair makes it look.
    - **When no existing file of the inferred or selected type governs the subject, create the new
      owner under Guidance Changes Proceed Automatically.** Record its recommended name, scope, and
      behavior in the correction evidence; do not ask for approval. An existing file of that type
@@ -277,15 +287,14 @@ user's review of the source pull request overlaps it.
      skills-repository session only when no writable checkout can be obtained, never by editing
      the installed clone.
      The originating session supplies the observed miss and its failure class, original task,
-     relevant diff or small file set, repository commit, original skill text, and the observable
-     pass criteria needed for the scenario.
-     Include a sanitized fixture when the skills session cannot read the originating repository.
-     The skills session tests original and proposed wording against the same case and names the
-     exact proposed pull-request head. For repository-dependent behavior, the originating session
-     then reads that head's `SKILL.md` explicitly and replays the case in its own context before
-     merge; fetch the head when accessible or receive the exact file as a scratch artifact. Retain
-     the replay across heads unless changed guidance, inputs, or environment materially invalidate
-     it. Do not assume a pull request automatically installs its skill.
+     relevant diff or small file set, repository commit, original skill text and the outcome the
+     user requires, with a sanitized fixture when the skills session cannot read the originating
+     repository. The skills session tests original and proposed wording against the same case and
+     names the exact proposed pull-request head. For repository-dependent behavior, the originating
+     session then replays the case against that head before merge as `test-skill` runs a scenario,
+     its reader given that head's files, fetched or received as a scratch artifact, and carries the
+     result across heads only as `test-skill` carries one. Do not assume a pull request
+     automatically installs its skill.
    - Never read or write `.cursor/*`, `.claude/*`, `.codex/*`, or any other non-`.agents` agent or provider folder.
    - Do not manually create, update, or sync mirrored command/skill/rule files in those folders; repository automation propagates changes from `.agents` to Cursor, Claude, Codex, and similar targets. This holds with no exception, including where the change leaves a mirror pointing at a path it renames or deletes: the workflow reconciles those on the default branch, and a branch carrying a stale or broken one meanwhile is expected.
    - This path restriction applies to the agent-content update, not to source changes required to fix an underlying issue from step 3.
@@ -326,7 +335,9 @@ user's review of the source pull request overlaps it.
      rules and skills by its subject, required action and opposite disposition. Read the complete
      changed skill or rule and its supporting files, plus relevant sections in other skills, rules,
      callers and dependencies. Apply the [conflict criteria](references/conflicting-instructions.md). Resolve competing instructions
-     at their owners rather than adding a reminder beside them. Record the searches, sources read
+     at their owners rather than adding a reminder beside them; where the new instruction conflicts
+     with standing guidance the request did not ask to change, fit the new instruction to the
+     standing one, as step 2 says. Record the searches, sources read
      and each resolution, or the evidence for a clean result. Repeat this check for later wording
      changes before acceptance and skill tests; an earlier clean result does not cover a new edit.
    - Update existing files in place and report any structural changes. Before delivery, follow the
@@ -373,8 +384,10 @@ user's review of the source pull request overlaps it.
 7. **Guidance Delivery** delivers the batch in this order, with `review-pass` carrying steps 3–4. Ordinary
    repairs and verification remain authorized throughout this delivery; resolve flagged gates under `acceptance-gate`'s **Bounds** and failing skill-test runs under
    `test-skill`. A pull request confined to agent configuration has merge authorization under the
-   GitHub rule after its stated gates, subject to the selected workflow's delivery hold; ask neither to repeat that authorization nor to continue
-   an ordinary repair. That merge authority settles no genuine unresolved product, scope, or
+   GitHub rule after its stated gates, a skill's changed scripts' own checks included, unless its
+   **Merge Authorization** holds it; ask neither to repeat that authorization nor to continue an
+   ordinary repair, and never record, report or ask for a permission hold by citing the ordinary
+   merge default. That merge authority settles no genuine unresolved product, scope, or
    authorization choice: put that concrete choice to the user under **Bounds** while independent
    work continues. It does not authorize a release workflow. A changed output's concrete example, under **Upsert behavior**, is task evidence before writing that output; it does not wait for approval.
    1. **Branch and commit.** Select the edit's pull request under the GitHub rule's **Branches and Pull Requests** — never put it onto a
@@ -412,10 +425,10 @@ user's review of the source pull request overlaps it.
       above. No merge here authorizes a release.
    3. **Check prose duplication** through the `code-simplify` pass `review-pass` runs over the delta,
       reading every touched `.agents` file whole, and act on what it reports: guidance duplicated
-      between peer rules or skills, including a caller and a skill it always invokes; a section grown
-      around a second subject; a heading named for a category with one member; a rubric left inline
-      that the shared `agent-guidance.md` rule's skill shape sends to a
-      reference. Prose duplicates as readily as code, and nothing else catches it. Every `.agents`
+      between peer rules or skills, including a caller and a skill it always invokes, or between two
+      files of one skill; a section grown around a second subject; a heading named for a category
+      with one member; a rubric left inline that the shared `agent-guidance.md` rule's skill shape
+      sends to a reference. Prose duplicates as readily as code, and nothing else catches it. Every `.agents`
       change gets that pass over its entry point and supporting files, a one-line rule edit as much as a
       new skill: a single bullet added to
       the file that does not own it is exactly the duplication this catches, and it is the change
@@ -427,16 +440,17 @@ user's review of the source pull request overlaps it.
       workaround in generic guidance is a finding unless the skill's contract depends on it; the
       incident's route must not narrow the durable decision boundary. The brief carries the
       incident's vocabulary — the product, its record and screen nouns, the labels the request
-      quoted — so an example carrying any of it is a finding.
+      quoted — so an example carrying any of it is a finding; it also carries the real case behind
+      the request.
       Resolve each flag through `acceptance-gate`'s **Bounds**: repair the owning instruction, push the
-      changed increment, and check it as those **Bounds** say. Repeated flags do not permit dropping owed work or merging
+      changed increment, and put it to the fresh gate those **Bounds** require. Repeated flags do not permit dropping owed work or merging
       flagged guidance, apart from the decision the global rules' review-round limit calls for after
       3 rounds; acceptance, or that recorded round-limit decision, must cover the final wording
       before delivery.
 
    5. **Run one `test-skill` round over the batch on the head `review-pass` accepted.** Give it every
       entry's reproduction scenario, grouping entries that share a failure class. `test-skill` owns
-      the coverage, package, control, scoring, and rerun procedure.
+      the scenario writing, coverage, package, control, grading, and rerun procedure.
       Record an entry whose run `test-skill` does not require as `not run: <test-skill reason>`;
       the acceptance gate is its check.
 
@@ -448,13 +462,6 @@ user's review of the source pull request overlaps it.
       it draft under an ordinary source-work default or report it as delivered before its merged
       text and generated outputs are verified. The report names either the merged state or a
       concrete documented gate with its evidence; draft alone is neither.
-
-      **The agent-configuration merge exception decides the conflict with the ordinary merge
-      default.** When the GitHub rule classifies every changed path as canonical agent
-      configuration, the required gates pass, a skill's changed scripts' own checks included, and no
-      still-open source pull request holds it, `merge-gate` is the next action in
-      this run. Do not record, report, or ask for a permission hold by citing the ordinary default;
-      that is not a documented gate for this pull request.
 
       **A skill that arrives by relocation is not a skill the change adds.** Moving one between
       repositories, or generalizing local copies into one every repository can adopt, produces a new
@@ -487,8 +494,8 @@ user's review of the source pull request overlaps it.
       merges. Select where dependent guidance goes under the GitHub rule's **Branches and Pull Requests**,
       and report any hold under its **Merge Authorization**. Otherwise a pull request carrying a
       skill change merges once step 6 found every changed output matching its concrete example, and
-      one carrying only rules merges on sight as the GitHub rules say, subject to the selected
-      workflow's delivery hold. Report a held pull request for the user's review.
+      one carrying only rules merges on sight as the GitHub rules say, unless their **Merge
+      Authorization** holds it. Report a held pull request for the user's review.
    8. **Nothing is copied by hand.** The skills repository is the only copy of a shared skill;
       sessions receive a merged edit through the refresh **After Agent Sync** runs, never through a copy
       placed in another repository or install. A skill that reads generically but was written into one repository's `.agents` is

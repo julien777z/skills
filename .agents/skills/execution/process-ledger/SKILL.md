@@ -31,8 +31,8 @@ Apply `session-ledger`'s **Guidance Batches** boundary.
   user asking to change a file the batch is changing included, takes the batch's id and its edit is
   pushed to the batch's pull request. The batch reruns only the checks that edit invalidates and
   keeps every verdict on what it left unchanged: the source check runs on the new head, the review
-  and acceptance gate judge the new increment alone, and the skill-test round covers the new entry's
-  scenario and any entry whose wording the edit changed. A completed stage is not repeated for the
+  and acceptance gate take the new increment as their delta, and the skill-test round covers the new
+  entry's scenario and every scenario `test-skill` does not carry forward to the new head. A completed stage is not repeated for the
   entries it already covers.
 - **Once the batch's pull request has merged**, an entry admitted then starts the next batch, frozen
   when this one is done and delivered with its normal checks; the merged batch is never reopened.
@@ -57,16 +57,18 @@ Apply `session-ledger`'s **Guidance Batches** boundary.
      **Batches**. Send it to `edit-skill`'s **Guidance Delivery** route so canonical guidance
      completes its delivery gates.
    - `artifact`, `plan`, `question`, and `decision`: reconcile the state with the artifact owner,
-     the plan's recorded steps, or user answer. They never create guidance merely because they were
-     processed. A complete `plan` stays while its task is active; remove it once the task's outcome
+     the plan's recorded steps, or user answer. A decision or answered question whose work is open
+     is complete only once that work is verified where it lives, never by matching the user's answer
+     alone. They never create guidance merely because they were processed. A complete `plan` stays while its task is active; remove it once the task's outcome
      is verified complete.
    - `review`: a pull request's reviewed head. Keep it while that pull request is open; remove it
      once the pull request is merged or closed.
    - An unrecognized kind: preserve it only when evidence identifies a concrete owning workflow or
      next action; otherwise remove it as invalid.
-3. A failed, blocked, unavailable, or unverified requested action — which a direct guidance request
-   never is, since its delivery is its action — is not a `guidance_correction` to process. Keep its evidence in the task's verification record, continue recovery or escalate
-   the live task as needed, and do not create, amend, or deliver permanent guidance from it.
+3. A process that failed, was blocked or was never verified on the work is not a
+   `guidance_correction` to process: keep its evidence in the task's verification record, continue
+   recovery or escalate the live task as needed, and encode nothing from it. A correction that
+   encodes no process is processed whatever happened to the current work's repair.
 4. Judge terminality against each record's complete owning outcome, including its required delivery
    and verification. Remove it only when that outcome is verified complete or evidence proves the
    record invalid. Current-work success alone does not complete a pending guidance delivery; retain

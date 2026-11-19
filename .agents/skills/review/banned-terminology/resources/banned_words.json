@@ -169,6 +169,16 @@
       "rejected_replacements": [
         "Banning \"validate\" outright. It is the right word for input validation, and renaming every field and model validator to assert_ made guards of things that only clean a value."
       ]
+    },
+    {
+      "term": "birch",
+      "variants": [
+        "birches",
+        "birchwood"
+      ],
+      "applies_to": "any name a person reads or hears: product and player-facing text, an item, character, place or creature, an asset, a file, an identifier, or an object placed in a world",
+      "use_instead": "another wood or tree of the same feel, such as alder, rowan, hazel or willow.",
+      "why": "Read aloud or misread by one letter it sounds like a curse, so players and readers hear the curse rather than the tree."
     }
   ]
 }

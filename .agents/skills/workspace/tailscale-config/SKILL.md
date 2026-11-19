@@ -93,7 +93,7 @@ effective authority and missing validation in the task's private verification ev
 evidenced guidance gap at its canonical owner; let `edit-skill` determine the disposition when no
 gap is established rather than inferring noncompliance from existing text. Generalize the failure class,
 never the current environment or resource names. Follow `edit-skill`'s **Recording During A Task**:
-the current work is corrected immediately, and only a verified successful correction is recorded.
+the current work is corrected immediately, and the correction is recorded beside it.
 
 ## Output
 

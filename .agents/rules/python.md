@@ -9,7 +9,6 @@ paths:
 
 ## Syntax and Typing
 
-- For single-consumer, non-library repositories, require Python 3.12 or newer and prefer the latest stable Python release when the repository's runtime and dependencies are compatible. For public libraries, prefer the widest feasible supported range with a minimum no earlier than Python 3.11.
 - Use modern type hints: `str | None` instead of `Optional[str]`.
 - Use built-in generics: `list[T]`, `dict[K, V]` instead of `List[T]`, `Dict[K, V]`.
 - Type a class method that returns a new instance of its own class as `Self` from `typing`; any
@@ -202,7 +201,7 @@ from myapp.http_transport import fetch
 
 - Define each configuration owner's settings in one descriptively named `BaseSettings` class such as `ActionConfig` in its `config.py`. A repository may have distinct application, worker, or script configuration owners; do not combine unrelated settings merely to produce one repository-wide class. Keep each config module declarative: instantiate its settings once at that owner's composition boundary, then pass or import that validated object wherever settings are needed.
 - Put a value in that settings class when, and only when, its owner is likely to change it on its own — per deployment, per environment, per release, or while running the system — without changing the code that reads it. What kind of value it is never decides this: a timeout, retry count, or batch size the owner expects to revisit is configuration exactly as a credential, a host the deployment chooses, or a feature switch is. Every other value — one nobody expects to change except together with the code that reads it, including every value that code's correctness fixes, such as a pattern it parses with or a format or limit a protocol defines — is a typed module constant beside that code. Where the evidence settles neither side, the value stays where its owner put it.
-- Give configurable values typed defaults when the repository has a safe default, and let `pydantic-settings` load environment values using the settings names governed by the Pydantic rule.
+- Give configurable values typed defaults when the repository has a safe default, as the global rules' **Configuration** section defines one, and let `pydantic-settings` load environment values using the settings names governed by the Pydantic rule.
 - Use `TypedDict` only for static structured data that is not configuration.
 
 ```python
@@ -220,7 +219,7 @@ class ActionConfig(BaseSettings):
 APPLICATION_CONFIG = ActionConfig()
 ```
 
-- Before declaring or reviewing a setting, read its supported operations, consumers, and example/test configuration. Settings needed for those operations without a safe default, including endpoints, API keys, and secrets, are required non-nullable Pydantic fields with nonempty field constraints. Newness, unavailable deployment credentials, and mock values do not make absence a supported mode. Use optional fields only for an explicitly supported absence contract, such as documented ambient credentials; enforce it at the owning boundary rather than adding missing-value checks or silent disablement in consumers.
+- Before declaring or reviewing a setting, read its supported operations, consumers, and example/test configuration. A setting the global rules' **Configuration** section makes required, including an endpoint, API key or secret, is a required non-nullable Pydantic field with a nonempty field constraint, never `str | None = None` or an empty-string default. Declare a field optional only for the documented absence contract that section allows, at the settings class, never through a missing-value check in a consumer.
 - Do not add useless config values like `DEFAULT_ENVIRONMENT`.
 - A provider's published sandbox and production hosts are constants in that provider's package, and the application's canonical environment check selects between them. Select a provider's host from that check (such as the settings object's `is_production`), never from a provider-specific environment setting or enum that restates what the deployment environment already decides.
 - Do not add helper functions like `_get_environment` when the value already exists on the shared settings object.

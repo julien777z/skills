@@ -1,21 +1,59 @@
 from collections.abc import Mapping, Sequence
-from enum import Enum
+from datetime import timedelta
+from enum import Enum, auto
 from typing import Literal, NotRequired, TypedDict
 
 type JsonValue = str | int | float | bool | None | Sequence[JsonValue] | Mapping[str, JsonValue]
 type ToolArguments = Mapping[str, JsonValue]
+type Position = tuple[float, float, float]
 
 
-class StudioCall(Enum):
-    """A kind of runner or Studio MCP call."""
+class RunnerOperation(Enum):
+    """An operation in the runner that has its own time limit."""
 
-    INITIALIZE = "initialize"
-    TOOL = "tool"
-    COPY = "copy"
-    LAUNCH = "launch"
-    CAPTURE = "capture"
-    CLOSE = "close"
-    REMOVAL = "removal"
+    INITIALIZE = auto()
+    TOOL_CALL = auto()
+    COPY = auto()
+    LAUNCH = auto()
+    CAPTURE = auto()
+    EDIT_PROBE = auto()
+    PROCESS_LIST = auto()
+    STOP = auto()
+    REMOVAL = auto()
+    LOCK_CHECK = auto()
+    DESCRIBE = auto()
+    SESSION_EXIT = auto()
+    HELPER_CHECK = auto()
+    PLUGIN_ALERT = auto()
+    DIAGNOSIS = auto()
+
+
+class RunnerConfig(TypedDict):
+    """The game's runner configuration, as `runner_ssh.sh --describe` prints it."""
+
+    ROBLOX_STUDIO_GAME: str
+    ROBLOX_STUDIO_TART: str
+    ROBLOX_STUDIO_VM: str
+    ROBLOX_STUDIO_SSH_USER: str
+    ROBLOX_STUDIO_SSH_KEY: str
+    ROBLOX_STUDIO_KNOWN_HOSTS: str
+    ROBLOX_STUDIO_EDITORS: int
+
+
+class AgentLockReceipt(TypedDict):
+    """The receipt agent-lock writes for a lock it granted."""
+
+    key: str
+    lock_file: str
+    token: str
+
+
+class EditorSlot(TypedDict):
+    """One editor of the game's pool: the lock a check takes for it and its guest folder."""
+
+    number: int
+    lock_key: str
+    project: str
 
 
 class LockOwnership(TypedDict):
@@ -30,6 +68,23 @@ class AgentLockCheckReport(TypedDict):
     status: str
     ownership: LockOwnership
     remaining_seconds: float
+
+
+class AgentLockAcquireReport(TypedDict):
+    """An agent-lock acquire report."""
+
+    status: str
+    ownership: LockOwnership
+    remaining_seconds: NotRequired[float]
+    expired_owner: NotRequired[str | None]
+
+
+class RunnerLease(TypedDict):
+    """The game's runner, the editor a receipt holds, or none for the whole VM, and how long its lease has left."""
+
+    config: RunnerConfig
+    editor: EditorSlot | None
+    remaining: timedelta
 
 
 class McpTextContent(TypedDict):
@@ -92,3 +147,17 @@ class StudioButton(TypedDict):
     y: float
     width: float
     height: float
+
+
+class PlaceIds(TypedDict):
+    """The place and universe IDs an editor's Edit data model reports."""
+
+    place_id: int
+    universe_id: int
+
+
+class CameraView(TypedDict):
+    """A camera position and the point it looks at."""
+
+    position: Position
+    look_at: Position

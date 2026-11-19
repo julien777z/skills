@@ -19,7 +19,6 @@ skill change the user asks for, whose plan is a proposed flow.
 - `review-pass`
 - `defer-scope`
 - `acceptance-gate`
-- `generic-push`
 - `merge-conflict`
 - `subagent-matrix`
 - `merge-gate`
@@ -604,7 +603,6 @@ checks it before review.
 When one change spans multiple repositories, treat each repository as an independent delivery
 context, with **Pull Requests** applying inside each of them.
 
-- Invoke `generic-push` separately for each repository before committing or publishing.
 - Write every branch name, commit message, pull-request title, pull-request description, review
   comment, code comment, and repository-local report solely from that repository's perspective.
 - Apply the GitHub rule's independent publishing context to those artifacts, including dependency
@@ -675,10 +673,10 @@ it — the user asking about something else is not the user withdrawing what the
   nothing.
 - **A context summary's pending list is this run's named work**, not background, **and its state is
   read from the record, never from the summary.** After a compaction or handoff, and before
-  starting, delegating or reporting any plan work, read each step's state from the plan entry in
-  `session-ledger` and from the repository — merged commits, pushed heads — and let them overrule
-  the summary: a step that the ledger entry or the repository shows done is not started again, and
-  one the summary left out is still owed. The first turn then moves the oldest item still open as
+  starting, delegating or reporting any plan work, read each step's state, and each decision or
+  answered question whose work is open, from `session-ledger` and from the repository — merged
+  commits, pushed heads — and let them overrule the summary: an item the record shows done is not
+  started again, and one the summary left out is still owed. The first turn then moves the oldest item still open as
   well as whatever the summary's next step names. A constraint it carries, such as "ask before X", is an earlier turn's instruction,
   checked under **Encountered Issues** before it is obeyed.
 - **Commits a remote lacks are undelivered work**; their next step is the pre-push checks and the

@@ -11,6 +11,10 @@ verification chat. Skills that use it should declare `subagent-matrix` in their 
 but a missing declaration does not bypass selection. Return the selection table to the calling
 agent; the calling agent launches the actual assignment with the selected model.
 
+## Dependencies
+
+- `share-media`
+
 ## Workflow
 
 1. Identify the calling skill or direct task, its assigned roles or verification chat, and any
@@ -113,7 +117,11 @@ context and returns its verdict into the step waiting on it; nothing else does b
 - **Never route one elsewhere**: not through a new remote or cloud session, a scheduled trigger or
   routine, or a message asking any session but the delegating agent to run it. Those run outside
   the step, can fail setup or leave branches behind, and their verdict never returns to the run
-  that waits on it.
+  that waits on it. The one exception is a reader whose test requires that it load no installed
+  copy of the guidance under test, when the agent tool's subagents load one: it runs as a local
+  headless harness process the running session starts and waits on, with its user-level skill and
+  rule roots pointed at a scratch root, and hands back its complete original output as the
+  result-retention bullet below requires.
 - **Launch fallback: a worker that cannot launch a subagent its step needs hands the step up; never
   absorb it.** Attempt the native dispatch when available. This covers a host that gives the worker
   no agent tool and a native dispatch that fails other than by a capacity refusal, which step 3 waits out and relaunches, for reviewers, lenses, validators, gates and
@@ -129,10 +137,11 @@ context and returns its verdict into the step waiting on it; nothing else does b
   such as the fix steps a flag names, under the follow-up bullet below. Only the top-level agent,
   with no delegating agent to ask, performs an assignment in process after its own launch fails,
   records the launch outcome, and reports that the result lacked independent review; never describe
-  an in-process result as an independent verdict. A brief never tells a worker to fall back to
-  in-process review or gating.
+  an in-process result as an independent verdict. An in-process result of an independent step
+  never admits the change it judges: that step stays a concrete gate until a launched subagent
+  answers it. A brief never tells a worker to fall back to in-process review or gating.
 - **An independent step gets a newly launched subagent for every question it answers when available.** A gate,
-  finding validator or skill-test reader that has answered about an item is never resumed, messaged or
+  finding validator, skill-test reader or grader that has answered about an item is never resumed, messaged or
   reused for a later round on it — not to judge the repair of its own flag or a revised item — since
   its answer would then rest on its own earlier verdict. A reviewer that a review loop keeps across
   its rounds, carrying the ledger, is a reviewer and not one of these.
@@ -150,12 +159,31 @@ context and returns its verdict into the step waiting on it; nothing else does b
   an original from retained host output when available; otherwise repeat only the unproven step,
   not the surrounding cohort.
 - **A worker hands each capture the user should see up the same way, as it is made.** Through any
-  mid-run channel the host gives it to the delegating agent, it sends the file path and a line on
-  what the capture shows; a worker whose only channel is its final message returns with the
-  captures made since and is resumed. Work that will make such captures goes to a worker the
+  mid-run channel the host gives it to the delegating agent, it sends the file path and the
+  caption `share-media` requires, or, for a capture worker that captures without judging as
+  [model capabilities](references/model-capabilities.md) says, what each capture shows, leaving its
+  reading and caption to the delegating agent; a worker whose only channel is its final message
+  returns with the captures made since and is resumed. Work that will make such captures goes to a worker the
   delegating agent can resume or hear from mid-run; where the host offers neither, the delegating
   agent splits the work so each delegation ends at one such capture, and forwards each as it
   arrives.
+- **At most five execution workers run at once in a session**: the subagents that implement,
+  investigate or test a scope of the task, since each one spends usage on its own. Parallel work is
+  worth that cost only for scopes that are truly separate. A reviewer, gate, validator or reader a
+  step requires is not an execution worker: it starts when its step reaches it, beside however many
+  workers are running. Before launching a worker, count the workers still running. A host or
+  provider limit that stops workers lowers the count further until they run cleanly.
+- **Work that shares an area with a running worker's scope goes to that worker**, such as the same
+  feature, window, system, files or verification setup, as part of its task, not to a new one: one
+  worker owning a game's settings window can take a request to rename one of its tabs and another
+  to change a related control.
+- **Work that needs a new worker while five are running waits for a slot** and is recorded with its
+  brief, except work that removes what the running workers are blocked on, such as making a shared
+  runner, tool or service they queue for faster or able to serve them in parallel. That work does
+  not wait for a slot; it takes one in this order: a running worker it unblocks pushes its work and
+  is paused, the unblocking work is launched in the freed slot, so the count never passes five, and
+  the paused worker resumes once that work lands. Its brief has it take the shared resource with
+  priority, through its lock's priority option where the resource has one.
 - **Assign one implementation owner per coherent scope, and a fresh worker for each delegated
   task.** The primary agent retains integration, dependencies, product decisions and orchestration.
   Delegate work that produces an independent result, not a wrapper that only invokes another

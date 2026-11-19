@@ -13,6 +13,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 - `session-ledger`
 - `list-prs`
 - `use-dashboard`
+- `pre-production`
 
 ## Workflow
 
@@ -102,13 +103,13 @@ and deliver the same dashboard again on every request so the user keeps one page
   ("<done> of <n>"), Running, Waiting on you and Time left, the summary of what the board shows step
   by step, and `details` holding each row's plan write-up, so a row opens the plan.
 - **`tree` "Plan tree"**, with `open_depth` 2: one entry per plan that is not withdrawn, in
-  approval order, `label` the plan's title, `figure` "<done> of <n> steps" and `meta` "~<n> min left", or "Proposed" for a plan
-  not yet approved; under it one entry per step, in plan order, `label` "<n>. <step title>", `tone`
-  as its progress segment is toned, `meta` its status, then "~<n> min" while it is not done or its
-  measured duration once it is, and `figure` "<done> of <n> parts" for a step with parts, counting
-  parts not skipped; and under such a step one entry per part, `label` its title, `tone` `good`
-  when done, `accent` when active, `critical` when blocked and neutral otherwise, and `meta` its
-  status.
+  approval order, `label` the plan's title, `figure` "<done> of <n> steps" and `meta` "~<n> min left", or
+  `status` "Proposed" for a plan not yet approved; under it one entry per step, in plan order, `label`
+  "<n>. <step title>", `status` its status (Done, Running, Blocked, Next or Skipped) toned as its
+  progress segment is, `meta` "~<n> min" while it is not done or its measured duration once it is,
+  and `figure` "<done> of <n> parts" for a step with parts, counting parts not skipped; and under
+  such a step one entry per part, `label` its title and `status` its status, toned `good` when done,
+  `accent` when active, `critical` when blocked and neutral otherwise.
 - **Plan write-up**: the plan as a reader who missed the conversation needs it, from the ledger's
   `plan` entry: an `outline` with `expanded` and `stacked` set, `title` the plan's title and `description` its
   goal, then "Approved · ~<total> min", or "Proposed · ~<total> min" for a plan not yet approved. Its groups, each only when it has something in it:
@@ -128,7 +129,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 | Column | `tone` | Cards |
 | --- | --- | --- |
 | Waiting on you | `warning` | Each open question: `title` the question, `detail` "Recommended: <recommendation>", `tag` "Question". |
-| In progress | `accent` | Active and blocked steps: `detail` what the step changes, from its ledger entry, `tag` the plan's title when the task has several plans, followed by " · blocked" when blocked, or "Blocked" alone when it has one, `meta` its estimate, adding "· <done> of <n> parts" for a step with parts, counting parts not skipped. Each question whose evidence is still owed: `title` the question, `detail` the evidence being gathered, `tag` "Question". |
+| In progress | `accent` | Active and blocked steps: `detail` what the step changes, from its ledger entry, `tag` the plan's title when the task has several plans, `status` "Blocked" toned `critical` when blocked, `meta` its estimate, adding "· <done> of <n> parts" for a step with parts, counting parts not skipped. Each question whose evidence is still owed: `title` the question, `detail` the evidence being gathered, `tag` "Question". |
 | Up next | — | Steps not started, in plan order, with `meta` as above and `tag` the plan's title when the task has several plans. |
 | Done | `good` | Finished steps, `meta` their measured duration. |
 
@@ -143,7 +144,8 @@ and deliver the same dashboard again on every request so the user keeps one page
   Keep to the boxes the explanation needs, a dozen at most.
 - **`table` "Ready to merge"**: one row per open or draft pull request, in merge order, with the
   columns Pull request, Checks, Conflicts, Open threads, Waits on and Ready. Checks is "Passing",
-  "Failing: <check>" or "Running"; Conflicts "None" or "With <base>"; Open threads the count of
+  "Failing: <check>" or "Running", over the checks the change answers for, leaving out a baseline
+  failure as `pre-production`'s **Encountered Issues** says; Conflicts "None" or "With <base>"; Open threads the count of
   unresolved review threads; Waits on the pull requests or actions it needs first, or "Nothing".
   Ready is "Yes" only when its checks pass, it has no conflict or open thread, and nothing it waits
   on is left; otherwise it names the first thing missing.
@@ -171,7 +173,8 @@ and deliver the same dashboard again on every request so the user keeps one page
   ones, which need nothing more from the reader, with `group_label` "Repository". `label` its name,
   `url`, `group` "<owner>/<repo>", `detail` the checks and review state just read, `state` its
   `open` or `draft`, and `status` and `tone`: Open `good`, Draft neutral, and Failing checks
-  `critical` in place of either when the head's checks fail.
+  `critical` in place of either when the head's checks fail, read the way the Ready to merge table's
+  Checks column reads them.
 - **`questions` "Answered"**: each answered question with the user's `answer` in their words and
   `at` the time it was given, with `page_size` 5.
 - **`notes` "Decisions and notes"**: each recorded decision and each assumption made without the
@@ -183,8 +186,8 @@ and deliver the same dashboard again on every request so the user keeps one page
   in" outline groups by, in that order, `label` the group's title and `figure` the count of its
   items, followed by "Config" and "Migrations" entries when its config or migration changes hold
   anything; and under each area one entry per change, `label` the item's title, or for config and
-  migrations the `name` with `meta` its `change` (Added, Changed or Removed). The tree is the map;
-  the details are in "Change details".
+  migrations the `name` with `status` its `change`: Added toned `good`, Changed `accent`, Removed
+  `critical`. The tree is the map; the details are in "Change details".
 - **`tabs` "Change details"**:
   the tabs "Code", holding an `outline` "What changed in <pull request name>" per pull request the
   page covers, in the tree's order; "Config", holding the `changes` "Config changes"; and
