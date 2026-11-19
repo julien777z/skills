@@ -96,9 +96,8 @@ Validate skill dependencies and their actual call and policy-read paths under th
   quoted as the global rules' example-value bullet says, the evidence of the gap, and for a process
   its verified run, a reproduction scenario, the intended behavior, the canonical files it will
   change, and `pending` as its `status`. Steps 1–4 of **Behavior** run now, while the evidence is
-  fresh, and their result goes into the entry; a review or gate of the edit judges it against those
-  words, never a summary of them; the edit itself (steps 5, 6 and 7.1) is written as the bullet on
-  writing the edit below says, and step 7.2 onward waits.
+  fresh, and their result goes into the entry; the edit itself (steps 5, 6 and 7.1) is written as the
+  bullet on writing the edit below says, and step 7.2 onward waits.
 - **A recorded correction governs the rest of the session at once**, ahead of the installed text it
   amends. Before a decision a pending entry's subject covers, read the ledger's pending entries and
   follow their intended behavior. Putting a question or a recommendation to someone is such a
@@ -141,7 +140,7 @@ user's review of the source pull request overlaps it.
 
 1. Read every entry in the frozen batch and resume at its recorded first
    nonterminal stage, rebuilding a lost or truncated entry from its backup
-   comment as `session-ledger` accepts it; the comment's existence records that the correction was admitted under **Recording During A Task**, its Intended behavior stands as the intent statement for step 3, and step 7.5
+   comment as `session-ledger` accepts it; the comment's existence records that the correction was admitted under **Recording During A Task**, its Intended behavior stands as the recovered intent for step 3 beside the user's words, taken from the conversation where they survive and never replaced by that paraphrase, and step 7.5
    rebuilds the reproduction scenario from its failure class and invariant, with anything else
    unrecoverable handled as `session-ledger` incomplete retrieval. An entry with no recorded commit
    applies its edits under **Behavior** steps 5 and 6, on the branch step 7.1 selects; one with a
@@ -158,8 +157,8 @@ user's review of the source pull request overlaps it.
    source check and skill-test round pass, so its batch can be done. The steps below cover the
    agent-configuration pull request.
 2. Run step 7.2's source check.
-3. Run `review-pass` once over the batch, naming every head it carries. Give it the user's request
-   and the recorded evidence as the intent statement, the incident vocabulary for its acceptance
+3. Run `review-pass` once over the batch, naming every head it carries. Give it each entry's recorded
+   user's words and evidence as the intent statement, the incident vocabulary for its acceptance
    gate as step 7.4 describes, and step 7.3's prose-duplication checks for its simplification pass.
 4. Run step 7.5's `test-skill` skill-test round once over the batch, naming every head `review-pass`
    accepted, with every entry's
