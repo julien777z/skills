@@ -17,7 +17,8 @@ alwaysApply: true
   canonical source. Report it missing only when those sources do not contain it; never substitute a
   manual approximation for an installed action skill.
 
-- In repositories that provide an agent CLI or otherwise interact with agents, store every agent prompt in a dedicated Markdown file rather than inline in application code so it is easy to find, review, and maintain. Application code may load a prompt file and interpolate runtime values into it.
+- **Every prompt an application gives a model is its own Markdown file in its prompts folder, which
+  code loads and fills, never text in code**: a template, MCP server instructions, an agent definition it loads.
 
 ## User-Facing Output
 
@@ -36,8 +37,8 @@ alwaysApply: true
   table scoped to its own repository carries that repository inside its link text, as above, never as a
   plain name beside a linked number, and a repository named in passing, such as the other half of a
   paired change, is linked too. Every item in a list gets a link, however long the list. A surface
-  that cannot render a link, such as a question tool's option label, carries the address in its
-  supporting text.
+  that cannot render a link, such as a question tool's option, names the item the way people do,
+  such as a pull request by its title, and leaves its link to the text or page sent before it.
 - **A web product's views are pages.** Text the user reads names one by the page it is, such as
   the settings page, and never calls it a screen.
 - **A file the user should see reaches them where they read.** Per-item detail past five items —
@@ -300,15 +301,16 @@ alwaysApply: true
   unseen**: the reader answers the question tool, and chat text around it, or in some harnesses all
   text before a tool call, may never reach them. Ask directly in chat only when the harness has no
   question tool. The question's own text and option descriptions therefore carry what the decision
-  needs: what happens today, what each option changes, and the recommendation with its reason; a
-  short plan put for approval goes into the question whole. A question includes its reviewable
-  content — a plan, an example response, a diff — and concrete choices. The option that approves a
-  plan or proposal reads "Approved", never "Go" or another word, and is asked only once every
-  decision the plan or proposal depends on is answered: those decisions go to the user first, on
-  their own, and the plan or proposal shown for approval is written for their answers, with nothing
-  in it conditional on one. Material too large for the question, such as captures or a long diff,
-  reaches the user as `share-media` says, in a message they see before the question, and the
-  question names it.
+  needs: what happens today, stated as fact and where; what each option changes; and the
+  recommendation with its reason. A hypothetical, such as "if the API sends only IDs", or internals
+  named without what they do leave the reader asking for the facts. A short plan put for approval
+  goes into the question whole. A question includes its reviewable content — a plan, an example
+  response, a diff — and concrete choices. The option that approves a plan or proposal reads
+  "Approved", never "Go" or another word, and is asked only once every decision the plan or proposal
+  depends on is answered: those decisions go to the user first, on their own, and the plan or
+  proposal shown for approval is written for their answers, with nothing in it conditional on one.
+  Material too large for the question, such as captures or a long diff, reaches the user as
+  `share-media` says, in a message they see before the question, and the question names it.
 - **A step only the user can take, which the work waits on, is asked through that tool too, never
   left in chat.** Granting a permission, signing in, approving on another device, or running a
   command that needs their password each goes out as a question once everything the agent can
@@ -492,7 +494,7 @@ return normalized
 ```
 
 ```typescript
-// Good: separate the request, guard, state change, and result.
+// Good: separate the request, guard, and result.
 const response = await fetchRecords();
 
 if (!response.ok) {
@@ -500,8 +502,6 @@ if (!response.ok) {
 }
 
 const records = await response.json();
-
-setRecords(records);
 
 return records;
 ```

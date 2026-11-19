@@ -131,8 +131,9 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
 8. **Classify every unsuccessful check before repair.** A caller-supplied exclusion, a current-user
    waiver for its named test or check is excluded. Preserve established baseline classifications;
    classify a newly encountered possible baseline under `pre-production`'s **Encountered Issues**,
-   without reentering that skill's active run. Record an exclusion's evidence, remove it from
-   required coverage, and do not repair, rerun, or wait for it. Apply the
+   without reentering that skill's active run. A non-essential check failing only on findings
+   `pre-production`'s essential-checks bullet leaves red is an exclusion too. Record an exclusion's
+   evidence, remove it from required coverage, and do not repair, rerun, or wait for it. Apply the
    GitHub rule's runner-infrastructure exclusion automatically: record a qualified check as skipped
    and do not rerun or wait for a green hosted result. For a canceled or otherwise interrupted
    attempt with no recorded validation failure and no exclusion, use an equivalent successful

@@ -129,8 +129,8 @@ mechanical check that finds every instance rather than the first one noticed:
   own test-utilities package — whose every consumer is under `tests/`, a test-utilities package, or
   a CI script using it for the same disposable-environment purpose the tests do (for every
   module-level `def` and `class` the scope adds or touches, grep the symbol across the repository
-  and classify each hit's root): it is a test utility and moves to the shared test-utilities owner
-  project guidance names, a test-support change under **Change Boundary** rather than an
+  and classify each hit's root): it is a test utility and moves to the shared test-utilities package
+  the repository's layout holds, a test-support change under **Change Boundary** rather than an
   application change. Two shapes stay where they are, and the report names every symbol it leaves
   for one of them with that reason, so a reviewer does not go hunting: an import-time registration
   such as a SQLAlchemy `@compiles` hook, whose consumer is the import itself and whose call-site
@@ -270,7 +270,8 @@ empty result included, and name each double it leaves alone with its reason.
 Model-factory machinery belongs in the repository's established shared factory owner, including
 when only one suite uses it. Fixture lifecycle wiring and scenario inputs stay in the suite.
 Inject application model types where a shared import would invert dependencies.
-Discover that owner from existing implementations and project guidance before relocating anything.
+Discover that owner from existing implementations and the repository's test-utilities package
+before relocating anything.
 Apply the general New Modules ownership-completion rule: inspect every related implementation and
 consumer, and flag a partial move even when the factory left behind was already there. Generic
 lifecycle helpers retain their own owners; a shared word does not establish shared responsibility.
@@ -283,7 +284,7 @@ every instance:
 
 - a `ModelFactory` or `SQLAlchemyFactory` subclass anywhere under `tests/`, including
   `fixtures/`, `utils/`, and factory modules; enumerate direct and indirect factory subclasses,
-  and move the machinery to the shared test-utilities owner named by project guidance;
+  and move the machinery to the shared test-utilities package the repository's layout holds;
 - model-generation functions, methods, or nested builders anywhere under the test tree, including
   `conftest.py`, fixture packages, and utilities: trace constructor calls and returned models, then
   apply `test-fixture`'s ownership dispositions to each implementation and its consumers; a clean
