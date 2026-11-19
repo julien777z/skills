@@ -173,8 +173,9 @@ and deliver the same dashboard again on every request so the user keeps one page
   deploy work** bullet says. In these three outlines, `tone` is `critical` when skipping the item
   breaks the next step and `warning` otherwise.
 - **`links` "Pull requests"**: each open and draft pull request, leaving out merged and closed
-  ones, which need nothing more from the reader, with `group_label` "Repository". `label` its name,
-  `url`, `group` "<owner>/<repo>", `detail` the checks and review state just read, `state` its
+  ones, which need nothing more from the reader, with `group_label` "Repository". `label` its
+  `<repository>#<number>`, `url`, `group` "<owner>/<repo>", `detail` its short title, then the
+  checks and review state just read, `state` its
   `open` or `draft`, and `status` and `tone`: Open `good`, Draft neutral, and Failing checks
   `critical` in place of either when the head's checks fail, read the way the Ready to merge table's
   Checks column reads them.
