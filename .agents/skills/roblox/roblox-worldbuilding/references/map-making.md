@@ -1,6 +1,6 @@
 # Map making and surface integration
 
-Apply this guidance to the requested genre and map. Preserve its art direction, authored scenery, and intended gameplay rules.
+Apply this guidance to the requested genre and map. Change its art direction, authored scenery or gameplay rules where they stand out as incorrect or would be better another way, as the global rules' game-design exception says.
 
 ## Composition and traversal
 
@@ -15,7 +15,7 @@ Apply this guidance to the requested genre and map. Preserve its art direction, 
 - Verify bridges and ramps with real walking. Decks should connect flush to approaches, collision surfaces should cover the route, and rails should run along the sides. A decorative bridge above water may still let a character pass underneath, swim, or become stuck. Use an appropriate hidden foundation/collision surface when the geometry needs it.
 - Check small decorative blockers too: a thin lamp post in a road can snag both players and a pathfinding driver. Place posts on the shoulder. For generated terrain, ground props against a raycast of the rendered voxel surface; the analytic height can sit noticeably above it. For imported meshes with retained rotations, use their actual bounds and world axes when fitting or grounding them.
 - Place encounters, collection objects, and navigation waypoints in their intended areas. Follow bridges and gates with authored route nodes or suitable pathfinding. A direct arrow through an obstacle is not usable navigation.
-- Keep requested duels/activities inside the explorable map. If a separate scene is an intentional product choice, give it a deliberate transition and return path. Do not silently move gameplay to an off-map development platform.
+- Keep requested duels/activities inside the explorable map. If a separate scene is intentional, give it a deliberate transition and return path. Do not silently move gameplay to an off-map development platform.
 - Place wayfinding information where it is visible and readable from the intended walking route before the relevant choice or destination. Validate each expected approach direction using the normal gameplay camera while staying on the route; a close-up from a specially chosen angle is not acceptance. Set orientation, setback, height, and reading distance together, keeping supports and scenery clear of the message. Choose one or multiple readable faces according to the approaches served. If physical signage cannot communicate reliably there, use another presentation suited to the game's visual language rather than requiring players to leave the route or hunt for the readable side.
 - Apply [world-space text inspection](world-space-text.md) to authored signs and runtime messages placed in the map.
 - Give a larger map distinct, connected areas with believable transitions in terrain, materials, buildings, and vegetation. Detail should support each area's role and guide exploration; scattered repeated props do not substitute for composition.
@@ -92,7 +92,7 @@ functional tests; move, reorient, or remove unexplained placements before passin
 
 ## Terrain, paving, and adjoining parts
 
-Treat visible intersections as map defects to repair during the affected visual pass, even when compilation and gameplay assertions pass. Avoid unrelated map redesign; preserve intentional embedded foundations, overlaps, and terrain variation.
+Treat visible intersections as map defects to repair during the affected visual pass, even when compilation and gameplay assertions pass. Preserve intentional embedded foundations, overlaps, and terrain variation.
 
 - Inspect the entire footprint and perimeter of circular plazas, disks, pools, steps, thin slabs, roof edges, and other parts touching terrain or geometry. Checking only the center misses grass wedges at curved edges and crossings at road joins.
 - Trace the actual source of clipping: solid terrain, decorative grass, a placed plant/mesh, intersecting parts, or nearly coplanar faces. Fix the relevant geometry/material/placement rather than concealing it with lighting or a camera restriction.

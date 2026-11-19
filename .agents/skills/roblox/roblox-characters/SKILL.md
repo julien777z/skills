@@ -13,7 +13,7 @@ short_description: 'Make Roblox NPCs, creatures, and avatars look, move, and pre
 
 ## Characters a player meets
 
-Apply this skill to every character a player sees: NPCs, enemies and other creatures, pets and companions, and the player's own avatar. Preserve authored silhouettes and the game's established characters. Override the player's avatar only when the product calls for it, because it was requested or the game requires it; otherwise preserve the existing character behavior and appearance.
+Apply this skill to every character a player sees: NPCs, enemies and other creatures, pets and companions, and the player's own avatar. Change an authored silhouette or established character where it stands out as incorrect or would be better another way, as the global rules' game-design exception says. Override the player's avatar only when the product calls for it, because it was requested or the game requires it; otherwise keep the player's own avatar as it is.
 
 Model and import a character's mesh through `roblox-worldbuilding`'s Blender pipeline, apply `luau` when reading or changing character code, and return imports, uploads, editor operations and Play sessions to the caller. Read [rigs, avatars and animation](references/rigs-and-animation.md), this skill's reference for rig-level work, before building or overriding an avatar, fitting accessories or a face, writing procedural poses or action presentation, rigging a creature for import, or changing character collision or a mode that holds a character still.
 

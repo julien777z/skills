@@ -14,7 +14,7 @@ short_description: 'Design and change Roblox interfaces, including HUDs and menu
 
 ## Clarity and visual quality
 
-Follow `luau`'s required UI framework. Make every interface clean, easy to use, beginner friendly, and visually pleasing. Treat these as acceptance criteria, not optional polish after code compiles. Preserve the game's established artwork and visual identity unless a redesign is requested.
+Follow `luau`'s required UI framework. Make every interface clean, easy to use, beginner friendly, and visually pleasing. Treat these as acceptance criteria, not optional polish after code compiles. Change artwork and visual identity where they stand out as incorrect or would be better another way, as the global rules' game-design exception says.
 
 Apply `luau` whenever reading or editing its Luau code. Return required engine setup and playtest work to the caller. Read [Framework and component practices](references/components.md) before changing architecture, dependencies, lifecycle, or layout.
 
