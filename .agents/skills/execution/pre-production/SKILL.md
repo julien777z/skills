@@ -63,8 +63,10 @@ Build the clean target contract instead of preserving transitional behavior.
   code or a changed-file lint run meeting older code in a file the change touched. Fix the findings
   in lines the change writes and leave the rest for later work on that code. Never sweep the rest to
   turn the check green, never loosen, disable, rescope or ignore the check, and never report the red
-  check to the user or ask about it. An essential check that already fails on the default branch is
-  a baseline failure, handled as the bullet above says.
+  check to the user or ask about it. A finding the change causes is the change's wherever it points:
+  a changed signature whose untouched callers no longer type-check is fixed in those callers, as
+  **Target Contract** requires. An essential check that already fails on the default branch is a
+  baseline failure, handled as the bullet above says.
 
 Fix and validate every defect that remains in the task, even when it predates the task or sits
 outside the initial file set; cleanup that fixes no defect follows the size budget below.
