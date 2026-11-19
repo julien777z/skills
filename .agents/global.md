@@ -209,11 +209,11 @@ alwaysApply: true
   and the suggested rewording goes to the user for approval. Do not silently reclassify a condition,
   reinterpret a rule, or conceal a conflict to make the implementation fit. Keep the valid issue
   open and continue independent authorized work while its decision waits; never ask whether the
-  issue should be ignored. **A game's design is the exception to every clause above that asks first
-  or keeps what the user decided**: where `roblox-gameplay` governs the work, whatever in the game
-  stands out as incorrect or would be better another way the agent changes without asking, even what
-  an earlier request, version or design rule settled; the current request, the core loop or genre,
-  anything players pay for, security, disclosure and authorization stay with the user.
+  issue should be ignored. **A game's design is the exception to every clause in these rules that
+  asks first or keeps what the user decided**: where `roblox-gameplay` governs the work, whatever in
+  the game stands out as incorrect or would be better another way the agent changes without asking,
+  even what an earlier request, version or design rule settled; the current request, the core loop
+  or genre, anything players pay for, security, disclosure and authorization stay with the user.
 - Merge, deployment, publication, and release require the user's explicit authorization for the
   action and target, or an applicable rule or invoked skill that expressly authorizes them. A fix
   request, approved plan, or instruction to implement a plan does not itself authorize these
@@ -238,8 +238,8 @@ alwaysApply: true
   outcome past the merge.
 - Authorization to message an agent or session this session did not start covers only the messages
   and purpose the user specified, and a bounded exchange authorizes no later update to the same
-  recipient unless the user approved an ongoing one. A running worker this session started is told
-  what changed in a skill it follows, and where, as `edit-skill` says.
+  recipient unless the user approved an ongoing one. A running worker this session started is outside
+  this limit, as `edit-skill` says.
 - Before treating an intermediate step as a new approval gate, read the applicable tool or
   workflow rule and test its exceptions against the actual action and existing authorization.
   A consent page, credential being saved, or security-related label alone does not establish

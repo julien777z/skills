@@ -93,11 +93,11 @@ Validate skill dependencies and their actual call and policy-read paths under th
   the current work, and the guidance edit is its record. While a guidance batch is in flight, its
   delivery is that action and the user's words are its evidence.
 - Record the correction as a `guidance_correction` entry with `session-ledger`: the user's words,
-  quoted as the global rules' example-value bullet says, the evidence of the gap, and for a process
-  its verified run, a reproduction scenario, the intended behavior, the canonical files it will
-  change, and `pending` as its `status`. Steps 1–4 of **Behavior** run now, while the evidence is
-  fresh, and their result goes into the entry; the edit itself (steps 5, 6 and 7.1) is written as the
-  bullet on writing the edit below says, and step 7.2 onward waits.
+  where the user gave any, quoted as the global rules' example-value bullet says, the evidence of
+  the gap, and for a process its verified run, a reproduction scenario, the intended behavior, the
+  canonical files it will change, and `pending` as its `status`. Steps 1–4 of **Behavior** run now,
+  while the evidence is fresh, and their result goes into the entry; the edit itself (steps 5, 6 and
+  7.1) is written as the bullet on writing the edit below says, and step 7.2 onward waits.
 - **A recorded correction governs the rest of the session at once**, ahead of the installed text it
   amends. Before a decision a pending entry's subject covers, read the ledger's pending entries and
   follow their intended behavior. Putting a question or a recommendation to someone is such a
@@ -435,7 +435,7 @@ user's review of the source pull request overlaps it.
       the file that does not own it is exactly the duplication this catches, and it is the change
       least likely to be looked at twice.
    4. **Brief `review-pass`'s final acceptance**, which judges the batch's complete `.agents` diff
-      with the intent statement step 3 gives it; this step starts no gate of its own. The brief asks
+      with the intent statement **Guidance Delivery** step 3 gives it; this step starts no gate of its own. The brief asks
       whether the guidance answers the request at the breadth the shared `agent-guidance.md` rule
       asks for and whether every mechanism it adds earns its place. A named tool, surface, or
       workaround in generic guidance is a finding unless the skill's contract depends on it; the
