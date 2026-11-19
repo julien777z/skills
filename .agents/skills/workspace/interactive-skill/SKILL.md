@@ -73,9 +73,13 @@ choices:
   as the description. A `multi` menu allows several selections, and a `confirm` offers Yes and No,
   its Yes labeled Approved when it approves a plan or proposal.
   A reply typed into the tool's free-text answer is matched as below.
+- **A menu longer than the tool holds is still asked through it.** Write the numbered menu below in
+  a message first, then ask the prompt through the tool, naming that menu, with up to four options:
+  the recommended choices, and for a `multi` menu `All` and `None`. The tool's free-text answer
+  takes any numbers or names from the menu, matched as below.
 - **Otherwise write the menu in chat**, exactly in this shape. That covers a harness with no
-  question tool, a menu longer than the tool can hold, and a `text` prompt. Then end the turn;
-  nothing that depends on the answer runs before it arrives.
+  question tool and a `text` prompt. Then end the turn; nothing that depends on the answer runs
+  before it arrives.
 
 ```markdown
 **What do you want to do?**
