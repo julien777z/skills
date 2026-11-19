@@ -146,6 +146,7 @@ def install_tool(action: ActionReference, commit: str) -> Path:
         ],
         check=True,
     )
+
     marker.touch()
 
     return tool_python(install_dir)
@@ -331,6 +332,7 @@ def parse_arguments() -> argparse.Namespace:
         default=Path.cwd(),
         help="Repository root (default: the working directory).",
     )
+
     tree.add_argument(
         "--agents-dir",
         default=".agents",
