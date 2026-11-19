@@ -181,7 +181,7 @@ Dashboards look alike because they are built alike:
   a page about one thing, such as the order parcels leave the warehouse in, find the stage that
   thing belongs to, such as dispatching the week's orders, and build the page for that stage, with
   the requested thing as one section among what the reader needs there. Name the page for the stage.
-- **A page that needs the reader says so in the navbar.** Any other page holding something the
+- **A page that needs the reader says so in the navbar.** A page other than Proposals holding something the
   reader must act on, such as a review waiting on them, sets its `status` in the `warning` tone, so
   its link carries the yellow dot; a page with nothing for the reader carries none.
 - **Pages run in the order the reader's work does.** After Overview and Proposals, pages that help the reader

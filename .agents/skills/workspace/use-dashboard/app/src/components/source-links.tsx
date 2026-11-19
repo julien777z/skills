@@ -5,8 +5,9 @@ import { Stack } from '@/components/primitives';
 import { Badge } from '@/components/ui/badge';
 import { linkAttributes } from '@/lib/references';
 import { PULL_REQUESTS } from '@/lib/tone';
-import { cn, withKeys } from '@/lib/utils';
+import { withKeys } from '@/lib/utils';
 import { type PullRequestState, SourceKind, type SourceLink } from '@/spec';
+import { PullRequestIcon } from './pull-request-icon';
 
 const KIND_LABELS: Record<Exclude<SourceKind, typeof SourceKind.PULL_REQUEST>, string> = {
   [SourceKind.DOC]: 'Doc',
@@ -18,17 +19,6 @@ const KIND_LABELS: Record<Exclude<SourceKind, typeof SourceKind.PULL_REQUEST>, s
   [SourceKind.PAGE]: 'Page',
   [SourceKind.DATA]: 'Data',
 };
-
-export function PullRequestIcon({ state, className }: { state: PullRequestState; className?: string }): ReactNode {
-  const style = PULL_REQUESTS[state];
-
-  return (
-    <svg viewBox="0 0 16 16" role="img" className={cn('fill-current', className)}>
-      <title>{style.label}</title>
-      <path d={style.path} />
-    </svg>
-  );
-}
 
 function PullRequestPill({ label, url, state }: { label: string; url: string; state: PullRequestState }): ReactNode {
   const attributes = linkAttributes(url);
