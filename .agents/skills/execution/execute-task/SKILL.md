@@ -291,7 +291,7 @@ Before implementation begins and whenever new work is admitted, delegate each co
 execution task under `subagent-matrix`'s **Dispatch** assignment bullets; a task waiting on a worker
 never holds another independent one. Reassess ownership after each finding or follow-up. Before
 writing a script or doing a check by hand, the agent and every worker look in the repository's
-`.agents/tools/` and the tool list its project guidance keeps, and every brief points there.
+`.agents/tools/`, and every brief points there.
 
 ### Task Authorization
 
@@ -766,8 +766,8 @@ Missing merge approval holds merging, never available branch verification. Merge
 verification, never a substitute for an available branch test.
 
 In a repository the owner runs, turn work the task's agents did by hand or scripted more than once
-into a helper in its `.agents/tools/`, creating the folder when missing, with a line naming it in the
-project guidance's tool list, before the delivery streams start.
+into a helper in its `.agents/tools/`, creating the folder when missing, before the delivery streams
+start.
 
 Then finish each pull request the task changed, once, with its work finished. A follow-up arriving
 after the streams ran is built, then reaches this checkpoint again when it is finished;

@@ -444,11 +444,11 @@ alwaysApply: true
   `budget 2.csv`, `notes (conflicted copy).md` or `HEAD 2`. On meeting one, list them all with a
   name search of the whole tree and of its Git directories, such as `find` from the repository root
   and from `git rev-parse --git-dir` and `--git-common-dir`, never `git status` or `ls`, which skip
-  them and ignored folders. A copy with content of its own stays as an ordinary file, and one in use
-  by a process, worktree or session goes once idle. Before anything stages, stashes or snapshots the
-  tree, delete each other copy holding nothing of its own, naming each in the report:
+  them and ignored folders. A copy with content of its own stays as an ordinary file. Before
+  anything stages, stashes or snapshots the tree, delete each other copy, once no process, worktree
+  or session uses it, naming each in the report:
   - a file identical to its original or to any version of it Git holds;
-  - an entry in a Git directory outside `worktrees` and `modules`, once a commit only it names is branched;
+  - an entry in a Git directory outside `worktrees` and `modules`, once a branch holds each commit only it names;
   - a folder or clone whose files, commits and stashes its original holds, removed as a plain folder.
 
 - Do not rebuild, republish, or redeploy an already validated artifact solely because its source
@@ -627,8 +627,8 @@ return records;
   or a report names what was found and lists the values it concerns, such as "Unrecognized shelf
   codes: B7, Q2". It assumes no cause, such as "the shelf list is out of date", and asks nothing of
   anyone, such as "Please ask the catalog team to correct the shelf list": its reader is the one
-  who investigates, and a guessed cause or errand sends them the wrong way. It says player or item,
-  never the product's in-world words, apart from a proper name, such as the currency's.
+  who investigates, and a guessed cause or errand sends them the wrong way. It uses plain terms, such
+  as player, account or item, never the in-world words, apart from a proper name such as its currency's.
 
 ## Repository guidance
 
