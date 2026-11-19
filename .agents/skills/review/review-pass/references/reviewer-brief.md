@@ -8,6 +8,7 @@ Review only. Do not edit, commit, push, comment on PRs, or start subagents.
 Repo: <abs path> Base: <sha> Intent: <intent> Out of scope: <scope> Checks: <results>
 Rules: <repository rule files whose patterns match the changed paths, or none>
 Whole: <each skill or rule the diff touches, the shared agent-guidance rule's size budget, and the real case, or none>
+Guidance intent: <base guidance, user's explicit requirements and corrections in their words, and acceptance-gate rubric's Guidance Intent section, or none>
 See: git diff <base> [-- <paths>]; git status --short (read untracked files).
 Read surrounding code. Find bugs, broken callers, mismatch with intent, and unsafe
 handling of user input (paths, patterns, queries, markup).
@@ -20,11 +21,14 @@ code that skips or weakens its work when one is unset, unless its owner document
 Flag breaks of the listed rules; skip other style unless it hides a bug. Flag code, tests or guards the intent does not need.
 Read each Whole skill or rule in full: flag a requirement it states twice, growth past that budget,
 and a step of the real case a reader of the result would take wrongly.
+Apply Guidance Intent to the resulting package and to every suggested remedy. An explicit
+requirement contradicted on any path is a blocker. Missing evidence holds approval.
 blocker = intended case wrong. should = a real bug callers will hit, an unsafe input,
 an optional setting above, a workaround, a duplicate of an existing helper, or a break of a listed rule. nit = the rest.
 List problems you see outside the change separately, with the files a fix would touch.
 Reply:
 VERDICT: APPROVE or CHANGES
+Guidance intent evidence: <controlling requirement and decisive path and evidence, if applicable>
 S1 [blocker|should|nit] <file>:<line> <claim>. Fix: <suggestion>
 O1 [outside] <files> <claim>
 ```

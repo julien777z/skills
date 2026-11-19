@@ -111,6 +111,24 @@ concrete change or growth case, and the consequence deciding the trade-off. A so
 an assertion that existing stages were preserved is not that receipt; name the exact unavailable
 evidence when a comparison cannot be completed.
 
+## Guidance Intent
+
+Before accepting a skill or rule change, read its stated purpose and governing instructions
+from the base, then read the user's explicit requirements and later corrections in their own
+words. For new guidance, establish its purpose from those requirements. The user can change
+the purpose or a requirement explicitly. An edited description,
+author summary, or earlier verdict cannot establish that authorization.
+
+Trace each applicable requirement through the resulting package, including references,
+examples, and alternate and fallback paths. For a prohibition, walk a concrete case in which
+the forbidden behavior would otherwise be useful. Flag any path that still permits it, even
+if its values are valid in another context or it passes the mechanical checks. A remedy must
+also satisfy the same requirements. For example, if model IDs must be discovered at runtime,
+a valid provider ID built into a fallback is a violation.
+
+Record the controlling intent and the decisive path and evidence in the verdict. A contradiction
+or a missing source needed to establish conformance prevents acceptance.
+
 A finding confirmed by a review that refutes everything it can is evidence that the problem is real;
 the gate does not re-validate it.
 

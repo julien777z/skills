@@ -2,15 +2,16 @@
 
 These are model families, not pinned versions. Each capability label selects the latest available
 member of its family on the current host. The calling skill chooses the capability level appropriate
-to each assignment. The labels range from cheap to frontier, with frontier representing the
-strongest available model family in this policy.
+to each assignment. Cheap through frontier form the ordinary capability ladder; specialist is a
+separate tier.
 
-| Capability | Codex family | Claude family | Intended use                                       |
-| ---------- | ------------ | ------------- | -------------------------------------------------- |
-| `cheap`    | Luna  | Haiku  | Lower-cost, bounded tasks and cheaper-model checks |
-| `standard` | Terra | Sonnet | Balanced reviews, analysis, and substantive tasks  |
-| `advanced` | Sol   | Opus   | Difficult tasks requiring stronger reasoning       |
-| `frontier` | Astra | Fable  | The most demanding tasks; strongest available model |
+| Capability | Codex family | Claude family | Selection | Fallback |
+| ---------- | ------------ | ------------- | --------- | -------- |
+| `cheap` | Luna | Haiku | Lower-cost, bounded tasks and cheaper-model checks | Caller-authorized ordinary ladder |
+| `standard` | Terra | Sonnet | Balanced reviews, analysis, and substantive tasks | Caller-authorized ordinary ladder |
+| `advanced` | Sol | Opus | Difficult tasks requiring stronger reasoning | Caller-authorized ordinary ladder |
+| `frontier` | Astra | Fable | The most demanding ordinary assignments | Caller-authorized ordinary ladder |
+| `specialist` | Astra | Mythos | Only a calling skill explicitly selecting specialist | Claude: `frontier` by default, or caller-selected tier; Codex Astra holds |
 
 The labels describe selection policy, not identical capabilities across providers or guaranteed
 host availability. A catalog omission is not availability evidence; the workflow resolves an
@@ -33,21 +34,3 @@ so two seats may share a provider.
 | 1 | Sol |
 | 2 | Opus |
 | 3 | Fable |
-
-## Dispatch candidates
-
-Prefer the host's latest identifier matching the selected family. When a Codex catalog omits the
-family, use the documented candidate below to launch the actual assignment. These are candidates
-to test, not supported-model claims or replacements for a newer matching catalog entry.
-
-| Codex family | Catalog-hidden candidate |
-| ------------ | -------------------------- |
-| Luna | `gpt-6-luna` |
-| Terra | `gpt-5.6-terra` |
-| Sol | `gpt-6-sol` |
-| Astra | `gpt-6-astra` |
-
-Retain the exact request and host receipt. An unsupported rejection invokes only the calling
-workflow's permitted fallback; it never authorizes changing capability policy or repository
-settings. For another host, resolve an identifier from its selection surface or an exact user
-override; a family with no documented or host-resolved candidate triggers the launch fallback.

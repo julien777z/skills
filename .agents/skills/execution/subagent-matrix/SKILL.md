@@ -1,6 +1,6 @@
 ---
 name: subagent-matrix
-description: Apply before every subagent launch, including a workflow coordinator or nested reviewer, when selecting a live skill-verification model, and whenever workers stopped on a rate limit or quota, which never holds work, since they are resumed as soon as the coordinator answers. Default reasoning effort to medium unless the user or invoking skill explicitly specifies another effort. Resolve the assignment role and verify the actual model, reasoning and history arguments before dispatch, including a fresh independent or read-only gate, reviewer, validator, or skill-test reader. Resolve cheap, standard, advanced, and frontier capability levels from the host catalog and documented dispatch candidates. Attempt the assigned work with a catalog-hidden candidate before reporting unavailability or proposing a substitution, select the model explicitly, route independent steps through a subagent of the running session, and give the user complete direct-dispatch diagnostics when the launch cannot start.
+description: Apply before every subagent launch, including a workflow coordinator or nested reviewer, when selecting a live skill-verification model, and when resuming workers stopped by a rate limit or quota. Default reasoning effort to medium unless the user or invoking skill explicitly specifies another effort. Resolve the assignment role and verify the actual model, reasoning and history arguments before dispatch, including a fresh independent or read-only gate, reviewer, validator, or skill-test reader. Resolve cheap, standard, advanced, frontier, and specialist capability levels from the host catalog and current official provider sources. Attempt the assigned work with a catalog-hidden candidate before reporting unavailability or proposing a substitution, select the model explicitly, route independent steps through a subagent of the running session, and give the user complete direct-dispatch diagnostics when the launch cannot start.
 short_description: 'Select a model capability level for live verification chats or subagent delegation.'
 ---
 
@@ -25,15 +25,17 @@ agent; the calling agent launches the actual assignment with the selected model.
 2. Resolve the capability level or model family the caller names to its family in **model
    capabilities**; the coordinator's model never overrides it. Use an exact user override only for
    the role, chat, and capability row it expressly governs; one explicitly scoped to every assignment governs
-   every row. For every other row, prefer the latest matching identifier from the host's model-selection
-   surface. If the family is absent there, read the host's documented candidates in **model capabilities**
-   and use that family's candidate for the actual assignment. A family label is not a dispatch identifier,
-   and a documented candidate is not a claim of support. Mark a resolved catalog-hidden candidate `dispatch
-   required` and proceed to step 3; never turn catalog omission into an identifier hold or an override
-   question while that candidate exists. Only when neither the host nor the reference nor an exact override
-   for that assignment supplies a candidate, or the host has no explicit model-selection mechanism, record
-   an identifier-resolution failure and use the launch fallback for the assignment. Do not invent
-   versions or aliases or silently substitute another family.
+   every row. For every other row, use the latest matching identifier from the host's model-selection
+   surface for the current selection or permitted fallback step. **The skill must never hard-code
+   model IDs**, including in references, examples, aliases, or fallback tables. If the host does
+   not supply an exact ID matching that choice,
+   look online for the current ID in the provider's official model catalog, documentation,
+   or release notes for the applicable host or API. Record the source and exact ID. A published ID
+   is a candidate for an actual dispatch; host acceptance is separate evidence. Mark this candidate
+   `dispatch required` and proceed to step 3. If neither discovery route nor an exact user override
+   yields an applicable ID, or the host has no explicit model selector, record an identifier-resolution
+   failure and follow the launch fallback for the assignment. Never guess an ID or treat missing
+   discovery evidence as an unsupported-model receipt.
 3. Before a caller marks a requested capability level or explicit model unavailable, follows an
    unavailable-model fallback, or takes the launch fallback, launch the actual assigned work once with its exact
    candidate identifier and explicit reasoning effort when the native tool is available. A successful dispatch establishes that the host accepted
@@ -48,11 +50,11 @@ agent; the calling agent launches the actual assignment with the selected model.
    which this step forbids below. Repair the component that actually holds the refused value, read from the
    running request path rather than from the refusal's own advice, such as a proxy between the agent and the
    provider. Only when that component is out of reach, as the global rules' bullet on a step only the user can
-   take settles it, does its repair go to the user as such a step, with the exact command, while the fallback
-   below proceeds for the assignment in hand. Unavailability, and every fallback or substitution it permits,
-   starts only when that relaunch is refused again or the named repair cannot be made, recorded with both
-   receipts and the repair attempted; only that is an explicit unsupported receipt wherever this skill or its
-   callers name one. **A rate limit or quota refusal is temporary capacity, never unavailability**, even when it
+   take settles it, does its repair go to the user as such a step, with the exact command. Record the original
+   refusal, the repair attempted, and any relaunch receipt. If the failure remains operational or the repair
+   cannot be made, use the launch fallback and retain that classification. Model substitution requires an
+   explicit receipt that the exact model is unsupported or, where step 4 allows it, denied.
+   **A rate limit or quota refusal is temporary capacity, never unavailability**, even when it
    names a long reset time: it permits no fallback, no other provider and no absorbing the work into the
    coordinator's own process, and never a reason to hold work: a reset time the refusal names is a guess, not
    a wait. Resume or relaunch the same worker on the same model as soon as the coordinator next answers, read
@@ -63,12 +65,22 @@ agent; the calling agent launches the actual assignment with the selected model.
    branding, a worker-reported label, or no runtime identifier is neither confirmation nor a contradiction of
    the accepted selection. Availability is not permission to change repository or global settings, such as a
    model policy or a provider's configuration.
-4. When a requested capability level or model is explicitly unsupported, apply a fallback only when the
+4. For a specialist assignment, after step 3 establishes that Claude Mythos is unsupported or
+   denied, launch the same assignment directly on the latest Claude family at the `frontier` tier, unless
+   the calling skill explicitly selects a different ordinary fallback tier. Resolve its latest Claude family
+   through steps 2 and 3 and apply that fallback only if it respects the user's
+   explicit model or capability constraint; otherwise hold the assignment. Do not try older Mythos
+   or another provider. Apply step 3's repair, retry, and capacity rules to every attempt,
+   including the selected fallback and Codex Astra. Hold when the selected fallback or specialist Codex Astra is confirmed
+   unsupported or denied. Catalog omission, identifier-resolution failure, and operational or
+   capacity failures do not establish Mythos unavailability or denial. No ordinary assignment may
+   select specialist as a fallback.
+
+   For ordinary assignments, when a requested capability level or model is explicitly unsupported, apply a fallback only when the
    calling skill declares its direction and limits and it respects the user's explicit model or capability
    constraint. **A permitted fallback steps down as little as it can**, in this order, launching the actual
    assignment at each step and moving on only on an explicit unsupported receipt:
-   1. earlier versions of the same family, newest first, found in the host's model-selection surface
-      including entries it omits from its short list;
+   1. earlier versions of the same family, newest first, resolved through the host or official provider discovery in step 2;
    2. the other provider's family at the requested level;
    3. the family one capability level below, on the same provider first, then the other provider's family at
       that level;
@@ -86,7 +98,8 @@ agent; the calling agent launches the actual assignment with the selected model.
    launch the actual chat assignment; never skip that family because the catalog omits it. Advance to another
    family only after an explicit unsupported receipt and only as the caller's fallback policy permits. Otherwise
    use the task criteria in the table, with **standard** as the default. Reserve frontier for the most demanding
-   assignments unless specifically required. Default reasoning effort to **medium** for every
+   assignments unless specifically required. Select specialist only when the calling skill explicitly
+   selects it for that assignment; neither task difficulty nor a generic fallback enters that tier. Default reasoning effort to **medium** for every
    assignment, including complex work, independent reviews, coordinators, and higher-capability
    models. Use another effort only when the user or invoking skill explicitly specifies it for
    that assignment; retain the instruction as dispatch evidence. Complexity, role, model capability,
@@ -127,7 +140,8 @@ context and returns its verdict into the step waiting on it; nothing else does b
   absorb it.** Attempt the native dispatch when available. This covers a host that gives the worker
   no agent tool and a native dispatch that fails other than by a capacity refusal, which step 3 waits out and relaunches, for reviewers, lenses, validators, gates and
   further implementation workers alike. The worker writes the complete assignment — the inputs, the
-  question, the reading list, the output shape — to a file, asks the agent that delegated to it to
+  question, the reading list, the output shape, the originally requested tier, its fallback policy,
+  and launch receipts — to a file, asks the agent that delegated to it to
   run that file as a subagent at the chosen capability level, and waits for the verdict before going
   past the step; that agent launches the workers the step calls for, so each runs with its own
   context. Work the step splits among several workers is never carried by one of them alone, which
@@ -135,7 +149,9 @@ context and returns its verdict into the step waiting on it; nothing else does b
   asks by returning: it ends its turn with the file path and the request, and resumes when the
   verdict comes back. The delegating agent runs it and returns the verdict unedited; when the
   finished worker cannot be resumed, the delegating agent carries out what the verdict calls for,
-  such as the fix steps a flag names, under the follow-up bullet below. Only the top-level agent,
+  such as the fix steps a flag names, under the follow-up bullet below. If no authorized launch
+  works for an assignment originally selected as specialist, hold it, including after any fallback
+  attempt. Only the top-level agent,
   with no delegating agent to ask, performs an assignment in process after its own launch fails,
   records the launch outcome, and reports that the result lacked independent review; never describe
   an in-process result as an independent verdict. An in-process result of an independent step
@@ -232,7 +248,7 @@ Use this user-facing shape whenever a launch failure is material to the task:
 - **Arguments:** `<complete argument names and safe values>`
 - **Host receipt:** <verbatim receipt, or `none — <why no invocation was possible>`>
 - **Classification:** <one permitted classification and its evidence>
-- **Fallback:** <handed up to the delegating agent, or top-level in-process work and its loss of independence>
+- **Fallback:** <assignment held, handed up to the delegating agent, or top-level in-process work and its loss of independence>
 ```
 
 ## Output
@@ -255,11 +271,17 @@ Selected dispatch: <exact identifier> / <reasoning effort> / <history mode>
 
 | Capability | Catalog state | Dispatch identifier | Assignment state |
 | ---------- | --------------- | ------------------- | ---------------- |
-| cheap | catalog-confirmed or catalog-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, or unavailable: <reason> |
-| standard | catalog-confirmed or catalog-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, or unavailable: <reason> |
-| advanced | catalog-confirmed or catalog-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, or unavailable: <reason> |
-| frontier | catalog-confirmed or catalog-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, or unavailable: <reason> |
+| cheap | catalog-confirmed or catalog-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, unavailable: <reason>, or denied: <host receipt> |
+| standard | catalog-confirmed or catalog-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, unavailable: <reason>, or denied: <host receipt> |
+| advanced | catalog-confirmed or catalog-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, unavailable: <reason>, or denied: <host receipt> |
+| frontier | catalog-confirmed or catalog-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, unavailable: <reason>, or denied: <host receipt> |
+| specialist | catalog-confirmed or catalog-hidden | <original candidate or identifier required> | not requested, dispatch required, identifier required, accepted, unavailable: <reason>, or denied: <host receipt> |
 ```
+
+For a specialist fallback, retain the original candidate and its catalog state, assignment state,
+and host receipt alongside the fallback model's identifier, catalog state, assignment state, and
+host receipt. Record denial as denied, not unavailable; preserve operational and capacity refusals
+under their actual host classification.
 
 A calling skill that launches selected work retains the catalog state, exact identifier, assignment state, and
 host receipt in its own evidence. Runtime identity is additional evidence only when the host exposes it.

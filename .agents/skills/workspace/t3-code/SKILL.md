@@ -28,12 +28,13 @@ Merges replace matching variable names and preserve every unrelated variable and
 An empty value is a value, never a removal. Imported values are sensitive by default, matching
 T3's Add variable behavior. Preserve existing redaction markers and let T3 store secrets.
 
-For example, with the resolved helper path in `T3_ENV_SCRIPT`:
+For example, with the resolved helper path in `T3_ENV_SCRIPT`, the verified execution
+environment's ID in `T3_ENVIRONMENT_ID`, and the provider ID from `list` in `T3_PROVIDER_ID`:
 
 ```sh
-node "$T3_ENV_SCRIPT" list --ssh user@node.example
-cat ./provider.env | node "$T3_ENV_SCRIPT" merge --ssh user@node.example --provider claudeAgent
-cat ./provider.env | node "$T3_ENV_SCRIPT" merge --ssh user@node.example --provider claudeAgent --apply
+node "$T3_ENV_SCRIPT" list --ssh user@node.example --expect-environment "$T3_ENVIRONMENT_ID"
+cat ./provider.env | node "$T3_ENV_SCRIPT" merge --ssh user@node.example --expect-environment "$T3_ENVIRONMENT_ID" --provider "$T3_PROVIDER_ID"
+cat ./provider.env | node "$T3_ENV_SCRIPT" merge --ssh user@node.example --expect-environment "$T3_ENVIRONMENT_ID" --provider "$T3_PROVIDER_ID" --apply
 ```
 
 `--ssh` uses the existing SSH configuration and authentication. `--identity` and `--known-hosts`
@@ -52,24 +53,31 @@ Apply `security-audit` to configuration changes. Use `proton-pass` for an existi
 1. Identify the requested environment, provider instances, and project scope. Read installed T3
    version and native CLI help; use source matching that release when the UI or CLI does not expose
    the needed operation. The authoritative source is [T3 Code](https://github.com/pingdotgg/t3code).
-   Reuse the intended account and environment; ask only about unresolved target ambiguity.
-2. Inspect current configuration. For variables, run the helper's `list` command and resolve the
-   requested provider names to its actual IDs. The helper manages environment-wide provider values,
-   which apply across projects on that environment. Do not silently substitute another scope.
+   Inspect connected desktop environments as well as the server-linked CLI list. Distinguish the
+   execution environment, provider instance, and hub account; resolve the request's actual routing
+   through native settings or management before asking about a target. Locate the host and try its
+   available management routes: an SSH refusal rules out that route alone. Reuse the intended
+   account and environment; ask only about unresolved target ambiguity.
+2. Inspect current configuration. For variables, use the helper's `list` command when it can reach
+   the verified environment, passing `--expect-environment` with its ID, and resolve requested
+   provider names to actual IDs. When the helper cannot reach it, use a reachable native management
+   route for that same environment and provider. A direct provider does not require a hub account.
+   The helper manages environment-wide provider values, which apply across projects on that
+   environment. Do not silently substitute another scope.
 3. Obtain input from the user-authorized source: a file, pipe, provided values, or the selected
    application's environment editor through Computer Use. Copy that block as data. Keep values
    out of chat, command arguments, Git, diagnostics and screenshots. If a temporary input file is
    needed, create it privately with mode `0600`, use it only for the transfer, and remove it afterward.
-4. Preview variable names and destination providers. Apply the authorized batch through the helper.
-   It uses T3's native scoped session and settings mutation rather than editing settings files or
-   provider account credentials. Existing Claude profiles and other provider runtime settings stay
-   attached to their own instances.
+4. Preview variable names and destination providers. Apply the authorized batch through the helper
+   with the same `--expect-environment` ID for preview and apply, or through the reachable native route selected in step 2. Use
+   T3's native settings mutation rather than editing settings files or provider account credentials.
+   Existing Claude profiles and other provider runtime settings stay attached to their own instances.
 5. Read the resulting configuration through T3 and verify the changed names, sensitivity and
    preserved settings. Confirm the selected environment's Providers screen when the task involves
    that UI. Existing running provider sessions may retain their original process environment;
    use a newly started session for the new values rather than restarting unrelated work.
 6. For other configuration, use the same target, inspection, authorized mutation and readback
-   procedure through the current native CLI/API. Inspect the current schema before using an
+   procedure through a current native management route. Inspect the current schema before using an
    operation not implemented by the variable helper; never invent a command or directly rewrite
    T3's persisted settings to bypass its secret handling.
 
