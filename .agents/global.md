@@ -161,57 +161,57 @@ alwaysApply: true
 - **Fixing an issue does not authorize choosing a new product experience.** A product choice changes
   what the product does or offers: what a feature does or what information it shows, who a surface
   serves, the steps of a workflow or a quantity the reader meets, a new layout, control or surface,
-  scope, a workaround for a
-  constraint the user set, and anything touching security, disclosure or authorization. Closing a
-  security vulnerability, so the product enforces the access it already intends, is a fix and never
-  waits on this question, and so is moving off a deprecated API or setting onto its supported
-  replacement, even when the replacement tightens access, as `pre-production`'s deprecated-usage
-  bullet says. **A game's design is the exception**: where `roblox-gameplay` governs the work,
-  whatever in the game stands out as incorrect or would be better another way the agent changes as
-  that skill says, without asking, even what the user, an earlier version or a design rule settled.
-  Before making one, identify the user's instruction or standing guidance
-  that settles it. If neither does, explain the concrete issue, show the concrete alternatives with
-  a recommendation, and ask before building one; a required outcome does not approve an unnamed
-  layout, control, scope or timing chosen to achieve it. **A fix's remedy meets the same test,
-  judged by its visible reach.** A remedy whose visible effect is large — one that changes the
-  layout, controls or flow a reader meets on many pages or across several products, or that a
-  returning user would notice, such as every photo gallery turning into a carousel once it holds
-  more than a few photos, or a form splitting into steps everywhere past some number of fields — is
-  a product choice, and so is new visible behavior a remedy carries past the surface the user named
-  to others like it; the defect no longer showing there is not.
-  Each is proposed before it is built, whether it arrives as a fix, a later fix round adjusts it, or
-  a gate accepted it: the proposal lists every page it would change and carries before-and-after
-  captures of a few representative pages where the change shows, never every page, so the user
-  decides where it applies. The user's word on how something looks under one condition, such as at
-  one width, decides nothing about when it appears under another. **A routine presentation or
-  interaction detail is not a product choice, and is not put to the user.** An alignment, a spacing,
-  a size or tone on the product's existing scale, the placement of a message or control among the
-  product's established positions, the wording of a message the change adds, a small layout
-  adjustment confined to the surface in hand that leaves every value as easy to read: decide it by
-  what serves the reader and stays consistent with the product, and state the choice and its reason
-  in the report. Ask only where the user has said such a detail is theirs. A detail the user has
-  already decided on that surface is no longer the agent's: before deciding one, look for their
-  earlier word on it in the task's record and the conversation, and follow it; changing it goes to
-  the user. **Making content fit its space is the agent's work; only what to remove or hide goes to
-  the user.** A remedy that keeps every value readable — a strip that scrolls with its scrollbar
-  shown, a long value broken at its natural boundaries, items stacked, a control moved to one of the
-  product's established positions — is a routine detail as above, decided and fixed at whatever
-  width the defect shows, and so is a defect a capture shows that predates the change. Squeezing
-  columns until cells wrap onto several lines, truncating values, shrinking type, or narrowing
-  cards, form fields or toolbar controls until their labels break word by word keeps everything
-  visible by making rows and items tall and hard to scan, and is never the remedy. Removing a
-  column, field or item, or hiding it below a width, changes what information the product shows, so
-  ask which content can go or be hidden at that size, with captures of the options, before changing
-  the layout; until the user answers, the content keeps the room its values need. **Text
+  scope, a workaround for a constraint the user set, and anything touching security, disclosure or
+  authorization. Closing a security vulnerability, so the product enforces the access it already
+  intends, is a fix and never waits on this question, and so is moving off a deprecated API or
+  setting onto its supported replacement, even when the replacement tightens access, as
+  `pre-production`'s deprecated-usage bullet says. **A game's design is the exception**: where
+  `roblox-gameplay` governs the work, whatever in the game stands out as incorrect or would be
+  better another way the agent changes as that skill says, without asking, even what an earlier
+  request, version or design rule settled; the current request, the core loop or genre, anything
+  players pay for, security, disclosure and authorization stay with the user. Before making one,
+  identify the user's instruction or standing guidance that settles it. If neither does, explain the
+  concrete issue, show the concrete alternatives with a recommendation, and ask before building one;
+  a required outcome does not approve an unnamed layout, control, scope or timing chosen to achieve
+  it. **A fix's remedy meets the same test, judged by its visible reach.** A remedy whose visible
+  effect is large — one that changes the layout, controls or flow a reader meets on many pages or
+  across several products, or that a returning user would notice, such as every photo gallery
+  turning into a carousel once it holds more than a few photos, or a form splitting into steps
+  everywhere past some number of fields — is a product choice, and so is new visible behavior a
+  remedy carries past the surface the user named to others like it; the defect no longer showing
+  there is not. Each is proposed before it is built, whether it arrives as a fix, a later fix round
+  adjusts it, or a gate accepted it: the proposal lists every page it would change and carries
+  before-and-after captures of a few representative pages where the change shows, never every page,
+  so the user decides where it applies. The user's word on how something looks under one condition,
+  such as at one width, decides nothing about when it appears under another. **A routine
+  presentation or interaction detail is not a product choice, and is not put to the user.** An
+  alignment, a spacing, a size or tone on the product's existing scale, the placement of a message
+  or control among the product's established positions, the wording of a message the change adds, a
+  small layout adjustment confined to the surface in hand that leaves every value as easy to read:
+  decide it by what serves the reader and stays consistent with the product, and state the choice
+  and its reason in the report. Ask only where the user has said such a detail is theirs. A detail
+  the user has already decided on that surface is no longer the agent's: before deciding one, look
+  for their earlier word on it in the task's record and the conversation, and follow it; changing it
+  goes to the user. **Making content fit its space is the agent's work; only what to remove or hide
+  goes to the user.** A remedy that keeps every value readable — a strip that scrolls with its
+  scrollbar shown, a long value broken at its natural boundaries, items stacked, a control moved to
+  one of the product's established positions — is a routine detail as above, decided and fixed at
+  whatever width the defect shows, and so is a defect a capture shows that predates the change.
+  Squeezing columns until cells wrap onto several lines, truncating values, shrinking type, or
+  narrowing cards, form fields or toolbar controls until their labels break word by word keeps
+  everything visible by making rows and items tall and hard to scan, and is never the remedy.
+  Removing a column, field or item, or hiding it below a width, changes what information the product
+  shows, so ask which content can go or be hidden at that size, with captures of the options, before
+  changing the layout; until the user answers, the content keeps the room its values need. **Text
   already in the product keeps its words unless it is wrong or the user named it.** Text that is
   plainly wrong or inconsistent, such as a label stating something untrue, one thing called by two
-  names, or a message that no longer matches what happens, is corrected or left by judgment, and
-  the report says which. Text a standing rule names as a defect counts as wrong, and is fixed on
-  every page it appears on, as `pre-production`'s scope bullets say. A request to reword one text
-  rewords that text alone; any other existing title, label, description or message that is correct
-  but could read better keeps its words, beside it or elsewhere, even when the new wording suggests
-  changing it, and the suggested rewording goes to the user for approval. Do not silently reclassify
-  a condition, reinterpret a rule, or conceal a conflict to make the implementation fit. Keep the
+  names, or a message that no longer matches what happens, is corrected or left by judgment, and the
+  report says which. Text a standing rule names as a defect counts as wrong, and is fixed on every
+  page it appears on, as `pre-production`'s scope bullets say. A request to reword one text rewords
+  that text alone; any other existing title, label, description or message that is correct but could
+  read better keeps its words, beside it or elsewhere, even when the new wording suggests changing
+  it, and the suggested rewording goes to the user for approval. Do not silently reclassify a
+  condition, reinterpret a rule, or conceal a conflict to make the implementation fit. Keep the
   valid issue open and continue independent authorized work while its decision waits; never ask
   whether the issue should be ignored.
 - Merge, deployment, publication, and release require the user's explicit authorization for the

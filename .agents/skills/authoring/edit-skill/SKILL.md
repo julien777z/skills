@@ -93,12 +93,12 @@ Validate skill dependencies and their actual call and policy-read paths under th
   the current work, and the guidance edit is its record. While a guidance batch is in flight, its
   delivery is that action and the user's words are its evidence.
 - Record the correction as a `guidance_correction` entry with `session-ledger`: the user's words,
-  quoted exactly, the evidence of the gap, and for a process its verified run, a reproduction
-  scenario, the intended behavior, the canonical files it will change, and `pending` as its
-  `status`. Steps 1–4 of **Behavior** run now, while the evidence is fresh, and their result goes
-  into the entry; a review or gate of the edit judges it against those words, never a summary of
-  them; the edit itself (steps 5, 6 and 7.1) is written as the bullet on writing the edit below
-  says, and step 7.2 onward waits.
+  quoted as the global rules' example-value bullet says, the evidence of the gap, and for a process
+  its verified run, a reproduction scenario, the intended behavior, the canonical files it will
+  change, and `pending` as its `status`. Steps 1–4 of **Behavior** run now, while the evidence is
+  fresh, and their result goes into the entry; a review or gate of the edit judges it against those
+  words, never a summary of them; the edit itself (steps 5, 6 and 7.1) is written as the bullet on
+  writing the edit below says, and step 7.2 onward waits.
 - **A recorded correction governs the rest of the session at once**, ahead of the installed text it
   amends. Before a decision a pending entry's subject covers, read the ledger's pending entries and
   follow their intended behavior. Putting a question or a recommendation to someone is such a
