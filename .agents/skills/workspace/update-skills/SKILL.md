@@ -55,18 +55,17 @@ an untrusted one is left out and reported.
 
 Hold `agent-lock` on the key `skills-install`, acquired with `--ttl-seconds 900`, from step 2 until
 step 6 finishes, so two sessions never build or remove overlays at once. Run its `check` before
-every write to shared state: step 2's deletions, step 3's stash, fast-forward and marker deletion,
-step 4.4's marker, step 5, each removal in step 6, and each repair of damaged Git state. A check
-that passes with under 300 seconds left ends that lease at this boundary: release it with
-`--resource-idle` and acquire a fresh one before the write, so a refresh longer than one lease goes
-on; a fresh acquisition that finds another holder is a lost lease. On a failed check or a lost
-lease, stop writes immediately, reacquire the lock, restore any stash this run pushed and verify its
-paths, then restart at step 2. Keep step 2's first record whole and the head each abandoned build
-reached; the restarted step 2 adds only overlays that record lacks. Repeat recovery after each lost
-lease until verification succeeds. After safe cleanup, release the lock with `--resource-idle` once
-step 6 finishes. A release the tool refuses means a successor took the lock after its deadline:
-release nothing, and report that the lock expired and which overlays were removed after its
-deadline.
+every write to shared state: step 3's stash, fast-forward and marker deletion, step 4.4's marker,
+step 5, each removal in step 6, and each repair of damaged Git state. A check that passes with under
+300 seconds left ends that lease at this boundary: release it with `--resource-idle` and acquire a
+fresh one before the write, so a refresh longer than one lease goes on; a fresh acquisition that
+finds another holder is a lost lease. On a failed check or a lost lease, stop writes immediately,
+reacquire the lock, restore any stash this run pushed and verify its paths, then restart at step 2.
+Keep step 2's first record whole and the head each abandoned build reached; the restarted step 2
+adds only overlays that record lacks. Repeat recovery after each lost lease until verification
+succeeds. After safe cleanup, release the lock with `--resource-idle` once step 6 finishes. A
+release the tool refuses means a successor took the lock after its deadline: release nothing, and
+report that the lock expired and which overlays were removed after its deadline.
 
 **Local Git damage in the skills checkout never holds a refresh and is never put to the user; it is
 backed up and repaired, whoever's branch it is.** Damage is local Git state that makes a read, fetch
@@ -158,7 +157,7 @@ Report the source checkout and the branch it was left on, the installed source a
 links resolve to, what took effect — the default branch's old and new commits, each pull request in
 effect with the tips brought in, the checked-out branch, and the uncommitted paths applied — every
 input or path left out and why, every conflict resolved in the overlay and the pull request it
-belongs to, anything preserved from a removed overlay, each sync or operating-system copy deleted,
-each backup of damaged Git state with its location and each repair made, the roots refreshed, link
-verification, and the skills and rules reread. Name any preserved unreadable originals and the
-evidence used to reconstruct the installed source.
+belongs to, anything preserved from a removed overlay, each backup of damaged Git state with its
+location and each repair made, the roots refreshed, link verification, and the skills and rules
+reread. Name any preserved unreadable originals and the evidence used to reconstruct the installed
+source.
