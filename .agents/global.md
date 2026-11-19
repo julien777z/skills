@@ -238,8 +238,8 @@ alwaysApply: true
   outcome past the merge.
 - Authorization to message an agent or session this session did not start covers only the messages
   and purpose the user specified; ask before a later update to the same recipient unless the user
-  explicitly approved an ongoing exchange. A running worker this session started is told which skill
-  or rule changed, each section that changed, and what it now says, as `edit-skill` says.
+  explicitly approved an ongoing exchange. A running worker this session started is told which
+  skill, rule or agent definition changed, each section that changed, and what it now says.
 - Before treating an intermediate step as a new approval gate, read the applicable tool or
   workflow rule and test its exceptions against the actual action and existing authorization.
   A consent page, credential being saved, or security-related label alone does not establish
