@@ -266,10 +266,10 @@ Selected dispatch: <exact identifier> / <reasoning effort> / <history mode>
 
 | Capability | Catalog state | Dispatch identifier | Assignment state |
 | ---------- | --------------- | ------------------- | ---------------- |
-| cheap | catalog-confirmed or catalog-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, or unavailable: <reason> |
-| standard | catalog-confirmed or catalog-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, or unavailable: <reason> |
-| advanced | catalog-confirmed or catalog-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, or unavailable: <reason> |
-| frontier | catalog-confirmed or catalog-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, or unavailable: <reason> |
+| cheap | catalog-confirmed or catalog-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, unavailable: <reason>, or denied: <host receipt> |
+| standard | catalog-confirmed or catalog-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, unavailable: <reason>, or denied: <host receipt> |
+| advanced | catalog-confirmed or catalog-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, unavailable: <reason>, or denied: <host receipt> |
+| frontier | catalog-confirmed or catalog-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, unavailable: <reason>, or denied: <host receipt> |
 | specialist | catalog-confirmed or catalog-hidden | <original candidate or identifier required> | not requested, dispatch required, identifier required, accepted, unavailable: <reason>, or denied: <host receipt> |
 ```
 

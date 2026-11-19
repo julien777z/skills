@@ -28,12 +28,13 @@ Merges replace matching variable names and preserve every unrelated variable and
 An empty value is a value, never a removal. Imported values are sensitive by default, matching
 T3's Add variable behavior. Preserve existing redaction markers and let T3 store secrets.
 
-For example, with the resolved helper path in `T3_ENV_SCRIPT`:
+For example, with the resolved helper path in `T3_ENV_SCRIPT` and the verified execution
+environment's ID in `T3_ENVIRONMENT_ID`:
 
 ```sh
-node "$T3_ENV_SCRIPT" list --ssh user@node.example
-cat ./provider.env | node "$T3_ENV_SCRIPT" merge --ssh user@node.example --provider claudeAgent
-cat ./provider.env | node "$T3_ENV_SCRIPT" merge --ssh user@node.example --provider claudeAgent --apply
+node "$T3_ENV_SCRIPT" list --ssh user@node.example --expect-environment "$T3_ENVIRONMENT_ID"
+cat ./provider.env | node "$T3_ENV_SCRIPT" merge --ssh user@node.example --expect-environment "$T3_ENVIRONMENT_ID" --provider claudeAgent
+cat ./provider.env | node "$T3_ENV_SCRIPT" merge --ssh user@node.example --expect-environment "$T3_ENVIRONMENT_ID" --provider claudeAgent --apply
 ```
 
 `--ssh` uses the existing SSH configuration and authentication. `--identity` and `--known-hosts`
@@ -68,7 +69,7 @@ Apply `security-audit` to configuration changes. Use `proton-pass` for an existi
    out of chat, command arguments, Git, diagnostics and screenshots. If a temporary input file is
    needed, create it privately with mode `0600`, use it only for the transfer, and remove it afterward.
 4. Preview variable names and destination providers. Apply the authorized batch through the helper
-   bound to the verified environment, or through the reachable native route selected in step 2. Use
+   with the same `--expect-environment` ID for preview and apply, or through the reachable native route selected in step 2. Use
    T3's native settings mutation rather than editing settings files or provider account credentials.
    Existing Claude profiles and other provider runtime settings stay attached to their own instances.
 5. Read the resulting configuration through T3 and verify the changed names, sensitivity and
