@@ -459,8 +459,8 @@ how those issues are handled.
   detail decided names who decided it and where; one the agent decided itself says so. Every brief
   for work that can change a surface the user has decided on, a simplification or review pass
   included, carries those decisions in the user's words, so the worker keeps them rather than
-  undoing them; an item that would undo one goes to the user, apart from a game's design, which the
-  global rules' game-design exception leaves to the agent. The class is any item asking for what a
+  undoing them; an item that would undo one goes to the user, apart from the parts of a game's design
+  the global rules' game-design exception leaves to the agent. The class is any item asking for what a
   rule rules out: a review finding asking for the catch-all exception handler the language rule
   bans, a brief telling a worker to skip a check a skill requires before a push, a correction asking
   for copy the copy rules forbid, one asking for a boat-rental waiver to arrive filled in from the

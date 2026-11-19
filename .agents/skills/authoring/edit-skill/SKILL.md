@@ -435,7 +435,7 @@ user's review of the source pull request overlaps it.
       the file that does not own it is exactly the duplication this catches, and it is the change
       least likely to be looked at twice.
    4. **Brief `review-pass`'s final acceptance**, which judges the batch's complete `.agents` diff
-      with the request as the intent statement; this step starts no gate of its own. The brief asks
+      with the intent statement step 3 gives it; this step starts no gate of its own. The brief asks
       whether the guidance answers the request at the breadth the shared `agent-guidance.md` rule
       asks for and whether every mechanism it adds earns its place. A named tool, surface, or
       workaround in generic guidance is a finding unless the skill's contract depends on it; the
