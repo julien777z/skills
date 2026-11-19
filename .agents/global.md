@@ -236,10 +236,10 @@ alwaysApply: true
   rules' **After Agent Sync** section requires. A task whose own outcome the user stated as a
   deployment, publication or release, or as restoring a broken deployed operation, follows that
   outcome past the merge.
-- Authorization to send messages to another agent or external session covers only the messages and
-  purpose the user specified. Permission for a bounded exchange does not authorize later updates
-  to the same recipient; ask before sending more unless the user explicitly approved an ongoing
-  exchange.
+- Authorization to message an agent or session this session did not start covers only the messages
+  and purpose the user specified, and a bounded exchange authorizes no later update to the same
+  recipient unless the user approved an ongoing one. A worker this session started is told of a
+  change to a skill it follows, as `edit-skill` says.
 - Before treating an intermediate step as a new approval gate, read the applicable tool or
   workflow rule and test its exceptions against the actual action and existing authorization.
   A consent page, credential being saved, or security-related label alone does not establish
