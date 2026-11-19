@@ -17,6 +17,12 @@ globs:
   goes, which harnesses it serves, how its generated mirrors are produced, and how a change to it is
   validated. Any other rule or `.agents/global.md` keeps only what its own subject needs and points
   here for the rest.
+- **Guidance lives in skills and rules, never in a harness's memory.** A correction, preference,
+  limit, exception or operating fact that tells agents how to work — such as a cap on workers, a
+  repository that gets only minimal changes, or a machine whose processes may be ended — goes
+  through `edit-skill` into the skill, rule, project guidance or reference that owns it, so every
+  harness and session reads the same copy. A harness's memory, such as an auto-memory file, holds
+  none of it. A memory found holding guidance is moved to its owner and deleted.
 - `.agents/global.md` states guidance that holds in every repository and that no rule's subject
   covers, and every `.agents/rules/*.md` file guidance that holds in any repository using its
   technology. Keep their examples generic —
@@ -116,8 +122,8 @@ globs:
   `references/<topic>.md` beside it, named for what it holds — a rubric, a checklist, a catalog,
   a protocol — and `SKILL.md` names the file at the point the workflow reads it. A skill with two
   routes through it (two modes, two kinds of target, two hosts) keeps the shared workflow in
-  `SKILL.md` and gives each route its own reference, so the file a reader loads first stays short
-  enough to be read whole. References may explain the technical steps for a route selected by the
+  `SKILL.md` and gives each route its own reference, so the file a reader loads first stays within
+  the size budget under **Writing**. References may explain the technical steps for a route selected by the
   entry point. They do not select the top-level workflow, hide a decision gate, declare a dependency,
   or invoke another skill. Scripts the skill runs go under `scripts/`; supporting files may live
   under `assets/`, `resources/`, or another directory named for their role. Keep only files the skill
@@ -226,6 +232,17 @@ restriction. Gate a single user-only workflow inside an otherwise usable skill i
   workflow does this declares `council`. A ruling never accepts a confirmed defect, an exploitable
   vulnerability or a failing required check.
 
+### Subagents
+
+- **Every subagent a skill starts is usage the user pays for, so guidance starts as few as its
+  purpose needs.** Before writing or changing text that launches subagents — a writer, reader,
+  reviewer, grader, gate, worker or council member — state in that text how many it starts in a
+  usual run and in each round, and what that count grows with. Prefer one agent serving a batch over
+  one per item, a fresh agent only where independence requires one, and a rerun only of what a
+  change touched; a count that grows with items, findings or files names its cap. An edit that
+  raises a workflow's usual subagent count says so, with its reason, in its pull request
+  description, and a review of the edit judges that count as part of the change.
+
 ### Output
 
 Prefer an `## Output` section holding a hard-coded format whenever two correct runs
@@ -284,6 +301,10 @@ a template where correct results genuinely vary in shape.
   use, follows the sections on headings and paragraphs that every document uses, even though
   footnotes extend paragraphs.
 - Express each independent requirement once, as one concise statement or bullet, without padding. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
+- **A file read whole, a `SKILL.md` or a rule, has a size budget of 500 lines**, the skill-body
+  target hosts publish. A change that pushes one past it, or grows one already past it, makes its
+  room in the same change by merging what the file states twice or moving text to the reference or
+  file that owns it.
 - Normalize the touched file's nearby structure when needed: combine narrow sections and remove redundant wording.
 - **Prefer the broad statement, and let the request's shape be its example.** A request
   arrives as one symptom, and the rule it needs names the class that symptom belongs to; the
