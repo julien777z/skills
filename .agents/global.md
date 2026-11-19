@@ -768,8 +768,8 @@ return records;
   checks that run for its state starting — a draft starts no test jobs — since the base can move
   while the push runs. A status sent to the user states what was just read and where, never what
   was reported or expected: conflicted, failing, running, or passing, on the head or target named,
-  with "done", "ready" or a merge hand-off written only once that read says so, nothing this run
-  started still changes it, and a file sent with it is checked as **User-Facing Output** requires.
+  with "done" or "ready" written only when that read says so and a file sent with it checked first
+  as **User-Facing Output** requires.
 - **Whatever that read shows wrong is the next thing done**, ahead of every queued item, and is
   never carried to "the next push" or bundled behind other work. A conflict is brought in
   through `merge-conflict`, delivered under the GitHub rule’s **Pre-Push Gate**, and read back. A base that only

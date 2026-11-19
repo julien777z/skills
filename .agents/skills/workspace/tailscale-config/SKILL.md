@@ -18,8 +18,8 @@ of that proof; agreement in one never establishes agreement in another.
 
 1. Establish the authorized outcome, environments and mutation boundaries. Apply the global
    Tailscale policy for naming, groups and tag ownership. Discover each repository's deployment
-   procedure and configuration owner from its project guidance. This procedure reconciles a
-   Tailscale change and is no general configuration audit. Reading a
+   procedure and configuration owner from its workflows, deployment configuration and README. This
+   procedure reconciles a Tailscale change and is no general configuration audit. Reading a
    deployment procedure supplies its read-only inspection route and never authorizes a rollout.
 2. Discover Git repositories within the user's authorized collection, accessible sibling roots and
    worktrees, and previously established task targets. Normalize remotes and deduplicate worktrees

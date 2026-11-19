@@ -283,7 +283,7 @@ every instance:
 
 - a `ModelFactory` or `SQLAlchemyFactory` subclass anywhere under `tests/`, including
   `fixtures/`, `utils/`, and factory modules; enumerate direct and indirect factory subclasses,
-  and move the machinery to the shared test-utilities owner named by project guidance;
+  and move the machinery to the shared test-utilities package the repository's layout holds;
 - model-generation functions, methods, or nested builders anywhere under the test tree, including
   `conftest.py`, fixture packages, and utilities: trace constructor calls and returned models, then
   apply `test-fixture`'s ownership dispositions to each implementation and its consumers; a clean
