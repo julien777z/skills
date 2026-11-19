@@ -208,11 +208,13 @@ started as **Check Gate** steps 6–7 poll a check. A run ending in anything but
 from its log and reported. After a successful run, complete the refresh selected by the GitHub
 rules' **After Agent Sync** section and verify its installed links; the skill does not return, and
 the turn does not end, until that refresh is verified or a failed run or blocker is reported.
+When the caller owns the primary checkout refresh, return the sync result and any shared
+installation result so the caller can complete and verify the checkout refresh.
 
 ## Report
 
 ```markdown
-Merged: [<owner>/<repo>#<number>](<url>) at <short sha> — checks: <local only | names of hosted checks and results> — consumers: <none pinned | repointed: <consumer PR> at <short sha> | owned elsewhere: <consumer PR> pins <reference>> — sync: <run result | not agent configuration>; refresh: <installed source and commit | blocked: exact reason | not agent configuration>
+Merged: [<owner>/<repo>#<number>](<url>) at <short sha> — checks: <local only | names of hosted checks and results, baseline failures left out> — consumers: <none pinned | repointed: <consumer PR> at <short sha> | owned elsewhere: <consumer PR> pins <reference>> — sync: <run result | not agent configuration>; refresh: <installed source and commit | blocked: exact reason | not agent configuration>
 ```
 
 Or, when a gate holds: `Not merged: <link> — <gate>: <evidence>`. The evidence includes each

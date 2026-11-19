@@ -108,8 +108,13 @@ Use the platform's equivalent capabilities while preserving the specified roles,
 
 ## What The Audit Writes
 
-The output is a report: one findings file in the session's scratch directory, sent to the user with
-the chat summary. Nothing is written inside the target repository, and the audit changes no code.
+The output is a report: one findings file in `.agent_sources/` at the root of the worktree the
+review runs in, added to the repository's local exclude file first as the global rules' working-files
+bullet says, sent to the user with the chat summary. A report file the request names, such as one at
+the worktree's root, carries the summary and the findings file's path, never the findings in its
+place. Phase 5 of [validation and reporting](references/validation-and-reporting.md) sets what the
+file and the summary hold. Nothing is committed to the target repository, and the audit changes no
+code.
 
 A report is what this run found; it never asserts a codebase is clean. Each run explores different
 code paths depending on which agents find what and where they dig, and the best single run finds

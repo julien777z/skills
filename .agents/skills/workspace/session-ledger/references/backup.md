@@ -46,3 +46,6 @@ Task: `<task token>`
   governs.
 - A question's section holds **Question:** the choice that was open, **Answer:** the option chosen,
   paraphrased, and **Applies to:** the work it unblocked.
+- A decision or question whose entry records work adds **Work:** `open` with its next action, or
+  `done` with the evidence that verified it, and a rebuilt entry restores that `work` and its next
+  action from it.

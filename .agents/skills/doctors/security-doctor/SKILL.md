@@ -1,8 +1,7 @@
 ---
 name: security-doctor
-description: Find and fix the exploitable vulnerabilities in a codebase — injection, broken access control, unsafe file and resource handling, weak cryptography and leaked secrets, business-logic and feature abuse, chained trust gaps, and code built without the guard its siblings carry — each proven with a concrete attack and closed with the smallest fix and a regression test. Use to audit and repair a codebase's security, or to fix the findings of a security audit.
+description: Find and fix the exploitable vulnerabilities in a codebase — injection, broken access control, unsafe file and resource handling, weak cryptography and leaked secrets, business-logic and feature abuse, chained trust gaps, and code built without the guard its siblings carry — each proven with a concrete attack and closed with the smallest fix and a regression test. Use to audit and repair a codebase's security, or to fix the findings of a security audit. Run only when the user asks for it.
 short_description: 'Find and fix the exploitable vulnerabilities in a codebase, each proven by a concrete attack.'
-disable-model-invocation: true
 ---
 
 # Security Doctor

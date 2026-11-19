@@ -2,15 +2,38 @@
 
 ## Identity, source, and assets
 
-Record the intended experience (universe), place IDs, owner, local file, and build paths. Verify the active Studio title and place ID before writing or publishing. Create a new experience when requested; never copy an excluded recent project. Updates must preserve existing saved progress and authored artwork.
+Record the intended experience (universe), place IDs, owner, local file, and build paths. Verify the active Studio title and place ID before writing or publishing from Studio. Create a new experience when requested; never copy an excluded recent project. Updates must preserve existing saved progress and authored artwork.
 
-Use separate Rojo iteration and complete-place delivery builds; they serve different purposes. Include serialized art, rigs, maps, and terrain archives in the delivery artifact and test its contents in a fresh session when serialization is affected. Check serializer compatibility against the installed versions and current official releases before diagnosing an asset as corrupt.
+Every place, for iteration and for delivery alike, is a `rojo build` of the repository's code, art, area and terrain files, laid out as [the project layout](#project-layout) says; test a built place's contents in a fresh session when serialization is affected. Check serializer compatibility against the installed versions and current official releases before diagnosing an asset as corrupt.
 
-Terrain is not ordinary geometry. Preserve it with `Terrain:CopyRegion()` and restore with `PasteRegion()` at the recorded voxel corner. Regions use 4-stud voxel coordinates. Archive distant maps separately to avoid serializing the empty space between them. Verify restored cell counts and walk the actual terrain in a rebuilt place. A current Studio viewport can hide a missing terrain export.
+Terrain is not ordinary geometry, and Rojo cannot live-sync it. Keep each map's terrain in its own file: copy it with `Terrain:CopyRegion()` and restore it with `PasteRegion()` at the recorded voxel corner. Regions use 4-stud voxel coordinates. Copy distant maps separately to avoid serializing the empty space between them. Confirm the terrain file survives a `rojo build`: verify restored cell counts and walk the actual terrain in the built place. A current Studio viewport can hide a missing terrain file.
 
 After restoring terrain, wait for a simulation step before building patrol/navigation samples with raycasts. Verify terrain readiness with representative samples before deriving navigation; part hits alone do not establish terrain readiness.
 
-Studio's `SerializationService:SerializeInstancesAsync()` and `EncodingService:Base64Encode()` can export authored instances when available in the current editor security context. Keep exported binaries separate from generated script content. Do not repeatedly try an API that reports the operation is unavailable in that context. When no local receiver can take the encoded bytes, read them back through the execute tool's output as [bounded binary exports](#bounded-binary-exports-through-mcp) describes.
+Keep saved binaries separate from generated script content, and save them as [saving files through MCP](#saving-files-through-mcp) describes.
+
+## Project layout
+
+Fully managed Rojo leaves several choices open; settle them this way:
+
+- **Art** is one `.rbxm` per asset in an art directory the project mounts in ServerStorage; the file's name becomes the instance's name, so every asset name must be a safe file name.
+- **An area is the unit of a level file.** An `.rbxm` has exactly one root and a Rojo node has one `$path`, so one directory cannot be merged into a folder that another also fills, and a role folder cannot be split across files. Each area file is therefore one Folder named for the area, holding that area's role folders. The world folder holds one folder per map, each mounting that map's area directory, at the same depth in every place, including a place that holds several maps, so no lookup branches on the place.
+- **Lookups go through one shared helper** that finds an object by role and name across every area, and observes role folders as they stream in on the client; no code indexes a role folder of the world directly.
+- **Area files live outside the code tree**, such as `world/<map>/<area>.rbxm` beside it, because the linters, the type checker and the Rojo sourcemap own the code tree.
+- **Every object is filed by one deterministic rule**, most specific region first: the interior a door leads into, then a named area, then a district, then the map's base area. An object named for a world point, such as an NPC's post or an encounter's arena, files at that point; any other model files at its bounding-box center. An object no area holds is refused with its name and position and the map volume widened, never silently dropped.
+- **A builder change reaches a level only once that level is rebuilt, or edited and saved.** Changing a builder changes no saved area file. Apply it by running the builder over the affected pieces in an editor opened on the built place and saving their areas as [saving files through MCP](#saving-files-through-mcp) says, so the diff holds only the builder's change.
+- **`rbx-merge`** is pinned with the project's tools (`rokit add kennethloeffler/rbx-merge`). One person runs `rbx-merge install --write-gitattributes` once and commits the `.gitattributes` block; every clone runs `rbx-merge install`, which belongs in the project's install recipe. In a git worktree it writes to the main clone's `.git/info/attributes`, which covers every worktree. Where no prebuilt binary exists, such as Linux arm64, the bootstrap builds it with `cargo install --git <rbx-merge repository> --tag <pinned tag> rbx_merge_cli`, which needs Rust 1.85 or newer. `git diff` on an area file then shows a readable instance tree.
+
+### Converting an older pipeline
+
+A pipeline that keeps whole-world archives, splices parts of them in place or exports maps by cutting a world apart converts this way:
+
+1. Measure the starting world from a `rojo build` of each place: how reused art is copied, which per-placement changes the copies carry, which role folders hold them, and whether every asset name is a safe file name. Where the same map's content lives in more than one source, such as a combined development place and the map's own place, compare those sources first: a fix saved to only one leaves the other stale, and the conversion reads each map from the source its published place builds from.
+2. Move the runtime first: the shared lookup helper and every consumer of the old role folders, and the server's marker swap wired into world start.
+3. Write the authoring steps that turn each copy into a marker, proving each against the copy it replaces, and that file a built world into map, area and role. The project's world builder ends with both.
+4. Run the conversion once from a script kept outside the repository: build each published place from its old project, run both steps in an Edit session, and save every area and asset file. Keep each Studio call short enough for the runner lease.
+5. Mount the art and area directories in every Rojo project, and delete what the layout supersedes: the whole-world archives, splice and export tools, and any receiver that carried files back from Studio.
+6. Verify as the testing reference's [placement and before-and-after verification](testing.md#placement-and-before-and-after-verification) says.
 
 ## Multiple maps and persistence
 
@@ -26,19 +49,17 @@ Read current official guidance before relying on changing platform behavior:
 
 ## Editor automation
 
-Prefer supported tools and APIs. A temporary trusted loopback bridge can make source synchronization and Studio test orchestration practical when no suitable connector exists. Bind only to loopback, execute only authored commands, serialize jobs, and keep the bridge and test fixtures out of the saved/published game. Do not turn it into a public code-execution endpoint or extract account cookies to work around UI limitations.
-
-A command queue file disappearing means it was consumed, not that a long Studio test finished. Await the explicit result before queuing dependent commands. Avoid overwriting pending jobs. Editor code runs against the editable DataModel, not the separate running server/client DataModels. Inject isolated test fixtures and clean them up after termination.
+Use Studio's MCP server for editor operations and for bringing files back from Studio. A receiver listening on the host's loopback never reaches a Studio running inside the runner, so do not build one; never add a code-execution endpoint or extract account cookies to work around UI limitations. Editor code runs against the editable DataModel, not the separate running server/client DataModels. Inject isolated test fixtures, keep them out of every built place, and clean them up after termination.
 
 Editor `require()` caches ModuleScript values even after source synchronization. Recreate or clone the relevant module instances before relying on changed content in an editor build operation; do not mistake stale cached values for a failed source update.
 
-## Native UI fallback
+## Studio's interface and native UI fallback
 
-Read fresh accessibility state and screenshots. Native menus often expose a `Cancel` secondary action that works when a generic Escape keystroke does not. An automation click can move the cursor without delivering a game click; verify the resulting UI state, not the tool's success status.
+**Anything chosen through Studio's interface is chosen from fresh accessibility state and a fresh screenshot, never from a position remembered from an earlier run**: an experience tile, a place row, an asset, a menu item or a dialog button. Studio reorders its lists by recent use, so the spot that held one game's experience last time can hold another's now. After each click, capture again and confirm that the item Studio now shows selected or opened is the intended one before the next click: Studio can register a click on a neighboring row, or move the cursor without delivering the click, so neither the coordinates sent nor the tool's success status shows what was chosen. On macOS, before the first click in Studio's main window, set and check its origin as [direct guest control](testing.md#direct-guest-control) describes. Before a destructive confirmation such as Overwrite, capture the dialog again and check that it names the intended experience and place. Native menus often expose a `Cancel` secondary action that works when a generic Escape keystroke does not.
 
 Use AppleScript/System Events or another native fallback only within the user's authorization and active tool policy. With authorized native HID input, activate and verify the exact target process immediately before sending input. Release all held keys/buttons. Identify the named main window: window 1 can be a tooltip or tiny auxiliary window. Convert downscaled screenshot coordinates to the actual window bounds before clicking. A PID-targeted event may behave differently from a foreground HID event.
 
-Opening a local place can launch a separate Studio process. An existing app-control handle may remain attached to the old DataModel. Verify the new file and process before editing. Close each task-owned finished editor normally after saving needed changes and confirming any publication, before opening the next place. Do not retain unused editors merely because the control tool can distinguish them; they consume memory and complicate targeting. Preserve unrelated user-owned instances.
+Opening a local place can launch a separate Studio process. An existing app-control handle may remain attached to the old DataModel. Verify the new file and process before editing. Close each task-owned editor other than [the game's warm editors](testing.md#keep-the-games-editors-warm) once its changes are saved and any publication confirmed, before opening the next place, as [leaving the shared runner as you found it](testing.md#leave-the-shared-runner-as-you-found-it) describes. Preserve unrelated user-owned instances.
 
 Multiple browser processes can have different tabs/accounts. An AppleScript browser query may reach a separate automation instance rather than the signed-in visible browser. Verify the actual page/account through the chosen surface. Do not browse unrelated user tabs to compensate.
 
@@ -68,9 +89,17 @@ A locked desktop affects operations that depend on that desktop. Independent gue
 
 ## Delivery
 
-To add a newly built map to an existing experience, use Studio’s Publish to Roblox As, select the verified experience, then Add as a new place. The dashboard’s Add A Place flow may list existing places to move instead. A Rojo project name does not guarantee the published place name; inspect and update the child place’s metadata after creation.
+**Existing places publish through Open Cloud from the project's deploy workflow**, and need no Studio runner:
 
-Save the actual Studio place, compare expected source revisions, and confirm temporary fixtures/bridge commands are absent. Retain a reproducible build and editable asset originals. Publish only to the authorized place, owner, and visibility. Inspect terminal publication success, destination, and version. Do not routinely launch the published client; use the narrow live-test criteria in [testing guidance](testing.md). A saved file, successful upload, Studio test, and live-client test are distinct evidence.
+- **Triggers.** A push to the default branch publishes to staging; a manual dispatch takes an environment input and publishes the dispatched branch. The job runs under that GitHub environment, runs the project's tests and integrity check, builds every place with `rojo build` as a binary `.rbxl`, and calls one checked-in script.
+- **The script** reads the universe and place IDs from the project's own configuration, and stops with a clear message for an environment that names no universe. It publishes each place, maps before the start place, with `POST https://apis.roblox.com/universes/v1/{universeId}/places/{placeId}/versions?versionType=Published`, the place file as the body and the key in the `x-api-key` header. It then reads each place's update time back through Open Cloud v2 `GetPlace` and writes a table of places and times to the run's summary.
+- **Binary builds.** The endpoint refuses a place over 10 MiB, and an XML `.rbxlx` of the same place is far larger.
+- **Key scope.** The project's Open Cloud key gets `universe-places` write on each experience the workflow publishes to, added in the Creator Dashboard. Adding a permission keeps the key's secret, so the stored secret keeps working. The Assets API's place route is never used: its key permission covers every asset the account can reach.
+- **Setting it up.** A project without the workflow gets it as source work, in the two pull requests the GitHub rules' **Workflows** section sets for a new workflow with a manual dispatch: a placeholder on the default branch first, then the real workflow tested by dispatching it on its branch.
+
+Choose the experience, place and confirmation in Studio's publish dialogs as [Studio's interface and native UI fallback](#studios-interface-and-native-ui-fallback) says. To add a newly built map to an existing experience, use Studio’s Publish to Roblox As, select the verified experience, then Add as a new place. The dashboard’s Add A Place flow may list existing places to move instead. A Rojo project name does not guarantee the published place name; inspect and update the child place’s metadata after creation.
+
+Build the place from the delivery head with `rojo build`, compare expected source revisions, and confirm temporary fixtures are absent. Retain a reproducible build and editable asset originals. Publish only to the authorized place, owner, and visibility. Inspect terminal publication success, destination, and version. Do not routinely launch the published client; use the narrow live-test criteria in [testing guidance](testing.md). A saved file, successful upload, Studio test, and live-client test are distinct evidence.
 
 ### Spatial queries in larger maps
 
@@ -86,12 +115,42 @@ Do not use the deprecated `Technology` property's ordinary command-context readb
 the active style. Keep ambient/exposure choices consistent with the art direction and test affected
 device behavior. See the [Lighting reference](https://create.roblox.com/docs/reference/engine/classes/Lighting).
 
-## Bounded binary exports through MCP
+## Saving files through MCP
 
-Large textual results and instance properties can have size limits. In Studio 0.737,
-`execute_luau` truncated a result near 100,000 characters and a `StringValue` rejected a
-435,776-character value; 70,000-character encoded chunks worked for that export. Start with a
-bounded chunk at or below that observed size, check each response length, and reduce the size if
-the current transport truncates it. Serialize once, retrieve all chunks, then validate the
-reassembled length, decoding, and checksum before replacing the local artifact. Remove temporary
-storage even after failure, and keep the original binary until validation succeeds.
+Studio's Save to File menu command has no MCP equivalent. Save an asset or area to its file this
+way:
+
+1. In an Edit session, serialize the instance with `SerializationService:SerializeInstancesAsync()`,
+   base64-encode the result with `EncodingService:Base64Encode()`, and hold the string in `shared`
+   with its byte count. Do not repeatedly try an API that reports the operation is unavailable in
+   the current security context.
+2. Read the string back with `execute_luau` in chunks well under the tool's output limit: it
+   truncates a result near 100,000 characters, and 60,000-character chunks leave room. Check each
+   response's length; a `StringValue` cannot hold a large export.
+3. Reassemble and decode, then check the byte count and that the file starts with the `<roblox!`
+   signature before replacing the file. Keep the original until the check passes, and clear the
+   value in `shared` even after a failure.
+
+A save writes a whole file from what the editor holds, so it carries everything that differs from
+the file, not only the edit; on a branch other workers also edit, a stale or wide save silently
+overwrites their work:
+
+- **Start from the current branch head, built apart from the working tree.** Fetch, and open a
+  fresh build of the head's committed files from a separate checkout, such as a worktree at that
+  commit; a build of an older checkout carries that checkout's copy of every area into the save.
+  Before writing a saved file into the working tree, check it has no uncommitted change: this
+  work's own is committed first, and another writer's holds the save until they commit it.
+- **Save only the area files the change touches**, never every area. An edit to one piece saves the
+  one area that holds it.
+- **Change only the intended pieces.** Select a piece by an exact identity, such as its name and
+  prior position, never by a search that can match a similar piece, and stop before saving when the
+  selection is not the one expected. A builder rerun that would rebuild more than the intended
+  pieces is narrowed to those pieces, so drift elsewhere in its area stays out of the file.
+- **Check the diff before committing.** Every area file the change does not touch is byte-identical
+  (`git diff --stat` lists only the touched files), and each touched file differs only by the
+  intended change, read through `rbx-merge`'s diff. The
+  [testing reference](testing.md#placement-and-before-and-after-verification) says when the change
+  also runs the whole-world placement diff.
+
+Wrap these steps in one repository helper that runs a script in an editor and saves named area and
+asset files, so a conversion, a builder rerun and an ordinary edit all save the same way.

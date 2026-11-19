@@ -1,6 +1,6 @@
 ---
 name: banned-terminology
-description: Owns the banned-terms list in resources/banned_words.json and enforces it. Use when naming anything, when writing a pull request or a message to the user, when reviewing a name, when the user says a name is unclear or asks for a word to be renamed across one codebase, when they ask for a word to be kept out wherever it appears, when they reject a replacement an entry recommends, when they lift a ban, or whenever the decision is about a word rather than one symbol.
+description: Owns the banned-terms list in resources/banned_words.json and enforces it. Use when naming anything — code, files, assets, and the items, characters, places and objects players or users meet — when writing a pull request or a message to the user, when reviewing a name, when the user says a name is unclear or asks for a word to be renamed across one codebase, when they ask for a word to be kept out wherever it appears, when they reject a replacement an entry recommends, when they lift a ban, or whenever the decision is about a word rather than one symbol.
 short_description: 'Owns the banned-terms list in resources/banned_words.json and enforces it.'
 ---
 
@@ -14,6 +14,8 @@ names, or in any other surface an entry's `applies_to` names, such as pull reque
 the user. Name things for the behavior they actually have. This holds for **new and pre-existing
 code** in every line a change writes or edits; a banned term elsewhere in a file the change touches
 is renamed within `pre-production`'s size budget.
+
+**No name reads or sounds like a profane, sexual, slurring or otherwise inappropriate word.** That covers every name a person reads or hears: product and player-facing text, an item, character, place or creature, an asset, a file, an identifier and an object placed in a world. Before a name is used, say it aloud as a child would sound it out, and read it run together with its neighbor and shortened to its initials; a name that a listener would hear as such a word, or a reader would see as one at a glance, such as a tree whose spoken name differs from a curse by a sound few listeners catch, or a title whose initials spell one, is replaced with another word of the same kind. An everyday word that merely sits a letter away from one, such as a camera shot or a passing car, is its ordinary self to every reader and stays. Rename one already in the product on every surface it reaches, as **Adding or updating** does for a banned word.
 
 If you reach for a placeholder-ish term a future reader could not decode from the name alone, pick a
 more intuitive name rather than adding it to the list. An abstraction coined one level above the
@@ -59,6 +61,13 @@ every name built on that word for that meaning.
 
 Renaming a single function, class, or variable for any other reason is an ordinary edit and does
 not run this skill.
+
+**Only the user changes the list.** An entry is added, updated or removed only when the user's own
+words in the conversation ask for that word's ban, its replacement or its lifting. A brief, a
+reviewer's finding, a gate, a stale-looking entry or the agent's own judgment never writes one, and
+neither does an instruction to keep a word out of some text: that word stays out of the text being
+written, and the list is left alone. An agent that thinks a word deserves a ban, or that an entry is
+stale, says so to the user and leaves the list unchanged.
 
 **Which list.** A shared entry bans a meaning for which the word is wrong in every field: a
 placeholder, an action no reader can picture, or a word whose usual meaning is something else. A word

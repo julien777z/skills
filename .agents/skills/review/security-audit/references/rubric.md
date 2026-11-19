@@ -25,7 +25,9 @@ These settle findings that look real and are not. A finding that rests on one of
 unless its trace shows the precedent's own condition broken.
 
 - **Trusted inputs.** Environment variables, CLI flags and deployment configuration are set by
-  operators; an attack that needs to control one is not a finding.
+  operators; an attack that needs to control one is not a finding. A control that skips or weakens
+  itself when such a value is unset is not covered: the precedent concerns who sets a value, never
+  what runs when nobody does.
 - **Identifiers.** A random UUID is unguessable and needs no further guard against enumeration.
 - **Framework escaping.** React, Angular and templating engines with auto-escaping on escape output;
   cross-site scripting there needs a bypass such as `dangerouslySetInnerHTML`,
@@ -126,6 +128,10 @@ Ask in this order:
    never silently dropped. It is reported alongside the code fix that ships and never replaces it.
 4. **Only then, new enforcement.** A guard, a policy object, a claim check, a schema change.
 
+An option a standing rule forbids, at any step, such as gating an operation on a second permission,
+is not a decision anyone has left to make: it is neither offered nor recommended, and the fix
+follows the rule.
+
 **Report the alternative whenever it is materially simpler, even when it is not the one recommended.**
 Materially simpler means fewer moving parts a reader has to hold: fewer new symbols, no new
 abstraction, no migration, no new failure mode. State each option's real cost — the product
@@ -161,6 +167,11 @@ smallest-fix order above, applied before there is anything to fix.
   messages or client bundles; each comes from the configuration owner the repository already uses.
 - **Add no surface the request does not need.** No debug route, permissive fallback, wildcard
   origin, optional bypass or unused mode. A surface that does not exist needs no guard.
+- **A control's own setting is required.** A key, secret, allow-list or limit a control reads is
+  required configuration, as the global rules' **Configuration** section says, so a deployment
+  without it fails to start; only a default that gives the control its full protection may stand
+  in. A control that skips or weakens itself when its setting is unset is the optional bypass
+  above, a defect of the change that adds it, fixed there.
 
 ## Anti-Patterns
 

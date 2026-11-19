@@ -232,6 +232,13 @@ class TreeNode(BaseModel):
 - Keep non-secret test environment values in that pytest-env configuration, not in workflow YAML. Workflows provide only secrets, provider credentials, and service-container configuration that pytest-env cannot supply.
 - Do NOT hardcode configuration values in `conftest.py` files.
 - Access these values through the production typed settings object when one exists; otherwise use `os.environ` in test code.
+- **Test runs treat warnings as errors**, through the runner's own setting, such as pytest's
+  `filterwarnings = ["error"]`. Every warning is fixed as `pre-production`'s deprecated-usage bullet
+  says. The one ignore allowed is for a defect inside a third-party package that no release fixes,
+  no replacement avoids, and nothing the repository passes or configures resolves: it matches that
+  package's module and message alone, with a comment naming the package and the upstream fix it
+  waits for. A warning about how the repository calls or configures a package, such as an unset
+  setting or a deprecated argument, never qualifies.
 - For every pull request an agent creates, ensure all test-related CI jobs pass before considering delivery complete; investigate and fix any failures within the pull request's scope.
 
 - Before selecting a test invocation, apply the global rules' **Tools and environments** verification
@@ -302,6 +309,16 @@ overlapping tests, and CI routing; inspect dependency source or types for depend
 
 - Before planning browser walkthroughs or rendered UI inspections, read `run-site`'s **Principles**
   and select its environment applicability. Required automated tests and builds still run.
+- **Tests leave the user's desktop undisturbed.** Before selecting or launching a test that uses
+  windows or apps, choose an isolated desktop, a headless runtime, or hidden test-owned windows.
+  Suppress focus changes, app activation, taskbar or dock appearances, notifications, and sound;
+  apply the same policy to child windows and anything the test launches. A hidden first window
+  alone does not establish isolation. Verify the runtime's window and activation policy before
+  launch, and observe that it stays hidden while it runs. Never minimize, hide, or rearrange the
+  user's own windows to make room. General approval to implement or test a change does not approve
+  interrupting the desktop. When the behavior cannot be tested silently, prepare the test first,
+  explain the specific interruption and ask for explicit permission before that part runs. Continue
+  independent checks through nondisruptive routes and report what still lacks verification.
 - A cloud workspace snapshot restores files, not running processes. A failing `docker info` at session start means the daemon may need to be started; it does not by itself prove Docker is unavailable.
 - Prefer the repository's service-startup helper or skill. Otherwise start the daemon explicitly and wait for `docker info` to succeed:
 

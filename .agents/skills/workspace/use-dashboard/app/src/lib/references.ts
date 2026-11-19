@@ -46,8 +46,12 @@ export class References {
 
   private readonly entries: Reference[];
 
-  constructor(entries: Reference[]) {
+  // Texts left unlinked, such as an open dialog's own name, still match so a shorter name never links inside them.
+  private readonly plain: string[];
+
+  constructor(entries: Reference[], plain: string[] = []) {
     this.entries = entries;
+    this.plain = plain;
     this.targets = new Map();
 
     for (const entry of entries) {
@@ -60,7 +64,7 @@ export class References {
       }
     }
 
-    const texts = [...this.targets.keys()].sort((first, second) => second.length - first.length);
+    const texts = [...this.targets.keys(), ...plain].sort((first, second) => second.length - first.length);
     const alternatives = texts.map(escapeRegExp).join('|');
 
     this.pattern = texts.length
@@ -69,7 +73,10 @@ export class References {
   }
 
   without(text: string): References {
-    return new References(this.entries.filter((entry) => entry.text !== text));
+    return new References(
+      this.entries.filter((entry) => entry.text !== text),
+      [...this.plain, text],
+    );
   }
 
   split(text: string): (string | ReferenceLink)[] {
@@ -81,9 +88,15 @@ export class References {
     let start = 0;
 
     for (const match of text.matchAll(this.pattern)) {
+      const target = this.targets.get(match[0]);
+
+      if (!target) {
+        continue;
+      }
+
       const index = match.index ?? 0;
 
-      parts.push(text.slice(start, index), { text: match[0], ...this.targets.get(match[0]) });
+      parts.push(text.slice(start, index), { text: match[0], ...target });
       start = index + match[0].length;
     }
 

@@ -1,0 +1,95 @@
+---
+name: roblox-worldbuilding
+description: Apply when planning, inspecting, creating, modifying, importing, optimizing, or playtesting anything placed in a Roblox world — maps, terrain, water, roads, buildings, rooms, props, environmental meshes, or Blender assets, whether the work runs in Studio or through builder scripts and the project's own tools. Also apply when handling authored signs or runtime world-space text, regardless of renderer. Require coherent environments, deliberate place architecture, economical measured geometry, readable traversal, preserved artwork, and player-height visual/performance checks; a world change is reported finished only after its grounding, blocking and boundary audit in Play, and a new map or visual pass only after a fresh-eye review as well.
+short_description: 'Build and improve Roblox worlds, terrain, structures, props, and assets.'
+---
+
+# Roblox worldbuilding
+
+## Dependencies
+
+- `luau`
+- `subagent-matrix`
+- `council`
+
+## Give every map a purpose
+
+Build worlds that make sense, look intentional, and reward exploration. Preserve the requested genre, existing artwork, gameplay, and visual identity. Use this skill for environment work; it does not authorize a visual redesign during an unrelated code task.
+
+Before extending a world, identify its role in the overall game, arrival/exit routes, neighboring maps, landmarks, terrain, inhabitants, activities, and intended traversal. Give each region a recognizable identity within one coherent palette and architectural language. Its geography and connections should be understandable: roads lead somewhere useful, bridges cross meaningful obstacles, water and terrain connect plausibly, and settlements have believable entrances and functions.
+
+**Every playable space is enclosed by a boundary the player can see and cannot cross.** A map's outer edge, a cliff top, open water, a ledge over the void and an interior's open side are each closed by something that fits the setting, such as a mountain ridge, a wall, dense forest, a fence along a drop or a sea that turns the player back. Where nothing solid would fit, an invisible collision wall holds the line behind scenery that explains the limit. A space where walking, jumping, swimming or climbing reaches unbuilt terrain or empty space is unfinished, whatever its size.
+
+Choose one place or multiple places according to the game's established architecture and intended transitions. A region within a continuous map can remain in one place; independent destinations may warrant separate places within an experience. Do not hide distant production maps as staging areas visible to players. When using multiple places, keep each place's scenery, terrain, spawn/exit definitions, and build inputs separate, and use a validated registry and deliberate transitions. Require session handoff and teleport verification for multiple places; return editor operations and testing to the caller. Do not create experiences or publish places without task authorization.
+
+## Avoid bland or arbitrary environments
+
+Vary terrain shape, sightlines, silhouettes, landmarks, architecture, vegetation, lighting, and the rhythm of enclosed/open spaces. Compose focal areas with quieter spaces between them. Make routes readable and reward looking around with meaningful environmental detail, optional discoveries, or views appropriate to the scope. Do not substitute a larger empty field, random prop scattering, or endless copies of one tree for a designed map.
+
+Give every district a useful role and connect it visually to its neighbors. Inspect approached building faces, roof orientation, doorways, signs, supports, interior scale, shoreline transitions, and terrain joins. Detail must support navigation, story, or atmosphere while leaving room for player movement and the gameplay camera. Every sign states what is true where it hangs: an interior's own name sign names that room, never the place outside its door, while an exit or direction sign names the destination it points to. Preserve established safe-zone and encounter rules.
+
+Evaluate every object's placement in the complete scene: why it belongs there, what
+it faces or connects to, how it is approached and used, and whether its neighbors
+support or obstruct that purpose. Reserve the full approach, interaction, and exit
+space before adding decorative props. Apply the functional-placement criteria in
+the map-making reference; isolated asset quality, collision checks, and successful
+interactions do not establish a coherent arrangement.
+
+**Every decoration fits the setting it stands in.** It is something the people of that place would
+plausibly have made, used and left there, so its kind, materials and wear match the setting:
+weathered and made for the outdoors outside, indoor furnishings indoors, and together the pieces
+tell what the place is for. A miners' camp on a mountain path holds a pick rack, a lantern on a
+nail, ore carts and a patched canvas tarp, never a velvet armchair from a manor's kit. A piece
+borrowed from another setting's kit is placed only where it would belong in the new one; that it was
+on hand is never the reason. When no fitting piece exists, make one rather than substitute what is
+available.
+
+Read [Map making and surface integration](references/map-making.md) for composition, traversal, terrain joins, collision, and inspection. Before accepting a new map or a visual pass, a new or rebuilt interior included, run its **Scene audit** and then a fresh-eye review: invoke `subagent-matrix` at its standard capability level for one reviewer given only the audit's captures, with places of one kind side by side, and the game's stated art direction or the reference the user gave, never the build notes, and ask what reads as unfinished, repetitive, empty, off-palette or wrongly turned, and of each prop whether a player would expect it in that place; an out-of-place prop is a finding. Fix confirmed findings and recapture; a finding you would reject goes to `council` in **Ask** mode and its ruling is followed. Read [world-space text inspection](references/world-space-text.md) for authored signs or runtime messages in the world. Use shared map/model frames and named anchors as described in `luau`; update geometry and its gameplay consumers together.
+
+## Blender and economical meshes
+
+Use Blender when original editable meshes improve silhouettes and cohesive detail. Keep the `.blend` source, export recipe, asset identity, and measured geometry counts. Read [Blender and imported assets](references/blender-assets.md) before creating/importing assets.
+
+Keep meshes low in triangles for their visible purpose and expected repetition. Spend detail on silhouettes and close focal objects; simplify repeated/background props. Do not use Roblox's maximum import limits as a production budget. Agree a project-appropriate budget from target devices and visible density, then record actual triangulated counts per asset and representative loaded scene. A tree repeated hundreds of times has a different budget from a single landmark.
+
+Remove hidden/internal faces where they cannot become visible, unnecessary edge loops, and excessive subdivisions. Preserve normals, UVs, outline, and important deformation when simplifying. Inspect the exported triangulated result, not only Blender's quad count. Texture/material detail can replace geometry where it remains convincing at player distance; keep texture memory and material splits economical too.
+
+**Apply the cheap performance defaults to every mesh, prop and light as it is built, never waiting for a measured slowdown.** Each one costs nothing a player sees, and its saving only shows once many pieces carry or lack it, by which point the whole world needs reworking. They follow [Roblox performance guidance](https://create.roblox.com/docs/performance-optimization/improve):
+
+- One upload per distinct geometry, placed in levels as a marker as **Reused art** below says. Each use takes its own color or tint (`Color`, `SurfaceAppearance.Color`), never a recolored re-upload, and one texture or SurfaceAppearance is shared per kind of prop.
+- Decoration, meaning anything players do not stand on, need to be stopped by, or interact with, takes `CollisionFidelity` Box, with `CanCollide`, `CanTouch` and `CanQuery` false. A piece a touch trigger, pickup or raycast relies on keeps the flag that serves it, and where a piece must block movement or the camera, a simple invisible collider does it. That collider covers the piece's full height, through every part stacked on its footprint, never only the base the floor touches, or players walk into the rest.
+- `CastShadow` false on small decoration and on anything indoors or under a roof, and `Shadows` false on interior lights the scene does not need.
+- `RenderFidelity` Automatic, never Precise.
+- No decorative part with partial transparency. Glass and glow use an opaque or Neon material or one shared transparent surface.
+- Textures at 512 px or less, 256 px for minor props.
+- Distant models use `LevelOfDetail` where the place streams.
+
+A default is left off only where it visibly breaks the result, such as a shadow the scene's lighting depends on, and the reason goes beside that piece. Enforce the defaults where the project places and imports pieces, so a new piece cannot skip them: the marker swap applies the placement defaults, and a setting a running script cannot change, such as `CollisionFidelity` or `RenderFidelity`, is baked into the asset when it is installed. Measurement checks a scene against its budget; it never decides whether a default applies. Avoid a single enormous combined mesh that defeats useful streaming boundaries.
+
+Low triangle counts alone do not guarantee smooth play. Also inspect draw calls, materials, transparency/overdraw, texture memory, particles, lights, physics, scripts, and streaming load. Measure representative busy views and startup using Studio performance tools. Record device/simulator, graphics level, frame time, and memory where available. Do not describe a desktop or simulator result as physical mobile performance.
+
+## Reused art
+
+Art a level uses more than once is placed as a marker, never as a copy, as Roblox's [fully managed project layout](https://create.roblox.com/docs/projects/rojo/fully-managed) recommends: a built place has no package-style links, so a copy keeps whatever the asset was when it was placed.
+
+- **A marker is a Model**, not the tagged Part Roblox's page suggests: a running game cannot set `LevelOfDetail`, so the level sets it and `ModelStreamingMode` on the marker, and the swap keeps them by cloning the marker rather than writing them. The marker holds one small invisible handle Part an editor can select, and is tagged for the swap.
+- **A marker stands at the placed model's pivot**, so an editor sees it where the object is, never where the asset's own pivot would fall, which can be far from its geometry.
+- **A marker records only what differs from a plain copy**: scale, a stretch along one axis, where the asset's pivot goes when it is not at the marker, whether the piece is solid, the model's own attributes and tags, its streaming and detail settings when they differ from the defaults, and one entry per changed part holding the changed properties and what hangs on that part, such as a SurfaceGui or a light. It skips `RBX_`-prefixed attributes, which Roblox reserves and a game script cannot set.
+- **Characters are never markers**: an outfit fitted to one body and accessories held by welds do not survive a swap, so a model holding a Humanoid stays as it is.
+- **The server swaps every marker at world start**, from an art library in ServerStorage, after terrain is restored and before anything stands on the art, such as NPCs grounded on its floors, and before the world reports ready. Clients only stream in finished models; Edit shows the markers and Play shows the art.
+- **Placement defaults live in the swap**, so every placement gets them from one place, and authoring builds pieces through the same swap code the server runs.
+- **Packages cannot replace markers**: a package updates only when a place is opened in Studio, never in a `rojo build`, scripts cannot create its link, and any edit to a copy beyond its root's name and position stops its updates.
+
+A conversion from copies proves each marker by building it and comparing every part's frame, size and changeable properties with the copy it replaces, plus a whole-tree inventory; a copy the comparison refuses stays a copy until the marker records what it lacks.
+
+## Build and Play test
+
+Return imports, terrain preservation, saving area and asset files, background MCP tests, and authorized delivery to the caller. Apply `luau` when opening or modifying builders/scripts.
+
+Trace every affected entrance and activity access route all the way to the established traversal network; a reachable destination or walkable grass does not prove its authored path connects. Apply the route-continuity criteria in the map-making reference. Walk the arrival route, every changed connection, bridges/ramps, doors, and activity boundaries in both directions. Inspect at player height and supported camera zoom/pitch from multiple approaches. Check clipping, flicker, inaccessible steps, collision snags, misleading paths, bland sightlines, and accidental views of other maps. Every placed piece rests on the support actually built, grounded as the map-making reference's **Terrain, paving, and adjoining parts** says; whether pieces float, sink or let players walk through them is measured by an automated grounding, blocking and boundary audit in Play with a clean rerun, never judged by eye, so return that audit to the caller with the changed areas. The same audit tries to leave every place by every route a player has, and fails when the player gets past its boundary. Fix defects in the canonical builder and saved artwork so rebuilding preserves the repair.
+
+For major maps or streaming changes, test stream-out/re-entry, destination preloading, interiors, missing assets, and appropriate mobile coverage. Verify complete activity footprints avoid protected routes. Check the saved or rebuilt artifact for terrain, assets, lighting, source/package closure, and absence of test fixtures; reopen it when serialization needs verification. Report code checks, Studio traversal, simulation, performance measurements, and published-client results separately.
+
+Keep reusable worldbuilding lessons here, a lesson whose subject another skill owns there, and game-specific world design in the project skill. Update canonical `.agents` sources only; leave provider mirrors to Agent Sync.
+
+Sources for place architecture: [Roblox places](https://create.roblox.com/docs/production/publishing/publish-games-and-places), [teleporting](https://create.roblox.com/docs/projects/teleport).

@@ -11,6 +11,10 @@ verification chat. Skills that use it should declare `subagent-matrix` in their 
 but a missing declaration does not bypass selection. Return the selection table to the calling
 agent; the calling agent launches the actual assignment with the selected model.
 
+## Dependencies
+
+- `share-media`
+
 ## Workflow
 
 1. Identify the calling skill or direct task, its assigned roles or verification chat, and any
@@ -34,18 +38,42 @@ agent; the calling agent launches the actual assignment with the selected model.
    unavailable-model fallback, or takes the launch fallback, launch the actual assigned work once with its exact
    candidate identifier and explicit reasoning effort when the native tool is available. A successful dispatch establishes that the host accepted
    the requested identifier for that launch; it does not establish catalog availability or runtime identity.
-   An explicit host receipt that the candidate is unsupported establishes unavailability. **A rate limit or
-   quota refusal is temporary capacity, never unavailability**, even when it names a long reset time: it permits
-   no fallback, no other provider and no absorbing the work into the coordinator's own process. Resume or
-   relaunch the same worker on the same model once the limit no longer holds, read from the request path itself:
-   the coordinator answering on that model, or the relaunch being accepted, shows it has cleared. The accepted worker
+   An explicit host receipt that the candidate is unsupported establishes unavailability only as this step defines
+   below. **A refusal that names its own cause or fix is a repair, never unavailability**: a client or runtime
+   version too old, a sign-in, a disabled provider, a stale process. A rate limit or quota refusal is not this
+   kind; it follows the capacity rule below. The repair is the first step and every
+   fallback comes after it: update the client, sign in, enable the provider or restart the process, or confirm the
+   condition no longer holds, then launch the same assignment again with the same identifier. Updating or
+   repairing the agent's own client or runtime is that repair, never a repository or global settings change,
+   which this step forbids below. Repair the component that actually holds the refused value, read from the
+   running request path rather than from the refusal's own advice, such as a proxy between the agent and the
+   provider. Only when that component is out of reach, as the global rules' bullet on a step only the user can
+   take settles it, does its repair go to the user as such a step, with the exact command, while the fallback
+   below proceeds for the assignment in hand. Unavailability, and every fallback or substitution it permits,
+   starts only when that relaunch is refused again or the named repair cannot be made, recorded with both
+   receipts and the repair attempted; only that is an explicit unsupported receipt wherever this skill or its
+   callers name one. **A rate limit or quota refusal is temporary capacity, never unavailability**, even when it
+   names a long reset time: it permits no fallback, no other provider and no absorbing the work into the
+   coordinator's own process. Resume or relaunch the same worker on the same model once the limit no longer
+   holds, read from the request path itself: the coordinator answering on that model, or the relaunch being
+   accepted, shows it has cleared. The accepted worker
    performs the assignment; never launch a throwaway availability probe. Record the runtime identifier only
    when the host exposes its exact value. Generic provider or product
    branding, a worker-reported label, or no runtime identifier is neither confirmation nor a contradiction of
-   the accepted selection. Availability is not permission to change repository or global settings.
+   the accepted selection. Availability is not permission to change repository or global settings, such as a
+   model policy or a provider's configuration.
 4. When a requested capability level or model is explicitly unsupported, apply a fallback only when the
    calling skill declares its direction and limits and it respects the user's explicit model or capability
-   constraint. Report the original request as unavailable and name the actual fallback capability and model;
+   constraint. **A permitted fallback steps down as little as it can**, in this order, launching the actual
+   assignment at each step and moving on only on an explicit unsupported receipt:
+   1. earlier versions of the same family, newest first, found in the host's model-selection surface
+      including entries it omits from its short list;
+   2. the other provider's family at the requested level;
+   3. the family one capability level below, on the same provider first, then the other provider's family at
+      that level;
+   4. each lower level in turn, never skipping one. A family another seat or worker already uses is still the
+      next step: a fallback chooses by capability, never to keep the families distinct.
+   Report the original request as unavailable and name the actual fallback capability and model;
    never relabel it as the requested level. Without that policy, report the unsupported request and host
    receipt; do not substitute another model. If the required worker cannot launch, apply the launch
    fallback below. Preserve one
@@ -89,7 +117,11 @@ context and returns its verdict into the step waiting on it; nothing else does b
 - **Never route one elsewhere**: not through a new remote or cloud session, a scheduled trigger or
   routine, or a message asking any session but the delegating agent to run it. Those run outside
   the step, can fail setup or leave branches behind, and their verdict never returns to the run
-  that waits on it.
+  that waits on it. The one exception is a reader whose test requires that it load no installed
+  copy of the guidance under test, when the agent tool's subagents load one: it runs as a local
+  headless harness process the running session starts and waits on, with its user-level skill and
+  rule roots pointed at a scratch root, and hands back its complete original output as the
+  result-retention bullet below requires.
 - **Launch fallback: a worker that cannot launch a subagent its step needs hands the step up; never
   absorb it.** Attempt the native dispatch when available. This covers a host that gives the worker
   no agent tool and a native dispatch that fails other than by a capacity refusal, which step 3 waits out and relaunches, for reviewers, lenses, validators, gates and
@@ -105,10 +137,11 @@ context and returns its verdict into the step waiting on it; nothing else does b
   such as the fix steps a flag names, under the follow-up bullet below. Only the top-level agent,
   with no delegating agent to ask, performs an assignment in process after its own launch fails,
   records the launch outcome, and reports that the result lacked independent review; never describe
-  an in-process result as an independent verdict. A brief never tells a worker to fall back to
-  in-process review or gating.
+  an in-process result as an independent verdict. An in-process result of an independent step
+  never admits the change it judges: that step stays a concrete gate until a launched subagent
+  answers it. A brief never tells a worker to fall back to in-process review or gating.
 - **An independent step gets a newly launched subagent for every question it answers when available.** A gate,
-  finding validator or skill-test reader that has answered about an item is never resumed, messaged or
+  finding validator, skill-test reader or grader that has answered about an item is never resumed, messaged or
   reused for a later round on it — not to judge the repair of its own flag or a revised item — since
   its answer would then rest on its own earlier verdict. A reviewer that a review loop keeps across
   its rounds, carrying the ledger, is a reviewer and not one of these.
@@ -126,12 +159,31 @@ context and returns its verdict into the step waiting on it; nothing else does b
   an original from retained host output when available; otherwise repeat only the unproven step,
   not the surrounding cohort.
 - **A worker hands each capture the user should see up the same way, as it is made.** Through any
-  mid-run channel the host gives it to the delegating agent, it sends the file path and a line on
-  what the capture shows; a worker whose only channel is its final message returns with the
-  captures made since and is resumed. Work that will make such captures goes to a worker the
+  mid-run channel the host gives it to the delegating agent, it sends the file path and the
+  caption `share-media` requires, or, for a capture worker that captures without judging as
+  [model capabilities](references/model-capabilities.md) says, what each capture shows, leaving its
+  reading and caption to the delegating agent; a worker whose only channel is its final message
+  returns with the captures made since and is resumed. Work that will make such captures goes to a worker the
   delegating agent can resume or hear from mid-run; where the host offers neither, the delegating
   agent splits the work so each delegation ends at one such capture, and forwards each as it
   arrives.
+- **At most five execution workers run at once in a session**: the subagents that implement,
+  investigate or test a scope of the task, since each one spends usage on its own. Parallel work is
+  worth that cost only for scopes that are truly separate. A reviewer, gate, validator or reader a
+  step requires is not an execution worker: it starts when its step reaches it, beside however many
+  workers are running. Before launching a worker, count the workers still running. A host or
+  provider limit that stops workers lowers the count further until they run cleanly.
+- **Work that shares an area with a running worker's scope goes to that worker**, such as the same
+  feature, window, system, files or verification setup, as part of its task, not to a new one: one
+  worker owning a game's settings window can take a request to rename one of its tabs and another
+  to change a related control.
+- **Work that needs a new worker while five are running waits for a slot** and is recorded with its
+  brief, except work that removes what the running workers are blocked on, such as making a shared
+  runner, tool or service they queue for faster or able to serve them in parallel. That work does
+  not wait for a slot; it takes one in this order: a running worker it unblocks pushes its work and
+  is paused, the unblocking work is launched in the freed slot, so the count never passes five, and
+  the paused worker resumes once that work lands. Its brief has it take the shared resource with
+  priority, through its lock's priority option where the resource has one.
 - **Assign one implementation owner per coherent scope, and a fresh worker for each delegated
   task.** The primary agent retains integration, dependencies, product decisions and orchestration.
   Delegate work that produces an independent result, not a wrapper that only invokes another
@@ -191,7 +243,7 @@ explicitly rejects it as unsupported; after acceptance, record `accepted` while 
 Use `identifier required` only for an identifier-resolution failure established by Workflow step 2; report that
 step's resolved candidate and state rather than independently selecting candidate sources here. Apply the
 launch fallback; do not describe the missing identifier as an unsupported-model receipt. Use `unavailable` only
-when a host receipt explicitly rejects the exact candidate as unsupported. The calling agent then records the
+when a host receipt explicitly rejects the exact candidate as unsupported after step 3's repair and relaunch. The calling agent then records the
 selected capability level per role or chat, or the explicit user override.
 
 ```markdown

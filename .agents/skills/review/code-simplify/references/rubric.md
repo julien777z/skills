@@ -93,6 +93,12 @@ that hides a real failure, keeps its bug severity.
    shape a standing rule names a defect is repaired, not followed.
 9. **Deletions read first.** An addition that takes the shape the same diff removes elsewhere — a
    restated list, a second mechanism, a reintroduced flag — is a finding.
+10. **Configuration is required unless it has a safe default or its owner documents an absence.** A
+   settings field, environment variable, secret, config key or workflow input the change adds or
+   reads as optional, with a default that is not safe or a branch that skips or weakens its work
+   when it is unset, is a `should` finding under the global rules' **Configuration** section: a
+   deployment that misses it runs without what it provides. Local runs or tests lacking the value
+   are not such a documented absence. The remedy makes it required and deletes the absence branch.
 
 ## Five Greps
 
@@ -131,5 +137,5 @@ difference). A map listing only the current repository states the search that fo
 
 The rubric applies to `.agents` rules and skills too, with one exception: **a skill restating a
 rule is never a finding**, because the skill is the copy read when the task starts. Duplication
-between two rules, two skills, or within one file stays a finding, and a skill and rule that
-disagree are reconciled.
+between two rules, two skills, two files of one skill, or within one file stays a finding, and a
+skill and rule that disagree are reconciled.

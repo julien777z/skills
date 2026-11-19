@@ -95,6 +95,9 @@ identity, never a second authoritative copy of its records.
      what a feature does, a scope — record a `decision` entry when it is given: the surface it
      governs and the user's words with when they were given. A later decision on that surface is
      checked against it, and a correction that reverses it records the user's new words. A
+     decision or answered question that calls for work records that work in its entry as `work:
+     open` with a `next_action` from the moment it is given, and keeps it open until the work is
+     verified where it lives, when it becomes `work: done` with that evidence. A
      decision the user scopes to the whole session, rather than one task, is copied into each later
      task's ledger when that ledger is created, until the user withdraws it.
    - **A record rebuilt from evidence holds only what the user's own messages show.** A plan, step,

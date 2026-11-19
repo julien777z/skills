@@ -19,7 +19,6 @@ skill change the user asks for, whose plan is a proposed flow.
 - `review-pass`
 - `defer-scope`
 - `acceptance-gate`
-- `generic-push`
 - `merge-conflict`
 - `subagent-matrix`
 - `merge-gate`
@@ -103,8 +102,8 @@ Every task that changes files starts here, and so does every follow-up that arri
   it lacks: at most five numbered steps, each one plain line naming one bounded action with its
   wall-clock estimate, as `i-have-adhd` numbers steps, then the total and what the user does
   afterwards. Keep it under 200 words while `i-have-adhd` is active.
-- **A plan's last step is the merge**, the reviewable pull request when no merge is authorized, or
-  the verified local result when there is no pull request. Its verification runs before that; no
+- **A plan's last step for repository changes is the merge**, or the reviewable pull request when
+  no merge is authorized. Its verification runs before that; no
   step, verification or user action after it walks the deployed site, checks a rollout or waits for
   a deploy, apart from the tasks the global rules' **A merge leaves no deploy work** bullet excepts.
 - **An estimate is the executing agent's own wall-clock, never the effort the same work would
@@ -590,9 +589,10 @@ decision before preserving a checked-out branch or updating an existing pull req
 Verify selected pull requests remotely, and leave another session's branch and pull request
 untouched as that rule says unless the selected route explicitly directs continuing it.
 
-**A pull request exists from the first push.** The push that first carries a change opens its
-draft pull request, whatever is still being decided or built for it: an open question, a later
-step, or a batch still collecting changes holds none of it back.
+**Every task that changes repository files opens or updates its draft pull request.** At the first
+validated commit, push and open the draft in the same step, then read back its URL and head. An
+open question, a later step, or a batch still collecting changes holds none of it back. If a
+required check or the host prevents delivery, keep the push and pull request as pending work.
 
 **A pull request's title and description are brought up to date at every milestone, not at every
 push.** A milestone is a finished plan step or worker task whose checks pass, and a guidance correction pushed onto the pull request carrying it. After it, add
@@ -606,7 +606,6 @@ checks it before review.
 When one change spans multiple repositories, treat each repository as an independent delivery
 context, with **Pull Requests** applying inside each of them.
 
-- Invoke `generic-push` separately for each repository before committing or publishing.
 - Write every branch name, commit message, pull-request title, pull-request description, review
   comment, code comment, and repository-local report solely from that repository's perspective.
 - Apply the GitHub rule's independent publishing context to those artifacts, including dependency
@@ -677,10 +676,10 @@ it — the user asking about something else is not the user withdrawing what the
   nothing.
 - **A context summary's pending list is this run's named work**, not background, **and its state is
   read from the record, never from the summary.** After a compaction or handoff, and before
-  starting, delegating or reporting any plan work, read each step's state from the plan entry in
-  `session-ledger` and from the repository — merged commits, pushed heads — and let them overrule
-  the summary: a step that the ledger entry or the repository shows done is not started again, and
-  one the summary left out is still owed. The first turn then moves the oldest item still open as
+  starting, delegating or reporting any plan work, read each step's state, and each decision or
+  answered question whose work is open, from `session-ledger` and from the repository — merged
+  commits, pushed heads — and let them overrule the summary: an item the record shows done is not
+  started again, and one the summary left out is still owed. The first turn then moves the oldest item still open as
   well as whatever the summary's next step names. A constraint it carries, such as "ask before X", is an earlier turn's instruction,
   checked under **Encountered Issues** before it is obeyed.
 - **Commits a remote lacks are undelivered work**; their next step is the pre-push checks and the
@@ -714,12 +713,14 @@ outcome still needs work, update the active plan and start the replacement's fir
 step under the existing authorization, without another plan approval.
 
 **A wait blocks only the work that depends on what is awaited.** While one item waits on something
-outside the run's hands — a background agent, CI, a review, a build, the user's answer to one
-question or confirmation — start the authorized, already-named work that **Priority** permits and that neither needs the
+outside the run's hands — a background agent, CI, a review, a build, a shared machine, device or lock another
+session holds, the user's answer to one question or confirmation — start the authorized, already-named work that **Priority** permits and that neither needs the
 awaited result nor touches the files or resources the awaited work is changing. Each item held for the wait
 names what it uses that only the awaited result will supply; absent that dependency or a hold under
 **Priority**, it starts now: coming later in the plan, belonging to the same feature, or consuming a shape already agreed
 with the awaited work, such as a planned contract, is not such a thing, so build against that shape.
+**Every wait applies this test to the whole plan record** before the turn's report: to each step and part
+not yet started, in every later step as well as the current one, starting or delegating each that passes it.
 When the awaited work is a building worker, another edit starts only in an independently owned
 scope with separate files and resources, under `subagent-matrix`'s **Dispatch**; otherwise do
 read-only verification, review or question preparation while it runs.
@@ -744,15 +745,11 @@ operation, a read-only interruption, or the absence of a source diff or pull req
 pending guidance delivery terminal; a genuine authorization or dependency hold still holds only its
 dependent action.
 
-Run this checkpoint before reporting a change complete. When the task changes repository-owned
-source or configuration, verify its pull request carries the change before reporting delivery,
-unless the user explicitly asked to keep the change local. Local installation, configuration, or
-recovery can verify the change or restore service while its pull request is in flight. When no
-pull request is needed, source-stream step 1 and step 3's verification review the complete task
-diff and its validation prerequisites; the history, ready-for-review message, and `merge-gate`
-apply only to pull requests. A failed local setup operation remains work under **Encountered
-Issues**. The independent gate receives the affected-repository map and comparison evidence along
-with the diff.
+Run this checkpoint before reporting a change complete. Verify that each changed repository has a
+pull request carrying the task's final commit. A local installation, configuration, or recovery
+can verify the change or restore service while its pull request is in flight. A failed local
+setup operation remains work under **Encountered Issues**. The independent gate receives the
+affected-repository map and comparison evidence along with the diff.
 
 Before the final delivery steps below, select the applicable verification route under the shared
 testing rule's **Environments** section, then verify the requested behavior on the change's branch
@@ -796,7 +793,7 @@ Two streams run side by side from here: the guidance stream and the source strea
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
   request belongs to the guidance stream:
 
-1. Invoke `review-pass` on the pull request, or on the local task diff when none exists, with the
+1. Invoke `review-pass` on the pull request with the
    intent statement. It runs its review loop and one final `acceptance-gate` over the changes no
    earlier pass reviewed, brings in a moved base, and returns the head its final acceptance passed.
 2. Shape the history with `rewrite-git-history`. The first time a pull request is sent for review,

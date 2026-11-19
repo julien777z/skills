@@ -17,6 +17,12 @@ paths:
   goes, which harnesses it serves, how its generated mirrors are produced, and how a change to it is
   validated. Any other rule or `.agents/global.md` keeps only what its own subject needs and points
   here for the rest.
+- **Guidance lives in skills and rules, never in a harness's memory.** A correction, preference,
+  limit, exception or operating fact that tells agents how to work — such as a cap on workers, a
+  repository that gets only minimal changes, or a machine whose processes may be ended — goes
+  through `edit-skill` into the skill, rule, project guidance or reference that owns it, so every
+  harness and session reads the same copy. A harness's memory, such as an auto-memory file, holds
+  none of it. A memory found holding guidance is moved to its owner and deleted.
 - `.agents/global.md` states guidance that holds in every repository and that no rule's subject
   covers, and every `.agents/rules/*.md` file guidance that holds in any repository using its
   technology. Keep their examples generic —
@@ -29,6 +35,10 @@ paths:
   demand, and `.agents/project.md` points to each file in one line.
 - A rule that cannot be stated without naming something this repository owns belongs in
   `.agents/project.md`. Move it there rather than rewording it into something generic but untrue.
+- **A new rule file is only ever a guidance correction**, written through `edit-skill` for guidance
+  a rule's subject owns, as the bullets above place it. A system an agent built, such as a booking
+  service's flows, is documented where those bullets place repository facts; repository guidance
+  that says to add a rule per system is itself corrected under `edit-skill`.
 - **Shared or repository-owned.** Generic skills live in one shared skills repository and reach
   every session through a user-level skill root; repository-specific skills, every rule, and
   repository-specific agents live in the repository they describe. Inspect a skill's content and
@@ -112,8 +122,8 @@ paths:
   `references/<topic>.md` beside it, named for what it holds — a rubric, a checklist, a catalog,
   a protocol — and `SKILL.md` names the file at the point the workflow reads it. A skill with two
   routes through it (two modes, two kinds of target, two hosts) keeps the shared workflow in
-  `SKILL.md` and gives each route its own reference, so the file a reader loads first stays short
-  enough to be read whole. References may explain the technical steps for a route selected by the
+  `SKILL.md` and gives each route its own reference, so the file a reader loads first stays within
+  the size budget under **Writing**. References may explain the technical steps for a route selected by the
   entry point. They do not select the top-level workflow, hide a decision gate, declare a dependency,
   or invoke another skill. Scripts the skill runs go under `scripts/`; supporting files may live
   under `assets/`, `resources/`, or another directory named for their role. Keep only files the skill
@@ -156,6 +166,14 @@ naming — a target, a scope, a mode — not the command that precedes it.
 Judge a description by substitution: read it without knowing which skill it belongs to. If it still
 says which situations fire the skill, it works. If the remainder names no situation, it was never a
 trigger.
+
+**A skill that runs only at the user's request says so in its description, never by hiding itself.**
+A frontmatter flag that keeps a skill out of the agent's skill listing, such as
+`disable-model-invocation`, hides every route and tool inside it: an agent cannot load it when the
+user asks for it in words, cannot follow another skill that names it, and never finds a script it
+holds when other work needs one. Keep every skill listed and end its description with the exact
+sentence "Run only when the user asks for it.", which is how readers and tools recognize the
+restriction. Gate a single user-only workflow inside an otherwise usable skill in its body.
 
 ### Dependencies
 
@@ -213,6 +231,17 @@ trigger.
   **Ask** mode, and its ruling, by majority unless the skill sets a stricter threshold, is followed and named in the skill's result. A skill whose
   workflow does this declares `council`. A ruling never accepts a confirmed defect, an exploitable
   vulnerability or a failing required check.
+
+### Subagents
+
+- **Every subagent a skill starts is usage the user pays for, so guidance starts as few as its
+  purpose needs.** Before writing or changing text that launches subagents — a writer, reader,
+  reviewer, grader, gate, worker or council member — state in that text how many it starts in a
+  usual run and in each round, and what that count grows with. Prefer one agent serving a batch over
+  one per item, a fresh agent only where independence requires one, and a rerun only of what a
+  change touched; a count that grows with items, findings or files names its cap. An edit that
+  raises a workflow's usual subagent count says so, with its reason, in its pull request
+  description, and a review of the edit judges that count as part of the change.
 
 ### Output
 
@@ -272,6 +301,10 @@ a template where correct results genuinely vary in shape.
   use, follows the sections on headings and paragraphs that every document uses, even though
   footnotes extend paragraphs.
 - Express each independent requirement once, as one concise statement or bullet, without padding. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
+- **A file read whole, a `SKILL.md` or a rule, has a size budget of 500 lines**, the skill-body
+  target hosts publish. A change that pushes one past it, or grows one already past it, makes its
+  room in the same change by merging what the file states twice or moving text to the reference or
+  file that owns it.
 - Normalize the touched file's nearby structure when needed: combine narrow sections and remove redundant wording.
 - **Prefer the broad statement, and let the request's shape be its example.** A request
   arrives as one symptom, and the rule it needs names the class that symptom belongs to; the
@@ -320,7 +353,10 @@ a template where correct results genuinely vary in shape.
 - When the user asks to add guidance from another repository, treat that repository as source material: encode transferable requirements in the owning skills and refer to those skills by name. Before delivery, audit the edited package for the source repository's name, links, paths, commands, versions, and configuration; never hard-code or cite that repository in a skill.
 - Separate temporary task, session, and pull-request directions from lasting guidance before
   writing. Apply the former to the current work only; never encode them as canonical rules or
-  skills.
+  skills. A direction about what the product holds now, such as which recipes a cookbook includes,
+  what each plan costs or which accounts get a discount, is one of them even when the user gives a
+  reason: it changes the product's data, and guidance keeps describing how the product works, since
+  its contents will change as it grows.
 
 ## Scripts
 

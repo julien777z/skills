@@ -30,8 +30,8 @@ skill's model capabilities reference lists under **Review panel**, each at its l
 the host and at high effort, and resolve each launch through that skill. Start the three in
 parallel, read-only, each starting no subagents of its own.
 
-- When a listed family is unreachable, fill its seat with the strongest other reachable model and
-  say so in the result. A named member who is unavailable is reported, never replaced silently.
+- When a listed family is unavailable as `subagent-matrix` establishes it, fill its seat through that
+  skill's fallback order, with no lower limit, and say so in the result. A named member who is unavailable is reported, never replaced silently.
 - **Brief:** a brief the invocation supplies is sent as it stands to every member. Otherwise give
   each the question or request, the intent, the material (a diff, files, a plan), and any check
   results. A review asks for findings, each with a file and line, rated `blocker` (the intended case

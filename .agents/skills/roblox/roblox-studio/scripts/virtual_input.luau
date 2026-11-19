@@ -12,10 +12,17 @@ end
 
 function Input:click(button)
 	assert(button:IsA("GuiButton") and button.Visible, "Expected a visible game button")
+	local center = button.AbsolutePosition + button.AbsoluteSize / 2
 	local ancestor = button.Parent
 	while ancestor do
 		if ancestor:IsA("GuiObject") then
 			assert(ancestor.Visible, "Button is inside hidden UI")
+			if ancestor.ClipsDescendants then
+				local low = ancestor.AbsolutePosition
+				local high = low + ancestor.AbsoluteSize
+				local inside = center.X >= low.X and center.Y >= low.Y and center.X <= high.X and center.Y <= high.Y
+				assert(inside, "Scroll the button into view before clicking")
+			end
 		end
 		if ancestor:IsA("ScreenGui") then
 			assert(ancestor.Enabled, "Button screen is disabled")
@@ -23,9 +30,7 @@ function Input:click(button)
 		ancestor = ancestor.Parent
 	end
 	-- AbsolutePosition is in the core UI coordinate space; account for device notches too.
-	local point = button.AbsolutePosition
-		+ button.AbsoluteSize / 2
-		- GuiService:GetInsetArea(Enum.ScreenInsets.None).Min
+	local point = center - GuiService:GetInsetArea(Enum.ScreenInsets.None).Min
 	self.device:SendMousePosition(point)
 	task.wait(0.08)
 	self.device:SendMouseButton(point, Enum.UserInputType.MouseButton1, true, 0)

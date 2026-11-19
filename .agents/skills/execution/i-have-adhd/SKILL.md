@@ -15,6 +15,7 @@ The reader has ADHD. Output is not just brief. It is shaped so an ADHD brain can
 ## Dependencies
 - `pre-production`
 - `session-ledger`
+- `share-media`
 
 ## Persistence
 
@@ -62,6 +63,8 @@ Good:
 
 If anything is left open, name ONE thing the reader can do in under two minutes. Even "open the file" counts. This picks a next action; it never removes other unanswered questions from the decision list. The action is work the reader does, such as reviewing a pull request at its link, never a request that they authorize a merge, deployment, publication or release, which the global rules reserve to their own words, and never an answer to a decision, which rule 4 puts to the question tool.
 
+**This closing line is the reader's action, never the agent's.** Authorized work the agent has not finished is done in this turn, never named as next, as the global rules' pending-result bullet in **Tools and environments** says. "Next: nothing needed from you. I'm moving on to the release notes." ends a turn on work never started: start the release notes instead.
+
 Bad: "Hope that helps. Let me know if you want to dig deeper."
 Good: "Next: run `npm test` and paste the first failing line."
 
@@ -95,11 +98,13 @@ even when the reply concerns another topic or adds no progress. Reconcile the le
 message before sending; an asynchronous question control or task checklist does not replace this
 visible status list. At meaningful progress updates and handoffs, refresh the same list. Use a
 numbered list: each item starts with a **bold subject**. An evidence-pending item states its pending
-work; a ready item identifies its active question-tool request and the work depending on it.
-Keep the question, choices and supporting captures in that request under the global question-tool
-procedure rather than soliciting another answer in chat. **Listing a decision is never asking it.**
-A ready decision with no active request is put to the question tool in the same turn, after the
-chat text that carries its supporting material, as the global rules' question-tool bullet says. No
+work; a ready item identifies the question-tool request already sent for it, in the turn its
+supporting material was ready, and the work depending on it. An item with neither a sent request
+nor pending evidence work is asked now.
+Keep the question and its choices in that request under the global question-tool procedure, with
+any captures, table, plan or other material it needs shown before it as `share-media` says for
+the harness, rather than soliciting an answer in
+chat. **Listing a decision is never asking it:** no
 sentence the reader sees poses the choice for a chat reply: not a list item phrased as a question,
 a report's closing line, a recommendation ending "should I?", or a section of a skill's required
 output. Where no equivalent tool exists, the
@@ -132,7 +137,7 @@ Keep named work active and wait for pending results under the global rules.
 The reader cannot hold "we are on step 3 of 5" between messages. Restate it.
 
 Bad: "Done. Ready for the next part?"
-Good: "Step 3 of 5 done: schema updated. Next: backfill the new column. Run the script?"
+Good: "Step 3 of 5 done: schema updated. Step 4, backfilling the new column, is running now."
 
 If the harness has a task or plan tool, use it for multi-step work: one item per step, one in progress at a time. The checklist does the restating; do not also narrate the full plan as prose.
 
@@ -207,6 +212,8 @@ Before sending, delete:
 6. Any idiom or figurative phrase ("circle back," "get the ball rolling," "on the same page"). Replace with the literal action.
 
 Then reconcile pending decisions with the current ledger and user message: every unresolved item, including optional choices and unconfirmed assumptions, must appear in the required numbered status list as an active tool request or evidence-pending work, according to readiness; a ready item with no active request is invoked through the question tool before the turn ends, and chat questions appear only when no equivalent tool exists. Resolved or superseded questions must not reappear.
+
+Then check what the message leaves undone: if it names work the agent will do next, take that action before the turn ends.
 
 Then verify: if the reader reads only the first line and the last line, do they know (a) what to do next, and (b) what just happened?
 
