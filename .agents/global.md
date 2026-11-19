@@ -17,8 +17,8 @@ alwaysApply: true
   canonical source. Report it missing only when those sources do not contain it; never substitute a
   manual approximation for an installed action skill.
 
-- **Every prompt, any text a model reads as instructions, is its own Markdown file in the app's
-  prompts folder, never text in code**: a template, MCP server instructions, an agent definition.
+- **Every prompt an application gives a model is its own Markdown file in its prompts folder, which
+  code loads and fills, never text in code**: a template, MCP server instructions, an agent definition it loads.
 
 ## User-Facing Output
 
