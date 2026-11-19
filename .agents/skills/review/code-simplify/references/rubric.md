@@ -44,6 +44,21 @@ Every other maintainability finding — placement, typing style, naming, module 
 that could be a method, docstring length — is a `nit`. A bug a standard uncovers, such as a guard
 that hides a real failure, keeps its bug severity.
 
+## Reuse And Removal
+
+For an addition or a workaround, record what the desired behavior requires that the existing
+paths do not already provide. Search for the operation by its effect across the applicable
+repository, shared libraries, and owned consumers. Cite the candidates and compare their actual
+inputs, authority, results, and failure boundaries with the requirement. Show what can be
+deleted, called directly, or composed. A new mechanism earns its place only when the simpler
+candidate would break a named invariant. If no candidate exists, record where and how you looked.
+
+When the change adds a condition around an expensive or broad operation, trace which resources
+the callee actually reads, writes, invalidates, or causes to be recomputed. Compare narrowing the
+operation at its owner with guarding the same operation. Verify both the affected and unaffected
+cases. A condition that lets the same excessive work happen for the reported case leaves the
+defect open.
+
 ## Standards
 
 1. **Should this exist at all?** Before asking whether new code duplicates something, ask what breaks

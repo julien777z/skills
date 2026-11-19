@@ -12,9 +12,8 @@ Guidance intent: <base guidance, user's explicit requirements and corrections in
 See: git diff <base> [-- <paths>]; git status --short (read untracked files).
 Read surrounding code. Find bugs, broken callers, mismatch with intent, and unsafe
 handling of user input (paths, patterns, queries, markup).
-Flag new code that re-implements a helper the repo already has (cite it), and
-abstractions with a single implementation. Flag workarounds: a remedy that hides
-the symptom (folds away, skips, retries, catches, special-cases) instead of fixing its cause.
+Independently apply the supplied reuse and removal criteria. Verify the planning evidence
+against the actual callers and effects, and cite the deciding sources in the verdict.
 Flag a setting, env var, secret, config key or workflow input left optional or given an unsafe default, or
 code that skips or weakens its work when one is unset, unless its owner documents that absence
 ("tests lack it" does not). A default production gets the full behavior from is fine.
@@ -29,6 +28,7 @@ List problems you see outside the change separately, with the files a fix would 
 Reply:
 VERDICT: APPROVE or CHANGES
 Guidance intent evidence: <controlling requirement and decisive path and evidence, if applicable>
+Reuse and removal evidence: <verified candidates, deciding sources and effects, if applicable>
 S1 [blocker|should|nit] <file>:<line> <claim>. Fix: <suggestion>
 O1 [outside] <files> <claim>
 ```
