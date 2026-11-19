@@ -39,16 +39,49 @@ class Receipt(TypedDict):
     token: str
 
 
-class Acquisition(TypedDict):
-    """Validated settings for waiting on and acquiring a resource."""
+class Ticket(TypedDict):
+    """One waiter's place in a resource's queue.
 
-    key: str
+    `pid` names the process polling for the waiter, or is `None` while the waiter is between
+    bounded calls. A `priority` ticket waits ahead of every ordinary one.
+    """
+
+    receipt: str
+    owner: str
+    activity: str
+    pid: int | None
+    priority: bool
+    enqueued_at: datetime
+    renewed_at: datetime
+
+
+class QueueRecord(TypedDict):
+    """A resource's persisted queue of waiters, oldest first."""
+
+    version: Literal[1]
+    tickets: list[Ticket]
+
+
+class Waiter(TypedDict):
+    """A queued waiter as `status` reports it."""
+
+    position: int
+    owner: str
+    activity: str
+    enqueued_at: datetime
+
+
+class Acquisition(TypedDict):
+    """Validated settings for waiting on and acquiring one of a set of resources."""
+
+    keys: list[str]
     state_directory: Path
     owner: str
     activity: str
     receipt_path: Path
     wait: timedelta
     ttl: timedelta
+    priority: bool
 
 
 class LockResult(TypedDict):
@@ -59,6 +92,8 @@ class LockResult(TypedDict):
     remaining_seconds: NotRequired[float]
     receipt: NotRequired[str]
     expired_owner: NotRequired[str | None]
+    queue_position: NotRequired[int]
+    waiters: NotRequired[list[Waiter]]
     message: NotRequired[str]
 
 

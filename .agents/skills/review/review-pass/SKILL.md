@@ -25,14 +25,18 @@ skill never readies, merges or deploys.
 ## Invocation
 
 - The invocation names the target and supplies the intent statement: what the change is for and what
-  is out of scope.
+  is out of scope. An intent that does not name a bug never bounds it: one the pass finds outside
+  the diff or the intent is fixed in the change, as **Answer each finding** says for one outside the
+  change, unless the intent records the user cutting that work and the change did not introduce
+  the bug.
 - The invocation authorizes the declared dependencies over that target, pushing fixes to its
   working pull request, refreshing its title and description, resolving its review threads and
   posting the replies **Review Threads** allows, and, on the merged-range route only, creating the
   fix pull request **Targets** describes. It authorizes no merge, readying a draft, release,
   deployment or unrelated provider mutation.
-- The one gate this skill holds is an unresolved `acceptance-gate` flag or a finding that waits on
-  the user's decision. Every later gate is the caller's.
+- The gates this skill holds are open recorded work due before review, an unresolved
+  `acceptance-gate` flag and a finding that waits on the user's decision. Every later gate is the
+  caller's.
 
 ## Modes
 
@@ -64,6 +68,11 @@ skill never readies, merges or deploys.
 - **No pull request:** the local task diff against its merge base is the target; description
   refresh and review threads do not apply, and fixes are committed in the task's own checkout
   without pushing.
+- **A repository the owner does not own**, as the global rules' **Repository guidance** defines it:
+  the pass fixes the request's own issues and the defects it finds, wherever they sit. **Local
+  Passes** do not run, the reviewer brief's rules are that repository's own guidance, the final
+  acceptance brief names the repository as someone else's, and a finding that rests only on a
+  shared standard is declined with that reason. Cleanup outside the change is neither fixed nor recorded.
 
 ## Range
 
@@ -82,6 +91,9 @@ Each pass reviews only what no earlier pass reviewed.
   pass records `whole`; every other pass records `delta`.
 - **An empty delta** runs only **Review Threads**; with no thread fix, return the recorded verdict.
   A thread fix is a new delta.
+- **A delta that touches a skill or rule is reviewed as the package it results in.** The **Review
+  Loop** and the final acceptance read every file of each skill and rule it touches whole at the
+  head, judged as `acceptance-gate` judges guidance, with the real case the invocation supplies.
 
 ## Description Refresh
 
@@ -123,8 +135,12 @@ validation exclusion is recorded with its evidence and not repaired, rerun or wa
 
 ## Workflow
 
-1. Resolve the target and its delta. With a working pull request, run **Description Refresh** and
-   **Review Threads**.
+1. Resolve the target and its delta. Before the first round, read the task's ledger through
+   `session-ledger` for each decision and answered question whose work is open, and each plan step
+   that builds or changes something, whose work goes on this pull request under the GitHub rule's
+   **Branches and Pull Requests** and is due before review; work its plan orders after this review,
+   such as a repoint that waits on a dependency's merge, is not. While any is open, review nothing
+   and return the **Output**'s required-work shape. With a working pull request, run **Description Refresh** and **Review Threads**.
 2. Run **Base**, then **Checks**.
 3. When the delta crosses a trust boundary `security-audit` names, run its **Diff Review** at
    `medium` over the delta, with the merge-base diff as context, and fix what it confirms.
@@ -137,9 +153,8 @@ validation exclusion is recorded with its evidence and not repaired, rerun or wa
 7. With a working pull request, run **Description Refresh** once more. Put the complete target diff,
    the merge-base diff or the merged range, and any refreshed prose to `acceptance-gate`'s **Final
    acceptance** question once, with the intent statement and
-   the reviewed delta marked. Fix a flag as one increment under `acceptance-gate`'s **Bounds**: a
-   repair checked in process there needs no second gate, and the head carrying it is the accepted
-   head; a repair those **Bounds** send to a fresh gate is accepted when that gate accepts it.
+   the reviewed delta marked. Answer each flag as one increment under `acceptance-gate`'s
+   **Bounds**, whose fresh gate's acceptance makes that increment's head the accepted head.
 8. Re-read the head, base and merge base where they live: the pull request's remote, or the local
    checkout for a local target; a merged range does not move. When they match the accepted head,
    record it under **Range** and return its **Output**. A moved base is brought in through **Base**
@@ -205,7 +220,9 @@ changed. Make the smallest changes that answer real findings, and push back on t
   - agree: make the smallest fix, preferring to delete or narrow code over a new lock, cache, helper
     or option, and add one focused test that fails without the fix when the repository has a test
     setup and the intent needs it;
-  - disagree: say why, with evidence such as a file and line, a test or output;
+  - disagree: say why, with evidence such as a file and line, a test or output; the finding stays
+    open until the reviewer marks it resolved or a ruling below settles it, so a reply never ends
+    the loop;
   - nit: fix it when it is a one-line change in a line the change already touches, otherwise decline
     it in one line;
   - outside the change: fix every bug, and record cleanup past `pre-production`'s size budget with
@@ -242,4 +259,13 @@ changed. Make the smallest changes that answer real findings, and push back on t
 - **Acceptance:** <accept | flag and what it named>
 - **Deferred:** <record link: what it covers, or none>
 - **Holds:** <the gate that holds, or none>
+```
+
+When open recorded work holds the pass before any review, it returns this instead, claiming no
+accepted head and recording no review:
+
+```markdown
+**Review pass:** not started · open recorded work on <target>
+
+- **Required work:** <one line per ledger entry: its id, the work, its next action>
 ```

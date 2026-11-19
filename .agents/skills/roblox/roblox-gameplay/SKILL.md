@@ -53,6 +53,14 @@ Show locked content where the player will use it, together with what unlocks it:
 
 Where the game allows it, let what the player did stay visible in the world: ground they cleared, a structure that grows as they invest in it, NPCs that react to what they chose, their name on what they own. The world then shows progress without a meter. Drive these changes from authoritative state, bound them, and keep them consistent on rejoin and streaming.
 
+**An object that stands out as part of a quest appears to a player only once that quest is active for them, and stays after they finish it.** That covers the pieces a step has the player collect, a prop a step asks them to inspect or use, a character who exists only for the quest, and a marker made for one step, such as the scattered pages of a lost journal or a stranger who turns up for one errand; scenery and residents who belong there anyway stay for everyone. Another player seeing the props of a quest they have not reached reads as the world spoiling it. Stage each object per player from the quest's state:
+- Until its quest or side step is active, the object is invisible and non-solid for that player, and nothing about it can be touched, prompted or hit.
+- The rule that decides when each object shows lives in one shared place, which the builders and the saved world both read.
+- The hidden state wins over every other feature that changes the object's look, such as a fade, a flicker or a glow: their changes are held while it is hidden and applied once it shows.
+- A collected piece hides through its own state, so collecting and the quest's gate combine rather than overwrite each other.
+- A feature that depends on the objects follows the same gate, such as an offer to collect them that appears only while a piece the player can reach remains.
+- A change to quests or to the objects they use audits them: it lists each such object with the gate the shared rule gives it and whether a fresh profile can see it, names every one that has no gate or that a fresh profile sees, and reruns after the fixes until it names none. The report carries that list; a statement that the objects are gated is not an audit.
+
 ## Navigation, movement and travel presentation
 
 Make the current objective and next useful action easy to find without covering play. Use a HUD cue, in-world guidance, or another presentation suited to the game. Keep route cues attached to traversable paths, and suppress them when they would obstruct conversations, encounters, or modal screens. Preserve destination information through streaming and restore camera/input after failed transitions.

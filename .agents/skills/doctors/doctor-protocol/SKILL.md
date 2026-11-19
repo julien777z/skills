@@ -219,8 +219,8 @@ prevents completion.
 ## Accept The Complete Diff
 
 Once review is clean, put the complete diff to `acceptance-gate`'s final-acceptance question
-against the intent statement. Fix every flag under `acceptance-gate`'s **Bounds** and push each fix
-as its own increment, checked as the GitHub rule's **Pre-Push Gate** says.
+against the intent statement. Answer every flag under `acceptance-gate`'s **Bounds**, pushing each
+fix as its own increment through the GitHub rule's **Pre-Push Gate**.
 
 ## Defer Leftovers
 

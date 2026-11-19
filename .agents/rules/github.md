@@ -17,6 +17,13 @@ alwaysApply: true
   entrypoint. Preserve scheduled and default-branch automatic behavior and repository, environment
   and source authorization bindings. Default-branch-only execution or merging is never a substitute
   for an available selected-branch route.
+- **A new workflow with a manual dispatch is delivered as two pull requests**, since GitHub offers a
+  manual dispatch only for a workflow file the default branch holds. The first, on a branch of its
+  own, adds only that workflow file: its final file name and triggers, required inputs included,
+  and one step that prints what the real workflow will do, with no secrets, builds or scripts. The
+  second, on another branch, holds the real workflow at the same path with its scripts, and is
+  tested by dispatching it on that branch once the first has merged. Each merge waits for its own
+  authorization under **Merge Authorization**.
 
 - Build, publish, and deploy through the repository's existing entrypoint and supported ref
   selection. Use its GitHub Actions workflow when that is the designated route; a native CLI the
@@ -115,7 +122,8 @@ alwaysApply: true
   pull request from its creation or authorized continuation receipt and verify that it is open.
   Carry that receipt forward when a follow-up starts a new task in the same session. Keep distinct
   concerns and worker contributions on that pull request, in separate commits where appropriate.
-  Open a new source pull request only when none is in progress or the user directs a split. Apply
+  Open a new source pull request only when none is in progress, the user directs a split, or the
+  **Workflows** section's dispatch placeholder needs its own. Apply
   the agent-configuration routing below to guidance. Continue a source pull request from another
   session only when the user, an applicable invoked skill, or a repository rule explicitly directs
   that continuation. A matching topic, existing branch, open state, or recorded touch does not supply
@@ -246,15 +254,16 @@ alwaysApply: true
   source and commit, or the concrete blocker preventing refresh.
 - Select the refresh route before checking local changes. When the repository supplies the installed
   shared skills, invoke `update-skills`; it keeps pending agent-configuration changes in effect,
-  dirty checkouts and open pull requests alike. Tell it when the caller will clean the source
-  checkout after installation so the installed files stay available independently. For the skill's first merge, read it from the
-  merged commit before invoking it. A session follows the copy it loaded until this refresh completes.
-- When the invoking workflow owns the primary checkout refresh, return the Agent Sync result and
-  any installed shared guidance refresh to that workflow. For other repositories in that case, the
-  invoking workflow performs the checkout refresh and verifies generated guidance there.
-- Otherwise, for a repository without installed shared skills, refresh its primary checkout: if it is clean,
-  check out its default branch and pull with `--ff-only`. Never discard or stash dirty files to force
-  this checkout-only refresh; report a skipped refresh and leave them untouched.
+  dirty checkouts and open pull requests alike. Tell it the caller will clean the source checkout
+  after installation, so the installed files stay available independently. For the skill's first
+  merge, read it from the merged commit before invoking it. A session follows the copy it loaded
+  until this refresh completes.
+- **Every merge of agent configuration then refreshes the repository's primary checkout as
+  `finish-pr`'s **Local Checkout** section does**, whichever workflow merged it: a local edit the
+  merged default branch already holds is removed, local-only work is saved in a named stash and
+  kept, and the checkout ends clean on the default branch's fetched tip. When the invoking workflow
+  owns that refresh, return the Agent Sync result and any installed shared guidance refresh to it,
+  and it performs the refresh and verifies generated guidance there.
 
 ## Comments
 
@@ -270,7 +279,10 @@ alwaysApply: true
 
 - Use conventional commit messages when applicable and keep commits atomic and focused.
 - Commit each small coherent step and push it promptly once the pre-push checks **Pre-Push Gate** defines pass, sub-agents included; work only one machine holds is lost with it.
-- Do not commit generated files unless the repository explicitly requires them.
+- Commit only the files the change wrote. Stage each by its own file path — never `git add -A`, `git
+  add .`, `git commit -a` or a directory — then run `git diff --cached --name-only` before
+  committing, and unstage every file it lists that the change did not write, such as a bytecode
+  cache, build output or tool state a run left behind, unless the repository explicitly requires it.
 
 ## Dependency Installation
 
@@ -338,10 +350,11 @@ constraints where it specifies them; nothing holds committed work on one machine
 pass pending on it, an integration merge, or a plan that orders one first. The one exception is
 commits that `lock-revision`'s **After Locking** hold keeps local until the user lets revisions
 resume. `code-simplify` and `acceptance-gate` do not run per push; `execute-task` and `review-pass`
-set when they run. A fix pushed for a flag a review or gate raised is checked
-by the agent that made it: it re-reads the changed lines against the flag and reruns the checks
-covering that code, unless `acceptance-gate`'s **Bounds** send it to a fresh gate; that recorded
-check, or that gate's verdict, is what other skills mean by an increment's **Pre-Push Gate** verdict.
+set when they run. A fix pushed for a flag a review or gate raised is pushed once
+the agent that made it has re-read the changed lines against the flag and rerun the checks covering
+that code; that recorded check is what other skills mean by an increment's **Pre-Push Gate**
+verdict. It never closes the flag: the review's next round or, for a gate's flag, the fresh gate
+`acceptance-gate`'s **Bounds** require does.
 
 Read the shared testing rule before planning test runs or briefing an implementation worker.
 Its **Verification Cadence** governs tests, builds, browser walkthroughs and reviews, including

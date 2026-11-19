@@ -54,6 +54,9 @@ specific set.
   discovery as pending and recover the missing records. Add all recovered targets before marking
   discovery complete; known units can proceed while recovery runs.
 - Verify each target's branch, head and state on the host before starting its review.
+- **Open recorded work `review-pass` returns is built on the target before its review starts**;
+  review, merge and a dependency-held repoint keep their own order under **Workflow** and
+  **Dependent Pull Requests**.
 
 Each target is an independent unit with its own range, intent, threads, validation, acceptance, and
 exact-head merge gate. A compact agent-configuration unit may run right after its related source unit
@@ -132,6 +135,10 @@ head lag and a retryable rate limit are nonterminal.
   and was not subsequently reverted. Compare staged and unstaged changes, including file mode and binary
   changes, before restoring anything. For a file with mixed or uncertain changes, preserve the
   entire file unless the landed and local-only changes can be verified independently.
+- A copy that a file-sync service or the operating system made of a file is not local work, so
+  delete it rather than saving it: for example, an untracked `install 2.sh` beside a tracked
+  `install.sh`, or a sync service's conflict copy. Before deleting, confirm that its name only
+  adds the copy suffix to a file in the checkout and that no task or person wrote it.
 - Stage the remaining local-only edits by path, including untracked files that belong to the work.
   When a path has different staged and working-tree edits, keep its index entry intact. Save the
   index, working tree, and untracked files in a named local stash and verify the saved versions

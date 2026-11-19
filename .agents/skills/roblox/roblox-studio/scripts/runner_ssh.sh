@@ -1,7 +1,8 @@
 #!/bin/sh
 # Runs a command in the game's Tart runner over its pinned SSH key, finding the guest's address on every call.
 # The game is ROBLOX_STUDIO_GAME, or else the repository the command runs in, named by its main checkout's folder.
-# games/<game>.env names the game's VM, conventionally <game>-vm; its configured name is the lock key.
+# games/<game>.env names the game's VM, conventionally <game>-vm, whose configured name is the lock key for work on the
+# whole VM, and ROBLOX_STUDIO_EDITORS, how many editors it keeps for checks to run in at once.
 # The runner's Studio MCP over stdio: runner_ssh.sh /Applications/RobloxStudio.app/Contents/MacOS/StudioMCP
 # `runner_ssh.sh --describe` prints the game's resolved runner configuration as shell assignments instead.
 set -eu
@@ -46,7 +47,7 @@ fi
 . "$runner_env"
 
 # The game's file names its own VM and host keys; the shared file's values for them never apply.
-unset ROBLOX_STUDIO_VM ROBLOX_STUDIO_KNOWN_HOSTS
+unset ROBLOX_STUDIO_VM ROBLOX_STUDIO_KNOWN_HOSTS ROBLOX_STUDIO_EDITORS
 . "$game_env"
 
 # Neither settings file may change which game was resolved.
@@ -57,11 +58,12 @@ ROBLOX_STUDIO_GAME="$game"
 : "${ROBLOX_STUDIO_SSH_KEY:?$runner_env sets no ROBLOX_STUDIO_SSH_KEY}"
 : "${ROBLOX_STUDIO_VM:?$game_env sets no ROBLOX_STUDIO_VM}"
 : "${ROBLOX_STUDIO_KNOWN_HOSTS:?$game_env sets no ROBLOX_STUDIO_KNOWN_HOSTS}"
+: "${ROBLOX_STUDIO_EDITORS:?$game_env sets no ROBLOX_STUDIO_EDITORS}"
 
 
 if [ "${1:-}" = "--describe" ]; then
   for name in ROBLOX_STUDIO_GAME ROBLOX_STUDIO_TART ROBLOX_STUDIO_VM ROBLOX_STUDIO_SSH_USER ROBLOX_STUDIO_SSH_KEY \
-    ROBLOX_STUDIO_KNOWN_HOSTS; do
+    ROBLOX_STUDIO_KNOWN_HOSTS ROBLOX_STUDIO_EDITORS; do
     eval "value=\$$name"
     printf "%s='%s'\n" "$name" "$(printf '%s' "$value" | sed "s/'/'\\\\''/g")"
   done

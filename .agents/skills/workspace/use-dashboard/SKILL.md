@@ -229,12 +229,14 @@ data exists, or a change to the app — runs on one made-up scenario, never on r
 
 ## Render
 
-1. Write the spec to a JSON file in private task storage, outside every repository checkout, and
-   choose a page path the delivery route below can read, such as the host's scratch directory when
-   its publishing tool reads only there.
+1. Write the spec and the page to the task's working-files folder, as the global rules' **Tools and
+   environments** section places it. A dashboard of a subject that outlives the session keeps its
+   spec, its page and anything a later render reuses in a folder of its own under the user's state
+   directory (`$XDG_STATE_HOME`, by default `~/.local/state`) instead. Copy the page to the host's
+   scratch directory only when the delivery route reads from there alone.
 2. Run `python3 -B scripts/render.py --input <spec.json> --output <page.html>`, resolving `scripts/`
    from this skill's directory; `-B` keeps the run from writing bytecode into the skill. Add
-   `--fragment` and `--compress` when **Delivery** says to. The script prints the written path, or names the first
+   `--fragment` and `--compress` when the harness's delivery route says to. The script prints the written path, or names the first
    field that does not match the spec and exits non-zero; fix the spec and run it again.
    The first render after the app changes builds it with npm into the user cache directory
    (`$XDG_CACHE_HOME/use-dashboard`, or `~/.cache/use-dashboard`), which needs Node.js 20 or newer,
@@ -261,36 +263,45 @@ changed record or an earlier one-time request to update it never re-renders one 
 
 Every render the user is shown goes out through this section, including a preview, a sample, or a
 test of a change to the page: a screenshot of a render is a capture of the page, never its delivery.
-Use the first route the session offers, and the same one for every update of one dashboard.
+Deliver through the routes the **Harness Router** below selects, in their order, and through the
+same route for every update of one dashboard. A local file or a screenshot does not replace a
+publishing route the harness's file names.
 
-**Every render is also shown in the conversation** when the harness can show an HTML page inline:
-the first render and every update, a preview included, besides whichever route below carries its
-link, as the [inline display reference](references/inline.md) says for each harness that has one.
+- **One published page per dashboard.** Before publishing, look for the link already published for
+  this dashboard's purpose, and publish the update to it when there is one. A dashboard that changes
+  its look, its data, or both is still the same dashboard; only a dashboard with a different purpose
+  gets a new page. Where that search looks depends on what the dashboard shows, which the caller
+  states:
+  - **Session work**, such as work in hand this session or a preview, looks only in the caller's
+    task state and earlier in this session. A new session publishes a new page and never updates one
+    another session published.
+  - **A subject that outlives the session**, such as a repository's structure, also looks among the
+    user's published pages for one with the same title and topic, through the publishing tool's own
+    listing. Before publishing to a page found that way, read it through the tool to confirm this
+    session can update it and to build on its current version; when it cannot, publish a new page
+    and say why.
+- Record each new link or opened local page where the caller keeps task state, so the next render
+  finds it.
 
-1. **A publishing tool**, whenever the harness offers one. In Codex with Pages tools, apply
-   `pages:write-page` and follow the [Spaces publishing reference](references/spaces.md). In Claude,
-   follow the [Artifacts publishing reference](references/artifacts.md). Both publish this renderer's
-   interactive page and return its link. A local file or a screenshot does not replace publication
-   when the session offers the publishing route. For another publisher, use its current instructions
-   and render with `--fragment` when it supplies the document skeleton, the full page otherwise.
-   - **One published page per dashboard.** Before publishing, look for the link already published
-     for this dashboard's purpose, and publish the update to it when there is one. A dashboard that
-     changes its look, its data, or both is still the same dashboard; only a dashboard with a
-     different purpose gets a new page. Where that search looks depends on what the dashboard
-     shows, which the caller states:
-     - **Session work**, such as work in hand this session or a preview, looks only in the caller's
-       task state and earlier in this session. A new session publishes a new page and never updates
-       one another session published.
-     - **A subject that outlives the session**, such as a repository's structure, also looks among
-       the user's published pages for one with the same title and topic, through the tool's own
-       listing. Before publishing to a page found that way, read it through the tool to confirm this
-       session can update it and to build on its current version; when it cannot, publish a new
-       page and say why.
-   - Record each new link where the caller keeps task state, so the next render finds it.
-2. **The user's own browser, through `use-browser`**, when no such tool exists and its **Showing A
-   Local Page** route applies, with the full page; the page refreshes itself on every later render.
-3. **Otherwise**, send the full page with a tool that sends a file to the user, or, with none, give
-   its absolute path.
+## Harness Router
+
+The harness is the app the user reads this conversation in, as the session's own description of its
+environment names it. Settle it before calling any delivery tool. A host app can run another
+harness's agent inside it, as T3 Code runs Claude Code and Codex sessions; the app the user reads
+in decides, never the agent runtime or which tools the session happens to list. A session has one
+harness, so one file applies.
+
+| Harness | Delivery routes |
+| --- | --- |
+| T3 Code | [references/harnesses/t3-code.md](references/harnesses/t3-code.md) |
+| Claude Code, in the terminal, the desktop app or on the web | [references/harnesses/claude-code.md](references/harnesses/claude-code.md) |
+| Codex | [references/harnesses/codex.md](references/harnesses/codex.md) |
+
+**The user's own browser is every harness's last route**: open the full page through `use-browser`'s
+**Showing A Local Page**, which refreshes it on every later render. A harness takes it when the
+routes its file lists are unavailable or refuse the session, or beside them where its file says so,
+and a harness no row names takes it alone. Where that route does not apply, send the full page with
+a tool that sends a file to the user, or, with none, give its absolute path.
 
 ## Guardrails
 
