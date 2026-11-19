@@ -366,6 +366,8 @@ checks before delivery; retain evidence that the change has not invalidated.
   disk, memory or ports is recovered as the global rules' local-stack bullet says, and the job runs
   here. Only a hosted service or credentials the session lacks, each established as the testing
   rules' cannot-run bullet says, or runner-specific behavior does.
+  A non-essential check left red on findings the change did not write, as `pre-production`'s
+  essential-checks bullet classifies them, holds no push.
 - **A local variant of a CI check is not that check**, and each of these passes locally and fails
   in CI: lint or type checks scoped to the changed files, where CI's whole-tree run finds an import
   another change left unused in a file the branch never touched; a formatter or linter in write
