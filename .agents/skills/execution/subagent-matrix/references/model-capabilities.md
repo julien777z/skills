@@ -48,7 +48,7 @@ to test, not supported-model claims or replacements for a newer matching catalog
 | Sol | `gpt-6-sol` |
 | Astra | `gpt-6-astra` |
 
-For a Claude host, `claude-mythos-5-2` and `claude-opus-5-5` are candidates, not claims
+For a Claude host, `claude-mythos-5-2`, `claude-fable-5-2`, and `claude-opus-5-5` are candidates, not claims
 that the host supports them. Resolve the latest matching Mythos identifier first and the latest
 matching identifier for the selected fallback tier. `claude-opus-5-5` is a catalog-hidden
 candidate for Opus, not a version requirement.

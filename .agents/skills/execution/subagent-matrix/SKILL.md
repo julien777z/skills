@@ -64,8 +64,8 @@ agent; the calling agent launches the actual assignment with the selected model.
    model policy or a provider's configuration.
 4. For a specialist assignment, after step 3 establishes that Claude Mythos is unsupported or
    denied, launch the same assignment directly on the latest Claude family at the `frontier` tier, unless
-   the calling skill explicitly selects a different fallback tier. Resolve its latest Claude family
-   and apply that fallback only if it respects the user's
+   the calling skill explicitly selects a different ordinary fallback tier. Resolve its latest Claude family
+   through steps 2 and 3 and apply that fallback only if it respects the user's
    explicit model or capability constraint; otherwise hold the assignment. Do not try older Mythos
    or another provider. Apply step 3's repair, retry, and capacity rules to every attempt,
    including the selected fallback and Codex Astra. Hold when the selected fallback or specialist Codex Astra is confirmed
