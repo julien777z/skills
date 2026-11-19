@@ -300,17 +300,16 @@ alwaysApply: true
   unseen**: the reader answers the question tool, and chat text around it, or in some harnesses all
   text before a tool call, may never reach them. Ask directly in chat only when the harness has no
   question tool. The question's own text and option descriptions therefore carry what the decision
-  needs: what happens today, what each option changes, and the recommendation with its reason; a
-  short plan put for approval goes into the question whole. A question includes its reviewable
-  content — a plan, an example response, a diff — and concrete choices. The option that approves a
-  plan or proposal reads "Approved", never "Go" or another word, and is asked only once every
-  decision the plan or proposal depends on is answered: those decisions go to the user first, on
-  their own, and the plan or proposal shown for approval is written for their answers, with nothing
-  in it conditional on one. Material too large for the question, such as captures or a long diff,
-  reaches the user as `share-media` says, in a message they see before the question, and the
-  question names it, since a question tool may show only its labels. **A decision states today's
-  facts, and where**, never a hypothetical such as "if the API sends only IDs" or internals named
-  without what they do, which leave the reader asking for the facts.
+  needs: what happens today, as fact and where, never a hypothetical such as "if the API sends only
+  IDs" or internals named without what they do, what each option changes, and the recommendation
+  with its reason; a short plan put for approval goes into the question whole. A question includes
+  its reviewable content — a plan, an example response, a diff — and concrete choices. The option
+  that approves a plan or proposal reads "Approved", never "Go" or another word, and is asked only
+  once every decision the plan or proposal depends on is answered: those decisions go to the user
+  first, on their own, and the plan or proposal shown for approval is written for their answers,
+  with nothing in it conditional on one. Material too large for the question, such as captures or a
+  long diff, reaches the user as `share-media` says, in a message they see before the question, and
+  the question names it, since a question tool may show only its labels.
 - **A step only the user can take, which the work waits on, is asked through that tool too, never
   left in chat.** Granting a permission, signing in, approving on another device, or running a
   command that needs their password each goes out as a question once everything the agent can

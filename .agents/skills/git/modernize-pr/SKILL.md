@@ -100,9 +100,8 @@ title says. Another open pull request holding the same change is not the base, a
 this pull request's branch holds it only by building on it, as the GitHub rules' delivery bullet
 says. One with any part still unsolved is `REWORK`, scoped to that part.
 
-A pull request is closed only on the user's word, and each choice goes to the user through the
-question tool, as the global rules' question-tool bullet says, after the dashboard **Output**
-describes:
+Each choice goes to the user through the question tool, as the global rules' question-tool bullet
+says, after the dashboard **Output** describes:
 
 - **The `CLOSE` pull requests form one stale batch**, approved once: a single question whose
   approving option closes every pull request in it, each listed on the dashboard with the base
@@ -161,13 +160,12 @@ named `repository#number` wherever the page names it:
 | Not verified | each open answer and the blocker that keeps it open |
 
 The chat reply gives the dashboard's link, the count per disposition and one line per set with
-its recommendation, then the question **Choose A Disposition** describes, each option naming a pull
-request by its title. Keep observed facts and judgment apart: a fact
-names where it was read, and a judgment says it is one.
+its recommendation, then the question **Choose A Disposition** describes. Keep observed facts and judgment apart: a
+fact names where it was read, and a judgment says it is one.
 
 ## Guardrails
 
-- Never merge, retarget or comment on a pull request this skill handles, or close one without the
-  user's word; the GitHub rules' **Comments** section governs any post.
+- Never comment on a pull request this skill handles; the GitHub rules' **Comments** section
+  governs any post.
 - Never force-push without the lease pinned to the recorded head.
 - Never rebase an obsolete branch: a `CLOSE` stops before any update.

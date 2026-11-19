@@ -211,7 +211,7 @@ Before sending, delete:
 5. Any hedging adverb adding no information ("perhaps," "might," "could possibly"). Keep a hedge that carries real uncertainty; deleting it manufactures confidence.
 6. Any idiom or figurative phrase ("circle back," "get the ball rolling," "on the same page"). Replace with the literal action.
 
-Then reconcile pending decisions with the current ledger and user message: every unresolved item, including optional choices and unconfirmed assumptions, must appear in the required numbered status list as an active tool request or evidence-pending work, according to readiness; a ready item with no active request is invoked through the question tool before the turn ends, and chat questions appear only when no equivalent tool exists. Resolved or superseded questions must not reappear.
+Then reconcile pending decisions with the current ledger and user message: every unresolved item, including optional choices and unconfirmed assumptions, must appear in the required numbered status list as an active tool request or evidence-pending work, according to readiness, and chat questions appear only when no equivalent tool exists. Resolved or superseded questions must not reappear.
 
 Then check what the message leaves undone: if it names work the agent will do next, take that action before the turn ends.
 

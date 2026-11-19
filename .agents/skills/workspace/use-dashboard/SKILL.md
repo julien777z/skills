@@ -181,10 +181,9 @@ Dashboards look alike because they are built alike:
   a page about one thing, such as the order parcels leave the warehouse in, find the stage that
   thing belongs to, such as dispatching the week's orders, and build the page for that stage, with
   the requested thing as one section among what the reader needs there. Name the page for the stage.
-- **Choices for the reader sit on Proposals.** Every question a dashboard puts to the user goes in
-  a `questions` section on the `Proposals` page, directly after Overview, so the reader finds what
-  waits on them in one place. While one is open the navbar and the Proposals link show `Waiting for
-  you`, so the spec leaves both `status` fields out.
+- **Choices for the reader sit on Proposals.** Every `questions` section a dashboard holds goes on
+  the `Proposals` page, directly after Overview, so the reader finds what waits on them in one
+  place.
 - **A page that needs the reader says so in the navbar.** Any other page holding something the
   reader must act on, such as a review waiting on them, sets its `status` in the `warning` tone, so
   its link carries the yellow dot; a page with nothing for the reader carries none.
