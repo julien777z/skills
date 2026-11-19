@@ -48,16 +48,21 @@ that hides a real failure, keeps its bug severity.
 
 For an addition or a workaround, record what the desired behavior requires that the existing
 paths do not already provide. Search for the operation by its effect across the applicable
-repository, shared libraries, and owned consumers. Cite the candidates and compare their actual
-inputs, authority, results, and failure boundaries with the requirement. Show what can be
-deleted, called directly, or composed. A new mechanism earns its place only when the simpler
-candidate would break a named invariant. If no candidate exists, record where and how you looked.
+repository, shared libraries, and owned consumers. For each viable candidate, cite the source
+and state the actual input selection, authorization scope, result, and failure boundary wherever
+they bear on the decision. A link to an operation does not establish which fields or objects it
+can change. Show what can be deleted, called directly, or composed. A new mechanism earns its
+place only when the simpler candidate would break a named invariant. If no candidate exists,
+record where and how you looked.
 
 When the change adds a condition around an expensive or broad operation, trace which resources
 the callee actually reads, writes, invalidates, or causes to be recomputed. Compare narrowing the
-operation at its owner with guarding the same operation. Verify both the affected and unaffected
-cases. A condition that lets the same excessive work happen for the reported case leaves the
-defect open.
+operation at its owner with guarding the same operation. Where existing primitives support the
+narrower effect, name the concrete composition that achieves it. For verification, establish the
+prior state and identify the observations that distinguish the intended effect from collateral
+work on the original path. Include dependent results and unchanged resources, and check commit
+and rollback when the effect depends on a write committing. A condition that lets the same
+excessive work happen for the reported case leaves the defect open.
 
 ## Standards
 
