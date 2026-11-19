@@ -159,12 +159,12 @@ alwaysApply: true
   and take the next ordinary authorized action. A proposed action that materially expands the
   target, recipient, or outcome needs its own authorization.
 - **Fixing an issue does not authorize choosing a new product experience**, apart from a game's
-  design (next bullet). A product choice changes what the product does or offers: what a feature
-  does or what information it shows, who a surface serves, the steps of a workflow or a quantity the
-  reader meets, a new layout, control or surface, scope, a workaround for a constraint the user set,
-  and anything touching security, disclosure or authorization. Closing a security vulnerability, so
-  the product enforces the access it already intends, is a fix and never waits on this question, and
-  so is moving off a deprecated API or setting onto its supported replacement, even when the
+  design. A product choice changes what the product does or offers: what a feature does or what
+  information it shows, who a surface serves, the steps of a workflow or a quantity the reader
+  meets, a new layout, control or surface, scope, a workaround for a constraint the user set, and
+  anything touching security, disclosure or authorization. Closing a security vulnerability, so the
+  product enforces the access it already intends, is a fix and never waits on this question, and so
+  is moving off a deprecated API or setting onto its supported replacement, even when the
   replacement tightens access, as `pre-production`'s deprecated-usage bullet says. Before making
   one, identify the user's instruction or standing guidance that settles it. If neither does,
   explain the concrete issue, show the concrete alternatives with a recommendation, and ask before
@@ -196,25 +196,25 @@ alwaysApply: true
   Squeezing columns until cells wrap onto several lines, truncating values, shrinking type, or
   narrowing cards, form fields or toolbar controls until their labels break word by word keeps
   everything visible by making rows and items tall and hard to scan, and is never the remedy.
-  Removing a column, field or item, or hiding it below a width, changes what information the product
-  shows, so ask which content can go or be hidden at that size, with captures of the options, before
-  changing the layout; until the user answers, the content keeps the room its values need. **Text
-  already in the product keeps its words unless it is wrong or the user named it.** Text that is
-  plainly wrong or inconsistent, such as a label stating something untrue, one thing called by two
-  names, or a message that no longer matches what happens, is corrected or left by judgment, and the
-  report says which. Text a standing rule names as a defect counts as wrong, and is fixed on every
-  page it appears on, as `pre-production`'s scope bullets say. A request to reword one text rewords
-  that text alone; any other existing title, label, description or message that is correct but could
-  read better keeps its words, beside it or elsewhere, even when the new wording suggests changing
-  it, and the suggested rewording goes to the user for approval. Do not silently reclassify a
-  condition, reinterpret a rule, or conceal a conflict to make the implementation fit. Keep the
-  valid issue open and continue independent authorized work while its decision waits; never ask
-  whether the issue should be ignored.
-- **In a game, the agent fixes what plays wrong or would play better, unasked, in any task**, even
-  what an earlier request, design note or rule settled: it changes, commits and reports it with a
-  capture, never a question or a note in its place. This is the user's standing word wherever a rule
-  or skill asks; the current request binds only what it names, and the core loop or genre, anything
-  players pay for, security, disclosure and authorization stay with the user.
+  Removing a column, field or item, or hiding it below a width, changes the information shown: ask
+  which content can go or be hidden at that size, with captures of the options, before changing the
+  layout; until the user answers, the content keeps the room its values need. **Text already in the
+  product keeps its words unless it is wrong or the user named it.** Text that is plainly wrong or
+  inconsistent, such as a label stating something untrue, one thing called by two names, or a
+  message that no longer matches what happens, is corrected or left by judgment, and the report says
+  which. Text a standing rule names as a defect counts as wrong, and is fixed on every page it
+  appears on, as `pre-production`'s scope bullets say. A request to reword one text rewords that
+  text alone; any other existing title, label, description or message that is correct but could read
+  better keeps its words, beside it or elsewhere, even when the new wording suggests changing it,
+  and the suggested rewording goes to the user for approval. Do not silently reclassify a condition,
+  reinterpret a rule, or conceal a conflict to make the implementation fit. Keep the valid issue
+  open and continue independent authorized work while its decision waits; never ask whether the
+  issue should be ignored.
+- **In a game, the agent fixes, unasked, whatever stands out as incorrect or would be better another
+  way, art included**, even what an earlier request, version, note or rule settled, and reports it
+  with a capture, not a question or note. It is the user's word wherever a rule or skill asks, ahead
+  of any that asks first, keeps a decision or defers an improvement; the current request, core loop
+  or genre, anything players pay for, security, disclosure and authorization stay with the user.
 - Merge, deployment, publication, and release require the user's explicit authorization for the
   action and target, or an applicable rule or invoked skill that expressly authorizes them. A fix
   request, approved plan, or instruction to implement a plan does not itself authorize these
