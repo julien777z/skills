@@ -50,11 +50,11 @@ agent; the calling agent launches the actual assignment with the selected model.
    which this step forbids below. Repair the component that actually holds the refused value, read from the
    running request path rather than from the refusal's own advice, such as a proxy between the agent and the
    provider. Only when that component is out of reach, as the global rules' bullet on a step only the user can
-   take settles it, does its repair go to the user as such a step, with the exact command, while the fallback
-   below proceeds for the assignment in hand. Unavailability, and every fallback or substitution it permits,
-   starts only when that relaunch is refused again or the named repair cannot be made, recorded with both
-   receipts and the repair attempted; only that is an explicit unsupported receipt wherever this skill or its
-   callers name one. **A rate limit or quota refusal is temporary capacity, never unavailability**, even when it
+   take settles it, does its repair go to the user as such a step, with the exact command. Record the original
+   refusal, the repair attempted, and any relaunch receipt. If the failure remains operational or the repair
+   cannot be made, use the launch fallback and retain that classification. Model substitution requires an
+   explicit receipt that the exact model is unsupported or, where step 4 allows it, denied.
+   **A rate limit or quota refusal is temporary capacity, never unavailability**, even when it
    names a long reset time: it permits no fallback, no other provider and no absorbing the work into the
    coordinator's own process, and never a reason to hold work: a reset time the refusal names is a guess, not
    a wait. Resume or relaunch the same worker on the same model as soon as the coordinator next answers, read
@@ -140,7 +140,8 @@ context and returns its verdict into the step waiting on it; nothing else does b
   absorb it.** Attempt the native dispatch when available. This covers a host that gives the worker
   no agent tool and a native dispatch that fails other than by a capacity refusal, which step 3 waits out and relaunches, for reviewers, lenses, validators, gates and
   further implementation workers alike. The worker writes the complete assignment — the inputs, the
-  question, the reading list, the output shape — to a file, asks the agent that delegated to it to
+  question, the reading list, the output shape, the originally requested tier, its fallback policy,
+  and launch receipts — to a file, asks the agent that delegated to it to
   run that file as a subagent at the chosen capability level, and waits for the verdict before going
   past the step; that agent launches the workers the step calls for, so each runs with its own
   context. Work the step splits among several workers is never carried by one of them alone, which
@@ -148,7 +149,9 @@ context and returns its verdict into the step waiting on it; nothing else does b
   asks by returning: it ends its turn with the file path and the request, and resumes when the
   verdict comes back. The delegating agent runs it and returns the verdict unedited; when the
   finished worker cannot be resumed, the delegating agent carries out what the verdict calls for,
-  such as the fix steps a flag names, under the follow-up bullet below. Only the top-level agent,
+  such as the fix steps a flag names, under the follow-up bullet below. If no authorized launch
+  works for an assignment originally selected as specialist, hold it, including after any fallback
+  attempt. Only the top-level agent,
   with no delegating agent to ask, performs an assignment in process after its own launch fails,
   records the launch outcome, and reports that the result lacked independent review; never describe
   an in-process result as an independent verdict. An in-process result of an independent step
@@ -245,7 +248,7 @@ Use this user-facing shape whenever a launch failure is material to the task:
 - **Arguments:** `<complete argument names and safe values>`
 - **Host receipt:** <verbatim receipt, or `none — <why no invocation was possible>`>
 - **Classification:** <one permitted classification and its evidence>
-- **Fallback:** <handed up to the delegating agent, or top-level in-process work and its loss of independence>
+- **Fallback:** <assignment held, handed up to the delegating agent, or top-level in-process work and its loss of independence>
 ```
 
 ## Output

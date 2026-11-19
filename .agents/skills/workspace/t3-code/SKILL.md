@@ -28,13 +28,13 @@ Merges replace matching variable names and preserve every unrelated variable and
 An empty value is a value, never a removal. Imported values are sensitive by default, matching
 T3's Add variable behavior. Preserve existing redaction markers and let T3 store secrets.
 
-For example, with the resolved helper path in `T3_ENV_SCRIPT` and the verified execution
-environment's ID in `T3_ENVIRONMENT_ID`:
+For example, with the resolved helper path in `T3_ENV_SCRIPT`, the verified execution
+environment's ID in `T3_ENVIRONMENT_ID`, and the provider ID from `list` in `T3_PROVIDER_ID`:
 
 ```sh
 node "$T3_ENV_SCRIPT" list --ssh user@node.example --expect-environment "$T3_ENVIRONMENT_ID"
-cat ./provider.env | node "$T3_ENV_SCRIPT" merge --ssh user@node.example --expect-environment "$T3_ENVIRONMENT_ID" --provider claudeAgent
-cat ./provider.env | node "$T3_ENV_SCRIPT" merge --ssh user@node.example --expect-environment "$T3_ENVIRONMENT_ID" --provider claudeAgent --apply
+cat ./provider.env | node "$T3_ENV_SCRIPT" merge --ssh user@node.example --expect-environment "$T3_ENVIRONMENT_ID" --provider "$T3_PROVIDER_ID"
+cat ./provider.env | node "$T3_ENV_SCRIPT" merge --ssh user@node.example --expect-environment "$T3_ENVIRONMENT_ID" --provider "$T3_PROVIDER_ID" --apply
 ```
 
 `--ssh` uses the existing SSH configuration and authentication. `--identity` and `--known-hosts`
