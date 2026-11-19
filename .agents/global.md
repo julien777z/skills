@@ -309,8 +309,7 @@ alwaysApply: true
   depends on is answered: those decisions go to the user first, on their own, and the plan or
   proposal shown for approval is written for their answers, with nothing in it conditional on one.
   Material too large for the question, such as captures or a long diff, reaches the user as
-  `share-media` says, in a message they see before the question, and the question names it, since a
-  question tool may show only its labels.
+  `share-media` says, in a message they see before the question, and the question names it.
 - **A step only the user can take, which the work waits on, is asked through that tool too, never
   left in chat.** Granting a permission, signing in, approving on another device, or running a
   command that needs their password each goes out as a question once everything the agent can

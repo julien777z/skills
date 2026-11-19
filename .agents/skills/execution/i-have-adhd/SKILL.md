@@ -103,12 +103,9 @@ supporting material was ready, and the work depending on it. An item with neithe
 nor pending evidence work is asked now.
 Keep the question and its choices in that request under the global question-tool procedure, with
 any captures, table, plan or other material it needs shown before it as `share-media` says for
-the harness, rather than soliciting an answer in
-chat. **Listing a decision is never asking it:** no
-sentence the reader sees poses the choice for a chat reply: not a list item phrased as a question,
-a report's closing line, a recommendation ending "should I?", or a section of a skill's required
-output. Where no equivalent tool exists, the
-chat question includes the choices, recommendation or material trade-off and dependent work.
+the harness, rather than soliciting an answer in chat, whether by a list item phrased as a
+question, a report's closing line, a recommendation ending "should I?", or a section of a skill's
+required output. Where no equivalent tool exists, the chat question includes the choices, recommendation or material trade-off and dependent work.
 Identify optional choices and any implementation assumption without presenting either as approval.
 If none remain, omit the list. The list accompanies a skill’s
 required direct-chat result even when that skill says to return only its result or nothing else;
