@@ -70,7 +70,8 @@ measurement that cannot be taken is recorded as unmeasured with the reason.
 ## Delegate The Audit
 
 Use multiple read-only subagents for every run. Invoke `subagent-matrix` at the capability level
-the calling doctor explicitly selects for reviewers, or standard when it does not. Launch each
+the calling doctor explicitly selects for reviewers, or standard when it does not, and carry any
+reviewer fallback override the doctor specifies. Launch each
 exact resolved identifier and retain catalog state, identifier, assignment state and host receipt in
 the unified ledger. The parent owns that ledger.
 
@@ -203,7 +204,7 @@ configured rather than inventing one.
 ## Review The Result
 
 Launch at least two independent read-only final reviewers. Invoke `subagent-matrix` at the same
-reviewer capability level for each, launch the exact resolved identifier, and retain catalog state, identifier,
+reviewer capability level and fallback override for each, launch the exact resolved identifier, and retain catalog state, identifier,
 assignment state and host receipt in the unified ledger:
 
 - one verifies that every approved disposition was carried out completely;

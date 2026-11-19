@@ -63,10 +63,12 @@ agent; the calling agent launches the actual assignment with the selected model.
    the accepted selection. Availability is not permission to change repository or global settings, such as a
    model policy or a provider's configuration.
 4. For a specialist assignment, after step 3 establishes that Claude Mythos is unsupported or
-   denied, launch the same assignment directly on exact Opus 5.5 only if it respects the user's
-   explicit model or capability constraint. Otherwise hold the assignment. Do not try older Mythos,
-   Fable, or another provider. Apply step 3's repair, retry, and capacity rules to every attempt,
-   including Opus 5.5 and Codex Astra. Hold when Opus 5.5 or specialist Codex Astra is confirmed
+   denied, launch the same assignment directly on the latest Claude family at the `frontier` tier, unless
+   the calling skill explicitly selects a different fallback tier. Resolve its latest Claude family
+   and apply that fallback only if it respects the user's
+   explicit model or capability constraint; otherwise hold the assignment. Do not try older Mythos
+   or another provider. Apply step 3's repair, retry, and capacity rules to every attempt,
+   including the selected fallback and Codex Astra. Hold when the selected fallback or specialist Codex Astra is confirmed
    unsupported or denied. Catalog omission, identifier-resolution failure, and operational or
    capacity failures do not establish Mythos unavailability or denial. No ordinary assignment may
    select specialist as a fallback.

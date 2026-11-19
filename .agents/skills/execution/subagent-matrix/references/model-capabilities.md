@@ -11,7 +11,7 @@ separate tier.
 | `standard` | Terra | Sonnet | Balanced reviews, analysis, and substantive tasks | Caller-authorized ordinary ladder |
 | `advanced` | Sol | Opus | Difficult tasks requiring stronger reasoning | Caller-authorized ordinary ladder |
 | `frontier` | Astra | Fable | The most demanding ordinary assignments | Caller-authorized ordinary ladder |
-| `specialist` | Astra | Mythos | Only a calling skill explicitly selecting specialist | Claude Mythos to Opus 5.5 only; Codex Astra holds |
+| `specialist` | Astra | Mythos | Only a calling skill explicitly selecting specialist | Claude: `frontier` by default, or caller-selected tier; Codex Astra holds |
 
 The labels describe selection policy, not identical capabilities across providers or guaranteed
 host availability. A catalog omission is not availability evidence; the workflow resolves an
@@ -48,10 +48,10 @@ to test, not supported-model claims or replacements for a newer matching catalog
 | Sol | `gpt-6-sol` |
 | Astra | `gpt-6-astra` |
 
-For a Claude host, `claude-mythos-5-2` and `claude-opus-5-5` are candidates for
-Mythos and the specialist fallback respectively, not claims that the host supports them. Resolve
-the latest matching Mythos identifier from the host first; use the exact Opus 5.5 identifier for
-the specialist fallback.
+For a Claude host, `claude-mythos-5-2` and `claude-opus-5-5` are candidates, not claims
+that the host supports them. Resolve the latest matching Mythos identifier first and the latest
+matching identifier for the selected fallback tier. `claude-opus-5-5` is a catalog-hidden
+candidate for Opus, not a version requirement.
 
 Retain the exact request and host receipt. An unsupported rejection invokes only the calling
 workflow's permitted fallback; it never authorizes changing capability policy or repository
