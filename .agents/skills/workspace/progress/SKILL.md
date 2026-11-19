@@ -56,7 +56,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 
 - **Header.** `title`: `Progress Dashboard`. `topic`: the task in a few words, such as "Bulk
   export". `subtitle`: the task's goal, such as "Let admins download a month of invoices as one
-  file". It sets no `status`, so the navbar shows no badge.
+  file". It sets no `status`.
 - **Progress.** A step's work is its estimate, or for a step with parts the estimates of its parts
   not skipped; a skipped step has none. `value`: finished work over all work, across every plan
   that is not withdrawn, where finished work is each done step's work and each done part of a step
@@ -82,16 +82,19 @@ and deliver the same dashboard again on every request so the user keeps one page
   requests", for one, runs repository by repository, the repositories in the order their first pull
   request merges, or by `<owner>/<repo>` when no merge order is set, and each repository's pull
   requests in merge order, then by number.
-- **Pull request names.** The page names each pull request "PR #<number> - <short title>": a few
-  words saying what it does, not necessarily its title, such as `PR #1337 - Add bulk export`.
-- **Pages.** The dashboard's `icon` is `progress`, and its pages run in this order. `Overview`,
-  `icon` `overview` and `layout` `rows`, holds the pull requests and the `table` "Plans", in that
-  order. `Plan`, `icon` `checklist` and `layout` `rows`, follows with the `tree` "Plan tree", then
-  one plan write-up per approved plan, in approval order, and is `locked`, with `sections` `[]`,
-  until a plan is approved.
-  `Progress`, `icon` `board`, holds the board, the answered questions, the notes and any other
-  table. Once step 3 gives the page a pull request to cover, `Architecture`
-  follows, with `icon` `diagram` and `layout` `rows`: the diagram, then the `tree` "What each pull
+- **Pull request names.** The page names each pull request "<repository>#<number> - <short title>":
+  a few words saying what it does, not necessarily its title, such as
+  `garden-api#1337 - Add bulk export`.
+- **Pages.** The dashboard's `icon` is `progress`, and its pages run in this order:
+  - `Overview`, `icon` `overview` and `layout` `rows`: the pull requests and the `table` "Plans",
+    in that order.
+  - `Proposals`, `icon` `proposals`: the `questions` "Open" and "Answered".
+  - `Plan`, `icon` `checklist` and `layout` `rows`: the `tree` "Plan tree", then one plan write-up
+    per approved plan, in approval order; it is `locked`, with `sections` `[]`, until a plan is
+    approved.
+  - `Progress`, `icon` `board`: the board, the notes and any other table.
+
+  Once step 3 gives the page a pull request to cover, `Architecture` follows, with `icon` `diagram` and `layout` `rows`: the diagram, then the `tree` "What each pull
   request changes", then the `tabs` "Change details", then an `outline` "Keep in mind". While the task has an open or draft
   pull request, `Wrap up` comes last, with `icon` `release` and `layout` `rows`: the `table` "Ready
   to merge", the `diagram` "Merge and deploy order", then the `outline` sections "Between merges",
@@ -124,11 +127,10 @@ and deliver the same dashboard again on every request so the user keeps one page
   waiting on you" when a question is open, and `body` the first open question in a sentence and
   the step it blocks; otherwise, while a step is blocked, `tone` `critical`, `title` "<step title> is
   blocked" and `body` what it waits for.
-- **`board` "Work"**, four columns, with Up next and Done setting `page_size` 5 so each shows five cards at a time:
+- **`board` "Work"**, three columns, with Up next and Done setting `page_size` 5 so each shows five cards at a time:
 
 | Column | `tone` | Cards |
 | --- | --- | --- |
-| Waiting on you | `warning` | Each open question: `title` the question, `detail` "Recommended: <recommendation>", `tag` "Question". |
 | In progress | `accent` | Active and blocked steps: `detail` what the step changes, from its ledger entry, `tag` the plan's title when the task has several plans, `status` "Blocked" toned `critical` when blocked, `meta` its estimate, adding "· <done> of <n> parts" for a step with parts, counting parts not skipped. Each question whose evidence is still owed: `title` the question, `detail` the evidence being gathered, `tag` "Question". |
 | Up next | — | Steps not started, in plan order, with `meta` as above and `tag` the plan's title when the task has several plans. |
 | Done | `good` | Finished steps, `meta` their measured duration. |
@@ -159,7 +161,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   order, one sentence each, what to merge or deploy and what that sets off, each number on the
   arrows it releases; pull requests with no order between them share a step.
 - **`outline` "Between merges"**: each action a merge needs done before the next one can go, grouped
-  by the step it follows, such as `After PR #119 merges`: repointing a dependency to the branch it
+  by the step it follows, such as `After garden-api#119 merges`: repointing a dependency to the branch it
   merged into, regenerating the lock, publishing a build.
 - **`outline` "Deploy"**: per environment, what reaching it needs that the pull requests do not
   carry — a secret or setting to set, a grant, a build to publish, a migration to run by hand — and
@@ -175,6 +177,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   `open` or `draft`, and `status` and `tone`: Open `good`, Draft neutral, and Failing checks
   `critical` in place of either when the head's checks fail, read the way the Ready to merge table's
   Checks column reads them.
+- **`questions` "Open"**: each open question, with its `recommendation`.
 - **`questions` "Answered"**: each answered question with the user's `answer` in their words and
   `at` the time it was given, with `page_size` 5.
 - **`notes` "Decisions and notes"**: each recorded decision and each assumption made without the
@@ -219,11 +222,10 @@ and deliver the same dashboard again on every request so the user keeps one page
   stays a draft or runs its checks. `tone` is `critical` for what breaks something if missed and
   `warning` for what needs an action.
 - **`references`**: each pull request in every form the page writes it — its name,
-  "<owner>/<repo>#<number>", and "#<number>" when no other pull request of the task shares the
-  number — with its `url`, so every mention of it is a link.
+  "<owner>/<repo>#<number>" and "<repository>#<number>" — with its `url`, so every mention of it is a link.
 
 Leave out withdrawn plans and questions, and a section with nothing in it, except the board,
-which keeps its four columns, and the tabs of "Change details", which stay with `sections` `[]`.
+which keeps its columns, and the tabs of "Change details", which stay with `sections` `[]`.
 
 ## Guardrails
 
