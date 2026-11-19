@@ -1,6 +1,6 @@
 ---
 name: subagent-matrix
-description: Apply before every subagent launch, including a workflow coordinator or nested reviewer, and when selecting a live skill-verification model. Default reasoning effort to medium unless the user or invoking skill explicitly specifies another effort. Resolve the assignment role and verify the actual model, reasoning and history arguments before dispatch, including a fresh independent or read-only gate, reviewer, validator, or skill-test reader. Resolve cheap, standard, advanced, and frontier capability levels from the host catalog and documented dispatch candidates. Attempt the assigned work with a catalog-hidden candidate before reporting unavailability or proposing a substitution, select the model explicitly, route independent steps through a subagent of the running session, and give the user complete direct-dispatch diagnostics when the launch cannot start.
+description: Apply before every subagent launch, including a workflow coordinator or nested reviewer, and when selecting a live skill-verification model. Default reasoning effort to medium unless the user or invoking skill explicitly specifies another effort. Resolve the assignment role and verify the actual model, reasoning and history arguments before dispatch, including a fresh independent or read-only gate, reviewer, validator, or skill-test reader. Resolve cheap, standard, advanced, frontier, and specialist capability levels from the host catalog and documented dispatch candidates. Attempt the assigned work with a catalog-hidden candidate before reporting unavailability or proposing a substitution, select the model explicitly, route independent steps through a subagent of the running session, and give the user complete direct-dispatch diagnostics when the launch cannot start.
 short_description: 'Select a model capability level for live verification chats or subagent delegation.'
 ---
 
@@ -62,7 +62,13 @@ agent; the calling agent launches the actual assignment with the selected model.
    branding, a worker-reported label, or no runtime identifier is neither confirmation nor a contradiction of
    the accepted selection. Availability is not permission to change repository or global settings, such as a
    model policy or a provider's configuration.
-4. When a requested capability level or model is explicitly unsupported, apply a fallback only when the
+4. For a specialist assignment, after the repairs and actual dispatch in step 3 establish that Claude
+   Mythos is unavailable or denied, launch the same assignment directly on exact Opus 5.5. Do not
+   try older Mythos, Fable, or another provider. If Opus 5.5 is unavailable or denied, hold the
+   assignment. A specialist Codex Astra refusal also holds it. Capacity refusals still wait under
+   step 3. No ordinary assignment may select specialist as a fallback.
+
+   For ordinary assignments, when a requested capability level or model is explicitly unsupported, apply a fallback only when the
    calling skill declares its direction and limits and it respects the user's explicit model or capability
    constraint. **A permitted fallback steps down as little as it can**, in this order, launching the actual
    assignment at each step and moving on only on an explicit unsupported receipt:
@@ -85,7 +91,8 @@ agent; the calling agent launches the actual assignment with the selected model.
    launch the actual chat assignment; never skip that family because the catalog omits it. Advance to another
    family only after an explicit unsupported receipt and only as the caller's fallback policy permits. Otherwise
    use the task criteria in the table, with **standard** as the default. Reserve frontier for the most demanding
-   assignments unless specifically required. Default reasoning effort to **medium** for every
+   assignments unless specifically required. Select specialist only when the calling skill explicitly
+   selects it for that assignment; neither task difficulty nor a generic fallback enters that tier. Default reasoning effort to **medium** for every
    assignment, including complex work, independent reviews, coordinators, and higher-capability
    models. Use another effort only when the user or invoking skill explicitly specifies it for
    that assignment; retain the instruction as dispatch evidence. Complexity, role, model capability,

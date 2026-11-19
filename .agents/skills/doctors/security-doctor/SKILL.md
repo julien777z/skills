@@ -17,7 +17,8 @@ one that makes that attack fail and a test that proves it does.
 
 ## Inventory
 
-Run `doctor-protocol`.
+Run `doctor-protocol` with specialist capability for its audit, cross-cutting, and final
+reviewers. Its implementation workers retain the protocol default.
 
 `security-audit`'s Phase 1 reconnaissance, taken once before fan-out: what the application is and
 its comparable baseline; per deployable, its trust boundaries, authentication and authorization

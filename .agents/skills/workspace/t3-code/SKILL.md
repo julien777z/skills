@@ -52,7 +52,11 @@ Apply `security-audit` to configuration changes. Use `proton-pass` for an existi
 1. Identify the requested environment, provider instances, and project scope. Read installed T3
    version and native CLI help; use source matching that release when the UI or CLI does not expose
    the needed operation. The authoritative source is [T3 Code](https://github.com/pingdotgg/t3code).
-   Reuse the intended account and environment; ask only about unresolved target ambiguity.
+   Inspect connected desktop environments as well as the server-linked CLI list. Distinguish the
+   execution environment, provider instance, and hub account; resolve the request's actual routing
+   through native settings or management before asking about a target. Locate the host and try its
+   available management routes: an SSH refusal rules out that route alone. Reuse the intended
+   account and environment; ask only about unresolved target ambiguity.
 2. Inspect current configuration. For variables, run the helper's `list` command and resolve the
    requested provider names to its actual IDs. The helper manages environment-wide provider values,
    which apply across projects on that environment. Do not silently substitute another scope.
