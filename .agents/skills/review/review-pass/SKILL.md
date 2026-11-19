@@ -89,11 +89,16 @@ Each pass reviews only what no earlier pass reviewed.
 - **A caller can ask for the whole pull request.** A latest record already scoped `whole` meets the
   ask, and the delta is measured from it; otherwise the delta is the complete merge-base diff. Such a
   pass records `whole`; every other pass records `delta`.
-- **An empty delta** runs only **Review Threads**; with no thread fix, return the recorded verdict.
-  A thread fix is a new delta.
+- **An empty delta** runs only **Review Threads** when the recorded review still covers the
+  current intent and governing guidance. For a skill or rule, retain that comparison with the
+  review record, identifying the base guidance and user requirements checked. If it is missing
+  or its inputs changed, use the complete target patch to identify the affected packages. Review
+  their diff again and pass the current inputs to final acceptance. A thread fix is a new delta.
 - **A delta that touches a skill or rule is reviewed as the package it results in.** The **Review
   Loop** and the final acceptance read every file of each skill and rule it touches whole at the
-  head, judged as `acceptance-gate` judges guidance, with the real case the invocation supplies.
+  head, judged as `acceptance-gate`'s **Guidance Intent** rubric requires, with the real case the
+  invocation supplies. Give both readers the base guidance and the user's explicit requirements
+  and later corrections in their words. An earlier approval cannot stand for that comparison.
 
 ## Description Refresh
 
@@ -214,8 +219,8 @@ changed. Make the smallest changes that answer real findings, and push back on t
   group goes to `council` and the other groups share the remaining two of the five reviewers.
 - **Brief:** send [the reviewer brief](references/reviewer-brief.md), this skill's reference holding
   the round text and severity scale, with the repository, base, intent, out-of-scope note, check
-  results and the repository rules whose file patterns match the changed paths filled in. Use the
-  same diff command every round.
+  results, applicable repository rules, and the Whole and Guidance intent fields filled in. Use
+  the same diff command every round.
 - **Answer each finding** after checking it and its severity against the code yourself:
   - agree: make the smallest fix, preferring to delete or narrow code over a new lock, cache, helper
     or option, and add one focused test that fails without the fix when the repository has a test
