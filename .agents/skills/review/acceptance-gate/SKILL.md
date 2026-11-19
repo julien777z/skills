@@ -1,6 +1,6 @@
 ---
 name: acceptance-gate
-description: Independent read-only verdict on a pull request's complete diff before merge, run once per pull request; also for a triage or deferral decision, a list of borderline incidental items, and base incorporation; per plan step only for a finished step that later steps build on. Never run per fix, apart from a repair that settles a design, product or security choice of its own.
+description: Independent read-only verdict on a pull request's complete diff before merge, run once per pull request; also for a triage or deferral decision, a list of borderline incidental items, and base incorporation; per plan step only for a finished step that later steps build on. Never run per fix, apart from a fresh gate over each repair of, or answer to, a gate's flag.
 short_description: 'Have an independent reviewer decide whether a proposed change fits the task and the repository.'
 ---
 
@@ -10,7 +10,8 @@ Put a decision the author cannot judge about its own work to a subagent that rea
 state and the change's intent, applies the repository's rubric, and answers one question. It runs
 once over a pull request's complete diff, before its merge, and otherwise only for the questions
 below that a caller cannot settle alone. A plan step or worker task is gated only when later steps
-build on it; every other step, and every fix, is checked by its author against its own checks.
+build on it; every other step, and every fix to a review finding, gets its author's own checks,
+while a gate's flag is closed only by a fresh gate under **Bounds**.
 `references/rubric.md` holds what it judges by; this file holds how it is run.
 
 ## Dependencies
@@ -106,7 +107,10 @@ receives five things and nothing else:
    explicit empty result;
 4. the affected-repository map required by `code-simplify`'s **Trace Changed Flows**. For each
    changed file group, resolve its project guidance, scoped repository rules and installed shared
-   rules by path. Supply the complete text and scope of each source inline or in a named file.
+   rules by path. Supply the complete text and scope of each source inline or in a named file. In a
+   repository the owner does not own, as the global rules' **Repository guidance** defines it, the
+   brief says so: the gate judges the change against the request, its defects and that repository's
+   own guidance and conventions, and a shared rule's standard is no flag there.
    When the Python rules apply, run `scripts/python_rule_findings.py` with the project's Python
    interpreter on the in-scope Python files. Supply the file list and every finding, including an
    explicit empty result. The reader verifies each reported shape against the source and rule;
@@ -119,7 +123,12 @@ judging a working tree that other edits may have moved, or nothing at all. Its s
 model-dispatch record; never replace it with a generic “largest model” label.
 
 **A diff review judges the code as it stands, not only the lines that changed.** Read every module
-the diff adds, moves or rewrites whole; moved and renamed code is judged as if it were new. Before
+the diff adds, moves or rewrites whole; moved and renamed code is judged as if it were new. A diff
+that changes a skill or rule is judged as the package it results in: every file of each skill and
+rule it touches is read whole at the head, and a requirement stated in more than one place there,
+or growth past the shared `agent-guidance.md` rule's size budget, is a flag. Where the item
+carries a real case the guidance governs, the gate walks the resulting text through it and flags
+the step a reader would take wrongly. Before
 the design comparison, answer the plain question: would an experienced reviewer reading the change —
 its code, configuration and prose, and the verification output supplied — call any of it slop, or
 say it does not make sense? Each reason they would give is a flag with its remedy, whether or not a
@@ -252,8 +261,8 @@ it:
 - **Admission — may this work be deferred?** The triage question asked of a proposed record.
 - **Proposal — should this be written?**
 - **Diff — should this stand?** A finished plan step or worker task that later steps build on, a
-  correction after base incorporation, or a repair that settles a design, product or security
-  choice of its own, read with the whole branch diff as its originating diff.
+  correction after base incorporation, or the repair of or answer to a gate's flag, read with the
+  whole branch diff as its originating diff.
 - **Base incorporation — what did the base bring in that the change must refactor?** The procedure
   below.
 - **Final acceptance — may this merge?** The complete pull-request diff, read once after review is
@@ -298,34 +307,35 @@ earlier acceptance said: it is repaired as below.
 Read every other objection and remedy against the intent and standing guidance and make the
 smallest coherent repair using the existing owner or mechanism.
 
-**A repair is checked in process.** The agent that made it re-reads the changed lines against the
-flag's objection and remedy, runs the checks covering that code, and records the result with the
-flag; no fresh gate or worker is started for it. It still counts as one of the flag's repair
-rounds. Only a repair that settles a design, product or security choice of its own, or one the
-in-process check cannot settle, goes to one fresh gate under the Diff question, following
-`subagent-matrix`'s **Dispatch**.
+**No flag is closed by the run that raised it or the agent that answered it.** The agent that made
+a repair re-reads the changed lines against the flag's objection and remedy and runs the checks
+covering that code; then the repair, or a settled, out-of-scope or council-dropped answer with its
+evidence, goes to a fresh gate under the Diff question, following `subagent-matrix`'s
+**Dispatch**, and only that gate's acceptance closes the flag. The one exception is the decision
+the global rules' review-round limit has `council` make once 3 rounds have failed the change,
+which settles its flags as it rules. Each such gate is one of the change's re-reviews under the
+global rules' review-round limit, and a repair's gate one of the flag's own repair rounds below.
 
 **Repair rounds are counted per objection and per change.** A change gets at most 3 rounds across
 every kind of check, the first and 2 after repairs, as the global rules' review-round limit counts
 them: once 3 have failed it, whatever each raised, the decision that bullet calls for replaces
 another repair, and an acceptance with recorded findings that decision makes is the one exception to
-the rules below on flagged diffs; an in-process check of a repair is not one of those 3
-rounds. While the change is under that limit, a flag gets at most two repair rounds of its own, and
-one a fresh gate raises for the first time starts at zero. A flag the gate still raises after its
-own second repair, with the change still under the limit, goes to `council` in **Ask** mode with
-the open flag, each remedy tried and its evidence, and the gate's proposed remedy. Its ruling
-decides the remedy, which is applied and checked as any repair is, and the caller's result names
-the flag and the ruling. A flag the council returns as the user's choice goes to
-the user, as a report of those facts with a recommended next step, never as a choice about whether to
-fix it or leave it in place. Every other flag keeps its own repair and gate meanwhile.
+the rules below on flagged diffs. While the change is under that limit, a flag gets at most two
+repair rounds of its own, and one a fresh gate raises for the first time starts at zero. A flag the
+gate still raises after its own second repair, with the change still under the limit, goes to
+`council` in **Ask** mode with the open flag, each remedy tried and its evidence, and the gate's
+proposed remedy. Its ruling decides the remedy, which is applied and checked as any repair is, and
+the caller's result names the flag and the ruling. A flag the council returns as the user's choice
+goes to the user, as a report of those facts with a recommended next step, never as a choice about
+whether to fix it or leave it in place. Every other flag keeps its own repair and gate meanwhile.
 
 Never rerun an unchanged item hoping for acceptance, argue it through the same gate, rename it to
 reset its history, or keep flagged code because the caller can authorize its merge. Carry unresolved
 objections and previous remedies into the next review; a remedy that reverses one given earlier
 names it and the evidence it was wrong. If evidence refutes an objection, put the
 objection, that evidence and the code it concerns to `council` in **Ask** mode for a ruling: a
-unanimous `drop` dismisses it, and anything else keeps it open for repair. The caller cannot dismiss
-it unilaterally.
+unanimous `drop` is the evidence a fresh gate closes the flag on, and anything else keeps it open
+for repair. The caller cannot dismiss it unilaterally.
 
 When the intent statement already schedules a flag's remedy as named work with its owner, such as
 a consumer's migration on its own pull request, the gate reports it as a hold on the merge that

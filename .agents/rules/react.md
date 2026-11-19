@@ -644,6 +644,10 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 ## Forms
 
+- **Choose each field's control from the values it accepts before laying out the form.** A field
+  that selects one value from a defined list uses the shared dropdown or combobox, never a free-text
+  input. Reuse the existing domain control and its complete option source wherever that field
+  appears; country and state fields do not become text inputs in a generic field renderer.
 - **Disable an action while locally known prerequisites are unmet.** Missing selections or incomplete
   required fields are normal editing state, not an error banner. Show errors for failures after a
   valid action or for failed data requests.
@@ -715,8 +719,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - **Comparable controls use comparable dimensions.** Inputs with the same role in a form take the same
   width or grid span; let the value format or available space justify a difference. A content-sized
   control beside a fixed-width peer reads as a different kind of choice even when both collect the
-  same kind of answer. Equivalent editable fields use the same inline row layout and control height,
-  including fields enabled by a selection. Preserve masking for sensitive values in that layout.
+  same kind of answer. Choose the editing mode for the form, not independently for each field:
+  a form ready for input uses direct controls throughout, rather than mixing them with read-only
+  values that each need an Edit button. Equivalent editable fields use the same inline row layout
+  and control height, including fields enabled by a selection. Preserve masking for sensitive values
+  in that layout.
 - **One act gets one confirmation.** A single checkbox, worded as the whole statement the reader is
   making, stands for it; a second box restating part of the first asks twice.
 - **Long fixed text a reader must accept — a certification, terms, a disclosure — is set in smaller

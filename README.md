@@ -146,6 +146,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`review-proposal`](.agents/skills/review/review-proposal/SKILL.md) — Challenge a proposal and obtain independent acceptance before presenting it for approval.
 - [`rewrite-git-history`](.agents/skills/git/rewrite-git-history/SKILL.md) — Rework your branch into focused commits while preserving and checking its content.
 - [`roblox-characters`](.agents/skills/roblox/roblox-characters/SKILL.md) — Make Roblox NPCs, creatures, and avatars look, move, and present convincingly.
+- [`roblox-game-overview`](.agents/skills/roblox/roblox-game-overview/SKILL.md) — Explain and audit a Roblox game in a dashboard with pictures staged in the game.
 - [`roblox-gameplay`](.agents/skills/roblox/roblox-gameplay/SKILL.md) — Apply every time actively modifying a Roblox game, including mechanics, progression, rewards, controls, presentation, UI, and world content.
 - [`roblox-studio`](.agents/skills/roblox/roblox-studio/SKILL.md) — Create, polish, and playtest Roblox games in Studio.
 - [`roblox-ui`](.agents/skills/roblox/roblox-ui/SKILL.md) — Design and change Roblox interfaces, including HUDs and menus.

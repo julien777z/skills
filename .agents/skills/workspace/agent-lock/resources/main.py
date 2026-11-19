@@ -1,5 +1,5 @@
 from argparse import ArgumentParser, ArgumentTypeError, Namespace
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 from json import dumps
 from os import environ
 from pathlib import Path
@@ -11,7 +11,9 @@ from locks import (
     acquire_resource,
     check_ownership,
     ownership_status,
+    queued_waiters,
     read_ownership,
+    read_queue,
     read_receipt,
     release_ownership,
     resource_path,
@@ -41,13 +43,15 @@ def create_parser() -> ArgumentParser:
 
     for command in ("acquire", "consume"):
         acquire_parser = commands.add_parser(command)
-        acquire_parser.add_argument("key")
+        acquire_parser.add_argument("key", nargs="+")
+        acquire_parser.add_argument("--any", action="store_true")
         acquire_parser.add_argument("--state-dir", type=Path, default=Path.home() / ".local/state/agent-lock")
         acquire_parser.add_argument("--owner", required=True)
         acquire_parser.add_argument("--activity", required=True)
         acquire_parser.add_argument("--receipt", type=Path, required=True)
         acquire_parser.add_argument("--wait-seconds", type=positive_seconds, default=50)
         acquire_parser.add_argument("--ttl-seconds", type=parse_ttl, default=DEFAULT_TTL.total_seconds())
+        acquire_parser.add_argument("--priority", action="store_true")
 
     status_parser = commands.add_parser("status")
     status_parser.add_argument("key")
@@ -103,13 +107,14 @@ def execute(options: Namespace, child_command: list[str]) -> tuple[LockResult | 
     match options.command:
         case "acquire" | "consume":
             request = Acquisition(
-                key=options.key,
+                keys=options.key,
                 state_directory=options.state_dir,
                 owner=options.owner,
                 activity=options.activity,
                 receipt_path=options.receipt.expanduser().resolve(),
                 wait=timedelta(seconds=options.wait_seconds),
                 ttl=timedelta(seconds=options.ttl_seconds),
+                priority=options.priority,
             )
             result = acquire_resource(request)
 
@@ -134,6 +139,7 @@ def execute(options: Namespace, child_command: list[str]) -> tuple[LockResult | 
 
             with exclusive_file(path):
                 result = ownership_status(read_ownership(path))
+                result["waiters"] = queued_waiters(read_queue(path), datetime.now(UTC))
 
         case _:
             raise ValueError("Unknown lock command")
@@ -156,6 +162,12 @@ def main(arguments: list[str]) -> int:
 
     if options.command == "consume" and not child_command:
         parser.error("consume requires -- followed by a foreground command")
+
+    if options.command in ("acquire", "consume") and len(options.key) > 1 and not options.any:
+        parser.error("several keys take --any, which acquires whichever is free first")
+
+    if options.command in ("acquire", "consume") and len(set(options.key)) != len(options.key):
+        parser.error("each key is named once")
 
     try:
         result, exit_code = execute(options, child_command)
