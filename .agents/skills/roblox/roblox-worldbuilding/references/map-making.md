@@ -1,6 +1,6 @@
 # Map making and surface integration
 
-Apply this guidance to the requested genre and map. Keep its intended gameplay rules; art direction and authored scenery that stand out as incorrect, or would be better another way, change as the global rules' game-design exception says.
+Apply this guidance to the requested genre and map. Keep its core loop; gameplay rules, art direction and authored scenery that stand out as incorrect, or would be better another way, change as the global rules' game-design exception says.
 
 ## Composition and traversal
 

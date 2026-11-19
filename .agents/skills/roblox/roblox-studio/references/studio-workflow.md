@@ -2,7 +2,7 @@
 
 ## Identity, source, and assets
 
-Record the intended experience (universe), place IDs, owner, local file, and build paths. Verify the active Studio title and place ID before writing or publishing from Studio. Create a new experience when requested; never copy an excluded recent project. An update loses no saved progress or authored artwork.
+Record the intended experience (universe), place IDs, owner, local file, and build paths. Verify the active Studio title and place ID before writing or publishing from Studio. Create a new experience when requested; never copy an excluded recent project. An update's build or publish loses no saved progress or authored artwork.
 
 Every place, for iteration and for delivery alike, is a `rojo build` of the repository's code, art, area and terrain files, laid out as [the project layout](#project-layout) says; test a built place's contents in a fresh session when serialization is affected. Check serializer compatibility against the installed versions and current official releases before diagnosing an asset as corrupt.
 

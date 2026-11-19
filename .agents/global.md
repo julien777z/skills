@@ -209,12 +209,12 @@ alwaysApply: true
   and the suggested rewording goes to the user for approval. Do not silently reclassify a condition,
   reinterpret a rule, or conceal a conflict to make the implementation fit. Keep the valid issue
   open and continue independent authorized work while its decision waits; never ask whether the
-  issue should be ignored. **A game's design is the exception: it is not a product choice.** By the
-  user's standing instruction the agent changes, unasked, within the task, whatever in a game stands
-  out as incorrect or would be better another way, even what an earlier request, version or design
-  rule settled; it is the user's word wherever any rule or skill asks for one, and outranks every
-  clause that asks first, keeps what was decided, or defers an improvement. The current request, the
-  core loop or genre, paid items, security, disclosure and authorization stay with the user.
+  issue should be ignored. **A game's design is the exception, not a product choice.** By the user's
+  standing instruction the agent changes, unasked, in any task, whatever in a game stands out as
+  incorrect or would be better another way, even what an earlier request, version or design rule
+  settled; this is the user's word wherever a rule or skill asks for one, and outranks every clause
+  that asks first, keeps a decision, or defers an improvement. The current request, the core loop or
+  genre, anything players pay for, security, disclosure and authorization stay with the user.
 - Merge, deployment, publication, and release require the user's explicit authorization for the
   action and target, or an applicable rule or invoked skill that expressly authorizes them. A fix
   request, approved plan, or instruction to implement a plan does not itself authorize these

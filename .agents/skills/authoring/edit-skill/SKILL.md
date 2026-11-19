@@ -435,15 +435,15 @@ user's review of the source pull request overlaps it.
       the file that does not own it is exactly the duplication this catches, and it is the change
       least likely to be looked at twice.
    4. **Brief `review-pass`'s final acceptance**, which judges the batch's complete `.agents` diff
-      with the intent statement **Guidance Delivery** step 3 gives it; this step starts no gate of its
-      own. The brief asks whether the guidance answers the request at the breadth the shared
-      `agent-guidance.md` rule asks for and whether every mechanism it adds earns its place. A named tool, surface, or
-      workaround in generic guidance is a finding unless the skill's contract depends on it; the
-      incident's route must not narrow the durable decision boundary. The brief carries the
-      incident's vocabulary — the product, its record and screen nouns, the labels the request
-      quoted — so an example carrying any of it is a finding; it also carries the real case behind
-      the request. Resolve each flag through `acceptance-gate`'s **Bounds**: repair the owning
-      instruction, push the changed increment, and put it to the fresh gate those **Bounds**
+      with the intent statement **Guidance Delivery** step 3 gives it; this step starts no gate of
+      its own. The brief asks whether the guidance answers the request at the breadth the shared
+      `agent-guidance.md` rule asks for and whether every mechanism it adds earns its place. A named
+      tool, surface, or workaround in generic guidance is a finding unless the skill's contract
+      depends on it; the incident's route must not narrow the durable decision boundary. The brief
+      carries the incident's vocabulary — the product, its record and screen nouns, the labels the
+      request quoted — so an example carrying any of it is a finding; it also carries the real case
+      behind the request. Resolve each flag through `acceptance-gate`'s **Bounds**: repair the
+      owning instruction, push the changed increment, and put it to the fresh gate those **Bounds**
       require. Repeated flags do not permit dropping owed work or merging flagged guidance, apart
       from the decision the global rules' review-round limit calls for after 3 rounds; acceptance,
       or that recorded round-limit decision, must cover the final wording before delivery.
