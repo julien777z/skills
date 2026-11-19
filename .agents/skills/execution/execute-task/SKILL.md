@@ -296,9 +296,9 @@ execution task under `subagent-matrix`'s **Dispatch** assignment bullets; a task
 never holds another independent one. Reassess ownership after each finding or follow-up. Before
 writing a script or doing a check by hand, the agent and every worker look in the repository's
 `.agents/tools/`, and every brief points there. In a repository the owner runs, an operation the
-task will run more than once, or is about to run again, is first written as a helper there, created
-with the folder if missing, committed as source work, and run each time; a shell function, heredoc
-or inline script is not a helper.
+task will run more than once, or is about to run again, is first written as a helper in
+`.agents/tools/`, created with the folder if missing, committed with the task's change, and run from
+there each time; a shell function, heredoc, inline or temporary script is not a helper.
 
 ### Task Authorization
 

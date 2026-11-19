@@ -210,11 +210,14 @@ alwaysApply: true
   reinterpret a rule, or conceal a conflict to make the implementation fit. Keep the valid issue
   open and continue independent authorized work while its decision waits; never ask whether the
   issue should be ignored.
-- **In a game, the agent fixes, unasked, whatever stands out as incorrect or would be better another
-  way, art included**, even what an earlier request, version, note or rule settled, and reports it
-  with a capture, not a question or note. It is the user's word wherever a rule or skill asks, ahead
-  of any that asks first, keeps a decision or defers an improvement; the current request, core loop
-  or genre, anything players pay for, security, disclosure and authorization stay with the user.
+- **In a game, in any task, the agent fixes, unasked, whatever stands out as incorrect or would be
+  better another way, art included**, even what an earlier request, version, design note or rule
+  settled, such as a level exit the owner once asked to hide that playtesters cannot find: it
+  changes it, commits it and reports it with a capture, never a question, an option list or a note
+  in its place. This standing instruction is the user's word wherever a rule or skill asks, ahead of
+  any rule that asks first, keeps a decision or defers an improvement; the current request binds
+  only what it names, and the core loop or genre, anything players pay for, security, disclosure and
+  authorization stay with the user.
 - Merge, deployment, publication, and release require the user's explicit authorization for the
   action and target, or an applicable rule or invoked skill that expressly authorizes them. A fix
   request, approved plan, or instruction to implement a plan does not itself authorize these
@@ -238,8 +241,9 @@ alwaysApply: true
   deployment, publication or release, or as restoring a broken deployed operation, follows that
   outcome past the merge.
 - Authorization to message an agent or session this session did not start covers only the messages
-  and purpose the user named, and a bounded exchange authorizes no later message unless the user
-  approved more. A running worker this session started is told what changed in a skill it follows.
+  and purpose the user specified, and a bounded exchange authorizes no later update to the same
+  recipient unless the user explicitly approved an ongoing exchange. A running worker this session
+  started is told what changed in a skill it follows, and where, as `edit-skill` says.
 - Before treating an intermediate step as a new approval gate, read the applicable tool or
   workflow rule and test its exceptions against the actual action and existing authorization.
   A consent page, credential being saved, or security-related label alone does not establish
@@ -491,19 +495,6 @@ if not records:
 normalized = [normalize(record) for record in records]
 save_records(normalized)
 return normalized
-```
-
-```typescript
-// Good: separate the request, guard, and result.
-const response = await fetchRecords();
-
-if (!response.ok) {
-  throw new Error('Could not load records');
-}
-
-const records = await response.json();
-
-return records;
 ```
 
 - **A new file is the last resort.** Before creating one, find the existing file that already owns
