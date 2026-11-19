@@ -1,6 +1,6 @@
 ---
 name: subagent-matrix
-description: Apply before every subagent launch, including a workflow coordinator or nested reviewer, and when selecting a live skill-verification model. Default reasoning effort to medium unless the user or invoking skill explicitly specifies another effort. Resolve the assignment role and verify the actual model, reasoning and history arguments before dispatch, including a fresh independent or read-only gate, reviewer, validator, or skill-test reader. Resolve cheap, standard, advanced, frontier, and specialist capability levels from the host catalog and documented dispatch candidates. Attempt the assigned work with a catalog-hidden candidate before reporting unavailability or proposing a substitution, select the model explicitly, route independent steps through a subagent of the running session, and give the user complete direct-dispatch diagnostics when the launch cannot start.
+description: Apply before every subagent launch, including a workflow coordinator or nested reviewer, and when selecting a live skill-verification model. Default reasoning effort to medium unless the user or invoking skill explicitly specifies another effort. Resolve the assignment role and verify the actual model, reasoning and history arguments before dispatch, including a fresh independent or read-only gate, reviewer, validator, or skill-test reader. Resolve cheap, standard, advanced, frontier, and specialist capability levels from the host catalog and current official provider sources. Attempt the assigned work with a catalog-hidden candidate before reporting unavailability or proposing a substitution, select the model explicitly, route independent steps through a subagent of the running session, and give the user complete direct-dispatch diagnostics when the launch cannot start.
 short_description: 'Select a model capability level for live verification chats or subagent delegation.'
 ---
 
@@ -25,15 +25,16 @@ agent; the calling agent launches the actual assignment with the selected model.
 2. Resolve the capability level or model family the caller names to its family in **model
    capabilities**; the coordinator's model never overrides it. Use an exact user override only for
    the role, chat, and capability row it expressly governs; one explicitly scoped to every assignment governs
-   every row. For every other row, prefer the latest matching identifier from the host's model-selection
-   surface. If the family is absent there, read the host's documented candidates in **model capabilities**
-   and use that family's candidate for the actual assignment. A family label is not a dispatch identifier,
-   and a documented candidate is not a claim of support. Mark a resolved catalog-hidden candidate `dispatch
-   required` and proceed to step 3; never turn catalog omission into an identifier hold or an override
-   question while that candidate exists. Only when neither the host nor the reference nor an exact override
-   for that assignment supplies a candidate, or the host has no explicit model-selection mechanism, record
-   an identifier-resolution failure and use the launch fallback for the assignment. Do not invent
-   versions or aliases or silently substitute another family.
+   every row. For every other row, use the latest matching identifier from the host's model-selection
+   surface. **The skill must never hard-code model IDs**, including in references, examples,
+   aliases, or fallback tables. If the host does not supply an exact ID for the selected family,
+   look online for the current ID in the provider's official model catalog, documentation,
+   or release notes for the applicable host or API. Record the source and exact ID. A published ID
+   is a candidate for an actual dispatch; host acceptance is separate evidence. Mark this candidate
+   `dispatch required` and proceed to step 3. If neither discovery route nor an exact user override
+   yields an applicable ID, or the host has no explicit model selector, record an identifier-resolution
+   failure and follow the launch fallback for the assignment. Never guess an ID or treat missing
+   discovery evidence as an unsupported-model receipt.
 3. Before a caller marks a requested capability level or explicit model unavailable, follows an
    unavailable-model fallback, or takes the launch fallback, launch the actual assigned work once with its exact
    candidate identifier and explicit reasoning effort when the native tool is available. A successful dispatch establishes that the host accepted
@@ -77,8 +78,7 @@ agent; the calling agent launches the actual assignment with the selected model.
    calling skill declares its direction and limits and it respects the user's explicit model or capability
    constraint. **A permitted fallback steps down as little as it can**, in this order, launching the actual
    assignment at each step and moving on only on an explicit unsupported receipt:
-   1. earlier versions of the same family, newest first, found in the host's model-selection surface
-      including entries it omits from its short list;
+   1. earlier versions of the same family, newest first, resolved through the host or official provider discovery in step 2;
    2. the other provider's family at the requested level;
    3. the family one capability level below, on the same provider first, then the other provider's family at
       that level;

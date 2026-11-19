@@ -34,26 +34,3 @@ so two seats may share a provider.
 | 1 | Sol |
 | 2 | Opus |
 | 3 | Fable |
-
-## Dispatch candidates
-
-Prefer the host's latest identifier matching the selected family. When a Codex catalog omits the
-family, use the documented candidate below to launch the actual assignment. These are candidates
-to test, not supported-model claims or replacements for a newer matching catalog entry.
-
-| Codex family | Catalog-hidden candidate |
-| ------------ | -------------------------- |
-| Luna | `gpt-6-luna` |
-| Terra | `gpt-5.6-terra` |
-| Sol | `gpt-6-sol` |
-| Astra | `gpt-6-astra` |
-
-For a Claude host, `claude-mythos-5-2`, `claude-fable-5-2`, and `claude-opus-5-5` are candidates, not claims
-that the host supports them. Resolve the latest matching Mythos identifier first and the latest
-matching identifier for the selected fallback tier. `claude-opus-5-5` is a catalog-hidden
-candidate for Opus, not a version requirement.
-
-Retain the exact request and host receipt. An unsupported rejection invokes only the calling
-workflow's permitted fallback; it never authorizes changing capability policy or repository
-settings. For any other family or host, resolve an identifier from its selection surface or an exact user
-override; a family with no documented or host-resolved candidate triggers the launch fallback.
