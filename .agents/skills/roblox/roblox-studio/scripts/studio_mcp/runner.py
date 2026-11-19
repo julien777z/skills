@@ -17,7 +17,7 @@ from studio_mcp.models import (AgentLockAcquireReport, AgentLockCheckReport, Age
 # the linked source mid-run leaves them valid.
 SCRIPTS: Final[Path] = Path(__file__).absolute().parents[1]
 RUNNER_SSH: Final[Path] = SCRIPTS / "runner_ssh.sh"
-AGENT_LOCK: Final[Path] = SCRIPTS.parents[1] / "agent-lock" / "resources" / "main.py"
+AGENT_LOCK_ENTRY: Final[Path] = Path("agent-lock") / "resources" / "main.py"
 OPERATION_TIMEOUTS: Final[Mapping[RunnerOperation, timedelta]] = MappingProxyType({
     RunnerOperation.INITIALIZE: timedelta(seconds=55),
     RunnerOperation.TOOL_CALL: timedelta(seconds=55),
@@ -44,6 +44,26 @@ MAX_LEASE: Final[timedelta] = timedelta(seconds=900)
 FOCUS_LEASE: Final[timedelta] = timedelta(seconds=120)
 # agent-lock's exit status for a lock that stayed held through the wait.
 AGENT_LOCK_BUSY: Final[int] = 2
+
+
+def agent_lock_script(scripts: Path) -> Path:
+    """Return agent-lock's entry script in a flat skills root or in the skills repository's category folders."""
+
+    sibling = scripts.parents[1] / AGENT_LOCK_ENTRY
+    skills = scripts.parents[2]
+
+    if sibling.is_file():
+        return sibling
+
+    categorized = sorted(skills.glob(f"*/{AGENT_LOCK_ENTRY}"))
+
+    if not categorized:
+        raise FileNotFoundError(f"agent-lock is in neither {sibling} nor {skills / '*' / AGENT_LOCK_ENTRY}")
+
+    return categorized[0]
+
+
+AGENT_LOCK: Final[Path] = agent_lock_script(SCRIPTS)
 
 
 class RunnerLockBusy(RuntimeError):
