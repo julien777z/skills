@@ -309,6 +309,8 @@ writing a script or doing a check by hand, the agent and every worker look in th
   invoked skill that expressly authorizes it; otherwise complete the reviewable work and stop
   there. An unauthorized merge leaves the pull request draft for the user; a deployment,
   publication or release the request does not name is no part of the task, and nothing waits on it.
+- Once the merge is authorized and the pull request is verified, invoke `merge-gate`'s
+  **Readiness**. The full merge gate follows the source stream's checks.
 - Ask only for a decision that materially changes the authorized target, recipient, or outcome, or
   for an action-time confirmation a platform actually requires. Make that question specific to the
   new decision or action; never ask the user to reconfirm the task or say "continue" to resume it.
@@ -813,9 +815,8 @@ Two streams run side by side from here: the guidance stream and the source strea
    invocation of `merge-gate`, passing the accepted head, `review-pass`'s **Checks** results with their
    commands and head as the behaviors local tests already cover, every exclusion it returned with
    its evidence, and, as its fix rule, the **Pre-Push Gate** with each fix folded into its commit
-   through `rewrite-git-history`'s fixup route. It readies the pull request, inventories its
-   exact-head hosted coverage, obtains fresh results only where no equivalent terminal coverage
-   exists, fixes what relevant checks report and merges; when it returns, send one line with the
+   through `rewrite-git-history`'s fixup route. It inventories exact-head hosted coverage, obtains fresh results only where no
+   equivalent terminal coverage exists, fixes what relevant checks report and merges; when it returns, send one line with the
    result it read: the merge, or the gate that holds it. Otherwise send step 3's message; the pull
    request stays draft.
 

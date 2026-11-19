@@ -34,10 +34,11 @@ any fix `merge-gate` makes, and review afterwards whatever merged without an ear
 1. The pull requests the user names, or else every open pull request `list-prs` returns for the
    task. Freeze that set at invocation and verify each head and state on the host.
 2. Leave out a pull request confined to agent configuration.
-3. A pull request whose task has not supplied its reviewed result is finished first: carry its
+3. Run `merge-gate`'s **Readiness** for every remaining target.
+4. A pull request whose task has not supplied its reviewed result is finished first: carry its
    unfinished implementation and verification through `execute-task`, in the task's active run when
-   there is one, and use the head that run's review accepts, unless the user named the pull request, in which case it is taken as it stands. Every pull request is a draft until `merge-gate` merges it, so being a
-   draft says nothing about whether it is finished.
+   there is one, and use the head that run's review accepts. If the user named the pull request,
+   use it as it stands.
 
 ## Merge
 
@@ -64,7 +65,7 @@ depends on to merge.
    there.
 2. Confirmed findings go into one draft fix pull request per repository, cut from the freshly
    fetched default branch. Record each fix pull request and its outcome with `session-ledger`. The original merge is never amended or reopened.
-3. Each fix pull request takes **Merge** steps 1–3. It gets no further review round beyond the fix rule's review of a
+3. Verify each fix pull request, run `merge-gate`’s **Readiness**, and take **Merge** steps 1–3. It gets no further review round beyond the fix rule's review of a
    `merge-gate` fix.
 
 ## Report

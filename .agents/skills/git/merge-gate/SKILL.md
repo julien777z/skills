@@ -1,6 +1,6 @@
 ---
 name: merge-gate
-description: Merge a pull request its caller is authorized to merge — verify its delivery dependencies before taking it out of draft, gate its exact head, resolve merge conflicts, squash-merge and verify the merge. Use when an authorized merge is reached. A pull request leaves draft only here; newly introduced PR or testing dependencies block that transition and merge. Unchanged references already on the default branch are exempt from that dependency gate.
+description: Ready a pull request for its authorized merge, then verify its delivery dependencies, gate its exact head, resolve conflicts, squash-merge and verify the result. Use once merge is authorized, including to mark ready while a merge gate is pending.
 short_description: 'Ready a pull request for its authorized merge, gate its exact head, and merge it.'
 ---
 
@@ -55,32 +55,38 @@ so make it through GraphQL `markPullRequestReadyForReview` with the pull request
 re-read the pull request over REST and require `draft` to be `false` before reading any check.
 A rate limit is waited out through the host's wait mechanism and retried on the same transport.
 
+## Readiness
+
+Once merge is authorized, mark the open pull request ready and verify the state through **Transport**.
+A caller may invoke this step as soon as it has verified the target, before supplying the accepted
+head and other inputs for **Check Gate**. The full gate runs this step if the caller has not.
+Keep the pull request ready while review, checks, conflicts or delivery prerequisites hold the
+merge. Readiness starts review and applicable checks. Acceptance and the merge gates still govern
+whether the accepted head can merge.
+
 ## Check Gate
 
 1. **Bind the accepted head before the gate.** Re-read the pull request and record its head and base
-   SHA. Its head must equal the SHA that passed acceptance before dependency inventory, readiness,
-   receipt reuse, exclusions, or hosted-result inventory; otherwise send its new commits through the
+   SHA. Its head must equal the SHA that passed acceptance before dependency inventory, receipt
+   reuse, exclusions, or hosted-result inventory. Send any new commits through the
    caller's rule and restart this gate.
-2. **Verify delivery dependencies before readiness.** Inventory what the complete consumer head
+2. **Verify delivery dependencies before merge.** Inventory what the complete consumer head
    resolves for its build, validation, packaging and delivered behavior, following the
    [delivery dependency criteria](references/delivery-dependencies.md). Compare every consuming
    location, configured reference and resolved revision with the freshly fetched default branch;
    retain that comparison with the admission verdict. Newly introduced or changed PR/testing
-   references in workflows, application code, manifests or lockfiles block readiness and merge.
+   references in workflows, application code, manifests or lockfiles block the merge.
    Exempt only the same input already present unchanged at that location on the default branch;
    a new location or changed resolution is not inherited. For nonexempt inputs, verify each
    provider's merged state and each resolved revision's provenance; a branch label or immutable
-   identifier alone proves neither. A testing dependency, or missing provenance, keeps the
-   consumer draft and blocks both readiness and merge, even with passing tests. Convert an
-   already-ready consumer back to draft through GraphQL `convertPullRequestToDraft` and verify
-   `draft` true over REST. Surface the provider dependency and its evidence in user chat under the GitHub
-   rule's independent publishing context; the body states only the consumer's own delivery requirement. Draft validation and review may continue. After the
-   dependency merges, update every consuming reference to the maintained target chosen by the
-   user or repository guidance, revalidate the consumer's new head through the caller's fix rule,
-   and repeat this inventory before taking it ready. This gate authorizes no dependency merge
-   or release; never take a blocked consumer ready to start tests or send a ready message.
-3. **Require a pull request ready for review.** Mark a draft ready. That
-   state-only transition can start duplicate test jobs; it does not invalidate a terminal result
+   identifier alone proves neither. A testing dependency or missing provenance blocks the merge,
+   even with passing tests. Surface the provider dependency and its evidence in user chat under
+   the GitHub rule's independent publishing context. The body states the consumer's own delivery
+   requirement. After the dependency merges, update every consuming reference to the maintained
+   target chosen by the user or repository guidance, revalidate the consumer's new head through
+   the caller's fix rule, and repeat this inventory before merging.
+3. **Account for checks started by readiness.** The state transition can start duplicate test
+   jobs. It does not invalidate a terminal result
    already produced for the exact head. Reuse that result only when the source, resolved
    dependencies, configuration, toolchain, runner, trigger context, job conditions, and affected
    behavior coverage are evidenced equivalent. A test job `skipped` because the pull request was
