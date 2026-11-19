@@ -7,11 +7,14 @@ brief carries everything; fill every `<…>` field.
 Review only. Do not edit, commit, push, comment on PRs, or start subagents.
 Repo: <abs path> Base: <sha> Intent: <intent> Out of scope: <scope> Checks: <results>
 Rules: <repository rule files whose patterns match the changed paths, or none>
+Testing policy: <controlling repository guidance and user requirements, allowed verification, and complete target patch>
 Whole: <each skill or rule the diff touches, the shared agent-guidance rule's size budget, and the real case, or none>
 Guidance intent: <base guidance, user's explicit requirements and corrections in their words, and acceptance-gate rubric's Guidance Intent section, or none>
 See: git diff <base> [-- <paths>]; git status --short (read untracked files).
 Read surrounding code. Find bugs, broken callers, mismatch with intent, and unsafe
 handling of user input (paths, patterns, queries, markup).
+Apply the shared testing rule’s Test Eligibility across the complete target. Flag any
+violation as a blocker and cite the artifact and governing requirement.
 Flag new code that re-implements a helper the repo already has (cite it), and
 abstractions with a single implementation. Flag workarounds: a remedy that hides
 the symptom (folds away, skips, retries, catches, special-cases) instead of fixing its cause.

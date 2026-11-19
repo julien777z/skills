@@ -109,7 +109,9 @@ receives five things and nothing else:
    package contents and the real case it governs, when supplied;
 4. the affected-repository map required by `code-simplify`'s **Trace Changed Flows**. For each
    changed file group, resolve its project guidance, scoped repository rules and installed shared
-   rules by path. Supply the complete text and scope of each source inline or in a named file. In a
+   rules by path. For every complete diff, include the repository's testing policy and the user's
+   explicit test restrictions. Supply the complete text and scope of each source inline or in a
+   named file. In a
    repository the owner does not own, as the global rules' **Repository guidance** defines it, the
    brief says so: the gate judges the change against the request, its defects and that repository's
    own guidance and conventions, and a shared rule's standard is no flag there.

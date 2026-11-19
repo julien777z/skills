@@ -96,6 +96,9 @@ Each pass reviews only what no earlier pass reviewed.
   delta changes other files. Pass the current inputs to final acceptance and record the sources
   checked with the verdict, including the requirements checked and the base revision or content
   digest of the governing guidance.
+- **Before reusing review coverage**, apply the shared `testing.md` rule's **Test Eligibility** to
+  the complete target patch. Record the governing test policy with the verdict. If it changes,
+  recheck affected files even when the latest delta is empty or unrelated.
 - **An empty delta** runs only **Review Threads** when the recorded verdict is reusable. A
   thread fix is a new delta.
 - **A delta that touches a skill or rule is reviewed as the package it results in.** The **Review
@@ -137,7 +140,9 @@ incoming behavior reconciled with the change's intent in the description.
 
 ## Checks
 
-Run the checks CI runs on a pull request once, with each job's own command and scope, after the
+Apply the shared `testing.md` rule's **Test Eligibility** before choosing and running checks.
+
+Run the permitted checks CI runs on a pull request once, with each job's own command and scope, after the
 base is in and before the review; fix what the change broke and push. A failure the user waived, an
 established baseline failure, or a hosted interruption that qualifies for the GitHub rule's
 validation exclusion is recorded with its evidence and not repaired, rerun or waited on.
@@ -226,12 +231,12 @@ changed. Make the smallest changes that answer real findings, and push back on t
   group goes to `council` and the other groups share the remaining two of the five reviewers.
 - **Brief:** send [the reviewer brief](references/reviewer-brief.md), this skill's reference holding
   the round text and severity scale, with the repository, base, intent, out-of-scope note, check
-  results, applicable repository rules, and the Whole and Guidance intent fields filled in. Use
-  the same diff command every round.
+  results, applicable repository rules, and the Testing policy, Whole, and Guidance intent fields
+  filled in. Use the same diff command every round.
 - **Answer each finding** after checking it and its severity against the code yourself:
   - agree: make the smallest fix, preferring to delete or narrow code over a new lock, cache, helper
-    or option, and add one focused test that fails without the fix when the repository has a test
-    setup and the intent needs it;
+    or option. Add one focused test that fails without the fix when the repository has a test
+    setup, its policy permits it, and the intent needs it; otherwise use permitted verification;
   - disagree: say why, with evidence such as a file and line, a test or output; the finding stays
     open until the reviewer marks it resolved or a ruling below settles it, so a reply never ends
     the loop;

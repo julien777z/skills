@@ -128,6 +128,9 @@ agent; the calling agent launches the actual assignment with the selected model.
 author does not make about its own work. A subagent gives it a fresh
 context and returns its verdict into the step waiting on it; nothing else does both.
 
+- **Before dispatching test work**, apply the shared `testing.md` rule's **Test Eligibility** to
+  each target repository. This includes a source assignment that permits adding or changing tests.
+  Give the worker the controlling policy and permitted verification in the brief.
 - **Never route one elsewhere**: not through a new remote or cloud session, a scheduled trigger or
   routine, or a message asking any session but the delegating agent to run it. Those run outside
   the step, can fail setup or leave branches behind, and their verdict never returns to the run
