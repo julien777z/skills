@@ -100,15 +100,14 @@ alwaysApply: true
 ## Task execution and authorization
 
 - Run a user-triggered action skill only after the user directly invokes it — by its command or by
-  asking for it in words — in the current request.
-  Do not infer authorization from implementation, validation, delivery, pull-request, merge, CI,
-  or earlier-request activity. Guidance maintenance is the exception: `edit-skill` runs when the
-  user reports a guidance failure or canonical guidance is being changed, so the failure and its
-  owning instruction are repaired together, on the timing `edit-skill`'s **Recording During A
-  Task** sets.
-  Determine a user-only restriction from the skill's entry point, not from the fact that it
-  performs work. Required checks and independent gates declared by an authorized workflow run
-  as dependencies without a separate invocation; an omitted review request is not a waiver.
+  asking for it in words — in the current request. Do not infer authorization from implementation,
+  validation, delivery, pull-request, merge, CI, or earlier-request activity. Guidance maintenance
+  is the exception: `edit-skill` runs when the user reports a guidance failure or canonical guidance
+  is being changed, so the failure and its owning instruction are repaired together, on the timing
+  `edit-skill`'s **Recording During A Task** sets. Determine a user-only restriction from the
+  skill's entry point, not from the fact that it performs work. Required checks and independent
+  gates declared by an authorized workflow run as dependencies without a separate invocation; an
+  omitted review request is not a waiver.
 - An authorized task stays active until its outcome is verified complete or the user explicitly
   stops or hands it off. A follow-up, retry, recovery, context compaction, guidance correction,
   completed milestone, pending decision or reported gate does not close it. For every task
@@ -266,22 +265,21 @@ alwaysApply: true
   re-present it rather than replacing it.
 - **Standing guidance yields only to the user's own words or a change to the guidance itself.**
   Before sending or acting on a proposed action, recommendation, question, deferral or delegated
-  instruction, identify the applicable guidance and available review evidence, the next action
-  they require, and whether the proposal follows it. Correct a proposal that contradicts them;
-  carry out an already-settled authorized remedy rather than offering its omission or retention as
-  a choice. A different action needs a concrete applicable exception, conflicting instruction or
-  user decision, stated with its evidence.
-  **A rule about how the product looks or reads is a default that records earlier design
-  judgment, never the argument for a design.** Rank design options by what serves the reader and
-  the flow. Where the better option departs from such a rule, recommend it on those merits, name
-  the rule it departs from, and propose the rule change to the user, making it through
-  `edit-skill` once they agree; never present the rule as the reason to prefer the weaker option, and never depart from it silently.
-  A brief, correction, review finding, gate's fix step or continuation note never outranks the
-  guidance governing its subject or the scope the user last set: an item outside that scope is
-  answered as out of scope, never relayed as a fix, unless the change itself introduced a defect.
-  That defect remains a required fix. Its sender checks before sending and its receiver before
-  acting; `pre-production`'s **Encountered Issues** holds what each does with an item
-  a rule forbids.
+  instruction, identify the applicable guidance and available review evidence, the next action they
+  require, and whether the proposal follows it. Correct a proposal that contradicts them; carry out
+  an already-settled authorized remedy rather than offering its omission or retention as a choice. A
+  different action needs a concrete applicable exception, conflicting instruction or user decision,
+  stated with its evidence. **A rule about how the product looks or reads is a default that records
+  earlier design judgment, never the argument for a design.** Rank design options by what serves the
+  reader and the flow. Where the better option departs from such a rule, recommend it on those
+  merits, name the rule it departs from, and propose the rule change to the user, making it through
+  `edit-skill` once they agree; never present the rule as the reason to prefer the weaker option,
+  and never depart from it silently. A brief, correction, review finding, gate's fix step or
+  continuation note never outranks the guidance governing its subject or the scope the user last
+  set: an item outside that scope is answered as out of scope, never relayed as a fix, unless the
+  change itself introduced a defect. That defect remains a required fix. Its sender checks before
+  sending and its receiver before acting; `pre-production`'s **Encountered Issues** holds what each
+  does with an item a rule forbids.
 - **A rule is met by doing what it requires, never by changing what a check or a reader can see.**
   When the compliant change is hard, the forbidden thing is not renamed, described in other words,
   wrapped, aliased, split, moved to a file the check does not read, or let through by a narrowed,
@@ -441,6 +439,22 @@ alwaysApply: true
   terminal. Keep the task active under **Task execution and authorization** while resolving its gate.
 
 - **Local stack resources are disposable, and repairing them is part of the work, never a question for the user.** Local databases and their migration state, Redis, Docker containers, volumes, networks, images and the daemon itself can be repaired, reset, dropped or recreated whenever the task needs them working. A database stuck on a revision a branch has since regenerated, a stale cache, a wedged container: fix it and carry on. The records a local stack holds are the same: create, edit, reset, reopen or convert them whenever the work needs them in a given state — a test account to sign in with, a submission held in review to show a banner, a record a new rule no longer accepts — as the repository's data policy says, report what was done, and never put the choice to the user. The tooling that brings a local stack to a state is the agent's in the same way: a scenario command, the test accounts and records it creates, and what each scenario seeds are added, changed or redesigned as the work needs, never put to the user in a plan, a question or a gate's remedy, and never a product choice, since no user of the product meets them. The same holds for what the session's own work leaves behind when disk, memory or a port runs short: build caches and the leases and snapshots holding them, stopped containers, orphaned processes and build output. The one limit is a resource another run is actively using, such as a test runner holding the stack's lock. Wait for it or use a separate resource; never stop it. A route that limit rules out, such as restarting a daemon a running test still uses, leaves narrower ones, such as removing only the leases, records or processes the session's own work created; recovery is exhausted, and reported as a gate, only once no route remains. **Development data in a non-production deployment is the agent's the same way** when the project's guidance or its release stage marks it disposable: an unreleased product's staging saves, its test profiles and accounts, and the records a staging environment holds for its testers are reset, converted or recreated whenever the work needs them, such as a test save that no longer loads after an item's ID changed, then reported, never put to the user. Production data, and records real users or other people own, stay with the user. Deployed and shared remote environments are otherwise not local; the following live-deployment rules govern them.
+- **A copy a file-sync service or the operating system left behind is deleted, never kept, left as
+  outside the task or put to the user.** Its name is an original's plus a copy suffix, such as
+  `budget 2.csv`, `notes (conflicted copy).md` or `HEAD 2`, beside its original. On meeting one,
+  list every such entry with a name search of the whole tree and of its Git directories, such as
+  `find` from the repository root and from `git rev-parse --git-dir` and `--git-common-dir`, never
+  `git status` or `ls`, which skip them and ignored folders, and delete each that holds nothing of
+  its own:
+  - a file identical to its original or to any version of it Git holds;
+  - any entry inside a Git directory outside `worktrees` and `modules`, after putting a commit only
+    that entry names on a branch;
+  - a folder or clone whose files, commits and stashes its original already holds, removed as a
+    plain folder.
+
+  A copy with content of its own stays as an ordinary file, without a question. One that a process,
+  worktree or session is using goes once it is idle. Delete before anything stages, stashes or
+  snapshots the tree, and name each deletion in the report.
 
 - Do not rebuild, republish, or redeploy an already validated artifact solely because its source
   head advanced. Compare the edits with the artifact's actual source: cleanup proven to preserve
@@ -629,7 +643,9 @@ return records;
   or a report names what was found and lists the values it concerns, such as "Unrecognized shelf
   codes: B7, Q2". It assumes no cause, such as "the shelf list is out of date", and asks nothing of
   anyone, such as "Please ask the catalog team to correct the shelf list": its reader is the one
-  who investigates, and a guessed cause or errand sends them the wrong way.
+  who investigates, and a guessed cause or errand sends them the wrong way. It names things in
+  plain operational terms, such as player, account or item, never the product's in-world words for
+  them, apart from a proper name the product gives one thing, such as its currency.
 
 ## Repository guidance
 

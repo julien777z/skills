@@ -46,10 +46,8 @@ should have done X", "don't do Y again": each calls for correcting the thing in 
 checking whether guidance allowed the miss. Record the owning file's correction at once, beside
 correcting the work, so the next session does not repeat it.
 
-Correct the current behavior and trace its guidance path in the same turn. When the trace exposes a
-gap during another task, record it as **Recording During A Task** says;
-**Guidance Delivery** carries it into canonical guidance. Neither the issue nor its verification
-disappears when the surrounding task resumes.
+Correct the current behavior and trace its guidance path in the same turn. Neither the issue nor its
+verification disappears when the surrounding task resumes.
 
 A correct instruction does not close a reported failure to follow it. Step 2 traces and repairs the
 application step that admitted the rejected decision, then verifies that repair against the miss.
@@ -61,9 +59,8 @@ new owner under **Guidance Changes Proceed Automatically**.
 
 A user request or an encountered guidance gap, once **Behavior** step 1 confirms its premise,
 authorizes the canonical `.agents` correction, except a policy change, which **Behavior** step 2
-sends to the user. Do not
-ask for a plan or for approval of a guidance-output example; an approval hold the invoking workflow
-sets is that workflow's and still applies. An example renders the settled
+sends to the user. Do not ask for a plan or for approval of a guidance-output example; an approval
+hold the invoking workflow sets is that workflow's and still applies. An example renders the settled
 instruction and is task evidence, not a new product experience because a user reads it. A guidance
 edit that intentionally changes the product still follows the global product-decision boundary. The
 required skill test, review, and acceptance gate validate the correction. When a separate source
@@ -80,6 +77,7 @@ During A Task** for the edit's timing.
 - `merge-gate`
 - `session-ledger`
 - `update-skills`
+- `council`
 
 ## Recording During A Task
 
@@ -95,11 +93,10 @@ Validate skill dependencies and their actual call and policy-read paths under th
   the current work, and the guidance edit is its record. While a guidance batch is in flight, its
   delivery is that action and the user's words are its evidence.
 - Record the correction as a `guidance_correction` entry with `session-ledger`: the evidence of the
-  gap, and for a process its verified run, a reproduction scenario, the intended
-  behavior, the canonical files it will change, and `pending` as its `status`. Steps 1–4
-  of **Behavior** run now, while the evidence is fresh, and their result goes into the entry; the
-  edit itself (steps 5, 6 and 7.1) is written as the bullet on writing the edit below says, and step
-  7.2 onward waits.
+  gap, and for a process its verified run, a reproduction scenario, the intended behavior, the
+  canonical files it will change, and `pending` as its `status`. Steps 1–4 of **Behavior** run now,
+  while the evidence is fresh, and their result goes into the entry; the edit itself (steps 5, 6 and
+  7.1) is written as the bullet on writing the edit below says, and step 7.2 onward waits.
 - **A recorded correction governs the rest of the session at once**, ahead of the installed text it
   amends. Before a decision a pending entry's subject covers, read the ledger's pending entries and
   follow their intended behavior. Putting a question or a recommendation to someone is such a
@@ -118,8 +115,8 @@ Validate skill dependencies and their actual call and policy-read paths under th
   edit from a separate worktree on the selected branch, leave the task's tree untouched, and stage
   only the guidance files. Record the branch, the `commits` list and the pull request in the entry's
   `data`, bring that pull request's description up to date at the milestone, then run `update-skills` at once for eligible edits under its **What Takes Effect**, so the installed
-  copy every agent loads, subagents included, carries them; agents still running hold no refresh, since each skill is
-  read through its link when it is used. Nothing else of delivery runs while the task does: no
+  copy every agent loads, subagents included, carries them. A running agent keeps the text it
+  already read: message each one following a changed skill with what changed and where. Nothing else of delivery runs while the task does: no
   review, gate, skill-test round, merge or worker, except the checks a batch in flight reruns for an edit
   that joined it, as `session-ledger`'s **Guidance Batches** says. A standing instruction about how guidance
   pull requests are reviewed or merged governs that delivery when it runs, never when. A gate result
@@ -178,9 +175,12 @@ user's review of the source pull request overlaps it.
   and environments** pending-result boundary. Never lose a correction, treat a recorded one as
   delivered, or hold the source pull request for it beyond the checks its ridden edits need and the
   delivery of the batch carrying them.
-- **Delivery is the agent's own work, never the user's errand.** It starts at its own trigger without
-  the user asking, and no report, pending-decision list, summary or continuation note describes a
-  pending batch as waiting for the user to ask; one that does is corrected, never carried forward.
+- **Delivery is the agent's own work, never the user's errand.** It starts at its own trigger
+  without the user asking, and every choice in it — another round, splitting a correction onto its
+  own pull request, dropping one, accepting a residual miss — is the agent's, a contested one going
+  to `council` in **Ask** mode. No question, report, pending-decision list or note puts such a
+  choice to the user or describes a pending batch as waiting on them; one that does is corrected,
+  never carried forward.
 - At a checkpoint and before reporting its state, record the complete pull-request head and file
   list, the target repository's lifecycle, its current state, and its next transition. A draft
   confined to canonical agent configuration records `agent-configuration exception`
