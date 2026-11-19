@@ -188,8 +188,9 @@ These run in the order below, in process unless a pass says otherwise.
 - **Layout:** for the delta's changed Python files, run this skill's
   `scripts/paragraph_candidates.py` over them; each pair it lists that the global code-layout rule
   makes a boundary gets its blank line.
-- **Simplification:** when the delta adds a module, a declaration (an enum, constant set, mapping or
-  model), a helper, or changes guidance under `.agents`, run `code-simplify` over the delta with the
+- **Simplification:** when the delta adds a module or declaration (an enum, constant set, mapping,
+  or model), changes guidance under `.agents`, or is covered by `code-simplify`'s
+  **Before Choosing A Design** check, run `code-simplify` over the delta with the
   intent statement: in process when one reader can hold the delta, its touched files and their
   siblings, and by slice as its **Review** says when it cannot. Its rubric holds the
   prose-duplication checks a guidance change needs.
@@ -226,8 +227,9 @@ changed. Make the smallest changes that answer real findings, and push back on t
   group goes to `council` and the other groups share the remaining two of the five reviewers.
 - **Brief:** send [the reviewer brief](references/reviewer-brief.md), this skill's reference holding
   the round text and severity scale, with the repository, base, intent, out-of-scope note, check
-  results, applicable repository rules, and the Whole and Guidance intent fields filled in. Use
-  the same diff command every round.
+  results, applicable repository rules, and the Whole and Guidance intent fields filled in.
+  Include the planning evidence and the owning criteria from `code-simplify`'s
+  **Before Choosing A Design** check on a delta it covers. Use the same diff command every round.
 - **Answer each finding** after checking it and its severity against the code yourself:
   - agree: make the smallest fix, preferring to delete or narrow code over a new lock, cache, helper
     or option, and add one focused test that fails without the fix when the repository has a test

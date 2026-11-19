@@ -56,6 +56,11 @@ Invoke `merge-conflict` when a push read-back shows a conflicting base.
 
 Every task that changes files starts here, and so does every follow-up that arrives while one runs.
 
+Before choosing a design that adds an operation, helper, or guard or changes a shared operation,
+contract, subsystem, runtime boundary, or independent consumer, apply `code-simplify`'s
+**Before Choosing A Design** check and add the complete record to the task before deciding.
+Follow-ups that skip plan approval still write this record without a new approval step.
+
 ### When A Plan Is Needed
 
 - **Every source or product change gets a plan put to the user before its first edit, except a
@@ -124,10 +129,9 @@ Every task that changes files starts here, and so does every follow-up that arri
 - Schedule steps by `subagent-matrix`'s **Dispatch**: coupled work stays sequential, and
   independent scopes with separate owners, files and resources overlap once their inputs are
   settled. Estimate the elapsed time with that overlap, totaled as `session-ledger` totals a plan.
-- **Settle ownership before the plan is final.** For a plan that introduces or changes a shared operation, contract, subsystem, runtime
-  boundary, or independent consumer, apply `code-simplify`'s ownership analysis to the proposed
-  shape and the analogous implementations already in the repository, with one read-only subagent
-  inventorying them when the comparison spans subsystems. Invoke `subagent-matrix` at its standard
+- **Settle ownership before the plan is final.** When the design comparison for a shared operation,
+  contract, subsystem, runtime boundary, or independent consumer spans subsystems, delegate its
+  inventory to one read-only subagent. Invoke `subagent-matrix` at its standard
   capability level for that reader, launch the exact resolved identifier, and retain catalog state,
   identifier, assignment state and host receipt with the plan evidence. The plan states where common
   behavior will live and which policy or wiring stays consumer-specific; it never starts from a parallel
