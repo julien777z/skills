@@ -177,9 +177,9 @@ alwaysApply: true
   pull request with a stack on it, including one whose stack has been retargeted onto the default
   branch, is never closed or judged superseded or redundant by that stack until the default branch
   holds its change, and retargeting the stack is never a route to closing it. The stacked one
-  carries the change only by building on it, so closing it, before or after a retarget, leaves the
-  change on an unmerged branch that can still be reworked, split or closed; only the default branch
-  holding it delivers it.
+  carries the change only by building on it, so closing the pull request it builds on, before or
+  after a retarget, leaves the change on an unmerged branch that can still be reworked, split or
+  closed; only the default branch holding it delivers it.
 
 ### Merge Authorization
 
