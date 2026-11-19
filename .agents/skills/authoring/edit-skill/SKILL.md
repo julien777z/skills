@@ -176,11 +176,12 @@ user's review of the source pull request overlaps it.
   delivered, or hold the source pull request for it beyond the checks its ridden edits need and the
   delivery of the batch carrying them.
 - **Delivery is the agent's own work, never the user's errand.** It starts at its own trigger
-  without the user asking, and every choice in it — another round, splitting a correction onto its
-  own pull request, dropping one, accepting a residual miss — is the agent's, a contested one going
-  to `council` in **Ask** mode. No question, report, pending-decision list or note puts such a
+  without the user asking, and its operational choices — another round, splitting a correction onto
+  its own pull request, dropping one, accepting a residual miss — are the agent's, a contested one
+  going to `council` in **Ask** mode. No question, report, pending-decision list or note puts such a
   choice to the user or describes a pending batch as waiting on them; one that does is corrected,
-  never carried forward.
+  never carried forward; a policy change **Behavior** step 2 sends to the user and a user-review
+  hold stay theirs.
 - At a checkpoint and before reporting its state, record the complete pull-request head and file
   list, the target repository's lifecycle, its current state, and its next transition. A draft
   confined to canonical agent configuration records `agent-configuration exception`
@@ -354,12 +355,11 @@ user's review of the source pull request overlaps it.
      create that entry point when it is absent, or extend it when it exists, and verify a fresh
      bootstrap provides the tool. Keep that bootstrap repository-neutral — it serves every developer
      and agent, so its name, behavior, and messages must not be Claude- or Codex-branded.
-   - Follow the user's explicit consumer-reference choice; otherwise, after a dependency receives
-     a separately authorized release, replace its branch reference with a maintained version tag.
-     Use a minor release for a new capability or a patch
-     release for a bug fix; verify any moving major tag points to that release and validate the
-     consumer against it. Never use an unpublished tag; use the default branch when the user chose it
-     or applicable reference guidance permits it.
+   - Follow the user's explicit consumer-reference choice; otherwise, after a dependency receives a
+     separately authorized release, replace its branch reference with a maintained version tag. Use
+     a minor release for a new capability or a patch release for a bug fix; verify any moving major
+     tag points to that release and validate the consumer against it. Never use an unpublished tag;
+     use the default branch when the user chose it or applicable reference guidance permits it.
    - Write every added or changed instruction as the shared `agent-guidance.md` rule says: its
      frontmatter, headings and statements, where each addition sits in the file, its breadth and
      examples, its scripts, hooks and settings and every harness that loads them, a skill's shape,
