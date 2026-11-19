@@ -437,7 +437,7 @@ skill_contract() {
   local sources=()
 
   if [ "$provider" = claude ]; then
-    printf 'protected:synced\n'
+    printf 'protected:synced\nprotected:session-start-hook\n'
   fi
 
   for skill in ${CANONICAL_CATALOG[@]+"${CANONICAL_CATALOG[@]}"}; do

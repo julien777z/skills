@@ -1,19 +1,27 @@
-# Hidden provider packages are outside the user catalog. Claude also owns synced skills.
+# Hidden provider packages are outside the user catalog. Claude also owns the skills it syncs from
+# an account and the one a cloud session supplies.
 protected_skill() {
   local provider="$1" name="$2" root="$3" path_helper="$4"
-  local entry_key synced_key
+  local entry_key lowered owned owned_key
 
   case "$name" in
     .*) return 0 ;;
   esac
 
   [ "$provider" = claude ] || return 1
-  [[ "$name" =~ ^[sS][yY][nN][cC][eE][dD]$ ]] || return 1
 
-  entry_key="$(python3 "$path_helper" "$root/skills/$name" --entry)" || return 0
-  synced_key="$(python3 "$path_helper" "$root/skills/synced" --entry)" || return 0
+  lowered="$(printf '%s' "$name" | tr '[:upper:]' '[:lower:]')"
 
-  [ "$entry_key" = "$synced_key" ]
+  for owned in synced session-start-hook; do
+    [ "$lowered" = "$owned" ] || continue
+
+    entry_key="$(python3 "$path_helper" "$root/skills/$name" --entry)" || return 0
+    owned_key="$(python3 "$path_helper" "$root/skills/$owned" --entry)" || return 0
+
+    [ "$entry_key" = "$owned_key" ] && return 0
+  done
+
+  return 1
 }
 
 preflight_skill_reconciliation() {

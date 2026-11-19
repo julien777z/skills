@@ -50,7 +50,8 @@ The local installer links skills, reference collections, reusable rules, hooks, 
 Claude, Codex, and Cursor user roots. Codex's global `AGENTS.md` links to the same canonical
 `global.md` rule used by the other harnesses. Repository-specific rules stay in each repository's
 `project.md`. Re-running reconciles user skill entries to the selected catalog, replacing extra
-entries and collisions while preserving hidden provider packages and Claude account-synced skills.
+entries and collisions while preserving hidden provider packages, Claude account-synced skills, and
+the `session-start-hook` skill a Claude cloud session supplies.
 Other artifact types retain their owned-link pruning and conflict checks.
 
 The installer needs `python3` to validate installation roots. Hook registration needs Python 3.11
