@@ -14,10 +14,19 @@ of that proof; agreement in one never establishes agreement in another.
 - `edit-skill`
 - `proton-pass`
 
+## Policy
+
+- Prefer environment-branded tags over generic role tags whenever a Tailscale resource applies to
+  a particular environment. Add a role suffix only when distinct roles within that environment need
+  separate authority; do not create tags for roles that are not in use.
+- Use groups to grant people access and to own tags. Define service and routing policy in terms of
+  environment-scoped resource tags instead of individual email addresses or broad
+  cross-environment tags.
+
 ## Workflow
 
-1. Establish the authorized outcome, environments and mutation boundaries. Apply the global
-   Tailscale policy for naming, groups and tag ownership. Discover each repository's deployment
+1. Establish the authorized outcome, environments and mutation boundaries. Apply **Policy** for
+   naming, groups and tag ownership. Discover each repository's deployment
    procedure and configuration owner from its project guidance. This procedure reconciles a
    Tailscale change and is no general configuration audit. Reading a
    deployment procedure supplies its read-only inspection route and never authorizes a rollout.

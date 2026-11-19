@@ -444,17 +444,13 @@ alwaysApply: true
   `budget 2.csv`, `notes (conflicted copy).md` or `HEAD 2`, beside its original. On meeting one,
   list every such entry with a name search of the whole tree and of its Git directories, such as
   `find` from the repository root and from `git rev-parse --git-dir` and `--git-common-dir`, never
-  `git status` or `ls`, which skip them and ignored folders, and delete each that holds nothing of
-  its own:
+  `git status` or `ls`, which skip them and ignored folders. A copy with content of its own stays as
+  an ordinary file, without a question, and one a process, worktree or session is using goes once it
+  is idle. Before anything stages, stashes or snapshots the tree, delete every other copy that holds
+  nothing of its own, and name each deletion in the report:
   - a file identical to its original or to any version of it Git holds;
-  - any entry inside a Git directory outside `worktrees` and `modules`, after putting a commit only
-    that entry names on a branch;
-  - a folder or clone whose files, commits and stashes its original already holds, removed as a
-    plain folder.
-
-  A copy with content of its own stays as an ordinary file, without a question. One that a process,
-  worktree or session is using goes once it is idle. Delete before anything stages, stashes or
-  snapshots the tree, and name each deletion in the report.
+  - an entry in a Git directory outside `worktrees` and `modules`, once a commit only it names is branched;
+  - a folder or clone whose files, commits and stashes its original holds, removed as a plain folder.
 
 - Do not rebuild, republish, or redeploy an already validated artifact solely because its source
   head advanced. Compare the edits with the artifact's actual source: cleanup proven to preserve
@@ -469,17 +465,6 @@ alwaysApply: true
   smoke testing read-only everywhere else. Where the same artifact and materially equivalent
   configuration run in several environments, one successful write test on that target plus
   read-only health and routing checks on the others validates the shared path.
-
-## Tailscale policy
-
-- Before changing Tailscale authority or its consumers, invoke `tailscale-config`; it owns
-  affected-consumer discovery, execution cutover and verification across repositories and environments.
-- Prefer environment-branded tags over generic role tags whenever a Tailscale resource applies to
-  a particular environment. Add a role suffix only when distinct roles within that environment need
-  separate authority; do not create tags for roles that are not in use.
-- Use groups to grant people access and to own tags. Define service and routing policy in terms of
-  environment-scoped resource tags instead of individual email addresses or broad
-  cross-environment tags.
 
 ## Code layout
 
@@ -643,9 +628,8 @@ return records;
   or a report names what was found and lists the values it concerns, such as "Unrecognized shelf
   codes: B7, Q2". It assumes no cause, such as "the shelf list is out of date", and asks nothing of
   anyone, such as "Please ask the catalog team to correct the shelf list": its reader is the one
-  who investigates, and a guessed cause or errand sends them the wrong way. It names things in
-  plain operational terms, such as player, account or item, never the product's in-world words for
-  them, apart from a proper name the product gives one thing, such as its currency.
+  who investigates, and a guessed cause or errand sends them the wrong way. It says player or item,
+  never the product's in-world words, apart from a proper name, such as the currency's.
 
 ## Repository guidance
 
