@@ -293,7 +293,8 @@ never holds another independent one. Reassess ownership after each finding or fo
 writing a script or doing a check by hand, the agent and every worker look in the repository's
 `.agents/tools/`, and every brief points there. In a repository the owner runs, an operation the
 task's agents do by hand or script a second time becomes a helper there, creating the folder when
-missing, committed on the task's branch, and later runs use it.
+missing, committed as source work on the pull request the GitHub rule's **Branches and Pull Requests**
+selects for it, and later runs use it.
 
 ### Task Authorization
 
