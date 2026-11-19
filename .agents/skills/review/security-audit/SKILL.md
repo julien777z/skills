@@ -80,8 +80,10 @@ At `low` every phase, including supplemental research, runs in process with no a
 `medium` upward, launch the agents each phase names in parallel; capacity limits force batching, never omission and never an undeclared local skim. For each named
 agent, invoke `subagent-matrix` at its specialist capability level for authorized defensive work, launch the exact resolved identifier, and
 retain catalog state, identifier, assignment state and host receipt in the audit evidence; a research sub-agent a
-hunter starts launches the same way. Each agent a level
-names is launched as `subagent-matrix`'s **Dispatch** section directs.
+hunter starts launches the same way. Include in each hunter brief the explicit specialist selection
+for any research child it starts, and instruct the hunter to resolve the child's identifier and
+launch it through `subagent-matrix`. Each agent a level names is launched as
+`subagent-matrix`'s **Dispatch** section directs.
 
 **The rubric is the same at every level; only the cohort shrinks.** A `low` finding is held to
 exactly the bar in `references/rubric.md` — exploitable, with a concrete attack — because a thinner

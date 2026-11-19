@@ -2,8 +2,8 @@
 
 These are model families, not pinned versions. Each capability label selects the latest available
 member of its family on the current host. The calling skill chooses the capability level appropriate
-to each assignment. Cheap through frontier form the ordinary capability ladder. Specialist is a
-separate tier entered only when the calling skill explicitly selects it for the assignment.
+to each assignment. Cheap through frontier form the ordinary capability ladder; specialist is a
+separate tier.
 
 | Capability | Codex family | Claude family | Selection | Fallback |
 | ---------- | ------------ | ------------- | --------- | -------- |

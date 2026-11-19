@@ -62,11 +62,14 @@ agent; the calling agent launches the actual assignment with the selected model.
    branding, a worker-reported label, or no runtime identifier is neither confirmation nor a contradiction of
    the accepted selection. Availability is not permission to change repository or global settings, such as a
    model policy or a provider's configuration.
-4. For a specialist assignment, after the repairs and actual dispatch in step 3 establish that Claude
-   Mythos is unavailable or denied, launch the same assignment directly on exact Opus 5.5. Do not
-   try older Mythos, Fable, or another provider. If Opus 5.5 is unavailable or denied, hold the
-   assignment. A specialist Codex Astra refusal also holds it. Capacity refusals still wait under
-   step 3. No ordinary assignment may select specialist as a fallback.
+4. For a specialist assignment, after step 3 establishes that Claude Mythos is unsupported or
+   denied, launch the same assignment directly on exact Opus 5.5 only if it respects the user's
+   explicit model or capability constraint. Otherwise hold the assignment. Do not try older Mythos,
+   Fable, or another provider. Apply step 3's repair, retry, and capacity rules to every attempt,
+   including Opus 5.5 and Codex Astra. Hold when Opus 5.5 or specialist Codex Astra is confirmed
+   unsupported or denied. Catalog omission, identifier-resolution failure, and operational or
+   capacity failures do not establish Mythos unavailability or denial. No ordinary assignment may
+   select specialist as a fallback.
 
    For ordinary assignments, when a requested capability level or model is explicitly unsupported, apply a fallback only when the
    calling skill declares its direction and limits and it respects the user's explicit model or capability
@@ -265,7 +268,13 @@ Selected dispatch: <exact identifier> / <reasoning effort> / <history mode>
 | standard | catalog-confirmed or catalog-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, or unavailable: <reason> |
 | advanced | catalog-confirmed or catalog-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, or unavailable: <reason> |
 | frontier | catalog-confirmed or catalog-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, or unavailable: <reason> |
+| specialist | catalog-confirmed or catalog-hidden | <original candidate or identifier required> | not requested, dispatch required, identifier required, accepted, unavailable: <reason>, or denied: <host receipt> |
 ```
+
+For a specialist fallback, retain the original candidate and its catalog state, assignment state,
+and host receipt alongside the fallback model's identifier, catalog state, assignment state, and
+host receipt. Record denial as denied, not unavailable; preserve operational and capacity refusals
+under their actual host classification.
 
 A calling skill that launches selected work retains the catalog state, exact identifier, assignment state, and
 host receipt in its own evidence. Runtime identity is additional evidence only when the host exposes it.
