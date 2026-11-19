@@ -17,6 +17,7 @@ const badgeVariants = cva(
         link: 'text-primary underline-offset-4 [a&]:hover:underline',
         source:
           'gap-0 overflow-hidden rounded-md border-border p-0 font-normal text-muted-foreground [a&]:hover:border-ring/60 [a&]:hover:text-foreground',
+        pullRequest: 'gap-1 text-white [a&]:hover:opacity-90',
       },
     },
     defaultVariants: {
