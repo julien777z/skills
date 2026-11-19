@@ -25,8 +25,8 @@ prompt: Which skills should the gauntlet run on?
 kind: multi
 choices:
   - id: <the snapshot's snapshot_id>
-    label: <the skill's name>
-    detail: <its scope and one-line purpose>
+    label: <the skill's name, with its scope when another choice has the same name>
+    detail: <its installations' scopes, its one-line purpose, and whether it is recommended>
 ```
 
 ## Resources
@@ -44,7 +44,8 @@ choices:
    directory before analysis, verify its digest, and mark whether its installed source is editable.
 3. Record each skill's purpose, origin, dependencies, overlaps, precedence, and editability in the
    public state. Compose and publish the dashboard as described below, give the user its URL and
-   the inventory in a message they see, then ask **Selection** through the question tool as
+   the inventory, with the skills it recommends running and why, in a message they see, then ask
+   **Selection** through the question tool as
    `interactive-skill` says, and wait for the answer. Never put selection controls in the
    dashboard or treat dashboard activity as approval.
 4. After selection, run the complete protocol independently for each selected skill. Do not ask
