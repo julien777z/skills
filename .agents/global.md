@@ -166,9 +166,10 @@ alwaysApply: true
   security vulnerability, so the product enforces the access it already intends, is a fix and never
   waits on this question, and so is moving off a deprecated API or setting onto its supported
   replacement, even when the replacement tightens access, as `pre-production`'s deprecated-usage
-  bullet says. **A game's design is the exception**: where `roblox-gameplay` governs the work, the
-  agent changes the game as that skill says, without asking, even what the user, an earlier version
-  or a design rule settled. Before making one, identify the user's instruction or standing guidance
+  bullet says. **A game's design is the exception**: where `roblox-gameplay` governs the work,
+  whatever in the game stands out as incorrect or would be better another way the agent changes as
+  that skill says, without asking, even what the user, an earlier version or a design rule settled.
+  Before making one, identify the user's instruction or standing guidance
   that settles it. If neither does, explain the concrete issue, show the concrete alternatives with
   a recommendation, and ask before building one; a required outcome does not approve an unnamed
   layout, control, scope or timing chosen to achieve it. **A fix's remedy meets the same test,
