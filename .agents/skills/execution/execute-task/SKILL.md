@@ -141,9 +141,6 @@ Every task that changes files starts here, and so does every follow-up that arri
 1. **<subject>** — <what happens today, as fact, and where>. <what each option would change>. I recommend <option>, because <reason>.
 ```
 
-The question tool then asks each decision in one short line, its options named by their outcome,
-as the global rules' question-tool bullet says.
-
 ```markdown
 **Proposed plan**
 

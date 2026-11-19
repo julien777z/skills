@@ -34,9 +34,10 @@ Record each pull request with `session-ledger` before reading it, as a `referenc
 
 ## Splitting The Work
 
-Judge the pull requests in parallel subagents, each given at most three pull requests and never a
-share of a split set, assigned and briefed as `subagent-matrix` says. A run naming three or fewer still
-uses one. Each worker runs **Establish The Intent**, **Check What Changed Around It** and **Choose A
+Judge the pull requests in at most three parallel subagents, assigned and briefed as
+`subagent-matrix` says: one for a run naming three pull requests or fewer, otherwise one per batch of
+about three. A cross-repository set stays whole in one worker even past three, and past nine pull
+requests each worker takes a larger batch rather than a fourth worker starting. Each worker runs **Establish The Intent**, **Check What Changed Around It** and **Choose A
 Disposition** for its share, read-only, and returns each set's **Output** fields with the evidence
 behind every answer: the command, test or file and line it read. The parent checks each answer at
 its source before it reaches the user, as the global rules' **Reported Outcomes** says, and runs
@@ -107,9 +108,9 @@ describes:
   approving option closes every pull request in it, each listed on the dashboard with the base
   change that replaced each of its parts. The user never picks them one by one.
 - **The `REWORK` pull requests are offered for rework, never for closing**: a question choosing
-  which to rework now, each option one pull request named by its title, where picking it starts
-  its rewrite on a new branch and the old pull request closes once the new one carries its
-  remaining part. One left unpicked stays open as it is. Options are never the ones to keep, which
+  which to rework now, each option one pull request, or one cross-repository set as a whole, named
+  by its title, where picking it starts its rewrite on new branches and each old pull request closes
+  once the new one carries its remaining part. One left unpicked stays open as it is. Options are never the ones to keep, which
   makes the reader's picks undo what they read as choosing.
 
 ## Bring It Up To Date
