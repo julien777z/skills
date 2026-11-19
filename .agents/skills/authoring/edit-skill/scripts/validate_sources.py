@@ -130,7 +130,9 @@ def install_tool(action: ActionReference, commit: str) -> Path:
         install_dir,
     )
 
-    venv.EnvBuilder(with_pip=True).create(install_dir)
+    # A copied interpreter from a standalone Python build cannot find its standard library, so the
+    # environment links to the interpreter, as `python -m venv` does outside Windows.
+    venv.EnvBuilder(with_pip=True, symlinks=os.name != "nt").create(install_dir)
 
     url = REPOSITORY_URL_TEMPLATE.format(repository=action["repository"])
     subprocess.run(
@@ -144,6 +146,7 @@ def install_tool(action: ActionReference, commit: str) -> Path:
         ],
         check=True,
     )
+
     marker.touch()
 
     return tool_python(install_dir)
@@ -329,6 +332,7 @@ def parse_arguments() -> argparse.Namespace:
         default=Path.cwd(),
         help="Repository root (default: the working directory).",
     )
+
     tree.add_argument(
         "--agents-dir",
         default=".agents",

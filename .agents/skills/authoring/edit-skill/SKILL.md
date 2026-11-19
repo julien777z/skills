@@ -92,8 +92,9 @@ Validate skill dependencies and their actual call and policy-read paths under th
   same way. While another task runs, the requested action is the behavior it describes, applied to
   the current work, and the guidance edit is its record. While a guidance batch is in flight, its
   delivery is that action and the user's words are its evidence.
-- Record the correction as a `guidance_correction` entry with `session-ledger`: the evidence of the
-  gap, and for a process its verified run, a reproduction scenario, the intended behavior, the
+- Record the correction as a `guidance_correction` entry with `session-ledger`: the user's words,
+  where the user gave any, quoted as the global rules' example-value bullet says, the evidence of
+  the gap, and for a process its verified run, a reproduction scenario, the intended behavior, the
   canonical files it will change, and `pending` as its `status`. Steps 1–4 of **Behavior** run now,
   while the evidence is fresh, and their result goes into the entry; the edit itself (steps 5, 6 and
   7.1) is written as the bullet on writing the edit below says, and step 7.2 onward waits.
@@ -116,7 +117,7 @@ Validate skill dependencies and their actual call and policy-read paths under th
   only the guidance files. Record the branch, the `commits` list and the pull request in the entry's
   `data`, bring that pull request's description up to date at the milestone, then run `update-skills` at once for eligible edits under its **What Takes Effect**, so the installed
   copy every agent loads, subagents included, carries them. A running agent keeps the text it
-  already read: tell each running worker this session started what changed, and where, in a skill it follows. Nothing else of delivery runs while the task does: no
+  already read: tell each running worker this session started which skill, rule or agent definition changed, each section that changed, and what it now says. Nothing else of delivery runs while the task does: no
   review, gate, skill-test round, merge or worker, except the checks a batch in flight reruns for an edit
   that joined it, as `session-ledger`'s **Guidance Batches** says. A standing instruction about how guidance
   pull requests are reviewed or merged governs that delivery when it runs, never when. A gate result
@@ -139,7 +140,7 @@ user's review of the source pull request overlaps it.
 
 1. Read every entry in the frozen batch and resume at its recorded first
    nonterminal stage, rebuilding a lost or truncated entry from its backup
-   comment as `session-ledger` accepts it; the comment's existence records that the correction was admitted under **Recording During A Task**, its Intended behavior stands as the intent statement for step 3, and step 7.5
+   comment as `session-ledger` accepts it; the comment's existence records that the correction was admitted under **Recording During A Task**, its Intended behavior stands as the recovered intent for step 3 beside the user's words, taken from the conversation where they survive and otherwise named as missing in that intent, never replaced by that paraphrase, and step 7.5
    rebuilds the reproduction scenario from its failure class and invariant, with anything else
    unrecoverable handled as `session-ledger` incomplete retrieval. An entry with no recorded commit
    applies its edits under **Behavior** steps 5 and 6, on the branch step 7.1 selects; one with a
@@ -156,8 +157,8 @@ user's review of the source pull request overlaps it.
    source check and skill-test round pass, so its batch can be done. The steps below cover the
    agent-configuration pull request.
 2. Run step 7.2's source check.
-3. Run `review-pass` once over the batch, naming every head it carries. Give it the user's request
-   and the recorded evidence as the intent statement, the incident vocabulary for its acceptance
+3. Run `review-pass` once over the batch, naming every head it carries. Give it each entry's recorded
+   user's words and evidence as the intent statement, the incident vocabulary for its acceptance
    gate as step 7.4 describes, and step 7.3's prose-duplication checks for its simplification pass.
 4. Run step 7.5's `test-skill` skill-test round once over the batch, naming every head `review-pass`
    accepted, with every entry's
@@ -282,14 +283,13 @@ user's review of the source pull request overlaps it.
    - A shared target is edited in the skills repository's checkout — the one the user-level link
      resolves to, or the main checkout behind it when the link resolves into `update-skills`'
      overlay worktree, or, when the session has no editing checkout, a writable checkout attached to
-     or cloned into the session — on a branch and pull request in that repository, never
-     through the link's path from another repository's branch. A cloud setup clone installed
-     only to provide skills is not the editing checkout. Transfer the edit to a separate
-     skills-repository session only when no writable checkout can be obtained, never by editing
-     the installed clone.
-     The originating session supplies the observed miss and its failure class, original task,
-     relevant diff or small file set, repository commit, original skill text and the outcome the
-     user requires, with a sanitized fixture when the skills session cannot read the originating
+     or cloned into the session — on a branch and pull request in that repository, never through the
+     link's path from another repository's branch. A cloud setup clone installed only to provide
+     skills is not the editing checkout. Transfer the edit to a separate skills-repository session
+     only when no writable checkout can be obtained, never by editing the installed clone. The
+     originating session supplies the observed miss and its failure class, original task, relevant
+     diff or small file set, repository commit, original skill text and the outcome the user
+     requires, with a sanitized fixture when the skills session cannot read the originating
      repository. The skills session tests original and proposed wording against the same case and
      names the exact proposed pull-request head. For repository-dependent behavior, the originating
      session then replays the case against that head before merge as `test-skill` runs a scenario,
@@ -435,19 +435,18 @@ user's review of the source pull request overlaps it.
       the file that does not own it is exactly the duplication this catches, and it is the change
       least likely to be looked at twice.
    4. **Brief `review-pass`'s final acceptance**, which judges the batch's complete `.agents` diff
-      with the request as the intent statement; this step starts no gate of its own. The brief asks
-      whether the guidance answers the request at the breadth the shared `agent-guidance.md` rule
-      asks for and whether every mechanism it adds earns its place. A named tool, surface, or
-      workaround in generic guidance is a finding unless the skill's contract depends on it; the
-      incident's route must not narrow the durable decision boundary. The brief carries the
-      incident's vocabulary — the product, its record and screen nouns, the labels the request
-      quoted — so an example carrying any of it is a finding; it also carries the real case behind
-      the request.
-      Resolve each flag through `acceptance-gate`'s **Bounds**: repair the owning instruction, push the
-      changed increment, and put it to the fresh gate those **Bounds** require. Repeated flags do not permit dropping owed work or merging
-      flagged guidance, apart from the decision the global rules' review-round limit calls for after
-      3 rounds; acceptance, or that recorded round-limit decision, must cover the final wording
-      before delivery.
+      with the intent statement **Guidance Delivery** step 3 gives it; this step starts no gate of
+      its own. The brief asks whether the guidance answers the request at the breadth the shared
+      `agent-guidance.md` rule asks for and whether every mechanism it adds earns its place. A named
+      tool, surface, or workaround in generic guidance is a finding unless the skill's contract
+      depends on it; the incident's route must not narrow the durable decision boundary. The brief
+      carries the incident's vocabulary — the product, its record and screen nouns, the labels the
+      request quoted — so an example carrying any of it is a finding; it also carries the real case
+      behind the request. Resolve each flag through `acceptance-gate`'s **Bounds**: repair the
+      owning instruction, push the changed increment, and put it to the fresh gate those **Bounds**
+      require. Repeated flags do not permit dropping owed work or merging flagged guidance, apart
+      from the decision the global rules' review-round limit calls for after 3 rounds; acceptance,
+      or that recorded round-limit decision, must cover the final wording before delivery.
 
    5. **Run one `test-skill` round over the batch on the head `review-pass` accepted.** Give it every
       entry's reproduction scenario, grouping entries that share a failure class. `test-skill` owns

@@ -6,6 +6,7 @@ import sys
 from collections.abc import Iterator, Mapping, Sequence
 from contextlib import contextmanager
 from datetime import timedelta
+from functools import cache
 from pathlib import Path
 from types import MappingProxyType
 from typing import Final
@@ -17,7 +18,8 @@ from studio_mcp.models import (AgentLockAcquireReport, AgentLockCheckReport, Age
 # the linked source mid-run leaves them valid.
 SCRIPTS: Final[Path] = Path(__file__).absolute().parents[1]
 RUNNER_SSH: Final[Path] = SCRIPTS / "runner_ssh.sh"
-AGENT_LOCK: Final[Path] = SCRIPTS.parents[1] / "agent-lock" / "resources" / "main.py"
+AGENT_LOCK_ENTRY: Final[Path] = Path("agent-lock") / "resources" / "main.py"
+REPOSITORY_SKILLS: Final[tuple[str, ...]] = (".agents", "skills")
 OPERATION_TIMEOUTS: Final[Mapping[RunnerOperation, timedelta]] = MappingProxyType({
     RunnerOperation.INITIALIZE: timedelta(seconds=55),
     RunnerOperation.TOOL_CALL: timedelta(seconds=55),
@@ -44,6 +46,27 @@ MAX_LEASE: Final[timedelta] = timedelta(seconds=900)
 FOCUS_LEASE: Final[timedelta] = timedelta(seconds=120)
 # agent-lock's exit status for a lock that stayed held through the wait.
 AGENT_LOCK_BUSY: Final[int] = 2
+
+
+@cache
+def agent_lock_script() -> Path:
+    """Return agent-lock's entry script."""
+
+    sibling = SCRIPTS.parents[1] / AGENT_LOCK_ENTRY
+    repository_skills = SCRIPTS.parents[2]
+
+    if sibling.is_file():
+        return sibling
+
+    if repository_skills.parts[-2:] != REPOSITORY_SKILLS:
+        raise FileNotFoundError(f"agent-lock is not at {sibling}")
+
+    categorized = sorted(repository_skills.glob(f"*/{AGENT_LOCK_ENTRY}"))
+
+    if not categorized:
+        raise FileNotFoundError(f"agent-lock is in neither {sibling} nor {repository_skills / '*' / AGENT_LOCK_ENTRY}")
+
+    return categorized[0]
 
 
 class RunnerLockBusy(RuntimeError):
@@ -125,9 +148,9 @@ def acquire_lock(keys: Sequence[str], lock_receipt: Path, owner: str, activity: 
     choice = ["--any"] if len(keys) > 1 else []
     ordering = ["--priority"] if priority else []
 
-    result = subprocess.run([sys.executable, str(AGENT_LOCK), "acquire", *keys, *choice, *ordering, "--owner", owner,
-                             "--activity", activity, "--receipt", str(lock_receipt), "--wait-seconds",
-                             str(wait.total_seconds()), "--ttl-seconds", str(lease.total_seconds())],
+    result = subprocess.run([sys.executable, str(agent_lock_script()), "acquire", *keys, *choice, *ordering,
+                             "--owner", owner, "--activity", activity, "--receipt", str(lock_receipt),
+                             "--wait-seconds", str(wait.total_seconds()), "--ttl-seconds", str(lease.total_seconds())],
                             capture_output=True, text=True,
                             timeout=(wait + OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK]).total_seconds())
 
@@ -144,7 +167,7 @@ def acquire_lock(keys: Sequence[str], lock_receipt: Path, owner: str, activity: 
 def release_lock(lock_receipt: Path) -> None:
     """Release the lock a receipt owns, stating to agent-lock that its resource is idle."""
 
-    result = subprocess.run([sys.executable, str(AGENT_LOCK), "release", "--receipt", str(lock_receipt),
+    result = subprocess.run([sys.executable, str(agent_lock_script()), "release", "--receipt", str(lock_receipt),
                              "--resource-idle"], capture_output=True, text=True,
                             timeout=OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK].total_seconds())
 
@@ -183,6 +206,7 @@ def acquire_runner_lock(lock_receipt: Path, owner: str, activity: str, lease: ti
         if not acquired:
             for receipt in reversed(taken):
                 release_lock(receipt)
+
                 receipt.unlink(missing_ok=True)
 
     return reports[vm]
@@ -196,6 +220,7 @@ def release_runner_lock(lock_receipt: Path) -> None:
 
         if receipt.is_file():
             release_lock(receipt)
+
             receipt.unlink()
 
     release_lock(lock_receipt)
@@ -207,7 +232,7 @@ def runner_lease(lock_receipt: Path) -> RunnerLease:
     config = runner_config()
     vm = config["ROBLOX_STUDIO_VM"]
 
-    result = subprocess.run([sys.executable, str(AGENT_LOCK), "check", "--receipt", str(lock_receipt)],
+    result = subprocess.run([sys.executable, str(agent_lock_script()), "check", "--receipt", str(lock_receipt)],
                             capture_output=True, text=True,
                             timeout=OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK].total_seconds())
 
@@ -251,6 +276,7 @@ def focused_input(lock_receipt: Path, activity: str, hold: timedelta = FOCUS_LEA
         yield
     finally:
         release_lock(focus_receipt)
+
         focus_receipt.unlink(missing_ok=True)
 
 
