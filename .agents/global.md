@@ -441,12 +441,12 @@ alwaysApply: true
 - **Local stack resources are disposable, and repairing them is part of the work, never a question for the user.** Local databases and their migration state, Redis, Docker containers, volumes, networks, images and the daemon itself can be repaired, reset, dropped or recreated whenever the task needs them working. A database stuck on a revision a branch has since regenerated, a stale cache, a wedged container: fix it and carry on. The records a local stack holds are the same: create, edit, reset, reopen or convert them whenever the work needs them in a given state — a test account to sign in with, a submission held in review to show a banner, a record a new rule no longer accepts — as the repository's data policy says, report what was done, and never put the choice to the user. The tooling that brings a local stack to a state is the agent's in the same way: a scenario command, the test accounts and records it creates, and what each scenario seeds are added, changed or redesigned as the work needs, never put to the user in a plan, a question or a gate's remedy, and never a product choice, since no user of the product meets them. The same holds for what the session's own work leaves behind when disk, memory or a port runs short: build caches and the leases and snapshots holding them, stopped containers, orphaned processes and build output. The one limit is a resource another run is actively using, such as a test runner holding the stack's lock. Wait for it or use a separate resource; never stop it. A route that limit rules out, such as restarting a daemon a running test still uses, leaves narrower ones, such as removing only the leases, records or processes the session's own work created; recovery is exhausted, and reported as a gate, only once no route remains. **Development data in a non-production deployment is the agent's the same way** when the project's guidance or its release stage marks it disposable: an unreleased product's staging saves, its test profiles and accounts, and the records a staging environment holds for its testers are reset, converted or recreated whenever the work needs them, such as a test save that no longer loads after an item's ID changed, then reported, never put to the user. Production data, and records real users or other people own, stay with the user. Deployed and shared remote environments are otherwise not local; the following live-deployment rules govern them.
 - **A copy a file-sync service or the operating system left behind is deleted, never kept, left as
   outside the task or put to the user.** Its name is its original's plus a copy suffix, such as
-  `budget 2.csv`, `notes (conflicted copy).md` or `HEAD 2`. On meeting one, list them all with a
-  name search of the whole tree and of its Git directories, such as `find` from the repository root
-  and from `git rev-parse --git-dir` and `--git-common-dir`, never `git status` or `ls`, which skip
-  them and ignored folders. A copy with content of its own stays as an ordinary file. Before
-  anything stages, stashes or snapshots the tree, delete each other copy, once no process, worktree
-  or session uses it, naming each in the report:
+  `budget 2.csv` or `HEAD 2`. On meeting one, list them all with a name search of the whole tree and
+  its Git directories, such as `find` on the repository root, `git rev-parse --git-dir` and
+  `--git-common-dir`, never `git status` or `ls`, which skip them and ignored folders. A copy with
+  content of its own stays as an ordinary file. Before anything stages, stashes or snapshots the
+  tree, delete each other copy, once no process, worktree or session uses it, naming each in the
+  report:
   - a file identical to its original or to any version of it Git holds;
   - an entry in a Git directory outside `worktrees` and `modules`, once a branch holds each commit only it names;
   - a folder or clone whose files, commits and stashes its original holds, removed as a plain folder.
@@ -628,7 +628,8 @@ return records;
   codes: B7, Q2". It assumes no cause, such as "the shelf list is out of date", and asks nothing of
   anyone, such as "Please ask the catalog team to correct the shelf list": its reader is the one
   who investigates, and a guessed cause or errand sends them the wrong way. It uses plain terms, such
-  as player, account or item, never the in-world words, apart from a proper name such as its currency's.
+  as player, account or item, never the product's in-world words for them, apart from a proper name
+  such as its currency.
 
 ## Repository guidance
 
