@@ -20,8 +20,9 @@ for an agent-configuration change, Agent Sync handling before this skill finishe
   offering the merge as the remaining step. What stops a merge is a gate: a relevant required check
   that is not green, a head that no longer matches the accepted SHA, or a conflict still unresolved.
   Report that gate.
-- An authorized merge includes the repository's automatic merge-triggered workflows. Do not hold
-  the merge or ask for separate approval because those workflows may publish or deploy.
+- An authorized merge includes the repository's automatic merge-triggered workflows. Their
+  publication, rollout, and serving-state checks belong to release or deployment work. Verify
+  the merge at the host and finish the merge workflow there.
 - Dispatching a release workflow or creating a deployment is a separate action with its own
   authorization.
 

@@ -119,7 +119,9 @@ Follow the active task's recorded priorities when choosing the next eligible uni
 
 Before concluding, require discovery to be complete and reconcile the recorded target inventory
 with its verified dispositions. Resume any unit without a disposition even if a different
-repository's pull request already merged. Every entry must be verified merged with `merge-gate`
+repository's pull request already merged. Work through every merge gate the run can resolve
+within its scope and continue through the authorized merge when the gate clears. Every entry must
+be verified merged with `merge-gate`
 returned, ended at its accepted head with merge withheld, or verified ready and held by a gate
 that is reported. A failed readiness transition is itself a host gate with its evidence. GitHub
 head lag and a retryable rate limit are nonterminal.

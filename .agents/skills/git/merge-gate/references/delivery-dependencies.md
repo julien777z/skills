@@ -24,8 +24,10 @@ input already present there unchanged is exempt from this dependency admission g
 ordinary validation of the proposed change. A new consuming location, changed reference or changed
 resolved revision needs its own admission; another input's exemption never covers it.
 
-A maintained default branch or published release is eligible only when it includes
-the behavior the consumer needs and contains no outstanding prerequisite change.
+A maintained default branch or published release is eligible when it includes the behavior the
+consumer needs and contains no outstanding prerequisite change. For a source prerequisite,
+verify the maintained branch contains the merge. For a consumed release, verify the referenced
+artifact's provenance.
 
 A nonexempt pull-request ref, testing branch or artifact built from an unmerged revision is an unresolved
 delivery dependency. Replacing its branch name with a commit, image digest or package version does not
