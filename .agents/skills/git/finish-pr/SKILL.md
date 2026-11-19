@@ -53,7 +53,8 @@ specific set.
   the run's target inventory through `session-ledger`. If discovery is incomplete, also record
   discovery as pending and recover the missing records. Add all recovered targets before marking
   discovery complete; known units can proceed while recovery runs.
-- Verify each target's branch, head and state on the host before starting its review.
+- Verify each target's branch, head and state on the host. For each authorized merge, run
+  `merge-gate`'s **Readiness** as soon as the target is verified, before work or review can hold it.
 - **Open recorded work `review-pass` returns is built on the target before its review starts**;
   review, merge and a dependency-held repoint keep their own order under **Workflow** and
   **Dependent Pull Requests**.
@@ -75,12 +76,12 @@ dependent unit. Its dependency gates its merge, never its review:
   the dependent is a fix that `review-pass` reviews as a new delta. A dependency that merged
   before the dependent's review starts is repointed first, as below, and the dependent is then
   reviewed once on that head.
-- The dependent completes its review at its accepted head and holds there, draft, while the
+- The dependent completes its review at its accepted head and holds there while the
   dependency is unmerged, so `merge-gate` later receives that review's coverage. The hold is not a
   withheld merge and does not end the run: other selected units proceed while it waits for the
   dependency's merge through the host's event route, and the run ends only once it lands or reaches
   the gate below. A dependency closed without merging, or whose merge is neither authorized nor
-  pending, is a concrete gate: the unit stays at its accepted head, draft, and the **Report** names
+  pending, is a concrete gate: the unit stays at its accepted head, and the **Report** names
   the gate and the saved next action.
 - Once the dependency merges, repoint every consuming reference as `merge-gate`'s
   delivery-dependency gate says, regenerating any lockfile with the repository's tooling. The
@@ -118,8 +119,11 @@ Follow the active task's recorded priorities when choosing the next eligible uni
 
 Before concluding, require discovery to be complete and reconcile the recorded target inventory
 with its verified dispositions. Resume any unit without a disposition even if a different
-repository's pull request already merged. Every entry must be verified merged with `merge-gate`
-returned, ended at its accepted head with merge withheld, or held by a gate that is reported. GitHub
+repository's pull request already merged. Work through every merge gate the run can resolve
+within its scope and continue through the authorized merge when the gate clears. Every entry must
+be verified merged with `merge-gate`
+returned, ended at its accepted head with merge withheld, or verified ready and held by a gate
+that is reported. A failed readiness transition is itself a host gate with its evidence. GitHub
 head lag and a retryable rate limit are nonterminal.
 
 ## Local Checkout

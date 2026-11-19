@@ -24,11 +24,13 @@ input already present there unchanged is exempt from this dependency admission g
 ordinary validation of the proposed change. A new consuming location, changed reference or changed
 resolved revision needs its own admission; another input's exemption never covers it.
 
-A maintained default branch or published release is eligible only when it includes
-the behavior the consumer needs and contains no outstanding prerequisite change.
+A maintained default branch or published release is eligible when it includes the behavior the
+consumer needs and contains no outstanding prerequisite change. For a source prerequisite,
+verify the maintained branch contains the merge. For a consumed release, verify the referenced
+artifact's provenance.
 
-A nonexempt pull-request ref, testing branch or artifact built from an unmerged revision remains a draft
-dependency. Replacing its branch name with a commit, image digest or package version does not
+A nonexempt pull-request ref, testing branch or artifact built from an unmerged revision is an unresolved
+delivery dependency. Replacing its branch name with a commit, image digest or package version does not
 change that state. Establish ancestry against the freshly fetched provider default branch for
 resolved commits (`git merge-base --is-ancestor <revision> <provider-default>`), or equivalent
 provider evidence. A squash merge may not preserve the tested commit's ancestry: read the actual
@@ -37,7 +39,7 @@ packages, read build or release provenance linking the artifact to its source re
 label alone cannot establish that a testing artifact is deliverable. Missing access or provenance
 is an unresolved dependency, never a clean inventory.
 
-While the consumer is draft, disclose each unresolved provider change, its direct PR link when
+While a dependency holds the merge, disclose each unresolved provider change, its direct PR link when
 available, the consumed reference and resolved revision, delivery impact and required transition
 in user chat and private task evidence. The consumer body describes its own interface requirement
 and delivery limitation without foreign repository or PR references, under the GitHub rule's
@@ -49,5 +51,5 @@ guidance: a default branch, published release tag, or another permitted maintain
 Recorded commits establish provenance; they do not override the standing version-reference policy.
 An explicitly permitted nonexempt immutable reference still needs merged or released provenance. A dependency
 merge does not authorize a release or make the consumer's old testing reference suitable for
-delivery. Verify all nonexempt consuming locations have moved and validate what they now resolve before
-readiness; recheck mutable targets before merging.
+delivery. Before merging, verify all nonexempt consuming locations have moved, validate what they
+now resolve, and recheck mutable targets.

@@ -81,10 +81,8 @@ alwaysApply: true
 - When the user asks to list pull requests, use `list-prs`; its default scope is open pull requests created or worked on for the ongoing task, including handoffs and drafts across chats. Honor explicit scope and state requests.
 - Record every pull request with `session-ledger` immediately after the hosting service returns its canonical URL. A task-scoped pull-request lookup reconciles verified task records through that ledger and verifies each selected URL remotely; never infer task membership from the current checkout, a branch name, a transcript, or a broad hosting-service search.
 
-- **Open every pull request as a draft and keep it draft until it merges.** The user reviews it as
-  a draft; it leaves draft once, as the first step of an authorized merge through `merge-gate`, so its
-  test jobs run once, on the head about to merge. Never mark one ready to start its tests, to show
-  it finished, or to hand it to the user.
+- **Open each pull request as a draft.** Once its merge is authorized, use `merge-gate`'s
+  **Readiness** to mark it ready.
 - Keep pull requests focused and give them descriptive titles and descriptions: a title stays short,
   and a body may run long with bullets and validation notes. Request appropriate reviewers when the
   repository workflow requires them.
@@ -106,7 +104,7 @@ alwaysApply: true
   rules' **Repository guidance** says. Describe a consumed interface or unresolved delivery
   requirement in terms of this repository's own contract; disclose provider PR links and merge
   ordering to the user in chat.
-  `merge-gate` still owns the complete dependency inventory and readiness gate.
+  `merge-gate` still owns the complete dependency inventory and merge gate.
 - **Text handed to Git or the hosting service is staged where only its author writes and read back
   once published.** A commit message, title, description, comment or issue body goes inline, on
   standard input, or from a file whose path was generated for that one text, such as one `mktemp`
