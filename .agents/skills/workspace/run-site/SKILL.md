@@ -113,7 +113,7 @@ say so and name what only a harness rendered.
 
 Where the repository provides commands to start an isolated stack instance, bring it to a named
 state (a scenario) and capture pages, the walkthrough reaches its state with the scenario command
-and captures with the capture command, as project guidance names them, never by seeding records by
+and captures with the capture command, as its tooling and README name them, never by seeding records by
 hand; the control the change touches is still operated as **Drive the change** says. A list of
 pages the capture command reads holds only the pages the change reaches. A long capture list can
 go to a capture worker at the capability `subagent-matrix` names for one, and every image it
@@ -128,8 +128,8 @@ each scenario and the test accounts and records it needs, and never puts that de
 ### Sign in
 
 Use the repository's normal sign-in flow and the test identity, tenant, fixtures, provider modes,
-and persistence checks its project guidance names. **Walk the change as each kind of user whose
-pages it reaches**, signing in with the identity project guidance names for each role: one role's
+and persistence checks its tooling, seed configuration and README name. **Walk the change as each kind of user whose
+pages it reaches**, signing in with the identity its seed configuration or README names for each role: one role's
 walkthrough says nothing about what another sees. Where the repository provides a one-time sign-in
 link or token, sign in with it and leave the identity's password alone. Use those facts exactly and
 reuse what exists: never invent a test identity or turn a provider fixture into a generic workflow.
@@ -142,7 +142,7 @@ user's saved passwords, cookies, local storage, or session files.
 Keep a password or one-time sign-in token out of argv and the transcript: put it in an environment
 variable for the one command that fills the field or opens the link, build that script, and pipe it
 to the browser command through stdin. The password comes from what the repository provides — the
-file project guidance names, or the helper its tooling uses to set or generate a test identity's
+file its configuration or README names, or the helper its tooling uses to set or generate a test identity's
 password, run first when the identity has none yet — and through `proton-pass` only for an account
 the repository provides no source for, such as a deployed or third-party one. Set the value through
 the native setter and dispatch a bubbling `input` event so a framework-controlled input registers
