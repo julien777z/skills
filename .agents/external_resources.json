@@ -67,6 +67,14 @@
     },
     {
       "kind": "skill",
+      "name": "modernize-pr",
+      "repo": "t3dotgg/tstack",
+      "skill": "modernize",
+      "category": "git",
+      "update_on_sync": false
+    },
+    {
+      "kind": "skill",
       "name": "no-ai-slop",
       "skill_name_override": "no-text-ai-slop",
       "repo": "petergyang/no-ai-slop",
