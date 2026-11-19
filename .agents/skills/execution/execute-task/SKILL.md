@@ -168,9 +168,8 @@ Every task that changes files starts here, and so does every follow-up that arri
 
 - Only an explicit user response approves a plan. A timeout, inactivity, a missing response, a tool
   result, a mode change or a system notice never does. Surface approval through the global rules'
-  **Task execution and authorization** question-tool procedure, including its timeout retries.
-  Keep the plan pending and begin no work that needs its approval; independent authorized work
-  continues.
+  **Task execution and authorization** question-tool procedure, including its timeout retries. Keep
+  the plan pending and begin no work that needs its approval; independent authorized work continues.
 - An interruption continues the same plan. Never replace or silently revise an unapproved plan;
   fold the user's amendments into the detailed plan, take it through `review-proposal` again, and
   present the complete revised plan.
@@ -264,11 +263,10 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
   still remembers.** When an accepted plan goes to the user, record it with `session-ledger` as a
   `plan` entry holding the fields `session-ledger` names for one, filled from the planning work even
   where the plan shown to the user leaves them out. Work the user adds to an active task, with or
-  without a plan of its own, becomes a step on that plan or a plan entry of its own, with the
-  user's words and its approval time, or the time the user added it when it has no plan, before
-  the first edit or dispatch it authorizes; a harness task list, the chat or a summary is never
-  where it first lives.
-  A step the agent adds, or widens past what the user asked, is recorded as agent-originated,
+  without a plan of its own, becomes a step on that plan or a plan entry of its own, with the user's
+  words and its approval time, or the time the user added it when it has no plan, before the first
+  edit or dispatch it authorizes; a harness task list, the chat or a summary is never where it first
+  lives. A step the agent adds, or widens past what the user asked, is recorded as agent-originated,
   proceeds under the task's authorization like the work **When A Plan Is Needed** says an approved
   plan covers, and is never shown as user-approved; one that is a product choice goes to the user
   before it is built, as the global rules' product-choice bullet says. Update it when the state
@@ -291,7 +289,9 @@ Execution starts once a required plan is approved, or immediately when **When A 
 
 Before implementation begins and whenever new work is admitted, delegate each coherent nontrivial
 execution task under `subagent-matrix`'s **Dispatch** assignment bullets; a task waiting on a worker
-never holds another independent one. Reassess ownership after each finding or follow-up.
+never holds another independent one. Reassess ownership after each finding or follow-up. Before
+writing a script or doing a check by hand, the agent and every worker look in the repository's
+`.agents/tools/`, and every brief points there.
 
 ### Task Authorization
 
@@ -498,11 +498,10 @@ how those issues are handled.
 - Use the repository's relevant tests as the regression guardrail; do not preserve a defect solely
   because an existing test asserts the old behavior. When coverage is absent or insufficient, use
   the strongest available validation and account explicitly for the uncovered behavior.
-- Apply an owned API, protobuf, schema, payload, or stored-shape change selected by
-  `pre-production` without a second approval, once its **Target Contract** admits it without a
-  proposal; update every consumer the user controls, in
-  whichever repository it lives, plus every generated artifact and required migration for the
-  target contract.
+- Apply an owned API, protobuf, schema, payload, or stored-shape change selected by `pre-production`
+  without a second approval, once its **Target Contract** admits it without a proposal; update every
+  consumer the user controls, in whichever repository it lives, plus every generated artifact and
+  required migration for the target contract.
 - Apply **Task Authorization** to encountered corrections. Ask only when the correction is a product
   change as the first bullet defines it, changes security or disclosure posture (closing a
   vulnerability is a fix, never a question), reaches a
@@ -543,12 +542,11 @@ timing instead.
 Own each coherent feature through integration: the primary agent settles dependencies, product
 decisions and the combined result. Simplify a feature as it is built. Assign a worker an
 independently owned scope with a concrete boundary and return condition, not an arbitrary slice of
-the primary agent's feature. Keep admitted
-cleanup with its feature; an independently selected cleanup follows its own stated scope and
-ownership. When cleanup crosses an interface or repository, bring its producer and consumers to a
-coordinated checkpoint, verify compatibility at both ends, and keep the cleanup named until
-that check passes. Neither a slower dependency nor unrelated work drops an encountered issue from
-the task.
+the primary agent's feature. Keep admitted cleanup with its feature; an independently selected
+cleanup follows its own stated scope and ownership. When cleanup crosses an interface or repository,
+bring its producer and consumers to a coordinated checkpoint, verify compatibility at both ends, and
+keep the cleanup named until that check passes. Neither a slower dependency nor unrelated work drops
+an encountered issue from the task.
 
 - Simplifying as the work is built covers three things, never the diff hunks alone: the
   **changes** themselves, the **similar code** they resemble, and the **sibling modules** around them.
@@ -656,21 +654,20 @@ it — the user asking about something else is not the user withdrawing what the
 
 - **Write it down before anything else starts.** The displaced work is recorded as **Progress
   Record** says, with its next step, before the first step of whatever displaced it.
-- **An interruption pauses the step in flight; it never ends the run.** After a follow-up
-  finishes, mark the displaced work active again in the ledger and
-  execute its saved next step without waiting for "continue". A promise to resume is not that
-  step, and neither is a report that ends by naming what comes next: a turn that relays a worker's
-  result, finishes a unit or answers a question starts the next named step before it ends, and
-  every step that result unblocks, as **Progress Record** records them. A defect a turn finds while
-  answering is handled in that turn as **Encountered Issues** says, one its own change made always
-  fixed, and the answer reports it fixed or recorded; it never goes out as work the agent will do. Completing
-  its own delivery — including a guidance merge and refresh, a diagnostic answer, or a local
-  environment repair — does not complete the surrounding task. Report that intermediate result
-  while continuing. A held item keeps its saved next action; repair, resolution and waiting follow
-  the global rules' **Tools and environments** boundary. End only when the task is verified
-  complete or the user explicitly stops or hands it off.
-  "Continue", or anything meaning it, resumes exactly the paused step and is never answered with
-  nothing.
+- **An interruption pauses the step in flight; it never ends the run.** After a follow-up finishes,
+  mark the displaced work active again in the ledger and execute its saved next step without waiting
+  for "continue". A promise to resume is not that step, and neither is a report that ends by naming
+  what comes next: a turn that relays a worker's result, finishes a unit or answers a question
+  starts the next named step before it ends, and every step that result unblocks, as **Progress
+  Record** records them. A defect a turn finds while answering is handled in that turn as
+  **Encountered Issues** says, one its own change made always fixed, and the answer reports it fixed
+  or recorded; it never goes out as work the agent will do. Completing its own delivery — including
+  a guidance merge and refresh, a diagnostic answer, or a local environment repair — does not
+  complete the surrounding task. Report that intermediate result while continuing. A held item keeps
+  its saved next action; repair, resolution and waiting follow the global rules' **Tools and
+  environments** boundary. End only when the task is verified complete or the user explicitly stops
+  or hands it off. "Continue", or anything meaning it, resumes exactly the paused step and is never
+  answered with nothing.
 - **A context summary's pending list is this run's named work**, not background, **and its state is
   read from the record, never from the summary.** After a compaction or handoff, and before
   starting, delegating or reporting any plan work, read each step's state, and each decision or
@@ -768,11 +765,14 @@ and state precisely which live behavior remains unverified. Do not add a tempora
 Missing merge approval holds merging, never available branch verification. Merge is delivery after
 verification, never a substitute for an available branch test.
 
+In a repository the owner runs, turn work the task's agents did by hand or scripted more than once
+into a helper in its `.agents/tools/`, creating the folder when missing, before the delivery streams
+start.
+
 Then finish each pull request the task changed, once, with its work finished. A follow-up arriving
-after the streams ran is built, then
-reaches this checkpoint again when it is finished; `review-pass` reviews only what changed since the
-head it last accepted, so a small follow-up costs a small review and a large one a full review of the
-new work.
+after the streams ran is built, then reaches this checkpoint again when it is finished;
+`review-pass` reviews only what changed since the head it last accepted, so a small follow-up costs
+a small review and a large one a full review of the new work.
 
 Follow the selected workflow’s declared verification and delivery sequence and any hold it places on delivery.
 
@@ -797,9 +797,8 @@ Two streams run side by side from here: the guidance stream and the source strea
    rebuild it into one commit per material change. Each later **Completion** of the same pull
    request, after a follow-up, folds every change into the commit it amends through that skill's
    fixup route, or adds a new commit for a new material change, and never rebuilds it again, so the
-   commits the user already reviewed keep their shape. A rewrite whose tree proof shows an
-   identical tree keeps the acceptance verdict and moves `review-pass`'s reviewed head to the
-   rewritten head.
+   commits the user already reviewed keep their shape. A rewrite whose tree proof shows an identical
+   tree keeps the acceptance verdict and moves `review-pass`'s reviewed head to the rewritten head.
 3. Reconcile the result with **Product Constraints**' target receipt, updating its sources when
    accepted requirements changed. Verify every requested outcome and every incidental fix, confirm tests and relevant validation
    cover each of them and every simplification, confirm intentional contract changes are reflected
