@@ -55,17 +55,17 @@ alwaysApply: true
   own reviewers, gates or workers — the request restated, verified facts, evidence, per-file
   detail — stays with them; the user receives a short version of the same content, as
   `execute-task`'s **What The Plan Holds** shapes a plan.
-- **Read every file, image and recording whole before sending or presenting it, whoever produced
-  it.** Checking that it shows what the message says it does is the smaller half: go through it
-  region by region — each section, banner, message, badge, empty state and control in the frame —
-  and ask of each whether the product should show that, there. **Look before reading the sender's
-  account of it:** a description read first narrows the look to the claim it makes, so judge the
-  frame on its own, then check the claim. In a rendered scene, such as a game or a 3D view, the
-  regions include every subject and what it touches: a character or object passing into a wall, a
-  ceiling, the ground or another object, floating above what should hold it, or hidden behind
-  something in front of it. A defect anywhere in it, in a region
-  the message never mentions as much as the one it does — a state or error shown in a section it
-  does not concern, a message repeated, a wrong value or tone — is named with the capture and fixed
+- **Read every file, image and recording whole before sending or presenting it, and every capture
+  taken to check work, whoever produced it.** Checking that it shows what the message says it does
+  is the smaller half: go through it region by region — each section, banner, message, badge, empty
+  state and control in the frame — and ask of each whether the product should show that, there.
+  **Look before reading the sender's account of it:** a description read first narrows the look to
+  the claim it makes, so judge the frame on its own, then check the claim. In a rendered scene, such
+  as a game or a 3D view, the regions include every subject and what it touches: a character or
+  object passing into a wall, a ceiling, the ground or another object, floating above what should
+  hold it, or hidden behind something in front of it. A defect anywhere in it, in a region the
+  message never mentions as much as the one it does — a state or error shown in a section it does
+  not concern, a message repeated, a wrong value or tone — is named with the capture and fixed
   rather than offered, as `pre-production`'s **Encountered Issues** says.
 - **A capture of a change reaches the user while the work is still running.** A screenshot, a
   recording, or a generated image that shows something the run changed — the screen after an edit, a
