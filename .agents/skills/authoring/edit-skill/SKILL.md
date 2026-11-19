@@ -92,11 +92,13 @@ Validate skill dependencies and their actual call and policy-read paths under th
   same way. While another task runs, the requested action is the behavior it describes, applied to
   the current work, and the guidance edit is its record. While a guidance batch is in flight, its
   delivery is that action and the user's words are its evidence.
-- Record the correction as a `guidance_correction` entry with `session-ledger`: the evidence of the
-  gap, and for a process its verified run, a reproduction scenario, the intended behavior, the
-  canonical files it will change, and `pending` as its `status`. Steps 1–4 of **Behavior** run now,
-  while the evidence is fresh, and their result goes into the entry; the edit itself (steps 5, 6 and
-  7.1) is written as the bullet on writing the edit below says, and step 7.2 onward waits.
+- Record the correction as a `guidance_correction` entry with `session-ledger`: the user's words,
+  quoted exactly, the evidence of the gap, and for a process its verified run, a reproduction
+  scenario, the intended behavior, the canonical files it will change, and `pending` as its
+  `status`. Steps 1–4 of **Behavior** run now, while the evidence is fresh, and their result goes
+  into the entry; a review or gate of the edit judges it against those words, never a summary of
+  them; the edit itself (steps 5, 6 and 7.1) is written as the bullet on writing the edit below
+  says, and step 7.2 onward waits.
 - **A recorded correction governs the rest of the session at once**, ahead of the installed text it
   amends. Before a decision a pending entry's subject covers, read the ledger's pending entries and
   follow their intended behavior. Putting a question or a recommendation to someone is such a
@@ -282,14 +284,13 @@ user's review of the source pull request overlaps it.
    - A shared target is edited in the skills repository's checkout — the one the user-level link
      resolves to, or the main checkout behind it when the link resolves into `update-skills`'
      overlay worktree, or, when the session has no editing checkout, a writable checkout attached to
-     or cloned into the session — on a branch and pull request in that repository, never
-     through the link's path from another repository's branch. A cloud setup clone installed
-     only to provide skills is not the editing checkout. Transfer the edit to a separate
-     skills-repository session only when no writable checkout can be obtained, never by editing
-     the installed clone.
-     The originating session supplies the observed miss and its failure class, original task,
-     relevant diff or small file set, repository commit, original skill text and the outcome the
-     user requires, with a sanitized fixture when the skills session cannot read the originating
+     or cloned into the session — on a branch and pull request in that repository, never through the
+     link's path from another repository's branch. A cloud setup clone installed only to provide
+     skills is not the editing checkout. Transfer the edit to a separate skills-repository session
+     only when no writable checkout can be obtained, never by editing the installed clone. The
+     originating session supplies the observed miss and its failure class, original task, relevant
+     diff or small file set, repository commit, original skill text and the outcome the user
+     requires, with a sanitized fixture when the skills session cannot read the originating
      repository. The skills session tests original and proposed wording against the same case and
      names the exact proposed pull-request head. For repository-dependent behavior, the originating
      session then replays the case against that head before merge as `test-skill` runs a scenario,
@@ -441,12 +442,11 @@ user's review of the source pull request overlaps it.
       incident's route must not narrow the durable decision boundary. The brief carries the
       incident's vocabulary — the product, its record and screen nouns, the labels the request
       quoted — so an example carrying any of it is a finding; it also carries the real case behind
-      the request.
-      Resolve each flag through `acceptance-gate`'s **Bounds**: repair the owning instruction, push the
-      changed increment, and put it to the fresh gate those **Bounds** require. Repeated flags do not permit dropping owed work or merging
-      flagged guidance, apart from the decision the global rules' review-round limit calls for after
-      3 rounds; acceptance, or that recorded round-limit decision, must cover the final wording
-      before delivery.
+      the request. Resolve each flag through `acceptance-gate`'s **Bounds**: repair the owning
+      instruction, push the changed increment, and put it to the fresh gate those **Bounds**
+      require. Repeated flags do not permit dropping owed work or merging flagged guidance, apart
+      from the decision the global rules' review-round limit calls for after 3 rounds; acceptance,
+      or that recorded round-limit decision, must cover the final wording before delivery.
 
    5. **Run one `test-skill` round over the batch on the head `review-pass` accepted.** Give it every
       entry's reproduction scenario, grouping entries that share a failure class. `test-skill` owns
