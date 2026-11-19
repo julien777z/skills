@@ -176,10 +176,10 @@ alwaysApply: true
   whose base is its head branch, or whose commits include that branch's commits, is stacked on it. A
   pull request with a stack on it, including one whose stack has been retargeted onto the default
   branch, is never closed or judged superseded or redundant by that stack until the default branch
-  holds its change, and retargeting the stack is never a route to closing it, before or after the
-  retarget: the stacked one carries the change only by building on it, so closing it leaves the
-  change on an unmerged branch that can still be reworked, split or closed, and only the default
-  branch holding it delivers it.
+  holds its change, and retargeting the stack is never a route to closing it. The stacked one
+  carries the change only by building on it, so closing it, before or after a retarget, leaves the
+  change on an unmerged branch that can still be reworked, split or closed; only the default branch
+  holding it delivers it.
 
 ### Merge Authorization
 
