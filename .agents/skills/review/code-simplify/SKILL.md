@@ -17,6 +17,12 @@ it whole before the pass.
 - `subagent-matrix`
 - `test-fixture`
 
+## Before Choosing A Design
+
+Write the [Reuse and removal](references/rubric.md#reuse-and-removal) record for candidate
+designs and review deltas. In planning, read and report evidence only. Apply it again when a
+follow-up changes the proposed mechanism.
+
 ## 1. Scope
 
 1. Take the scope the caller names. Otherwise use `git diff $(git merge-base <base> HEAD)` plus the
