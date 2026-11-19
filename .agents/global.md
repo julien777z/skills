@@ -37,8 +37,8 @@ alwaysApply: true
   table scoped to its own repository carries that repository inside its link text, as above, never as a
   plain name beside a linked number, and a repository named in passing, such as the other half of a
   paired change, is linked too. Every item in a list gets a link, however long the list. A surface
-  that cannot render a link, such as a question tool's option label, carries the address in its
-  supporting text.
+  that cannot render a link, such as a question tool's option, names the item the way people do,
+  such as a pull request by its title, and leaves its link to the text or page sent before it.
 - **A web product's views are pages.** Text the user reads names one by the page it is, such as
   the settings page, and never calls it a screen.
 - **A file the user should see reaches them where they read.** Per-item detail past five items —
@@ -266,22 +266,21 @@ alwaysApply: true
   re-present it rather than replacing it.
 - **Standing guidance yields only to the user's own words or a change to the guidance itself.**
   Before sending or acting on a proposed action, recommendation, question, deferral or delegated
-  instruction, identify the applicable guidance and available review evidence, the next action
-  they require, and whether the proposal follows it. Correct a proposal that contradicts them;
-  carry out an already-settled authorized remedy rather than offering its omission or retention as
-  a choice. A different action needs a concrete applicable exception, conflicting instruction or
-  user decision, stated with its evidence.
-  **A rule about how the product looks or reads is a default that records earlier design
-  judgment, never the argument for a design.** Rank design options by what serves the reader and
-  the flow. Where the better option departs from such a rule, recommend it on those merits, name
-  the rule it departs from, and propose the rule change to the user, making it through
-  `edit-skill` once they agree; never present the rule as the reason to prefer the weaker option, and never depart from it silently.
-  A brief, correction, review finding, gate's fix step or continuation note never outranks the
-  guidance governing its subject or the scope the user last set: an item outside that scope is
-  answered as out of scope, never relayed as a fix, unless the change itself introduced a defect.
-  That defect remains a required fix. Its sender checks before sending and its receiver before
-  acting; `pre-production`'s **Encountered Issues** holds what each does with an item
-  a rule forbids.
+  instruction, identify the applicable guidance and available review evidence, the next action they
+  require, and whether the proposal follows it. Correct a proposal that contradicts them; carry out
+  an already-settled authorized remedy rather than offering its omission or retention as a choice. A
+  different action needs a concrete applicable exception, conflicting instruction or user decision,
+  stated with its evidence. **A rule about how the product looks or reads is a default that records
+  earlier design judgment, never the argument for a design.** Rank design options by what serves the
+  reader and the flow. Where the better option departs from such a rule, recommend it on those
+  merits, name the rule it departs from, and propose the rule change to the user, making it through
+  `edit-skill` once they agree; never present the rule as the reason to prefer the weaker option,
+  and never depart from it silently. A brief, correction, review finding, gate's fix step or
+  continuation note never outranks the guidance governing its subject or the scope the user last
+  set: an item outside that scope is answered as out of scope, never relayed as a fix, unless the
+  change itself introduced a defect. That defect remains a required fix. Its sender checks before
+  sending and its receiver before acting; `pre-production`'s **Encountered Issues** holds what each
+  does with an item a rule forbids.
 - **A rule is met by doing what it requires, never by changing what a check or a reader can see.**
   When the compliant change is hard, the forbidden thing is not renamed, described in other words,
   wrapped, aliased, split, moved to a file the check does not read, or let through by a narrowed,
@@ -302,15 +301,16 @@ alwaysApply: true
   unseen**: the reader answers the question tool, and chat text around it, or in some harnesses all
   text before a tool call, may never reach them. Ask directly in chat only when the harness has no
   question tool. The question's own text and option descriptions therefore carry what the decision
-  needs: what happens today, what each option changes, and the recommendation with its reason; a
-  short plan put for approval goes into the question whole. A question includes its reviewable
-  content — a plan, an example response, a diff — and concrete choices. The option that approves a
-  plan or proposal reads "Approved", never "Go" or another word, and is asked only once every
-  decision the plan or proposal depends on is answered: those decisions go to the user first, on
-  their own, and the plan or proposal shown for approval is written for their answers, with nothing
-  in it conditional on one. Material too large for the question, such as captures or a long diff,
-  reaches the user as `share-media` says, in a message they see before the question, and the
-  question names it.
+  needs: what happens today, stated as fact and where; what each option changes; and the
+  recommendation with its reason. A hypothetical, such as "if the API sends only IDs", or internals
+  named without what they do leave the reader asking for the facts. A short plan put for approval
+  goes into the question whole. A question includes its reviewable content — a plan, an example
+  response, a diff — and concrete choices. The option that approves a plan or proposal reads
+  "Approved", never "Go" or another word, and is asked only once every decision the plan or proposal
+  depends on is answered: those decisions go to the user first, on their own, and the plan or
+  proposal shown for approval is written for their answers, with nothing in it conditional on one.
+  Material too large for the question, such as captures or a long diff, reaches the user as
+  `share-media` says, in a message they see before the question, and the question names it.
 - **A step only the user can take, which the work waits on, is asked through that tool too, never
   left in chat.** Granting a permission, signing in, approving on another device, or running a
   command that needs their password each goes out as a question once everything the agent can

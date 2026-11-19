@@ -138,7 +138,7 @@ Every task that changes files starts here, and so does every follow-up that arri
 
 ```markdown
 **Decision needed:**
-1. **<subject>** — <question>? <only the context it needs>. I recommend <option>, because <reason>.
+1. **<subject>** — <what happens today, as fact, and where>. <what each option would change>. I recommend <option>, because <reason>.
 ```
 
 ```markdown

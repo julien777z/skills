@@ -61,7 +61,7 @@ Good:
 
 ### 3. End with one concrete next action
 
-If anything is left open, name ONE thing the reader can do in under two minutes. Even "open the file" counts. This picks a next action; it never removes other unanswered questions from the decision list. The action is work the reader does, such as reviewing a pull request at its link, never a request that they authorize a merge, deployment, publication or release, which the global rules reserve to their own words.
+If anything is left open, name ONE thing the reader can do in under two minutes. Even "open the file" counts. This picks a next action; it never removes other unanswered questions from the decision list. The action is work the reader does, such as reviewing a pull request at its link, never a request that they authorize a merge, deployment, publication or release, which the global rules reserve to their own words, and never an answer to a decision, which rule 4 puts to the question tool.
 
 **This closing line is the reader's action, never the agent's.** Authorized work the agent has not finished is done in this turn, never named as next, as the global rules' pending-result bullet in **Tools and environments** says. "Next: nothing needed from you. I'm moving on to the release notes." ends a turn on work never started: start the release notes instead.
 
@@ -103,9 +103,9 @@ supporting material was ready, and the work depending on it. An item with neithe
 nor pending evidence work is asked now.
 Keep the question and its choices in that request under the global question-tool procedure, with
 any captures, table, plan or other material it needs shown before it as `share-media` says for
-the harness, rather than soliciting an answer in
-chat. Where no equivalent tool exists, the
-chat question includes the choices, recommendation or material trade-off and dependent work.
+the harness, rather than soliciting an answer in chat, whether by a list item phrased as a
+question, a report's closing line, a recommendation ending "should I?", or a section of a skill's
+required output. Where no equivalent tool exists, the chat question includes the choices, recommendation or material trade-off and dependent work.
 Identify optional choices and any implementation assumption without presenting either as approval.
 If none remain, omit the list. The list accompanies a skill’s
 required direct-chat result even when that skill says to return only its result or nothing else;
@@ -208,7 +208,7 @@ Before sending, delete:
 5. Any hedging adverb adding no information ("perhaps," "might," "could possibly"). Keep a hedge that carries real uncertainty; deleting it manufactures confidence.
 6. Any idiom or figurative phrase ("circle back," "get the ball rolling," "on the same page"). Replace with the literal action.
 
-Then reconcile pending decisions with the current ledger and user message: every unresolved item, including optional choices and unconfirmed assumptions, must appear in the required numbered status list as an active tool request or evidence-pending work, according to readiness; chat questions appear only when no equivalent tool exists. Resolved or superseded questions must not reappear.
+Then reconcile pending decisions with the current ledger and user message: every unresolved item, including optional choices and unconfirmed assumptions, must appear in the required numbered status list as an active tool request or evidence-pending work, according to readiness, and chat questions appear only when no equivalent tool exists. Resolved or superseded questions must not reappear.
 
 Then check what the message leaves undone: if it names work the agent will do next, take that action before the turn ends.
 
