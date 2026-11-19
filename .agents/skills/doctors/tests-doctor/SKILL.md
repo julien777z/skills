@@ -270,7 +270,8 @@ empty result included, and name each double it leaves alone with its reason.
 Model-factory machinery belongs in the repository's established shared factory owner, including
 when only one suite uses it. Fixture lifecycle wiring and scenario inputs stay in the suite.
 Inject application model types where a shared import would invert dependencies.
-Discover that owner from existing implementations and project guidance before relocating anything.
+Discover that owner from existing implementations and the repository's test-utilities package
+before relocating anything.
 Apply the general New Modules ownership-completion rule: inspect every related implementation and
 consumer, and flag a partial move even when the factory left behind was already there. Generic
 lifecycle helpers retain their own owners; a shared word does not establish shared responsibility.
