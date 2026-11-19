@@ -46,12 +46,15 @@ that hides a real failure, keeps its bug severity.
 
 ## Reuse And Removal
 
-For an addition or a workaround, record what the desired behavior requires that the existing
-paths do not already provide. Search for the operation by its effect across the applicable
-repository, shared libraries, and owned consumers. For each viable candidate, cite the source
-and state the actual input selection, authorization scope, result, and failure boundary wherever
-they bear on the decision. A link to an operation does not establish which fields or objects it
-can change. Show what can be deleted, called directly, or composed. A new mechanism earns its
+For an addition, a workaround, or a change to an existing shared design, record what the
+desired behavior requires that the existing paths do not already provide. Search for the operation
+by its effect across the applicable repository, shared libraries, and owned consumers. For each
+viable candidate, cite the source
+and state the actual input selection, result, and failure boundary wherever they bear on the
+decision. For an authorized operation, identify who can call it and which objects it can reach.
+For a selective write, name the mask or other selection it accepts,
+the exact fields it selects, and what omission does. A link to an operation does not establish
+which fields or objects it can change. Show what can be deleted, called directly, or composed. A new mechanism earns its
 place only when the simpler candidate would break a named invariant. If no candidate exists,
 record where and how you looked.
 

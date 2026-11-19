@@ -9,6 +9,7 @@ Repo: <abs path> Base: <sha> Intent: <intent> Out of scope: <scope> Checks: <res
 Rules: <repository rule files whose patterns match the changed paths, or none>
 Whole: <each skill or rule the diff touches, the shared agent-guidance rule's size budget, and the real case, or none>
 Guidance intent: <base guidance, user's explicit requirements and corrections in their words, and acceptance-gate rubric's Guidance Intent section, or none>
+Reuse and removal: <owning criteria, planning evidence, and the candidate and callee sources the evidence cites, or not applicable>
 See: git diff <base> [-- <paths>]; git status --short (read untracked files).
 Read surrounding code. Find bugs, broken callers, mismatch with intent, and unsafe
 handling of user input (paths, patterns, queries, markup).

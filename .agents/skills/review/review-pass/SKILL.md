@@ -188,9 +188,9 @@ These run in the order below, in process unless a pass says otherwise.
 - **Layout:** for the delta's changed Python files, run this skill's
   `scripts/paragraph_candidates.py` over them; each pair it lists that the global code-layout rule
   makes a boundary gets its blank line.
-- **Simplification:** when the delta adds a module, a declaration (an enum, constant set, mapping or
-  model), a helper, or an operation, introduces a guard, or changes guidance under `.agents`,
-  run `code-simplify` over the delta with the
+- **Simplification:** when the delta adds a module or declaration (an enum, constant set, mapping,
+  or model), changes guidance under `.agents`, or is covered by `code-simplify`'s
+  **Before Choosing A Design** check, run `code-simplify` over the delta with the
   intent statement: in process when one reader can hold the delta, its touched files and their
   siblings, and by slice as its **Review** says when it cannot. Its rubric holds the
   prose-duplication checks a guidance change needs.

@@ -105,7 +105,10 @@ receives five things and nothing else:
    record; a diff that adds or changes tests carries the cost evidence from its verification run
    under `test-fixture`'s existing-reporting procedure, including any unmeasured attribution, and
    every diff carries the warnings and deprecation messages its verification runs printed, or an
-   explicit empty result. For a skill or rule change, include the frozen base and resulting
+   explicit empty result. When `code-simplify`'s **Before Choosing A Design** check applies,
+   include its criteria, the planning and any review evidence, and source excerpts for the
+   candidates and callees the gate needs to verify their effects. A citation without its source
+   content is missing evidence. For a skill or rule change, include the frozen base and resulting
    package contents and the real case it governs, when supplied;
 4. the affected-repository map required by `code-simplify`'s **Trace Changed Flows**. For each
    changed file group, resolve its project guidance, scoped repository rules and installed shared
