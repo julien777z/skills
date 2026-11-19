@@ -84,8 +84,8 @@ and deliver the same dashboard again on every request so the user keeps one page
   requests in merge order, then by number.
 - **Pull request names.** The page names each pull request "<repository>#<number> - <short title>":
   a few words saying what it does, not necessarily its title, such as
-  `garden-api#1337 - Add bulk export`, apart from the `links` "Pull requests" item, labeled
-  `<repository>#<number>` alone with that short title in `detail`.
+  `garden-api#1337 - Add bulk export`, apart from the `links` "Pull requests" item, whose own
+  bullet below sets its label and `detail`.
 - **Pages.** The dashboard's `icon` is `progress`, and its pages run in this order:
   - `Overview`, `icon` `overview` and `layout` `rows`: the pull requests and the `table` "Plans",
     in that order.
