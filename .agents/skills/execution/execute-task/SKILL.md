@@ -56,6 +56,11 @@ Invoke `merge-conflict` when a push read-back shows a conflicting base.
 
 Every task that changes files starts here, and so does every follow-up that arrives while one runs.
 
+Before choosing a design that adds an operation, helper, or guard or changes a shared operation,
+contract, subsystem, runtime boundary, or independent consumer, apply `code-simplify`'s
+**Before Choosing A Design** check and add the complete record to the task before deciding.
+Follow-ups that skip plan approval still write this record without a new approval step.
+
 ### When A Plan Is Needed
 
 - **Every source or product change gets a plan put to the user before its first edit, except a
@@ -124,10 +129,9 @@ Every task that changes files starts here, and so does every follow-up that arri
 - Schedule steps by `subagent-matrix`'s **Dispatch**: coupled work stays sequential, and
   independent scopes with separate owners, files and resources overlap once their inputs are
   settled. Estimate the elapsed time with that overlap, totaled as `session-ledger` totals a plan.
-- **Settle ownership before the plan is final.** For a plan that introduces or changes a shared operation, contract, subsystem, runtime
-  boundary, or independent consumer, apply `code-simplify`'s ownership analysis to the proposed
-  shape and the analogous implementations already in the repository, with one read-only subagent
-  inventorying them when the comparison spans subsystems. Invoke `subagent-matrix` at its standard
+- **Settle ownership before the plan is final.** When the design comparison for a shared operation,
+  contract, subsystem, runtime boundary, or independent consumer spans subsystems, delegate its
+  inventory to one read-only subagent. Invoke `subagent-matrix` at its standard
   capability level for that reader, launch the exact resolved identifier, and retain catalog state,
   identifier, assignment state and host receipt with the plan evidence. The plan states where common
   behavior will live and which policy or wiring stays consumer-specific; it never starts from a parallel
@@ -308,6 +312,8 @@ Requests** selects for it, and later runs use it.
   invoked skill that expressly authorizes it; otherwise complete the reviewable work and stop
   there. An unauthorized merge leaves the pull request draft for the user; a deployment,
   publication or release the request does not name is no part of the task, and nothing waits on it.
+- Once the merge is authorized and the pull request is verified, invoke `merge-gate`'s
+  **Readiness**. The full merge gate follows the source stream's checks.
 - Ask only for a decision that materially changes the authorized target, recipient, or outcome, or
   for an action-time confirmation a platform actually requires. Make that question specific to the
   new decision or action; never ask the user to reconfirm the task or say "continue" to resume it.
@@ -809,9 +815,8 @@ Two streams run side by side from here: the guidance stream and the source strea
    invocation of `merge-gate`, passing the accepted head, `review-pass`'s **Checks** results with their
    commands and head as the behaviors local tests already cover, every exclusion it returned with
    its evidence, and, as its fix rule, the **Pre-Push Gate** with each fix folded into its commit
-   through `rewrite-git-history`'s fixup route. It readies the pull request, inventories its
-   exact-head hosted coverage, obtains fresh results only where no equivalent terminal coverage
-   exists, fixes what relevant checks report and merges; when it returns, send one line with the
+   through `rewrite-git-history`'s fixup route. It inventories exact-head hosted coverage, obtains fresh results only where no
+   equivalent terminal coverage exists, fixes what relevant checks report and merges; when it returns, send one line with the
    result it read: the merge, or the gate that holds it. Otherwise send step 3's message; the pull
    request stays draft.
 

@@ -89,11 +89,20 @@ Each pass reviews only what no earlier pass reviewed.
 - **A caller can ask for the whole pull request.** A latest record already scoped `whole` meets the
   ask, and the delta is measured from it; otherwise the delta is the complete merge-base diff. Such a
   pass records `whole`; every other pass records `delta`.
-- **An empty delta** runs only **Review Threads**; with no thread fix, return the recorded verdict.
-  A thread fix is a new delta.
+- **A guidance review is reusable only with matching intent and governing guidance.** Before
+  selecting the review range, compare the current user requirements and base guidance with the
+  recorded comparison. If it is missing or its inputs changed, use the complete target patch to
+  identify the affected packages and include their diff in the review range, even if the latest
+  delta changes other files. Pass the current inputs to final acceptance and record the sources
+  checked with the verdict, including the requirements checked and the base revision or content
+  digest of the governing guidance.
+- **An empty delta** runs only **Review Threads** when the recorded verdict is reusable. A
+  thread fix is a new delta.
 - **A delta that touches a skill or rule is reviewed as the package it results in.** The **Review
   Loop** and the final acceptance read every file of each skill and rule it touches whole at the
-  head, judged as `acceptance-gate` judges guidance, with the real case the invocation supplies.
+  head, judged as `acceptance-gate`'s **Guidance Intent** rubric requires, with the real case the
+  invocation supplies. Give both readers the base guidance and the user's explicit requirements
+  and later corrections in their words. An earlier approval cannot stand for that comparison.
 
 ## Description Refresh
 
@@ -135,13 +144,14 @@ validation exclusion is recorded with its evidence and not repaired, rerun or wa
 
 ## Workflow
 
-1. Resolve the target and its delta. Before the first round, read the task's ledger through
+1. Resolve the target. Before the first round, read the task's ledger through
    `session-ledger` for each decision and answered question whose work is open, and each plan step
    that builds or changes something, whose work goes on this pull request under the GitHub rule's
    **Branches and Pull Requests** and is due before review; work its plan orders after this review,
    such as a repoint that waits on a dependency's merge, is not. While any is open, review nothing
    and return the **Output**'s required-work shape. With a working pull request, run **Description Refresh** and **Review Threads**.
-2. Run **Base**, then **Checks**.
+2. Run **Base**, resolve the review range against the resulting head and governing guidance, then
+   run **Checks**.
 3. When the delta crosses a trust boundary `security-audit` names, run its **Diff Review** at
    `medium` over the delta, with the merge-base diff as context, and fix what it confirms.
 4. Run **Local Passes** over the delta and push their fixes.
@@ -149,17 +159,19 @@ validation exclusion is recorded with its evidence and not repaired, rerun or wa
    full touched files as context. Push each fix as its own commit through the GitHub rule's
    **Pre-Push Gate**. A finding that is the user's decision holds the pass: put it to the user
    with both sides, and continue independent work.
-6. When the base moved again, run **Base** and rerun the checks the incoming change touches.
+6. When the base moved again, run **Base** and recompute **Range**. If the incorporation introduced
+   a delta or changed governing guidance, return to step 2 for the affected review and checks.
 7. With a working pull request, run **Description Refresh** once more. Put the complete target diff,
    the merge-base diff or the merged range, and any refreshed prose to `acceptance-gate`'s **Final
    acceptance** question once, with the intent statement and
    the reviewed delta marked. Answer each flag as one increment under `acceptance-gate`'s
    **Bounds**, whose fresh gate's acceptance makes that increment's head the accepted head.
 8. Re-read the head, base and merge base where they live: the pull request's remote, or the local
-   checkout for a local target; a merged range does not move. When they match the accepted head,
-   record it under **Range** and return its **Output**. A moved base is brought in through **Base**
-   and the pass returns to step 7; commits added to the head are a new delta, and the pass returns
-   to step 1 for it.
+   checkout for a local target; a merged range does not move. Confirm the current requirements and
+   governing guidance still match the intent the reviewers and gate received. If they changed, return
+   to step 1 to review and gate the affected work under the current intent. A moved base returns the
+   pass to step 6, and new commits return it to step 1. When all inputs match, record the accepted
+   head under **Range** and return its **Output**.
 
 A finding outside the change follows **Review Loop**'s rule for it: every defect is fixed here,
 whatever its size, and only cleanup past `pre-production`'s size budget is recorded with
@@ -176,8 +188,9 @@ These run in the order below, in process unless a pass says otherwise.
 - **Layout:** for the delta's changed Python files, run this skill's
   `scripts/paragraph_candidates.py` over them; each pair it lists that the global code-layout rule
   makes a boundary gets its blank line.
-- **Simplification:** when the delta adds a module, a declaration (an enum, constant set, mapping or
-  model), a helper, or changes guidance under `.agents`, run `code-simplify` over the delta with the
+- **Simplification:** when the delta adds a module or declaration (an enum, constant set, mapping,
+  or model), changes guidance under `.agents`, or is covered by `code-simplify`'s
+  **Before Choosing A Design** check, run `code-simplify` over the delta with the
   intent statement: in process when one reader can hold the delta, its touched files and their
   siblings, and by slice as its **Review** says when it cannot. Its rubric holds the
   prose-duplication checks a guidance change needs.
@@ -192,8 +205,8 @@ changed. Make the smallest changes that answer real findings, and push back on t
 - **Budget:** three rounds. Round 1 reviews the whole target; later rounds review the changed code
   and the findings still open. Five rounds only for security, permissions, auth, data loss or
   concurrency while a blocker or should stays open with evidence, or when the user asks. Stop early
-  when a round returns only nits; a declined nit, or a fix to comments, docs or formatting, needs no
-  new round. These rounds count the pull request's review loop; one finding's fix still follows the
+  when a round returns only nits; a declined nit or an edit that changes only wording or formatting
+  needs no new round. These rounds count the pull request's review loop; one finding's fix still follows the
   global rules' review-round limit.
 - **Reviewer:** a model of a different provider from the author when one is reachable, so it does
   not share the author's blind spots; the user may name another. Resolve it through
@@ -214,8 +227,9 @@ changed. Make the smallest changes that answer real findings, and push back on t
   group goes to `council` and the other groups share the remaining two of the five reviewers.
 - **Brief:** send [the reviewer brief](references/reviewer-brief.md), this skill's reference holding
   the round text and severity scale, with the repository, base, intent, out-of-scope note, check
-  results and the repository rules whose file patterns match the changed paths filled in. Use the
-  same diff command every round.
+  results, applicable repository rules, and the Whole and Guidance intent fields filled in.
+  Include the planning evidence and the owning criteria from `code-simplify`'s
+  **Before Choosing A Design** check on a delta it covers. Use the same diff command every round.
 - **Answer each finding** after checking it and its severity against the code yourself:
   - agree: make the smallest fix, preferring to delete or narrow code over a new lock, cache, helper
     or option, and add one focused test that fails without the fix when the repository has a test
@@ -227,8 +241,8 @@ changed. Make the smallest changes that answer real findings, and push back on t
     it in one line;
   - outside the change: fix every bug, and record cleanup past `pre-production`'s size budget with
     `defer-scope`.
-- **Next round** only while budget remains and a blocker or should is open, or behavior code
-  changed since the last approval. Rerun the checks and `git diff --shortstat <base>` first; if
+- **Next round** only while budget remains and a blocker or should is open, or code or guidance
+  behavior changed since the last approval. Rerun the checks and `git diff --shortstat <base>` first; if
   review grew the diff past what the intent needs, cut it first. Never agree just to end the loop.
 - **Stop** when the reviewer approves the current diff with no blocker or should open and no concern
   of your own. A spent budget is not approval.

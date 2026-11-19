@@ -394,10 +394,11 @@ user's review of the source pull request overlaps it.
    1. **Branch and commit.** Select the edit's pull request under the GitHub rule's **Branches and Pull Requests** — never put it onto a
       source branch, the one checked out included, except guidance that rule puts on the source pull
       request it depends on, which merges with it. Commit the `.agents` files, never a provider
-      mirror, and push each step once the GitHub rule’s **Pre-Push Gate** checks pass to a draft pull
-      request; steps 3–4 are the review pass the selected workflow runs over what no earlier pass reviewed, and step 7's `merge-gate` merges it,
-      taking it out of draft as the merge's first step. None of that waits to be asked: the decision was made when the edit was requested, and
-      a pull request left open leaves the guidance this change replaces in use. A source fix required by step 3 is source work: it goes onto the source pull request
+      mirror, and push each step once the GitHub rule’s **Pre-Push Gate** checks pass. Open the pull
+      request as a draft. If the merge is already authorized, run `merge-gate`'s **Readiness** after verifying
+      the pull request. Steps 3–4 review what no earlier pass covered, and step 7's `merge-gate`
+      merges it. Carry out each authorized transition as it becomes eligible. An
+      open pull request leaves the current guidance in use. A source fix required by step 3 is source work: it goes onto the source pull request
       the work continues in its repository under the same rule and merges as that work does.
    2. **Run `validate_sources.py check`**, which sits under `scripts/` beside this skill, before the pull
       request merges, and again whenever the branch changes after that run. Nothing on a pull request runs the sync: the workflow
