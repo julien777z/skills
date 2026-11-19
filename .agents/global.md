@@ -17,12 +17,8 @@ alwaysApply: true
   canonical source. Report it missing only when those sources do not contain it; never substitute a
   manual approximation for an installed action skill.
 
-- **Every prompt is a Markdown file of its own in the application's prompts folder, never text in
-  code.** A prompt is any text written for a model to read as instructions: a system or user prompt
-  template, the instructions an MCP server gives connecting agents, a prompt an MCP server publishes,
-  or an agent definition the application loads. Each one is one file in the application's `prompts`
-  folder, named for what it asks, and code loads it and fills in runtime values. Where the
-  application already keeps prompts in a folder, that folder is the prompts folder.
+- **Every prompt, any text a model reads as instructions, is its own Markdown file in the app's
+  prompts folder, never text in code**: a template, MCP server instructions, an agent definition.
 
 ## User-Facing Output
 
@@ -105,15 +101,14 @@ alwaysApply: true
 ## Task execution and authorization
 
 - Run a user-triggered action skill only after the user directly invokes it — by its command or by
-  asking for it in words — in the current request.
-  Do not infer authorization from implementation, validation, delivery, pull-request, merge, CI,
-  or earlier-request activity. Guidance maintenance is the exception: `edit-skill` runs when the
-  user reports a guidance failure or canonical guidance is being changed, so the failure and its
-  owning instruction are repaired together, on the timing `edit-skill`'s **Recording During A
-  Task** sets.
-  Determine a user-only restriction from the skill's entry point, not from the fact that it
-  performs work. Required checks and independent gates declared by an authorized workflow run
-  as dependencies without a separate invocation; an omitted review request is not a waiver.
+  asking for it in words — in the current request. Do not infer authorization from implementation,
+  validation, delivery, pull-request, merge, CI, or earlier-request activity. Guidance maintenance
+  is the exception: `edit-skill` runs when the user reports a guidance failure or canonical guidance
+  is being changed, so the failure and its owning instruction are repaired together, on the timing
+  `edit-skill`'s **Recording During A Task** sets. Determine a user-only restriction from the
+  skill's entry point, not from the fact that it performs work. Required checks and independent
+  gates declared by an authorized workflow run as dependencies without a separate invocation; an
+  omitted review request is not a waiver.
 - An authorized task stays active until its outcome is verified complete or the user explicitly
   stops or hands it off. A follow-up, retry, recovery, context compaction, guidance correction,
   completed milestone, pending decision or reported gate does not close it. For every task
@@ -231,10 +226,7 @@ alwaysApply: true
   with a word, such as "reply ship to land these". The outcome is left to the user's own
   instruction, a skill they invoke for it, such as `finish-pr`, or guidance that grants it; naming
   what remains for the user and that skill, in a report or a plan's closing line, is how it is left
-  to them, not an offer. **That hand-off is made only for finished work.** A reader takes a merge
-  step, a review hand-off or a "ready" as the pull request being done, so while a worker, a push or
-  a fix this run started is still changing a pull request, the report says it is still changing and
-  names no merge step, review hand-off or readiness for it.
+  to them, not an offer.
 - **A merge leaves no deploy work.** Once a pull request's merge is verified, never check by any
   route whether the change is live, such as a provider's deployment status, a release run or the
   site itself; never walk or test the site the merge deployed; never schedule a re-check, wait for
@@ -776,8 +768,8 @@ return records;
   checks that run for its state starting — a draft starts no test jobs — since the base can move
   while the push runs. A status sent to the user states what was just read and where, never what
   was reported or expected: conflicted, failing, running, or passing, on the head or target named,
-  with "done" or "ready" written only when that read says so and a file sent with it checked first
-  as **User-Facing Output** requires.
+  with "done", "ready" or a merge hand-off written only once that read says so, nothing this run
+  started still changes it, and a file sent with it is checked as **User-Facing Output** requires.
 - **Whatever that read shows wrong is the next thing done**, ahead of every queued item, and is
   never carried to "the next push" or bundled behind other work. A conflict is brought in
   through `merge-conflict`, delivered under the GitHub rule’s **Pre-Push Gate**, and read back. A base that only

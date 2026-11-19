@@ -131,8 +131,9 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
 8. **Classify every unsuccessful check before repair.** A caller-supplied exclusion, a current-user
    waiver for its named test or check is excluded. Preserve established baseline classifications;
    classify a newly encountered possible baseline under `pre-production`'s **Encountered Issues**,
-   without reentering that skill's active run. Record an exclusion's evidence, remove it from
-   required coverage, and do not repair, rerun, or wait for it. Apply the
+   without reentering that skill's active run. A non-essential check failing only on findings
+   `pre-production`'s essential-checks bullet leaves red is an exclusion too. Record an exclusion's
+   evidence, remove it from required coverage, and do not repair, rerun, or wait for it. Apply the
    GitHub rule's runner-infrastructure exclusion automatically: record a qualified check as skipped
    and do not rerun or wait for a green hosted result. For a canceled or otherwise interrupted
    attempt with no recorded validation failure and no exclusion, use an equivalent successful
@@ -141,9 +142,7 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
    on the same head using `POST /repos/{owner}/{repo}/actions/jobs/{job_id}/rerun`. Verify the
    retried job's head and required context before using its result. Missing logs or an unknown cancellation cause cannot justify local substitution;
    recover hosted coverage in that case. A canceled attempt alone does not end the gate.
-   A non-essential check failing only on findings outside the lines the change writes is excluded
-   the same way, as `pre-production`'s **Encountered Issues** says. Every other failure is
-   relevant. Read its annotations and complete log, fix the repository
+   Every other failure is relevant. Read its annotations and complete log, fix the repository
    input responsible — code, test, configuration or workflow — and commit it. **Every relevant
    failure on the head goes into one push**: read all of them before fixing any, reproduce each
    with the job's own command where it can run locally, and push only once each reproduced failure

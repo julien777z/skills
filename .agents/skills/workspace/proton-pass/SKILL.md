@@ -7,7 +7,7 @@ short_description: 'Retrieve credentials from Proton Pass with pass-cli.'
 # Proton Pass
 
 A credential the session environment already holds, or one the repository supplies, is used from
-there: an injected token, a password file project guidance names, or a helper the repository's
+there: an injected token, a password file the repository's configuration or README names, or a helper the repository's
 tooling uses to set or generate a local or development test identity's password. The password of a
 test identity a local stack or dev container creates never comes from Proton Pass.
 

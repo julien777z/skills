@@ -386,8 +386,8 @@ checks before delivery; retain evidence that the change has not invalidated.
   A non-essential check left red on findings the change did not write, as `pre-production`'s
   essential-checks bullet classifies them, holds no push.
 - **A local variant of a CI check is not that check**, and each of these passes locally and fails
-  in CI: lint or type checks scoped to the changed files, where CI's whole-tree run finds an import
-  another change left unused in a file the branch never touched; a formatter or linter in write
+  in CI: lint or type checks scoped to the changed files, where CI's whole-tree run finds an
+  untouched caller of a signature the change altered; a formatter or linter in write
   mode, which rewrites what CI's check mode reports; a tool at a version or with a config other than
   the one CI resolves; a job left out because the diff looks unrelated to it, such as a
   generated-output drift check or a whole-tree check that every shared component has a docs page.
