@@ -19,7 +19,7 @@ it whole before the pass.
 
 ## Before Choosing A Design
 
-Apply the rubric's [Reuse and removal](references/rubric.md#reuse-and-removal) check to candidate
+Write the [Reuse and removal](references/rubric.md#reuse-and-removal) record for candidate
 designs and review deltas. In planning, read and report evidence only. Apply it again when a
 follow-up changes the proposed mechanism.
 

@@ -168,12 +168,10 @@ and name the exact missing input and investigation for any remaining choice. Ret
 and deciding evidence in the existing verdict fields; a checklist or stage inventory alone is
 incomplete.
 
-**Make the simpler candidate concrete.** Independently verify planning and review evidence
-against `code-simplify`'s **Before Choosing A Design** check where it applies, with the deciding
-paths and effects in the verdict. For each suspect shape, apply the rubric's removal test before
-accepting it. Return the concrete consolidation or deletion, or the actual current contract
-that the simpler complete candidate would break. Missing validation evidence is a separate flag,
-never a reason to leave this judgment unfinished.
+**Make the simpler candidate concrete.** Where `code-simplify`'s **Before Choosing A Design**
+check applies, reconstruct its record from the supplied sources and include every field in the
+verdict. For other suspect shapes, apply the rubric's removal test. Missing validation evidence
+is a separate flag, never a reason to leave the design judgment unfinished.
 
 **Trace changed state-like values during the design comparison.** Apply the rubric's **State
 Meaning** criteria to their writers, transformations and consumers, including values whose names did

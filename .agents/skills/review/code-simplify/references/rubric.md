@@ -46,26 +46,19 @@ that hides a real failure, keeps its bug severity.
 
 ## Reuse And Removal
 
-For an addition, a workaround, or a change to an existing shared design, record what the
-desired behavior requires that the existing paths do not already provide. Search for the operation
-by its effect across the applicable repository, shared libraries, and owned consumers. For each
-viable candidate, cite the source
-and state the actual input selection, result, and failure boundary wherever they bear on the
-decision. For an authorized operation, identify who can call it and which objects it can reach.
-For a selective write, name the mask or other selection it accepts,
-the exact fields it selects, and what omission does. A link to an operation does not establish
-which fields or objects it can change. Show what can be deleted, called directly, or composed. A new mechanism earns its
-place only when the simpler candidate would break a named invariant. If no candidate exists,
-record where and how you looked.
+For an addition, workaround, or change to an existing shared design, search by effect for existing
+owners and primitives. Before deciding, write all three fields in the task record or verdict:
 
-When the change adds a condition around an expensive or broad operation, trace which resources
-the callee actually reads, writes, invalidates, or causes to be recomputed. Compare narrowing the
-operation at its owner with guarding the same operation. Where existing primitives support the
-narrower effect, name the concrete composition that achieves it. For verification, establish the
-prior state and identify the observations that distinguish the intended effect from collateral
-work on the original path. Include dependent results and unchanged resources, and check commit
-and rollback when the effect depends on a write committing. A condition that lets the same
-excessive work happen for the reported case leaves the defect open.
+- **Source:** Cite the existing calls. State who can call them, which objects and exact input
+  fields they handle, what omission does, what actually changes or gets recomputed, and where
+  failure or commit can stop the work. Use the applicable facts. If no candidate exists, name
+  the search. Flag any material missing fact and still state the strongest supported design.
+- **Smallest change:** Name the concrete sequence or composition using existing primitives and
+  what code goes away. If a new mechanism is required, name the invariant the smaller design
+  breaks. For a guard around broad work, compare narrowing the callee with guarding it.
+- **Proof:** Name an observable case for the intended result and an unchanged resource where
+  collateral work matters. Seed the prior state, check dependent results, and cover commit
+  and rollback when the effect depends on a transaction.
 
 ## Standards
 

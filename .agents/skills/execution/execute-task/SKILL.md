@@ -58,8 +58,8 @@ Every task that changes files starts here, and so does every follow-up that arri
 
 Before choosing a design that adds an operation, helper, or guard or changes a shared operation,
 contract, subsystem, runtime boundary, or independent consumer, apply `code-simplify`'s
-**Before Choosing A Design** check and record its evidence. Follow-ups that skip plan approval
-still run this check without a new approval step.
+**Before Choosing A Design** check and add the complete record to the task before deciding.
+Follow-ups that skip plan approval still write this record without a new approval step.
 
 ### When A Plan Is Needed
 
