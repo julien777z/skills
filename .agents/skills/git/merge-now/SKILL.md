@@ -65,7 +65,7 @@ depends on to merge.
    there.
 2. Confirmed findings go into one draft fix pull request per repository, cut from the freshly
    fetched default branch. Record each fix pull request and its outcome with `session-ledger`. The original merge is never amended or reopened.
-3. Verify each fix pull request, run `merge-gate`’s **Readiness**, and take **Merge** steps 1–3. It gets no further review round beyond the fix rule's review of a
+3. Each fix pull request takes **Merge** steps 1–3. It gets no further review round beyond the fix rule's review of a
    `merge-gate` fix.
 
 ## Report
