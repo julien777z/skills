@@ -199,15 +199,16 @@ These run in the order below, in process unless a pass says otherwise.
 
 ## Review Loop
 
-One reviewer reads the change, the author answers each finding, and a fresh round checks only what
-changed. Make the smallest changes that answer real findings, and push back on the rest.
+The reviewer reads the change and the author answers each finding. Make the smallest changes that
+answer real findings, and push back on the rest.
 
-- **Budget:** three rounds. Round 1 reviews the whole target; later rounds review the changed code
-  and the findings still open. Five rounds only for security, permissions, auth, data loss or
-  concurrency while a blocker or should stays open with evidence, or when the user asks. Stop early
-  when a round returns only nits; a declined nit or an edit that changes only wording or formatting
-  needs no new round. These rounds count the pull request's review loop; one finding's fix still follows the
-  global rules' review-round limit.
+- **Scope:** Round 1 reviews the whole target. Later rounds review changed code, open findings,
+  and work affected by changed governing requirements, including unchanged files.
+- **Budget:** three rounds. Five rounds only for security, permissions, auth, data loss or
+  concurrency while a blocker or should stays open with evidence, or when the user asks. A declined
+  nit or an edit that changes only wording or formatting needs no new round while the governing
+  requirements still match. These rounds count the pull request's review loop. Each finding's fix
+  follows the global rules' review-round limit.
 - **Reviewer:** a model of a different provider from the author when one is reachable, so it does
   not share the author's blind spots; the user may name another. Resolve it through
   `subagent-matrix` at the advanced level of that provider's families and medium effort, applying
@@ -219,8 +220,7 @@ changed. Make the smallest changes that answer real findings, and push back on t
 - **Split round 1 by area** when the delta spans several areas, such as packages, services or apps,
   and is too large for one careful read: up to five reviewers, one per area group, each briefed with
   its group's paths and the whole diff as context, so a finding that crosses groups is still seen.
-  Merge their findings into one ledger before answering. Later rounds go back to one reviewer over
-  the changed code and the open findings.
+  Merge their findings into one ledger before answering. Later rounds go back to one reviewer.
 - **Panel round 1 for risky deltas:** when the delta touches security, permissions, auth, data loss
   or concurrency, round 1 goes to `council` in **Ask** mode with the round's brief, in place of the
   single reviewer, and its findings become the ledger. When round 1 is also split, the risky area
@@ -229,7 +229,8 @@ changed. Make the smallest changes that answer real findings, and push back on t
   the round text and severity scale, with the repository, base, intent, out-of-scope note, check
   results, and the Governing requirements, Whole, and Guidance intent fields filled in. Include
   the planning evidence and the owning criteria from `code-simplify`'s
-  **Before Choosing A Design** check on a delta it covers. Use the same diff command every round.
+  **Before Choosing A Design** check on a delta it covers. Refresh the brief and diff command when
+  the review scope changes.
 - **Answer each finding** after checking it and its severity against the code yourself:
   - agree: make the smallest fix, preferring to delete or narrow code over a new lock, cache, helper
     or option. Add one focused test that fails without the fix when the repository has a test
@@ -247,7 +248,9 @@ changed. Make the smallest changes that answer real findings, and push back on t
   when requirements change. Rerun the checks and `git diff --shortstat <base>` first; if review
   grew the diff past what the intent needs, cut it first. Never agree just to end the loop.
 - **Stop** when the reviewer approves the current diff under the current governing requirements
-  with no blocker or should open and no concern of your own. A spent budget is not approval.
+  with no blocker or should open and no concern of your own. Check that the governing requirements
+  still match the brief before using the verdict, including a nit-only round. A spent budget is not
+  approval.
 - **A finding still disputed after two replies** goes to the user when it is the user's decision,
   as the shared `agent-guidance.md` rule's **Decisions** names them, with both sides in two or three
   lines each. Any other goes to `council` in **Ask** mode for a ruling, with the finding, the
