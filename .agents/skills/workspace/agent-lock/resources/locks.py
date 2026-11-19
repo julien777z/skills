@@ -95,10 +95,10 @@ def read_queue(path: Path) -> list[Ticket]:
         if pid is not None and (not isinstance(pid, int) or isinstance(pid, bool) or pid <= 0):
             raise ValueError("A queue ticket's pid must be a positive integer or null")
 
-        priority = entry.get("priority", False)
+        priority = entry.get("priority")
 
         if not isinstance(priority, bool):
-            raise ValueError("A queue ticket's priority must be a boolean")
+            raise ValueError("A queue ticket's priority field must be present and a boolean")
 
         tickets.append(
             Ticket(
