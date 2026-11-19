@@ -295,7 +295,11 @@ Before implementation begins and whenever new work is admitted, delegate each co
 execution task under `subagent-matrix`'s **Dispatch** assignment bullets; a task waiting on a worker
 never holds another independent one. Reassess ownership after each finding or follow-up. Before
 writing a script or doing a check by hand, the agent and every worker look in the repository's
-`.agents/tools/`, and every brief points there.
+`.agents/tools/`, and every brief points there. In a repository the owner runs, an operation the
+task will run more than once, or is about to run again, is first written as a helper there, creating
+the folder if missing, committed as source work on the pull request the GitHub rule selects for it,
+and run from there each time; a shell function, heredoc, inline or temporary script is not a helper,
+though a skill's execution checks stay untracked, as the agent-guidance rule says.
 
 ### Task Authorization
 
@@ -770,10 +774,6 @@ equivalent native isolated branch route preserving authentication, permissions a
 and state precisely which live behavior remains unverified. Do not add a temporary workflow bypass.
 Missing merge approval holds merging, never available branch verification. Merge is delivery after
 verification, never a substitute for an available branch test.
-
-In a repository the owner runs, turn work the task's agents did by hand or scripted more than once
-into a helper in its `.agents/tools/`, creating the folder when missing, before the delivery streams
-start.
 
 Then finish each pull request the task changed, once, with its work finished. A follow-up arriving
 after the streams ran is built, then reaches this checkpoint again when it is finished;
