@@ -447,21 +447,22 @@ how those issues are handled.
   step, a note or summary an earlier turn left for a later one — is checked against the standing
   guidance before it is sent and again before it is acted on**, because it never outranks that
   guidance, as the global rules' **Task execution and authorization** says. Each side reads every
-  item against the rules and skills governing the surface it changes — the language, framework,
-  copy and testing rules, and the skills the worker runs — opening them at that moment where it has
-  not read them yet — and against the user's recorded decisions on that surface. An item calling a
+  item against the rules and skills governing the surface it changes — the language, framework, copy
+  and testing rules, and the skills the worker runs — opening them at that moment where it has not
+  read them yet — and against the user's recorded decisions on that surface. An item calling a
   detail decided names who decided it and where; one the agent decided itself says so. Every brief
   for work that can change a surface the user has decided on, a simplification or review pass
   included, carries those decisions in the user's words, so the worker keeps them rather than
-  undoing them; an item that would undo one goes to the user. The class is any item asking for
-  what a rule rules out: a review finding asking for the catch-all exception handler the language
-  rule bans, a brief telling a worker to skip a check a skill requires before a push, a correction
-  asking for copy the copy rules forbid, one asking for a boat-rental waiver to arrive filled in
-  from the renter's last booking when the forms rule says a form someone attests to starts empty. It
-  also takes in an item adding a stop, a question or an approval the guidance does not call for,
-  such as a brief telling a worker to stop and ask before adding the schema revision a migration
-  skill puts its change in: the guidance settled that step, and the added gate hands the user a
-  question with one answer.
+  undoing them; an item that would undo one goes to the user, apart from a game's design, which the
+  global rules' game-design exception leaves to the agent. The class is any item asking for what a
+  rule rules out: a review finding asking for the catch-all exception handler the language rule
+  bans, a brief telling a worker to skip a check a skill requires before a push, a correction asking
+  for copy the copy rules forbid, one asking for a boat-rental waiver to arrive filled in from the
+  renter's last booking when the forms rule says a form someone attests to starts empty. It also
+  takes in an item adding a stop, a question or an approval the guidance does not call for, such as
+  a brief telling a worker to stop and ask before adding the schema revision a migration skill puts
+  its change in: the guidance settled that step, and the added gate hands the user a question with
+  one answer.
   - **The agent writing it** rewrites an item a rule forbids into a shape the rule allows, or drops
     it where none exists. One the user asked for in their own words goes out with those words quoted
     and the rule they set aside named; a rule the agent thinks is wrong is put to the user, never
