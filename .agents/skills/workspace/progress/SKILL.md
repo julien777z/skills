@@ -88,7 +88,8 @@ and deliver the same dashboard again on every request so the user keeps one page
 - **Pages.** The dashboard's `icon` is `progress`, and its pages run in this order:
   - `Overview`, `icon` `overview` and `layout` `rows`: the pull requests and the `table` "Plans",
     in that order.
-  - `Proposals`, `icon` `proposals`: the `questions` "Open" and "Answered".
+  - `Proposals`, `icon` `proposals`: the `questions` "Open" and "Answered"; it is `locked`, with
+    `sections` `[]`, until the task has a question.
   - `Plan`, `icon` `checklist` and `layout` `rows`: the `tree` "Plan tree", then one plan write-up
     per approved plan, in approval order; it is `locked`, with `sections` `[]`, until a plan is
     approved.
