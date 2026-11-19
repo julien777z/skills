@@ -131,6 +131,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`merge-conflict`](.agents/skills/git/merge-conflict/SKILL.md) — Bring the base branch into a work branch, resolve conflicts, and validate the result.
 - [`merge-gate`](.agents/skills/git/merge-gate/SKILL.md) — Ready a pull request for its authorized merge, gate its exact head, and merge it.
 - [`merge-now`](.agents/skills/git/merge-now/SKILL.md) — Merge finished pull requests now, then review what merged unreviewed.
+- [`modernize-pr`](.agents/skills/git/modernize-pr/SKILL.md) — Bring an old pull request up to date with its base, or decide it should not be.
 - [`new-doctor`](.agents/skills/doctors/new-doctor/SKILL.md) — Create a doctor skill on the shared doctor-protocol for one class of repository hygiene.
 - [`no-text-ai-slop`](.agents/skills/review/no-text-ai-slop/SKILL.md) — Edit drafts into sharper, more human writing while preserving the writer's personal voice, or detect AI-slop patterns without rewriting.
 - [`placeholder-data`](.agents/skills/workspace/placeholder-data/SKILL.md) — Turn a pasted API payload into the same shape with obviously fake values.
