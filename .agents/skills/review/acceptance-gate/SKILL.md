@@ -169,8 +169,8 @@ and deciding evidence in the existing verdict fields; a checklist or stage inven
 incomplete.
 
 **Make the simpler candidate concrete.** Where `code-simplify`'s **Before Choosing A Design**
-check applies, reconstruct its record from the supplied sources and include every field in the
-verdict. For other suspect shapes, apply the rubric's removal test. Missing validation evidence
+check applies, reconstruct its record from the supplied sources and include every field in
+`Also read`. For other suspect shapes, apply the rubric's removal test. Missing validation evidence
 is a separate flag, never a reason to leave the design judgment unfinished.
 
 **Trace changed state-like values during the design comparison.** Apply the rubric's **State

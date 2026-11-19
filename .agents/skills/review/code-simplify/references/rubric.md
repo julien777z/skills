@@ -49,14 +49,15 @@ that hides a real failure, keeps its bug severity.
 For an addition, workaround, or change to an existing shared design, search by effect for existing
 owners and primitives. Before deciding, write all three fields in the task record or verdict:
 
-- **Source:** Cite the existing calls. State who can call them, which objects and exact input
-  fields they handle, what omission does, what actually changes or gets recomputed, and where
-  failure or commit can stop the work. Use the applicable facts. If no candidate exists, name
-  the search. Flag any material missing fact and still state the strongest supported design.
-- **Smallest change:** Name the concrete sequence or composition using existing primitives and
+- **Source.** For each call in the proposed composition, cite its implementation. Name the
+  accepted caller role or authorization guard and the object scope separately. If it selects
+  fields, list its exact field or mask entries and what omission does. State the actual effects
+  and the failure or commit boundary. If no candidate exists, name the search. Flag a material
+  missing fact and state the strongest supported design.
+- **Smallest change.** Name the concrete sequence or composition using existing primitives and
   what code goes away. If a new mechanism is required, name the invariant the smaller design
   breaks. For a guard around broad work, compare narrowing the callee with guarding it.
-- **Proof:** Name an observable case for the intended result and an unchanged resource where
+- **Proof.** Name an observable case for the intended result and an unchanged resource where
   collateral work matters. Seed the prior state, check dependent results, and cover commit
   and rollback when the effect depends on a transaction.
 
