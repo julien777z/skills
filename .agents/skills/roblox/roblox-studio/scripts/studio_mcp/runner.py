@@ -50,7 +50,7 @@ AGENT_LOCK_BUSY: Final[int] = 2
 
 @cache
 def agent_lock_script() -> Path:
-    """Return agent-lock's entry script in a flat skills root or in the skills repository's category folders."""
+    """Return agent-lock's entry script."""
 
     sibling = SCRIPTS.parents[1] / AGENT_LOCK_ENTRY
     repository_skills = SCRIPTS.parents[2]
