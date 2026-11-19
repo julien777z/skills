@@ -144,8 +144,8 @@ and lock ownership throughout.
    Claude's `settings.json` and Codex's and Cursor's `hooks.json` — runs a `main.py` that resolves
    through a hook link in that root, unless the installer warned that it registered none. Check Codex's global `AGENTS.md` link when Codex is installed. Preserve
    provider-owned hidden packages, Claude account-synced skills and the `session-start-hook` skill
-   a Claude cloud session supplies. The installer reconciles other
-   user skill entries to the selected catalog, replacing foreign links and real entries. Real
+   a Claude cloud session supplies. The installer reconciles other user skill entries to the
+   selected catalog, replacing foreign links and real entries. Real
    files and foreign links for other artifact types remain protected by conflict preflight.
 6. Once the links point into the installed source, remove every other `skills-overlay/` worktree of
    the checkout, complete or not; this step alone removes overlays. First compare each with the

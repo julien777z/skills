@@ -1,5 +1,7 @@
 # Hidden provider packages are outside the user catalog. Claude also owns the skills it syncs from
 # an account and the one a cloud session supplies.
+CLAUDE_OWNED_SKILLS='synced session-start-hook'
+
 protected_skill() {
   local provider="$1" name="$2" root="$3" path_helper="$4"
   local entry_key lowered owned owned_key
@@ -12,7 +14,7 @@ protected_skill() {
 
   lowered="$(printf '%s' "$name" | tr '[:upper:]' '[:lower:]')"
 
-  for owned in synced session-start-hook; do
+  for owned in $CLAUDE_OWNED_SKILLS; do
     [ "$lowered" = "$owned" ] || continue
 
     entry_key="$(python3 "$path_helper" "$root/skills/$name" --entry)" || return 0
