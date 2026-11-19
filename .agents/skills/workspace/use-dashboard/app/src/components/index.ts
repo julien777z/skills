@@ -4,6 +4,6 @@ export { NoticeBanner } from './notice-banner';
 export { DialogOpener, RichText } from './rich-text';
 export { SectionCards } from './section-cards';
 export { SiteHeader } from './site-header';
-export { PullRequestIcon, SourceLinks } from './source-links';
+export { SourceLinks } from './source-links';
 export { StatusBadge } from './status-badge';
 export { ToneDot } from './tone-dot';
