@@ -17,7 +17,8 @@ alwaysApply: true
   canonical source. Report it missing only when those sources do not contain it; never substitute a
   manual approximation for an installed action skill.
 
-- In repositories that provide an agent CLI or otherwise interact with agents, store every agent prompt in a dedicated Markdown file rather than inline in application code so it is easy to find, review, and maintain. Application code may load a prompt file and interpolate runtime values into it.
+- **Every prompt an application gives a model is its own Markdown file in its prompts folder, which
+  code loads and fills, never text in code**: a template, MCP server instructions, an agent definition it loads.
 
 ## User-Facing Output
 
@@ -100,15 +101,14 @@ alwaysApply: true
 ## Task execution and authorization
 
 - Run a user-triggered action skill only after the user directly invokes it — by its command or by
-  asking for it in words — in the current request.
-  Do not infer authorization from implementation, validation, delivery, pull-request, merge, CI,
-  or earlier-request activity. Guidance maintenance is the exception: `edit-skill` runs when the
-  user reports a guidance failure or canonical guidance is being changed, so the failure and its
-  owning instruction are repaired together, on the timing `edit-skill`'s **Recording During A
-  Task** sets.
-  Determine a user-only restriction from the skill's entry point, not from the fact that it
-  performs work. Required checks and independent gates declared by an authorized workflow run
-  as dependencies without a separate invocation; an omitted review request is not a waiver.
+  asking for it in words — in the current request. Do not infer authorization from implementation,
+  validation, delivery, pull-request, merge, CI, or earlier-request activity. Guidance maintenance
+  is the exception: `edit-skill` runs when the user reports a guidance failure or canonical guidance
+  is being changed, so the failure and its owning instruction are repaired together, on the timing
+  `edit-skill`'s **Recording During A Task** sets. Determine a user-only restriction from the
+  skill's entry point, not from the fact that it performs work. Required checks and independent
+  gates declared by an authorized workflow run as dependencies without a separate invocation; an
+  omitted review request is not a waiver.
 - An authorized task stays active until its outcome is verified complete or the user explicitly
   stops or hands it off. A follow-up, retry, recovery, context compaction, guidance correction,
   completed milestone, pending decision or reported gate does not close it. For every task

@@ -6,7 +6,7 @@ short_description: 'Guide for authoring, rebasing, and troubleshooting Alembic d
 
 # Database Migrations
 
-Read the repository's migration layouts, runner commands, CI jobs, and fixture ownership from its project guidance, opening every `.agents/references/` file its `project.md` points to, before applying this policy. Resolve every role below through it; do not invent local paths.
+Read the repository's migration layouts, runner commands, CI jobs, and fixture ownership from its migration tooling, CI workflows and test fixtures, and the rules its project guidance sets, before applying this policy. Resolve every role below through it; do not invent local paths.
 
 ## Dependencies
 - `pre-production`

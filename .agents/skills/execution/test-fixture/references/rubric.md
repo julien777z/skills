@@ -208,7 +208,7 @@ Place a cross-module test at the nearest shared source owner.
 Keep one test class per file, but create a class only for a substantial coherent responsibility. Before creating a class or file, inspect the existing class that owns the source behavior and its parameter sets; extend them for small related cases. A helper, operation, boundary case, or pair of tests does not by itself earn a class. When several small classes cover one owner, merge their related cases into the broader owning class and its file, preserving independent coverage; split a substantial suite only where independently maintained responsibilities justify separate classes.
 
 Before adding or relocating model-factory machinery, discover and extend the established shared
-factory owner named by project guidance. Apply the general New Modules rule to all related
+factory owner the repository's test-utilities package holds. Apply the general New Modules rule to all related
 implementations and consumers; a package that accepts a new factory is not necessarily its owner.
 Complete any ownership move rather than leaving existing factories in a competing location. Keep
 lifecycle helpers with their own responsibilities and inject application model types when needed

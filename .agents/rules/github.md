@@ -224,8 +224,9 @@ alwaysApply: true
 - A hold does not authorize merging the source pull request to unblock the agent-configuration pull request. Finish both pull requests' independent checks, report the dependency, and leave the source pull request reviewable until its merge is separately authorized. After the source pull request merges, continue the held one under the selection rule above: incorporate the updated base and rerun the affected gates before using the agent-configuration merge exception.
 - When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request; one held for a source pull request becomes eligible once that pull request has merged. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, when selected under the ownership rules above. Do not close or leave it open merely because it is draft or conflicts with the base; close only one this session opened, and only when its change is superseded or no longer wanted.
 - An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization, except each fix pull request a directly user-invoked skill's own authorization names, once that skill's merge gates pass; that authorization ends with the run.
-- An authorized merge is not held for a failing check the current user explicitly waives or an
-  established baseline exclusion under `pre-production`'s **Encountered Issues** classification.
+- An authorized merge is not held for a failing check the current user explicitly waives, an
+  established baseline exclusion, or a non-essential check left red on findings the change did not
+  write, each under `pre-production`'s **Encountered Issues** classification.
   Record the check and its exclusion evidence in the task's record, then attempt the authorized
   merge without asking the user; a baseline exclusion is named to the user only where that
   classification allows. Preserve that classification rather than excluding a required repair merely
@@ -299,6 +300,13 @@ alwaysApply: true
   as “as requested” or “per your instructions”; apply the instruction to the result itself.
   Record an exchange only when the user explicitly asks to document that exchange, in a document
   whose purpose is that record.
+- **A description of an input, output, option, setting or field tells a person what the value is,
+  in a plain sentence**, such as "Commit the changes are compared against". It never restates the
+  flag or variable the value becomes, such as `--base-sha`, stands a bare value grammar such as
+  `a | b` in place of words, or lists which operation, command or caller uses it, such as
+  `(generate only)`: the code already shows how the value is passed and who reads it, and a list of
+  users goes stale with the next change to the code. Where a value is one of a fixed set, the
+  sentence says what each one does.
 - Name what a branch, commit or pull request changes by its category of change, in generic nouns
   such as page, request or button. A branch takes the repository's required prefix and a slug of
   that description.
@@ -309,8 +317,8 @@ alwaysApply: true
 - A README's reader is a person using or developing the project, so a README holds what the
   project is, how to run or use it, where a developer finds its parts, and a Local Development
   section with the commands to install, run, and validate it locally. Anything only an agent acts on
-  goes in the repository's rules and skills instead, with repository-specific facts in
-  `.agents/project.md` or a reference it points to: an environment variable or credential an agent
+  goes in the repository's rules and skills instead, with what one repository's agents must do in
+  `.agents/project.md`: an environment variable or credential an agent
   session reads, even one a person adds to a cloud environment for the agent; a tool installed for
   agents; a procedure only agents follow.
 - After drafting or editing READMEs and other reference documentation, compare each statement with
@@ -375,9 +383,11 @@ checks before delivery; retain evidence that the change has not invalidated.
   disk, memory or ports is recovered as the global rules' local-stack bullet says, and the job runs
   here. Only a hosted service or credentials the session lacks, each established as the testing
   rules' cannot-run bullet says, or runner-specific behavior does.
+  A non-essential check left red on findings the change did not write, as `pre-production`'s
+  essential-checks bullet classifies them, holds no push.
 - **A local variant of a CI check is not that check**, and each of these passes locally and fails
-  in CI: lint or type checks scoped to the changed files, where CI's whole-tree run finds an import
-  another change left unused in a file the branch never touched; a formatter or linter in write
+  in CI: lint or type checks scoped to the changed files, where CI's whole-tree run finds an
+  untouched caller of a signature the change altered; a formatter or linter in write
   mode, which rewrites what CI's check mode reports; a tool at a version or with a config other than
   the one CI resolves; a job left out because the diff looks unrelated to it, such as a
   generated-output drift check or a whole-tree check that every shared component has a docs page.
