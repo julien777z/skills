@@ -292,9 +292,9 @@ execution task under `subagent-matrix`'s **Dispatch** assignment bullets; a task
 never holds another independent one. Reassess ownership after each finding or follow-up. Before
 writing a script or doing a check by hand, the agent and every worker look in the repository's
 `.agents/tools/`, and every brief points there. In a repository the owner runs, an operation the
-task's agents do by hand or script a second time becomes a helper there, creating the folder when
-missing, committed as source work on the pull request the GitHub rule's **Branches and Pull Requests**
-selects for it, and later runs use it.
+task's agents run a second time, by hand or by a script, becomes a helper there, creating the folder
+when missing, committed as source work on the pull request the GitHub rule's **Branches and Pull
+Requests** selects for it, and later runs use it.
 
 ### Task Authorization
 
