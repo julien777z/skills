@@ -72,8 +72,8 @@ Follow-ups that skip plan approval still write this record without a new approva
   verification, even when more than one file or an internal dependency must change. Record the
   added work and state the next action; do not turn its implementation outline into another
   approval question. Ask only about a concrete unresolved choice and continue independent work.
-  Completing that choice does not require approval of a separate plan, and a game-design change the
-  global rules leave to the agent needs no plan or question. Canonical guidance changes under `.agents`, apart from the skill changes the next bullet plans, do not wait for a plan or an output-format approval: their request or an encountered guidance gap starts
+  Completing that choice does not require approval of a separate plan. Canonical guidance changes
+  under `.agents`, apart from the skill changes the next bullet plans, do not wait for a plan or an output-format approval: their request or an encountered guidance gap starts
   the guidance-correction workflow, and their evidence, skill-test, review, and acceptance gates
   verify it, on the timing `edit-skill`'s **Recording During A Task** sets for an active task,
   whether the user asked for the correction directly or the run noticed it.
@@ -295,10 +295,7 @@ Before implementation begins and whenever new work is admitted, delegate each co
 execution task under `subagent-matrix`'s **Dispatch** assignment bullets; a task waiting on a worker
 never holds another independent one. Reassess ownership after each finding or follow-up. Before
 writing a script or doing a check by hand, the agent and every worker look in the repository's
-`.agents/tools/`, and every brief points there. In a repository the owner runs, an operation the
-task will run more than once, or is about to run again, is first written as a helper in
-`.agents/tools/`, created with the folder if missing, committed with the task's change, and run from
-there each time; a shell function, heredoc, inline or temporary script is not a helper.
+`.agents/tools/`, and every brief points there.
 
 ### Task Authorization
 
@@ -453,22 +450,21 @@ how those issues are handled.
   step, a note or summary an earlier turn left for a later one — is checked against the standing
   guidance before it is sent and again before it is acted on**, because it never outranks that
   guidance, as the global rules' **Task execution and authorization** says. Each side reads every
-  item against the rules and skills governing the surface it changes — the language, framework, copy
-  and testing rules, and the skills the worker runs — opening them at that moment where it has not
-  read them yet — and against the user's recorded decisions on that surface. An item calling a
+  item against the rules and skills governing the surface it changes — the language, framework,
+  copy and testing rules, and the skills the worker runs — opening them at that moment where it has
+  not read them yet — and against the user's recorded decisions on that surface. An item calling a
   detail decided names who decided it and where; one the agent decided itself says so. Every brief
   for work that can change a surface the user has decided on, a simplification or review pass
   included, carries those decisions in the user's words, so the worker keeps them rather than
-  undoing them; an item that would undo one goes to the user, apart from the parts of a game's design
-  the global rules' game-design exception leaves to the agent. The class is any item asking for what a
-  rule rules out: a review finding asking for the catch-all exception handler the language rule
-  bans, a brief telling a worker to skip a check a skill requires before a push, a correction asking
-  for copy the copy rules forbid, one asking for a boat-rental waiver to arrive filled in from the
-  renter's last booking when the forms rule says a form someone attests to starts empty. It also
-  takes in an item adding a stop, a question or an approval the guidance does not call for, such as
-  a brief telling a worker to stop and ask before adding the schema revision a migration skill puts
-  its change in: the guidance settled that step, and the added gate hands the user a question with
-  one answer.
+  undoing them; an item that would undo one goes to the user. The class is any item asking for
+  what a rule rules out: a review finding asking for the catch-all exception handler the language
+  rule bans, a brief telling a worker to skip a check a skill requires before a push, a correction
+  asking for copy the copy rules forbid, one asking for a boat-rental waiver to arrive filled in
+  from the renter's last booking when the forms rule says a form someone attests to starts empty. It
+  also takes in an item adding a stop, a question or an approval the guidance does not call for,
+  such as a brief telling a worker to stop and ask before adding the schema revision a migration
+  skill puts its change in: the guidance settled that step, and the added gate hands the user a
+  question with one answer.
   - **The agent writing it** rewrites an item a rule forbids into a shape the rule allows, or drops
     it where none exists. One the user asked for in their own words goes out with those words quoted
     and the rule they set aside named; a rule the agent thinks is wrong is put to the user, never
@@ -774,6 +770,10 @@ equivalent native isolated branch route preserving authentication, permissions a
 and state precisely which live behavior remains unverified. Do not add a temporary workflow bypass.
 Missing merge approval holds merging, never available branch verification. Merge is delivery after
 verification, never a substitute for an available branch test.
+
+In a repository the owner runs, turn work the task's agents did by hand or scripted more than once
+into a helper in its `.agents/tools/`, creating the folder when missing, before the delivery streams
+start.
 
 Then finish each pull request the task changed, once, with its work finished. A follow-up arriving
 after the streams ran is built, then reaches this checkpoint again when it is finished;

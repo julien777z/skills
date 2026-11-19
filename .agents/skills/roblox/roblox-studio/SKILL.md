@@ -65,7 +65,7 @@ Code, interface, gameplay, and environment lessons belong to their respective de
 
 ## Experience and place operations
 
-Read [the multi-place reference](references/studio-workflow.md#multiple-maps-and-persistence) for loader, session handoff, and teleport operations. Keep existing artwork intact through place operations, and preserve the authorized save contract. Keep temporary test profiles separate from live data.
+Read [the multi-place reference](references/studio-workflow.md#multiple-maps-and-persistence) for loader, session handoff, and teleport operations. Preserve existing artwork and the authorized save contract. Keep temporary test profiles separate from live data.
 
 ## Test through completion
 

@@ -1,6 +1,6 @@
 # Map making and surface integration
 
-Apply this guidance to the requested genre and map. Keep its core loop; gameplay rules, art direction and authored scenery that stand out as incorrect, or would be better another way, change as the global rules' game-design exception says.
+Apply this guidance to the requested genre and map. Preserve its art direction, authored scenery, and intended gameplay rules.
 
 ## Composition and traversal
 
@@ -92,7 +92,7 @@ functional tests; move, reorient, or remove unexplained placements before passin
 
 ## Terrain, paving, and adjoining parts
 
-Treat visible intersections as map defects to repair during the affected visual pass, even when compilation and gameplay assertions pass. Preserve intentional embedded foundations, overlaps, and terrain variation.
+Treat visible intersections as map defects to repair during the affected visual pass, even when compilation and gameplay assertions pass. Avoid unrelated map redesign; preserve intentional embedded foundations, overlaps, and terrain variation.
 
 - Inspect the entire footprint and perimeter of circular plazas, disks, pools, steps, thin slabs, roof edges, and other parts touching terrain or geometry. Checking only the center misses grass wedges at curved edges and crossings at road joins.
 - Trace the actual source of clipping: solid terrain, decorative grass, a placed plant/mesh, intersecting parts, or nearly coplanar faces. Fix the relevant geometry/material/placement rather than concealing it with lighting or a camera restriction.
