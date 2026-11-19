@@ -72,8 +72,8 @@ Follow-ups that skip plan approval still write this record without a new approva
   verification, even when more than one file or an internal dependency must change. Record the
   added work and state the next action; do not turn its implementation outline into another
   approval question. Ask only about a concrete unresolved choice and continue independent work.
-  Completing that choice does not require approval of a separate plan. Canonical guidance changes
-  under `.agents`, apart from the skill changes the next bullet plans, do not wait for a plan or an output-format approval: their request or an encountered guidance gap starts
+  Completing that choice does not require approval of a separate plan, and a game-design change the
+  global rules leave to the agent needs no plan or question. Canonical guidance changes under `.agents`, apart from the skill changes the next bullet plans, do not wait for a plan or an output-format approval: their request or an encountered guidance gap starts
   the guidance-correction workflow, and their evidence, skill-test, review, and acceptance gates
   verify it, on the timing `edit-skill`'s **Recording During A Task** sets for an active task,
   whether the user asked for the correction directly or the run noticed it.
@@ -296,9 +296,9 @@ execution task under `subagent-matrix`'s **Dispatch** assignment bullets; a task
 never holds another independent one. Reassess ownership after each finding or follow-up. Before
 writing a script or doing a check by hand, the agent and every worker look in the repository's
 `.agents/tools/`, and every brief points there. In a repository the owner runs, an operation the
-task's agents run a second time, by hand or by a script, becomes a helper there, creating the folder
-when missing, committed as source work on the pull request the GitHub rule's **Branches and Pull
-Requests** selects for it, and later runs use it.
+task will run more than once, such as on a second group of inputs, is first written as a helper
+there, created with the folder if missing, committed as source work, and run each time; a shell
+function, heredoc or inline script is not a helper.
 
 ### Task Authorization
 
