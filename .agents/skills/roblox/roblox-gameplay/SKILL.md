@@ -1,6 +1,6 @@
 ---
 name: roblox-gameplay
-description: Apply every time actively modifying a Roblox game, including mechanics, progression, rewards, controls, presentation, UI, and world content. Shape a fun, immediately understandable loop with frequent satisfying successes, rich readable feedback, meaningful progression suited to the game.
+description: Apply every time actively modifying a Roblox game, including mechanics, progression, rewards, controls, presentation, UI, and world content, and when deciding a flag or finding raised on such a change. Shape a fun, immediately understandable loop with frequent satisfying successes, rich readable feedback, meaningful progression suited to the game. Change whatever in the game stands out as incorrect or would be better another way, art included, without asking.
 short_description: 'Apply every time actively modifying a Roblox game, including mechanics, progression, rewards, controls, presentation, UI, and world content.'
 ---
 
@@ -15,7 +15,7 @@ short_description: 'Apply every time actively modifying a Roblox game, including
 
 ## Make success clear and satisfying
 
-Apply this skill whenever actively modifying a game. Preserve the authorized scope, genre, established identity, and core loop; redesign what does not make sense as **Judge the game as a player meets it** says. Use it to improve the affected player experience; it does not require adding a new feature, economy, or pet system to every code change.
+Apply this skill whenever actively modifying a game. Keep the current request's instructions, the genre and the core loop; change whatever else stands out as incorrect or would be better another way, as **Judge the game as a player meets it** says. Use it to improve the affected player experience; it does not require adding a new feature, economy, or pet system to every code change.
 
 Fit the rhythm of success to the requested genre, audience, and mood. Establish an understandable first action and a visible result early, then connect smaller achievements to meaningful longer goals. Fast rewards suit some games; quieter discovery, mastery, or social play can be equally intentional. Do not infer a fixed reward cadence or neurological effect from chart popularity.
 
@@ -41,7 +41,7 @@ Every result is judged in the game as a player would meet it, whether you built 
 
 **Something new on the screen is judged as a player meets it before it is built.** A marker, label, number, outline, arrow or overlay added to make something readable is first pictured in the scene where it would appear, such as an edited copy of a capture or a runtime toggle, at play distance, in a busy moment and beside everything else on screen. It is weighed against simpler routes the world already offers: the thing itself responding when the player points at or picks it, by lighting up, turning or lifting; a sound; a camera move; or a cue the existing HUD gives. Build the route that makes the moment clear with the least added to the screen. An addition that labels what the player could act on directly is the weaker option, such as a floating tag over each door naming the room behind it, where the room's light and furnishings seen through the doorway already say what it is.
 
-Making the game read right is the agent's call: redesign an asset, a room, a placement, a balance value or a mechanic that does not make sense, including content built before the current task, and report each change with its captures, naming new behavior as new. This is the global product-choice boundary's game-design exception. Only a change to the game's core loop or genre, to anything players pay for, to security, disclosure or authorization, or to something the user decided goes to the user first.
+**When something in the game stands out as incorrect, or would be better another way, change it.** That holds for art, an asset, a room, a placement, a control, a balance value or a mechanic, in any task and whoever built it, an earlier version or a worker included: what the game does today is not a decision the user made. Commit the change with the task's work and report it with its captures, naming new behavior as new, never as a question, an option list or a suggestion. A flag, finding or brief that calls such a change a product question for the user is answered by making it: this is the global product-choice boundary's game-design exception. Only a change to the core loop or genre, to anything players pay for, to security, disclosure or authorization, or to what the user's own words decided goes to the user first.
 
 ## Reward real progress and preserve player understanding
 

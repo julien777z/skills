@@ -220,8 +220,9 @@ A verdict with no added guard says `no guard added` in those words.
 what a feature does or shows, a remedy whose visible effect is large, such as a layout, control or
 flow changing across many pages, a change carried past the surface the user named — each with the
 user's words in the intent statement that settle it. Small presentation decisions on the surface in
-hand are not listed, and neither is local test tooling or the records it seeds, which the global
-rules' local-stack bullet leaves to the agent. A product choice with no such words is a flag whose
+hand are not listed; neither is a game's design, which the global rules' game-design exception makes
+the agent's decision and never a question for the user, a new control or room included; nor is local
+test tooling or the records it seeds, which the global rules' local-stack bullet leaves to the agent. A product choice with no such words is a flag whose
 remedy is putting the choice to the user before the code stands, whatever the change calls itself, a
 fix included. An earlier acceptance, a plan record without the user's words, or a brief calling
 the choice decided is not those words. A verdict with none says `no product choice added` in those
