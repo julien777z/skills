@@ -173,12 +173,11 @@ alwaysApply: true
 - **Work is delivered only once the default branch holds it.** Before a pull request is called
   superseded, stale or done because another pull request carries its change, or is recommended for
   closing or closed, read the base and commits of every open pull request in the repository: one
-  whose base is its head branch, or whose commits include that branch's after a retarget onto the
-  default branch, is stacked on it. A pull request with a stack on it, including one whose stack has
-  been retargeted onto the default branch, is never closed or judged superseded or redundant by that
-  stack until the default branch holds its change, and retargeting the stack is never a route to
-  closing it: the stacked one carries the change only by building on it, and closing it strands the
-  whole stack off the default branch.
+  whose base is its head branch, or whose commits include that branch's commits, is stacked on it. A
+  pull request with a stack on it, including one whose stack has been retargeted onto the default
+  branch, is never closed or judged superseded or redundant by that stack until the default branch
+  holds its change, and retargeting the stack is never a route to closing it: the stacked one
+  carries the change only by building on it, and only the default branch holding it delivers it.
 
 ### Merge Authorization
 
