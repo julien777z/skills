@@ -242,11 +242,12 @@ changed. Make the smallest changes that answer real findings, and push back on t
     it in one line;
   - outside the change: fix every bug, and record cleanup past `pre-production`'s size budget with
     `defer-scope`.
-- **Next round** only while budget remains and a blocker or should is open, or code or guidance
-  behavior changed since the last approval. Rerun the checks and `git diff --shortstat <base>` first; if
-  review grew the diff past what the intent needs, cut it first. Never agree just to end the loop.
-- **Stop** when the reviewer approves the current diff with no blocker or should open and no concern
-  of your own. A spent budget is not approval.
+- **Next round** only while budget remains and a blocker or should is open, or code, guidance
+  behavior, or governing requirements changed since the last approval. Resolve **Range** again
+  when requirements change. Rerun the checks and `git diff --shortstat <base>` first; if review
+  grew the diff past what the intent needs, cut it first. Never agree just to end the loop.
+- **Stop** when the reviewer approves the current diff under the current governing requirements
+  with no blocker or should open and no concern of your own. A spent budget is not approval.
 - **A finding still disputed after two replies** goes to the user when it is the user's decision,
   as the shared `agent-guidance.md` rule's **Decisions** names them, with both sides in two or three
   lines each. Any other goes to `council` in **Ask** mode for a ruling, with the finding, the
