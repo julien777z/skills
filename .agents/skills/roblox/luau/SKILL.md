@@ -24,7 +24,7 @@ Use `--!strict` for new and rewritten runtime modules. Define precise profiles, 
 
 Keep authoritative state and rewards on the server. Client requests express intentions. Parse unknown input into bounded tagged values, reject non-finite numbers and invalid indices, and validate player eligibility, session/round identity, ownership, proximity, targets, costs, and rate limits. Static types do not validate client data.
 
-Preserve session ownership, serialized saves, failed-load protection, shutdown saves, and once-only rewards. Never overwrite a failed load with defaults. Keep saves and gameplay contracts unchanged unless the task authorizes a change. Use isolated Studio profiles and validation keys when testing persistence. Development commands require server-side authorization.
+Preserve session ownership, serialized saves, failed-load protection, shutdown saves, and once-only rewards. Never overwrite a failed load with defaults. Keep the save contract unchanged unless the task authorizes a change; gameplay changes follow the global rules' game-design exception. Use isolated Studio profiles and validation keys when testing persistence. Development commands require server-side authorization.
 
 Separate animation/camera completion from authoritative resolution. Missing assets, slow rendering, or canceled effects must not stall gameplay. Keep content definitions, gameplay services, and client presentation distinct without imposing a large architecture on a small feature.
 
