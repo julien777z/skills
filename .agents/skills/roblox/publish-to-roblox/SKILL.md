@@ -72,12 +72,20 @@ experience's audience, settings or monetization, and no publish to any other exp
    lock; a failed publish ends the same way.
 5. **Verify** each place's new version or update time from Roblox, not from the run's or the
    dialog's success, and compare it with the times the workflow run's summary reports.
-6. **Give the experience and every place it publishes their own pictures.** Read each one's icon
-   and thumbnails through Roblox's thumbnail API. One still showing Roblox's default placeholder
-   icon, or with no thumbnails, gets them in this run: a square icon and a set of 16:9 thumbnails
-   captured in Studio from the frozen build at player height, showing the game's real places,
-   characters and play rather than text alone, each read whole before upload. Read them back
-   through the same API afterward.
+6. **Give the experience and every place it publishes the pictures top games have.** Read each
+   one's icon and thumbnails through Roblox's public thumbnails API. One still showing the default
+   placeholder icon, or with no thumbnails, gets them in this run, made and set as the
+   [key art reference](references/key-art.md) says:
+   - study the icons and thumbnails of the games in Roblox's current top sorts first, as contact
+     sheets;
+   - stage key art from the game's own characters, creatures, effects and places in a scratch copy
+     of a built place in the isolated runner, then composite it with a grade, a burst or glow and a
+     bold wordmark; a player-height gameplay screenshot is not a game picture;
+   - check every picture at full size and at 150 px beside those sheets, and show the set to the
+     user before uploading it;
+   - upload each as an Image asset, set each place's icon and thumbnails through the Assets API
+     with the place's revision left unchanged, and read them back through the thumbnails API until
+     moderation completes.
 
 ## Output
 
