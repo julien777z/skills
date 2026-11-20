@@ -48,7 +48,7 @@ decision waiting on evidence is reported, and how an action the reader owns is h
 
 ## Before sending
 
-Every unresolved item, including optional choices and unconfirmed assumptions, appears in the
-numbered list as an active question-tool request or as evidence-pending work, according to its
-readiness. A chat question appears only where the harness has no question tool. A resolved or
+Every unresolved decision, optional choices included, appears in the numbered list as an active
+question-tool request or as evidence-pending work, according to its readiness; an unconfirmed
+assumption appears as an assumption, never as a question. A chat question appears only where the harness has no question tool. A resolved or
 superseded question does not reappear.

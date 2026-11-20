@@ -152,8 +152,10 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
   explain the specific interruption and ask for explicit permission before that part runs. Continue
   independent checks through nondisruptive routes and report what still lacks verification.
 - A cloud workspace snapshot restores files, not running processes. A failing `docker info` at session start means the daemon may need to be started; it does not by itself prove Docker is unavailable.
-- On macOS, select the container runtime first, as `run-site`'s **Start and verify the stack** says
-  of OrbStack. Prefer the repository's service-startup helper or skill. Otherwise start the daemon explicitly and wait for `docker info` to succeed:
+- On macOS, select and start the container runtime as `run-site`'s **Start and verify the stack**
+  says of OrbStack, then wait for `docker info` to succeed.
+- On Linux, prefer the repository's service-startup helper or skill. Otherwise start the daemon
+  explicitly and wait for `docker info` to succeed:
 
 ```bash
 mkdir -p .agent_sources/logs

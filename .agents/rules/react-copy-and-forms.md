@@ -221,6 +221,6 @@ paths:
 - **One act gets one confirmation.** A single checkbox, worded as the whole statement the reader is
   making, stands for it; a second box restating part of the first asks twice.
 - **Long fixed text a reader must accept — a certification, terms, a disclosure — is set in smaller
-  muted type** and scrolls inside a maximum height as Layout And Spacing describes.
+  muted type** and scrolls inside a maximum height as the React layout rule's **Layout And Spacing** describes.
 - **A placeholder shows a realistic example of the value's format,** such as `555-0100` or
   `2030-01-31`, never zeros, dots or a mask that reads as an existing value hidden from the reader.

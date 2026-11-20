@@ -116,7 +116,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - Extract reusable logic into custom hooks
 
 - Local state with `useState` for component-specific state
-- Reuse the repository's established shared-state and server-state libraries instead of introducing parallel state layers.
+- Reuse the repository's established shared-state and server-state libraries instead of introducing parallel state layers; in a Next.js App Router repository, server data follows **Rendering and Data** below and takes no client data layer.
 
 - Use `useRef` for DOM access and mutable values
 - Don't overuse refs for state that should cause re-renders
