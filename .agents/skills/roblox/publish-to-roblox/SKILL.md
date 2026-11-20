@@ -82,8 +82,9 @@ experience's audience, settings or monetization, and no publish to any other exp
    - stage key art from the game's own characters, creatures, effects and places in a scratch copy
      of a built place in the isolated runner, then composite it with a grade, a burst or glow and a
      bold wordmark;
-   - check every picture at full size and at 150 px beside those sheets, and send the set to the
-     user as it is made, as any capture of a change is sent, then go on without waiting;
+   - check every picture, each thumbnail as well as the icon, at full size and at 150 px beside
+     those sheets, and send the set to the user as it is made, as any capture of a change is sent,
+     then go on without waiting;
    - upload each as an Image asset, set each place's icon and thumbnails through the Assets API
      with the place's revision left unchanged, and read them back through the thumbnails API until
      moderation completes.

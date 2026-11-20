@@ -331,9 +331,10 @@ failed the change, which settles its flags as it rules.
 **Each flag carries its severity, `defect` or `style`.** A style flag concerns only the form of
 lines whose behavior, structure and contract stand: a docstring's or comment's length, a missing
 blank line, a name's length, wording that misstates nothing. Everything else is a defect, however
-small its fix. The author fixes a style flag and runs the checks covering it, and the next gate the
-change already gets confirms it: final acceptance, or, for a style flag final acceptance raised, a
-fresh re-check of those lines alone. A style flag costs no round, under the global rules'
+small its fix. The author fixes a style flag and runs the checks covering it, and a gate confirms it
+before the change counts as accepted: final acceptance when the change still gets one, otherwise,
+as for a style flag final acceptance raised, a fresh re-check of those lines alone. A style flag
+costs no round, under the global rules'
 review-round limit or the repair rounds below, and never goes to `council`.
 
 **A gap in the evidence a gate was given is not a failed round.** A gate whose verdict waits only
