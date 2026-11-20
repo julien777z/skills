@@ -185,9 +185,9 @@ until it returns; a quiet interval or a yielded wait is not completion.
 
 These run in the order below, in process unless a pass says otherwise.
 
-- **Layout:** for the delta's changed Python files, run this skill's
-  `scripts/paragraph_candidates.py` over them; each pair it lists that the global code-layout rule
-  makes a boundary gets its blank line.
+- **Layout:** for the delta's changed Python files, run `acceptance-gate`'s
+  `scripts/python_rule_findings.py` over them; each finding it lists gets its fix, and each
+  paragraph candidate the global code-layout rule makes a boundary gets its blank line.
 - **Simplification:** when the delta adds a module or declaration (an enum, constant set, mapping,
   or model), changes guidance under `.agents`, or is covered by `code-simplify`'s
   **Before Choosing A Design** check, run `code-simplify` over the delta with the

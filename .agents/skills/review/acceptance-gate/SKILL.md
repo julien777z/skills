@@ -116,9 +116,12 @@ receives five things and nothing else:
    repository the owner does not own, as the global rules' **Repository guidance** defines it, the
    brief says so: the gate judges the change against the request, its defects and that repository's
    own guidance and conventions, and a shared rule's standard is no flag there.
-   When the Python rules apply, run `scripts/python_rule_findings.py` with the project's Python
-   interpreter on the in-scope Python files. Supply the file list and every finding, including an
-   explicit empty result. The reader verifies each reported shape against the source and rule;
+   **The pre-gate check runs before every gate.** When the Python rules apply, the caller runs
+   `scripts/python_rule_findings.py` with the project's Python interpreter on the in-scope Python
+   files before dispatch, fixes each finding, and each paragraph candidate the global code-layout
+   rule makes a boundary, in the lines the change writes or edits, then runs it again. Supply the
+   file list and every finding that run prints, including an explicit empty result. The reader
+   verifies each reported shape against the source and rule;
 5. exactly one question from the list below.
 
 **The gate has no shell, so every diff reaches it as content, never as a reference.** The caller
