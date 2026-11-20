@@ -48,7 +48,7 @@ skill never readies, merges or deploys.
   mode polls. Every 30–60 seconds it reads the pull request's checks, threads and comments on the
   current head: it runs **Review Threads** over the pull request first, then again on each new or
   updated thread and comment, and on a check that fails it reads the log and fixes what the change
-  broke as **Checks** says, pushing each fix once the running task's pre-push checks pass. Polling
+  broke as **Checks** says, pushing each fix once the checks the GitHub rule's **Pre-Push Gate** defines pass. Polling
   ends when every check that runs on the current head is terminal and either green or recorded as
   an exclusion under **Checks**, and every thread is resolved, outdated or put to the user. It then
   runs `code-simplify` once over the pull request's whole diff, in process or by slice as **Local
@@ -66,7 +66,8 @@ skill never readies, merges or deploys.
   pull request only once a finding needs one.
 - **No pull request:** the local task diff against its merge base is the target; description
   refresh and review threads do not apply, and fixes are committed in the task's own checkout
-  without pushing.
+  without pushing, the exception the GitHub rule's **Pre-Push Gate** makes for a review the user
+  asked for without a push.
 - **A repository the owner does not own**, as `pre-production`'s **Whose Standards Apply** defines it:
   the pass fixes the request's own issues and the defects it finds, wherever they sit. **Local
   Passes** do not run, the reviewer brief's rules are that repository's own guidance, the final
@@ -155,8 +156,8 @@ validation exclusion is recorded with its evidence and not repaired, rerun or wa
    `medium` over the delta, with the merge-base diff as context, and fix what it confirms.
 4. Run **Local Passes** over the delta and push their fixes.
 5. Run **Review Loop** once over the delta, with the intent statement, the merge-base diff and the
-   full touched files as context. Push each fix as its own commit once the running
-   task's pre-push checks pass. A finding that is the user's decision holds the pass: put it to the user
+   full touched files as context. Push each fix as its own commit once the checks the
+   GitHub rule's **Pre-Push Gate** defines pass. A finding that is the user's decision holds the pass: put it to the user
    with both sides, and continue independent work.
 6. When the base moved again, run **Base** and recompute **Range**. If the incorporation introduced
    a delta or changed governing guidance, return to step 2 for the affected review and checks.

@@ -47,6 +47,25 @@ writing, keeping or removing, and how suites are laid out, configured and budget
   their source validation, review and skill tests; verify the final wording rather than
   each intermediate revision.
 
+## Pre-Push Checks
+
+The GitHub rule's **Pre-Push Gate** states the checks every push passes. Where it speaks in plain
+words, this skill supplies:
+
+- its verification checkpoints: **Verification Cadence** above, whose superseded-run bullet says
+  what happens to a suite still running, and **Suites And Failures**' cannot-run bullet, which
+  decides when a job may be left to its hosted run;
+- its spacing check: `pre-production`'s **Code Layout**, with `acceptance-gate`'s
+  `scripts/python_rule_findings.py` listing the candidate pairs in changed Python files;
+- its size budget, target boundary, essential checks and local-stack recovery: `pre-production`'s
+  incidental size budget, target boundary, essential-checks bullet and **Local Stacks**;
+- its delegated briefs: `subagent-matrix`'s **Dispatch**, with the worker's head read under
+  [reported outcomes](outcomes.md);
+- the holds it excepts: `lock-revision`'s **After Locking**, and a `review-pass` the user asked
+  for without a push;
+- when a simplification pass and a gate run: `SKILL.md`'s **Ongoing Simplification** and
+  **Completion**, with a gate's flag closed by the fresh gate `acceptance-gate`'s **Bounds** requires.
+
 ## Suites And Failures
 
 - Before selecting a test invocation, apply `pre-production`'s **Verification And Experiments**
@@ -73,9 +92,13 @@ writing, keeping or removing, and how suites are laid out, configured and budget
   or identity created per test though nothing per-test lives on it, and a stack torn down and
   rebuilt each run though its inputs have not changed. What the read finds is handled as
   `test-fixture`'s **Test Cost** decides.
-- For every pull request an agent creates, ensure all test-related CI jobs pass before considering
-  delivery complete; investigate and fix any failures within the pull request's scope, apart from a
-  baseline failure, which is recorded and left as `pre-production`'s **Encountered Issues** says.
+- **Hosted test jobs are required at the merge, not before it.** A pull request leaves draft only
+  as the last step before an authorized merge, and a draft starts no test jobs. With no merge
+  authorized, delivery is complete at the reviewable draft, and the task's test evidence is the
+  local runs of CI's commands the GitHub rule's **Pre-Push Gate** requires. At an authorized merge,
+  `merge-gate`'s **Check Gate** drives every test job to a terminal result and fixes each failure
+  within the pull request's scope, apart from a baseline failure, which is recorded and left as
+  `pre-production`'s **Encountered Issues** says.
 - When CI tests fail, read the job logs by whichever route reaches them, such as the hosting
   service's API, CLI or connector. Ask the user for the failure output only once the reach check in
   [authorization](authorization.md)'s **Steps Only The User Can Take** finds no route.

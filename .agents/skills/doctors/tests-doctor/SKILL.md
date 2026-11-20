@@ -359,7 +359,8 @@ the isolation model is verified the same way as any other edit here: the affecte
 green, and the durations are re-taken against the same workload.
 
 Application changes qualify only for the performance exception below, removal of a proven dead
-test-only seam, or repair of a product defect exposed by a baseline failing test. For a seam,
+test-only seam, or repair of a product defect or vulnerability the run notices, one a baseline
+failing test exposes included. For a seam,
 inspect non-test callers and history, move coverage to its real owner boundary, then remove the
 unused export, flag, wrapper, injection hook, or dead path without a compatibility alias. A test
 failing at this run's baseline measurement is this doctor's own finding: a run the user invoked to
@@ -367,8 +368,10 @@ repair tests is the one exception to `pre-production`'s **Encountered Issues** b
 which records and leaves a test already failing on the default branch that other work meets. For a
 baseline failure, reproduce the product defect, fix it at its owner in a separate commit, and show
 the same harness failing with the fix absent and passing with it present. Do not weaken, skip, or
-delete tests to conceal a defect. Other application correctness and structural changes remain
-outside this doctor's boundary and are reported with evidence.
+delete tests to conceal a defect. Other structural changes to the application remain outside this
+doctor's boundary and are reported with evidence; any other confirmed product defect or
+vulnerability the run notices is fixed at its owner in this run, as `doctor-protocol`'s **Resolve
+The Scope** says.
 
 ### Application Performance Exception
 

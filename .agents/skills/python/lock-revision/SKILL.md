@@ -46,6 +46,7 @@ locked.
 `database-migrations`' lock-marker rule is the whole of what a lock means. Until the user unlocks,
 none of these is pushed: a change to a locked revision, a new revision, or a source change that
 depends on either. Commit that work locally; work that touches no revision keeps pushing as usual.
+This hold is the exception the GitHub rule's **Pre-Push Gate** allows an invoked skill to state.
 
 Only the user's own words unlock. Once they do, push the held commits and record the unlock with
 `session-ledger`.

@@ -98,7 +98,8 @@ protective attributes, unvalidated redirects, and errors returning internals.
 
 1. **Change boundary.** The fix for each confirmed finding: the code, tests, configuration,
    contracts and data migration it needs, and the guard that holds it. Refactoring and dependency
-   upgrades are outside it.
+   upgrades are outside it. A confirmed defect the run notices that is no vulnerability is fixed in
+   this run too, as `doctor-protocol`'s **Resolve The Scope** says.
 2. **Every confirmed finding is closed in this run** with the smallest fix that enforces the access
    the product already intends, as `pre-production`'s security bullet says. Only a change that
    widens access or changes who the feature serves, such as dropping a feature, goes to the user,

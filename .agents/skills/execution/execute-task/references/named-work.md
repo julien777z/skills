@@ -37,7 +37,7 @@ it — the user asking about something else is not the user withdrawing what the
   it is obeyed.
 - **Commits a remote lacks are undelivered work**; their next step is the pre-push checks and the
   push. A hook or status line counting unpushed commits whose checks pass reports a push owed now,
-  not something to explain, apart from the commits the [pre-push gate](pre-push.md)'s exceptions hold.
+  not something to explain, apart from the commits the GitHub rule's **Pre-Push Gate** excepts.
 
 ## The Unchanged Line
 

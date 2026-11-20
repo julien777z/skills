@@ -25,6 +25,12 @@ and examples. A supporting file is part of the skill, not an exemption from its 
   standing guidance.** Hold each change to its **Where Guidance Lives** placement bullet and to its
   **Writing** bullets on a correction that restructures the bullet it lands in, an absolute that
   carries its scope and exception, guidance that states what holds, and citations that resolve.
+- **A rule file or `.agents/global.md` that names an individual skill to carve an exception, grant
+  a permission or describe that skill conflicts with standing guidance**, as the authoring
+  reference's **Where Guidance Lives** says. The rule states its requirement and the generic
+  opening, such as "unless an invoked skill authorizes it". Read the departing skill's own text
+  as well: it states its departure and cites the rule, and a departure stated on neither side, or
+  only in the rule, leaves one case with two answers.
 - **Guidance arriving from another branch is checked like an edit.** A merge or rebase that brings
   the base into a guidance branch, a pull that updates a checkout holding pending guidance edits, and
   a pull request folded into another each put two sets of changes together that were only ever

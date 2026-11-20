@@ -33,6 +33,13 @@ harnesses and validated. The skill's workflow names the section each step applie
   - Examples in `.agents/global.md` and a rule stay generic: invented names and
     placeholder shapes, never this repository's modules, helpers, packages, paths, or domain
     vocabulary, and never the product, tool, or platform whose incident prompted the change.
+- **A rule file and `.agents/global.md` name no individual skill to carve an exception, grant a
+  permission or describe what that skill does.** Each states its own requirement in full and words
+  the opening generically, such as "unless an invoked skill authorizes it", "a skill that states it
+  polls" or "the skill running the merge". The skill that departs from the rule states its own
+  departure and cites the rule. `.agents/global.md` names skills in two places only, because naming
+  is their job: its instructions on which skills always start, and its **Where The Rest Lives**
+  owner table; anywhere else it cites an owner by the subject that table's row names.
 - `.agents/project.md` is the home for repository-specific guidance: the rules and conventions an
   agent follows there, such as which base classes and helpers to use and its generated sections.
 - **Guidance never keeps a copy of how a repository's tooling behaves today.** Commands, flags,

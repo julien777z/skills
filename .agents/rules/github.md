@@ -38,8 +38,8 @@ alwaysApply: true
 - Keep `run` steps declarative. Invoke checked-in scripts for control flow, validation, filesystem changes, or other implementation logic instead of embedding arbitrary shell or program code in workflow YAML; place those scripts under `.github/scripts/` and prefer Python.
 - Do not hard-code runtime versions when a shared action, reusable workflow, or repository version file supplies them; omit `python-version` when shared Python automation provides it, and use `node-version-file: ".nvmrc"` for Node.js workflows.
 - **A required workflow or action input is declared `required: true` with no `default`**, and no
-  step is skipped when it is empty; `pre-production`'s **Configuration** says which inputs
-  are required. An action's checked-in script also fails, naming the input, when the value is
+  step is skipped when it is empty. An input is required unless it has a safe default or its owner
+  documents a supported absence. An action's checked-in script also fails, naming the input, when the value is
   empty, since GitHub does not enforce `required` on an action's inputs.
 - Name repository-owned Boolean action and workflow inputs `use-<capability>`, so the name states
   what the toggle enables. Update declarations, conditions and callers together; do not retain a
@@ -75,15 +75,19 @@ alwaysApply: true
   request; never add it and revert it within a session. Cheaper non-test checks, such as lint, may
   keep running on drafts. This bounds what drafts cost and is never a way past a failing test: no
   test is skipped, disabled, or quarantined to reach green.
-- A job that runs a test suite follows `test-fixture`'s **Time Budgets**.
+- A job that runs a test suite stays within the time budget set for a suite.
 
 ## Branches and Pull Requests
 
-- When the user asks to list pull requests, use `list-prs`; its default scope is open pull requests created or worked on for the ongoing task, including handoffs and drafts across chats. Honor explicit scope and state requests.
-- Record every pull request with `session-ledger` immediately after the hosting service returns its canonical URL. A task-scoped pull-request lookup reconciles verified task records through that ledger and verifies each selected URL remotely; never infer task membership from the current checkout, a branch name, a transcript, or a broad hosting-service search.
+- A request to list pull requests defaults to the open pull requests created or worked on for the ongoing task, including handoffs and drafts across chats. Honor explicit scope and state requests.
+- Record every pull request in the task's ledger immediately after the hosting service returns its canonical URL. A task-scoped pull-request lookup reconciles verified task records through that ledger and verifies each selected URL remotely; never infer task membership from the current checkout, a branch name, a transcript, or a broad hosting-service search.
 
-- **Open each pull request as a draft.** Once its merge is authorized, use `merge-gate`'s
-  **Readiness** to mark it ready.
+- **Open every pull request as a draft and keep it draft until its merge.** The user reviews it as
+  a draft. It leaves draft once, as the last step before an authorized merge, after its review has
+  passed, so its test jobs run once, on the head about to merge. Never mark one ready to start its
+  tests, to show it finished, or to hand it to the user. With no merge authorized, a pull request
+  is complete as a reviewable draft whose local checks under **Pre-Push Gate** passed; its hosted
+  test jobs are required at the merge.
 - Keep pull requests focused and give them descriptive titles and descriptions: a title stays short,
   and a body may run long with bullets and validation notes. Request appropriate reviewers when the
   repository workflow requires them.
@@ -101,11 +105,10 @@ alwaysApply: true
   coordination and combined status in user chat and private task evidence.
 - Before publishing or updating those artifacts, check the final text against the target
   repository's diff and evidence. Remove foreign references, including from dependency and delivery
-  notes, and replace every example value the user supplied with an invented one, as
-  `pre-production`'s **Examples And Paths** says. Describe a consumed interface or unresolved delivery
-  requirement in terms of this repository's own contract; disclose provider PR links and merge
-  ordering to the user in chat.
-  `merge-gate` owns the complete dependency inventory and merge gate.
+  notes, and replace every example value the user supplied with an invented one. Describe a
+  consumed interface or unresolved delivery requirement in terms of this repository's own contract;
+  disclose provider PR links and merge ordering to the user in chat. The complete dependency
+  inventory is taken at the merge, by the skill running it.
 - **Text handed to Git or the hosting service is staged where only its author writes and read back
   once published.** A commit message, title, description, comment or issue body goes inline, on
   standard input, or from a file whose path was generated for that one text, such as one `mktemp`
@@ -115,7 +118,8 @@ alwaysApply: true
   difference in that text at once, under the authorization the original post had; a commit message
   is read back before its push and amended only while unpushed. The current text is what readers
   act on: earlier revisions in the edit history are left alone and never raised with the user,
-  unless one holds a credential `pre-production`'s **Logging** counts as exposed.
+  unless one holds a credential that evidence shows reached an unauthorized recipient, a public
+  surface or a compromised destination.
 - **Put follow-up source work on the session's in-progress source pull request for that repository.**
   Before proposing a branch, assigning a worker, or starting edits, resolve the session's source
   pull request from its creation or authorized continuation receipt and verify that it is open.
@@ -127,8 +131,8 @@ alwaysApply: true
   session only when the user, an applicable invoked skill, or a repository rule explicitly directs
   that continuation. A matching topic, existing branch, open state, or recorded touch does not supply
   that instruction. Verify the selected pull request's owner, state and scope before updating it;
-  leave other sessions' pull requests and branches untouched, apart from damaged local Git state
-  `update-skills` backs up and repairs.
+  leave other sessions' pull requests and branches untouched, apart from damaged local Git state a
+  skill that installs shared guidance states it backs up and repairs.
 - **Each session opens its own agent-configuration pull request in each repository.** Agent
   configuration is the canonical `.agents` tree — skills, each with its own scripts, assets and
   templates; rules; and agent definitions. Nonbehavioral text and guidance-reference corrections in
@@ -185,9 +189,10 @@ alwaysApply: true
 ### Merge Authorization
 
 - Agents may create branches and pull requests, commit, and push scoped changes without additional approval.
-- `merge-gate`'s **Authorization** says what authorizes a merge; the bullets below are the standing
-  permissions and holds it refers to. Where neither the user's authorization nor one of those
-  permissions applies, do not merge or enable auto-merge.
+- Merging a pull request requires the user's explicit authorization naming the merge and that pull
+  request, an invoked skill that states its invocation authorizes the merge, or one of the standing
+  permissions below. A fix request, an approved plan, a passing check or a review authorizes none.
+  Where none applies, do not merge or enable auto-merge.
 - Honor the selected workflow's delivery hold before the standing permissions below; a pull
   request held for user review cannot use those exceptions or auto-merge.
 - **Guidance for something the user is still trying out is held for their review.** Once the user
@@ -218,21 +223,25 @@ alwaysApply: true
   pauses and exclusions; this permission authorizes no deployment or release.
 - A pull request confined to agent configuration — skills with their own scripts, assets and
   templates; rules; agent definitions; and static metadata — may be merged without a separate
-  request once `code-simplify` has run and its findings are resolved and a skill's changed scripts
-  pass the checks they own, such as a type check or a test render. One that adds a doctor skill
-  waits instead for the user's review together with everything in its batch. A workflow, installer,
-  or repository tooling outside a skill's folder is source work when its execution changes, even
-  when it sits under `.agents`.
-  When the user asked for the change to be tested, first run the skill test against the exact
-  pull-request head. Check that the complete pull request remains confined to this agent
-  configuration before using this exception.
+  request once its full gate set has passed on the head that merges:
+  - a simplification pass over the change, with its findings resolved;
+  - a review pass over the change;
+  - an independent acceptance gate over the complete diff;
+  - for an edit that changes behavior, a skill-test round against the exact pull-request head;
+  - the checks a skill's changed scripts own, such as a type check or a test render.
+
+  No shorter set qualifies, and this bullet is the one statement of the set: other guidance cites
+  it. One that adds a doctor skill waits instead for the user's review together with everything in
+  its batch. A workflow, installer, or repository tooling outside a skill's folder is source work
+  when its execution changes, even when it sits under `.agents`. Check that the complete pull
+  request remains confined to this agent configuration before using this exception.
 - **An agent-configuration pull request whose guidance depends on a still-open source pull request is held until that merge**, whatever its other gates say, unless the guidance rides that source pull request under **Branches and Pull Requests**. Guidance true on the default branch as it stands waits for nothing.
 - A hold does not authorize merging the source pull request to unblock the agent-configuration pull request. Finish both pull requests' independent checks, report the dependency, and leave the source pull request reviewable until its merge is separately authorized. After the source pull request merges, continue the held one under the selection rule above: incorporate the updated base and rerun the affected gates before using the agent-configuration merge exception.
 - When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request; one held for a source pull request becomes eligible once that pull request has merged. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, when selected under the ownership rules above. Do not close or leave it open merely because it is draft or conflicts with the base; close only one this session opened, and only when its change is superseded or no longer wanted.
 - An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization, except each fix pull request a directly user-invoked skill's own authorization names, once that skill's merge gates pass; that authorization ends with the run.
 - An authorized merge is not held for a failing check the current user explicitly waives, an
   established baseline exclusion, or a non-essential check left red on findings the change did not
-  write, each under `pre-production`'s **Encountered Issues** classification.
+  write, each as the classification of encountered validation failures establishes it.
   Record the check and its exclusion evidence in the task's record, then attempt the authorized
   merge without asking the user; a baseline exclusion is named to the user only where that
   classification allows. Preserve that classification rather than excluding a required repair merely
@@ -260,13 +269,13 @@ alwaysApply: true
   merge's delivery, including when the merge is the session's final work. Report the installed
   source and commit, or the concrete blocker preventing refresh.
 - Select the refresh route before checking local changes. When the repository supplies the installed
-  shared skills, invoke `update-skills`; it keeps pending agent-configuration changes in effect,
-  dirty checkouts and open pull requests alike. Tell it the caller will clean the source checkout
-  after installation, so the installed files stay available independently. For the skill's first
-  merge, read it from the merged commit before invoking it. A session follows the copy it loaded
-  until this refresh completes.
-- **Every merge of agent configuration then refreshes the repository's primary checkout as
-  `finish-pr`'s **Local Checkout** section does**, whichever workflow merged it: a local edit the
+  shared skills, invoke the skill that installs them; the refresh keeps pending agent-configuration
+  changes in effect, dirty checkouts and open pull requests alike. Tell it the caller will clean the
+  source checkout after installation, so the installed files stay available independently. For that
+  skill's first merge, read it from the merged commit before invoking it. A session follows the copy
+  it loaded until this refresh completes.
+- **Every merge of agent configuration then refreshes the repository's primary checkout**,
+  whichever workflow merged it: a local edit the
   merged default branch already holds is removed, local-only work is saved in a named stash and
   kept, and the checkout ends clean on the default branch's fetched tip. When the invoking workflow
   owns that refresh, return the Agent Sync result and any installed shared guidance refresh to it,
@@ -285,9 +294,8 @@ alwaysApply: true
 ## Commits
 
 - Use conventional commit messages when applicable and keep commits atomic and focused.
-- Commit each small coherent step and push it promptly once the pre-push checks pass, sub-agents
-  included; `execute-task`'s pre-push reference defines those checks. Work only one machine holds is
-  lost with it.
+- Commit each small coherent step and push it promptly once the checks **Pre-Push Gate** defines
+  pass, sub-agents included. Work only one machine holds is lost with it.
 - Commit only the files the change wrote. Stage each by its own file path — never `git add -A`, `git
   add .`, `git commit -a` or a directory — then run `git diff --cached --name-only` before
   committing, and unstage every file it lists that the change did not write, such as a bytecode
@@ -357,3 +365,96 @@ alwaysApply: true
 - Introduce each example with a one- or two-line description of its purpose, followed by a small code example.
 - In cron-based examples, use a conventional schedule such as every Monday and add an inline comment translating the cron expression into that plain-language schedule.
 - For reusable GitHub Actions, include an Inputs table with the input name, default value, and purpose.
+
+## Pre-Push Gate
+
+Every push goes out once the pre-push checks below pass, on a draft and on a pull request ready for
+review alike. Follow an explicitly selected workflow’s own declared check sequence and delivery
+constraints where it specifies them; nothing holds committed work on one machine — not a gate,
+review or simplification pass pending on it, an integration merge, or a plan that orders one first.
+The exceptions are commits an invoked skill states it holds local until the user releases them,
+such as locked database revisions, and the fixes of a review the user asked for without a push,
+which stay local until they ask. A simplification pass and an acceptance gate do not run per push;
+the running task's workflow sets when they run. A fix pushed for a flag a review or gate raised is
+pushed once the agent that made it has re-read the changed lines against the flag and rerun the
+checks covering that code; that recorded check is an increment's **Pre-Push Gate** verdict. It
+never closes the flag: the review's next round or, for a gate's flag, a fresh gate does.
+
+The verification the running task's workflow selects sets when tests, builds, browser walkthroughs
+and reviews run, pre-push checks included. Deferred feature verification does not hold an
+intermediate push and remains required afterward, and a suite still running holds none either. Run
+the relevant batch after the feature is complete, then the required final checks before delivery;
+retain evidence that the change has not invalidated.
+
+- **Required checks use CI’s commands and scope, at those verification checkpoints.** Read
+  the workflow files that trigger on a pull request and run every checking job that can run
+  locally — lint, format, type checks, build, tests, generated-output drift, docs or coverage
+  checks — with the job's own command and scope, plus any check a skill in use requires. Do not
+  restart the batch for each push; retain results whose code and inputs remain unchanged. Project
+  guidance that lists those commands is a shortcut to the workflows, never a
+  substitute; where the two disagree, the workflow is right. A job that needs a hosted service or a
+  running stack, or is too slow to run before every push, joins the slow verification below and is
+  named in the report. Room on this machine never leaves a job to its hosted run: a shortage of
+  disk, memory or ports is recovered, local stack resources being disposable, and the job runs
+  here. Only a hosted service or credentials the session itself found absent from where the
+  repository configures them, never taken on another agent's or a plan's word, or runner-specific
+  behavior does. A non-essential check left red on findings the change did not write holds no push.
+- **A local variant of a CI check is not that check**, and each of these passes locally and fails
+  in CI: lint or type checks scoped to the changed files, where CI's whole-tree run finds an
+  untouched caller of a signature the change altered; a formatter or linter in write
+  mode, which rewrites what CI's check mode reports; a tool at a version or with a config other than
+  the one CI resolves; a job left out because the diff looks unrelated to it, such as a
+  generated-output drift check or a whole-tree check that every shared component has a docs page.
+
+Before each push, list the exact adjacent line pairs where setup, a guard, transformation, side
+effect, or return meets the next phase without the blank line the code-layout convention requires;
+for changed Python files, use the script the running workflow names for it. Fix every listed
+boundary in the lines the change writes or edits, and elsewhere in the changed files within the
+incidental size budget; an unrelated bug or a passing formatter does not satisfy this spacing check.
+
+- **Commit each small coherent step and push it as soon as its checks pass**, and at least every
+  five minutes of work — a function and its callers updated, a test brought to pass, one finding
+  fixed — never at the end of a unit or task. Define coherence against the change's complete target
+  boundary, not the latest edited files: required consumer updates, superseded
+  owners and declarations, generated contracts and retained-data migration are implementation,
+  never later cleanup. An intermediate push may preserve ongoing work; it neither narrows the
+  remaining obligation nor qualifies that feature for completion, review delivery or rollout.
+  A push is what lets the user review and test the work, and the only copy that
+  outlives the machine: a recycled container or an ended session takes every commit and edit no
+  remote holds.
+- **Nothing outside the change holds a push, a check or a walkthrough, or becomes a question about
+  pushing or merging.** A dependency
+  still in review in another repository, an unreleased package version, a sibling pull request not
+  yet merged, CI expected to stay red until one of those lands: the branch consumes the
+  dependency's pull-request branch, or its default branch once merged — in the manifest, the
+  lockfile and any workflow checkout, a maintained branch being a permitted reference while
+  developing — or builds on a same-repository sibling's branch as **Branches and Pull Requests**
+  sets out, and pushes. Every build, test and walkthrough runs against that checked-in reference,
+  never a local copy the manifest does not name. A consumer that cannot build until its dependency
+  merges is a manifest still naming the default branch: point it at the pull-request branch, never
+  ask for the dependency's merge or report the consumer blocked on it. Which branch it consumes,
+  and a red check that dependency explains, are surfaced in user chat under that section's
+  independent publishing context rather than waited on; adopting
+  its maintained delivery target is named work for when the dependency merges.
+- **No edit sits uncommitted through a long wait outside the checks.** Before the slow verification
+  below, a background worker, CI on the pushed head, or a question to the user, bring the work to a
+  coherent step, commit it, and push it; the checks' own runs are part of the push, not such a wait.
+- **Delegated edits run at this cadence.** A brief handing a worker edits states it, names the
+  branch the worker pushes to — the branch of the pull request the work continues, under
+  **Branches and Pull Requests** — and names the exact files to change. The
+  worker pushes each step once its checks pass and reports the branch and head. The brief has the
+  worker fix every defect it meets, in the product or the repository's tooling, and report as left
+  alone only cleanup past the incidental size budget and any item that is the user's decision. The
+  delegating agent reads that head at its source before any dependent work starts. The worker
+  ends with nothing uncommitted and nothing unpushed beyond the exceptions above,
+  never amends or rebases a pushed commit, and
+  its report names the branch and head.
+- **A pull request stays draft until the last step before its authorized merge**, as **Branches and
+  Pull Requests** says, so these pushes start no test jobs. Marking it ready can enqueue duplicate
+  hosted jobs without changing the head; the skill running the merge decides whether completed
+  exact-head evidence is equivalent before it waits for fresh coverage. The local checks above are
+  what stand between a push and hosted validation.
+- **The order is change, checks, push, then the slow verification**: a browser walkthrough, a full
+  or end-to-end suite, a run against a service without the change, root-causing a failure seen
+  along the way — anything slow or needing a running stack. What it finds goes out as fix pushes, each once its checks pass.
+- **Pushed is not done**: the change is reported done only once that verification has passed.

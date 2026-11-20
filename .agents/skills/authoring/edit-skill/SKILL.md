@@ -109,7 +109,7 @@ Validate skill dependencies and their actual call and policy-read paths under th
   entry's intended behavior, with the user's words quoted and the installed text it amends named.
 - Write the edit in the checkout step 4 resolves, on the branch **Branch and commit** selects — the batch's own
   branch while a batch is in flight and its pull request has not merged — commit it, and push it to
-  that branch's pull request once its pre-push checks pass, opening a draft when the branch has
+  that branch's pull request once the checks the GitHub rule's **Pre-Push Gate** defines pass, opening a draft when the branch has
   none; this holds for a source pull request **Branch and commit** selects as for an agent-configuration one.
   When the checkout holds the active task's uncommitted or source-branch work, write and commit the
   edit from a separate worktree on the selected branch, leave the task's tree untouched, and stage
@@ -341,9 +341,8 @@ user's review of the source pull request overlaps it.
    1. **Branch and commit.** Select the edit's pull request under the GitHub rule's **Branches and Pull Requests** — never put it onto a
       source branch, the one checked out included, except guidance that rule puts on the source pull
       request it depends on, which merges with it. Commit the `.agents` files, never a provider
-      mirror, and push each step once its pre-push checks pass. Open the pull
-      request as a draft. If the merge is already authorized, run `merge-gate`'s **Readiness** after verifying
-      the pull request. **Check prose duplication** and **Brief `review-pass`'s final acceptance** review what no earlier pass covered, and
+      mirror, and push each step once the checks the GitHub rule's **Pre-Push Gate** defines pass. Open the pull
+      request as a draft; it stays draft until `merge-gate` marks it ready as the last step before its merge. **Check prose duplication** and **Brief `review-pass`'s final acceptance** review what no earlier pass covered, and
       **Check the diff file list against the default branch, then merge** merges it. Carry out each authorized transition as it becomes eligible. An
       open pull request leaves the current guidance in use. A source fix required by step 3 is source work: it goes onto the source pull request
       the work continues in its repository under the same rule and merges as that work does.

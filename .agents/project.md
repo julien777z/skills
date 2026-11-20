@@ -12,8 +12,12 @@ The descriptions also cover work that file patterns alone cannot identify.
 | `http.md` | Designing or changing HTTP clients, provider calls, server API operations and policy, or response statuses. |
 | `poetry.md` | Changing Python dependencies, project configuration, or test setup. |
 | `pydantic.md` | Defining models and settings or changing validation and serialization. |
-| `python.md` | Editing Python typing, modules, control flow, errors, logging, or style. |
-| `react.md` | Building components, hooks, layouts, or Next.js App Router surfaces. |
+| `python.md` | Editing Python typing, imports, modules, constants, functions, control flow, or logging. |
+| `python-boundaries.md` | Changing Python settings, client injection, model placement, caching, external API calls, or error handling. |
+| `python-formatting.md` | Formatting Python code or writing its docstrings and comments. |
+| `react.md` | Building components, hooks, rendering and events, or Next.js App Router surfaces. |
+| `react-copy-and-forms.md` | Writing interface copy, confirmation dialogs, or forms in React. |
+| `react-layout.md` | Building or changing shared surfaces, page layouts, spacing, or responsive behavior in React. |
 | `sqlalchemy.md` | Defining tables or relationships, writing queries, or handling sessions. |
 | `typescript.md` | Editing types, modules, imports, functions, or external-data boundaries. |
 

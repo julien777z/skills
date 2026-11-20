@@ -8,8 +8,9 @@ short_description: 'Plan source and product changes for approval; validate canon
 
 Plan source and product changes, get them approved, then run them the same way every time.
 **Plan** decides what will be built; canonical guidance changes enter **Execution** directly and
-are validated by their evidence, skill-test, review, and acceptance gates, except a substantial
-skill change the user asks for, whose plan is a proposed flow.
+are validated by the gate set the GitHub rule's **Merge Authorization** states for an
+agent-configuration pull request, except a substantial skill change the user asks for, whose plan
+is a proposed flow.
 
 ## Dependencies
 - `review-proposal`
@@ -78,8 +79,8 @@ Follow-ups that skip plan approval still write this record without a new approva
   approval question. Ask only about a concrete unresolved choice and continue independent work.
   Completing that choice does not require approval of a separate plan. Canonical guidance changes
   under `.agents`, apart from the skill changes the next bullet plans, do not wait for a plan or an output-format approval: their request or an encountered guidance gap starts
-  the guidance-correction workflow, and their evidence, skill-test, review, and acceptance gates
-  verify it, on the timing `edit-skill`'s **Recording During A Task** sets for an active task,
+  the guidance-correction workflow, and the gate set the GitHub rule's **Merge Authorization**
+  states verifies it, on the timing `edit-skill`'s **Recording During A Task** sets for an active task,
   whether the user asked for the correction directly or the run noticed it.
 - **A skill change the user asks for gets a plan when a source change of its size would, and that
   plan is a proposed flow.** A trivial skill change, or a small, clearly specified follow-up, is
@@ -279,10 +280,11 @@ guidance already answers.
 - Carry the user's authorization for the task through its ordinary work, and ask only where its
   **What An Authorization Covers** says a new authorization is needed.
 - Merge, deployment, publication and release are separate outcomes, authorized as `merge-gate`'s
-  **Authorization** says. Without that authorization, complete the reviewable work and stop there,
-  leaving the pull request draft.
-- Once the merge is authorized and the pull request is verified, invoke `merge-gate`'s
-  **Readiness**. The full merge gate follows the source stream's checks.
+  **Authorization** says. Without that authorization, the task is complete at the reviewable draft
+  pull request with its local checks passed, as the GitHub rule's draft bullet says.
+- With the merge authorized, the pull request stays draft through the source stream's review;
+  `merge-gate` marks it ready, as the last step before the merge, once `review-pass` has accepted
+  its head.
 - A change that has failed 3 review rounds is not repaired again: put its disposition to `council`
   in **Ask** mode as [review rounds](references/review-rounds.md) says, and follow its ruling.
 
@@ -328,7 +330,7 @@ Apply `pre-production`'s encountered-issues policy while making the change, hand
 
 ### Ongoing Simplification
 
-A finished plan step or worker task gets its local checks under the **Pre-Push Gate**. When a later
+A finished plan step or worker task gets its local checks under the GitHub rule's **Pre-Push Gate**. When a later
 step builds on it — reads its schema, calls its interface, extends its code — it also gets one
 `acceptance-gate` Diff question over its diff, with the intent statement, before that later step
 starts, so a wrong foundation is caught before more is built on it. A step nothing later depends
@@ -343,8 +345,9 @@ covers the changes, the similar code they resemble and the sibling modules aroun
 
 ### Pre-Push Gate And Reported Outcomes
 
-Apply the [pre-push gate](references/pre-push.md) to each push, and
-[reported outcomes](references/outcomes.md) before reporting or building on a result: read the
+Apply the GitHub rule's **Pre-Push Gate** to each push, read with
+[verification](references/verification.md)'s **Pre-Push Checks**, which names what this skill
+supplies for it, and [reported outcomes](references/outcomes.md) before reporting or building on a result: read the
 state an action left, at its source, and do whatever that read shows wrong next, invoking
 `merge-conflict` when a push read-back shows a conflicting base.
 
@@ -464,7 +467,7 @@ Two streams run side by side from here: the guidance stream and the source strea
 4. When **Task Authorization** finds the merge authorized, send step 3's message together with the
    invocation of `merge-gate`, passing the accepted head, `review-pass`'s **Checks** results with their
    commands and head as the behaviors local tests already cover, every exclusion it returned with
-   its evidence, and, as its fix rule, the **Pre-Push Gate** with each fix folded into its commit
+   its evidence, and, as its fix rule, the GitHub rule's **Pre-Push Gate** with each fix folded into its commit
    through `rewrite-git-history`'s fixup route. It inventories exact-head hosted coverage, obtains fresh results only where no
    equivalent terminal coverage exists, fixes what relevant checks report and merges; when it returns, send one line with the
    result it read: the merge, or the gate that holds it. Otherwise send step 3's message; the pull

@@ -22,7 +22,8 @@ run; each doctor owns only its domain.
 
 Read the applicable dependencies before beginning. Apply their approval, target-contract, compatibility, migration,
 and encountered-issue policies within the invoking doctor's declared change boundary; they do not
-expand that boundary.
+expand that boundary, apart from a defect or vulnerability the run notices, which **Resolve The
+Scope** puts inside every doctor's boundary.
 
 A doctor declares this skill as a dependency and supplies five things:
 
@@ -51,9 +52,15 @@ Do not turn that trace into a proactive audit of unrelated items encountered alo
 
 The doctor's dispositions also bound what may change, independently of which files may be read.
 Enforce that boundary during dependency execution, planning, implementation, and final review.
-General encountered-defect instructions do not authorize changes outside it. Follow the doctor's
-reporting disposition for excluded findings; neither recording nor a refused deferral authorizes
-their implementation in this run.
+A cleanup finding outside it follows the doctor's reporting disposition; neither recording nor a
+refused deferral authorizes its implementation in this run.
+
+**A defect or vulnerability the run notices is never outside the boundary.** Whatever its size, its
+area, the lens that met it or the doctor running, a confirmed defect or exploitable vulnerability
+joins the remediation plan as a required entry and is fixed in this run at its owner, as
+`pre-production`'s **Scope Follows The Defect, Not The Request** says of a defect the work notices.
+It is never reported in place of a fix, deferred or left for another doctor. What a doctor's
+disposition may still exclude is cleanup that fixes no defect.
 
 Discover the repository's actual languages, projects, ownership boundaries, runners, generators,
 validation commands, and dependency graph at runtime. Do not assume a framework, directory layout,
@@ -169,7 +176,7 @@ combined result, and the full suite and every check that needs a shared resource
   as one finishes, the next group in the wave starts.
 - **Each worker gets one group.** Its brief carries the group's entries and files, the remedies the
   lenses state, the intent statement and the run's branch it pushes to. It works in its own git
-  worktree detached at that branch's remote head, changes only its group's files, runs the pre-push checks `execute-task`'s **Pre-Push Gate**
+  worktree detached at that branch's remote head, changes only its group's files, runs the pre-push checks the GitHub rule's **Pre-Push Gate**
   defines, and pushes each step with `git push origin HEAD:<branch>` after fetching and rebasing,
   as the GitHub rule's **Branches and Pull Requests** says.
 - **A shared resource is never used by two workers at once** — a database, a port, a running stack.
@@ -197,7 +204,7 @@ behavior.
 
 ## Run Repository-Native Checks
 
-Run the pre-push checks `execute-task`'s **Pre-Push Gate** defines, then any further
+Run the pre-push checks the GitHub rule's **Pre-Push Gate** defines, then any further
 repository-native check applicable to the changed files and their consumers: formatting, static
 analysis, tests, builds, code generation, and contract checks. Report a check category that is not
 configured rather than inventing one.
@@ -212,8 +219,8 @@ assignment state and host receipt in the unified ledger:
 - one tries to disprove the decisions, checks what was retained, and reviews unresolved evidence.
   The doctor names what this reviewer challenges.
 
-Both reviewers check the delivered changes against the doctor's boundary and required exception
-evidence, including changes introduced while incorporating the base branch or resolving conflicts.
+Both reviewers check the delivered changes against the doctor's boundary, which holds the fix for
+every defect or vulnerability the run noticed, and required exception evidence, including changes introduced while incorporating the base branch or resolving conflicts.
 
 Validate their findings, fix every confirmed in-scope issue, rerun affected checks, and repeat the
 relevant review until no confirmed issue remains or a genuine external blocker or user decision
@@ -224,16 +231,18 @@ review-rounds reference sets; a change that fails its third round gets that refe
 
 Once review is clean, put the complete diff to `acceptance-gate`'s final-acceptance question
 against the intent statement. Answer every flag under `acceptance-gate`'s **Bounds**, pushing each
-fix as its own increment through `execute-task`'s **Pre-Push Gate**.
+fix as its own increment through the GitHub rule's **Pre-Push Gate**.
 
 ## Defer Leftovers
 
 A run's own leftover findings are not deferred: the next run rediscovers them, so the report names
-them and nothing is written. A confirmed defect within the doctor's change boundary is fixed in this run,
-whatever its size, rather than left for a later one. What goes through `defer-scope`, at the
-moment the decision is made, is a decision the user declined — recorded so the next run carries it
-rather than presenting the finding again — and anything found outside the run's lenses that no
-check rediscovers, subject to the doctor's reporting disposition and change boundary. Any other
+them and nothing is written. A confirmed defect or vulnerability is fixed in this run, whatever its
+size or area, as **Resolve The Scope** says, and is never deferred. What goes through `defer-scope`,
+at the moment the decision is made, is a decision the user declined — recorded so the next run
+carries it rather than presenting the finding again — and cleanup that fixes no defect, found
+outside the run's lenses, that no check rediscovers, which is the one kind of work
+`pre-production` itself leaves to a deferral, subject to the doctor's reporting disposition and
+change boundary. Any other
 refused admission means in-boundary work is done in this run, unless the refusal names close,
 which is recorded canceled with its reason and reconsideration criterion. A finding
 stated only in chat, the plan, or the report is not recorded.

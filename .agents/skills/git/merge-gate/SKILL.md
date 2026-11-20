@@ -1,7 +1,7 @@
 ---
 name: merge-gate
-description: Ready a pull request for its authorized merge, then verify its delivery dependencies, gate its exact head, resolve conflicts, squash-merge and verify the result. Use once merge is authorized, including to mark ready while a merge gate is pending. Holds what authorizes a merge, deployment, publication or release, what follows a merge, and when a pull request may be polled.
-short_description: 'Ready a pull request for its authorized merge, gate its exact head, and merge it.'
+description: Merge a pull request its caller is authorized to merge, once its review has accepted a head — verify its delivery dependencies, take it out of draft as the last step before the merge, gate that exact head, resolve conflicts, squash-merge and verify the result. Use when an authorized merge is reached; a pull request leaves draft only here. Holds what authorizes a merge, deployment, publication or release, what follows a merge, and when a pull request may be polled.
+short_description: 'Take a reviewed pull request out of draft, gate its exact head, and merge it.'
 ---
 
 # Merge Gate
@@ -75,12 +75,18 @@ A rate limit is waited out through the host's wait mechanism and retried on the 
 
 ## Readiness
 
-Once merge is authorized, mark the open pull request ready and verify the state through **Transport**.
-A caller may invoke this step as soon as it has verified the target, before supplying the accepted
-head and other inputs for **Check Gate**. The full gate runs this step if the caller has not.
-Keep the pull request ready while review, checks, conflicts or delivery prerequisites hold the
-merge. Readiness starts review and applicable checks. Acceptance and the merge gates still govern
-whether the accepted head can merge.
+A pull request leaves draft only here, as the last step before its authorized merge, which is how
+this skill implements the draft bullet of the GitHub rule's **Branches and Pull Requests**: its
+test jobs run once, on the head about to merge.
+
+- The caller's review has accepted the head in **Inputs** before this skill is invoked. No caller
+  runs this step on its own, ahead of that acceptance, to start tests, or to hand the pull request
+  to the user.
+- **Check Gate** step 3 marks the open pull request ready, after steps 1 and 2 have bound the
+  accepted head and admitted its delivery dependencies, and verifies the state through
+  **Transport**. A dependency that blocks the merge leaves the pull request draft.
+- Once ready, the pull request stays ready while a check, a conflict or a fix made here holds the
+  merge; a fix pushed in that state starts test jobs, and the gate repeats on its head.
 
 ## Check Gate
 
@@ -103,7 +109,8 @@ whether the accepted head can merge.
    requirement. After the dependency merges, update every consuming reference to the maintained
    target chosen by the user or repository guidance, revalidate the consumer's new head through
    the caller's fix rule, and repeat this inventory before merging.
-3. **Account for checks started by readiness.** The state transition can start duplicate test
+3. **Mark the pull request ready, and account for the checks that starts.** Run **Readiness**
+   when the pull request is still draft. The state transition can start duplicate test
    jobs. It does not invalidate a terminal result
    already produced for the exact head. Reuse that result only when the source, resolved
    dependencies, configuration, toolchain, runner, trigger context, job conditions, and affected

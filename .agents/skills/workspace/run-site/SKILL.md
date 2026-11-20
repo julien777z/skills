@@ -7,7 +7,9 @@ short_description: 'Start an application stack and perform browser verification 
 # Run Site
 
 Start and verify the stack within the requested scope. When browser verification applies under
-**Principles**, its deliverable includes screenshots and a recording showing signed-in functionality.
+**Principles**, its deliverable includes screenshots and a recording showing signed-in functionality
+wherever the change is visible on a page; a change no page shows is verified by request checks,
+with no capture.
 
 ## Dependencies
 - `pre-production`
@@ -106,10 +108,14 @@ preserve configured ports.
 
 After selecting browser verification applicability under **Principles**, perform the following
 walkthrough only when it applies. Passing tests, type checks, and a clean build do not replace an
-applicable walkthrough. A change that can alter what the app does — new or reordered UI, layout or
-spacing, a component's props or state, a hook, a route, a redirect, middleware, an auth round trip, or the shape
-of a request — is walked end to end before it is reported done, however few lines it took; the
-walkthrough follows the push rather than holding it. An
+applicable walkthrough. A change that can alter what a page shows — new or reordered UI, layout or
+spacing, a component's props or state, a hook, a redirect or an auth round trip the reader sees — is
+walked end to end before it is reported done, however few lines it took; the
+walkthrough follows the push rather than holding it. **A change no page shows is verified by request
+checks, with no capture or recording**: for a route, middleware or the shape of a request, make the
+requests the change affects against the running stack, allowed and refused cases alike, and read
+each status, header, redirect target and body against the intended behavior; the report states
+those requests and results in words. It is captured only when the user asks. An
 edit that provably cannot reach behavior — rewording text already rendered in its existing slot, a
 comment, prose in Markdown — is verified by reading it and by finding the new text in the build
 output and the old text nowhere in the tree. Judge by what the edit touches, not how small it looks:
@@ -258,7 +264,8 @@ run above; say which kind each capture shows, since the two look identical.
 
 ### Evidence
 
-Record the flow until the feature is exercised to its end — the form submitted and its result read
+Record and capture only a change that is visible on a page; a change verified by request checks, as
+**When a walkthrough is owed** says, sends none. Record the flow until the feature is exercised to its end — the form submitted and its result read
 back, the item seen in its list, the setting confirmed after a reload. Record through the selected
 tab's existing browser context, preserving its authenticated state; start before sign-in only when
 sign-in is part of the flow being exercised.

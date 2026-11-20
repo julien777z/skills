@@ -34,8 +34,7 @@ any fix `merge-gate` makes, and review afterwards whatever merged without an ear
 1. The pull requests the user names, or else every open pull request `list-prs` returns for the
    task. Freeze that set at invocation and verify each head and state on the host.
 2. Leave out a pull request confined to agent configuration.
-3. Run `merge-gate`'s **Readiness** for every remaining target.
-4. A pull request whose task has not supplied its reviewed result is finished first: carry its
+3. A pull request whose task has not supplied its reviewed result is finished first: carry its
    unfinished implementation and verification through `execute-task`, in the task's active run when
    there is one, and use the head that run's review accepts. If the user named the pull request,
    use it as it stands.
@@ -48,11 +47,12 @@ depends on to merge.
 1. **Acceptance.** Reuse `acceptance-gate`'s final-acceptance verdict when the head it accepted is
    the current head, or a rewrite whose tree is identical to it. Otherwise put the head to the
    final-acceptance question. A flag is fixed and gated under that skill's **Bounds**; the
-   target waits while one stands.
-2. **Check gate.** Invoke `merge-gate` with the accepted head, validation receipts, established
+   target waits, still draft, while one stands.
+2. **Check gate.** Invoke `merge-gate`, which marks the target ready as the last step before the
+   merge, with the accepted head, validation receipts, established
    exclusions and the fix rule for every fix it makes — a check fix, a conflict resolution, a commit
    someone else pushed: `review-pass` runs again over that fix's delta, and the fix is pushed through
-   `execute-task`'s pre-push reference, whose verdict is its gate. A fix counts only once both have
+   the GitHub rule's **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
    passed. `merge-gate`'s **Check Gate** owns complete-diff classification, check inventory, failure
    handling and the evidence required before merging.
 3. **Merge.** `merge-gate` squash-merges at the gated head and verifies it. Record the merge commit and its first parent with `session-ledger`.

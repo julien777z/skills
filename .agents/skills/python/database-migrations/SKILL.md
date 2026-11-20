@@ -54,8 +54,8 @@ Shared tooling lives in the project's shared migration package (runner, revision
   It creates a chain's revision only when the pull request has no unlocked revision on that chain.
   When it has one, the change goes into that file, generated and moved in or written by hand, under
   **Applied Is What Makes History** below; a schema change never opens a second revision.
-- Review handwritten and generated revision docstrings under the shared Python rule's **Formatting
-  and Documentation** migration-revision exception before accepting the revision.
+- Review handwritten and generated revision docstrings under the shared Python formatting rule's
+  **Formatting and Documentation** migration-revision exception before accepting the revision.
 - **A column rename is always hand-written.** Autogenerate compares two schema snapshots, in which a
   rename is indistinguishable from a drop plus an add, so it renders every rename as `drop_column` +
   `add_column` and discards the column's data. Write `op.alter_column(table, old_name,
@@ -165,6 +165,9 @@ format transition or recovery mechanism for data explicitly declared disposable 
   ```python
   # Locked: an environment may have applied this revision. Put later changes in a new revision.
   ```
+
+  The marker is this skill's one departure from the shared Python formatting rule's **Formatting
+  and Documentation**, which otherwise admits no comment at the top of a file.
 
   A lock the owner places is a push hold and nothing more. Until the owner unlocks, no change to a
   locked revision is pushed, no new revision is pushed, and no source change that depends on either

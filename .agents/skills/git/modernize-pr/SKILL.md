@@ -126,7 +126,7 @@ For a `MODERNIZE` disposition:
    disagreement reopens the disposition rather than being guessed through.
 3. Compare the series before and after with `git range-diff`, and read the final diff against the
    base: no intended behavior is gone, and nothing the base already has is brought back.
-4. Run the checks `execute-task`'s pre-push reference requires for the touched area. Tell a real
+4. Run the checks the GitHub rule's **Pre-Push Gate** requires for the touched area. Tell a real
    failure from one the base already has or one the environment caused, with its evidence.
 5. Push with `--force-with-lease` pinned to the remote head recorded before the update. When the
    lease fails, fetch and judge again rather than overwrite someone's new work.

@@ -20,7 +20,7 @@ built on.
     while that outcome is unmet.
 - **Whatever that read shows wrong is the next thing done**, ahead of every queued item, and is
   never carried to "the next push" or bundled behind other work. A conflict is brought in through
-  `merge-conflict`, delivered under the [pre-push gate](pre-push.md), and read back. A base that
+  `merge-conflict`, delivered under the GitHub rule's **Pre-Push Gate**, and read back. A base that
   only moved, with no conflict, is brought in once, by `review-pass` at the selected workflow's
   completion, before the final acceptance.
 - **A delegated worker's report of an outcome is a claim, never evidence.** Before relaying it or

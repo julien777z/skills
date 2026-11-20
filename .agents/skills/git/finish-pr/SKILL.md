@@ -56,8 +56,9 @@ specific set.
   the run's target inventory through `session-ledger`. If discovery is incomplete, also record
   discovery as pending and recover the missing records. Add all recovered targets before marking
   discovery complete; known units can proceed while recovery runs.
-- Verify each target's branch, head and state on the host. For each authorized merge, run
-  `merge-gate`'s **Readiness** as soon as the target is verified, before work or review can hold it.
+- Verify each target's branch, head and state on the host. A target stays draft through its work
+  and review: `merge-gate` marks it ready, as the last step before the merge, once `review-pass`
+  has accepted its head.
 - **Open recorded work `review-pass` returns is built on the target before its review starts**;
   review, merge and a dependency-held repoint keep their own order under **Workflow** and
   **Dependent Pull Requests**.
@@ -79,7 +80,7 @@ dependent unit. Its dependency gates its merge, never its review:
   the dependent is a fix that `review-pass` reviews as a new delta. A dependency that merged
   before the dependent's review starts is repointed first, as below, and the dependent is then
   reviewed once on that head.
-- The dependent completes its review at its accepted head and holds there while the
+- The dependent completes its review at its accepted head and holds there, still draft, while the
   dependency is unmerged, so `merge-gate` later receives that review's coverage. The hold is not a
   withheld merge and does not end the run: other selected units proceed while it waits for the
   dependency's merge through the host's event route, and the run ends only once it lands or reaches
@@ -89,8 +90,8 @@ dependent unit. Its dependency gates its merge, never its review:
 - Once the dependency merges, repoint every consuming reference as `merge-gate`'s
   delivery-dependency gate says, regenerating any lockfile with the repository's tooling. The
   repoint's diff holds only those reference edits and the lockfile entries they change.
-  `review-pass` reviews it as a new delta, it passes the validation it affects and the pre-push
-  checks, and `merge-gate` receives the head `review-pass` accepts.
+  `review-pass` reviews it as a new delta, it passes the validation it affects and the GitHub
+  rule's **Pre-Push Gate**, and `merge-gate` receives the head `review-pass` accepts.
 - Then land the dependent under the same invocation's merge authorization. A user's explicit
   withholding of merge still ends the unit at its accepted head.
 
@@ -115,7 +116,7 @@ Follow the active task's recorded priorities when choosing the next eligible uni
    - every exclusion it returned, with its evidence;
    - the fix rule for every fix `merge-gate` makes — a check fix, a conflict resolution, a commit
      someone else pushed: `review-pass` runs again over that fix's delta, and the fix is pushed through
-     `execute-task`'s pre-push reference, whose verdict is its gate. A fix counts only once both have
+     the GitHub rule's **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
      passed.
 3. After a verified merge, run **Local Checkout**. Record the merge and checkout outcome, or the
    gate that holds the merge, with `session-ledger`, and continue to the next unit.
@@ -125,11 +126,15 @@ with its verified dispositions. Resume any unit without a disposition even if a 
 repository's pull request already merged. Work through every merge gate the run can resolve
 within its scope and continue through the authorized merge when the gate clears. Every entry must
 be verified merged with `merge-gate`
-returned, ended at its accepted head with merge withheld, or verified ready and held by a gate
-that is reported. A failed readiness transition is itself a host gate with its evidence. GitHub
+returned, ended at its accepted head with merge withheld, or held by a gate that is reported,
+draft where the gate held it before `merge-gate` marked it ready. A failed readiness transition is
+itself a host gate with its evidence. GitHub
 head lag and a retryable rate limit are nonterminal.
 
 ## Local Checkout
+
+This is the primary-checkout refresh the GitHub rule's **After Agent Sync** requires after a merge
+of agent configuration, run here after every verified merge.
 
 - Locate the primary checkout in Git's worktree inventory and verify the remote identifies the
   merged repository. Fetch the pull request's target branch from that remote and confirm the
