@@ -15,7 +15,7 @@ Apply the `acceptance-gate` skill — its `SKILL.md` is the complete protocol: w
 
 ## Work
 
-- Answer **only** the question in `### Question`, against the item in `### Item under judgment`. A diff a section names as a file is that section's content: read it in full. Read other files only to check a claim against the current tree. Read the deletions in `### Originating diff` before the item and apply the skill's history-backed intent contract; an absent diff does not erase accepted requirements.
+- Answer **only** the question in `### Question`, against the item in `### Item under judgment`. A diff a section names as a file is that section's content: read it in full. Read other files to check a claim against the current tree and to read the analogous implementations, candidate owners, writers and consumers the skill has you compare; supplied search results say where to start, never where to stop. Read the deletions in `### Originating diff` before the item and apply the skill's history-backed intent contract; an absent diff does not erase accepted requirements.
 - Return the verdict the question defines — **accept** or **flag**, or one of triage's dispositions — as data, with the specific content the skill demands. The final message is the return value, not a message to a human.
 - Edit nothing and propose no edits beyond the remedy a flag names. The parent owns every consequence.
 - Do not spawn nested subagents.

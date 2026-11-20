@@ -214,27 +214,33 @@ context and returns its verdict into the step waiting on it; nothing else does b
   is paused, the unblocking work is launched in the freed slot, so the count never passes five, and
   the paused worker resumes once that work lands. Its brief has it take the shared resource with
   priority, through its lock's priority option where the resource has one.
-- **Assign one implementation owner per coherent scope, and a fresh worker for each delegated
-  task.** The primary agent retains integration, dependencies, product decisions and orchestration.
+- **Assign one implementation owner per coherent scope: one worker builds a coupled feature across
+  its plan steps, and each separate scope gets a fresh worker.** The primary agent retains integration, dependencies, product decisions and orchestration.
   Delegate work that produces an independent result, not a wrapper that only invokes another
   coordinator. Before launching, settle its checked prerequisites, immutable inputs, actual
   role-resolved launch arguments and required handoff; unresolved setup stays with the current
   owner rather than becoming a worker's discovery task. Delegate
-  independently owned scopes with explicit files, inputs, expected result and handoff; do not split
-  a coupled feature among workers merely to increase parallelism. Workers may build in parallel
+  independently owned scopes; do not split a coupled feature among workers, by plan step or
+  otherwise, merely to increase parallelism. Workers may build in parallel
   only when their edits and resources do not overlap and neither needs an unsettled output from the
-  other. A worker ends with its task; the next gets a fresh context. Read-only gates and reviews may
-  run alongside building at the cadence their owning skill sets.
+  other. A worker ends with its scope; the next scope gets a fresh context. Read-only gates and
+  reviews may run alongside building at the cadence their owning skill sets.
+- **Every implementation and fix worker gets the [worker brief](references/worker-brief.md) with
+  every field filled**: the intent, the scope and exact files, the reuse receipts from planning, the
+  checks to run, the push cadence and what to report. A skill that delegates edits fills that form
+  rather than writing its own.
 - **A running worker is told when guidance it works under changes**: which skill, rule or agent
   definition changed, each section that changed, and what it says.
 - **An editing worker's own worktree** is the host's worktree isolation where it offers one,
   otherwise a worktree the brief names under the task's working-files folder, made from the branch
   the worker pushes to.
-- **A delegated task is one plan step or one fix round, never a phase**, so each worker's context
-  stays the size of its step. A follow-up after a worker's task ended — a gate's fix steps, a
+- **A delegated task is one coherent scope, never a phase**: a plan step that stands alone, the
+  plan steps of one coupled feature built in order by the same worker, or one fix round. Steps are
+  coupled when one reads another's schema, calls its interface or extends its code; steps with
+  separate owners, files and resources are separate tasks, so each worker's context stays the size
+  of what must be held together. A follow-up after a worker's task ended — a gate's fix steps, a
   review's findings, a reviewer's question — is a new task: assign nontrivial execution to a fresh
-  worker with the findings, the files they name, the branch and its head. File count alone does not
-  make a task trivial. A finished worker is never resumed for a follow-up, since
+  worker with the brief's fix form. File count alone does not make a task trivial. A finished worker is never resumed for a follow-up, since
   resuming reloads its whole earlier context to make a small change.
 
 ## Launch Failure Reporting

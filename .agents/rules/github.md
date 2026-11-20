@@ -86,8 +86,8 @@ alwaysApply: true
   a draft. It leaves draft once, as the last step before an authorized merge, after its review has
   passed, so its test jobs run once, on the head about to merge. Never mark one ready to start its
   tests, to show it finished, or to hand it to the user. With no merge authorized, a pull request
-  is complete as a reviewable draft whose local checks under **Pre-Push Gate** passed; its hosted
-  test jobs are required at the merge.
+  is complete as a reviewable draft whose local checks under **Pre-Push Gate** and completion review
+  have passed; its hosted test jobs are required only at the merge.
 - Keep pull requests focused and give them descriptive titles and descriptions: a title stays short,
   and a body may run long with bullets and validation notes. Request appropriate reviewers when the
   repository workflow requires them.

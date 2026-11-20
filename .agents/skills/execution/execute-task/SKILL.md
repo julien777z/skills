@@ -62,10 +62,10 @@ the task. Where it owns a stage, return its result to this run rather than start
 
 Every task that changes files starts here, and so does every follow-up that arrives while one runs.
 
-Before choosing a design that adds an operation, helper, or guard or changes a shared operation,
-contract, subsystem, runtime boundary, or independent consumer, apply `code-simplify`'s
-**Before Choosing A Design** check and add the complete record to the task before deciding.
-Follow-ups that skip plan approval still write this record without a new approval step.
+Before choosing a design, and before the first edit on a path that takes no plan, apply
+`code-simplify`'s **Before Choosing A Design** check to everything the change will add and write
+its receipt in the task record. A small follow-up, a bug fix and a worker's task each write it
+without a new approval step; only an edit that adds nothing skips it.
 
 ### When A Plan Is Needed
 
@@ -261,11 +261,10 @@ Execution starts once a required plan is approved, or immediately when **When A 
 Before implementation and whenever new work is admitted, delegate the work `subagent-matrix`'s
 **When To Delegate** gives to a subagent, launched under its **Dispatch**; a task waiting on a worker never holds another
 independent one. Reassess ownership after each finding or follow-up. Each editing worker gets a
-worktree of its own, and each brief states the problem, the invariant the fix keeps and the
-requirement to find and reuse how the repository already solves it, never a mechanism its author
-invents; where the worker finds none, it proposes one with what its search found. The files a brief
-names bound the scope, not the design. Before writing a script or doing a check by hand, the agent
-and every worker look in the repository's `.agents/tools/`, and every brief points there. In a
+worktree of its own and `subagent-matrix`'s worker brief, filled with the plan's reuse receipts. Its
+report carries a receipt for each thing it added; one without them goes back to the worker before
+its head is built on. Before writing a script or doing a check by hand, the agent
+and every worker look in the repository's `.agents/tools/`. In a
 repository the owner runs, an operation the task will run more than once, or is about to run again,
 is first written as a helper there, created with its folder if missing, committed as source work on
 the pull request the GitHub rule selects for it, and run from there each time; a shell function,
@@ -281,8 +280,8 @@ guidance already answers.
 - Carry the user's authorization for the task through its ordinary work, and ask only where its
   **What An Authorization Covers** says a new authorization is needed.
 - Merge, deployment, publication and release are separate outcomes, authorized as `merge-gate`'s
-  **Authorization** says. Without that authorization, the task is complete at the reviewable draft
-  pull request with its local checks passed, as the GitHub rule's draft bullet says.
+  **Authorization** says. Without it, the task is complete at the reviewable draft pull request whose
+  local checks and **Completion** review have passed; hosted test jobs are required only at the merge.
 - With the merge authorized, the pull request stays draft through the source stream's review;
   `merge-gate` marks it ready, as the last step before the merge, once `review-pass` has accepted
   its head.
@@ -435,9 +434,9 @@ a small review and a large one a full review of the new work.
 
 Follow the selected workflow’s declared verification and delivery sequence and any hold it places on delivery.
 
-Two streams run side by side from here: the guidance stream and the source stream. When the task
-has more than one open pull request, in either stream and any repository, invoke `review-pass`'s
-**Combined Review** over them once each has its accepted head and before any of them merges.
+Two streams run side by side from here: the guidance stream and the source stream. When the set
+`review-pass`'s **Combined Review** defines holds more than one pull request, invoke it once each has
+its accepted head and before any of them merges; a pull request outside that set waits on none.
 
 - **Guidance stream.** Invoke `process-ledger` for the task's private ledger. It sends the
   `guidance_correction` batch it freezes to `edit-skill`'s **Guidance Delivery** route, delegated
@@ -469,8 +468,9 @@ has more than one open pull request, in either stream and any repository, invoke
 4. When **Task Authorization** finds the merge authorized, send step 3's message together with the
    invocation of `merge-gate`, passing the accepted head, `review-pass`'s **Checks** results with their
    commands and head as the behaviors local tests already cover, every exclusion it returned with
-   its evidence, and, as its fix rule, the GitHub rule's **Pre-Push Gate** with each fix folded into its commit
-   through `rewrite-git-history`'s fixup route. It inventories exact-head hosted coverage, obtains fresh results only where no
+   its evidence, and, as its fix rule, `review-pass` over each fix's delta since the accepted head and the
+   GitHub rule's **Pre-Push Gate**, with each fix folded into its commit through `rewrite-git-history`'s
+   fixup route. It inventories exact-head hosted coverage, obtains fresh results only where no
    equivalent terminal coverage exists, fixes what relevant checks report and merges; when it returns, send one line with the
    result it read: the merge, or the gate that holds it. Otherwise send step 3's message; the pull
    request stays draft.
@@ -482,14 +482,14 @@ The ready-for-review message takes exactly this shape, one message per pull requ
 **Ready for review:** <pull request URL>
 
 - **What landed:** <each requested outcome, one clause each>
-- **Review:** <full | delta `<reviewed head>..<head>` | trivial delta `<reviewed head>..<head>` | nothing new> · review loop <n> round(s), <n> finding(s) fixed · acceptance passed on `<head>` — leave out each count `review-pass` did not run
+- **Review:** <full | delta `<reviewed head>..<head>` | nothing new> · review loop <n> round(s), <n> finding(s) fixed · acceptance passed on `<head>` — leave out each count `review-pass` did not run
 - **History:** <n> commits (<subject> · <subject> · …)
 - **Fixed on the way:** <each incidental fix, or none>
 - **Deferred** (over the size budget):
   1. <item> — <record link>
 - **Still running:** <the authorized merge through `merge-gate` (CI ~<n> min) | the guidance fixes from this task that have their own pull request (<n> correction(s)) | nothing>
 
-**Next:** <review the pull request; send follow-ups here, `/finish-pr` to review the whole pull request and merge, or `/merge-now` to merge first and review after | review the pull request; it merges once its checks pass>
+**Next:** <review the pull request; send follow-ups here, `/finish-pr` to review what this pass has not and merge, or `/merge-now` to merge first and review after | review the pull request; it merges once its checks pass>
 ```
 
 The run stays open until both streams finish: the source stream when its message is sent, or when

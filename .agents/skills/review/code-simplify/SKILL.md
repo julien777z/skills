@@ -19,9 +19,21 @@ it whole before the pass.
 
 ## Before Choosing A Design
 
-Write the [Reuse and removal](references/rubric.md#reuse-and-removal) record for candidate
-designs and review deltas. In planning, read and report evidence only. Apply it again when a
-follow-up changes the proposed mechanism.
+**Search for an existing owner before writing anything a change adds**: a function, component,
+hook, type, constant set, fixture, configuration entry or block of inline logic. This holds on
+every path — a planned design, a small follow-up, a bug fix, a delegated worker's task — and only
+an edit that adds nothing, such as a typo fix or a rename, skips it.
+
+- Search the repository and its shared packages by what the addition does and by its key
+  operation, never by the name it would be given or by filename; a read of the sibling modules
+  alone cannot find the owner another package holds.
+- Write the [Reuse and removal](references/rubric.md#reuse-and-removal) receipt, one line per
+  addition, in the task record before the edit: what was searched for, what was found, and the
+  decision to reuse, extend with a parameter, or write new with the reason.
+- That section names the designs that also write its three fields.
+
+In planning, read and report evidence only. Apply the check again when a follow-up changes the
+proposed mechanism.
 
 ## 1. Scope
 
@@ -50,7 +62,9 @@ follow-up changes the proposed mechanism.
 - **Subagents review; the parent applies.** Each returns findings anchored to path and line with
   severity and remedy, and edits nothing. The parent drops duplicates and findings another subsumes,
   and checks each remaining finding against the code before acting on it.
-- Run the rubric's five greps first, then its standards, then trace changed flows.
+- Run the rubric's five greps first, then its standards, then trace changed flows. For each thing
+  the scope adds, make **Before Choosing A Design**'s search yourself, whether or not a receipt was
+  written, and check a written receipt against what the search finds.
 
 ## 3. Fix
 

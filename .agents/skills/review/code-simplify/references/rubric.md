@@ -35,8 +35,12 @@ Findings use this scale:
 A maintainability finding is never `blocker`. It is at most `should`, and only when it is one of:
 
 - a second copy of a helper or mechanism the repository already owns (standards 3 and 4);
+- new code beside an existing helper or mechanism that would have done the job with one more
+  parameter, condition or case (standard 4);
 - an abstraction, interface or factory the change adds with a single implementation or caller, or
   one whose job something already in the project does (standards 1, 4 and 5);
+- a parameter, option, prop, flag or branch the change adds for a condition no caller produces, or
+  that every caller sets the same way (standard 1);
 - a file the change pushes past 1000 lines (standard 6);
 - a lint or type suppression the change adds (standard 7).
 
@@ -46,20 +50,35 @@ that hides a real failure, keeps its bug severity.
 
 ## Reuse And Removal
 
-For an addition, workaround, or change to an existing shared design, search by effect for existing
-owners and primitives. Before deciding, write all three fields in the task record or verdict:
+Every addition gets one receipt line, written in the task record before the edit and checked at
+review against an independent search:
 
-- **Source.** For each call in the proposed composition, cite its implementation. Name the
-  accepted caller role or authorization guard and the object scope separately. If it selects
-  fields, list its exact field or mask entries and what omission does. State the actual effects
-  and the failure or commit boundary. If no candidate exists, name the search. Flag a material
-  missing fact and state the strongest supported design.
+```text
+<what it does> · searched: <terms, by effect and key operation> · found: <owner and path, or none> · <reuse | extend: <the parameter or condition added> | new: <why no owner fits>>
+```
+
+- **Reuse** calls the owner as it stands.
+- **Extend** adds the one parameter, condition or case an owner lacks to do the job; a second
+  helper beside that owner is standard 4's finding.
+- **New** names what each candidate found cannot do; with none found, the search terms are the
+  evidence. A receipt that names no search is no receipt.
+
+A workaround, or a design that changes a shared operation, guard, contract, subsystem, runtime
+boundary or independent consumer, also writes all three fields below, in the task record or
+verdict, before deciding. Each field asks only for the facts the change has:
+
+- **Source.** For each existing piece the design calls or composes, cite its implementation and
+  state what it does and where it fails. Where it checks a caller, name the accepted caller role or
+  authorization guard and the object scope separately; where it selects fields, list its exact
+  field or mask entries and what omission does; where it writes, state the commit boundary. If no
+  candidate exists, name the search. Flag a material missing fact and state the strongest
+  supported design.
 - **Smallest change.** Name the concrete sequence or composition using existing primitives and
   what code goes away. If a new mechanism is required, name the invariant the smaller design
   breaks. For a guard around broad work, compare narrowing the callee with guarding it.
-- **Proof.** Name an observable case for the intended result and an unchanged resource where
-  collateral work matters. Seed the prior state, check dependent results, and cover commit
-  and rollback when the effect depends on a transaction.
+- **Proof.** Name an observable case for the intended result, and an unchanged resource where
+  collateral work matters. Where the effect depends on stored state or a transaction, seed the
+  prior state, check dependent results, and cover commit and rollback.
 
 ## Standards
 
@@ -75,6 +94,10 @@ owners and primitives. Before deciding, write all three fields in the task recor
      that window.
    - Where a writer can produce the state, the check is real and belongs on every sibling path that
      answers the same question.
+   - **A parameter, option, prop, flag or branch for a condition nothing uses is dead code too.**
+     Read every caller of what the change adds or widens. One that no caller sets, or that every
+     caller sets the same way, is deleted with its branch and its one value inlined; "a later
+     caller may need it" keeps nothing.
    - **Reachability is judged where the change will land**: the branch it merges into and the open
      branches it ships with, in every repository the user controls. "Set outside this repository"
      leaves the question open until those are read.
@@ -89,7 +112,8 @@ owners and primitives. Before deciding, write all three fields in the task recor
 4. **One mechanism, one implementation.** Before accepting a new helper, client or utility, search
    the whole repository for the same operation by what it does, not by its name. Two live
    implementations of one guard, check or transform is the defect, whichever came first; a different
-   error type or input shape is drift, not a reason to keep both. Variants become parameters. A
+   error type or input shape is drift, not a reason to keep both. Variants become parameters: new
+   code beside an owner that needed one more condition or parameter is folded into that owner. A
    generic helper the change adds with one caller is either used at the other sites doing that job or
    folded back into its caller.
 5. **No forwarding layers.** A function whose body is one call to another owned function, an

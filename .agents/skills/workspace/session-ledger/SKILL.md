@@ -50,8 +50,11 @@ identity, never a second authoritative copy of its records.
   the receiving owner has read the current file. Overlapping owners must settle that transfer
   before either writes.
 - Write the complete validated document to a private temporary file beside the ledger, then
-  atomically replace the ledger and read it back before reporting persistence or continuing.
-  Preserve the previous valid file when validation or writing fails; a failed write remains owed.
+  atomically replace the ledger. Read it back only where a later step depends on the write:
+  before reporting persistence, before a handoff, an ownership transfer or a worker receiving the
+  locator, and after a write that failed or was interrupted. The next update's reread covers every
+  other write. Preserve the previous valid file when validation or writing fails; a failed write
+  remains owed.
 
 ## Workflow
 
@@ -166,9 +169,12 @@ This skill authorizes those comments and their edits under the GitHub rule's **C
   `awaiting_pull_request` for that part, and opening the pull request posts its backup and puts
   the comment's URL in that item's place.
 - **Posting and recording are one step.** Add the comment's URL to the entry's `recovery_comment`
-  list in the ledger update that follows the post, before any other work. When an entry a comment
-  holds changes — a new commit, a stage result, a step's status, a later answer — edit that comment
-  in place rather than posting another.
+  list in the ledger update that follows the post, before any other work.
+- **A comment is edited at stage boundaries, never at every state change.** Edit it in place,
+  rather than posting another, when its entry is first recorded, when its work is first pushed,
+  accepted, merged or held, and when a later answer replaces the one it holds. A change between
+  those boundaries, such as a step starting, a part finishing or an interim check result, updates
+  the ledger alone, and the comment's status line carries it at the next boundary.
 - The comment shapes and what they may say are in [references/backup.md](references/backup.md).
 - **The backup check reads three `data` fields.** `status` is a plan's or question's status from
   **Workflow**, or a `guidance_correction`'s delivery status: `pending`, `complete` or `withdrawn`;

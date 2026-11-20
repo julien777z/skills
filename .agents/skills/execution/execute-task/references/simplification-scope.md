@@ -21,8 +21,8 @@ an encountered issue from the task.
     edited in the current batch.
   - **Similar code**: every other place in the repository already expressing the same concept,
     shape, or operation as the changed code — a near-duplicate helper, a parallel implementation,
-    a second representation of one value. Search by concept and by key operation, not by filename;
-    a sibling-only read cannot find the canonical implementation another package owns. A copy of
+    a second representation of one value. `code-simplify`'s **Before Choosing A Design** search
+    found these before the edit; this pass rereads its receipts against the code as built. A copy of
     the change's own mechanism is the change's scope under `pre-production`'s **Scope Follows The
     Defect, Not The Request**: give the mechanism one owner, move every consumer onto it and delete the copies.
     Other code the change resembles and should be one thing with is made one thing within

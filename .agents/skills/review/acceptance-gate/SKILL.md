@@ -1,6 +1,6 @@
 ---
 name: acceptance-gate
-description: Independent read-only verdict on a pull request's complete diff before merge, run once per pull request; also for a triage or deferral decision, a list of borderline incidental items, and base incorporation; per plan step only for a finished step that later steps build on. Never run per fix, apart from a fresh gate over each repair of, or answer to, a gate's defect flag; a style flag waits for final acceptance, and evidence a gate asked for goes back to the same run.
+description: Independent read-only verdict on a pull request's complete diff before merge, run once per pull request; also for a triage or deferral decision, a list of borderline incidental items, and base incorporation; per plan step only for a finished step that later steps build on. Never run per fix, apart from one fresh gate over the repairs of, and answers to, a verdict's defect flags; a style flag waits for final acceptance, and evidence a gate asked for goes back to the same run.
 short_description: 'Have an independent reviewer decide whether a proposed change fits the task and the repository.'
 ---
 
@@ -85,8 +85,9 @@ pull-request context is a flag to obtain that context, not permission to assume 
 The gate is read-only and distinct from the author. If its reader cannot launch, apply
 `subagent-matrix`'s launch fallback. Invoke `subagent-matrix` at its advanced
 capability level. Dispatch the gate with that exact identifier, and retain catalog state, identifier, assignment
-state and host receipt in the gate record. Its reader freshness follows `subagent-matrix`'s **Dispatch**. It
-receives five things and nothing else:
+state and host receipt in the gate record. Its reader freshness follows `subagent-matrix`'s **Dispatch**. Its
+prompt carries five things and nothing else; what it reads from the tree itself, the paragraphs
+after them say:
 
 1. the intent statement, quoting the user's request in their words and carrying every decision the
    task has recorded that the item's subject touches, with the user's words, so earlier settled
@@ -100,10 +101,13 @@ receives five things and nothing else:
    record; a diff that adds or changes tests carries the cost evidence from its verification run
    under `test-fixture`'s existing-reporting procedure, including any unmeasured attribution, and
    every diff carries the warnings and deprecation messages its verification runs printed, or an
-   explicit empty result. When `code-simplify`'s **Before Choosing A Design** check applies,
-   include its criteria, the planning and any review evidence, and source excerpts for the
-   candidates and callees the gate needs to verify their effects. A citation without its source
-   content is missing evidence. For a skill or rule change, include the frozen base and resulting
+   explicit empty result. A diff that adds code carries the reuse receipts `code-simplify`'s
+   **Before Choosing A Design** check left and the results of a search made with a shell at the
+   judged head: for each addition, the terms searched and the candidates found, with a source
+   excerpt for each candidate and callee the gate needs to verify its effect. A gate that follows
+   a review loop carries that loop's reviewer's search; any other carries the caller's own. A
+   citation without its source content, or an addition with no search result, is missing
+   evidence. For a skill or rule change, include the frozen base and resulting
    package contents and the real case it governs, when supplied;
 4. the affected-repository map required by `code-simplify`'s **Trace Changed Flows**. For each
    changed file group, resolve its project guidance, scoped repository rules and installed shared
@@ -123,6 +127,8 @@ receives five things and nothing else:
 `test-fixture` to test costs and existing reporting evidence, and `run-site`'s **Scenarios** to
 changes that add or alter product states. Apply `security-audit` at `low` effort as a single
 in-process rubric pass without delegated agents; take its exploitable findings into the verdict.
+Where the item carries that skill's **Diff Review** result for the same range, read the result
+against the diff in place of that pass.
 
 **The gate has no shell, so every diff reaches it as content, never as a reference.** The caller
 pastes the originating diff and a diff item into the prompt, or writes each to a file the prompt
@@ -171,9 +177,14 @@ and name the exact missing input and investigation for any remaining choice. Ret
 and deciding evidence in the existing verdict fields; a checklist or stage inventory alone is
 incomplete.
 
-**Make the simpler candidate concrete.** Where `code-simplify`'s **Before Choosing A Design**
-check applies, reconstruct its record from the supplied sources and include every field in
-`Also read`. For other suspect shapes, apply the rubric's removal test. Missing validation evidence
+**Make the simpler candidate concrete.** For each thing the diff adds, check its reuse receipt
+against the supplied search results and candidate sources, and read the tree with the gate's own
+tools for an analogous implementation those results miss; the results say where to start, never
+where to stop. Flag a duplicate of an existing owner, new code where an owner needed one more
+condition or parameter, and a parameter, option or branch for a condition nothing uses, each at
+the severity `code-simplify`'s rubric gives it. Where the change wrote that check's three fields,
+verify each against the sources. Name the searches and candidates read in `Also read`. For other
+suspect shapes, apply the rubric's removal test. Missing validation evidence
 is a separate flag, never a reason to leave the design judgment unfinished.
 
 **Trace changed state-like values during the design comparison.** Apply the rubric's **State
@@ -271,7 +282,7 @@ it:
 - **Admission — may this work be deferred?** The triage question asked of a proposed record.
 - **Proposal — should this be written?**
 - **Diff — should this stand?** A finished plan step or worker task that later steps build on, a
-  correction after base incorporation, or the repair of or answer to a gate's flag, read with the
+  correction after base incorporation, or the repairs of and answers to a verdict's flags, read with the
   whole branch diff as its originating diff.
 - **Base incorporation — what did the base bring in that the change must refactor?** The procedure
   below.
@@ -280,9 +291,11 @@ it:
 
 ### Base incorporation
 
-Run after every
-incorporation of the base this session performed, whether or not Git reports
-conflicts. The base advancing remotely without being incorporated does not trigger the check, and
+Run after an incorporation of the base this session performed in which Git reported a conflict,
+or whose incoming diff touches a file, a shared contract or agent guidance the change also touches
+or depends on. A clean incorporation disjoint from the change takes no gate of its own: the caller
+records both file lists and the comparison that showed them disjoint, and final acceptance reads
+the resulting head. The base advancing remotely without being incorporated does not trigger the check, and
 neither does an incorporation another session performed and pushed: that branch has changed hands
 under the GitHub rules on branch ownership, and its resolved result is theirs to gate.
 
@@ -319,11 +332,11 @@ smallest coherent repair using the existing owner or mechanism.
 
 **No flag is closed by the run that raised it or the agent that answered it.** The agent that made
 a repair re-reads the changed lines against the flag's objection and remedy and runs the checks
-covering that code; then the repair, or a settled, out-of-scope or council-dropped answer with its
-evidence, goes to a fresh gate under the Diff question, following `subagent-matrix`'s
-**Dispatch**, and only that gate's acceptance closes the flag. Each such gate is one of the change's
-re-reviews under the limit of 3 review rounds per change, and a repair's gate one of the flag's own
-repair rounds below. The exceptions are a style flag and a flag naming only missing evidence, each
+covering that code. Then the repairs of every flag one verdict raised, and each settled,
+out-of-scope or council-dropped answer with its evidence, go together to one fresh gate under the
+Diff question, following `subagent-matrix`'s **Dispatch**; it answers each flag separately, and
+only its acceptance closes a flag. That gate is one of the change's re-reviews under the limit of 3
+review rounds per change, and one of the repair rounds below for each flag it reads a repair of. The exceptions are a style flag and a flag naming only missing evidence, each
 closed as its paragraph below says, and the decision `council` makes once 3 review rounds have failed the change, which settles its flags as it rules.
 
 **Each flag carries its severity, `defect` or `style`.** A style flag concerns only the form of
@@ -357,7 +370,7 @@ it proposed itself.
   after its own second repair, with the change still under the limit, goes to `council` in **Ask**
   mode with the open flag, each remedy tried and its evidence, and the gate's proposed remedy. Its
   ruling decides the remedy, which is applied and checked as any repair is, and the caller's result
-  names the flag and the ruling. Every other flag keeps its own repair and gate meanwhile.
+  names the flag and the ruling. The verdict's other flags go on to their fresh gate meanwhile.
 - A flag the council returns as the user's choice goes to the user, as a report of those facts with
   a recommended next step, never as a choice about whether to fix it or leave it in place.
 

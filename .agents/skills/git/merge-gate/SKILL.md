@@ -53,8 +53,9 @@ for an agent-configuration change, Agent Sync handling before this skill finishe
 ## Inputs
 
 The caller supplies the repository, the pull request, the head SHA its final acceptance passed, the
-affected behaviors its local tests already cover, and the rule that decides what a fix made here
-reopens in its own review. For every local result this gate relies on, obtain a receipt from the
+affected behaviors its local tests already cover, and its fix rule: the review a fix made here gets.
+Such a fix lands after final acceptance, so its delta since the accepted head is reviewed and
+accepted under that rule before the merge. For every local result this gate relies on, obtain a receipt from the
 caller or native validation evidence identifying its command and covered behavior, source head,
 resolved dependencies, configuration, toolchain and runner inputs, successful result, and durable
 output. Missing evidence prevents reusing that result or admitting a local-coverage exclusion; it
@@ -62,7 +63,7 @@ never waives hosted coverage. The caller also supplies each validation exclusion
 direction to leave a named test or check alone, a baseline exclusion established by `pre-production`'s
 **Encountered Issues** classification with its default-branch evidence, or evidence that a hosted
 runner or provider interruption meets the GitHub rule's interruption and local-coverage
-conditions. A caller with no such rule has each fix's diff judged the way it judged the accepted
+conditions. A caller with no fix rule has each fix's delta judged the way it judged the accepted
 head before the gate repeats.
 
 ## Transport
@@ -190,8 +191,8 @@ test jobs run once, on the head about to merge.
    another agent or person may be using it. When relevant validation needs local services and one it
    did not start is running, use the matching hosted check as the fallback rather than running a
    competing service-managed test.
-10. Every fix made here goes through the caller's rule from **Inputs**, and the gate repeats on the
-   new head.
+10. Every fix made here goes through the caller's fix rule from **Inputs**, and the gate repeats on
+   the head that review accepts.
 
 ## Merge Conflicts
 

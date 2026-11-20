@@ -41,8 +41,8 @@ writing, keeping or removing, and how suites are laid out, configured and budget
   diff. Reuse still-valid completed-feature results; run the full required checks where the final
   repository state or integration needs them. This cadence changes when verification runs, never
   its required coverage or the exact-head evidence a delivery gate requires.
-- Apply the same cadence to the parent and delegated workers. Brief the feature boundary and its
-  planned verification batch. Cleanup follows the same completed-scope batch and affected-check
+- Apply the same cadence to the parent and delegated workers. The worker brief's checks field
+  carries the feature boundary and its planned verification batch. Cleanup follows the same completed-scope batch and affected-check
   rerun rule; its presence does not add a test run per edit. Batch related guidance edits before
   their source validation, review and skill tests; verify the final wording rather than
   each intermediate revision.
@@ -59,7 +59,7 @@ words, this skill supplies:
   `scripts/python_rule_findings.py` listing the candidate pairs in changed Python files;
 - its size budget, target boundary, essential checks and local-stack recovery: `pre-production`'s
   incidental size budget, target boundary, essential-checks bullet and **Local Stacks**;
-- its delegated briefs: `subagent-matrix`'s **Dispatch**, with the worker's head read under
+- its delegated briefs: `subagent-matrix`'s worker brief, with the worker's head read under
   [reported outcomes](outcomes.md);
 - the holds it excepts: `lock-revision`'s **After Locking**, and a `review-pass` the user asked
   for without a push;

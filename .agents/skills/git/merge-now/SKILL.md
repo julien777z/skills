@@ -43,9 +43,10 @@ merged without an earlier `review-pass`.
 ## Merge
 
 Targets with no dependency on one another proceed concurrently; a consumer waits for the target it
-depends on to merge. When the task has more than one open pull request, an agent-configuration one
-**Targets** leaves out included, no target passes step 2 until step 1 has accepted every target and
-`review-pass`'s **Combined Review** has accepted its head.
+depends on to merge. When the set `review-pass`'s **Combined Review** defines holds more than one of
+the task's open pull requests, an agent-configuration one in that set that **Targets** leaves out
+included, no target in the set passes step 2 until step 1 has accepted every target in it and that
+round has accepted its head. A target outside the set waits on no other.
 
 1. **Acceptance.** Reuse `acceptance-gate`'s final-acceptance verdict when the head it accepted is
    the current head, or a rewrite whose tree is identical to it. Otherwise put the head to the
