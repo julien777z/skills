@@ -216,7 +216,7 @@ if [ -n "$overlay_root" ]; then
   echo "Using the refresh overlay $overlay_root; update-skills rebuilds it from the latest default branch."
   REPO_ROOT="$overlay_root"
 
-  python3 -B "$REPO_ROOT/.agents/skills/authoring/edit-skill/scripts/validate_sources.py" mirror \
+  python3 -B "$REPO_ROOT/.agents/skills/authoring/skill-pass/scripts/validate_sources.py" mirror \
     --root "$REPO_ROOT" --output-dir "$GENERATED_DIRNAME" || {
     echo "Could not regenerate the provider mirrors in $REPO_ROOT; no links were changed." >&2
     exit 1
