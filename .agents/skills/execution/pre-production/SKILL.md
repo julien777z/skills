@@ -45,7 +45,7 @@ Build the clean target contract instead of preserving transitional behavior.
   runtime budget, as the testing rule's **Every suite finishes within five minutes of wall time**
   bullet says, deprecated usage or a printed warning, as the
   deprecated-usage bullet below says, a failure of the behavior the task must establish,
-  a non-essential check's finding that fits the size budget the next bullet applies,
+  a non-essential check's finding the next bullet has the change fix,
   or a confirmed finding independently established by a review or source inspection apart from
   diagnosis of the excluded check. Do not reopen an exclusion by relabeling that same failure as a
   review or source finding. Assigned defects and independent findings remain fix responsibilities
@@ -62,11 +62,12 @@ Build the clean target contract instead of preserving transitional behavior.
   in code the change did not write may stay red. That holds whether the findings predate the change
   or the change brought them to light, such as a new lint rule meeting existing code or a
   changed-file lint run meeting older code in a file the change touched. Fix the findings in lines
-  the change writes. Every other finding that shows no defect is incidental cleanup, fixed or left
-  as the size budget below says. Never fix past that budget to turn the check green, never
-  loosen, disable, rescope or ignore the check, and never report the red check to
-  the user or ask about it, apart from a merge branch protection rejects for it, reported as the
-  bullet above says. A finding that shows a defect, such as deprecated usage or a vulnerability,
+  the change writes, and the other findings in a file the change edits while they stay small
+  beside the requested part, as the default size budget below measures cleanup. Leave the rest for
+  later work on that code: it is not deferred work, so it is neither recorded nor reported. Never
+  fix past that to turn the check green, never loosen, disable, rescope or ignore the check, and
+  never report the red check to the user or ask about it, apart from a merge branch protection
+  rejects for it, reported as the bullet above says. A finding that shows a defect, such as deprecated usage or a vulnerability,
   stays one, fixed as the bullets below say. A finding the change's own code or contract change
   causes is the change's wherever it points: a changed signature whose untouched callers no longer
   type-check is fixed in those callers, as **Target Contract** requires. An essential check that
@@ -175,26 +176,24 @@ with an obsolete owned contract or revision.
   consider or an option, recorded as deferred, left as a hardening note, or answered with a
   recommendation to run an audit of any kind later.
 - **Incidental cleanup has a size budget.** Incidental cleanup is everything the request did not
-  ask for that fixes no defect, outside the change's own design and the defect's shape above. A
-  change to a skill edits that skill's whole folder, its `SKILL.md`, references, scripts and
-  templates alike, and cleanup inside that folder is held to neither budget's size limits: an
+  ask for that fixes no defect, outside the change's own design, the defect's shape above and the
+  non-essential checks' findings the essential-checks bullet decides. A change to a skill edits
+  that skill's whole folder, its `SKILL.md`, references, scripts and templates alike, and cleanup
+  inside that folder is held to neither budget's size limits: an
   agent reads a skill as one unit, so a rule restated between two of its files is tidied in the
   change that edits either one, keeping every criterion either copy carries. Cleanup in another
   skill keeps the budget in force.
   - **The default budget:** cleanup that fixes no defect — duplication, dead code, a misplaced
-    helper, an abstraction with one implementation, layout, an older finding a non-essential check
-    reports — fits only inside the files the change already edits and while it stays small beside
-    the requested part.
+    helper, an abstraction with one implementation, layout — fits only inside the files the change
+    already edits and while it stays small beside the requested part.
   - **The widened budget**, which holds instead while a decision the user scoped to the whole
     session widens it, until they withdraw it: such cleanup fits when its fix touches about five
     files or fewer, needs no design decision from the user, does not change what the product does
     and needs no plan of its own. Each such fix gets its own commit, named for what it repairs.
   - Cleanup past the budget in force is deferred work: returned to the caller to record, listed in
     the change's report one line each with its record, and never fixed in the change or put to the
-    user as a question. An older finding a non-essential check reports is the exception: past the
-    budget it is left for later work on that code, neither recorded nor reported. A defect, a
-    security vulnerability included, is never past it. An explicitly requested broad refactor sets
-    its own scope and carries no budget.
+    user as a question. A defect, a security vulnerability included, is never past it. An explicitly
+    requested broad refactor sets its own scope and carries no budget.
 - **A correction to how one screen looks or reads reaches every page when the user makes it a
   rule, and that screen alone when they do not.** A correction the user asks to have codified, or
   gives a reason for that holds wherever the shape appears, such as "labels sit above their fields
