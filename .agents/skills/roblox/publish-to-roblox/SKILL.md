@@ -79,9 +79,9 @@ experience's audience, settings or monetization, and no publish to any other exp
    [key art reference](references/key-art.md) says:
    - study the icons and thumbnails of the games in Roblox's current top sorts first, as contact
      sheets;
-   - stage key art from the game's own characters, creatures, effects and places in a scratch copy
-     of a built place in the isolated runner, then composite it with a grade, a burst or glow and a
-     bold wordmark;
+   - copy a built place first and stage key art in that copy, in the isolated runner, from the
+     game's own characters, creatures, effects and places, then composite it with a grade, a burst
+     or glow and a bold wordmark;
    - read each picture whole at full size, check the whole set as one sheet with every picture at
      150 px beside those sheets, and send the set to the user as it is made, as any capture of a
      change is sent, then go on without waiting;

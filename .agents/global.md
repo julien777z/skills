@@ -28,6 +28,8 @@ alwaysApply: true
 - **A proposal never reads as done.** Text putting a change to the user names it in words that
   cannot be taken for finished work — "would combine", "proposed" — never a past participle such as
   "merged" or "removed" that a reader takes for something already built.
+- **Work done on the agent's own authority reads as done.** A change guidance leaves to the agent,
+  such as a game's design, is reported as made, with no offer to revert it and no choice about it.
 - **Anything the reader might open is a link to it, wherever it is named.** A pull request,
   issue, repository, commit, branch, workflow run, release or any other item with an address is
   written as a markdown link to that address each time a response, table, sent file or question

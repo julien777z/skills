@@ -293,7 +293,10 @@ Execution starts once a required plan is approved, or immediately when **When A 
 
 Before implementation begins and whenever new work is admitted, delegate each coherent nontrivial
 execution task under `subagent-matrix`'s **Dispatch** assignment bullets; a task waiting on a worker
-never holds another independent one. Reassess ownership after each finding or follow-up. Before
+never holds another independent one. Reassess ownership after each finding or follow-up. Each
+editing worker gets a worktree of its own, and each brief states the problem, the invariant the fix
+keeps and the requirement to find and reuse how the repository already solves it, never a mechanism
+its author invents; the files it names bound the scope, not the design. Before
 writing a script or doing a check by hand, the agent and every worker look in the repository's
 `.agents/tools/`, and every brief points there. In a repository the owner runs, an operation the
 task will run more than once, or is about to run again, is first written as a helper there, creating
@@ -546,8 +549,8 @@ step builds on it — reads its schema, calls its interface, extends its code �
 starts, so a wrong foundation is caught before more is built on it. A step nothing later depends
 on gets no gate, and no simplification pass or review runs per step, per worker task or per fix.
 `review-pass`'s review loop and one final `acceptance-gate` run once over every change not yet
-reviewed at **Completion**. Before a gate over Python files, its caller runs `acceptance-gate`'s
-pre-gate check, `scripts/python_rule_findings.py`, on them, as its **The Gate Subagent** says.
+reviewed at **Completion**. Before any gate over Python files, mid-task or final, its caller runs
+`acceptance-gate`'s pre-gate check, `scripts/python_rule_findings.py`, on them.
 
 Own each coherent feature through integration: the primary agent settles dependencies, product
 decisions and the combined result. Simplify a feature as it is built. Assign a worker an
@@ -579,20 +582,17 @@ an encountered issue from the task.
   individually useful edits can add up to a disproportionate change. Ask only about a genuine
   decision **Encountered Issues** reserves for the user.
 
-### Pre-Push Gate
+### Pre-Push Gate And Reported Outcomes
 
-Apply the GitHub rule’s **Pre-Push Gate** to each push.
-
-### Reported Outcomes
-
-Apply the global rules’ **Reported Outcomes** before reporting or building on a result.
+Apply the GitHub rule’s **Pre-Push Gate** to each push, and the global rules’ **Reported Outcomes**
+before reporting or building on a result.
 
 ### Pull Requests
 
-The GitHub rule's **Branches and Pull Requests** owns pull-request selection. Apply that ownership
-decision before preserving a checked-out branch or updating an existing pull request. A guidance change rides the source branch in flight only where that rule puts it there.
-Verify selected pull requests remotely, and leave another session's branch and pull request
-untouched as that rule says unless the selected route explicitly directs continuing it.
+The GitHub rule's **Branches and Pull Requests** owns pull-request selection, a guidance change
+riding a source branch included: apply it before keeping a checked-out branch or updating a pull
+request, verify the selection remotely, and leave another session's branch and pull request
+untouched unless the selected route directs continuing it.
 
 **Every task that changes repository files opens or updates its draft pull request.** At the first
 validated commit, push and open the draft in the same step, then read back its URL and head. An

@@ -1,6 +1,6 @@
 ---
 name: subagent-matrix
-description: Apply before every subagent launch and while writing its brief, including a workflow coordinator or nested reviewer, when selecting a live skill-verification model, and when resuming workers stopped by a rate limit or quota. Default reasoning effort to medium unless the user or invoking skill explicitly specifies another effort. Resolve the assignment role and verify the actual model, reasoning and history arguments before dispatch, including a fresh independent or read-only gate, reviewer, validator, or skill-test reader. Resolve cheap, standard, advanced, frontier, and specialist capability levels from the host catalog and current official provider sources. Attempt the assigned work with a catalog-hidden candidate before reporting unavailability or proposing a substitution, select the model explicitly, route independent steps through a subagent of the running session, and give the user complete direct-dispatch diagnostics when the launch cannot start.
+description: Apply before every subagent launch, including a workflow coordinator or nested reviewer, when selecting a live skill-verification model, and when resuming workers stopped by a rate limit or quota. Default reasoning effort to medium unless the user or invoking skill explicitly specifies another effort. Resolve the assignment role and verify the actual model, reasoning and history arguments before dispatch, including a fresh independent or read-only gate, reviewer, validator, or skill-test reader. Resolve cheap, standard, advanced, frontier, and specialist capability levels from the host catalog and current official provider sources. Attempt the assigned work with a catalog-hidden candidate before reporting unavailability or proposing a substitution, select the model explicitly, route independent steps through a subagent of the running session, and give the user complete direct-dispatch diagnostics when the launch cannot start.
 short_description: 'Select a model capability level for live verification chats or subagent delegation.'
 ---
 
@@ -213,17 +213,10 @@ context and returns its verdict into the step waiting on it; nothing else does b
   only when their edits and resources do not overlap and neither needs an unsettled output from the
   other. A worker ends with its task; the next gets a fresh context. Read-only gates and reviews may
   run alongside building at the cadence their owning skill sets.
-- **Every worker that edits files works in a worktree of its own**, never the delegating agent's
-  checkout or another worker's: the host's worktree isolation where it offers one, otherwise a
-  worktree the brief names under the task's working-files folder, made from the branch the worker
-  pushes to. Two writers in one checkout trip each other's hooks, stage each other's files and
-  conflict on files both regenerate.
-- **A brief states the problem, never a new mechanism.** It names what is wrong, the invariant the
-  fix must keep, and the requirement to find how the repository already solves that kind of problem
-  and reuse it; the files it names bound the scope, never the design. A mechanism the brief's author
-  invents, such as a new module, a registry or a hook into shared global state, is that author's
-  untested guess, and the worker who builds it hands the next review its finding. Where the search
-  finds no existing pattern, the worker proposes one with that evidence.
+- **An editing worker's own worktree** is the host's worktree isolation where it offers one,
+  otherwise a worktree the brief names under the task's working-files folder, made from the branch
+  the worker pushes to. Where a brief's search finds no existing pattern, the worker proposes one
+  with that evidence.
 - **A delegated task is one plan step or one fix round, never a phase**, so each worker's context
   stays the size of its step. A follow-up after a worker's task ended — a gate's fix steps, a
   review's findings, a reviewer's question — is a new task: assign nontrivial execution to a fresh
