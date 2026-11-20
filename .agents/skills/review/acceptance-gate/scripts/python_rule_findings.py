@@ -29,6 +29,7 @@ from ast import (
     get_docstring,
     match_case,
     parse,
+    stmt,
     unparse,
     walk,
 )
@@ -94,7 +95,7 @@ def data_class_spellings(module: Module) -> set[str]:
 
 
 def is_migration_revision(module: Module) -> bool:
-    """Tell whether a module is a migration revision file by its module-level revision pointers."""
+    """Tell whether a module is a migration revision file."""
 
     assigned = {
         target.id
@@ -107,24 +108,30 @@ def is_migration_revision(module: Module) -> bool:
     return {"revision", "down_revision"} <= assigned
 
 
-def statement_start(statement: AST) -> int:
-    """Return the first line a statement occupies, counting its decorators."""
+def statement_start(statement: stmt) -> int:
+    """Return the first line of a statement or its decorators."""
 
     decorators = getattr(statement, "decorator_list", [])
 
     return min([statement.lineno, *(decorator.lineno for decorator in decorators)])
 
 
+def statement_end(statement: stmt) -> int:
+    """Return the last line of a statement."""
+
+    return statement.end_lineno or statement.lineno
+
+
 def has_blank_line(lines: list[str], previous_end: int, next_start: int) -> bool:
-    """Tell whether a blank line separates two statements, ignoring comment lines between them."""
+    """Tell whether a blank line separates two statements."""
 
     return any(not line.strip() for line in lines[previous_end:next_start - 1])
 
 
-def statement_lists(node: AST) -> list[list[AST]]:
+def statement_lists(node: AST) -> list[list[stmt]]:
     """Return the statement lists an AST node owns."""
 
-    blocks: list[list[AST]] = []
+    blocks: list[list[stmt]] = []
 
     if isinstance(
         node,
@@ -155,8 +162,8 @@ def statement_lists(node: AST) -> list[list[AST]]:
     return blocks
 
 
-def called_function(statement: AST) -> str | None:
-    """Return the function an expression statement calls, awaited or not, as source text."""
+def called_function(statement: stmt) -> str | None:
+    """Return the source text of the function an expression statement calls."""
 
     if not isinstance(statement, Expr):
         return None
@@ -166,7 +173,7 @@ def called_function(statement: AST) -> str | None:
     return unparse(value.func) if isinstance(value, Call) else None
 
 
-def paragraph_kind(previous: AST, current: AST) -> ParagraphCandidateKind | None:
+def paragraph_kind(previous: stmt, current: stmt) -> ParagraphCandidateKind | None:
     """Classify an adjacent statement pair a reader judges for a paragraph break."""
 
     if isinstance(previous, If) and isinstance(current, If):
@@ -203,25 +210,27 @@ def docstring_findings(path: Path, module: Module, lines: list[str]) -> list[str
             and node.name in MIGRATION_DOCSTRING_FUNCTIONS
         )
 
-        if docstring.end_lineno > docstring.lineno and not exempt:
+        end = statement_end(docstring)
+
+        if end > docstring.lineno and not exempt:
             findings.append(f"{path}:{docstring.lineno}: multi-line docstring")
 
-        if len(node.body) > 1 and not has_blank_line(lines, docstring.end_lineno, statement_start(node.body[1])):
-            findings.append(f"{path}:{docstring.end_lineno}: no blank line after docstring")
+        if len(node.body) > 1 and not has_blank_line(lines, end, statement_start(node.body[1])):
+            findings.append(f"{path}:{end}: no blank line after docstring")
 
     return findings
 
 
-def adjacent_pairs(statements: list[AST], lines: list[str]) -> list[tuple[AST, AST, int, int]]:
-    """Return each statement pair no blank line separates, with the lines the first ends and the second starts on."""
+def adjacent_pairs(statements: list[stmt], lines: list[str]) -> list[tuple[stmt, stmt, int, int]]:
+    """Return each adjacent statement pair no blank line separates, with its boundary lines."""
 
-    pairs: list[tuple[AST, AST, int, int]] = []
+    pairs: list[tuple[stmt, stmt, int, int]] = []
 
     for previous, current in zip(statements, statements[1:]):
-        end = previous.end_lineno
+        end = statement_end(previous)
         start = statement_start(current)
 
-        if end is not None and not has_blank_line(lines, end, start):
+        if not has_blank_line(lines, end, start):
             pairs.append((previous, current, end, start))
 
     return pairs
@@ -255,8 +264,8 @@ def layout_findings(path: Path, module: Module, lines: list[str]) -> list[str]:
     return list(dict.fromkeys(findings))
 
 
-def test_name_findings(path: Path, module: Module) -> list[str]:
-    """Find test function names longer than the testing rule allows after `test_`."""
+def long_test_name_findings(path: Path, module: Module) -> list[str]:
+    """Find test function names longer than the testing rule allows."""
 
     findings: list[str] = []
 
@@ -291,7 +300,7 @@ def python_findings(path: Path) -> list[str]:
 
     findings.extend(docstring_findings(path, module, lines))
     findings.extend(layout_findings(path, module, lines))
-    findings.extend(test_name_findings(path, module))
+    findings.extend(long_test_name_findings(path, module))
 
     return findings
 
