@@ -39,8 +39,8 @@ alwaysApply: true
   table scoped to its own repository carries that repository inside its link text, as above, never
   as a plain name beside a linked number. Every item in a list gets a link, however long the list. A
   surface that cannot render a link, such as a question tool's option, names each item by the exact
-  name its page shows, such as a pull request by its title, never by its number or a paraphrase, and
-  its link goes in a message the reader gets before it.
+  name its page shows and by nothing more, such as a pull request by its title with no number beside
+  it, never by a number or a paraphrase, and its link goes in a message the reader gets before it.
 - **A web product's views are pages.** Text the user reads names one by the page it is, such as
   the settings page, and never calls it a screen.
 - **A file the user should see reaches them where they read.** Per-item detail past five items —
