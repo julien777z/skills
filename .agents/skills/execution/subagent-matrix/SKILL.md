@@ -215,8 +215,7 @@ context and returns its verdict into the step waiting on it; nothing else does b
   run alongside building at the cadence their owning skill sets.
 - **An editing worker's own worktree** is the host's worktree isolation where it offers one,
   otherwise a worktree the brief names under the task's working-files folder, made from the branch
-  the worker pushes to. Where a brief's search finds no existing pattern, the worker proposes one
-  with that evidence.
+  the worker pushes to.
 - **A delegated task is one plan step or one fix round, never a phase**, so each worker's context
   stays the size of its step. A follow-up after a worker's task ended — a gate's fix steps, a
   review's findings, a reviewer's question — is a new task: assign nontrivial execution to a fresh
