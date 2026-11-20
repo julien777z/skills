@@ -164,8 +164,8 @@ alwaysApply: true
 - **A game's design is the agent's, in every task.** In a game, whatever stands out as incorrect or
   would be better another way — art, a control, a value, a mechanic, whoever built it — is changed in
   the same work and reported as made, however narrow the request, a bug fix included; naming, leaving
-  or offering it back instead is the miss. It is the user's word wherever a rule or skill asks first,
-  keeps what is built or defers an improvement. Only the core loop or genre, what players pay for,
+  or offering it back instead is the miss. This is the user's word wherever a rule or skill asks
+  first, keeps what is built or defers an improvement. Only the core loop or genre, what players pay for,
   security, disclosure, authorization and what the user's words decided stay with the user.
 - **Fixing an issue does not authorize choosing a new product experience.** A product choice changes
   what the product does or offers: what a feature does or what information it shows, who a surface
