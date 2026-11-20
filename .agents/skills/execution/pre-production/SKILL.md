@@ -45,6 +45,7 @@ Build the clean target contract instead of preserving transitional behavior.
   runtime budget, as the testing rule's **Every suite finishes within five minutes of wall time**
   bullet says, deprecated usage or a printed warning, as the
   deprecated-usage bullet below says, a failure of the behavior the task must establish,
+  a non-essential check's finding that fits the size budget the next bullet applies,
   or a confirmed finding independently established by a review or source inspection apart from
   diagnosis of the excluded check. Do not reopen an exclusion by relabeling that same failure as a
   review or source finding. Assigned defects and independent findings remain fix responsibilities
