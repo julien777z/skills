@@ -211,36 +211,43 @@ def docstring_findings(path: Path, module: Module, lines: list[str]) -> list[str
     return findings
 
 
+def adjacent_pairs(statements: list[AST], lines: list[str]) -> list[tuple[AST, AST, int, int]]:
+    """Return each statement pair no blank line separates, with the lines the first ends and the second starts on."""
+
+    pairs: list[tuple[AST, AST, int, int]] = []
+
+    for previous, current in zip(statements, statements[1:]):
+        end = previous.end_lineno
+        start = statement_start(current)
+
+        if end is not None and not has_blank_line(lines, end, start):
+            pairs.append((previous, current, end, start))
+
+    return pairs
+
+
 def layout_findings(path: Path, module: Module, lines: list[str]) -> list[str]:
     """Find multi-line statements run into the next one and adjacent pairs that may need a blank line."""
 
     findings: list[str] = []
+    functions = [node for node in walk(module) if isinstance(node, (FunctionDef, AsyncFunctionDef))]
+    function_blocks = {
+        id(statements) for function in functions for node in walk(function) for statements in statement_lists(node)
+    }
+    blocks = [module.body, *(statements for node in walk(module) for statements in statement_lists(node))]
 
-    for function in walk(module):
-        if not isinstance(function, (FunctionDef, AsyncFunctionDef)):
-            continue
+    for statements in blocks:
+        for previous, current, end, start in adjacent_pairs(statements, lines):
+            is_docstring = (
+                previous is statements[0] and isinstance(previous, Expr) and isinstance(previous.value, Constant)
+            )
+            is_import_group = isinstance(previous, (Import, ImportFrom)) and isinstance(current, (Import, ImportFrom))
+            kind = paragraph_kind(previous, current)
 
-        for block in walk(function):
-            for statements in statement_lists(block):
-                for previous, current in zip(statements, statements[1:]):
-                    end = previous.end_lineno
-                    start = statement_start(current)
-
-                    if end is None or has_blank_line(lines, end, start):
-                        continue
-
-                    is_docstring = (
-                        previous is statements[0] and isinstance(previous, Expr) and isinstance(previous.value, Constant)
-                    )
-
-                    if end > previous.lineno and not is_docstring:
-                        findings.append(f"{path}:{end}-{start}: no blank line after multi-line statement")
-                        continue
-
-                    kind = paragraph_kind(previous, current)
-
-                    if kind and start == end + 1:
-                        findings.append(f"{path}:{end}-{start}: paragraph candidate, {kind}")
+            if end > previous.lineno and not is_docstring and not is_import_group:
+                findings.append(f"{path}:{end}-{start}: no blank line after multi-line statement")
+            elif kind and id(statements) in function_blocks and start == end + 1:
+                findings.append(f"{path}:{end}-{start}: paragraph candidate, {kind}")
 
     return list(dict.fromkeys(findings))
 
