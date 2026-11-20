@@ -299,10 +299,10 @@ requirement to find and reuse how the repository already solves it, never a mech
 invents; where the worker finds none, it proposes one with what its search found. The files a brief
 names bound the scope, not the design. Before writing a script or doing a check by hand, the agent
 and every worker look in the repository's `.agents/tools/`, and every brief points there. In a
-repository the owner runs, an operation the task will run more than once is first written as a
-helper there, created with its folder if missing, committed as source work on the pull request the
-GitHub rule selects for it, and run from there each time; a shell function, heredoc or temporary
-script is not a helper, though a skill's execution checks stay untracked.
+repository the owner runs, an operation the task will run more than once, or is about to run again,
+is first written as a helper there, created with its folder if missing, committed as source work on
+the pull request the GitHub rule selects for it, and run from there each time; a shell function,
+heredoc or temporary script is not a helper, though a skill's execution checks stay untracked.
 
 ### Task Authorization
 

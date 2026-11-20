@@ -31,8 +31,8 @@ A player-height gameplay screenshot is not a game picture, however good the scen
 Copy the built place first, recording the source place file's checksum, and point every capture at
 the copy, staging there with the game's own characters, creatures, outfits, props, effects and
 places. Before the first upload, compare the source file with that checksum; when it differs,
-rebuild it from the frozen head with step 2's build command and integrity check, and redo every
-capture from the copy.
+rebuild it from the frozen head with the build command and integrity check of the skill's
+**Freeze the build** step, and redo every capture from the copy.
 
 - **Pose, then anchor.** Pose characters and creatures through their joint offsets, such as a
   `Motor6D`'s `C0`, or freeze an animation at a strong frame. Then anchor every part where it
