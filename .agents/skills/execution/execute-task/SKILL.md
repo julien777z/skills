@@ -547,7 +547,7 @@ starts, so a wrong foundation is caught before more is built on it. A step nothi
 on gets no gate, and no simplification pass or review runs per step, per worker task or per fix.
 `review-pass`'s review loop and one final `acceptance-gate` run once over every change not yet
 reviewed at **Completion**. Before a gate over Python files, its caller runs `acceptance-gate`'s
-pre-gate check, `scripts/python_rule_findings.py`, on them, as that skill's item 4 says.
+pre-gate check, `scripts/python_rule_findings.py`, on them, as its **The Gate Subagent** says.
 
 Own each coherent feature through integration: the primary agent settles dependencies, product
 decisions and the combined result. Simplify a feature as it is built. Assign a worker an

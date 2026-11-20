@@ -78,8 +78,9 @@ props, effects and places; the source place file is never written.
   read, and look for clipping, a floating or hidden subject, stray text or names, grey
   placeholders, upscale blur, and a wordmark crowding the subject.
 - Lay the whole set out as one sheet with every picture shrunk to 150 px, beside the trending
-  sheets, read it whole, and ask whether each picture still says what the game is. Redo any picture
-  that fails, and state where the set still falls short of the trending pictures.
+  sheets, read it whole, and ask whether each picture still says what the game is.
+- Redo any picture that fails either check, and state where the set still falls short of the
+  trending pictures.
 
 ## Upload and Set
 
