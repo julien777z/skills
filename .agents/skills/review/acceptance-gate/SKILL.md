@@ -1,6 +1,6 @@
 ---
 name: acceptance-gate
-description: Independent read-only verdict on a pull request's complete diff before merge, run once per pull request; also for a triage or deferral decision, a list of borderline incidental items, and base incorporation; per plan step only for a finished step that later steps build on. Never run per fix, apart from a fresh gate over each repair of, or answer to, a gate's flag.
+description: Independent read-only verdict on a pull request's complete diff before merge, run once per pull request; also for a triage or deferral decision, a list of borderline incidental items, and base incorporation; per plan step only for a finished step that later steps build on. Never run per fix, apart from a fresh gate over each repair of, or answer to, a gate's defect flag; a style flag waits for final acceptance, and evidence a gate asked for goes back to the same run.
 short_description: 'Have an independent reviewer decide whether a proposed change fits the task and the repository.'
 ---
 
@@ -116,9 +116,12 @@ receives five things and nothing else:
    repository the owner does not own, as the global rules' **Repository guidance** defines it, the
    brief says so: the gate judges the change against the request, its defects and that repository's
    own guidance and conventions, and a shared rule's standard is no flag there.
-   When the Python rules apply, run `scripts/python_rule_findings.py` with the project's Python
-   interpreter on the in-scope Python files. Supply the file list and every finding, including an
-   explicit empty result. The reader verifies each reported shape against the source and rule;
+   **The pre-gate check runs before every gate.** When the Python rules apply, the caller runs
+   `scripts/python_rule_findings.py` with the project's Python interpreter on the in-scope Python
+   files before dispatch, fixes each finding, and each paragraph candidate the global code-layout
+   rule makes a boundary, in the lines the change writes or edits, then runs it again. Supply the
+   file list and every finding that run prints, including an explicit empty result. The reader
+   verifies each reported shape against the source and rule;
 5. exactly one question from the list below.
 
 **The gate has no shell, so every diff reaches it as content, never as a reference.** The caller
@@ -220,12 +223,13 @@ A verdict with no added guard says `no guard added` in those words.
 what a feature does or shows, a remedy whose visible effect is large, such as a layout, control or
 flow changing across many pages, a change carried past the surface the user named — each with the
 user's words in the intent statement that settle it. Small presentation decisions on the surface in
-hand are not listed, and neither is local test tooling or the records it seeds, which the global
-rules' local-stack bullet leaves to the agent. A product choice with no such words is a flag whose
-remedy is putting the choice to the user before the code stands, whatever the change calls itself, a
-fix included. An earlier acceptance, a plan record without the user's words, or a brief calling
-the choice decided is not those words. A verdict with none says `no product choice added` in those
-words.
+hand are not listed; neither is a game's design, which the global rules' game-design bullet makes
+the agent's decision and never a question for the user, a new control or room included; nor is local
+test tooling or the records it seeds, which the global rules' local-stack bullet leaves to the
+agent. A product choice with no such words is a flag whose remedy is putting the choice to the
+user before the code stands, whatever the change calls itself, a fix included. An earlier
+acceptance, a plan record without the user's words, or a brief calling the choice decided is not
+those words. A verdict with none says `no product choice added` in those words.
 
 **Then it lists every workaround the diff makes**: a remedy that makes the reported symptom go away
 while its cause stays, such as hiding or folding away what no longer fits instead of giving it
@@ -317,10 +321,25 @@ smallest coherent repair using the existing owner or mechanism.
 a repair re-reads the changed lines against the flag's objection and remedy and runs the checks
 covering that code; then the repair, or a settled, out-of-scope or council-dropped answer with its
 evidence, goes to a fresh gate under the Diff question, following `subagent-matrix`'s
-**Dispatch**, and only that gate's acceptance closes the flag. The one exception is the decision
-the global rules' review-round limit has `council` make once 3 rounds have failed the change,
-which settles its flags as it rules. Each such gate is one of the change's re-reviews under the
-global rules' review-round limit, and a repair's gate one of the flag's own repair rounds below.
+**Dispatch**, and only that gate's acceptance closes the flag. Each such gate is one of the change's
+re-reviews under the global rules' review-round limit, and a repair's gate one of the flag's own
+repair rounds below. The exceptions are a style flag and a flag naming only missing evidence, each
+closed as its paragraph below says, and the decision the global rules' review-round limit has
+`council` make once 3 rounds have failed the change, which settles its flags as it rules.
+
+**Each flag carries its severity, `defect` or `style`.** A style flag concerns only the form of
+lines whose behavior, structure and contract stand: a docstring's or comment's length, a missing
+blank line, a name's length, wording that misstates nothing. Everything else is a defect, however
+small its fix. The author fixes a style flag and runs the checks covering it, and final acceptance,
+which every change gets before it merges, confirms it; a style flag final acceptance raised is
+confirmed by a fresh re-check of those lines alone. A style flag costs no round, under the global
+rules' review-round limit or the repair rounds below, and never goes to `council`.
+
+**A gap in the evidence a gate was given is not a failed round.** A gate whose verdict waits only
+on evidence it names, such as a source excerpt or a run's output, receives that evidence in the same
+run and finishes its verdict, and that verdict is the round's. Only evidence travels this way: a
+change to the diff, or to any text the gate judges, goes to a fresh gate, and no gate judges wording
+it proposed itself.
 
 **Repair rounds are counted per objection and per change.** A change gets at most 3 rounds across
 every kind of check, the first and 2 after repairs, as the global rules' review-round limit counts
@@ -379,8 +398,9 @@ Gate: <question> — <item in one line>
 
 Verdict: accept | flag | fix | close | defer | do
 
-- <for a flag: the quoted line or missing evidence, the shape it takes, the intent, rule or rubric
-  item it violates, and the remedy the change itself would take; one bullet per flag>
+- <for a flag: `[defect]` or `[style]`, the quoted line or missing evidence, the shape it takes, the
+  intent, rule or rubric item it violates, and the remedy the change itself would take; one bullet
+  per flag>
 - <for an acceptance: each addition whose kind matches a removed shape, the shape it takes, and why
   it is neither the removed shape nor a finding; one bullet per addition>
 - <for a triage disposition: the test that decided it and the fact it rests on>

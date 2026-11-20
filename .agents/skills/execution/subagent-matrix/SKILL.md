@@ -160,8 +160,9 @@ context and returns its verdict into the step waiting on it; nothing else does b
 - **An independent step gets a newly launched subagent for every question it answers when available.** A gate,
   finding validator, skill-test reader or grader that has answered about an item is never resumed, messaged or
   reused for a later round on it — not to judge the repair of its own flag or a revised item — since
-  its answer would then rest on its own earlier verdict. A reviewer that a review loop keeps across
-  its rounds, carrying the ledger, is a reviewer and not one of these.
+  its answer would then rest on its own earlier verdict. A verdict waiting only on evidence it names
+  is not yet an answer: the same run receives that evidence and finishes it. A reviewer that a
+  review loop keeps across its rounds, carrying the ledger, is a reviewer and not one of these.
 - **An early final does not finish the assignment.** Reconcile its retained results and live child
   jobs before replacing anything. The parent takes over unfinished coordination and keeps waiting
   for existing producers; it does not launch another coordinator to relay the same work. Replace
@@ -212,6 +213,9 @@ context and returns its verdict into the step waiting on it; nothing else does b
   only when their edits and resources do not overlap and neither needs an unsettled output from the
   other. A worker ends with its task; the next gets a fresh context. Read-only gates and reviews may
   run alongside building at the cadence their owning skill sets.
+- **An editing worker's own worktree** is the host's worktree isolation where it offers one,
+  otherwise a worktree the brief names under the task's working-files folder, made from the branch
+  the worker pushes to.
 - **A delegated task is one plan step or one fix round, never a phase**, so each worker's context
   stays the size of its step. A follow-up after a worker's task ended — a gate's fix steps, a
   review's findings, a reviewer's question — is a new task: assign nontrivial execution to a fresh
