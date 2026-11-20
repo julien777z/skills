@@ -62,8 +62,8 @@ Build the clean target contract instead of preserving transitional behavior.
   in code the change did not write may stay red. That holds whether the findings predate the change
   or the change brought them to light, such as a new lint rule meeting existing code or a
   changed-file lint run meeting older code in a file the change touched. Fix the findings in lines
-  the change writes, and the other findings in a file the change edits while they stay small
-  beside the requested part, as the default size budget below measures cleanup. Leave the rest for
+  the change writes, and the other findings in a file the change edits while they fit the size
+  budget in force below, measured as it measures cleanup. Leave the rest for
   later work on that code: it is not deferred work, so it is neither recorded nor reported. Never
   fix past that to turn the check green, never loosen, disable, rescope or ignore the check, and
   never report the red check to the user or ask about it, apart from a merge branch protection
