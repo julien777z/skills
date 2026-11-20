@@ -1,6 +1,26 @@
 {
-  "description": "Check at turn end that every task ledger entry owing a backup comment has one.",
+  "description": "Load the i-have-adhd and user-facing-output skills at session start, and check at turn end that every task ledger entry owing a backup comment has one.",
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/session-skills/main.py\" i-have-adhd",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/session-skills/main.py\" user-facing-output",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "hooks": [
