@@ -1,4 +1,5 @@
 ---
+description: Apply when editing TypeScript types, modules, imports, functions, or external-data boundaries.
 alwaysApply: false
 paths:
 - '**/*.ts'

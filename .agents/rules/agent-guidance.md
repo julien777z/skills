@@ -112,6 +112,14 @@ paths:
 - For a scoped rule, declare its file patterns once as `paths` in canonical frontmatter.
   Do not duplicate them as `globs`; Agent Sync writes each provider's required scope key.
   Use `alwaysApply: true` only when the rule belongs in every session.
+- **Every rule file carries a frontmatter `description`**: one sentence that says when to read it,
+  in the words a task arrives in. A rule listed without one shows its file name alone, which tells a
+  reader of the rule index nothing about work its file patterns cannot identify.
+- **Rules that load for the same files are read as one document.** Before adding or changing a
+  ruling or an example in a scoped rule, read what `.agents/global.md` and every rule sharing one of
+  its `paths` patterns say on the same point. A ruling that differs names the rule it narrows and
+  the case it covers, and an example obeys every one of those rules, since a reader copies an
+  example before it reads the rule elsewhere that forbids it.
 - Before adding a requirement to a shared rule, test it against a repository, skill or file without the feature that prompted it; a requirement true only for the skill that prompted it goes in that skill. If it prescribes the current repository's documentation sections, inventory, or generation workflow, put it in `.agents/project.md`; keep the shared rule limited to guidance that still makes sense elsewhere.
 
 ## Skills
@@ -240,7 +248,8 @@ restriction. Gate a single user-only workflow inside an otherwise usable skill i
   reviewer, grader, gate, worker or council member — state in that text how many it starts in a
   usual run and in each round, and what that count grows with. Prefer one agent serving a batch over
   one per item, a fresh agent only where independence requires one, and a rerun only of what a
-  change touched; a count that grows with items, findings or files names its cap. An edit that
+  change touched; a count that grows with items, findings or files names its cap. Text that tells a
+  reader to delegate also says when the work is done directly instead, such as a read of one file. An edit that
   raises a workflow's usual subagent count says so, with its reason, in its pull request
   description, and a review of the edit judges that count as part of the change.
 
@@ -306,6 +315,21 @@ a template where correct results genuinely vary in shape.
   target hosts publish. A change that pushes one past it, or grows one already past it, makes its
   room in the same change by merging what the file states twice or moving text to the reference or
   file that owns it.
+- **A correction restructures the bullet it lands in, never appends to it.** A bullet that already
+  carries an exception, or runs past about twelve lines, takes no further clause: state its rule in
+  one sentence and move each condition and exception into a sub-bullet or a bullet of its own, so
+  the main rule stays findable. Several narrow cases that share a reason are replaced by that
+  reason, stated once.
+- **An absolute carries its scope and its exception in the same bullet.** Text that says never,
+  always or only is applied exactly as written, so it names the case it covers, and any passage
+  elsewhere that requires the opposite in some case is named there as the exception.
+- **Guidance states what holds now, in plain weight.** It never says what changed, as in "now",
+  "no longer", "legacy" or a past-tense account of a run, and it marks importance with a bold
+  lead and a reason, never with capitals or with words such as "critical" and "do not skip".
+- **Everything guidance cites resolves where it says.** A cited `**Section**`, a path, a script, a
+  command, a flag and what a command prints each exist under that name in the file or tool named.
+  Cite a section by its name, never by a step number, which moves with the next edit, and resolve a
+  skill's own script from the skill's directory, never from a repository path.
 - Normalize the touched file's nearby structure when needed: combine narrow sections and remove redundant wording.
 - **Prefer the broad statement, and let the request's shape be its example.** A request
   arrives as one symptom, and the rule it needs names the class that symptom belongs to; the

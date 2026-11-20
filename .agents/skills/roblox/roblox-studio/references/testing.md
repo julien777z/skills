@@ -555,7 +555,7 @@ local configuration and verification evidence. Reuse the retained runner before 
 
 With the Tart options above, the VM does not create a host window, share the clipboard, or play test audio through the user's speakers. Transfer only the project/test files over
 SSH, and invoke the guest's Studio MCP executable through `runner_ssh.sh`. Keep the guest proxy connection alive
-long enough for Studio discovery, as described in the MCP reference. Retrieve viewport captures and
+long enough for Studio discovery, as [Connect to the intended editor](#connect-to-the-intended-editor) describes. Retrieve viewport captures and
 structured results through that channel. Do not mount the whole home directory or transfer a Roblox
 session cookie. Use normal Roblox authentication.
 

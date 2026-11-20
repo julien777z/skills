@@ -110,7 +110,7 @@ async def pay_invoice(invoice_id: UUID) -> Payment:
 - Keep ALL imports at the top of the file.
 - Never import inside functions, methods, or test cases.
 - Group imports: stdlib, third-party, local (separated by blank lines).
-- Prefer **absolute imports** from the top-level package (for example `from application.routes.resources import router`) over **relative imports** with parent segments (for example `from ....routes.resources import router`). Absolute imports are stable when modules move, easier to grep, and avoid brittle `..` depth. Same rule applies to other installable packages: always anchor imports on the package name, not on the file’s directory depth.
+- Prefer **absolute imports** from the top-level package (for example `from application.routes.resources import resources_router`) over **relative imports** with parent segments (for example `from ....routes.resources import resources_router`). Absolute imports are stable when modules move, easier to grep, and avoid brittle `..` depth. Same rule applies to other installable packages: always anchor imports on the package name, not on the file’s directory depth.
 - Never use import aliases for project modules; import the canonical symbol/module name and update call sites to that name instead of aliasing. The one form that is not a rename is the explicit re-export marker `from pkg.module import Name as Name`, which PEP 484 defines as a package declaring `Name` part of its own public surface. Use it only in a package's `__init__.py` alongside `__all__`, never to give a symbol a second name.
 - Never define variables or call functions in between import statements; all imports must be contiguous at the top of the file.
 - Never create shim modules that only re-export symbols from another package for backwards compatibility; update all consumers to import from the canonical source instead.
@@ -507,7 +507,7 @@ match self:
 
 - Run a synchronous SDK's calls off the event loop (for example with `asyncio.to_thread`) when the application is asynchronous.
 - Verify SDK method availability before coding integrations:
-  - Prefer checking official docs with `@Browser`, or
+  - Prefer checking the official docs, or
   - Inspect the installed SDK directly (for example with Python `inspect`/`hasattr`) in the current environment.
 - Do not add defensive attribute checks or fallback branches for third-party SDK methods (for example, catching `AttributeError` to try an alternate call path).
 - Call the expected SDK method directly; if the integration changes, update it explicitly rather than supporting multiple speculative shapes in runtime code.
@@ -608,8 +608,10 @@ import third_party_client
 # Good: catch specific exception
 try:
     response = await client.get_resource(...)
-except third_party_client.ApiException as exc:
-    logger.warning("Resource API call failed: %s", exc)
+except third_party_client.ApiException:
+    logger.exception("Resource API call failed")
+
+    raise
 
 # Bad: catch all exceptions
 try:

@@ -79,7 +79,7 @@ the canonical repository identity and the current change's pull-request number w
 1. Invoke `linear` and require the deferral label the repository's project guidance names to exist.
 2. Search every matching active, completed, canceled, and archived issue using the label,
    repository, stable key, pull-request metadata, affected surface, and root cause. Also inspect the
-   legacy repository ledger so a pre-transition record is not duplicated.
+   repository ledger so a record already kept there is not duplicated.
 3. Put the scope, the search results, the draft resolution criteria, and any attempted fix to
    `acceptance-gate`'s admission question. A refusal ends recording. Reusing an active match is
    admitted the same way as creating one; appending to a record is still deferring.
@@ -103,7 +103,7 @@ blocked update.
 
 ## Repository Fallback
 
-Use the pre-transition repository workflow only when Linear preflight is unavailable before any
+Use the repository ledger below only when Linear preflight is unavailable before any
 write:
 
 1. In the resolved affected repository, search `deferrals/<key>/`, `deferrals/declined/<key>/`, and

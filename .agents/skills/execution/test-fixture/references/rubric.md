@@ -175,7 +175,7 @@ character-for-character identical; their ownership hierarchy must be recognizabl
 **One source file has one test module, named for it** by the language's test-file convention: a
 source file `pkg/invoices.py` is tested by `test_invoices.py` at the mirrored path, and
 `src/invoices.ts` by `invoices.test.ts`. That module holds the tests of every function and class
-in the file, unless the file-boundary test below justifies a behavior folder, whose modules pass
+in the file, unless independently maintained behaviors justify a behavior folder, as the list below says, whose modules pass
 this check. A folder named for a source file, holding a test file per function or class, is not a
 mirror: its paths resemble the source, but the source file has no test module, so the next test of
 that file gets a file of its own instead of joining the others. Check it mechanically: list every
@@ -200,7 +200,7 @@ Test-owned structures may follow the testing concern rather than a production pa
 - fixture, factory, shared-case, utility, snapshot, and harness packages;
 - integration or end-to-end flows that deliberately span several source modules;
 - a behavior folder that replaces one heavily tested source module with several focused test
-  modules named for independently maintained behaviors, when the file-boundary test below justifies a split.
+  modules named for independently maintained behaviors, when those behaviors change for different reasons.
   A function or class is never such a behavior on its own account.
 
 Place a cross-module test at the nearest shared source owner.
@@ -208,7 +208,7 @@ Place a cross-module test at the nearest shared source owner.
 Keep one test class per file, but create a class only for a substantial coherent responsibility. Before creating a class or file, inspect the existing class that owns the source behavior and its parameter sets; extend them for small related cases. A helper, operation, boundary case, or pair of tests does not by itself earn a class. When several small classes cover one owner, merge their related cases into the broader owning class and its file, preserving independent coverage; split a substantial suite only where independently maintained responsibilities justify separate classes.
 
 Before adding or relocating model-factory machinery, discover and extend the established shared
-factory owner the repository's test-utilities package holds. Apply the general New Modules rule to all related
+factory owner the repository's test-utilities package holds. Apply the global rules' **A new file is the last resort** bullet to all related
 implementations and consumers; a package that accepts a new factory is not necessarily its owner.
 Complete any ownership move rather than leaving existing factories in a competing location. Keep
 lifecycle helpers with their own responsibilities and inject application model types when needed

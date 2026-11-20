@@ -1,4 +1,5 @@
 ---
+description: Apply when planning or running tests, builds or browser verification, or writing or moving tests, fixtures, assertions, or test configuration.
 alwaysApply: false
 paths:
 - '**/tests/**'
@@ -103,7 +104,7 @@ paths:
 - Use clearly synthetic data that is unique to each test or parametrized case unless an exact protocol or catalog literal is the contract under test.
 - Define test helper functions at module level.
 - Keep helper docstrings to a single line.
-- Use Polyfactory for structured Pydantic and SQLAlchemy test data. Define concrete `ModelFactory` or `SQLAlchemyFactory` classes in the shared test-utilities owner selected by the rubric, set `__model__`, provide deterministic domain defaults, and call `.build(**overrides)` directly from tests.
+- Use Polyfactory for structured Pydantic and SQLAlchemy test data. Define concrete `ModelFactory` or `SQLAlchemyFactory` classes in the shared test-utilities owner `test-fixture`'s rubric selects, set `__model__`, provide deterministic domain defaults, and call `.build(**overrides)` directly from tests.
 - Let Polyfactory generate incidental valid values. Express domain constraints and cross-field relationships without replacing its generation with a large manual `build()` implementation.
 - Do not wrap Polyfactory classes in callable pytest fixtures solely for dependency injection, and do not use `Protocol` to describe them.
 - Use pytest factory fixtures for setup or construction that Polyfactory does not cover, including persisted flows, filesystem materialization, dependency lifecycles, and multi-object scenarios. Put reusable builders in the fixture owner selected by the rubric, not in test modules.
@@ -209,7 +210,6 @@ class TreeNode(BaseModel):
 
 ## Assertions and Mocking
 
-- Use descriptive assertions.
 - Name multiple results for their scenario or domain role, such as `invited_member_response` and `created_member_response`. Do not use lettered or numbered names such as `response_a`, `response_b`, `result_1`, or `result_2`.
 - For database verification, query the database directly and compare fields.
 - For a substantial behavior change, cover the normal path, each meaningful boundary, and relevant validation or failure path. Do not treat a single assertion or a single happy-path case as sufficient coverage for a multi-path contract.
@@ -279,7 +279,7 @@ class TreeNode(BaseModel):
   it, exactly as a raised timeout does: retuning the runner's distribution mode, worker count,
   ordering or grouping, giving it a job of its own, skipping it, marking it for a run pull requests
   deselect, or moving it to a scheduled workflow.
-- When CI tests fail and you cannot access the logs directly, ask the user to provide the failure output before attempting fixes.
+- When CI tests fail, read the job logs by whichever route reaches them, such as the hosting service's API, CLI or connector. Ask the user for the failure output only once the global rules' reach check finds no route.
 
 ## Test Cost
 
@@ -323,9 +323,10 @@ overlapping tests, and CI routing; inspect dependency source or types for depend
 - Prefer the repository's service-startup helper or skill. Otherwise start the daemon explicitly and wait for `docker info` to succeed:
 
 ```bash
+mkdir -p .agent_sources/logs
 sudo systemctl start docker 2>/dev/null \
   || sudo service docker start 2>/dev/null \
-  || (sudo dockerd > /tmp/dockerd.log 2>&1 & disown)
+  || (sudo dockerd > .agent_sources/logs/dockerd.log 2>&1 & disown)
 
 for attempt in $(seq 1 15); do
   docker info > /dev/null 2>&1 && break

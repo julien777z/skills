@@ -6,7 +6,7 @@ rubric.
 
 ### Phase 3: Validate findings
 
-Collect all findings from Phase 2 agents and **consolidate duplicates first**. Phase 2 deliberately overlaps agent scopes, so the same issue is frequently reported by more than one hunter — merge findings that share a root cause before validating, or you'll validate and report the same bug multiple times. For each remaining finding, try to disprove it using the cohort in the entrypoint. The hunting agents are biased toward finding things; the validation agents are biased toward killing false positives. This adversarial step is critical.
+Collect all findings from Phase 2 agents and **consolidate duplicates first**. Phase 2 deliberately overlaps agent scopes, so the same issue is frequently reported by more than one hunter — merge findings that share a root cause before validating, or you'll validate and report the same bug multiple times. For each remaining finding, try to disprove it using the cohort in the entrypoint. The hunting agents are biased toward finding things; the validation agents are biased toward killing false positives.
 
 At `medium` and `high`, assign one validator or refuter to each deduplicated finding; never batch findings. Launch agents in parallel where they cover independent areas. At `low`, validate inline.
 
@@ -75,7 +75,7 @@ Apply the agent's corrections:
 - **CORRECTED** — correct the finding before it is reported, and say in the report that it was corrected
 - **REJECTED** — drop the finding, or report it as investigated and rejected with the reason
 
-This is the final quality gate. Do not skip it.
+This is the final quality gate, and the report waits for it.
 
 ### Phase 5: Report
 

@@ -11,7 +11,7 @@ Each agent gets the architecture summary from Phase 1 injected into its prompt p
 
 **How is the surface split?** The effort table says how many hunters there are; Phase 1 says how to divide the surface between them. Split by attack class **and** by subsystem, because a focused hunter beats a broad one that runs out of context: where Phase 1 revealed an auth system, a plugin system, a media pipeline and a comment engine, each is its own partition before any class is doubled up. Where the table gives fewer hunters than partitions, cover the riskiest partitions first and say in the report which were not reached.
 
-Every agent prompt MUST include:
+Every agent prompt includes:
 1. The architecture summary from Phase 1 (copy it in verbatim)
 2. The specific attack class and scope to investigate
 3. Relevant file paths from Phase 1 as starting points
@@ -27,7 +27,7 @@ Tell each agent to think like an attacker, not a code reviewer:
 
 Don't just check if defenses exist. Try to break them.
 
-READ THE CODE AT DEPTH. Don't stop at the first function. Follow the data through
+Read the code at depth; do not stop at the first function. Follow the data through
 every layer — from the entry point through validation, transformation, storage, retrieval,
 and output. Bugs live in the gaps between layers.
 
@@ -101,8 +101,8 @@ category — a permission issue while tracing injection, a race condition while 
 auth — report it. Don't ignore a bug because it's "not your area." Attackers don't
 respect category boundaries.
 
-## Validation rules — apply before reporting ANY finding
+## Validation rules — apply before reporting a finding
 Read `references/rubric.md` and apply **Only Report What You Can Exploit**, **Precedents**, and the
-five tests in **What A Surviving Finding Has Been Put Through**. Return ONLY findings that survive all five, each
+five tests in **What A Surviving Finding Has Been Put Through**. Return only findings that survive all five, each
 with its concrete attack, or "No exploitable vulnerabilities found" if that is honest.
 ```

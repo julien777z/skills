@@ -293,7 +293,7 @@ user's review of the source pull request overlaps it.
      its reader given that head's files, fetched or received as a scratch artifact, and carries the
      result across heads only as `test-skill` carries one. Do not assume a pull request
      automatically installs its skill.
-   - Never read or write `.cursor/*`, `.claude/*`, `.codex/*`, or any other non-`.agents` agent or provider folder.
+   - Never write `.cursor/*`, `.claude/*`, `.codex/*`, or any other non-`.agents` agent or provider folder, and never read one as the source of guidance; step 7.9 reads them only to verify what Agent Sync generated.
    - Do not manually create, update, or sync mirrored command/skill/rule files in those folders; repository automation propagates changes from `.agents` to Cursor, Claude, Codex, and similar targets. This holds with no exception, including where the change leaves a mirror pointing at a path it renames or deletes: the workflow reconciles those on the default branch, and a branch carrying a stale or broken one meanwhile is expected.
    - This path restriction applies to the agent-content update, not to source changes required to fix an underlying issue from step 3.
    - When importing external guidance, inspect its actual entry points and file layout before registering it. If an owned sync tool cannot represent the source, extend that tool for the source's format and register the original content directly. Keep a standalone reference collection standalone: do not invent a substitute skill, relabel its files as skills, or bury it in another skill's references.
@@ -421,6 +421,10 @@ user's review of the source pull request overlaps it.
       Pull Requests** says, and merges with it; that pull request waits for the tool through the
       same gate. After the tool merges, the consumer adopts and validates its maintained target under the reference guidance
       above. No merge here authorizes a release.
+      The script checks skill names only. For each file the batch changes, also check by reading
+      and searching what the shared `agent-guidance.md` rule's **Writing** and **Rules** sections
+      require: every cited section, path, script, command and flag resolves; no ruling or example
+      disagrees with a file that loads beside it; and the file's line count is within its budget.
    3. **Check prose duplication** through the `code-simplify` pass `review-pass` runs over the delta,
       reading every touched `.agents` file whole, and act on what it reports: guidance duplicated
       between peer rules or skills, including a caller and a skill it always invokes, or between two
@@ -491,7 +495,7 @@ user's review of the source pull request overlaps it.
       merges. Select where dependent guidance goes under the GitHub rule's **Branches and Pull Requests**,
       and report any hold under its **Merge Authorization**. Otherwise a pull request carrying a
       skill change merges once step 6 found every changed output matching its concrete example, and
-      one carrying only rules merges on sight as the GitHub rules say, unless their **Merge
+      one carrying only rules has no example to match and merges once steps 2–5 pass, unless their **Merge
       Authorization** holds it. Report a held pull request for the user's review.
    8. **Nothing is copied by hand.** The skills repository is the only copy of a shared skill;
       sessions receive a merged edit through the refresh **After Agent Sync** runs, never through a copy

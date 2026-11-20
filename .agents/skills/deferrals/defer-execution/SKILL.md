@@ -59,7 +59,7 @@ The worktree leaves the current branch's working tree untouched.
 
    ```
    git fetch origin <default-branch>
-   git worktree add <path> -b claude/<slug> origin/<default-branch>
+   git worktree add <path> -b <required-prefix><slug> origin/<default-branch>
    ```
 
 2. **Delegate the work to a subagent** scoped to that worktree, once no other building worker in the
@@ -109,7 +109,7 @@ The work is owed once the originating pull request lands.
 
    ```
    git fetch origin <default-branch>
-   git checkout -b claude/<slug> origin/<default-branch>
+   git checkout -b <required-prefix><slug> origin/<default-branch>
    ```
 
    Never branch from the merged working branch, and never stack the work on top of it.

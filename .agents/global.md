@@ -119,7 +119,9 @@ alwaysApply: true
   delegating edits, or editing: discover and read its complete entry point rather than waiting for
   an edit to load it. Keep its run active and apply its **Work You Have Already Named** procedure
   before handling the interruption and before any final response.
-- Delegate nontrivial execution to subagents when the host supports it. The primary agent coordinates
+- Delegate execution to subagents where the work splits into independent parts, needs an
+  independent reader, or would crowd out the coordinator's own context; do small or tightly coupled
+  work directly. The primary agent coordinates
   the work, retains integration and decisions, and starts independent tasks concurrently when their
   ownership, dependencies and resources permit. A worker hands required independent reviews, gates
   and additional capacity needs up to its delegating agent when it cannot launch them itself. Follow
@@ -307,8 +309,7 @@ alwaysApply: true
   before asking. This applies to approval-requiring change proposals, not factual questions,
   routine authorized work or a platform's separate action-time confirmation. Acceptance-gate's
   technical verdict is not a user-approval request and never recursively enters this procedure.
-- Surface every question through `AskUserQuestionTool` or the harness's equivalent user-question
-  tool, including plan approvals and standalone questions. **A question asked anywhere else goes
+- Surface every question through the harness's user-question tool, including plan approvals and standalone questions. **A question asked anywhere else goes
   unseen**: the reader answers the question tool, and chat text around it, or in some harnesses all
   text before a tool call, may never reach them. Ask directly in chat only when the harness has no
   question tool. The question's own text and option descriptions therefore carry what the decision

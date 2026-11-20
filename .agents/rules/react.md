@@ -1,4 +1,5 @@
 ---
+description: Apply when building components, hooks, layouts, or Next.js App Router surfaces.
 alwaysApply: false
 paths:
 - '**/*.ts'

@@ -106,7 +106,7 @@ Follow-ups that skip plan approval still write this record without a new approva
   conditional on one. The plan the user reads summarizes the detailed plan, adding no step or scope
   it lacks: at most five numbered steps, each one plain line naming one bounded action with its
   wall-clock estimate, as `i-have-adhd` numbers steps, then the total and what the user does
-  afterwards. Keep it under 200 words while `i-have-adhd` is active.
+  afterwards. Keep it short enough to read at a glance.
 - **A plan's last step for repository changes is the merge**, or the reviewable pull request when
   no merge is authorized. Its verification runs before that; no
   step, verification or user action after it walks the deployed site, checks a rollout or waits for

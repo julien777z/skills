@@ -40,7 +40,7 @@ Return specific file paths. Be exhaustive.
 ```
 
 Collect the outputs and synthesize them into an architecture summary held in the
-session — the audit writes no files:
+session — this phase writes no file:
 - 1-2 page structured summary covering application type, tech stack, trust model, input surfaces, and baseline comparable
 - Include the key file paths from all agents — these become the starting points for Phase 2
 - This summary is injected verbatim into every Phase 2 agent prompt

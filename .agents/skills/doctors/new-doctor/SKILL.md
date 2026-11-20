@@ -48,8 +48,8 @@ does not start a doctor audit.
    confirm no heading restates a protocol section; run `get-doctors` and see the new doctor listed
    with the intended summary.
 7. **Skill-test it** as the section below states, and rewrite any lens a reviewer missed.
-8. **Deliver** through `edit-skill`, whose step 7.7 holds a pull request adding a doctor for the
-   user's review; the report hands the user its link.
+8. **Deliver** through `edit-skill`. The GitHub rule's **Merge Authorization** holds a pull request
+   that adds a doctor for the user's review; the report hands the user its link.
 
 ## Skill Test The Doctor
 

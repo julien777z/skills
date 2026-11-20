@@ -1,4 +1,5 @@
 ---
+description: Apply when formatting or linting TypeScript and TSX, or changing `biome.json`.
 alwaysApply: false
 paths:
 - '**/*.ts'
@@ -26,20 +27,6 @@ Follow the configured import organization, typically:
 Let Biome own configured indentation, quote style, semicolons, trailing commas, and line width.
 
 ## Linting
-
-### Enabled by Default
-
-- No unused variables
-- No unreachable code
-- Prefer `const` over `let` when possible
-- No implicit `any` in TypeScript
-- No console.log in production code
-
-### React-Specific
-
-- Exhaustive hook dependencies
-- No direct DOM manipulation
-- Proper key props for lists
 
 ## Guardrails
 

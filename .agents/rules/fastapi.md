@@ -150,7 +150,7 @@ class InvitePayload(BaseModel):
 - Do not pass `name`, `summary`, or `description` to route decorators; FastAPI uses the handler docstring.
 
 ```python
-@router.post("/verify")
+@resources_router.post("/verify")
 async def verify_resource(payload: VerifyPayload) -> ApiEnvelope[VerifyResponse]:
     """Verify a resource and return status."""
 ```
@@ -264,7 +264,7 @@ raise bad_request("Invalid payload")
 try:
     response = await client.get_resource(...)
 except third_party_client.ApiException as exc:
-    logger.error("Resource fetch failed: %s", exc)
+    logger.exception("Resource fetch failed")
 
     raise ApiError(
         status_code=HTTPStatus.INTERNAL_SERVER_ERROR,

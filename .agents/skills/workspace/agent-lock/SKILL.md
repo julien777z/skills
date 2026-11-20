@@ -8,7 +8,7 @@ short_description: 'Coordinate exclusive use of a shared resource between agents
 
 All agents competing for a resource use **exactly the same nonempty string key and coordinator host**. Keys are case-sensitive. Do not add an assignment ID, agent name, branch, or checkout to a key meant to serialize those agents. Different keys may run concurrently.
 
-Use [resources/main.py](resources/main.py) with Python 3.12+ on macOS or Linux. State lives under `~/.local/state/agent-lock/`, outside repositories; keys are hashed into safe filenames. All checkouts share this location. `--state-dir` is for tests or an explicitly shared coordinator configuration. When controlling a VM or remote machine, acquire on the coordinator host rather than separate guest filesystems. This is a cooperative local lock, not a distributed lock or control over unrelated human activity.
+Use [resources/main.py](resources/main.py) with Python 3.12+ on macOS or Linux. Resolve it from this skill's own directory and hold its absolute path in `AGENT_LOCK` for the commands below. State lives under `~/.local/state/agent-lock/`, outside repositories; keys are hashed into safe filenames. All checkouts share this location. `--state-dir` is for tests or an explicitly shared coordinator configuration. When controlling a VM or remote machine, acquire on the coordinator host rather than separate guest filesystems. This is a cooperative local lock, not a distributed lock or control over unrelated human activity.
 
 ## Consume ownership
 
@@ -17,9 +17,9 @@ Prefer ownership scoped to the actual operation. **No heartbeat or renewal comma
 For work represented by a foreground command, use `consume`:
 
 ```sh
-python3 .agents/skills/agent-lock/resources/main.py consume "shared-resource" \
+python3 "$AGENT_LOCK" consume "shared-resource" \
   --owner "task/researcher-1" --activity "Describe this operation" \
-  --receipt verification/researcher-1-lock.json --wait-seconds 50 \
+  --receipt .agent_sources/locks/researcher-1-lock.json --wait-seconds 50 \
   --ttl-seconds 600 -- python3 path/to/actual_worker.py
 ```
 
@@ -28,16 +28,16 @@ The helper acquires once, runs the command, and releases automatically when the 
 For a researcher using several separate tools, the CLI cannot observe the logical subagent's completion by itself. **The orchestrator owns that task scope:** acquire once, give the worker its receipt/deadline, and release as part of handling the worker's completion, failure, or cancellation. Workers need no periodic maintenance. If the host provides a real task-finalization callback, attach cleanup there; otherwise use the orchestrator's existing completion handling. Do not claim this release is automatic OS process tracking.
 
 ```sh
-python3 .agents/skills/agent-lock/resources/main.py acquire "shared-resource" \
+python3 "$AGENT_LOCK" acquire "shared-resource" \
   --owner "task/researcher-1" --activity "Interactive research" \
-  --receipt verification/researcher-1-lock.json --wait-seconds 50
+  --receipt .agent_sources/locks/researcher-1-lock.json --wait-seconds 50
 ```
 
 Acquire immediately before the protected portion of the assignment, not before unrelated research. The orchestrator records the agent ID, resource key, receipt and expiry. Completion handling must finish or cancel the external operation, release held controls, verify the resource is idle, then run:
 
 ```sh
-python3 .agents/skills/agent-lock/resources/main.py release \
-  --receipt verification/researcher-1-lock.json --resource-idle
+python3 "$AGENT_LOCK" release \
+  --receipt .agent_sources/locks/researcher-1-lock.json --resource-idle
 ```
 
 The worker may release at an earlier natural boundary, such as closing a browser session. The orchestrator checks whether that happened when processing completion. Lock expiry is the fallback if either agent disappears. Multiple resources must be acquired in lexicographic key order and released in reverse order.
@@ -48,10 +48,10 @@ The worker may release at an earlier natural boundary, such as closing a browser
 every key named in one `acquire` or `consume` call and `--any`:
 
 ```sh
-python3 .agents/skills/agent-lock/resources/main.py acquire --any \
+python3 "$AGENT_LOCK" acquire --any \
   "shared-pool/slot-1" "shared-pool/slot-2" "shared-pool/slot-3" \
   --owner "task/researcher-1" --activity "One check" \
-  --receipt verification/researcher-1-lock.json --wait-seconds 50
+  --receipt .agent_sources/locks/researcher-1-lock.json --wait-seconds 50
 ```
 
 The call waits in every named key's queue at once, so the first key released goes to the oldest
@@ -73,4 +73,4 @@ parent key keeps a second such operation from interleaving with it.
 - `check --receipt <path>` verifies ownership before a group of external actions, especially after waiting. It does not refresh the deadline. A failed check means stop; the old receipt cannot release a successor's lock. Acquisition is non-reentrant.
 - JSON results include typed ownership records with ISO-8601 timestamps. `status "shared-resource"` reports `available`, `held`, or `expired` with the deadline and remaining seconds. Expired locks become claimable automatically; no recovery CLI or file deletion is needed. Never unlink mutex files, because waiters rely on their stable inode.
 - Expiry invalidates ownership but cannot close an external desktop/browser session left behind by a separate tool. If acquisition reports `expired_owner`, the orchestrator must stop any still-running old worker and bring the resource to a known idle state before giving the successor permission for input. Never let the previous owner clean up after the successor starts using it.
-- Use a unique receipt under ignored `verification/` for each acquisition. Share it only with the assigned worker and its orchestrator; never commit lock state. Keep expiry/cleanup blockers in the task evidence.
+- Use a unique receipt under the task's working-files folder, such as `.agent_sources/locks/`, for each acquisition. Share it only with the assigned worker and its orchestrator; never commit lock state. Keep expiry/cleanup blockers in the task evidence.

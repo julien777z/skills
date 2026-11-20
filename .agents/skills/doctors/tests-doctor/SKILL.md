@@ -272,7 +272,7 @@ when only one suite uses it. Fixture lifecycle wiring and scenario inputs stay i
 Inject application model types where a shared import would invert dependencies.
 Discover that owner from existing implementations and the repository's test-utilities package
 before relocating anything.
-Apply the general New Modules ownership-completion rule: inspect every related implementation and
+Complete the ownership move as the global rules' **A new file is the last resort** bullet requires: inspect every related implementation and
 consumer, and flag a partial move even when the factory left behind was already there. Generic
 lifecycle helpers retain their own owners; a shared word does not establish shared responsibility.
 
@@ -444,11 +444,9 @@ outcome of the skill, so
 invoking the skill authorizes that comment under the comment rules, and it is posted whether the run
 brought every suite under budget or not.
 
-The comment exists because a duration is the one finding with nowhere else to live. A pull request
-body carries no measurements by rule, the diff cannot show a number, and a report in chat is gone by
-the next session — so without this the run measures a breach on day one, delivers, and leaves nothing
-a later reader can act on. Ranked in one place, the next run has its baseline and anyone deciding
-what to cut can see what the time is being spent on.
+The comment exists because a duration needs one place a later run can read. The diff cannot show a
+number and a report in chat is gone by the next session; one comment, updated in place, gives the
+next run its baseline and shows anyone deciding what to cut where the time goes.
 
 Post it once per pull request, updating the same comment when a later push changes the numbers
 rather than adding a second; the draft pull request carries the final ranking against the baseline.

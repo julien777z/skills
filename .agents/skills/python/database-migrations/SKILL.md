@@ -239,9 +239,9 @@ format transition or recovery mechanism for data explicitly declared disposable 
   for, so it belongs in `revisions/` however many modules import it. A helper that only drives the
   database engine — suspending foreign-key enforcement, reading a session setting — knows no schema
   and stays.
-- **The tests do not mirror the project's shared migration runtime package, because the project's durable migration-test helper package is already the
-  durable-helper package above.** A module under the project's shared migration runtime package is covered at the migration-test
-  root instead, following the project's declared test layout and package boundaries.
+- **A module under the project's shared migration runtime package is tested at the migration-test
+  root**, following the project's declared test layout and package boundaries; the tests keep no
+  package that mirrors the runtime package.
 - Reach for `utils/` because a helper is schema-independent, never because a second test wanted it.
   Two revisions needing the same seeding is ordinary, and it makes that seeder shared, not durable;
   promoting it on import count is what leaves the tests' `utils/` package holding the very rows a
