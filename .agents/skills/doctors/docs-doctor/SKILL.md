@@ -126,7 +126,7 @@ Flags README shape against the repository's README rules, one explanation repeat
 documents where one home and a link would do, and content whose reader is not the document's
 reader, such as a runbook or design specification in a README. Reach: whole repository.
 
-- every README against the GitHub rule's **README**, bullet by bullet: its heading, its sections
+- every README against the README rule, bullet by bullet: its heading, its sections
   and their order, its Local Development commands, and for an action or library its Features,
   Examples and Inputs table;
 - every explanation that appears in two documents, matched by the commands, paths and headings
@@ -141,8 +141,8 @@ whose reader acts on it. Left alone: a short restatement at a point of use that 
 
 Flags a description that does not tell its reader what the value or operation is. Reach: partition.
 
-- every description of an input, output, option, setting or field, against the GitHub rule's
-  **Repository Artifact Text**: one that restates the flag or variable the value becomes, stands a
+- every description of an input, output, option, setting or field, against `pre-production`'s
+  **Repository Text**: one that restates the flag or variable the value becomes, stands a
   value grammar in place of words, or lists which callers use it;
 - every route handler's docstring, against the FastAPI rules' **Route Metadata**: one that restates
   the router's prefix, tag or guard, or names the caller, in place of the operation.

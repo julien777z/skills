@@ -451,7 +451,7 @@ Build, CI and root files carrying more than they need, or built against the work
   does not exist, every second deploy path beside the live one, and template residue for tools the
   repository does not use;
 - every value — a port, a version, an image name — declared in more places than the tools need;
-- every workflow and action read against the GitHub rule's **Workflows**, bullet by bullet, each
+- every workflow and action read against the `github-workflows` rule, bullet by bullet, each
   bullet's result reported: a pull-request test job that runs on a draft, a `run` step holding
   control flow or program code, a job name built from an expression, a runtime version written in
   the workflow where a version file supplies it, a required input that carries a default or a step
@@ -459,8 +459,8 @@ Build, CI and root files carrying more than they need, or built against the work
   owned package placed by a toggle, a step that only forwards a value, a step whose whole body
   exports environment, and a job under an environment that picks a secret or variable by a
   per-stage name;
-- every workflow that installs a project package outside the manifest, against the GitHub rule's
-  **Dependency Installation**.
+- every workflow that installs a project package outside the manifest, against the `github-workflows`
+  rule's **Dependency Installation**.
 
 The remedy is one parameterized file, a shared composite action or reusable workflow, one script,
 one source for each value, deletion of what nothing reads, and for a workflow finding the shape

@@ -137,7 +137,7 @@ delegated worker, at `subagent-matrix`'s standard capability level, only where t
 worker start subagents of its own.
 
 **The batch takes one of two routes, chosen from its diff and its Scope Statements, never from how
-small it looks.** The GitHub rule's **Merge Authorization** states the gate set each must pass.
+small it looks.** Each route below is the gate set its batch passes on the head that merges.
 
 - **Short route.** Every entry changes one requirement in one file, its Scope Statement records
   `flow not affected` and lists nothing beyond what the user said, and the batch adds or removes no
@@ -423,7 +423,7 @@ small it looks.** The GitHub rule's **Merge Authorization** states the gate set 
       one carrying only rules has no example to match and merges once **Run `validate_sources.py check`** through **Run one `test-skill` round** pass, unless their **Merge
       Authorization** holds it. Report a held pull request for the user's review.
    8. **Nothing is copied by hand.** The skills repository is the only copy of a shared skill;
-      sessions receive a merged edit through the refresh the GitHub rule's **After Agent Sync** requires, never through a copy
+      sessions receive a merged edit through the refresh `merge-gate`'s **After Agent Sync** requires, never through a copy
       placed in another repository or install. A skill that reads generically but was written into one repository's `.agents` is
       moved to the skills repository in the same change rather than left as a second copy.
    9. **Read the merged text back before using it.** A merge changes the default branch, not the
@@ -434,8 +434,8 @@ small it looks.** The GitHub rule's **Merge Authorization** states the gate set 
       from that text for the rest of the session. A skill invoked while its change is still open
       is read the same way from the branch that carries it, never from a checkout that predates
       it.
-      `merge-gate` then waits for the default-branch Agent Sync run; the GitHub rules' **After Agent
-      Sync** section requires the installed copy to be refreshed before reporting completion.
+      `merge-gate` then waits for the default-branch Agent Sync run; its **After Agent Sync**
+      requires the installed copy to be refreshed before reporting completion.
       Once the run finishes, inspect every generated artifact on the default branch that represents
       the changed source, including `AGENTS.md` when the source feeds root instructions and
       provider trees such as `.cursor/`, `.claude/`, and `.codex/` when they represent the changed

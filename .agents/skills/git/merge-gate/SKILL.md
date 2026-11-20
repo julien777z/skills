@@ -1,6 +1,6 @@
 ---
 name: merge-gate
-description: Merge a pull request its caller is authorized to merge, once its review has accepted a head — verify its delivery dependencies, take it out of draft as the last step before the merge, gate that exact head, resolve conflicts, squash-merge and verify the result. Use when an authorized merge is reached; a pull request leaves draft only here. Holds what authorizes a merge, deployment, publication or release, what follows a merge, and when a pull request may be polled.
+description: Merge a pull request its caller is authorized to merge, once its review has accepted a head — verify its delivery dependencies, take it out of draft as the last step before the merge, gate that exact head, resolve conflicts, squash-merge and verify the result. Use when an authorized merge is reached; a pull request leaves draft only here. Holds what authorizes a merge, deployment, publication or release, which failing checks a merge excludes, what follows a merge, the refresh after a merge of agent configuration, and when a pull request may be polled.
 short_description: 'Take a reviewed pull request out of draft, gate its exact head, and merge it.'
 ---
 
@@ -42,7 +42,18 @@ for an agent-configuration change, Agent Sync handling before this skill finishe
   publication, rollout, and serving-state checks belong to separately authorized release or
   deployment work.
 - Dispatching a release workflow or creating a deployment is a separate action with its own
-  authorization.
+  authorization. A request for CI tests authorizes test workflows only: inspect a workflow's jobs
+  and triggers before dispatching it, since one that builds and publishes artifacts or deploys is a
+  release action even if it also runs tests.
+- **An authorized build, publication or deployment runs through the repository's existing
+  entrypoint and supported ref selection**: its GitHub Actions workflow when that is the designated
+  route, or a native CLI the user explicitly authorizes. Inspect the entrypoint's supported inputs
+  before invoking it, and verify the resulting run, artifact and deployed revision. An
+  authentication, permission or ref-selection failure is repaired at that entrypoint's identity,
+  credential, grants or owned configuration, granting only the authority the authorized operation
+  requires. Never add a temporary input, mode, wrapper or alternate workflow to bypass the failure,
+  even with a promise to remove it; a genuinely missing durable capability is source work under
+  the task's scope and authorization, never an incidental recovery allowance.
 
 ## Dependencies
 - `merge-conflict`
@@ -62,9 +73,35 @@ output. Missing evidence prevents reusing that result or admitting a local-cover
 never waives hosted coverage. The caller also supplies each validation exclusion: a current-user
 direction to leave a named test or check alone, a baseline exclusion established by `pre-production`'s
 **Encountered Issues** classification with its default-branch evidence, or evidence that a hosted
-runner or provider interruption meets the GitHub rule's interruption and local-coverage
+runner or provider interruption meets **Validation Exclusions**' interruption and local-coverage
 conditions. A caller with no fix rule has each fix's delta judged the way it judged the accepted
 head before the gate repeats.
+
+## Validation Exclusions
+
+An authorized merge is not held for an excluded check, as the GitHub rule's **Merge Authorization**
+says, and exclusions are applied before any failure is repaired.
+
+- **Waived, baseline and non-essential checks.** A failing check the current user explicitly
+  waives, an established baseline exclusion, and a non-essential check left red on findings the
+  change did not write are excluded, each as `pre-production`'s **Encountered Issues** classifies
+  it. Record the check and its exclusion evidence in the task's record, then attempt the authorized
+  merge without asking the user; a baseline exclusion is named to the user only where that
+  classification allows. Keep that classification rather than excluding a required repair merely
+  because the same failure also appears on the default branch.
+- **Interrupted hosted checks.** An interrupted hosted check supplies no validation result for the
+  work it did not complete. When the logs establish a runner or provider interruption without a
+  validation failure, exclude the interrupted attempt if equivalent local validation passed for
+  the proposed merge head. Record the run, the interruption evidence, and the matching local
+  commands and results; do not rerun or wait merely to get a green hosted result. A recorded
+  validation failure remains a failure even if the run was later canceled, and missing equivalent
+  coverage is obtained before merging.
+- **A local failure is never excluded this way.** A locally run validation failure caused by setup,
+  dependency, checkout, proxy or certificate trust, or container build configuration is an
+  encountered repository issue: repair its canonical bootstrap or container build configuration
+  and rerun it.
+- Where branch protection requires an excluded hosted interruption to pass, **Merge** obtains the
+  required hosted result; branch protection is never bypassed.
 
 ## Transport
 
@@ -165,8 +202,8 @@ test jobs run once, on the head about to merge.
    classify a newly encountered possible baseline under `pre-production`'s **Encountered Issues**,
    without reentering that skill's active run. A non-essential check failing only on findings
    `pre-production`'s essential-checks bullet leaves red is an exclusion too. Record an exclusion's
-   evidence, remove it from required coverage, and do not repair, rerun, or wait for it. Apply the
-   GitHub rule's runner-infrastructure exclusion automatically: record a qualified check as skipped
+   evidence, remove it from required coverage, and do not repair, rerun, or wait for it. Apply
+   **Validation Exclusions**' interrupted-check exclusion automatically: record a qualified check as skipped
    and do not rerun or wait for a green hosted result. For a canceled or otherwise interrupted
    attempt with no recorded validation failure and no exclusion, use an equivalent successful
    hosted attempt or follow a pending replacement through step 6. If neither exists, obtain
@@ -233,16 +270,32 @@ provider already rejected. Follow its matching replacement or retry under **Chec
 the required context and attempt the merge once GitHub reports it passing. For other exclusions, or if hosted
 recovery is unavailable, report the actual rejection and its provider evidence. Never bypass protection.
 
-Once the merge is verified, **No Deploy Work** governs what follows it.
+Once the merge is verified, **No Deploy Work** governs what follows it, and **After Agent Sync** a
+merge whose diff changes agent configuration.
+
+## After Agent Sync
 
 When the merged diff changes agent configuration, poll the default-branch Agent Sync run the merge
 started as **Check Gate** steps 6–7 poll a check. A run ending in anything but success is diagnosed
-from its log and reported. After a successful run, complete the refresh selected by the GitHub
-rules' **After Agent Sync** section, invoking `update-skills` when that section selects it, and
-verify its installed links; the skill does not return, and
-the turn does not end, until that refresh is verified or a failed run or blocker is reported.
-When the caller owns the primary checkout refresh, return the sync result and any shared
-installation result so the caller can complete and verify the checkout refresh.
+from its log and reported.
+
+- **Refresh immediately after the run succeeds.** The refresh is part of the merge's delivery,
+  including when the merge is the session's final work: complete it and verify the installed links
+  before reporting delivery complete. The skill does not return, and the turn does not end, until
+  that refresh is verified or a failed run or blocker is reported, and the report names the
+  installed source and commit, or the concrete blocker preventing refresh.
+- **Select the refresh route before checking local changes.** When the repository supplies the
+  installed shared skills, invoke `update-skills`, which keeps pending agent-configuration changes
+  in effect, dirty checkouts and open pull requests alike. Tell it the caller will clean the source
+  checkout after installation, so the installed files stay available independently. For
+  `update-skills`' own first merge, read it from the merged commit before invoking it. A session
+  follows the copy it loaded until this refresh completes.
+- **Every merge of agent configuration then refreshes the repository's primary checkout**,
+  whichever workflow merged it: a local edit the merged default branch already holds is removed,
+  local-only work is saved in a named stash and kept, and the checkout ends clean on the default
+  branch's fetched tip, with the generated guidance verified there. When the caller owns that
+  refresh, return the Agent Sync result and any shared installation result so the caller can
+  complete and verify it.
 
 ## No Deploy Work
 
@@ -256,8 +309,8 @@ installation result so the caller can complete and verify the checkout refresh.
 
 Nothing waits on a deploy: the remaining work proceeds, and a report names no deploy step as
 remaining. Other authorized work after a merge is unaffected, such as a run's next batch, a
-consumer repointed once its dependency merged, or the refresh the GitHub rules' **After Agent
-Sync** section requires. A task whose own outcome the user stated as a deployment, publication or
+consumer repointed once its dependency merged, or the refresh **After Agent Sync** requires. A
+task whose own outcome the user stated as a deployment, publication or
 release, or as restoring a broken deployed operation, follows that outcome past the merge.
 
 ## Pull Request Activity

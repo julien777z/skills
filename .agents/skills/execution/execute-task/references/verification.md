@@ -49,22 +49,56 @@ writing, keeping or removing, and how suites are laid out, configured and budget
 
 ## Pre-Push Checks
 
-The GitHub rule's **Pre-Push Gate** states the checks every push passes. Where it speaks in plain
-words, this skill supplies:
+The GitHub rule's **Pre-Push Gate** states what every push passes and what may hold one. Its detail:
 
-- its verification checkpoints: **Verification Cadence** above, whose superseded-run bullet says
-  what happens to a suite still running, and **Suites And Failures**' cannot-run bullet, which
-  decides when a job may be left to its hosted run;
-- its spacing check: `pre-production`'s **Code Layout**, with `acceptance-gate`'s
-  `scripts/python_rule_findings.py` listing the candidate pairs in changed Python files;
-- its size budget, target boundary, essential checks and local-stack recovery: `pre-production`'s
-  incidental size budget, target boundary, essential-checks bullet and **Local Stacks**;
-- its delegated briefs: `subagent-matrix`'s worker brief, with the worker's head read under
-  [reported outcomes](outcomes.md);
-- the holds it excepts: `lock-revision`'s **After Locking**, and a `review-pass` the user asked
-  for without a push;
-- when a simplification pass and a gate run: `SKILL.md`'s **Ongoing Simplification** and
-  **Completion**, with a gate's flag closed by the fresh gate `acceptance-gate`'s **Bounds** requires.
+- **When the checks run.** **Verification Cadence** above sets the checkpoints, and its
+  superseded-run bullet says what happens to a suite still running. Deferred feature verification
+  holds no intermediate push and stays required afterward: run the relevant batch once the feature
+  is complete, then the required final checks before delivery, keeping evidence the change has not
+  invalidated rather than restarting the batch for each push.
+- **Which jobs run here.** A job that needs a hosted service or a running stack, or is too slow to
+  run before every push, joins the slow verification and is named in the report. Room on this
+  machine never leaves a job to its hosted run: a shortage of disk, memory or ports is recovered as
+  `pre-production`'s **Local Stacks** says, and the job runs here. **Suites And Failures**'
+  cannot-run bullet decides when a job may be left to its hosted run. A non-essential check left
+  red on findings the change did not write, as `pre-production`'s essential-checks bullet
+  classifies them, holds no push.
+- **A local variant of a CI check is not that check**, and each of these passes locally and fails
+  in CI: lint or type checks scoped to the changed files, where CI's whole-tree run finds an
+  untouched caller of a signature the change altered; a formatter or linter in write mode, which
+  rewrites what CI's check mode reports; a tool at a version or with a config other than the one CI
+  resolves; a job left out because the diff looks unrelated to it, such as a generated-output drift
+  check or a whole-tree check that every shared component has a docs page.
+- **The spacing check.** Before each push, list the exact adjacent line pairs where setup, a guard,
+  transformation, side effect or return meets the next phase without the blank line
+  `pre-production`'s **Code Layout** requires; for changed Python files, `acceptance-gate`'s
+  `scripts/python_rule_findings.py` lists the candidate pairs. Fix every listed boundary in the
+  lines the change writes or edits, and elsewhere in the changed files within `pre-production`'s
+  incidental size budget; an unrelated bug or a passing formatter does not satisfy this check.
+- **A coherent step** is a function and its callers updated, a test brought to pass or one finding
+  fixed, judged against `pre-production`'s complete target boundary, not the latest edited files:
+  required consumer updates, superseded owners and declarations, generated contracts and
+  retained-data migration are implementation, never later cleanup. An intermediate push preserves
+  ongoing work; it neither narrows the remaining obligation nor qualifies that feature for
+  completion, review delivery or rollout. A recycled container or an ended session takes every
+  commit and edit no remote holds.
+- **No edit sits uncommitted through a long wait outside the checks.** Before the slow
+  verification, a background worker, CI on the pushed head, or a question to the user, bring the
+  work to a coherent step, commit it, and push it; the checks' own runs are part of the push, not
+  such a wait.
+- **The slow verification** is a browser walkthrough, a full or end-to-end suite, a run against a
+  service without the change, root-causing a failure seen along the way: anything slow or needing a
+  running stack. What it finds goes out as fix pushes, each once its checks pass.
+- **A dependency still in review** is consumed as
+  [multi-repository delivery](multi-repository.md)'s **Dependencies In Review** says.
+- **Delegated edits** take `subagent-matrix`'s worker brief, which carries this cadence, the exact
+  files to change and the branch the worker pushes to, with the worker's head read under
+  [reported outcomes](outcomes.md) before any dependent work starts.
+- **The holds the rule excepts** are `lock-revision`'s **After Locking** and a `review-pass` the
+  user asked for without a push.
+- **A simplification pass and a gate** run when `SKILL.md`'s **Ongoing Simplification** and
+  **Completion** say, never per push, with a gate's flag closed by the fresh gate
+  `acceptance-gate`'s **Bounds** requires.
 
 ## Suites And Failures
 

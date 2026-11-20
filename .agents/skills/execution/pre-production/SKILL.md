@@ -1,6 +1,6 @@
 ---
 name: pre-production
-description: Apply target-contract and product-state constraints to implementation, review, and operational data tasks, including maintenance, cleanup, tooling, and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update its owned consumers and migrate retained data instead. Apply to relevant CI failures after validation classification, and whenever a lint, formatting or other non-essential check is red on code the change did not write. Use before deciding whether a change is a product choice the user decides or a routine presentation detail the agent decides. Use when placing code in a file or laying it out, declaring a configuration value, logging, naming anything or choosing American English spelling, choosing a version or dependency release, or writing documentation, comments, example values or paths. Use when writing product copy or a form. Use before repairing or resetting a local stack or development data, running an experiment against shared state, rebuilding a built artifact, or mutating a live deployment.
+description: Apply target-contract and product-state constraints to implementation, review, and operational data tasks, including maintenance, cleanup, tooling, and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update its owned consumers and migrate retained data instead. Apply to relevant CI failures after validation classification, and whenever a lint, formatting or other non-essential check is red on code the change did not write. Use before deciding whether a change is a product choice the user decides or a routine presentation detail the agent decides. Use when placing code in a file or laying it out, declaring a configuration value, logging, naming anything or choosing American English spelling, choosing a version or dependency release, or writing documentation, comments, commit messages, pull-request text, example values or paths. Use when writing product copy or a form. Use before repairing or resetting a local stack or development data, running an experiment against shared state, rebuilding a built artifact, or mutating a live deployment.
 short_description: 'Apply target-contract constraints to implementation and review tasks.'
 ---
 
@@ -16,7 +16,7 @@ change writes:
 - [The code-conventions reference](references/code-conventions.md), before writing or editing
   code, configuration, a manifest, documentation, a comment, a commit message or pull-request text:
   whose standards apply, code layout, configuration values, logging, versions, naming and language,
-  example values and paths, and documentation.
+  example values and paths, documentation, and repository text.
 - [The product-copy reference](references/product-copy.md), before writing or changing text or a
   form a product's reader meets.
 - [The environments reference](references/environments.md), before repairing or resetting a local

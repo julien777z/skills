@@ -60,7 +60,8 @@ experience's audience, settings or monetization, and no publish to any other exp
    and the chosen environment as the Open Cloud route in `roblox-studio`'s source, editor, and
    publication reference describes. Follow the run to its end and confirm it ran on the frozen
    head. A project with no such workflow gets one set up as that reference says, in the two pull
-   requests the GitHub rules' **Workflows** section sets for a new workflow with a manual dispatch,
+   requests the `github-workflows` rule's **Branch Runs And Dispatch** sets for a new workflow with a
+   manual dispatch,
    so later publishes leave Studio out; until it is on the default branch, publish this run from
    Studio as **Publish from the isolated runner** says.
 4. **Publish from the isolated runner** only where no deploy workflow exists yet, as `roblox-studio`

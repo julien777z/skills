@@ -113,7 +113,7 @@ Each pass reviews only what no earlier pass reviewed.
 
 Read the title and description against the current head first, and rewrite either one that no
 longer describes the branch: a feature named that was taken back out, a shape the change replaced,
-a contract the diff no longer breaks. Rewrite at the GitHub rule's bar and its independent
+a contract the diff no longer breaks. Rewrite as `pre-production`'s **Repository Text** says and under the GitHub rule's independent
 publishing context, never from a body a tool truncated. Refresh once more before final acceptance,
 because the pass's own fixes change what the branch does. Name the fixes review surfaced rather
 than the task required, so a reader sees why the diff is wider than the title.

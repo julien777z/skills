@@ -241,3 +241,35 @@ return normalized
   handles it. Every other place that reuses that value or works around the same behavior restates
   nothing: a second comment, a docstring, or a comment in another file. A comment above a timeout
   saying a library sets none, and another at the override that applies it, are one comment too many.
+
+## Repository Text
+
+- Write repository artifact text for its reader: describe behavior, configuration, contracts and
+  validation, without narrating the task that produced it. This includes action and workflow
+  metadata, configuration descriptions, code comments, documentation, commit messages and
+  pull-request text. Do not add attribution to user requests, approvals or agent compliance, such
+  as “as requested” or “per your instructions”; apply the instruction to the result itself.
+  Record an exchange only when the user explicitly asks to document that exchange, in a document
+  whose purpose is that record.
+- **A description of an input, output, option, setting or field tells a person what the value is,
+  in a plain sentence**, such as "Commit the changes are compared against". It never restates the
+  flag or variable the value becomes, such as `--base-sha`, stands a bare value grammar such as
+  `a | b` in place of words, or lists which operation, command or caller uses it, such as
+  `(generate only)`: the code already shows how the value is passed and who reads it, and a list of
+  users goes stale with the next change to the code. Where a value is one of a fixed set, the
+  sentence says what each one does.
+- Use conventional commit messages when applicable and keep commits atomic and focused.
+- Name what a branch, commit or pull request changes by its category of change, in generic nouns
+  such as page, request or button. A branch takes the repository's required prefix and a slug of
+  that description. Leave branch names and pull-request metadata that automation owns unchanged.
+- Keep pull requests focused and give them descriptive titles and descriptions: a title stays short,
+  and a body may run long with bullets and validation notes. Request appropriate reviewers when the
+  repository workflow requires them.
+- **A pull-request description is written from what is already known, never by re-reading the
+  history.** The agent that did or coordinated the work writes it from its own record of the
+  change, the existing description, `git log --oneline` subjects and `git diff --stat` against the
+  base. It opens a commit or a file only to settle one line those leave unclear, and never walks
+  commits one by one; a worker asked to write one is handed that change list in its brief.
+- A pull-request description covers the changes in that pull request and nothing else. Leave out
+  alternatives considered and rejected, work deferred to a later change, and the reasoning behind
+  not doing something.

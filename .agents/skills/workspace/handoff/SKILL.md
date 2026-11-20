@@ -81,8 +81,8 @@ skill ends with.
    the work went, as the GitHub rule's **Branches and Pull Requests** says. A pull request the
    session did not open is never closed, retargeted or folded.
 7. **Bring each pull request body up to date**: read the complete existing body, then rewrite it
-   to describe everything the branch now changes, written the way the GitHub rule's description
-   bullets say — from the session's own record of the work, not a walk through its commits. Every open pull request in the ledger gets this, however long its body.
+   to describe everything the branch now changes, written the way `pre-production`'s **Repository Text**
+   says — from the session's own record of the work, not a walk through its commits. Every open pull request in the ledger gets this, however long its body.
 8. **Post the hand-off comment** on each pull request in the template below, written so an agent with
    no other context can continue: the queue in order with exact files, every question with the
    options as they were put, and every decision and constraint that governs this repository's work.

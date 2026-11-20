@@ -1,13 +1,13 @@
 ---
 name: update-skills
-description: Refresh the installed shared skills and rules to the latest default branch while keeping pending skill pull requests, the checked-out skills branch and uncommitted skill edits in effect. Use when the GitHub rules' After Agent Sync section calls for it, or when the user asks to bring local agent guidance up to date.
+description: Refresh the installed shared skills and rules to the latest default branch while keeping pending skill pull requests, the checked-out skills branch and uncommitted skill edits in effect. Use after a pull request that changes agent configuration merges and its Agent Sync run succeeds, or when the user asks to bring local agent guidance up to date.
 short_description: 'Refresh installed skills to the latest default branch, keeping pending skill changes in effect.'
 ---
 
 # Update Skills
 
 Refresh the user-level agent roots from the shared skills repository. An agent runs this skill
-when the GitHub rules' **After Agent Sync** section calls for it; cloud setup also runs the
+after a merge of agent configuration whose Agent Sync run succeeded; cloud setup also runs the
 installer when a session starts.
 This skill never copies provider mirrors by hand.
 

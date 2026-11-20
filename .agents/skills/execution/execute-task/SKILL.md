@@ -8,7 +8,7 @@ short_description: 'Plan source and product changes and show the plan; validate 
 
 Plan source and product changes, show the plan, then run it the same way every time. **Plan**
 decides what will be built; canonical guidance changes enter **Execution** directly and are
-validated by the gate set the GitHub rule's **Merge Authorization** states for an
+validated by the gate set `edit-skill`'s **Guidance Delivery** selects for an
 agent-configuration pull request, except a substantial skill change the user asks for, whose plan
 is a proposed flow.
 
@@ -80,8 +80,8 @@ without a plan of their own; only an edit that adds nothing skips it.
   approval question. Ask only about a concrete unresolved choice and continue independent work.
   Completing that choice takes no separate plan. Canonical guidance changes
   under `.agents`, apart from the substantial skill change the next bullet holds, do not wait for a plan or an output-format approval: their request or an encountered guidance gap starts
-  the guidance-correction workflow, and the gate set the GitHub rule's **Merge Authorization**
-  states verifies it, on the timing `edit-skill`'s **Recording During A Task** sets for an active task,
+  the guidance-correction workflow, and the gate set `edit-skill`'s **Guidance Delivery**
+  selects verifies it, on the timing `edit-skill`'s **Recording During A Task** sets for an active task,
   whether the user asked for the correction directly or the run noticed it.
 - **A guidance change whose flow is affected is shown as a proposed flow.** Whenever a change's
   statement of scope records `flow affected`, as `edit-skill`'s **Scope Statement** defines it,
@@ -366,8 +366,8 @@ required check or the host prevents delivery, keep the push and pull request as 
 
 **A pull request's title and description are brought up to date at every milestone, not at every
 push.** A milestone is a finished plan step or worker task whose checks pass, and a guidance correction pushed onto the pull request carrying it. After it, add
-what the milestone changed and rewrite whatever no longer holds, as the GitHub rule's description
-bullets say, before the milestone is reported. A push inside a step, such as a repair or a rebase,
+what the milestone changed and rewrite whatever no longer holds, as `pre-production`'s **Repository
+Text** says, before the milestone is reported. A push inside a step, such as a repair or a rebase,
 leaves the description for that step's milestone. `review-pass`'s **Description Refresh** still
 checks it before review.
 

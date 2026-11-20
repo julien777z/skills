@@ -142,7 +142,7 @@ head lag and a retryable rate limit are nonterminal.
 
 ## Local Checkout
 
-This is the primary-checkout refresh the GitHub rule's **After Agent Sync** requires after a merge
+This is the primary-checkout refresh `merge-gate`'s **After Agent Sync** requires after a merge
 of agent configuration, run here after every verified merge.
 
 - Locate the primary checkout in Git's worktree inventory and verify the remote identifies the
