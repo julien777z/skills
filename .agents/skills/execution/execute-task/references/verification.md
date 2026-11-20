@@ -74,7 +74,8 @@ writing, keeping or removing, and how suites are laid out, configured and budget
   rebuilt each run though its inputs have not changed. What the read finds is handled as
   `test-fixture`'s **Test Cost** decides.
 - For every pull request an agent creates, ensure all test-related CI jobs pass before considering
-  delivery complete; investigate and fix any failures within the pull request's scope.
+  delivery complete; investigate and fix any failures within the pull request's scope, apart from a
+  baseline failure, which is recorded and left as `pre-production`'s **Encountered Issues** says.
 - When CI tests fail, read the job logs by whichever route reaches them, such as the hosting
   service's API, CLI or connector. Ask the user for the failure output only once the reach check in
   [authorization](authorization.md)'s **Steps Only The User Can Take** finds no route.
@@ -94,7 +95,8 @@ writing, keeping or removing, and how suites are laid out, configured and budget
   explain the specific interruption and ask for explicit permission before that part runs. Continue
   independent checks through nondisruptive routes and report what still lacks verification.
 - A cloud workspace snapshot restores files, not running processes. A failing `docker info` at session start means the daemon may need to be started; it does not by itself prove Docker is unavailable.
-- Prefer the repository's service-startup helper or skill. Otherwise start the daemon explicitly and wait for `docker info` to succeed:
+- On macOS, select the container runtime first, as `run-site`'s **Start and verify the stack** says
+  of OrbStack. Prefer the repository's service-startup helper or skill. Otherwise start the daemon explicitly and wait for `docker info` to succeed:
 
 ```bash
 mkdir -p .agent_sources/logs

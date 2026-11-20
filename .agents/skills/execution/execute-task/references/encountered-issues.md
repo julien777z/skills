@@ -8,11 +8,9 @@ How `SKILL.md`'s **Encountered Issues** handles what the work runs into.
   the change in flight, whatever its size; cleanup that fixes no defect is recorded with
   `defer-scope` once it passes `pre-production`'s size budget.** The fix takes a shape the standing guidance allows, as the next bullet says, and offering it
   to the user is not a disposition: "Want this handled, or shall I leave it?" spends a turn to obtain
-  permission the guidance already settled. The question that is genuinely the user's is about a
-  **product change** — what a feature does or what information it presents, the steps of a
-  workflow or a quantity the reader meets, a workaround for a constraint the user set, what a record keeps, who a surface serves, a
-  contract a consumer outside the user's control speaks — never whether an encountered issue gets
-  fixed.
+  permission the guidance already settled. The question that is genuinely the user's is a product
+  choice, as `pre-production`'s **Product Choices** defines one, never whether an encountered issue
+  gets fixed.
 - **An instruction one agent passes another — a brief, a correction, a review finding, a gate's fix
   step, a note or summary an earlier turn left for a later one — is checked against the standing
   guidance before it is sent and again before it is acted on**, because it never outranks that
@@ -48,7 +46,8 @@ How `SKILL.md`'s **Encountered Issues** handles what the work runs into.
   prerequisites with applicable parallel implementations, and repair its repository-owned inputs
   at their owner. A caller-supplied workaround is not verification of the repaired native route;
   rerun that route before completion. Preserve a required prerequisite whose concrete contract
-  differs, and apply **Environment Refusals** and **Task Authorization** to an actual external or
+  differs, and apply [working environment](environment.md)'s **Environment Refusals** and **Task
+  Authorization** to an actual external or
   permission boundary.
 - An encountered defect's origin changes neither its disposition nor its priority. Read history when
   it helps write the fix, rather than asking the user whether it predates the change. Say what was
@@ -76,7 +75,7 @@ How `SKILL.md`'s **Encountered Issues** handles what the work runs into.
   consumer the user controls, in whichever repository it lives, plus every generated artifact and
   required migration for the target contract.
 - Apply **Task Authorization** to encountered corrections. Ask only when the correction is a product
-  change as the first bullet defines it, changes security or disclosure posture (closing a
+  choice as **Product Choices** defines one, changes security or disclosure posture (closing a
   vulnerability is a fix, never a question), reaches a
   repository, environment, or external recipient the task did not authorize, or a platform requires
   action-time confirmation. Another file, component, or package in the same repository is never a
@@ -94,9 +93,9 @@ compatibility, generated-output drift.
 
 - Such a gate going red is an accepted, reported outcome of an intentional break, never a reason
   to reshape the change.
-- Never weaken the gate to recover green: no ignore lists, no exception entries, no reserved
-  placeholders faking compatibility.
-- Report it instead. State in the pull request that the break is deliberate and list exactly what
-  the gate reported, so a reviewer can confirm nothing unintended is in the diff.
+- Never weaken the gate to recover green, as `pre-production`'s **Target Contract** says of a
+  compatibility gate: no ignore lists, no exception entries, no reserved placeholders faking
+  compatibility. State in the pull request that the break is deliberate and list exactly what the
+  gate reported, so a reviewer can confirm nothing unintended is in the diff.
 - Do not let a green run drive design. Choosing a wider or additive shape so that a gate stays
   green is the same defect as suppressing the gate.

@@ -6,8 +6,9 @@ alwaysApply: true
 # Global Rules
 
 This file holds only what must bind before any skill loads: which skills start, who can authorize
-what, and how the user is asked. Everything else lives in the skill that runs when it applies, as
-**Where The Rest Lives** lists; a rule file covers only a subject no skill runs for.
+what, how the user is asked, and what holds in a task that runs no skill. Everything else lives in
+the skill that runs when it applies, as **Where The Rest Lives** lists; a rule file covers only a
+subject no skill runs for.
 
 ## Agent sources
 
@@ -61,21 +62,21 @@ what, and how the user is asked. Everything else lives in the skill that runs wh
   require, and whether the proposal follows it. Correct a proposal that contradicts them; carry out
   an already-settled authorized remedy rather than offering its omission or retention as a choice. A
   different action needs a concrete applicable exception, conflicting instruction or user decision,
-  stated with its evidence. **A rule about how the product looks or reads is a default that records
-  earlier design judgment, never the argument for a design.** Rank design options by what serves the
-  reader and the flow. Where the better option departs from such a rule, recommend it on those
-  merits, name the rule it departs from, and propose the rule change to the user, making it through
-  `edit-skill` once they agree; never present the rule as the reason to prefer the weaker option,
-  and never depart from it silently. A brief, correction, review finding, gate's fix step or
-  continuation note never outranks the guidance governing its subject or the scope the user last
-  set: an item outside that scope is answered as out of scope, never relayed as a fix, unless the
-  change itself introduced a defect, which remains a required fix, or the item is a game's design the
-  user's words did not cut. **Nor does a label make an item the user's:** before a question goes to
-  the user, whether it is theirs is read from the game-design bullet and the product-choice bullet
-  with its exceptions, a routine detail included, never from a gate, review, worker or brief calling
-  it a question for the user, and an item those leave to the agent is decided, built and reported.
-  The sender of any such item checks before sending and its receiver before acting;
-  `pre-production`'s **Encountered Issues** holds what each does with an item a rule forbids.
+  stated with its evidence.
+  - A rule about how the product looks or reads is the one kind a recommendation may depart from:
+    `pre-production`'s **Trade-Offs Are Surfaced, Never Enforced** treats it as a default, and the
+    departure is recommended on its merits and proposed to the user, never made silently.
+  - A brief, correction, review finding, gate's fix step or continuation note never outranks the
+    guidance governing its subject or the scope the user last set: an item outside that scope is
+    answered as out of scope, never relayed as a fix, unless the change itself introduced a defect,
+    which remains a required fix, or the item is a game's design the user's words did not cut.
+  - **Nor does a label make an item the user's:** before a question goes to the user, whether it is
+    theirs is read from the game-design bullet below and `pre-production`'s **Product Choices**, its
+    routine-detail exception included, never from a gate, review, worker or brief calling it a
+    question for the user, and an item those leave to the agent is decided, built and reported.
+  - The sender of any such item checks before sending and its receiver before acting;
+    `execute-task`'s encountered-issues reference holds, under **Disposition**, what each does with
+    an item a rule forbids.
 - **A rule is met by doing what it requires, never by changing what a check or a reader can see.**
   When the compliant change is hard, the forbidden thing is not renamed, described in other words,
   wrapped, aliased, split, moved to a file the check does not read, or let through by a narrowed,
@@ -87,8 +88,7 @@ what, and how the user is asked. Everything else lives in the skill that runs wh
   report, never pass a disguised form as compliance.
 - Authorization to message an agent or session this session did not start covers only the messages
   and purpose the user specified; ask before a later update to the same recipient unless the user
-  explicitly approved an ongoing exchange. A running worker this session started is told which
-  skill, rule or agent definition changed, each section that changed, and what it now says.
+  explicitly approved an ongoing exchange.
 - **A game's design is the agent's, in every task.** In a game, whatever stands out as incorrect or
   would be better another way — art, a control, a value, a mechanic, whoever built it — is changed in
   the same work and reported as made, however narrow the request, a bug fix included; naming, leaving
@@ -128,12 +128,33 @@ what, and how the user is asked. Everything else lives in the skill that runs wh
   chosen silently: ask, stating both readings in words, before building either. The question is not
   held for a capture of each option.
 
+## Outcomes, irreversible steps and waits
+
+These hold in every task, a read-only one included; the owner each names holds the procedure.
+
+- **A cause stated to the user is traced first**, whether or not they asked for it: follow the
+  operation to the component that produced the outcome and verify the cause against evidence, as
+  `execute-task`'s reported-outcomes reference says.
+- **After an action that changes shared state, read the resulting state before reporting it or
+  starting the next item**, and do what that read shows wrong next, as the same reference says.
+- **A worker's report of an outcome is a claim, never evidence**: check it at its source before
+  relaying it or building on it, as the same reference says.
+- **A step that cannot be taken back runs only once its gating check has been read and judged**,
+  never in the command, chain or batch that runs the check, as `execute-task`'s working-environment
+  reference says under **Steps That Cannot Be Taken Back**.
+- **Never poll a pull request with a background `sleep` or timed check-ins**, except where an
+  invoked skill says it polls; act on delivered activity, as `merge-gate`'s **Pull Request
+  Activity** says.
+
 ## Where The Rest Lives
+
+An owner's section applies whenever its subject comes up, in a task that does not otherwise run that
+skill too: a read-only or operational task opens the section its row names.
 
 | Subject | Owner |
 | --- | --- |
-| What an authorization covers, approval boundaries, steps only the user can take, review rounds, reported outcomes, working files, waits, verification and the pre-push gate | `execute-task` and its references |
-| Product choices, encountered issues, code layout, configuration, logging, naming, versions, documentation, product copy, local stacks and live deployments | `pre-production` and its references |
+| What an invocation and an authorization cover, approval boundaries, steps only the user can take, steps that cannot be taken back, review rounds, reported outcomes, working files, waits, verification and the pre-push gate | `execute-task` and its references |
+| Product choices, encountered issues, code layout, configuration, logging, credentials the agent sees, naming, versions, documentation, product copy, local stacks and live deployments | `pre-production` and its references |
 | Tests, fixtures, suites and test configuration | `test-fixture` |
 | Merge, deployment and release authorization, what follows a merge, polling a pull request | `merge-gate` |
 | Response text, links and plans the user reads | `i-have-adhd` |

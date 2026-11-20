@@ -37,7 +37,7 @@ it — the user asking about something else is not the user withdrawing what the
   it is obeyed.
 - **Commits a remote lacks are undelivered work**; their next step is the pre-push checks and the
   push. A hook or status line counting unpushed commits whose checks pass reports a push owed now,
-  not something to explain, apart from the commits the [pre-push gate](pre-push.md)'s one exception holds.
+  not something to explain, apart from the commits the [pre-push gate](pre-push.md)'s exceptions hold.
 
 ## The Unchanged Line
 
@@ -94,6 +94,8 @@ nor touches the files or resources the awaited work is changing.
   never the task's report. When every remaining item depends on an awaited result, keep the
   available host wait or event route active until the result arrives, then resume its saved next
   action.
+- A pull request is waited on as `merge-gate`'s **Pull Request Activity** says: on delivered
+  activity, never a background `sleep` or a timed check-in, apart from the polling it excepts.
 - An unresolved user choice holds its dependent work, not the whole run: it neither closes the run
   nor cancels independent work. A guidance correction is recorded and the run carries on; it is
   processed at **Completion**, never a reason to end or pause the surrounding task.

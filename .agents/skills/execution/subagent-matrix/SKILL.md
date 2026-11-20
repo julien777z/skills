@@ -225,6 +225,8 @@ context and returns its verdict into the step waiting on it; nothing else does b
   only when their edits and resources do not overlap and neither needs an unsettled output from the
   other. A worker ends with its task; the next gets a fresh context. Read-only gates and reviews may
   run alongside building at the cadence their owning skill sets.
+- **A running worker is told when guidance it works under changes**: which skill, rule or agent
+  definition changed, each section that changed, and what it says.
 - **An editing worker's own worktree** is the host's worktree isolation where it offers one,
   otherwise a worktree the brief names under the task's working-files folder, made from the branch
   the worker pushes to.

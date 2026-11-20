@@ -143,7 +143,8 @@ dispositions, the **Mirror Source Ownership** test-module check, the **Naming Ch
 keeper, and delete one that proves nothing once the rubric's deletion evidence is recorded. A
 repaired or strengthened guarantee follows the existing-check validation procedure above. A fix that repairs a defect —
 a test that cannot fail, guards the wrong behavior or breaks in a fresh checkout — is always made,
-whatever its size; other cleanup the sweep finds counts toward `pre-production`'s size budget like
+whatever its size, apart from a test already failing on the default branch, which the rubric
+records and leaves; other cleanup the sweep finds counts toward `pre-production`'s size budget like
 any other incidental change, and past it, what is left returns to the caller as deferred work. Apply the cost-reporting procedure above to the run that verified the
 change. A disproportionate test, parametrized family or module in scope is made cheap or removed
 as `pre-production` decides.
@@ -157,8 +158,8 @@ Fix concrete violations encountered in the relevant tests, sibling tests, fixtur
 shared utilities at the breadth `pre-production` sets. Do not turn a focused change
 into an unrelated repository-wide audit.
 
-Run the locally available targets reached by the final diff. Run the full suite only when every test
-is relevant or the user explicitly requests it.
+Run the locally available targets the final diff reaches. That is this skill's own check of the
+tests it changed; it never narrows which suites verify a change as a whole.
 
 Report source-to-test placement, sibling conventions checked, fixture and factory owners reused or
 extended, parametrized cases reused, encountered corrections, literal-sweep corrections, any mutation

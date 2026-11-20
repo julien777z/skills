@@ -25,13 +25,9 @@ step is a new approval boundary, and how a step or choice reaches the user.
   instruction; a concrete gate holds only its dependent operation. On an explicit user stop or
   handoff, report what finished and record precisely what resumption needs.
 - **Merge, deployment, publication and release are separate outcomes outside the ordinary scoped
-  external changes above**, and `merge-gate`'s **Authorization** says what authorizes each.
-  "Implement this plan" is not an explicit instruction for any of them, even when the plan names
-  the action and target. Before acting, identify the user's separate explicit instruction for that
-  action and target, or applicable guidance or an invoked skill that expressly authorizes it;
-  otherwise complete the reviewable work and stop there. An unauthorized merge leaves the pull
-  request draft for the user; a deployment, publication or release the request does not name is no
-  part of the task, and nothing waits on it.
+  external changes above**, and `merge-gate`'s **Authorization** says what authorizes each. An
+  unauthorized merge leaves the pull request draft for the user; a deployment, publication or
+  release the request does not name is no part of the task, and nothing waits on it.
 
 ## Approval Boundaries
 
@@ -73,8 +69,8 @@ step is a new approval boundary, and how a step or choice reaches the user.
   treats as a defect — which repository or package owns shared behavior and which mechanism replaces
   parallel copies — which `pre-production` and `code-simplify` settle; and what configuration exists
   or how it is scoped, which is read where it lives. A permission denial leaves the decision where
-  it was, as **Environment Refusals** says.
-- **An encountered issue's remedy passes `pre-production`'s product-choice rule before it is
+  it was, as [working environment](environment.md)'s **Environment Refusals** says.
+- **An encountered issue's remedy passes `pre-production`'s **Product Choices** before it is
   chosen**, including one proposed by a worker or reviewer. An ambiguous instruction has no
   approved interpretation: name both concrete outcomes and build on the user's answer, quoting
   their words in a delegated brief. This decision wait holds only the dependent remedy, never the

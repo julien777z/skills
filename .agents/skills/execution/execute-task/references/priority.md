@@ -35,8 +35,7 @@ evidence, frozen inputs and the saved next action. An already-started independen
 exception permitting continued ordinary work. Deploy through the authorized branch route, then
 resume required delivery checks after that live proof. A successful child task, health response or
 merge does not establish it. After an authorized merge, repeat the operation from the default-source
-deployment; if it fails, resume recovery and pause ordinary delivery work again. This order grants
-no deployment or merge authority: **Task Authorization** still governs both.
+deployment; if it fails, resume recovery and pause ordinary delivery work again.
 
 Recovery ends with the deployment back on its own sources. Record each component's deployment
 branch and every setting changed for the fix before changing it. Once the fix is on the default

@@ -3,9 +3,10 @@
 Every push goes out once the pre-push checks below pass, on a draft and on a pull request ready for
 review alike. Follow an explicitly selected workflow’s own declared check sequence and delivery
 constraints where it specifies them; nothing holds committed work on one machine — not a gate, review or simplification
-pass pending on it, an integration merge, or a plan that orders one first. The one exception is
+pass pending on it, an integration merge, or a plan that orders one first. The exceptions are
 commits that `lock-revision`'s **After Locking** hold keeps local until the user lets revisions
-resume. `code-simplify` and `acceptance-gate` do not run per push; this skill's workflow and `review-pass`
+resume, and the fixes of a review the user asked for without a push, which stay local until they
+ask. `code-simplify` and `acceptance-gate` do not run per push; this skill's workflow and `review-pass`
 set when they run. A fix pushed for a flag a review or gate raised is pushed once
 the agent that made it has re-read the changed lines against the flag and rerun the checks covering
 that code; that recorded check is what other skills mean by an increment's **Pre-Push Gate**
@@ -32,8 +33,8 @@ checks before delivery; retain evidence that the change has not invalidated.
   here. Only a hosted service or credentials the session lacks, each established as the
   verification reference's cannot-run bullet says, or runner-specific behavior does.
   A non-essential check left red on findings the change did not write, as `pre-production`'s
-  essential-checks bullet classifies them, holds no push; invoke `pre-production` for those
-  findings and handle them as that bullet says.
+  essential-checks bullet classifies them, holds no push; handle those findings as that bullet
+  says.
 - **A local variant of a CI check is not that check**, and each of these passes locally and fails
   in CI: lint or type checks scoped to the changed files, where CI's whole-tree run finds an
   untouched caller of a signature the change altered; a formatter or linter in write
@@ -42,10 +43,10 @@ checks before delivery; retain evidence that the change has not invalidated.
   generated-output drift check or a whole-tree check that every shared component has a docs page.
 
 Before each push, list the exact adjacent line pairs where setup, a guard, transformation, side effect,
-or return meets the next phase without the blank line required by the global code-layout rule.
+or return meets the next phase without the blank line `pre-production`'s **Code Layout** requires.
 For changed Python files, `acceptance-gate`'s `python_rule_findings.py` script lists the candidate pairs.
 Fix every listed boundary in the lines the change writes or edits, and elsewhere in the changed files
-within `pre-production`'s incidental size budget, as the global code-layout rule says; an unrelated
+within `pre-production`'s incidental size budget, as that section says; an unrelated
 bug or a passing formatter does not satisfy this spacing check.
 
 - **Commit each small coherent step and push it as soon as its checks pass**, and at least every
@@ -82,7 +83,7 @@ bug or a passing formatter does not satisfy this spacing check.
   alone only cleanup past `pre-production`'s size budget and any item
   `pre-production`'s scope bullets leave to the user. The delegating agent reads that head under
   [reported outcomes](outcomes.md) before any dependent work starts. The worker
-  ends with nothing uncommitted and nothing unpushed beyond the one exception above,
+  ends with nothing uncommitted and nothing unpushed beyond the exceptions above,
   never amends or rebases a pushed commit, and
   its report names the branch and head.
 - **Pull requests stay draft until the authorized merge gate readies them**, so these pushes may

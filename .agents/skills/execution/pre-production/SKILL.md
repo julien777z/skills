@@ -344,14 +344,19 @@ the issue should be ignored.
   reads as "there was no decision to make".
 - When a genuine fork appears, present it as options, state each consequence concretely, and **say
   which one removes the most duplication and leaves the fewest mechanisms behind**. Recommend that one.
-  A fork only in how the code is built — where shared behavior lives, which mechanism replaces
-  parallel copies — is decided by that same test and stated in the pull request, never put to the
-  user. Converting existing instances that are not defective to a different shape is not such a
-  fork: it is proposed to the user, as the code-conventions reference's **A better shape is
-  proposed, never swept in** says.
-  A fork between designs of what the reader sees is ranked by what serves the reader and the flow
-  instead, as the global rules' standing-guidance bullet says of design rules.
   The user may take the trade-off or refuse it; they cannot weigh what they were not told.
+  - A fork only in how the code is built — where shared behavior lives, which mechanism replaces
+    parallel copies — is decided by that same test and stated in the pull request, never put to the
+    user.
+  - Converting existing instances that are not defective to a different shape is not such a fork:
+    it is proposed to the user, as the code-conventions reference's **A better shape is proposed,
+    never swept in** says.
+  - A fork between designs of what the reader sees is ranked by what serves the reader and the flow
+    instead. **A rule about how the product looks or reads is a default that records earlier design
+    judgment, never the argument for a design.** Where the better option departs from such a rule,
+    recommend it on those merits, name the rule it departs from, and propose the rule change to the
+    user, changing the rule once they agree; never present the rule as the reason to prefer the
+    weaker option, and never depart from it silently.
 - Reserve a blocking question for a decision that is genuinely theirs — a security posture, a product
   behavior, a disclosure boundary — as **Product Choices** reserves it, asked as the global rules'
   **Asking the user** says.

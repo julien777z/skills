@@ -338,7 +338,7 @@ why it matters.
 
 When a name is over, that is the order to cut in: the articles and connective prose first — `a`,
 `the`, `that`, `it`, `its` — then every noun the module or the class already states, then a numeric
-status code, replaced by its semantic name. What is left is the behavior under test, which is the
+status code, replaced by its semantic name, such as `not_found` or `forbidden`. What is left is the behavior under test, which is the
 only part the name owes a reader. A leading article, a numeric status code, and a noun the class
 already states are findings at any length, not only past the budget. A name inside the limit that
 carries none of them is finished.

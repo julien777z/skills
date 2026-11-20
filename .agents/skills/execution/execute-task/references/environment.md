@@ -1,7 +1,7 @@
 # Working environment
 
-What `SKILL.md`'s **Working Environment** applies to the files a run writes, the browser it drives
-and what the environment refuses.
+What `SKILL.md`'s **Working Environment** applies to the files a run writes, the browser it drives,
+what the environment refuses, and the steps it cannot take back.
 
 ## Working Files
 

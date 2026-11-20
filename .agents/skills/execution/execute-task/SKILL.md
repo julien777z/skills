@@ -42,8 +42,6 @@ skill change the user asks for, whose plan is a proposed flow.
 Follow the explicitly selected workflow’s own declared sequence, checks and delivery holds throughout
 the task. Where it owns a stage, return its result to this run rather than starting a parallel stage.
 
-Invoke `merge-conflict` when a push read-back shows a conflicting base.
-
 - Invoke this skill once when a task is authorized to change files, before its implementation
   recommendation, delegated edits, or first edit. A run stays active until
   the task's outcome is verified complete or the user explicitly stops or hands it off. **Work You
@@ -53,8 +51,9 @@ Invoke `merge-conflict` when a push read-back shows a conflicting base.
   They return outcomes, pending decisions and required coordinator work to the caller.
 - A selected workflow presents its own plan through its declared approval route.
 - A read-only task — a question answered from the code, a listing, a report with no edit — does
-  not run this skill; a task whose edits sub-agents make is not read-only for the agent that
-  delegated them. A read-only turn does not close an open run either: a run still holding named
+  not run this skill, though it still reads the reference the global rules' **Where The Rest
+  Lives** names for a subject it meets; a task whose edits sub-agents make is not read-only for the
+  agent that delegated them. A read-only turn does not close an open run either: a run still holding named
   work stays active through such a turn, and that turn moves its items.
 
 ## Plan
@@ -100,9 +99,11 @@ Follow-ups that skip plan approval still write this record without a new approva
   Surfaced, Never Enforced** before choosing the remedy or presenting an alternative. Use the
   same check when a worker, reviewer, or failed approach changes the proposed remedy.
 - Select verification before recommending it, putting it in a plan, or delegating it. Read
-  [verification](references/verification.md)'s **Environments** and invoke `run-site` to apply its **Principles**
-  before selecting browser walkthroughs or rendered UI inspections, including when later review
-  or **Completion** proposes additional verification.
+  [verification](references/verification.md): its **Verification Cadence** sets when tests, builds,
+  walkthroughs and reviews run, its **Suites And Failures** which suites a run covers and how a
+  failure is read, and its **Environments** where each runs. Invoke `run-site` to apply its
+  **Principles** before selecting browser walkthroughs or rendered UI inspections, including when
+  later review or **Completion** proposes additional verification.
 - **A plan is written twice: in detail for the run, and short for the user.** The detailed plan —
   the request restated, verified facts, evidence, each step's files and checks — is what
   `review-proposal` reviews and what workers and gates receive; it never goes to the user. While a
@@ -116,12 +117,10 @@ Follow-ups that skip plan approval still write this record without a new approva
   no merge is authorized. Its verification runs before that; no
   step, verification or user action after it walks the deployed site, checks a rollout or waits for
   a deploy, apart from the tasks `merge-gate`'s **No Deploy Work** excepts.
-
 - **An estimate is the executing agent's own wall-clock, never the effort the same work would
   take a person.** Build each step's from [plan estimates](references/plan-estimates.md), and list
   what the plan needs from the user — an approval, a merge, a manual action — separately and
   outside the total, with no time, since the agent cannot know how long the user takes.
-
 - Schedule steps by `subagent-matrix`'s **Dispatch**: coupled work stays sequential, and
   independent scopes with separate owners, files and resources overlap once their inputs are
   settled. Estimate the elapsed time with that overlap, totaled as `session-ledger` totals a plan.
@@ -167,7 +166,6 @@ Follow-ups that skip plan approval still write this record without a new approva
   to a decision between versions of a page.
   Reuse verified factual inventories; keep **When A Plan Is Needed**'s exceptions rather than
   creating another approval requirement.
-
 - Only an explicit user response approves a plan. A timeout, inactivity, a missing response, a tool
   result, a mode change or a system notice never does. Surface approval through the global rules'
   **Asking the user** procedure, including its timeout retries. Keep the plan pending and begin no
@@ -240,7 +238,7 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
   lives. A step the agent adds, or widens past what the user asked, is recorded as agent-originated,
   proceeds under the task's authorization like the work **When A Plan Is Needed** says an approved
   plan covers, and is never shown as user-approved; one that is a product choice goes to the user
-  before it is built, as `pre-production`'s product-choice rule says. Update it when the state
+  before it is built, as `pre-production`'s **Product Choices** says. Update it when the state
   changes, not when a report is due: approval, a step starting, finishing, blocking or being
   skipped, a follow-up's plan.
 - **A step that waits on other work records what it waits for**: the gate, merge or result whose
@@ -258,8 +256,8 @@ Execution starts once a required plan is approved, or immediately when **When A 
 
 ### Assigning Work
 
-Before implementation and whenever new work is admitted, delegate each coherent nontrivial execution
-task under `subagent-matrix`'s **Dispatch**; a task waiting on a worker never holds another
+Before implementation and whenever new work is admitted, delegate the work `subagent-matrix`'s
+**When To Delegate** gives to a subagent, launched under its **Dispatch**; a task waiting on a worker never holds another
 independent one. Reassess ownership after each finding or follow-up. Each editing worker gets a
 worktree of its own, and each brief states the problem, the invariant the fix keeps and the
 requirement to find and reuse how the repository already solves it, never a mechanism its author
@@ -278,10 +276,8 @@ authorization covers, when an intermediate step is a new approval boundary, how 
 user can take and a choice between versions of a page are put to them, and which questions the
 guidance already answers.
 
-- Carry the user's authorization for the task through its ordinary implementation, verification,
-  scoped external changes, retries, recovery and cleanup. Ask only for a decision that materially
-  changes the authorized target, recipient or outcome, or for an action-time confirmation a
-  platform actually requires.
+- Carry the user's authorization for the task through its ordinary work, and ask only where its
+  **What An Authorization Covers** says a new authorization is needed.
 - Merge, deployment, publication and release are separate outcomes, authorized as `merge-gate`'s
   **Authorization** says. Without that authorization, complete the reviewable work and stop there,
   leaving the pull request draft.
@@ -295,8 +291,10 @@ guidance already answers.
 Apply [working environment](references/environment.md): its **Working Files** puts everything
 the run writes for itself or its workers in `.agent_sources/` at the worktree's root; its **Copies A
 Sync Service Left Behind** deletes each such copy before anything stages, stashes or snapshots the
-tree; its **Browser Access** selects the browser; and its **Environment Refusals** treats an
-environment refusal as a route to find, and what a permission check refuses as not attempted again.
+tree; its **Browser Access** selects the browser; its **Environment Refusals** treats an
+environment refusal as a route to find, and what a permission check refuses as not attempted again;
+and its **Steps That Cannot Be Taken Back** runs a deletion, overwrite, push, merge or post only
+after its gating check has been read, outside the command, chain or batch that runs the check.
 
 ### Product Constraints
 
@@ -321,16 +319,12 @@ Before an edit that crosses a trust boundary `security-audit` names, invoke it a
 Apply `pre-production`'s encountered-issues policy while making the change, handled as
 [encountered issues](references/encountered-issues.md) says:
 
-- A finding against the task's changed design, and every defect the work runs into, is fixed in
-  the change in flight, whatever its size; cleanup that fixes no defect is recorded with
-  `defer-scope` once it passes `pre-production`'s size budget. Offering the fix to the user is not
-  a disposition.
-- An instruction one agent passes another is checked against the standing guidance before it is
-  sent and again before it is acted on.
-- Ask only where the correction is a product change, changes security or disclosure posture,
-  reaches a target the task did not authorize, or a platform requires action-time confirmation.
-- A required check that exists to detect deliberate changes, going red on an intentional break, is
-  reported and never suppressed or designed around, as its **CI Gates And Deliberate Breaks** says.
+- Its **Disposition** says what is fixed in the change in flight and what is recorded with
+  `defer-scope`, how an instruction one agent passes another is checked against the standing
+  guidance before it is sent and before it is acted on, and when a correction is asked about.
+  Offering a fix to the user is not a disposition.
+- Its **CI Gates And Deliberate Breaks** says how a required check that exists to detect deliberate
+  changes, going red on an intentional break, is reported and never suppressed or designed around.
 
 ### Ongoing Simplification
 
@@ -351,7 +345,8 @@ covers the changes, the similar code they resemble and the sibling modules aroun
 
 Apply the [pre-push gate](references/pre-push.md) to each push, and
 [reported outcomes](references/outcomes.md) before reporting or building on a result: read the
-state an action left, at its source, and do whatever that read shows wrong next.
+state an action left, at its source, and do whatever that read shows wrong next, invoking
+`merge-conflict` when a push read-back shows a conflicting base.
 
 ### Pull Requests
 
