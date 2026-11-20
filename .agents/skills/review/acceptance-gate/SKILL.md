@@ -321,10 +321,25 @@ smallest coherent repair using the existing owner or mechanism.
 a repair re-reads the changed lines against the flag's objection and remedy and runs the checks
 covering that code; then the repair, or a settled, out-of-scope or council-dropped answer with its
 evidence, goes to a fresh gate under the Diff question, following `subagent-matrix`'s
-**Dispatch**, and only that gate's acceptance closes the flag. The one exception is the decision
+**Dispatch**, and only that gate's acceptance closes the flag. The exceptions are a flag naming only
+missing evidence, which its own run closes as the evidence paragraph below says, and the decision
 the global rules' review-round limit has `council` make once 3 rounds have failed the change,
 which settles its flags as it rules. Each such gate is one of the change's re-reviews under the
 global rules' review-round limit, and a repair's gate one of the flag's own repair rounds below.
+
+**Each flag carries its severity, `defect` or `style`.** A style flag concerns only the form of
+lines whose behavior, structure and contract stand: a docstring's or comment's length, a missing
+blank line, a name's length, wording that misstates nothing. Everything else is a defect, however
+small its fix. The author fixes a style flag and runs the checks covering it, and the next gate the
+change already gets confirms it: final acceptance, or, for a style flag final acceptance raised, a
+fresh re-check of those lines alone. A style flag costs no round, under the global rules'
+review-round limit or the repair rounds below, and never goes to `council`.
+
+**A gap in the evidence a gate was given is not a failed round.** A gate whose verdict waits only
+on evidence it names, such as a source excerpt or a run's output, receives that evidence in the same
+run and finishes its verdict, and that verdict is the round's. Only evidence travels this way: a
+change to the diff, or to any text the gate judges, goes to a fresh gate, and no gate judges wording
+it proposed itself.
 
 **Repair rounds are counted per objection and per change.** A change gets at most 3 rounds across
 every kind of check, the first and 2 after repairs, as the global rules' review-round limit counts
@@ -383,8 +398,9 @@ Gate: <question> — <item in one line>
 
 Verdict: accept | flag | fix | close | defer | do
 
-- <for a flag: the quoted line or missing evidence, the shape it takes, the intent, rule or rubric
-  item it violates, and the remedy the change itself would take; one bullet per flag>
+- <for a flag: `[defect]` or `[style]`, the quoted line or missing evidence, the shape it takes, the
+  intent, rule or rubric item it violates, and the remedy the change itself would take; one bullet
+  per flag>
 - <for an acceptance: each addition whose kind matches a removed shape, the shape it takes, and why
   it is neither the removed shape nor a finding; one bullet per addition>
 - <for a triage disposition: the test that decided it and the fact it rests on>

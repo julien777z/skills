@@ -160,8 +160,9 @@ context and returns its verdict into the step waiting on it; nothing else does b
 - **An independent step gets a newly launched subagent for every question it answers when available.** A gate,
   finding validator, skill-test reader or grader that has answered about an item is never resumed, messaged or
   reused for a later round on it — not to judge the repair of its own flag or a revised item — since
-  its answer would then rest on its own earlier verdict. A reviewer that a review loop keeps across
-  its rounds, carrying the ledger, is a reviewer and not one of these.
+  its answer would then rest on its own earlier verdict. A verdict waiting only on evidence it names
+  is not yet an answer: the same run receives that evidence and finishes it. A reviewer that a
+  review loop keeps across its rounds, carrying the ledger, is a reviewer and not one of these.
 - **An early final does not finish the assignment.** Reconcile its retained results and live child
   jobs before replacing anything. The parent takes over unfinished coordination and keeps waiting
   for existing producers; it does not launch another coordinator to relay the same work. Replace

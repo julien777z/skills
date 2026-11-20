@@ -138,7 +138,8 @@ alwaysApply: true
   repaired again: findings that keep coming on one change say the approach is wrong, not that the next patch
   will land. A change is one plan step, worker task or finding fix, and its rounds are counted
   together across every kind of check; a round a broken runner, fixture or provider cut short before
-  judging the change is not counted. Put the disposition to `council` in **Ask** mode, with the
+  judging the change, a style flag and a gap in a gate's evidence, as `acceptance-gate`'s **Bounds**
+  defines them, are not counted, and no council is convened over style alone. Put the disposition to `council` in **Ask** mode, with the
   change, each round's findings and remedies, and the three choices: use a simpler approach, revert
   the change, or accept it with the remaining findings recorded; record its majority ruling and
   follow it. A confirmed defect, an
