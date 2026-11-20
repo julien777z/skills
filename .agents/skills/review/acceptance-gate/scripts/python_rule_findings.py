@@ -34,11 +34,12 @@ from ast import (
 )
 from enum import StrEnum
 from pathlib import Path
+from typing import Final
 
-DATA_CLASS_MODULES = {"dataclasses", "pydantic.dataclasses", "pydantic"}
-NAMED_TUPLE_MODULES = {"typing", "typing_extensions"}
-MIGRATION_DOCSTRING_FUNCTIONS = {"upgrade", "downgrade"}
-MAX_TEST_NAME_WORDS = 8
+DATA_CLASS_MODULES: Final[set[str]] = {"dataclasses", "pydantic.dataclasses", "pydantic"}
+NAMED_TUPLE_MODULES: Final[set[str]] = {"typing", "typing_extensions"}
+MIGRATION_DOCSTRING_FUNCTIONS: Final[set[str]] = {"upgrade", "downgrade"}
+MAX_TEST_NAME_WORDS: Final[int] = 8
 
 
 class ParagraphCandidateKind(StrEnum):
