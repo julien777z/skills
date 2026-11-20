@@ -1,7 +1,12 @@
 # Authoring Agent Guidance
 
+Contents: **Where Guidance Lives** (placement), **Harnesses**, **Rules**, **Skills** (package and
+references, descriptions, dependencies, decisions, subagents, flows, output, routers), **Writing**
+(wording, scope and size budgets), **Scripts**, **Validation**.
+
 This reference holds how anything under `.agents` is written, placed, served to harnesses and
-validated. The pass in `SKILL.md` names the section each step applies.
+validated. The pass in `SKILL.md` names the section each step applies, and the
+[vendor rubric](vendor-rubric.md) beside this file holds what the model vendors' guidance adds.
 
 ## Where Guidance Lives
 
@@ -183,7 +188,7 @@ the rest.
 So the slash command normally earns no space. It is the skill's own name, the listing normally shows
 it, and a reader deciding whether to invoke has it in hand — `Invoke as /code-slop-doctor to deslop
 a repository` spends its opening clause telling the reader something they used to get here. Keep the
-trigger and drop the command: `Use to deslop a repository or one of its phases, lenses or paths.`
+trigger and drop the command: `Use to deslop a whole repository or one of its areas, lenses or paths.`
 The same goes for a phrase naming the skill, `Use this skill to`, and a restatement of the skill's
 title.
 
@@ -198,6 +203,13 @@ naming — a target, a scope, a mode — not the command that precedes it.
 Judge a description by substitution: read it without knowing which skill it belongs to. If it still
 says which situations fire the skill, it works. If the remainder names no situation, it was never a
 trigger.
+
+A description is written in the third person and stays within 1,024 characters, the limit the open
+skill specification sets and a vendor's upload refuses past. Its main use comes first, because a
+host's listing truncates a long description at its own cap and drops whole descriptions when the
+listing passes its budget. It names kinds of situation, never a list of near-synonymous phrases
+that grows by one with each missed trigger. A rule it carries because the rule must bind before
+the body is read takes one clause; procedure stays in the body.
 
 **A skill that runs only at the user's request says so in its description, never by hiding itself.**
 A frontmatter flag that keeps a skill out of the agent's skill listing, such as
@@ -263,6 +275,11 @@ restriction. Gate a single user-only workflow inside an otherwise usable skill i
   **Ask** mode, and its ruling, by majority unless the skill sets a stricter threshold, is followed and named in the skill's result. A skill whose
   workflow does this declares `council`. A ruling never accepts a confirmed defect, an exploitable
   vulnerability or a failing required check.
+- **A stop for the user that guidance could settle is a defect in that guidance.** A workflow
+  pauses for the user only at a decision the bullet above makes theirs. An approval step reached
+  with no open decision, a question a standing rule already answers and a confirmation of work the
+  user has authorized each cost a wait and return nothing, so the text that causes one is changed
+  to state the answer.
 
 ### Subagents
 
@@ -272,9 +289,32 @@ restriction. Gate a single user-only workflow inside an otherwise usable skill i
   usual run and in each round, and what that count grows with. Prefer one agent serving a batch over
   one per item, a fresh agent only where independence requires one, and a rerun only of what a
   change touched; a count that grows with items, findings or files names its cap. Text that tells a
-  reader to delegate also says when the work is done directly instead, such as a read of one file. An edit that
+  reader to delegate says what the delegation buys — independent work run side by side, a reviewer
+  who has not seen the author's reasoning, or bulky output kept out of the caller's context — and
+  when the work is done directly instead, such as a read of one file; a second agent given the
+  same task returns no better answer than the first. An edit that
   raises a workflow's usual subagent count says so, with its reason, in its pull request
   description, and a review of the edit judges that count as part of the change.
+
+### Flows
+
+A flow is what a skill's text makes agents do from a request to its result: the steps, launches,
+reviews, gates, rounds and stops. Guidance that defines one is held to these, beside **Subagents**
+and **Decisions**.
+
+- **A delivery is sized to its change.** Text that sets the reviews, gates, rounds and tests a
+  change passes branches on the size or kind of change, so a one-sentence correction does not pay
+  what a new workflow pays, and no change takes far longer to deliver than it warrants.
+- **Nothing is read or run twice for one answer.** Each of these is a finding in the text that
+  causes it: one diff or document read by several agents for criteria that overlap, in one skill
+  or across a caller and the skills it runs; a gate, review or round that reruns everything where
+  only a delta changed; a step repeated on a head, diff or input unchanged since it last ran.
+- **A flow that writes code or guidance searches for an existing owner or implementation before
+  it writes**, and records what it searched and found, so a reviewer checks the search instead of
+  trusting that one happened.
+- **Every route to a flow's done, report or merge state passes an independent review of the
+  change.** A branch that shortens the delivery for a class of change names the review that still
+  covers that class.
 
 ### Output
 
@@ -333,21 +373,42 @@ a template where correct results genuinely vary in shape.
   use, follows the sections on headings and paragraphs that every document uses, even though
   footnotes extend paragraphs.
 - Express each independent requirement once, as one concise statement or bullet, without padding. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
-- **A file read whole, a `SKILL.md` or a rule, has a size budget of 500 lines**, the skill-body
-  target hosts publish. A change that pushes one past it, or grows one already past it, makes its
-  room in the same change by merging what the file states twice or moving text to the reference or
-  file that owns it.
+- **A file's size budget follows how it loads.** A change that pushes a file past its budget, or
+  grows one already past it, makes its room in the same change by merging what the file states
+  twice or moving text to the reference or file that owns it.
+  - **A file loaded in every session has a budget of 200 lines**, the figure a vendor publishes
+    for one: `.agents/global.md`, a rule with `alwaysApply: true`, and any other file a host loads
+    before a task is known. Every line there takes attention on every task, and adherence to the
+    whole file falls as it grows. The generated rules file a host concatenates is measured against
+    that host's own cap.
+  - **A skill's `SKILL.md` has a budget of 500 lines**, the skill-body target hosts publish, with
+    about 5,000 tokens as the figure an audit measures beside it, since a file written one
+    paragraph per line passes a line count while costing several times the tokens.
+  - **A path-scoped rule has a budget of 500 lines.** It loads only with the files its patterns
+    match, and the vendors publish no figure for one, so the repository holds it to the budget of
+    the other file a reader takes whole. Rules whose patterns match the same file load together,
+    and an audit reports their total.
+  - **A reference has no line budget.** One past 100 lines opens with a contents list, and
+    `SKILL.md` says when to read it.
 - **A correction restructures the bullet it lands in, never appends to it.** A bullet that already
   carries an exception, or runs past about twelve lines, takes no further clause: state its rule in
   one sentence and move each condition and exception into a sub-bullet or a bullet of its own, so
   the main rule stays findable. Several narrow cases that share a reason are replaced by that
   reason, stated once.
-- **An absolute carries its scope and its exception in the same bullet.** Text that says never,
-  always or only is applied exactly as written, so it names the case it covers, and any passage
-  elsewhere that requires the opposite in some case is named there as the exception.
+- **An absolute carries its scope, its exception and its reason in the same bullet, or is written
+  as the action to take.** Text that says never, always or only is applied exactly as written,
+  including to a step the user approved, so it names the case it covers, and any passage elsewhere
+  that requires the opposite in some case is named there as the exception. Where the reader should
+  stay responsible for a step, the bullet says what to do before it, such as checking that a
+  backup exists before dropping a table, in place of forbidding the step.
+- **A requirement states the result wanted and its reason; a prohibition is kept where it does
+  work a positive statement cannot.** The vendor rubric's **How A Passage Is Judged** says which
+  prohibitions those are, and a new one is written to pass it.
 - **Guidance states what holds now, in plain weight.** It never says what changed, as in "now",
-  "no longer", "legacy" or a past-tense account of a run, and it marks importance with a bold
-  lead and a reason, never with capitals or with words such as "critical" and "do not skip".
+  "no longer", "legacy" or a past-tense account of a run, and it marks importance with a reason,
+  never with capitals or with words such as "critical" and "do not skip". A bold lead names a
+  bullet's subject so the bullet can be found and cited; it is a label, and a file whose bullets
+  mostly open with a bold prohibition has spent it as emphasis.
 - **Everything guidance cites resolves where it says.** A cited `**Section**`, a path, a script, a
   command, a flag and what a command prints each exist under that name in the file or tool named.
   Cite a section by its name, never by a step number, which moves with the next edit, and resolve a
@@ -403,6 +464,8 @@ a template where correct results genuinely vary in shape.
   universal rule from one run. Configuration supplies environment-specific values.
 - An example earns space only when it explains a non-obvious distinction. It must not make the rule
   depend on recognizing that exact example; check that another member of the same class is covered.
+  A reader copies an example's length, tone and structure, so a rule that needs one takes two of
+  different kinds over one, and none of them is the incident that prompted the rule.
 - When the user asks to add guidance from another repository, treat that repository as source material: encode transferable requirements in the owning skills and refer to those skills by name. Before delivery, audit the edited package for the source repository's name, links, paths, commands, versions, and configuration; never hard-code or cite that repository in a skill.
 - Separate temporary task, session, and pull-request directions from lasting guidance before
   writing. Apply the former to the current work only; never encode them as canonical rules or

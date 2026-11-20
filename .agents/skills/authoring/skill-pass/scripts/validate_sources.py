@@ -95,7 +95,49 @@ ALWAYS_LOADED_PATTERN: Final[re.Pattern[str]] = re.compile(
 )
 SECTION_TRAILING_PUNCTUATION: Final[str] = ".:,;!?"
 SECTION_START_PATTERN: Final[re.Pattern[str]] = re.compile(r"$|\W")
-
+FRONTMATTER_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"\A---\n.*?^---[ \t]*$", re.MULTILINE | re.DOTALL
+)
+FRONTMATTER_FIELD_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"^(?P<name>description|when_to_use):[ \t]*(?P<value>.*(?:\n[ \t]+.*)*)", re.MULTILINE
+)
+BLOCK_SCALAR_PATTERN: Final[re.Pattern[str]] = re.compile(r"\A[>|][+-]?[ \t]*\n")
+UNIT_BREAK_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"\n[ \t]*\n|\n(?=[ \t]*(?:(?:[-*+]|\d+[.)])[ \t]|\|))"
+)
+TABLE_RULE_PATTERN: Final[re.Pattern[str]] = re.compile(r"[ \t|:-]+")
+WORDING_PATTERNS: Final[dict[str, re.Pattern[str]]] = {
+    "never": re.compile(r"\bnever\b", re.IGNORECASE),
+    "do_not": re.compile(r"\b(?:do not|don['’]t)\b", re.IGNORECASE),
+    "must_not": re.compile(r"\b(?:must not|mustn['’]t|may not)\b", re.IGNORECASE),
+    "always": re.compile(r"\balways\b", re.IGNORECASE),
+}
+PROHIBITION_PATTERN: Final[re.Pattern[str]] = re.compile(
+    "|".join(WORDING_PATTERNS[name].pattern for name in ("never", "do_not", "must_not")),
+    re.IGNORECASE,
+)
+REASON_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"\b(?:because|since|so that|so the|otherwise|which is why)\b", re.IGNORECASE
+)
+NEGATION_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"\b(?:never|not|no|cannot|don['’]t)\b", re.IGNORECASE
+)
+CAPITAL_EMPHASIS_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"\b(?:NEVER|ALWAYS|MUST|NOT|CRITICAL|IMPORTANT|ONLY|STOP|REQUIRED|MANDATORY|WARNING)\b"
+)
+WORDING_COLUMNS: Final[tuple[str, ...]] = (
+    "lines",
+    "words",
+    "units",
+    *WORDING_PATTERNS,
+    "bold_prohibitions",
+    "capital_emphasis",
+    "prohibiting_units",
+    "reasoned_units",
+)
+DESCRIPTION_FIELD: Final[str] = "description"
+DESCRIPTION_SPECIFICATION_CHARS: Final[int] = 1024
+DESCRIPTION_LISTING_CHARS: Final[int] = 1536
 
 EXIT_CODES: Final[dict[SyncOutcome, int]] = {
     SyncOutcome.VALID: 0,
@@ -430,6 +472,27 @@ def section_names(prose: str) -> tuple[set[str], set[str]]:
     return headings, leads
 
 
+def owned_guidance_files(agents_dir: Path) -> list[Path]:
+    """Return the canonical Markdown the repository owns.
+
+    Generated mirrors and packages refreshed from upstream are left out.
+    """
+
+    skills_dir = agents_dir / SKILLS_DIRNAME
+    third_party = third_party_skill_names(skills_dir)
+    third_party_dirs = {
+        entry.parent
+        for entry in source_files(skills_dir, SKILL_ENTRY_FILENAME)
+        if entry.parent.name in third_party
+    }
+
+    return [
+        path
+        for path in source_files(agents_dir, "*.md")
+        if GENERATED_DIRNAME not in path.parts and third_party_dirs.isdisjoint(path.parents)
+    ]
+
+
 def find_citation_problems(agents_dir: Path) -> list[str]:
     """Report citations in canonical guidance that point at nothing.
 
@@ -446,11 +509,6 @@ def find_citation_problems(agents_dir: Path) -> list[str]:
     rules_dir = agents_dir / RULES_DIRNAME
     packages = {
         entry.parent.name: entry.parent for entry in source_files(skills_dir, SKILL_ENTRY_FILENAME)
-    }
-    third_party_dirs = {
-        package
-        for name, package in packages.items()
-        if name in third_party_skill_names(skills_dir)
     }
     package_dirs = set(packages.values())
     rule_paths = {path.stem.casefold(): path for path in sorted(rules_dir.glob("*.md"))}
@@ -486,10 +544,7 @@ def find_citation_problems(agents_dir: Path) -> list[str]:
 
     problems: list[str] = []
 
-    for path in source_files(agents_dir, "*.md"):
-        if GENERATED_DIRNAME in path.parts or not third_party_dirs.isdisjoint(path.parents):
-            continue
-
+    for path in owned_guidance_files(agents_dir):
         prose = prose_of(path)
         label = path.relative_to(root).as_posix()
         package = next((parent for parent in path.parents if parent in package_dirs), None)
@@ -666,6 +721,101 @@ def find_readers(agents_dir: Path, name: str, section: str | None) -> list[str]:
     return readers
 
 
+def prose_units(prose: str) -> list[str]:
+    """Return a document's paragraphs, list items and table rows, given its text without code."""
+
+    pieces = UNIT_BREAK_PATTERN.split(blank_matches(prose, HEADING_PATTERN))
+
+    return [
+        " ".join(piece.split())
+        for piece in pieces
+        if piece.strip() and not TABLE_RULE_PATTERN.fullmatch(piece)
+    ]
+
+
+def frontmatter_field_lengths(frontmatter: str) -> dict[str, int]:
+    """Return the character length of the description and when-to-use text in a frontmatter."""
+
+    lengths: dict[str, int] = {}
+
+    for match in FRONTMATTER_FIELD_PATTERN.finditer(frontmatter):
+        folded = BLOCK_SCALAR_PATTERN.sub("", match.group("value"))
+        value = " ".join(line.strip() for line in folded.splitlines())
+
+        if len(value) > 1 and value[0] == value[-1] == "'":
+            value = value[1:-1].replace("''", "'")
+        elif len(value) > 1 and value[0] == value[-1] == '"':
+            value = value[1:-1].replace('\\"', '"')
+
+        lengths[match.group("name")] = len(value)
+
+    return lengths
+
+
+def wording_report(agents_dir: Path) -> list[str]:
+    """Return the prohibition and emphasis wording of the owned guidance, ready to print.
+
+    A header and one tab-separated row per file come first, then a total row, then each skill
+    description past a length limit. Fenced and inline code and the frontmatter are not counted. A
+    unit is a paragraph, a list item or a table row; a prohibiting unit holds a never, a do not or
+    a must not, and a reasoned one also holds a reason word.
+    """
+
+    root = agents_dir.parent
+    counts: dict[str, dict[str, int]] = {}
+    long_descriptions: list[str] = []
+
+    for path in owned_guidance_files(agents_dir):
+        text = path.read_text(encoding="utf-8")
+        label = path.relative_to(root).as_posix()
+        frontmatter = FRONTMATTER_PATTERN.match(text)
+        body = text if frontmatter is None else text[frontmatter.end() :]
+        prose = blank_matches(blank_matches(body, FENCED_BLOCK_PATTERN), INLINE_CODE_PATTERN)
+        units = prose_units(prose)
+        prohibiting = [unit for unit in units if PROHIBITION_PATTERN.search(unit)]
+        bold_leads = (match.group("lead") for match in BOLD_LEAD_PATTERN.finditer(prose))
+        values = [
+            len(text.splitlines()),
+            len(text.split()),
+            len(units),
+            *(len(pattern.findall(prose)) for pattern in WORDING_PATTERNS.values()),
+            sum(1 for lead in bold_leads if NEGATION_PATTERN.search(lead)),
+            len(CAPITAL_EMPHASIS_PATTERN.findall(prose)),
+            len(prohibiting),
+            sum(1 for unit in prohibiting if REASON_PATTERN.search(unit)),
+        ]
+
+        counts[label] = dict(zip(WORDING_COLUMNS, values, strict=True))
+
+        if frontmatter is None or path.name != SKILL_ENTRY_FILENAME:
+            continue
+
+        lengths = frontmatter_field_lengths(frontmatter.group(0))
+
+        for chars, limit, measured in (
+            (lengths.get(DESCRIPTION_FIELD, 0), DESCRIPTION_SPECIFICATION_CHARS, "description"),
+            (sum(lengths.values()), DESCRIPTION_LISTING_CHARS, "description and when-to-use text"),
+        ):
+            if chars > limit:
+                long_descriptions.append(f"{label}: {measured}: {chars} characters, past {limit}")
+
+    def row(label: str, count: dict[str, int]) -> str:
+        rate = 100 * count["prohibiting_units"] / max(count["units"], 1)
+
+        cells = [label, *(str(count[column]) for column in WORDING_COLUMNS), f"{rate:.1f}"]
+
+        return "\t".join(cells)
+
+    total = {column: sum(count[column] for count in counts.values()) for column in WORDING_COLUMNS}
+
+    return [
+        "\t".join(["path", *WORDING_COLUMNS, "prohibiting_per_100_units"]),
+        *(row(label, count) for label, count in counts.items()),
+        row(f"total of {len(counts)} files", total),
+        *long_descriptions,
+    ]
+
+
 def parse_arguments() -> argparse.Namespace:
     """Parse the command and the tree it runs on."""
 
@@ -685,7 +835,7 @@ def parse_arguments() -> argparse.Namespace:
     )
 
     parser = argparse.ArgumentParser(
-        description="Check the repository's canonical agent sources with the sync tool its workflow pins, or list what reads one of them."
+        description="Check the repository's canonical agent sources with the sync tool its workflow pins, list what reads one of them, or count their prohibition and emphasis wording."
     )
     commands = parser.add_subparsers(dest="command", required=True)
 
@@ -721,6 +871,12 @@ def parse_arguments() -> argparse.Namespace:
     readers.add_argument(
         "--section",
         help="Section of that skill or rule; only the lines citing it are listed.",
+    )
+
+    commands.add_parser(
+        SourceCommand.WORDING,
+        parents=[tree],
+        help="Count prohibition and emphasis wording and over-long descriptions in owned guidance.",
     )
 
     return parser.parse_args()
@@ -795,18 +951,24 @@ if __name__ == "__main__":
 
     arguments = parse_arguments()
 
-    if SourceCommand(arguments.command) is SourceCommand.READERS:
+    listing_command = SourceCommand(arguments.command)
+
+    if listing_command in (SourceCommand.READERS, SourceCommand.WORDING):
+        listed_dir: Path = arguments.root.resolve() / arguments.agents_dir
+
         try:
-            readers = find_readers(
-                arguments.root.resolve() / arguments.agents_dir, arguments.name, arguments.section
+            listed = (
+                find_readers(listed_dir, arguments.name, arguments.section)
+                if listing_command is SourceCommand.READERS
+                else wording_report(listed_dir)
             )
         except (OSError, RuntimeError) as exc:
             logger.error("%s", exc)
 
             raise SystemExit(EXIT_CODES[SyncOutcome.UNAVAILABLE]) from exc
 
-        for reader in readers:
-            print(reader)
+        for line in listed:
+            print(line)
 
         raise SystemExit(EXIT_CODES[SyncOutcome.VALID])
 

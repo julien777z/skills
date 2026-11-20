@@ -1,6 +1,6 @@
 ---
 name: skill-doctor
-description: 'Audit all agent guidance — every rule, skill, agent definition, hook, settings file and external-skill registry entry — for what to cut, tighten, fix or add. It reads every file against the repository''s own authoring criteria, what a current model does unprompted and the vendors'' current authoring guidance, and finds conflicting instructions, stale citations, misplaced or duplicated requirements, descriptions that fail as the index, rules broader or more literal than their case, size budgets, undeclared dependencies, and flows that spend more subagents, rounds or gates than the work needs. Use for a skill doctor, rule doctor or guidance doctor run, or to audit, deep-review or clean up skills, rules or how skills run. Run only when the user asks for it.'
+description: 'Audit all agent guidance — every rule, skill, agent definition, hook, settings file and external-skill registry entry — for what to cut, tighten, fix or add. It first refreshes its record of the vendors'' skill and prompting guidance online, then reads every file against the repository''s own authoring criteria, what a current model does unprompted and that record, and finds prohibitions, absolutes and cautions the vendor rubric would reword, merge or cut, conflicting instructions, stale citations, misplaced or duplicated requirements, descriptions that fail as the index, rules broader or more literal than their case, size budgets, undeclared dependencies, and flows that spend more subagents, rounds or gates than the work needs. Use for a skill doctor, rule doctor or guidance doctor run, or to audit, deep-review or clean up skills, rules or how skills run. Run only when the user asks for it.'
 short_description: 'Audit rules, skills and their flows for what to cut, fix, or add.'
 ---
 
@@ -37,9 +37,9 @@ Also read the host's skill-authoring skill and skill diagnostics when the host h
 their descriptions: a description optimizer, a trigger evaluation, a report of listing cost and
 unused skills. They are measurements this doctor reads, never re-implements.
 
-`references/vendor-guidance.md` holds the vendor and host tables and the dated summary of what the
-vendors' authoring guidance said when last fetched. Read it before the inventory; the measurement
-below refreshes it.
+`references/vendor-guidance.md` is the record of the vendors' skill and prompting guidance: the
+pages, the files a harness bundles, the host table, a dated summary and the quotes it rests on.
+The pre-pass's first step refreshes it, so the audit never runs against a record nobody checked.
 
 Every rule file, `.agents/global.md` and the project guidance included: bytes, lines, bullets,
 whether it loads unconditionally or by path scope, the globs, and every skill it names. Every
@@ -62,46 +62,65 @@ skill listing.
 Commit dates enter the inventory only when the clone is not shallow; otherwise they are unmeasured
 with that reason. Age is never evidence on its own.
 
-**Shared index.** Doctors run in a row share one index of the repository, keyed by commit in the
-worktree's working-files folder. This doctor reads its file inventory where the current commit's
-copy holds it, and rebuilds only what is missing or stale. It writes the guidance inventory above,
-the dependency graph between skills and the citation table.
+**Shared index.** From the index `doctor-protocol`'s **Share The Index** keeps, this doctor reads
+the file inventory. It writes the guidance inventory above, the dependency graph between skills and
+the citation table.
 
 ### Pre-Pass
 
 These are the mechanical steps `doctor-protocol` runs once before any reviewer reads, so no reviewer
-spends a read on what a step already lists. A step whose tool or source the machine lacks is
-recorded as not run, as `doctor-protocol`'s **Measure Before Fan-Out** says, and nothing is
-installed into the repository unasked.
+spends a read on what a step already lists. A step whose tool the repository does not configure is
+handled as `doctor-protocol`'s **Measure Before Fan-Out** says, and a step whose source cannot be
+reached is recorded as not run the same way.
 
-1. `skill-pass`'s **Source Check**, over the whole canonical tree. Every report it prints enters
+1. The vendor record, before anything else is measured or read.
+   - Fetch every page in the record's **Pages** table, and search each vendor's documentation for
+     newer guidance written for the current model family, of these kinds: the skill
+     best-practices page, the coding agent's skills and memory pages, the general prompting page
+     and the page for each current model, the vendor's own skill-writing skill, and its
+     engineering posts on skills and context. Read the prompt audit and the other files the record
+     lists under **Bundled Files** when the running harness has them.
+   - Record each page as the record's opening says: URL, title, the date the page shows, the fetch
+     date, how much was read, and each quote the summary relies on. A cross-host redirect comes
+     back to the caller rather than being followed, so its target becomes a new row and is
+     fetched; a page that is gone gets a search for its successor. A row that could not be reached
+     is marked so and keeps its earlier date. A quote is copied from what was read; when a quote
+     cannot be found, the line that needed it is dropped.
+   - Keep the record as it stood in the run folder, rewrite the dated summary, and list what
+     changed between the two for the report.
+   - With no network, say so in the ledger and the report and audit against the record as it
+     stands, giving its dates.
+   - A fetched number overrides a default below. A fetched recommendation that conflicts with a
+     decision the repository's guidance records, such as one `skill-pass`'s **Where The Sources
+     Disagree** lists, is a Contradictory finding for the user, never an automatic win. A fetched
+     page that makes a check in `skill-pass`'s vendor rubric wrong or incomplete is a Stale
+     finding on that rubric.
+   - Every reviewer reads the refreshed record.
+2. `skill-pass`'s **Source Check**, over the whole canonical tree. Every report it prints enters
    the ledger as a finding under the lens that owns its shape, **Stale** for a link, section or
    rule file that does not resolve and **Dependencies** for an undeclared name or a cycle.
-2. Near-duplicate statements. A script kept in the run's working files splits every canonical
+3. Near-duplicate statements. A script kept in the run's working files splits every canonical
    file under `.agents` into bullets and sentences, normalizes each — case, markup and punctuation
    removed — and compares their word shingles across every file, printing each pair whose overlap
    passes a threshold the run states, 0.6 of five-word shingles by default, with both locations.
    The pairs are **Redundant**'s candidates.
-3. Countable wording shapes, per file: bullets carrying emphasis as a share of all bullets,
-   headings with one bullet, bullets past the length `skill-pass`'s **Writing** allows, each
-   description's grammatical person, and hits for each term `banned-terminology` lists. They are
-   **Wrong Altitude**'s counts.
-4. The vendors' current authoring guidance. Fetch every URL in the references table; a cross-host
-   redirect comes back to the caller rather than being followed, so record its target as a new row
-   and fetch that; search for a successor when a page is gone. Rewrite the dated summary. Every
-   reviewer reads the file. Offline, the cached summary is read and its date reported. A fetched
-   number overrides a default below; a fetched recommendation that conflicts with a decision the
-   repository's guidance records is a Contradictory finding for the user, never an automatic win.
-5. Usage: the host's usage report where it has one, and the count of invocations per skill in the
+4. Prohibition and emphasis wording, per owned file: the `wording` command `skill-pass`'s **Source
+   Check** documents. Its rows, ranked by prohibiting units per 100 units and by how few of those
+   units hold a reason, are **Vendor Rubric**'s candidates and counts, and its list of
+   descriptions past a length limit goes to **Budget**.
+5. The other countable wording shapes, per file: headings with one bullet, bullets past the length
+   `skill-pass`'s **Writing** allows, each description's grammatical person, and hits for each
+   term `banned-terminology` lists. They are **Wrong Altitude**'s counts.
+6. Usage: the host's usage report where it has one, and the count of invocations per skill in the
    host's local transcripts over a stated window.
-6. The byte, line, and token totals above.
+7. The byte, line, and token totals above.
 
 ### Measures
 
 The counts `doctor-protocol` takes before the audit and again after the fixes: bytes, lines and
 approximate tokens per file and loaded per turn for each host; source-check reports; near-duplicate
-pairs; each countable wording shape; files past the size budget; descriptions past the listing
-truncation; and, per skill that starts subagents, its usual structural count.
+pairs; the `wording` command's total row and per-file rows; each other countable wording shape;
+files past the size budget for how they load; descriptions past a length limit; and, per skill that starts subagents, its usual structural count.
 
 ## Lenses
 
@@ -119,8 +138,9 @@ frontmatter, description, body and bundled files are read only for what the repo
 need from them, such as whether one names, depends on or duplicates it. What a lens would report
 inside that text — a flag that hides it from the listing or a description with no trigger under
 Unreachable, a description's length or wording under Budget and the two description lenses, a
-sentence under Restates, Wrong Altitude, Scope Calibration or Authoring Sections, a skill name
-under Dependencies — is listed once in the report as upstream, with the registry entry and the
+sentence under Restates, Wrong Altitude, Scope Calibration, Vendor Rubric or Authoring Sections,
+a skill name under Dependencies — is listed once in the report as upstream, with the registry
+entry and the
 upstream repository, and is never a finding, a remedy or an edit. A finding lands on the registry
 entry only when it is about the entry itself: one with no directory, one whose skill duplicates
 an owned skill, or a whole-entry cut under **Dispositions**.
@@ -131,11 +151,12 @@ Guidance the reader pays for and does not use. Two tables. Per host, reported on
 scope: the unconditional rules against the rules-file target; the generated rules file against the
 host's cap, where a path-scoped rule still counts in full for a host that concatenates every rule
 into one file, and a cap equal to the file's current size is a cap fitted to the content rather
-than chosen; the skill listing against the host's budget. Per file: a `SKILL.md` or a rule file
-past the size budget `skill-pass`'s **Writing** sets for a file read whole, which binds rule files
-and skills alike, a vendor's smaller target for an always-loaded file being reported as a
-measurement and never as a finding per file; a description past the listing truncation; a
-reference past the table-of-contents threshold without one; a reference chain deeper than one
+than chosen; the skill listing against the host's budget. Per file: a file past the size budget
+`skill-pass`'s **Writing** sets for how it loads — a file loaded in every session, a skill's
+entry point or a path-scoped rule — with a skill entry point's approximate tokens reported beside
+its lines and the rules that load together for one file type reported as a total; a description
+past the specification's limit or the listing truncation; a reference past the table-of-contents
+threshold without one; a reference chain deeper than one
 level. Evidence: the measurements. Remedy: what the file states twice is merged, text moves to the
 reference or file that owns it, a rule scopes by path, text is cut.
 
@@ -144,8 +165,8 @@ reference or file that owns it, a rule scopes by path, text is cut.
 An instruction the model follows without being told. Two checks, both recorded for every sentence
 judged: the sentence names no tool, number, path, glob, exception clause, or rejected alternative
 ("rather than", "instead of", "not X"); and its opposite is something no competent engineer would
-do unprompted. Both hold: a finding. Only the second holds: a candidate for the whole-file trial in
-Dispositions, never cut on its own. Third check: an instruction a configured linter or formatter
+do unprompted. Both hold: a finding, whose cut meets the passage trial in Dispositions. Only the
+second holds: a candidate for that trial, never cut on its own. Third check: an instruction a configured linter or formatter
 already enforces, or would with one rule switched on; the tool configuration is the evidence, and
 the remedy is the cut plus that rule as the guard.
 
@@ -199,8 +220,8 @@ and let the departing skill state its own departure.
 ### Wrong Altitude
 
 Text at the wrong height for the reader, in two groups. The countable shapes come from the
-pre-pass and no reviewer recounts them: emphasis on a share of bullets above the guidance's
-example, a heading with one bullet, a bullet carrying an appended exception past the length
+pre-pass and no reviewer recounts them: capital emphasis and bold-led prohibitions from the
+`wording` rows, a heading with one bullet, a bullet carrying an appended exception past the length
 `skill-pass`'s **Writing** allows, banned terms, and a description in the first or second person,
 or addressed to the reader as an instruction, where the host's guidance wants the third person —
 reported once as a convention when every description shares it, never as a finding per file. The
@@ -230,6 +251,43 @@ rule's own example where following the words gives a result the reason does not 
 passages that carve the exceptions. Remedy: state the outcome and the cases the reason covers, as
 `skill-pass`'s **Writing** asks; where the text gives no reason and its neighbors do not settle
 the intended reach, a user decision naming both readings.
+
+### Vendor Rubric
+
+A prohibition, an absolute, a caution or an example that `skill-pass`'s vendor rubric would write
+another way. This lens applies that rubric in depth to every owned skill, rule and agent
+definition; the rubric holds each check's principle, violation, better form and firmness, and
+nothing here restates them. It owns the checks no other lens does: goal and reason over a
+prohibition, absolutes, approval rules that name their actions, incident patches, named defaults,
+examples, instructions about thinking and tools, and text written for older models. A rubric check
+whose shape another lens owns is reported there and judged against the rubric's text: sizes under
+Budget, a restated default under Restates, emphasis and steps under Wrong Altitude, descriptions
+under the two description lenses, subagent text under Flow.
+
+A reviewer reads each file in its partition whole. The `wording` rows say which files to expect
+most from, never which passages fail. It judges every prohibition and absolute in the file as
+`skill-pass`'s **How A Passage Is Judged** says, whatever the passage is about:
+
+- **keep**, recording why: a fact specific to this repository, or a failure the repository's
+  correction record shows agents still making;
+- **reword**, as the goal and its reason or as the action to take, with the substance kept;
+- **merge**, several passages into the reason they share, at its owner;
+- **cut**, with the evidence `skill-pass`'s **Cutting A Passage** asks for.
+
+Evidence: the passage quoted with its location, the rubric check it misses and the verdict.
+Remedy: in the protocol's finding shape, one finding per passage. Its specific fix is the
+rewritten text in full, ready to replace the passage, and for a merge the owner it lands in and
+each passage that goes. Its proving check is the `wording` command rerun on the file and a read of
+the rewrite beside the original that accounts for every requirement, condition and exception as
+kept or named as cut. A kept passage is no finding; kept passages are counted per file with their
+reasons. Checks that find every instance: the `wording` rows and the whole-file read. Left alone:
+a registered external skill, text inside a fenced template or output format, and a list of named
+defaults the rubric keeps. Judged within one file; a merge across files is confirmed by the
+cross-cutting reviewer.
+
+The measure is the `wording` command's rows before and after: prohibiting units, how many hold a
+reason, the counts of each absolute, capital emphasis and descriptions past a limit. The counts
+trace the work and are never its aim: no passage is reworded to move a number.
 
 ### Authoring Sections
 
@@ -336,7 +394,8 @@ reads the whole catalog; the grouping says who reports which checks.
   partition, a category is split only between packages, and the rule files and every other non-skill
   file form partitions of their own.
 - A partition reviewer reports the lenses judged within a file or package: the per-file Budget
-  table, Restates, Stale, Wrong Altitude, Scope Calibration, Authoring Sections, Dependencies, the
+  table, Restates, Stale, Wrong Altitude, Scope Calibration, Vendor Rubric, Authoring Sections,
+  Dependencies, the
   two description lenses, and the launch records Flow needs for each skill in its slice.
 - The cross-cutting reviewer reports the whole-repository lenses, what is visible only across files,
   working from the pre-pass output and the dependency graph: Redundant, Contradictory, Misplaced,
@@ -344,8 +403,9 @@ reads the whole catalog; the grouping says who reports which checks.
   runs, and the unconditional set judged as one document against the per-host budget.
 - The final reviewers and the final acceptance gate are briefed with `skill-pass`'s **Reviewer
   Brief**. The adversarial one takes each proposed cut and tries to name a task the sentence would
-  have prevented a mistake on, takes each retained instruction and tries to show the model
-  does it unprompted, and takes each Flow remedy and tries to name a defect the removed launch
+  have prevented a mistake on, takes each rewrite and looks for a requirement, condition or
+  exception the original held that it lost, takes each retained instruction and tries to show the
+  model does it unprompted, and takes each Flow remedy and tries to name a defect the removed launch
   would have caught.
 
 ## Dispositions
@@ -361,12 +421,28 @@ reads the whole catalog; the grouping says who reports which checks.
   reported as untried candidates. No surviving sentence is the recommendation to cut; surviving
   sentences with no usage is the recommendation to fix the trigger first. Age, size, and a
   reference count on their own never cut a file.
+- **A passage is cut for restating the model only on a repeatable result**, as `skill-pass`'s
+  **Cutting A Passage** sets out. The trial runs at `subagent-matrix`'s cheap capability level with the bound the
+  whole-file trial has: twice with the passage removed, a third time when the two disagree, and at
+  most five passages in a run. An untried candidate is reported and stays as written or is
+  reworded.
+- **A rewording that reaches more than five files is a user decision before any of it is made**,
+  since it changes how the guidance reads everywhere. It is asked with the decisions
+  `doctor-protocol`'s **Gate And Show The Plan** asks first, and shows the `wording` counts for
+  the tree and for the ten highest-ranked files, the number of passages under each verdict, and
+  three to five representative rewrites, original beside rewrite, drawn from a file loaded in
+  every session, a rule and a skill entry point. The user may take all of it, some files or
+  checks, or none; what they decline stays in the ledger as declined. A rewording within five
+  files is ordinary work.
+- **Cutting a firm rule the user stated, or making it less firm, waits for the user** whatever a
+  trial shows. They are shown the passage, the proposed text and the trial's runs. A rewording
+  that keeps what the rule requires and how firmly is covered by the bullet above.
 - A Flow remedy that removes a review, gate or round, or changes who decides, is a user decision
   presented with the structural count before and after; one that batches, caps or stops a rerun of
   unchanged input is ordinary work.
 - A rule that must be deterministic becomes a hook, and the rule stays for hosts without hooks.
-- A wording cut within a file is ordinary work, unlike a contradiction, whose disposition the
-  Contradictory lens already states.
+- A wording change within a file that removes no requirement is ordinary work, unlike a
+  contradiction, whose disposition the Contradictory lens already states.
 - Each mechanical check gets a guard where the repository keeps structural tests: a test that fails
   when the generated rules file reaches its cap, when a registry entry has no directory, when two
   rule files share a byte-identical bullet.
@@ -377,7 +453,13 @@ reads the whole catalog; the grouping says who reports which checks.
   budget;
 - each cut with its evidence;
 - per skill whose flow changed, the usual structural subagent count before and after;
+- what changed in the vendor record since the last run: rows added, pages gone, redirected or not
+  reached, figures and summary lines that changed, quotes no longer found, and each rubric check
+  the change bears on; or that the network was unavailable, with the record's dates;
 - each URL fetched, with its date and any redirect;
+- the `wording` total row before and after, the files whose counts changed most, and the passages
+  kept, reworded, merged and cut, each kept one with its reason;
+- each passage trial with its runs and outcome, and each untried candidate;
 - each whole-file cut proposed, its trial runs and its outcome, and each untried candidate;
 - each installed copy reported;
 - what the lenses met inside registered external skills, listed as upstream;

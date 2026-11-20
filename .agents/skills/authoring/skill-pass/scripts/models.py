@@ -8,6 +8,7 @@ class SourceCommand(StrEnum):
     CHECK = "check"
     MIRROR = "mirror"
     READERS = "readers"
+    WORDING = "wording"
 
 
 class SyncOutcome(StrEnum):

@@ -1,6 +1,6 @@
 ---
 name: skill-pass
-description: 'How agent guidance under `.agents` is written, placed and checked — the criteria and the source check for a skill, rule, agent definition, hook, setting, reference or project guidance. Read when writing, editing, reviewing or auditing guidance, for where a requirement lives among the global rules, a rule file and a skill; frontmatter descriptions; skill dependencies and their declaration; conflicting instructions; citations that must resolve; size budgets; harness support; subagent counts; output sections; routers; prose duplication; validating guidance; listing which skills and rules read a skill, a rule or one of its sections; and how a reviewer or gate of a guidance diff is briefed. It starts no subagents.'
+description: 'How agent guidance under `.agents` is written, placed and checked — the criteria and the source check for a skill, rule, agent definition, hook, setting, reference or project guidance. Read when writing, editing, reviewing or auditing guidance, for where a requirement lives among the global rules, a rule file and a skill; frontmatter descriptions; skill dependencies and their declaration; conflicting instructions; citations that must resolve; size budgets by how a file loads; the vendor rubric for prohibitions, absolutes, emphasis and what a current model needs no telling, with the evidence a cut needs; counting that wording per file; harness support; subagent counts and what a flow costs; output sections; routers; prose duplication; validating guidance; listing which skills and rules read a skill, a rule or one of its sections; and how a reviewer or gate of a guidance diff is briefed. It starts no subagents.'
 short_description: 'Apply the writing, placement, conflict and source checks to agent guidance.'
 ---
 
@@ -20,8 +20,10 @@ or the whole canonical tree — and the pass runs over that.
 ## The Pass
 
 Run the steps in order over what the invocation names. The
-[authoring reference](references/authoring.md) holds the criteria steps 2 and 4 to 7 apply, and the
-[conflict criteria](references/conflicting-instructions.md) hold step 3's.
+[authoring reference](references/authoring.md) holds the criteria for **Writing**, **Placement**,
+**Description as the index**, **Budgets and flows** and **Dependencies**, the
+[vendor rubric](references/vendor-rubric.md) holds the **Vendor rubric** step's, and the
+[conflict criteria](references/conflicting-instructions.md) hold the **Conflicts** step's.
 
 1. **Source check.** Run it as **Source Check** says and fix or record every report before reading
    further, so no read is spent on what a script finds.
@@ -29,19 +31,29 @@ Run the steps in order over what the invocation names. The
    each other section the file's kind and content fall under: **Rules** for a rule file;
    **Package And References**, **Decisions**, **Subagents**, **Output** and **Routers** for a skill;
    **Scripts** for a helper script; and **Harnesses** for anything a harness runs or reads.
-3. **Conflicts.** Apply **Conflict Check**.
-4. **Placement.** Test each requirement against the authoring reference's **Where Guidance Lives**:
+3. **Vendor rubric.** Read the vendor rubric when the pass covers a prohibition, a firm rule, an
+   example, a description, or text about thinking, tools or subagents, which is nearly every pass.
+   Judge each such passage as its **How A Passage Is Judged** says — keep, reword, merge or cut —
+   whatever its subject, and hold a cut to its **Cutting A Passage**. For a set of files or the
+   whole tree, run `wording` as **Source Check** says first and start with the files it ranks
+   highest.
+4. **Conflicts.** Apply **Conflict Check**.
+5. **Placement.** Test each requirement against the authoring reference's **Where Guidance Lives**:
    name the skill that runs when the requirement applies before accepting it in a rule file or
    `.agents/global.md`, check what the owning file's name and description bound, and confirm no rule
    file or `.agents/global.md` names an individual skill outside the one place that reference
    allows.
-5. **Description as the index.** For every subject a skill owns, confirm a clause of its frontmatter
+6. **Description as the index.** For every subject a skill owns, confirm a clause of its frontmatter
    description names it, and judge the description as the authoring reference's **Descriptions**
    says. An index of owners kept in a rule file, `.agents/global.md` or a table is a finding.
-6. **Budgets.** Count the lines of every `SKILL.md` and rule file covered against the size budget
-   **Writing** sets, and judge each launch of subagents against **Subagents**: a stated usual
-   count, what it grows with, and a cap.
-7. **Dependencies.** Apply **Dependency Audit**.
+7. **Budgets and flows.** Count the lines of every `SKILL.md` and rule file covered against the
+   budget **Writing** sets for how that file loads, a file loaded in every session included. Judge
+   each launch of subagents against **Subagents** — a stated usual count, what it grows with, and
+   a cap — and each workflow the text defines against **Flows** and **Decisions**: a delivery sized
+   to its change, nothing read or run twice for one answer, a search for an existing owner before
+   writing, an independent review on every route to done, and no stop for the user that guidance
+   could settle.
+8. **Dependencies.** Apply **Dependency Audit**.
 
 A skill-test round is not part of the pass. Exercising guidance against tasks belongs to the
 delivery of changed guidance, covers only what that delivery changed, and is never run across
@@ -76,6 +88,16 @@ included, so a clean changed file does not make a failing tree pass.
   keeps only the lines citing that section. It installs nothing and matches name forms only, so a
   reader that makes the same decision without citing the text is found by searching for the
   decision's subject.
+- **How a file is worded.** `scripts/validate_sources.py wording` prints one tab-separated row per
+  owned guidance file, skills the external-resources registry refreshes from upstream left out,
+  then a total row: lines, words, units, the count of "never", of "do not" and "don't", of "must
+  not" and of "always", lines whose bold lead is a prohibition, all-capital emphasis words, the
+  units holding a prohibition, how many of those also hold a reason word, and prohibiting units
+  per 100 units. A unit is a paragraph, a list item or a table row, since a file written one
+  paragraph per line makes a rate per line meaningless. After the total it lists each description
+  past the specification's 1,024 characters, or past the 1,536 a listing keeps together with its
+  when-to-use text. It installs nothing, reports only and always exits clean: a count is where a
+  reader starts, never a finding, and the vendor rubric judges the passages.
 
 ## Conflict Check
 
@@ -85,6 +107,12 @@ its words. Read the complete skill or rule and its supporting files, every file 
 it, and the relevant sections of other skills, rules, callers and dependencies, then apply the
 [conflict criteria](references/conflicting-instructions.md), which also name the authoring
 reference's bullets each instruction is held to.
+
+**A change is judged at every reader, not only where it is written.** A sentence changed in one
+skill or rule changes what each skill that reads it decides. List those readers with `readers` as
+**Source Check** says, search by the decision's subject for a reader that makes the same decision
+without citing the text, and state for each what changes or that nothing does; a change a reader
+inherits that the request never asked for is out of scope until the user says otherwise.
 
 Resolve competing instructions at their owners rather than adding a reminder beside them. Where a
 new instruction conflicts with standing guidance nobody asked to change, the new instruction is
@@ -125,6 +153,8 @@ since nothing loads it for a reader of `.agents` files. Its brief asks:
   narrower and no broader: a rule written for one symptom is a finding, and so is a requirement its
   case never needed, a neighboring subject swept in, or an absolute applied past the cases its
   reason covers;
+- whether each prohibition, absolute and example it adds passes the vendor rubric, and whether a
+  passage it cuts has the evidence that rubric's **Cutting A Passage** asks for;
 - whether every mechanism it adds earns its place;
 - whether generic guidance names a tool, surface or workaround its contract does not depend on,
   which is a finding.
