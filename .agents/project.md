@@ -6,7 +6,6 @@ The descriptions also cover work that file patterns alone cannot identify.
 
 | Rule | Read it when… |
 | --- | --- |
-| `agent-guidance.md` | Writing, creating, placing, or validating anything under `.agents` — skills, rules, agent definitions, hooks, settings, references, or project guidance — and the harnesses it serves. |
 | `biome.md` | Formatting or linting TypeScript and TSX, or changing `biome.json`. |
 | `fastapi.md` | Changing Python routes, dependencies, request handling, or responses. |
 | `github.md` | Working with Actions, pull requests, commits, or repository documentation. |
@@ -16,7 +15,6 @@ The descriptions also cover work that file patterns alone cannot identify.
 | `python.md` | Editing Python typing, modules, control flow, errors, logging, or style. |
 | `react.md` | Building components, hooks, layouts, or Next.js App Router surfaces. |
 | `sqlalchemy.md` | Defining tables or relationships, writing queries, or handling sessions. |
-| `testing.md` | Planning or running tests, or writing or moving tests, fixtures, assertions, or test configuration. |
 | `typescript.md` | Editing types, modules, imports, functions, or external-data boundaries. |
 
 ## Verification

@@ -25,6 +25,15 @@ and examples. A supporting file is part of the skill, not an exemption from its 
   standing guidance.** Hold each change to its **Where Guidance Lives** placement bullet and to its
   **Writing** bullets on a correction that restructures the bullet it lands in, an absolute that
   carries its scope and exception, guidance that states what holds, and citations that resolve.
+- **Guidance arriving from another branch is checked like an edit.** A merge or rebase that brings
+  the base into a guidance branch, a pull that updates a checkout holding pending guidance edits, and
+  a pull request folded into another each put two sets of changes together that were only ever
+  checked apart. Git reports a conflict only where both touched the same lines; two edits to
+  different files can still give one case two answers, cite a section the other side renamed or
+  moved, restate a rule the other side changed at its owner, or name a skill the other side removed.
+  After the incoming changes land, list the decisions each side changed, apply these criteria to
+  every decision both sides touch and to every citation of a file, section or skill either side
+  moved, renamed or removed, and run the source check on the combined tree before the next push.
 - Keep one coherent decision at its owner. Remove obsolete competing language, narrow a clause that
   applies too broadly, or make route selection explicit; preserve requirements for cases outside the
   correction. A passing package or source validator does not establish semantic consistency.

@@ -29,6 +29,14 @@ answers to one question may now sit in one tree.
   winner, code that takes the losing shape is refactored onto the winner in the same change, and
   which branch it came from is never a reason to leave it there.
 
+- **A clean merge is not a consistent one, in guidance most of all.** Git reports a collision only
+  where both sides touched the same lines. Where either side changed agent guidance — a skill, a
+  rule, an agent definition — read what the two sides changed together even when nothing conflicted:
+  one case given two answers by edits to different files, a citation of a section or skill the other
+  side moved, renamed or removed, and a rule one side restates that the other changed at its owner
+  are each resolved as a conflict here, and the repository's guidance source check runs on the
+  result before it is pushed.
+
 ## Procedure
 
 Select the target from the actual work: a source branch incorporates its current base; a local
