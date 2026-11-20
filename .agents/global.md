@@ -40,7 +40,7 @@ alwaysApply: true
   plain name beside a linked number, and a repository named in passing, such as the other half of a
   paired change, is linked too. Every item in a list gets a link, however long the list. A surface
   that cannot render a link, such as a question tool's option, names the item the way people do,
-  such as a pull request by its title, and leaves its link to the text or page sent before it.
+  such as a pull request by its title, once the text or page linking it has reached the reader.
 - **A web product's views are pages.** Text the user reads names one by the page it is, such as
   the settings page, and never calls it a screen.
 - **A file the user should see reaches them where they read.** Per-item detail past five items —
