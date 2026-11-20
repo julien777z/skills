@@ -121,8 +121,11 @@ rule that matches:
 
 - **A reply that is not an answer is handled as the global rules' question-retry bullet says**,
   even to a `text` prompt: for a `choice`, `multi` or `confirm` menu, a reply that states no choice
-  in words; for a `text` prompt, a reply that, read as a whole, does not answer the prompt. That
-  bullet says how such a reply is handled, how the menu is asked again and when asking again stops;
+  in words, as the corrections, complaints and new requests that bullet names do; for a `text`
+  prompt, a reply that, read as a whole, does not answer the prompt. A reply that tries to answer,
+  `none` or `nothing` to a `multi` menu and `no` to a `confirm` included, goes to the table, and one
+  that matches no row gets the menu again as the bullet below says. The global bullet says how a
+  reply that is not an answer is handled, how the menu is asked again and when asking again stops;
   the calling skill waits on the answer.
 - **Any other reply that matches no choice, or more than one, gets the menu again**, never a pick
   made for the user, as often as it takes. Put one line above it, or in the question text when the
