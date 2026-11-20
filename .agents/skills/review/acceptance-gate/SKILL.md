@@ -323,10 +323,9 @@ covering that code; then the repair, or a settled, out-of-scope or council-dropp
 evidence, goes to a fresh gate under the Diff question, following `subagent-matrix`'s
 **Dispatch**, and only that gate's acceptance closes the flag. Each such gate is one of the change's
 re-reviews under the global rules' review-round limit, and a repair's gate one of the flag's own
-repair rounds below. The exceptions are a style flag, which the next gate the change already gets
-confirms; a flag naming only missing evidence, which its own run closes, each as a paragraph below
-says; and the decision the global rules' review-round limit has `council` make once 3 rounds have
-failed the change, which settles its flags as it rules.
+repair rounds below. The exceptions are a style flag and a flag naming only missing evidence, each
+closed as its paragraph below says, and the decision the global rules' review-round limit has
+`council` make once 3 rounds have failed the change, which settles its flags as it rules.
 
 **Each flag carries its severity, `defect` or `style`.** A style flag concerns only the form of
 lines whose behavior, structure and contract stand: a docstring's or comment's length, a missing
@@ -334,8 +333,8 @@ blank line, a name's length, wording that misstates nothing. Everything else is 
 small its fix. The author fixes a style flag and runs the checks covering it, and a gate confirms it
 before the change counts as accepted: final acceptance when the change still gets one, otherwise,
 as for a style flag final acceptance raised, a fresh re-check of those lines alone. A style flag
-costs no round, under the global rules'
-review-round limit or the repair rounds below, and never goes to `council`.
+costs no round, under the global rules' review-round limit or the repair rounds below, and never
+goes to `council`.
 
 **A gap in the evidence a gate was given is not a failed round.** A gate whose verdict waits only
 on evidence it names, such as a source excerpt or a run's output, receives that evidence in the same
