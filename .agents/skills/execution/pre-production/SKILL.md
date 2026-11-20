@@ -64,16 +64,15 @@ Build the clean target contract instead of preserving transitional behavior.
   changed-file lint run meeting older code in a file the change touched. Fix the findings in lines
   the change writes, and the other findings in a file the change edits, other than one edited only
   for an incidental fix, while they fit the size budget in force below, measured as it measures
-  cleanup. Leave the rest for
-  later work on that code: it is not deferred work, so it is neither recorded nor reported. Never
-  fix past that to turn the check green, never loosen, disable, rescope or ignore the check, and
-  never report the red check to the user or ask about it, apart from a merge branch protection
-  rejects for it, reported as the bullet above says. A finding that shows a defect, such as
-  deprecated usage or a vulnerability, stays one, fixed as the bullets below say. A finding the
-  change's own code or contract change causes is the change's wherever it points: a changed
-  signature whose untouched callers no longer type-check is fixed in those callers, as
-  **Target Contract** requires. An essential check that
-  already fails on the default branch is a baseline failure, handled as the bullet above says.
+  cleanup. Leave the rest for later work on that code: it is not deferred work, so it is neither
+  recorded nor reported. Never fix past that to turn the check green, never loosen, disable,
+  rescope or ignore the check, and never report the red check to the user or ask about it, apart
+  from a merge branch protection rejects for it, reported as the bullet above says. A finding that
+  shows a defect, such as deprecated usage or a vulnerability, stays one, fixed as the bullets
+  below say. A finding the change's own code or contract change causes is the change's wherever it
+  points: a changed signature whose untouched callers no longer type-check is fixed in those
+  callers, as **Target Contract** requires. An essential check that already fails on the default
+  branch is a baseline failure, handled as the bullet above says.
 
 Fix and validate every defect that remains in the task, even when it predates the task or sits
 outside the initial file set; cleanup that fixes no defect follows the size budget below.
