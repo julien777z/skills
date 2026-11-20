@@ -590,12 +590,14 @@ user must grant it.
 
 ## Direct guest control
 
-On a configured macOS guest, host Screen Sharing, guest SSH, and guest input are separate capabilities. When the host viewer
-is unavailable, first check whether the retained VM is running and SSH still reaches its normal
-signed-in desktop. Prefer guest MCP for supported Studio actions. When the active tool policy and
-user authorization permit direct guest input, an existing guest-native helper can operate the
-published Roblox player over SSH without opening a host viewer. Otherwise use the permitted
-hidden viewer or Screen Sharing path; do not infer that the VM needs rebuilding or new Roblox login.
+On a configured macOS VM, host Screen Sharing, SSH into the VM, and input posted inside the VM are
+separate capabilities. When the host viewer is unavailable, first check whether the retained VM is
+running and SSH still reaches its normal signed-in desktop. Prefer MCP inside the VM for supported
+Studio actions. **Input posted inside the VM is the default for every other UI step and needs no
+user authorization**: a helper native to the VM operates the published Roblox player and the VM's
+own UI over SSH without opening a host viewer. Where posted input cannot reach, use the hidden
+viewer; Screen Sharing on the user's Mac is the last resort. Do not infer that the VM needs
+rebuilding or new Roblox login.
 
 Before relying on direct control, take a fresh capture, click a real visible button, hold and release
 a movement key briefly, then capture the result. Permission checks and screenshots alone do not
@@ -616,16 +618,16 @@ before input, and bound key holds. Check existing guest Accessibility and Screen
 use normal guest permission/login UI when required, never disable authentication or edit privacy
 databases. SSH access alone does not establish UI permission or an unlocked guest.
 
-Every guest setting and permission change is the agent's own step under the global rules'
-user-action bullet, since the agent controls the whole guest. Input posted inside the guest leaves the host's cursor alone and
-is the route for guest UI work; a host viewer click moves the user's cursor and serves only where
-guest input cannot reach. Read the guest's Accessibility list first: a Cirrus Labs image already
+Every setting and permission change in the VM is the agent's own step under the global rules'
+user-action bullet, since the agent controls the whole VM. Input posted inside the VM leaves the host's cursor alone and
+is the route for the VM's UI work; a host viewer click moves the user's cursor and serves only where
+posted input cannot reach. Read the VM's Accessibility list first: a Cirrus Labs image already
 grants `osascript`, `sshd-keygen-wrapper` and `tart-guest-agent`, so `osascript -l JavaScript`
-over SSH posts working CoreGraphics clicks. A missing grant is added in the guest's System Settings,
+over SSH posts working CoreGraphics clicks. A missing grant is added in the VM's System Settings,
 opened over SSH with `open "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension?Privacy_Accessibility"`
-and operated by the agent through the [guest desktop viewer](#optional-guest-desktop-viewer), or the
-host's Screen Sharing when no hidden viewer is available, since posted input is what the grant
-enables. Guest input behaves like this:
+and operated by the agent through the [desktop viewer](#optional-guest-desktop-viewer), or, as the
+last resort, Screen Sharing on the user's Mac when no hidden viewer is available, since posted
+input is what the grant enables. Input posted inside the VM behaves like this:
 
 - **Coordinates are points.** A HiDPI guest's captures have twice the pixels of its screen points;
   read `NSScreen.mainScreen.frame` and divide capture coordinates accordingly.
@@ -835,38 +837,46 @@ every setting it changed reads back at the runner's configured value.
 
 ## End of session for a retained VM
 
-These steps apply only to a task-owned or configured retained VM. Finish or record the task blocker before shutdown; a progress update does not end the test session.
+These steps apply only to a task-owned or configured retained VM. A progress update does not end
+the test session.
+
+**A session's end leaves the VM running and the game's warm editors open.** When the game work is
+done, save the authorized project artifacts and close what the session itself opened, as
+[the section above](#leave-the-shared-runner-as-you-found-it) says. Shut a VM down in two cases
+only:
+
+- the user asks for it;
+- the host needs memory, and another session has a VM up that it is not actively using, shown by no
+  lock held on that VM or its editors. That idle VM is the one shut down.
 
 **Take a step only when the agent can undo it with the host locked.** The user's Mac can lock at any
 moment, and a locked host refuses host-side clicks, screenshots and window control. Everything a
 retained runner needs to come back runs without the host's screen: `tart run --no-graphics`, SSH,
-the guest's automatic desktop login, Studio relaunched in the guest, input posted inside the guest,
-and guest MCP. Check that the route still holds before ending a session. Leave running, rather than closing, anything
+the VM's automatic desktop login, Studio relaunched in the VM, input posted inside the VM,
+and MCP inside the VM. Check that the route still holds before ending a session. Leave running, rather than closing, anything
 whose restoration needs the host's screen or the user: a host viewer the user is using, Studio on
-the host, a guest state only a host viewer could recreate, or a Roblox session that would need the
-user to enter a new code. Powering the guest off is fine, because its automatic login brings the desktop back.
+the host, a VM state only a host viewer could recreate, or a Roblox session that would need the
+user to enter a new code. Powering the VM off in one of the two cases above is fine, because its automatic login brings the desktop back.
 
-When the game work is done, hold the VM's lock, save the authorized project artifacts, close Roblox
-Studio normally, the game's warm sessions included,
-and **shut down the guest VM** so it is no longer running locally: `"$runner_ssh" sudo -n shutdown -h
-now`, then wait until `tart run` exits. `tart stop` can end the guest before it writes recent changes
-to its disk, so a file or setting changed seconds before is lost; use it only when the guest does not
+To shut a VM down, finish or record the task blocker first, hold the VM's lock, close Roblox
+Studio normally, the game's warm sessions included, and run `"$runner_ssh" sudo -n shutdown -h
+now`, then wait until `tart run` exits. `tart stop` can end the VM before it writes recent changes
+to its disk, so a file or setting changed seconds before is lost; use it only when the VM does not
 shut down. A restart is the same shutdown followed by `launchctl kickstart "gui/$(id -u)/$job"`. Verify that Studio closed and the
-VM is stopped. Do not leave the VM running or substitute a suspended/running state for the requested
-shutdown. If an unfinished test must continue, report that explicitly rather than claiming shutdown.
+VM is stopped; do not substitute a suspended state for a requested shutdown. If an unfinished test
+must continue, report that explicitly rather than claiming shutdown.
 
 **Do not tear down the sandbox's persistent state.** Do not uninstall Studio or Roblox, log out,
 delete/recreate the VM, reset its disk, remove its project setup, clear caches/keychains, or erase its
 settings/authentication as end-of-task cleanup. A task's own copies and output are not that state;
-[the section above](#leave-the-shared-runner-as-you-found-it) removes them. Closing Studio and powering off the guest are the
-normal shutdown actions. Keep the VM, installed apps, signed-in accounts, files, configuration, and
+[the section above](#leave-the-shared-runner-as-you-found-it) removes them. Keep the VM, installed apps, signed-in accounts, files, configuration, and
 SSH access available for another session. Do not publish or commit the authenticated image or keys.
 
-At the next session, locate and start the existing VM with the same no-window/no-clipboard/no-audio
-options. Discover its current IP rather than assuming the prior address, reconnect via SSH, and
+At the next session, locate the existing VM, starting it when it is stopped with the same
+no-window/no-clipboard/no-audio options. Discover its current IP rather than assuming the prior address, reconnect via SSH, and
 verify the intended Studio/project. Create a replacement only when necessary and authorized; a new
 session is not a reason to rebuild or ask the user to sign in again. Open a viewer automatically
-when a guest UI step needs one that posted guest input cannot give.
+when a UI step in the VM needs one that input posted inside the VM cannot give.
 
 ## Studio MCP connection and input
 
@@ -1152,8 +1162,8 @@ recovery attempts in verification output; only a reusable decision rule belongs 
 When switching away or ending the session, close the hidden tab and stop its websockify
 process and any task-owned SSH forward. Verify their listening ports closed. Follow the
 [retained VM lifecycle](#end-of-session-for-a-retained-vm):
-save project artifacts, close Studio normally, shut down the VM, and preserve its disk,
-installed software, login, preferences, and SSH setup. Never remove the VM to clean up a viewer.
+save project artifacts, leave the VM running unless one of that section's two shutdown cases
+holds, and preserve its disk, installed software, login, preferences, and SSH setup. Never remove the VM to clean up a viewer.
 
 ### Guest file pickers
 

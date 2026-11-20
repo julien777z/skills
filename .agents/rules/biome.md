@@ -26,19 +26,8 @@ Follow the configured import organization, typically:
 
 Let Biome own configured indentation, quote style, semicolons, trailing commas, and line width.
 
-## Linting
+## Suppressions
 
-## Guardrails
-
-Only ignore when truly necessary:
-
-```typescript
-// biome-ignore lint/suspicious/noConsoleLog: Debug logging needed
-console.log("Debug info");
-```
-
-Or for a file:
-
-```typescript
-// biome-ignore-file lint/suspicious/noConsoleLog
-```
+Never add a `biome-ignore` or `biome-ignore-file` comment; the TypeScript rule's **Suppressions**
+section governs every report. A category is turned off only in `biome.json`, with its reason beside
+it.

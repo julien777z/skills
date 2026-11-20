@@ -17,6 +17,7 @@ skill ends with.
 - `defer-scope`
 - `session-ledger`
 - `pre-production`
+- `lock-revision`
 
 ## Scope
 
@@ -69,6 +70,10 @@ skill ends with.
    the GitHub rule’s **Pre-Push Gate** defines, report-only: every failing check is pushed unfixed and
    goes first in the queue — the one push that does not wait on its checks, because unpushed work
    is lost with the session. Apply and commit any stash. Never rewrite history or force-push.
+   **Commits `lock-revision`'s hold keeps local are pushed too, so ask the user first whether the
+   lock should be unlocked.** On yes, push them and record the unlock as that skill says. On no,
+   ask what should happen to those commits, since a hand-off leaves none unpushed, and wait for the
+   answer before the steps below.
 6. **Close the pull requests this session made stale.** One whose commits now live on the pull
    request the work continues, or whose change is superseded, is closed with a comment naming where
    the work went, as the GitHub rule's **Branches and Pull Requests** says. A pull request the

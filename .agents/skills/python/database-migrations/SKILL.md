@@ -151,33 +151,26 @@ format transition or recovery mechanism for data explicitly declared disposable 
 - **A pull request holds one unlocked revision per chain.** Every schema or stored-data change the
   pull request makes to that chain's database goes into that revision, whatever its size or concern,
   with its backfill steps inside it in dependency order and its survivorship and
-  destructive-operation entries merged into that revision's own. A revision the pull request adds is
-  unapplied unless it carries the lock marker or the owner reports a deploy of a commit that
-  contains it: the owner locks the branch's revisions before deploying it, and that, or such a
-  report, is the only way a chain gains a second revision in one pull request. A reported deploy
-  makes each revision, as it stood at the deployed commit, the applied one: restore its database
-  outcome at that commit, lock it there with the lock marker, and move every later change to its
-  chain into one new revision on top, before any other work on the branch. A pull request found
-  carrying several unlocked revisions on one chain folds them into one before anything else, and a
-  base update that adds revisions re-parents the unlocked one onto the new head.
-- **A revision whose first line is the lock marker counts as applied.** Locking a revision adds
-  this line as the first line of its file and changes nothing else in it:
+  destructive-operation entries merged into that revision's own. A pull request found carrying
+  several unlocked revisions on one chain folds them into one before anything else. A base update
+  that adds revisions to a chain re-parents the branch's revisions onto the new head, so the chain
+  stays linear. A revision the pull request adds is unapplied unless it is locked or the owner
+  reports a deploy of a commit that contains it; such a report locks the revision as it stood at
+  that commit, before any other work on the branch.
+- **A locked revision is one whose first line is the lock marker.** The owner locks a branch's
+  revisions before deploying it. Locking adds this line as the first line of the file and changes
+  nothing else in it:
 
   ```python
   # Locked: an environment may have applied this revision. Put later changes in a new revision.
   ```
 
-  A locked revision's id, its parent and what it does to the database stay fixed, so it is never
-  folded, re-parented or regenerated: an environment that applied it would sit on a chain it never
-  ran. Its code may still change when the database outcome stays the same — a simplification, a
-  refactor, a clearer helper — proven by the migration tests. A later change to the database goes
-  into one new revision on top, which the next lock locks. Locking settles where that
-  change goes, never whether it may be made: work that needs a schema change adds the revision
-  without asking. A base update that adds revisions
-  to its chain is joined with a merge revision. Where the migration tooling accepts only a
-  linear chain, the base's revision moves instead, re-parented onto the branch's head, once the
-  owner confirms no environment has applied it; one an environment has applied needs the tooling to
-  accept the merge revision first.
+  Until the owner unlocks, a lock means three things and nothing more: no change to a locked
+  revision is pushed, no new revision is pushed, and no source change that depends on either is
+  pushed. That work is committed locally and pushed once the owner unlocks; work that touches no
+  revision pushes as usual. Unlocking ends the hold and leaves the marker: a locked revision counts
+  as applied, so a database change made after it goes into one new revision on top, which work that
+  needs it adds without asking.
 - For a revision the pull request did not add, establish "not applied yet" from the real
   `alembic_version` row in every existing environment that may have applied it; the lock marker or
   the owner's report of a deploy settles it for the pull request's own. An explicit user statement
@@ -290,8 +283,8 @@ or
    Inspect the project's revision directory.
    Find which file has no other file pointing to it as `down_revision` — that is the current head.
 
-2. When your revision is unlocked, as **Applied Is What Makes History** defines, update its
-   `down_revision` to that head; a locked revision follows that section instead:
+2. Update your revision's `down_revision` to that head. For a locked revision this is a revision
+   change, pushed only once the owner unlocks, as **Applied Is What Makes History** says:
    ```python
    down_revision: Union[str, None] = "<actual-head-on-main>"
    ```

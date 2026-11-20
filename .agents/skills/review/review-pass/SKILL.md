@@ -203,8 +203,7 @@ One reviewer reads the change, the author answers each finding, and a fresh roun
 changed. Make the smallest changes that answer real findings, and push back on the rest.
 
 - **Budget:** three rounds. Round 1 reviews the whole target; later rounds review the changed code
-  and the findings still open. Five rounds only for security, permissions, auth, data loss or
-  concurrency while a blocker or should stays open with evidence, or when the user asks. Stop early
+  and the findings still open, whatever the delta touches. Stop early
   when a round returns only nits; a declined nit or an edit that changes only wording or formatting
   needs no new round. These rounds count the pull request's review loop; one finding's fix still follows the
   global rules' review-round limit.
@@ -251,7 +250,7 @@ changed. Make the smallest changes that answer real findings, and push back on t
   lines each. Any other goes to `council` in **Ask** mode for a ruling, with the finding, the
   reviewer's case and yours with their evidence, and the code it concerns; its ruling settles it:
   fix it, or record it declined with the ruling. A spent budget with a blocker or should still open
-  follows the global rules' review-round limit.
+  goes to `council` as the global rules' review-round limit says.
 
 ## Harness Compatibility
 

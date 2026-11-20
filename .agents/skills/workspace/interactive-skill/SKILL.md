@@ -104,7 +104,7 @@ Please pick a choice to proceed.
 ## Match The Reply
 
 Trim the reply and ignore case and surrounding punctuation. A reply that is not an answer, as the
-bullet below the table says, is settled first; every other reply, a cancel included, takes the first
+first two bullets below the table say, is settled first; every other reply, a cancel included, takes the first
 rule that matches:
 
 | Reply | Means |
@@ -119,14 +119,18 @@ rule that matches:
 | For `text`: the answering option's label with nothing typed | The prompt again; that label is never the answer. |
 | For `text`: anything else, or nothing when there is a `default` | The answer as typed, or the default. |
 
-- **A reply that is not an answer is handled as the global rules' question-retry bullet says**,
-  even to a `text` prompt: for a `choice`, `multi` or `confirm` menu, a reply that states no choice
-  in words, as the corrections, complaints and new requests that bullet names do; for a `text`
-  prompt, a reply that, read as a whole, does not answer the prompt. A reply that tries to answer,
-  `none` or `nothing` to a `multi` menu and `no` to a `confirm` included, goes to the table, and one
-  that matches no row gets the menu again as the bullet below says. The global bullet says how a
-  reply that is not an answer is handled, how the menu is asked again and when asking again stops;
-  the calling skill waits on the answer.
+- **A reply that is a new request drops the menu.** Read as a whole, it asks for something else and
+  states no choice, for a `text` prompt included. The menu is not asked again: hand the caller
+  `canceled`, say that nothing ran, and take up the new request. This is this skill's exception to
+  the global rules' requirement that a question whose reply states no choice is asked again; it
+  covers menus this skill asks and no other question.
+- **Any other reply that is not an answer is handled as the global rules' question-retry bullet
+  says**: for a `choice`, `multi` or `confirm` menu, a reply that states no choice in words, as the
+  corrections and complaints that bullet names do; for a `text` prompt, a reply that, read as a
+  whole, does not answer the prompt. A reply that tries to answer, `none` or `nothing` to a `multi`
+  menu and `no` to a `confirm` included, goes to the table, and one that matches no row gets the
+  menu again as the bullet below says. The global bullet says how such a reply is handled, how the
+  menu is asked again and when asking again stops; the calling skill waits on the answer.
 - **Any other reply that matches no choice, or more than one, gets the menu again**, never a pick
   made for the user, as often as it takes. Put one line above it, or in the question text when the
   question tool asks: "That did not match a choice. Please reply with a number from 1 to <n> or a

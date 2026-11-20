@@ -148,7 +148,9 @@ Do not migrate existing repository records to Linear in this run. Preserve their
 
 Once the validated
 resolution pull request is ready, comment on and close each superseded open pull request that
-carries nothing but records included in that replacement, with the replacement and disposition. A
+carries nothing but records included in that replacement, with the replacement and disposition.
+This holds whichever session opened that pull request: it is this skill's exception to the GitHub
+rule's **Branches and Pull Requests** bullets that close only a pull request the session opened. A
 superseded record riding a pull request that carries other work is removed from it when this
 session owns that pull request; on any other, report the record and its pull request and let the
 resolution pull request carry the disposition.
