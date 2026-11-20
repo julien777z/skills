@@ -118,8 +118,9 @@ Trim the reply and ignore case and surrounding punctuation. Then take the first 
 | For `text`: anything else, or nothing when there is a `default` | The answer as typed, or the default. |
 
 - **A reply that is a new request is not an answer.** A full sentence, question or instruction that
-  names no choice and is about something other than the menu drops the menu, and the calling skill
-  is not continued; the new request is handled as it stands.
+  names no choice and is about something other than the menu is handled as it stands, and the menu
+  is asked again with the reply to it, until the user answers, withdraws it or stops the task, as
+  the global rules' question-retry bullet says; the calling skill waits on that answer.
 - **Any other reply that matches no choice, or more than one, gets the menu again**, never a pick
   made for the user, as often as it takes. Put one line above it, or in the question text when the
   question tool asks: "That did not match a choice. Please reply with a number from 1 to <n> or a
