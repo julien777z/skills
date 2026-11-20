@@ -205,5 +205,5 @@ the acceptance gate, and the smoke test before the pull request merges.
 
 ```bash
 bootstrap/install.sh                                            # link into this machine's roots
-python3.12 .agents/skills/authoring/edit-skill/scripts/validate_sources.py check # validate with the pinned sync tool
+python3.12 .agents/skills/authoring/skill-pass/scripts/validate_sources.py check # validate with the pinned sync tool
 ```

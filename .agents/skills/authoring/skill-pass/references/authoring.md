@@ -1,7 +1,7 @@
 # Authoring Agent Guidance
 
-This reference of `edit-skill` holds how anything under `.agents` is written, placed, served to
-harnesses and validated. The skill's workflow names the section each step applies.
+This reference holds how anything under `.agents` is written, placed, served to harnesses and
+validated. The pass in `SKILL.md` names the section each step applies.
 
 ## Where Guidance Lives
 
@@ -9,11 +9,12 @@ harnesses and validated. The skill's workflow names the section each step applie
   a skill, rule, agent definition, hook, setting, reference or project guidance is written, where it
   goes, which harnesses it serves, how its generated mirrors are produced, and how a change to it is
   validated. A rule, another skill or `.agents/global.md` keeps only what its own subject needs and
-  names this skill for the rest.
+  leaves the rest here: a skill cites these sections by name, and a rule or `.agents/global.md`
+  cites them by subject.
 - **Guidance lives in skills and rules, never in a harness's memory.** A correction, preference,
   limit, exception or operating fact that tells agents how to work — such as a cap on workers, a
-  repository that gets only minimal changes, or a machine whose processes may be ended — goes
-  through this skill into the skill, rule, project guidance or reference that owns it, so every
+  repository that gets only minimal changes, or a machine whose processes may be ended — goes,
+  as a guidance edit, into the skill, rule, project guidance or reference that owns it, so every
   harness and session reads the same copy. A harness's memory, such as an auto-memory file, holds
   none of it. A memory found holding guidance is moved to its owner and deleted.
 - **A requirement goes in the skill that runs when it applies; a rule or `.agents/global.md` takes
@@ -57,10 +58,10 @@ harnesses and validated. The skill's workflow names the section each step applie
   today; a repository keeps no `.agents/references/` folder.
 - A rule that cannot be stated without naming something this repository owns belongs in
   `.agents/project.md`. Move it there rather than rewording it into something generic but untrue.
-- **A new rule file is only ever a guidance correction**, written through this skill for a subject
-  no skill runs for, as the placement bullet above says. A system an agent built, such as a booking
+- **A new rule file is only ever a guidance correction**, written for a subject no skill runs
+  for, as the placement bullet above says. A system an agent built, such as a booking
   service's flows, is documented in its code and README, never in guidance; repository guidance
-  that says to add a rule per system is itself corrected through this skill.
+  that says to add a rule per system is itself corrected.
 - **Shared or repository-owned.** Generic skills live in one shared skills repository and reach
   every session through a user-level skill root; repository-specific skills, every rule, and
   repository-specific agents live in the repository they describe. Inspect a skill's content and
@@ -366,11 +367,11 @@ a template where correct results genuinely vary in shape.
   only as one instance. A rule written for the symptom is silent on the next one, and the
   next one is what it will be read for. A named field, file, section, document kind, tool,
   or step, including the place a request says to put the fix, is an example of its class and
-  a candidate home under this skill's owner search, never the limit of the rule, unless the
+  a candidate home for the edit's owner search, never the limit of the rule, unless the
   contract requires its exact identity. Broaden to the class the user plainly meant, never to a
   neighboring subject. Wording handed over — rule text in the request or in a delegating agent's
   brief — remains input, not the spec: draft against the invariant and alternate routes
-  this skill's failure-class diagnosis classified, then apply that decision to every instruction
+  the edit's failure-class diagnosis supplies, then apply that decision to every instruction
   in the file that does the same work.
   One section rewritten while a neighbor still does the narrow thing is the draft only half
   done, and it is rewritten until the neighbor changes too. An agent delegating an edit

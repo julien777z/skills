@@ -18,7 +18,7 @@ and examples. A supporting file is part of the skill, not an exemption from its 
   reclassifies the owner's decision is a conflict even when no sentence negates the owner; replace
   it with a citation of the owner's section.
 - **The check covers examples as well as statements, and every file that loads alongside the
-  edited one.** `edit-skill`'s authoring reference lists those files under **Rules**; an example
+  edited one.** The authoring reference lists those files under **Rules**; an example
   one of them forbids is a conflict, since a reader copies an example before reading the text
   elsewhere that forbids it.
 - **A changed instruction that breaks one of the authoring reference's own bullets conflicts with

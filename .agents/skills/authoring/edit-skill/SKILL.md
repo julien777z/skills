@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit anything under `.agents` — a skill, rule, agent definition, hook, setting, reference or project guidance — including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Before proposing or editing guidance, derive the observable failure and test the proposed scope against alternative implementations of it. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. A correction that encodes a new process waits until that process has worked on the work in hand; every other correction is recorded and written at once, whatever happens to the current work's repair. While another task is active, every correction, a direct request to edit guidance included, is pushed to a draft guidance pull request and recorded, with a generic backup comment there, and the rest of its delivery runs in bulk when that task completes; one arriving while a guidance batch is in flight joins that batch's pull request, which reruns only the checks the new edit invalidates. Use it too when carrying a guidance batch through delivery to its merge or hold. Deliver every behavior-changing guidance edit through `review-pass`, the acceptance gate, and `test-skill` before its pull request merges.
+description: Add or edit anything under `.agents` — a skill, rule, agent definition, hook, setting, reference or project guidance — including when the user points out a mistake in how an agent followed or wrote guidance, or questions where guidance was placed, even with no explicit request to edit a skill. Diagnose the observable failure and the guidance path that allowed it, fix the underlying issue, and write the change for the whole class of failure the request is one instance of, never only the document, tool, step or section it names. A correction that encodes a new process waits until that process has worked on the work in hand; every other correction is recorded and written at once. While another task is active, every correction, a direct request to edit guidance included, is pushed to a draft guidance pull request and recorded, and the rest of its delivery runs in bulk when that task completes; one arriving while a guidance batch is in flight joins that batch. Use it too when carrying a guidance batch through delivery to its merge or hold. Every behavior-changing guidance edit goes through `review-pass`, the acceptance gate and `test-skill` before its pull request merges.
 short_description: 'Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.'
 ---
 
@@ -65,6 +65,7 @@ task is active, or a guidance batch is in flight, preserve its execution and fol
 During A Task** for the edit's timing.
 
 ## Dependencies
+- `skill-pass`
 - `code-simplify`
 - `acceptance-gate`
 - `pre-production`
@@ -82,7 +83,7 @@ During A Task** for the edit's timing.
 
 Honor the selected workflow's verification sequence and any delivery or installation hold when
 recording or delivering a batch.
-Validate skill dependencies and their actual call and policy-read paths under the [authoring reference](references/authoring.md)'s **Dependencies** and **Validation** sections.
+Validate skill dependencies and their actual call and policy-read paths as `skill-pass`'s **Dependency Audit** says.
 
 - A correction that encodes a new process waits for that process's verified run, as **A process is
   encoded only once it has worked** says; a method or lesson the work has not yet tried is not a
@@ -225,16 +226,16 @@ user's review of the source pull request overlaps it.
      When the owner necessarily runs before the action, remove equivalent conditions from callers;
      strengthen its trigger or invocation only if that owner would otherwise be missed. Explain the
      placement.
-   - Read the [authoring reference](references/authoring.md) before choosing an owner, and test the
-     candidate against its **Where Guidance Lives**: name the skill that runs when the requirement
-     applies before choosing a rule or `.agents/global.md`, and check what the candidate's name and description bound.
+   - Before choosing an owner, test the candidate against `skill-pass`'s **Where Guidance Lives**:
+     name the skill that runs when the requirement applies before choosing a rule or
+     `.agents/global.md`, and check what the candidate's name and description bound.
    - **When the request names no target, find the guidance that let the gap through and change it
      there.** A request usually arrives as a symptom with no file attached — "that is a bad
      implementation, do not use X" — and the file to edit is the one that governs the thing X
      belongs to: the language rule for a language construct, the review skill for something a
      review let past, the skill that ran for something it did while running. Search the rules and skills by the subject of the request, not by the request's words,
      read what the candidate already says about that subject, and put the change where a reader
-     doing that work will meet it, at the breadth the authoring reference's **Writing** asks for. Never ask which file; the search
+     doing that work will meet it, at the breadth `skill-pass`'s **Writing** asks for. Never ask which file; the search
      is this skill's job.
    - **A violated instruction, or any guidance failure the user points out, calls for causal
      diagnosis and an application repair.** Before editing, trace the actual path from the request
@@ -265,7 +266,7 @@ user's review of the source pull request overlaps it.
 
 4. Resolve which repository owns the target, then its path inside that repository's `.agents`.
    - Decide whether the target is shared or repository-owned, and its path for its type, as the
-     [authoring reference](references/authoring.md)'s **Where Guidance Lives** says.
+     placement bullets of `skill-pass`'s **Where Guidance Lives** say.
    - A shared target is edited in a writable checkout of the skills repository, on a branch and
      pull request in that repository, never through the link's path from another repository's
      branch. The [edit criteria](references/edit-criteria.md)'s **Shared Targets** says which
@@ -291,18 +292,15 @@ user's review of the source pull request overlaps it.
      change. Removing a bad example while retaining a directive that regenerates it is incomplete.
      Put incident evidence in the project/verification record and state that destination explicitly.
      Fix the producing instruction and its output together.
-   - Move inline criteria to a named reference when the [authoring reference](references/authoring.md)'s **Skills**
-     standards require it, and add the appropriate hard-coded output format or delivery report line
-     when absent.
-   - Validate every added or changed instruction and example for conflicts before delivery. Search the canonical
-     rules and skills by its subject, required action and opposite disposition. Read the complete
-     changed skill or rule and its supporting files, every file that loads alongside it, plus relevant sections in other skills, rules,
-     callers and dependencies. Apply the [conflict criteria](references/conflicting-instructions.md), which name the authoring reference's bullets each change is also held to. Resolve competing instructions
-     at their owners rather than adding a reminder beside them; where the new instruction conflicts
-     with standing guidance the request did not ask to change, fit the new instruction to the
-     standing one, as step 2 says. Record the searches, sources read
-     and each resolution, or the evidence for a clean result. Repeat this check for later wording
-     changes before acceptance and skill tests; an earlier clean result does not cover a new edit.
+   - **Run `skill-pass`'s pass over the delta before delivery**: every added or changed
+     instruction and example, the edited skill's complete package and affected callers, and every
+     file a folded or incorporated pull request brings in. Its source check runs at **Run
+     `validate_sources.py check`**; every other step runs here, and again for a later wording
+     change before acceptance and skill tests. Move inline criteria to a named reference when its
+     **Package And References** standards require it, and add the appropriate hard-coded output
+     format or delivery report line when absent. Where the new instruction conflicts with standing
+     guidance the request did not ask to change, fit the new instruction to the standing one, as
+     step 2 says.
    - Update existing files in place and report any structural changes. Before delivery, follow the
      entry point's links again and confirm that each route loads its required guidance. References
      must not hide an essential rule or introduce an unexplained mode or dependency. Check genericity
@@ -312,8 +310,6 @@ user's review of the source pull request overlaps it.
    - A missing tool the repository needs to run, build, test or review, and a consumer's reference
      to a dependency, follow the [edit criteria](references/edit-criteria.md)'s **Tools And
      Dependency References**.
-   - Write every added or changed instruction as the [authoring reference](references/authoring.md) says, under
-     each of its sections the edited file's kind and content fall under, **Harnesses** included for anything a harness runs or reads.
    - **Moved text is added text.** Guidance moved between files — a skill relocated, bullets
      gathered into a new rule or out of one — that lands beside a statement of the same requirement
      is merged with it into one in the same change, keeping every distinct criterion and exception,
@@ -321,7 +317,6 @@ user's review of the source pull request overlaps it.
      `pre-production`'s **Scope Follows The Defect, Not The Request** says of a defect the work notices, with
      `acceptance-gate` judging the repair's scope and size. Moving text unchanged proves it
      survived; it is never a reason to report a defect as left for the user.
-   - Before delivery, audit each edited skill's complete package and its affected callers, every file a folded or incorporated pull request brings in included: list every skill each one refers to, by name or by a description that identifies it, compare them with the owning entry point's `## Dependencies`, and resolve every reverse, peer, missing, stale or path-based reference and any user-only dependency lacking explicit bounded delegation as the [authoring reference](references/authoring.md)'s **Dependencies** says. Check references separately for hidden invocations and cross-skill filesystem links. **Run `validate_sources.py check`**'s source check matches name forms only, so a passing check does not replace this audit.
 
 6. Multi-target behavior.
    - Apply multi-target updates for `agents`, `skills`, and `rules`.
@@ -348,47 +343,25 @@ user's review of the source pull request overlaps it.
       **Check the diff file list against the default branch, then merge** merges it. Carry out each authorized transition as it becomes eligible. An
       open pull request leaves the current guidance in use. A source fix required by step 3 is source work: it goes onto the source pull request
       the work continues in its repository under the same rule and merges as that work does.
-   2. **Run `validate_sources.py check`**, which sits under `scripts/` beside this skill, before the pull
-      request merges, and again whenever the branch changes after that run. Nothing on a pull request runs the sync: the workflow
-      runs on the default branch after the merge, so a file it refuses is refused once every session
-      is already reading it. The script installs the sync tool at the revision the workflow pins and
-      mirrors the canonical tree into a scratch copy, so what its mirror refuses is exactly what the
-      workflow would; it also refuses the undeclared skill names and dependency cycles the
-      [authoring reference](references/authoring.md)'s **Dependencies** describes. Run it from the root of the repository being edited, with that repository's own
-      interpreter or any interpreter meeting the sync tool's version, and fix every
-      report it prints before pushing; a description holding a colon followed by a space is the usual
-      one, and quoting the value is the fix.
+   2. **Run `validate_sources.py check`**, the source check `skill-pass`'s **Source Check**
+      describes, before the pull request merges, and again whenever the branch changes after that
+      run. Nothing on a pull request runs the sync: the workflow runs on the default branch after
+      the merge, so a file it refuses is refused once every session is already reading it. Fix
+      every report it prints before pushing, and for each file the batch changes check by reading
+      what that section leaves to reading.
       When the sync tool cannot reach an imported skill's source repository, or the guidance needs a
       change in an unreleased tool another repository owns, follow the
       [edit criteria](references/edit-criteria.md)'s **Source Check Routes**: neither is a blocker,
       the tool's consuming workflow change is source work whose delivery follows `merge-gate`'s
       dependency gate, and no merge here authorizes a release.
-      Check the entire canonical skills tree against the authoring reference's **Package And
-      References**, imported skills included, rather than only the files being edited; leave generated
-      mirrors to Agent Sync. A clean changed file does not make a failing tree validation pass.
-      The script checks skill names only. For each file the batch changes, also check by reading
-      and searching what the [authoring reference](references/authoring.md)'s **Writing** and **Rules** sections
-      require: every cited section, path, script, command and flag resolves; no ruling or example
-      disagrees with a file that loads beside it; and the file's line count is within its budget.
    3. **Check prose duplication** through the `code-simplify` pass `review-pass` runs over the delta,
-      reading every touched `.agents` file whole, and act on what it reports: guidance duplicated
-      between peer rules or skills, including a caller and a skill it always invokes, or between two
-      files of one skill; a section grown around a second subject; a heading named for a category
-      with one member; a rubric left inline that the authoring reference's skill shape
-      sends to a reference. Prose duplicates as readily as code, and nothing else catches it. Every `.agents`
-      change gets that pass over its entry point and supporting files, a one-line rule edit as much as a
-      new skill: a single bullet added to
-      the file that does not own it is exactly the duplication this catches, and it is the change
-      least likely to be looked at twice.
+      reading every touched `.agents` file whole for the shapes `skill-pass`'s **Prose
+      Duplication** lists, and act on what it reports. Every `.agents` change gets that pass over
+      its entry point and supporting files, a one-line rule edit as much as a new skill.
    4. **Brief `review-pass`'s final acceptance**, which judges the batch's complete `.agents` diff
       with the intent statement **Guidance Delivery** step 3 gives it; this step starts no gate of
-      its own. The brief asks whether the guidance answers the request at the breadth the
-      [authoring reference](references/authoring.md)'s **Writing** asks for and whether every mechanism it adds earns its place, and hands the reviewer that reference to read whole, since nothing loads it for a reader of `.agents` files. A named
-      tool, surface, or workaround in generic guidance is a finding unless the skill's contract
-      depends on it; the incident's route must not narrow the durable decision boundary. The brief
-      carries the incident's vocabulary — the product, its record and screen nouns, the labels the
-      request quoted — so an example carrying any of it is a finding; it also carries the real case
-      behind the request. Resolve each flag through `acceptance-gate`'s **Bounds**: repair the
+      its own. The brief is `skill-pass`'s **Reviewer Brief**, carrying the incident's vocabulary
+      and the real case behind the request. Resolve each flag through `acceptance-gate`'s **Bounds**: repair the
       owning instruction, push the changed increment, and put it to the fresh gate those **Bounds**
       require. Repeated flags do not permit dropping owed work or merging flagged guidance, apart
       from the `council` decision that replaces another repair once 3 review rounds have failed the

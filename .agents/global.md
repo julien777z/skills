@@ -14,7 +14,7 @@ only a subject no skill runs for.
 ## Agent sources
 
 - Guidance about anything under `.agents` — writing, placing, harness support and validating it —
-  lives in the skill whose description covers editing guidance.
+  lives in the skill whose description covers how guidance is written, placed and checked.
 - Read the other shared rules relevant to the current repository and task. If a harness does not
   load them automatically, open the applicable files from its user-level rules directory.
 - A skill catalog is one discovery surface, not proof that a directly requested skill is absent.
