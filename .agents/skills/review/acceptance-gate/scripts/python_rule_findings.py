@@ -234,6 +234,7 @@ def layout_findings(path: Path, module: Module, lines: list[str]) -> list[str]:
     function_blocks = {
         id(statements) for function in functions for node in walk(function) for statements in statement_lists(node)
     }
+
     blocks = [module.body, *(statements for node in walk(module) for statements in statement_lists(node))]
 
     for statements in blocks:
@@ -241,6 +242,7 @@ def layout_findings(path: Path, module: Module, lines: list[str]) -> list[str]:
             is_docstring = (
                 previous is statements[0] and isinstance(previous, Expr) and isinstance(previous.value, Constant)
             )
+
             is_import_group = isinstance(previous, (Import, ImportFrom)) and isinstance(current, (Import, ImportFrom))
             kind = paragraph_kind(previous, current)
 
