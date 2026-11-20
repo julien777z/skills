@@ -31,6 +31,11 @@ and examples. A supporting file is part of the skill, not an exemption from its 
   opening, such as "unless an invoked skill authorizes it". Read the departing skill's own text
   as well: it states its departure and cites the rule, and a departure stated on neither side, or
   only in the rule, leaves one case with two answers.
+- **A subject a skill owns that its frontmatter description does not name is unreachable, and
+  counts as a defect.** For every subject a change moves into a skill or adds to one, read that
+  skill's description and confirm a clause names the subject; an index of owners in a rule file,
+  `.agents/global.md` or a table is the same defect, as the authoring reference's **Where Guidance
+  Lives** says, since the description is the only route to a skill.
 - **Guidance arriving from another branch is checked like an edit.** A merge or rebase that brings
   the base into a guidance branch, a pull that updates a checkout holding pending guidance edits, and
   a pull request folded into another each put two sets of changes together that were only ever

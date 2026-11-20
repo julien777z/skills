@@ -1,6 +1,6 @@
 ---
 name: execute-task
-description: "Always run this. Invoke once at the start of every task authorized to change files — including one whose edits sub-agents make or that starts because work turned up a defect — before recommending, delegating or making edits, and keep it active until verified completion or the user stops or hands it off. Never invoke it from inside a skill it runs."
+description: "Always run this. Invoke once at the start of every task authorized to change files — including one whose edits sub-agents make or that starts because work turned up a defect — before recommending, delegating or making edits, and keep it active until verified completion or the user stops or hands it off. Never invoke it from inside a skill it runs. Its references also govern, in any task whether or not it changes files, what an invocation or authorization covers, approval boundaries, steps only the user can take, steps that cannot be taken back, reading state after a push or merge, checking a worker's claim and tracing a cause before reporting it, where working files go, waits and awaited results, and verification cadence and suite choice."
 short_description: 'Plan source and product changes for approval; validate canonical guidance changes through their delivery gates.'
 ---
 
@@ -52,8 +52,8 @@ the task. Where it owns a stage, return its result to this run rather than start
   They return outcomes, pending decisions and required coordinator work to the caller.
 - A selected workflow presents its own plan through its declared approval route.
 - A read-only task — a question answered from the code, a listing, a report with no edit — does
-  not run this skill, though it still reads the reference the global rules' **Where The Rest
-  Lives** names for a subject it meets; a task whose edits sub-agents make is not read-only for the
+  not run this skill, though it still reads the reference of this skill that governs a subject it
+  meets, as the description lists them; a task whose edits sub-agents make is not read-only for the
   agent that delegated them. A read-only turn does not close an open run either: a run still holding named
   work stays active through such a turn, and that turn moves its items.
 

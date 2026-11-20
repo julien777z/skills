@@ -1,6 +1,6 @@
 ---
 name: i-have-adhd
-description: 'Apply before the first user-facing response without waiting for an invocation, and stay active until the reader explicitly stops it. Shape output for a reader with ADHD: lead with the next action, restate state, keep every unanswered decision visible after each user message, suppress tangents, and make progress concrete.'
+description: 'Apply before the first user-facing response without waiting for an invocation, and stay active until the reader explicitly stops it. Shape output for a reader with ADHD: lead with the next action, restate state, keep every unanswered decision visible after each user message, suppress tangents, and make progress concrete. Use when writing any text the user reads: link anything the reader might open, word a proposal so it never reads as done, call a web product''s views pages, name new behavior as new, and write for the user rather than for reviewers or workers.'
 license: MIT
 metadata:
   tags: "ADHD, Output Style, Productivity, Formatting"

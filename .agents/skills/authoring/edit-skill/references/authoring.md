@@ -37,9 +37,15 @@ harnesses and validated. The skill's workflow names the section each step applie
   permission or describe what that skill does.** Each states its own requirement in full and words
   the opening generically, such as "unless an invoked skill authorizes it", "a skill that states it
   polls" or "the skill running the merge". The skill that departs from the rule states its own
-  departure and cites the rule. `.agents/global.md` names skills in two places only, because naming
-  is their job: its instructions on which skills always start, and its **Where The Rest Lives**
-  owner table; anywhere else it cites an owner by the subject that table's row names.
+  departure and cites the rule. `.agents/global.md` names skills in one place only, because naming
+  is its job: its instructions on which skills always start; anywhere else it cites an owner
+  generically by its subject, such as "the skill that runs a merge".
+- **A skill is found by its frontmatter description, so every subject a skill owns is named in that
+  description.** No rule file, `.agents/global.md` or index table lists which skill owns which
+  subject: a list kept beside the descriptions goes stale and repeats what they already say. A
+  change that moves a subject into a skill, or adds one to it, widens that skill's description by
+  a clause naming the subject as **Descriptions** says, including a subject its sections govern in
+  a task that does not otherwise run the skill.
 - `.agents/project.md` is the home for repository-specific guidance: the rules and conventions an
   agent follows there, such as which base classes and helpers to use and its generated sections.
 - **Guidance never keeps a copy of how a repository's tooling behaves today.** Commands, flags,

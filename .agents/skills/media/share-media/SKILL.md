@@ -1,6 +1,6 @@
 ---
 name: share-media
-description: "Show the user what they need to see in the part of the agent's reply the harness shows them: screenshots, recordings, rendered previews and spoken audio as they are read, and any table, plan, list or file a report or question relies on. Use whenever work produces captures of a product, a site, a game or a generated image, whenever a reply points the user to material to look at, before any question whose supporting material is not inside the question itself, and when the user asks to talk by voice, hear the agent, have replies read aloud, or hold a spoken back-and-forth to clarify what they want."
+description: "Show the user what they need to see in the part of the agent's reply the harness shows them: screenshots, recordings, rendered previews and spoken audio as they are read, and any table, plan, list or file a report or question relies on. Use before sending any file, image or recording, which is read whole first, to decide when a capture reaches the user, and when per-item detail past five items goes in a file. Use whenever work produces captures of a product, a site, a game or a generated image, whenever a reply points the user to material to look at, before any question whose supporting material is not inside the question itself, and when the user asks to talk by voice, hear the agent, have replies read aloud, or hold a spoken back-and-forth to clarify what they want."
 short_description: 'Show captures, option previews, spoken replies and the material a reply relies on where the user reads.'
 ---
 
