@@ -45,6 +45,7 @@ Build the clean target contract instead of preserving transitional behavior.
   runtime budget, as the testing rule's **Every suite finishes within five minutes of wall time**
   bullet says, deprecated usage or a printed warning, as the
   deprecated-usage bullet below says, a failure of the behavior the task must establish,
+  a non-essential check's finding the next bullet has the change fix,
   or a confirmed finding independently established by a review or source inspection apart from
   diagnosis of the excluded check. Do not reopen an exclusion by relabeling that same failure as a
   review or source finding. Assigned defects and independent findings remain fix responsibilities
@@ -58,17 +59,20 @@ Build the clean target contract instead of preserving transitional behavior.
   a request, apart from that rejection.
 - **Only essential checks have to pass: the test suites, and only for what the change answers for.**
   A non-essential check, such as lint, formatting or other static analysis, that fails on findings
-  in code the change did not write is expected to stay red. That holds whether the findings predate
-  the change or the change brought them to light, such as a new lint rule meeting existing code or a
-  changed-file lint run meeting older code in a file the change touched. Fix the findings in lines
-  the change writes and leave the rest for later work on that code. Never sweep the rest to turn the
-  check green, never loosen, disable, rescope or ignore the check, and never report the red check to
-  the user or ask about it, apart from a merge branch protection rejects for it, reported as the
-  bullet above says. A finding that shows a defect, such as deprecated usage or a vulnerability,
-  stays one, fixed as the bullets below say. A finding the change's own code or contract change
-  causes is the change's wherever it points: a changed signature whose untouched callers no longer
-  type-check is fixed in those callers, as **Target Contract** requires. An essential check that
-  already fails on the default branch is a baseline failure, handled as the bullet above says.
+  in code the change did not write may stay red. That holds whether the findings predate the change
+  or the change brought them to light, such as a new lint rule meeting existing code or a
+  changed-file lint run meeting older code in a file the change edits. Fix the findings in lines the
+  change writes, and the other findings in a file the requested work itself edits, the callers and
+  consumers it must update included, while they fit the size budget in force below, measured as it
+  measures cleanup. Leave the rest for later work on that code: it is not deferred work, so it is
+  neither recorded nor reported. Never fix past that to turn the check green, never loosen, disable,
+  rescope or ignore the check, and never report the red check to the user or ask about it, apart
+  from a merge branch protection rejects for it, reported as the bullet above says. A finding that
+  shows a defect, such as deprecated usage or a vulnerability, stays one, fixed as the bullets below
+  say. A finding the change's own code or contract change causes is the change's wherever it points:
+  a changed signature whose untouched callers no longer type-check is fixed in those callers, as
+  **Target Contract** requires. An essential check that already fails on the default branch is a
+  baseline failure, handled as the bullet above says.
 
 Fix and validate every defect that remains in the task, even when it predates the task or sits
 outside the initial file set; cleanup that fixes no defect follows the size budget below.
@@ -124,10 +128,11 @@ with an obsolete owned contract or revision.
   of spread, not a cap on the repair itself: a necessary migration may be wide, while a small
   unrelated rewrite may already be disproportionate.
 - **Incidental work goes one hop, never further.** What the work notices while making the requested
-  change — in a file it opened, a check it ran, a capture it read — is a defect, fixed as below, or
-  cleanup, handled under the size budget below. A file opened or edited only to make such an
-  incidental fix is never itself a source of more incidental cleanup: what else it holds is deferred,
-  not chased.
+  change — in a file it opened, a check it ran, a capture it read — is a defect, fixed as below, a
+  non-essential check's finding, decided by the essential-checks bullet above, or cleanup, handled
+  under the size budget below. A file opened or edited only to make such an incidental fix is never
+  itself a source of more incidental work: what else it holds is not chased, its cleanup deferred
+  and its non-essential checks' findings left as the essential-checks bullet says.
 - **A defect is anything the system does or shows that a reader would call broken**, and the system
   includes the repository's tooling: its tests, fixtures, build, setup and CI. An image that never
   loads, a wrong value, a state shown in the wrong place, a control that does nothing, a lost write
@@ -173,9 +178,10 @@ with an obsolete owned contract or revision.
   consider or an option, recorded as deferred, left as a hardening note, or answered with a
   recommendation to run an audit of any kind later.
 - **Incidental cleanup has a size budget.** Incidental cleanup is everything the request did not
-  ask for that fixes no defect, outside the change's own design and the defect's shape above. A
-  change to a skill edits that skill's whole folder, its `SKILL.md`, references, scripts and
-  templates alike, and cleanup inside that folder is held to neither budget's size limits: an
+  ask for that fixes no defect, outside the change's own design, the defect's shape above and the
+  non-essential checks' findings the essential-checks bullet decides. A change to a skill edits
+  that skill's whole folder, its `SKILL.md`, references, scripts and templates alike, and cleanup
+  inside that folder is held to neither budget's size limits: an
   agent reads a skill as one unit, so a rule restated between two of its files is tidied in the
   change that edits either one, keeping every criterion either copy carries. Cleanup in another
   skill keeps the budget in force.
