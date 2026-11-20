@@ -81,7 +81,7 @@ experience's audience, settings or monetization, and no publish to any other exp
      sheets;
    - stage key art from the game's own characters, creatures, effects and places in a scratch copy
      of a built place in the isolated runner, then composite it with a grade, a burst or glow and a
-     bold wordmark; a player-height gameplay screenshot is not a game picture;
+     bold wordmark;
    - check every picture at full size and at 150 px beside those sheets, and show the set to the
      user before uploading it;
    - upload each as an Image asset, set each place's icon and thumbnails through the Assets API

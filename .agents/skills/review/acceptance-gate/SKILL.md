@@ -226,10 +226,10 @@ user's words in the intent statement that settle it. Small presentation decision
 hand are not listed; neither is a game's design, which the global rules' game-design exception makes
 the agent's decision and never a question for the user, a new control or room included; nor is local
 test tooling or the records it seeds, which the global rules' local-stack bullet leaves to the
-agent. A product choice with no such words is a flag whose remedy is putting the choice to the user before the code stands, whatever the change calls itself, a
-fix included. An earlier acceptance, a plan record without the user's words, or a brief calling
-the choice decided is not those words. A verdict with none says `no product choice added` in those
-words.
+agent. A product choice with no such words is a flag whose remedy is putting the choice to the
+user before the code stands, whatever the change calls itself, a fix included. An earlier
+acceptance, a plan record without the user's words, or a brief calling the choice decided is not
+those words. A verdict with none says `no product choice added` in those words.
 
 **Then it lists every workaround the diff makes**: a remedy that makes the reported symptom go away
 while its cause stays, such as hiding or folding away what no longer fits instead of giving it
@@ -321,12 +321,12 @@ smallest coherent repair using the existing owner or mechanism.
 a repair re-reads the changed lines against the flag's objection and remedy and runs the checks
 covering that code; then the repair, or a settled, out-of-scope or council-dropped answer with its
 evidence, goes to a fresh gate under the Diff question, following `subagent-matrix`'s
-**Dispatch**, and only that gate's acceptance closes the flag. The exceptions are a style flag, which the
-next gate the change already gets confirms, and a flag naming only missing evidence, which its own
-run closes, each as a paragraph below says, and the decision
-the global rules' review-round limit has `council` make once 3 rounds have failed the change,
-which settles its flags as it rules. Each such gate is one of the change's re-reviews under the
-global rules' review-round limit, and a repair's gate one of the flag's own repair rounds below.
+**Dispatch**, and only that gate's acceptance closes the flag. Each such gate is one of the change's
+re-reviews under the global rules' review-round limit, and a repair's gate one of the flag's own
+repair rounds below. The exceptions are a style flag, which the next gate the change already gets
+confirms; a flag naming only missing evidence, which its own run closes, each as a paragraph below
+says; and the decision the global rules' review-round limit has `council` make once 3 rounds have
+failed the change, which settles its flags as it rules.
 
 **Each flag carries its severity, `defect` or `style`.** A style flag concerns only the form of
 lines whose behavior, structure and contract stand: a docstring's or comment's length, a missing
