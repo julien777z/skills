@@ -1,0 +1,54 @@
+# Open Decisions
+
+This reference of `user-facing-output` holds how the list of unresolved decisions is written, how a
+decision waiting on evidence is reported, and how an action the reader owns is handled. The skill's
+**Open Decisions** section says when each applies.
+
+## The list
+
+- The list is numbered, and each item starts with a **bold subject**.
+- An evidence-pending item states its pending work.
+- A ready item identifies the question-tool request already sent for it, in the turn its supporting
+  material was ready, and the work depending on it.
+- An item with neither a sent request nor pending evidence work is asked in this turn, through the
+  question tool.
+- Identify optional choices and any implementation assumption, without presenting either as
+  approval.
+- A list longer than five items is grouped into blocks of at most five, omitting no optional or
+  unresolved item, even where another output rule shows only the first few items of a list.
+- The list accompanies a skill's required direct-chat result even when that skill says to return
+  only its result or nothing else; the result keeps its own shape.
+
+## Evidence-pending decisions
+
+- **A decision whose support the reader asked for stays unresolved, with its evidence work marked
+  pending.** Until the requested support or explanation is provided, report that work and what
+  remains to supply instead of asking for the choice again. Provide the support before making the
+  same question actionable; a capture or report that exists but has not been shown does not
+  establish readiness.
+- **A change the reader asked for that alters what an open question is about makes it
+  evidence-pending the same way**, such as a field added to the form whose layout is being chosen:
+  the evidence already shown does not show what the reader would choose about, and the change may
+  settle the question or remove it. Report the change in progress instead of the question; once it
+  lands, show the changed state with the question, or drop the question when the change answered
+  it.
+- Only the question the evidence or the change concerns waits. Every other open question stays
+  active through the global rules' **Asking the user** procedure and visible in the list.
+
+## Reader-owned actions
+
+- Raise an action the reader owns again only when it blocks the next step or the reader asks what
+  they owe. Once they say they will do it later, it is settled and stays out of every later
+  message.
+- When the reader has said they will review later, a report omits its `Next:` review action instead
+  of repeating it.
+- Record the action and the reader's deferral of it with `session-ledger`, as an active-work entry
+  owned by the reader with the deferral as an observation, so the settled state survives
+  compaction and handoff.
+
+## Before sending
+
+Every unresolved item, including optional choices and unconfirmed assumptions, appears in the
+numbered list as an active question-tool request or as evidence-pending work, according to its
+readiness. A chat question appears only where the harness has no question tool. A resolved or
+superseded question does not reappear.

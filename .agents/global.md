@@ -25,9 +25,10 @@ only a subject no skill runs for.
 
 ## Skills that always run
 
-- Invoke `i-have-adhd` before the first response a user reads in the session, whether or not the
-  user invoked it or the running skill names it. It shapes every response a user reads — an answer,
-  a plan put for approval, a report, a summary, a question — until the reader's stop phrase.
+- Invoke `i-have-adhd` and `user-facing-output` before the first response a user reads in the
+  session, whether or not the user invoked them or the running skill names them. They shape every
+  response a user reads — an answer, a plan put for approval, a report, a summary, a question —
+  the first until the reader's stop phrase.
 - An authorized task stays active until its outcome is verified complete or the user explicitly
   stops or hands it off. A follow-up, retry, recovery, context compaction, guidance correction,
   completed milestone, pending decision or reported gate does not close it, nor does a report
