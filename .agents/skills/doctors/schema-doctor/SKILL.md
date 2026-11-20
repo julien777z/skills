@@ -297,9 +297,7 @@ equivalence or ownership unresolved and make no simplification that depends on i
 A provider difference is not one of those distinctions, because the two sides of that boundary are
 not equally fixed. **A contract the user owns can change; a third-party provider's cannot.**
 Only one side can move, so a provider difference is always resolved by moving the repository's model
-toward what the provider sends — never by standing a second model beside it and converting. Calling
-such a pair "a genuine third-party boundary" describes the one thing that is not a boundary at all:
-where both sides are fixed there is a boundary, and here one side never is.
+toward what the provider sends — never by standing a second model beside it and converting.
 
 Take these in order, and the first that fits is the answer:
 

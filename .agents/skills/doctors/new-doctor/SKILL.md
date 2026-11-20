@@ -31,21 +31,24 @@ does not start a doctor audit.
    - `## Inventory`, opening with the instruction to run `doctor-protocol`. It names what is
      enumerated and what is excluded; the mechanical commands whose output lists candidates, by
      kind and found in the repository's configuration at runtime; and the before-and-after
-     measures, each a count one of those commands produces.
+     measures, each a count one of those commands produces. A **Shared index.** paragraph names
+     what the doctor reads from the index `doctor-protocol`'s **Share The Index** keeps and the
+     tables it writes there, in one or two sentences.
    - `## Lenses`, one `###` per lens, each stating six things: the defect shape; the evidence that
      establishes it; the remedy; the checks that find every instance, never only the first one
      noticed; what is left alone, so a reviewer does not go hunting; and whether the lens is
      whole-repository, judged only across partitions, or judged within one file or area.
-   - `## Dispositions`, in order, naming the user decisions this domain adds, what the
-     cross-cutting reviewer compares and what the final reviewer challenges.
+   - `## Reviewers`: one sentence citing the cap `doctor-protocol`'s **Launches** sets, a lower cap
+     only where the domain needs one, what dictates the partition cut, what the cross-cutting
+     reviewer compares and what the final reviewer challenges.
+   - `## Dispositions`, in order, naming the user decisions this domain adds.
    - `## Report Additions`.
 
    A decision a dependency already settles — breaking an owned contract, what stored data owes,
    which product changes are the user's — is cited by its section in Dispositions, never restated
-   or reclassified. What dictates the domain's partition cut may take its own heading, and it
-   states a reviewer cap only when lower than the protocol's; nothing that restates a protocol
-   section may take one. Declare no delivery cadence: the protocol leaves the run's pull requests
-   draft for the user under the doctor's review-only delivery contract.
+   or reclassified. Nothing that restates a protocol section takes a heading or a paragraph,
+   launch counts included. Declare no delivery cadence: the protocol's **Deliver** leaves the run's
+   pull requests draft for the user.
 4. **Keep it generic.** Discover layouts, tools, frameworks, and budgets at runtime. Never name the
    current repository's paths, packages, products, commands, or thresholds. State a default
    threshold as one the repository's configuration overrides. Refer to a repository-specific skill

@@ -87,7 +87,7 @@ manifest, or the runner does not have. Reach: partition.
 - every fenced command whose program resolves but whose subcommand, script or flag does not.
 
 Remedy: the reference is corrected to what exists; where the thing is gone, the sentence goes with
-it. Left alone: a placeholder written as one, such as a name in angle brackets; a URL outside the
+it, apart from a command that ought to exist, which **Dispositions** sends to the owner. Left alone: a placeholder written as one, such as a name in angle brackets; a URL outside the
 repository, which is checked only when the run has network access and is reported unchecked
 otherwise; and a reference inside generated documentation, fixed at its generator.
 
@@ -175,7 +175,7 @@ Reviewers are capped as `doctor-protocol`'s **Launches** sets; this doctor sets 
 document dictates the partition cut: a documentation tree and the docstrings of the packages it
 documents stay in one partition where the size bound allows. The cross-cutting reviewer owns
 **Structure**, working from the reference table, and compares documents with each other: one
-command, path, or behavior described differently in two places. The final adversarial reviewer
+command, path, or behavior described differently in two places. The final reviewer
 re-resolves every retained reference against the current tree and confirms that a collapsed
 explanation lost no distinct fact.
 

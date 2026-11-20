@@ -46,10 +46,8 @@ restates a product message a lens changes, which moves with it; and legal text, 
 its drafter's. An interface no browser renders, such as a native client, is audited by the copy and
 form lenses from its source and takes no walkthrough.
 
-**Shared index.** Doctors run in a row share one index of the repository, keyed by commit in the
-worktree's working-files folder. This doctor reads its file inventory, symbol and import tables
-where the current commit's copy holds them, and rebuilds only what is missing or stale. It writes
-the copy table, the page list and the component-use table described below.
+**Shared index.** From the index `doctor-protocol`'s **Share The Index** keeps, this doctor reads
+the file inventory, symbol table and import table. It writes the copy table, the page list and the component-use table described below.
 
 ### Pre-Pass
 
@@ -175,14 +173,8 @@ reading clean on the second walk, which the parent takes because it needs the ru
 
 ## Reviewers
 
-Reviewers are capped as `doctor-protocol`'s **Launches** sets; this doctor sets no lower cap and
-adds no launch of its own: the walkthrough is the parent's, and the owner-decision previews under
-**Dispositions** are too. A whole-site run therefore takes the protocol's whole-route count: 15
-launches on its usual four partitions and six groups, growing with partitions and groups as its
-table says, plus the proposal review **Launches** adds when the plan carries a designed remedy or a
-user decision's alternatives.
-
-The page dictates the partition cut. A partition is one app area: its page files, the components
+Reviewers are capped as `doctor-protocol`'s **Launches** sets; this doctor sets no lower cap, and
+the walkthrough and the owner-decision previews under **Dispositions** are the parent's work. The page dictates the partition cut. A partition is one app area: its page files, the components
 only those pages render, and their captures. A shared UI package is a partition of its own, audited
 with the component-use table rather than captures. Beside the protocol's size bound a partition
 holds at most fifteen walked rows, since its reviewer reads every one of their captures.

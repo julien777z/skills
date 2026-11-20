@@ -322,7 +322,7 @@ its phases. A comment stating a behavior the code must keep is replaced by a tes
 that behavior regresses, never deleted on its own. Each lint rule that reported is proposed as the
 guard `doctor-protocol`'s **Guard Recurrences** asks for. Left alone: a nested loop over small
 fixed sets; a comment of one or two lines recording behavior outside the repository — a third-party
-or protocol quirk — that the code cannot show; a log line reporting an outcome, status, progress or
+or protocol quirk — that the code cannot show; an existing to-do note; a log line reporting an outcome, status, progress or
 failure an operator reads; a long function whose phases share state a split would have to pass
 around; a name a framework, protocol or provider defines; and a name on an owned contract, whose
 rename is the contract break `banned-terminology` describes.

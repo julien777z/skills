@@ -10,9 +10,8 @@ Bring every suite to the shape its siblings share, repair or remove tests that p
 them as labels, run them within budget, and cover each contract in every classification that can
 reach it.
 
-Repair the existing tests and their necessary configuration through existing runner targets.
-Building a maintained audit system is outside this run. Apply `test-fixture`'s validation boundary
-to diagnostic experiments and any separately requested infrastructure work.
+Repair the existing tests and their necessary configuration through existing runner targets, and
+apply `test-fixture`'s validation boundary to diagnostic experiments.
 
 ## Dependencies
 - `pre-production`
@@ -304,4 +303,4 @@ Give it measured durations and unmeasured dispositions, without narration of the
 - determinism corrections; per suite, doubles of repository-owned code removed, moved to the suite
   with the real boundary, or retained with the fault they inject; and declared seams no test used
   before the run;
-- each cut presented and the decision that authorized it.
+- each cut and the deletion evidence that justified it.

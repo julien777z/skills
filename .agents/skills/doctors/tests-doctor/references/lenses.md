@@ -27,8 +27,8 @@ mechanical check that finds every instance rather than the first one noticed:
   directory is named for a source module beside it. Three noes make the row a finding, and nothing
   the module contains overturns that: a module that sweeps every route of a package, drives
   requests across several modules, or tests a concern rather than a file has still claimed a
-  source module that does not exist. `routes/test_pagination_bounds.py` with no
-  `routes/pagination_bounds.py` is that finding.
+  source module that does not exist. `routes/test_<concern>.py` with no
+  `routes/<concern>.py` is that finding.
   It moves under the source module it covers, as a behavior module in a directory named for that
   module, or is named for the package it sweeps beside that package (`test_routes.py` next to
   `routes/`, for the sweep above);
@@ -235,7 +235,8 @@ the inventory and check rows that section requires in the report.
 Every placement check below runs over the whole suite; each names the mechanical check that finds
 every instance:
 
-- a `ModelFactory` or `SQLAlchemyFactory` subclass anywhere under `tests/`, including
+- a test-data factory class, such as a polyfactory `ModelFactory` or `SQLAlchemyFactory` subclass,
+  anywhere under `tests/`, including
   `fixtures/`, `utils/`, and factory modules; enumerate direct and indirect factory subclasses,
   and move the machinery to the shared test-utilities package the repository's layout holds;
 - model-generation functions, methods, or nested builders anywhere under the test tree, including

@@ -68,7 +68,7 @@ a table rather than rebuilding it:
   application, test and script;
 - every comment, constant or message carrying a compatibility word — legacy, compat, fallback,
   deprecated, kept for, formerly, transitional, temporary, old format — as a search key pointing at
-  code, never removing an existing to-do note unprompted;
+  code;
 - per migration chain: its revisions, registries and registered backfills with the callable behind
   each hook, revisions sharing a name across chains, and which environments have applied which
   revisions, read from the real version table where reachable and treated as applied where not;
@@ -239,7 +239,7 @@ each checklist, manifest and example file names against the configuration matrix
 manifests for one package pinned differently across projects or languages and a check one project
 runs that its sibling does not.
 
-The final adversarial reviewer tries to reach each removed layer,
+The final reviewer tries to reach each removed layer,
 branch, alias and operation from a live caller, confirms each merged operation returns only what
 every run of its use cases needs, each batch or merged operation authorizes each item and each
 returned field as the operations it replaced did, and each use case waits no longer than before,
