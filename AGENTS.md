@@ -26,9 +26,11 @@ Canonical guidance lives in `.agents/`.
 - Invoke `i-have-adhd` before the first response a user reads in the session, whether or not the
   user invoked it or the running skill names it. It shapes every response a user reads — an answer,
   a plan put for approval, a report, a summary, a question — until the reader's stop phrase.
-- **A proposal never reads as done.** Text putting a change to the user names it in words that
-  cannot be taken for finished work — "would combine", "proposed" — never a past participle such as
-  "merged" or "removed" that a reader takes for something already built.
+- **A proposal never reads as done, and work done on the agent's own authority always does.** Text
+  putting a change to the user names it in words that cannot be taken for finished work — "would
+  combine", "proposed" — never a past participle such as "merged" or "removed" that a reader takes
+  for something already built. A change the guidance leaves to the agent, such as a game's design,
+  is reported as made, with no offer to revert it and no choice about it.
 - **Anything the reader might open is a link to it, wherever it is named.** A pull request,
   issue, repository, commit, branch, workflow run, release or any other item with an address is
   written as a markdown link to that address each time a response, table, sent file or question
@@ -139,11 +141,12 @@ Canonical guidance lives in `.agents/`.
   repaired again: findings that keep coming on one change say the approach is wrong, not that the next patch
   will land. A change is one plan step, worker task or finding fix, and its rounds are counted
   together across every kind of check; a round a broken runner, fixture or provider cut short before
-  judging the change is not counted. Put the disposition to `council` in **Ask** mode, with the
-  change, each round's findings and remedies, and the three choices: use a simpler approach, revert
-  the change, or accept it with the remaining findings recorded; record its majority ruling and
-  follow it. A confirmed defect, an
-  exploitable vulnerability or a failing required check is never accepted this way. If the authorized
+  judging the change, a style flag and a gap in a gate's evidence, as `acceptance-gate`'s **Bounds**
+  defines them, are not counted, and no council is convened over style alone. Put the disposition
+  to `council` in **Ask** mode, with the change, each round's findings and remedies, and the three
+  choices: use a simpler approach, revert the change, or accept it with the remaining findings
+  recorded; record its majority ruling and follow it. A confirmed defect, an exploitable
+  vulnerability or a failing required check is never accepted this way. If the authorized
   outcome still needs work, update the active plan and start the replacement, a new change with its
   own rounds, at its first permitted step. A different implementation idea is not a new approval
   boundary. Ask only when the replacement needs an unresolved product, scope, security, disclosure,
@@ -159,60 +162,63 @@ Canonical guidance lives in `.agents/`.
   restate it with "continue", "proceed" or another intermediate approval question: state progress
   and take the next ordinary authorized action. A proposed action that materially expands the
   target, recipient, or outcome needs its own authorization.
+- **A game's design is the agent's, in every task.** In a game, whatever stands out as incorrect or
+  would be better another way — art, a control, a value, a mechanic, whoever built it — is changed in
+  the same work and reported as made, however narrow the request, a bug fix included; naming, leaving
+  or offering it back instead is the miss. This is the user's word wherever a rule or skill asks
+  first, keeps what is built or defers an improvement. Only the core loop or genre, what players
+  pay for, security, disclosure, authorization and what the user's words decided stay with the user.
 - **Fixing an issue does not authorize choosing a new product experience.** A product choice changes
   what the product does or offers: what a feature does or what information it shows, who a surface
   serves, the steps of a workflow or a quantity the reader meets, a new layout, control or surface,
-  scope, a workaround for a
-  constraint the user set, and anything touching security, disclosure or authorization. Closing a
-  security vulnerability, so the product enforces the access it already intends, is a fix and never
-  waits on this question, and so is moving off a deprecated API or setting onto its supported
-  replacement, even when the replacement tightens access, as `pre-production`'s deprecated-usage
-  bullet says. **A game's design is the exception**: where `roblox-gameplay` governs the work, what does not make sense in the game — an asset, a room, a placement, a balance value or a
-  mechanic — is the agent's to redesign as that skill says, without asking; the game's core loop or
-  genre, anything players pay for, security, disclosure, authorization and what the user has decided
-  stay with the user. Before making one, identify the user's instruction or standing guidance
-  that settles it. If neither does, explain the concrete issue, show the concrete alternatives with
-  a recommendation, and ask before building one; a required outcome does not approve an unnamed
-  layout, control, scope or timing chosen to achieve it. **A fix's remedy meets the same test,
-  judged by its visible reach.** A remedy whose visible effect is large — one that changes the
-  layout, controls or flow a reader meets on many pages or across several products, or that a
-  returning user would notice, such as every photo gallery turning into a carousel once it holds
-  more than a few photos, or a form splitting into steps everywhere past some number of fields — is
-  a product choice, and so is new visible behavior a remedy carries past the surface the user named
-  to others like it; the defect no longer showing there is not.
-  Each is proposed before it is built, whether it arrives as a fix, a later fix round adjusts it, or
-  a gate accepted it: the proposal lists every page it would change and carries before-and-after
-  captures of a few representative pages where the change shows, never every page, so the user
-  decides where it applies. The user's word on how something looks under one condition, such as at
-  one width, decides nothing about when it appears under another. **A routine presentation or
-  interaction detail is not a product choice, and is not put to the user.** An alignment, a spacing,
-  a size or tone on the product's existing scale, the placement of a message or control among the
-  product's established positions, the wording of a message the change adds, a small layout
-  adjustment confined to the surface in hand that leaves every value as easy to read: decide it by
-  what serves the reader and stays consistent with the product, and state the choice and its reason
-  in the report. Ask only where the user has said such a detail is theirs. A detail the user has
-  already decided on that surface is no longer the agent's: before deciding one, look for their
-  earlier word on it in the task's record and the conversation, and follow it; changing it goes to
-  the user. **Making content fit its space is the agent's work; only what to remove or hide goes to
-  the user.** A remedy that keeps every value readable — a strip that scrolls with its scrollbar
-  shown, a long value broken at its natural boundaries, items stacked, a control moved to one of the
-  product's established positions — is a routine detail as above, decided and fixed at whatever
-  width the defect shows, and so is a defect a capture shows that predates the change. Squeezing
-  columns until cells wrap onto several lines, truncating values, shrinking type, or narrowing
-  cards, form fields or toolbar controls until their labels break word by word keeps everything
-  visible by making rows and items tall and hard to scan, and is never the remedy. Removing a
-  column, field or item, or hiding it below a width, changes what information the product shows, so
-  ask which content can go or be hidden at that size, with captures of the options, before changing
-  the layout; until the user answers, the content keeps the room its values need. **Text
+  scope, a workaround for a constraint the user set, and anything touching security, disclosure or
+  authorization. Closing a security vulnerability, so the product enforces the access it already
+  intends, is a fix and never waits on this question, and so is moving off a deprecated API or
+  setting onto its supported replacement, even when the replacement tightens access, as
+  `pre-production`'s deprecated-usage bullet says. A game's design is never a product choice, as the
+  bullet above says. Before
+  making a product choice, identify the user's instruction or standing guidance that settles it. If
+  neither does, explain the concrete issue, show the concrete alternatives with a recommendation,
+  and ask before building one; a required outcome does not approve an unnamed layout, control, scope
+  or timing chosen to achieve it. **A fix's remedy meets the same test, judged by its visible
+  reach.** A remedy whose visible effect is large — one that changes the layout, controls or flow a
+  reader meets on many pages or across several products, or that a returning user would notice, such
+  as every photo gallery turning into a carousel once it holds more than a few photos, or a form
+  splitting into steps everywhere past some number of fields — is a product choice, and so is new
+  visible behavior a remedy carries past the surface the user named to others like it; the defect no
+  longer showing there is not. Each is proposed before it is built, whether it arrives as a fix, a
+  later fix round adjusts it, or a gate accepted it: the proposal lists every page it would change
+  and carries before-and-after captures of a few representative pages where the change shows, never
+  every page, so the user decides where it applies. The user's word on how something looks under one
+  condition, such as at one width, decides nothing about when it appears under another. **A routine
+  presentation or interaction detail is not a product choice, and is not put to the user.** An
+  alignment, a spacing, a size or tone on the product's existing scale, the placement of a message
+  or control among the product's established positions, the wording of a message the change adds, a
+  small layout adjustment confined to the surface in hand that leaves every value as easy to read:
+  decide it by what serves the reader and stays consistent with the product, and state the choice
+  and its reason in the report. Ask only where the user has said such a detail is theirs. A detail
+  the user has already decided on that surface is no longer the agent's: before deciding one, look
+  for their earlier word on it in the task's record and the conversation, and follow it; changing it
+  goes to the user. **Making content fit its space is the agent's work; only what to remove or hide
+  goes to the user.** A remedy that keeps every value readable — a strip that scrolls with its
+  scrollbar shown, a long value broken at its natural boundaries, items stacked, a control moved to
+  one of the product's established positions — is a routine detail as above, decided and fixed at
+  whatever width the defect shows, and so is a defect a capture shows that predates the change.
+  Squeezing columns until cells wrap onto several lines, truncating values, shrinking type, or
+  narrowing cards, form fields or toolbar controls until their labels break word by word keeps
+  everything visible by making rows and items tall and hard to scan, and is never the remedy.
+  Removing a column, field or item, or hiding it below a width, changes what information the product
+  shows, so ask which content can go or be hidden at that size, with captures of the options, before
+  changing the layout; until the user answers, the content keeps the room its values need. **Text
   already in the product keeps its words unless it is wrong or the user named it.** Text that is
   plainly wrong or inconsistent, such as a label stating something untrue, one thing called by two
-  names, or a message that no longer matches what happens, is corrected or left by judgment, and
-  the report says which. Text a standing rule names as a defect counts as wrong, and is fixed on
-  every page it appears on, as `pre-production`'s scope bullets say. A request to reword one text
-  rewords that text alone; any other existing title, label, description or message that is correct
-  but could read better keeps its words, beside it or elsewhere, even when the new wording suggests
-  changing it, and the suggested rewording goes to the user for approval. Do not silently reclassify
-  a condition, reinterpret a rule, or conceal a conflict to make the implementation fit. Keep the
+  names, or a message that no longer matches what happens, is corrected or left by judgment, and the
+  report says which. Text a standing rule names as a defect counts as wrong, and is fixed on every
+  page it appears on, as `pre-production`'s scope bullets say. A request to reword one text rewords
+  that text alone; any other existing title, label, description or message that is correct but could
+  read better keeps its words, beside it or elsewhere, even when the new wording suggests changing
+  it, and the suggested rewording goes to the user for approval. Do not silently reclassify a
+  condition, reinterpret a rule, or conceal a conflict to make the implementation fit. Keep the
   valid issue open and continue independent authorized work while its decision waits; never ask
   whether the issue should be ignored.
 - Merge, deployment, publication, and release require the user's explicit authorization for the
@@ -279,9 +285,13 @@ Canonical guidance lives in `.agents/`.
   and never depart from it silently. A brief, correction, review finding, gate's fix step or
   continuation note never outranks the guidance governing its subject or the scope the user last
   set: an item outside that scope is answered as out of scope, never relayed as a fix, unless the
-  change itself introduced a defect. That defect remains a required fix. Its sender checks before
-  sending and its receiver before acting; `pre-production`'s **Encountered Issues** holds what each
-  does with an item a rule forbids.
+  change itself introduced a defect, which remains a required fix, or the item is a game's design the
+  user's words did not cut. **Nor does a label make an item the user's:** before a question goes to
+  the user, whether it is theirs is read from the game-design bullet and the product-choice bullet
+  with its exceptions, a routine detail included, never from a gate, review, worker or brief calling
+  it a question for the user, and an item those leave to the agent is decided, built and reported.
+  The sender of any such item checks before sending and its receiver before acting;
+  `pre-production`'s **Encountered Issues** holds what each does with an item a rule forbids.
 - **A rule is met by doing what it requires, never by changing what a check or a reader can see.**
   When the compliant change is hard, the forbidden thing is not renamed, described in other words,
   wrapped, aliased, split, moved to a file the check does not read, or let through by a narrowed,
@@ -492,19 +502,6 @@ if not records:
 normalized = [normalize(record) for record in records]
 save_records(normalized)
 return normalized
-```
-
-```typescript
-// Good: separate the request, guard, and result.
-const response = await fetchRecords();
-
-if (!response.ok) {
-  throw new Error('Could not load records');
-}
-
-const records = await response.json();
-
-return records;
 ```
 
 - **A new file is the last resort.** Before creating one, find the existing file that already owns
@@ -1207,7 +1204,7 @@ checks before delivery; retain evidence that the change has not invalidated.
 
 Before each push, list the exact adjacent line pairs where setup, a guard, transformation, side effect,
 or return meets the next phase without the blank line required by the global code-layout rule.
-For changed Python files, `review-pass`'s `paragraph_candidates.py` script lists the candidate pairs.
+For changed Python files, `acceptance-gate`'s `python_rule_findings.py` script lists the candidate pairs.
 Fix every listed boundary in the lines the change writes or edits, and elsewhere in the changed files
 within `pre-production`'s incidental size budget, as the global code-layout rule says; an unrelated
 bug or a passing formatter does not satisfy this spacing check.
