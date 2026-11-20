@@ -167,7 +167,7 @@ cross-cutting reviewer runs it, reading across the classes. Reach: whole reposit
 Construction a rule file names as a defect, whether or not an attack reaches it today: a privileged
 router listed in the schema of an application the public reaches, against the FastAPI rules'
 **Privileged Surfaces**; a development or test secret value in application or library code; and a
-branch on the environment that relaxes or varies security posture, both against the `python.md`
+branch on the environment that relaxes or varies security posture, both against the general Python
 rule. The pre-pass's unguarded-surface and environment-branch lists supply the candidates.
 Remedy: the shape the rule states. Left alone: construction no rule names and no attack reaches,
 which stays a hardening note. Reach: partition.

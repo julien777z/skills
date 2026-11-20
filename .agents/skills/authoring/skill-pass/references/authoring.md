@@ -32,6 +32,9 @@ validated. The pass in `SKILL.md` names the section each step applies, and the
     framework or tool matched by file pattern, or a host such as GitHub whose rules span many
     skills. A requirement goes in one only when no skill runs where it applies, and it holds in any
     repository using that technology or host.
+    A subject split across several rule files keeps one general file, named `general-<subject>.md`,
+    for what applies to all work in it; each other file is named `<subject>-<topic>.md` and holds
+    one topic, so the names show which file is the default and which load for a narrower task.
   - `.agents/global.md` holds only what must bind before any skill has loaded: which skills to
     start, who can authorize a merge, a deployment or a skill run, that only the user's words are
     approval, and how questions reach the user. A requirement goes there only when it must bind

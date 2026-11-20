@@ -44,14 +44,14 @@ A layer, wrapper or alias that only hands the call on.
 
 The remedy is that callers call the target, the layer and alias go, and every importer moves in the
 same change. A wrapper component's fixed values become a variant or prop on the component it
-renders, as the React rules' **Components and Props** says, a chain collapses into one component
+renders, as the general React rule's **Components and Props** says, a chain collapses into one component
 with variants, and a hook-only component becomes the hook its callers call. Left alone: a wrapper
 that adds policy, which is only validation, error mapping, retries, authorization, caching or
 translation at a provider boundary — a fixed or defaulted value, a hook call, a class or a renamed
 prop is never policy; a function that names a domain operation by mapping a domain value onto the
 call below it; one external name per field at a provider boundary; the explicit public-surface
 re-export a language defines for a package, in a short list; a component that carries the
-`"use client"` boundary for a Server Component call site, as the React rules' **Components and
+`"use client"` boundary for a Server Component call site, as the general React rule's **Components and
 Props** says; and a file the framework looks up by path.
 
 ## Speculative Abstraction
@@ -204,7 +204,7 @@ renumbering an owned wire contract's fields to match — every importer, produce
 updated and every generated target regenerated in the same change, no re-export left behind. A UI
 area folder is judged by these checks once **Pass-Through Layer**'s wrappers in it have become
 variants on their owners. Left alone: a module boundary a framework prescribes, a package boundary
-a build or distribution artifact needs, the one-component-per-file split the React rules require
+a build or distribution artifact needs, the one-component-per-file split the general React rule requires
 for the components that remain, a test importing a command to exercise that command, and a wrapper
 component, which **Pass-Through Layer** owns.
 
@@ -236,7 +236,7 @@ owns.
 
 ## Hand-Written Styling
 
-Styling written by hand where a shared component owns it. The aim is the app the React rules'
+Styling written by hand where a shared component owns it. The aim is the app the general React rule's
 **Components and Props** describes: every page a tree of common components configured by props and
 variants, so every page looks standard and the app holds no styling of its own:
 
@@ -266,7 +266,7 @@ constant or style module in the app; inside the library, the primitive in place 
 and each `className` prop removed with its callers moved onto variants. A finished run brings every
 app's count to zero: a use left standing is an open finding, never a disposition. Left alone: an
 inline style whose values come from saved data, such as a column width the reader dragged; inside
-the library, the classes a primitive is made of and the allowances the React rules' **Components and
+the library, the classes a primitive is made of and the allowances the general React rule's **Components and
 Props** grants there.
 
 ## Reads As Slop
@@ -346,7 +346,7 @@ without that proof it is not a finding.
   pre-pass's suppression list, every suppression comment and type-ignore read against the
   measurement with it removed, and every escape hatch that does a suppression's job, an annotation
   of `Any`, a cast that only quiets the checker, arguments passed through unnamed, as the
-  `python.md` rule and the TypeScript rules' **Suppressions** name them; every rule switched off in
+  general Python rule and the TypeScript rules' **Suppressions** name them; every rule switched off in
   tool configuration with zero instances of what it reports; every pipeline step whose failure is
   ignored; every filter that narrows a check to changed lines.
 - **Censored failure** — every record of a failure that drops the exception's message, notes or

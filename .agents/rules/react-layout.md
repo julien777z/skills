@@ -21,7 +21,7 @@ paths:
   navigation element, menu, input, loading state or action appears elsewhere, move the established
   implementation into a generic shared primitive. A local component built on the shared primitive
   supplies content — its own data and copy — and picks a documented variant at the call site; it
-  never fixes a variant under a second name, as the React rule's **Components and Props** says, and never recreates
+  never fixes a variant under a second name, as the general React rule's **Components and Props** says, and never recreates
   structure, styling, fetching or interaction behavior. An interface
   that is correct in one consumer is the canonical starting point for the extraction, not a visual
   reference to copy.
@@ -102,7 +102,7 @@ paths:
 ## Layout And Spacing
 
 - **Text inside an application surface stays within the product's heading scale.** A section,
-  card, panel or step title takes the size its component owns, under the React rule's **Components and
+  card, panel or step title takes the size its component owns, under the general React rule's **Components and
   Props**; a display-size headline, a hero line or marketing lettering inside an application surface
   outranks the page it sits on and reads as an advertisement. Display type belongs to marketing
   pages outside the application shell.

@@ -8,18 +8,18 @@ The descriptions also cover work that file patterns alone cannot identify.
 | --- | --- |
 | `biome.md` | Formatting or linting TypeScript and TSX, or changing `biome.json`. |
 | `fastapi.md` | Changing Python routes, dependencies, request handling, or responses. |
-| `github.md` | Working with branches, pull requests, merges, comments, commits, or pushes. |
+| `general-python.md` | Editing Python typing, imports, modules, constants, functions, control flow, or logging. |
+| `general-react.md` | Building components, hooks, rendering and events, or Next.js App Router surfaces. |
 | `github-workflows.md` | Writing or changing GitHub Actions workflows, actions, or the scripts they run. |
+| `github.md` | Working with branches, pull requests, merges, comments, commits, or pushes. |
 | `http.md` | Designing or changing HTTP clients, provider calls, server API operations and policy, or response statuses. |
 | `poetry.md` | Changing Python dependencies, project configuration, or test setup. |
 | `pydantic.md` | Defining models and settings or changing validation and serialization. |
-| `python.md` | Editing Python typing, imports, modules, constants, functions, control flow, or logging. |
 | `python-boundaries.md` | Changing Python settings, client injection, model placement, caching, external API calls, or error handling. |
 | `python-formatting.md` | Formatting Python code or writing its docstrings and comments. |
-| `readme.md` | Writing or editing a README or other reference documentation. |
-| `react.md` | Building components, hooks, rendering and events, or Next.js App Router surfaces. |
 | `react-copy-and-forms.md` | Writing interface copy, confirmation dialogs, or forms in React. |
 | `react-layout.md` | Building or changing shared surfaces, page layouts, spacing, or responsive behavior in React. |
+| `readme.md` | Writing or editing a README or other reference documentation. |
 | `sqlalchemy.md` | Defining tables or relationships, writing queries, or handling sessions. |
 | `typescript.md` | Editing types, modules, imports, functions, or external-data boundaries. |
 

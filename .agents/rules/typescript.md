@@ -44,9 +44,9 @@ type Status = (typeof Status)[keyof typeof Status];
 
 - A TS/TSX module must own a broad domain, not a single feature, action, watcher, or one-shot helper. Name modules after the domain (`payments.ts`), not the feature (`refundPayment.ts`).
   **A component module is the exception, here and in the subfolder and fewer-files bullets below**:
-  it exports exactly one component, as the React rules state, and its domain becomes the folder
+  it exports exactly one component, as the general React rule states, and its domain becomes the folder
   those files share, however few lines each holds. The exception covers a component that earns its
-  place under the React rules' **Components and Props**; a module whose component that rule calls
+  place under the general React rule's **Components and Props**; a module whose component that rule calls
   another's variant or a hook's wrapper merges like any other fragment.
 - Avoid role-suffixed file names like `*Action.ts`, `*Lookup.ts`, `*Watcher.ts`, `*Extractor.ts`, `*Url.ts`, or `*Collections.ts`; the folder already conveys the role.
 - Cross-domain helpers belong in a generic `utils` or `lib` module, not in a module named after a single feature.

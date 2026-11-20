@@ -7,7 +7,7 @@ paths:
 - '**/*.jsx'
 ---
 
-# React Conventions
+# General React Conventions
 
 ## Components and Props
 

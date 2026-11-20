@@ -21,7 +21,7 @@ rendered pages for the second, and corrects what serves the reader badly.
 
 Run `doctor-protocol`.
 
-Apply the React rule, the React layout rule, the React copy and forms rule, `pre-production`'s
+Apply the general React rule, the React layout rule, the React copy and forms rule, `pre-production`'s
 product-copy reference and the interface rules the repository's own project guidance holds. They
 are the rubric; this doctor cites them and never restates them. Their examples are written in
 React, and every lens applies to any web interface, read in its framework's terms.
@@ -215,7 +215,7 @@ Apply `pre-production` to every correction.
    the shape, with every page that builds its own copy moved onto it.
 3. **Wrong or inconsistent text is corrected**: a label that states something untrue, one thing
    under two names, a message that does not match what happens, and every text a lens flags. Wrong
-   copy for a refusal a service words is fixed at that service, as the React rule's **Rendering and
+   copy for a refusal a service words is fixed at that service, as the general React rule's **Rendering and
    Data** says, with the interface showing what the service sends.
 4. **Making content fit is a fix, decided and made at whatever width the defect shows**, by a
    remedy that keeps every value readable, as `pre-production`'s **Product Choices** says of

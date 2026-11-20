@@ -74,7 +74,7 @@ link that already takes the reader there.
 
 A refusal or failure message that passes a verdict, repeats what the reader entered, joins several
 problems, or frames a pending step as a penalty, against the product-copy reference's refusal
-bullet, **Interface Copy**'s bullets on status and on what is not yet possible, the React rule's
+bullet, **Interface Copy**'s bullets on status and on what is not yet possible, the general React rule's
 **Rendering and Data**, and the React layout rule's bullets on one error per message.
 
 Evidence: the row, the service or component that words it, and the action that produces it.
@@ -274,7 +274,7 @@ Descriptions** shortens in words.
 
 Spacing, type scale, frames and heights that depart from the product's own scale or stretch past
 their content, against **Layout And Spacing**'s bullets on the heading scale, padding, the content
-frame, surface height, dialog width and paired values, and the React rule's **Rendering and
+frame, surface height, dialog width and paired values, and the general React rule's **Rendering and
 Events** on button width.
 
 Evidence: the capture and region, the measurement rows compared — this page's against the pages of
@@ -387,7 +387,7 @@ beyond what the reader sees, which is fixed only where the walk shows it failing
 
 One component, state, message or sibling surface drawn differently on different pages, against
 **Shared Surfaces**' bullets on the established owner, sibling surfaces and shared mechanisms, and
-the React rule's **Components and Props**. Whole repository: each drawing looks right alone.
+the general React rule's **Components and Props**. Whole repository: each drawing looks right alone.
 
 Evidence: both instances — captures or source lines — the shared component that owns the shape or
 the instance most pages use, and the list of every page on each drawing.

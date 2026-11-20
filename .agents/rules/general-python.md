@@ -5,7 +5,7 @@ paths:
 - '**/*.py'
 ---
 
-# Python Rules
+# General Python Rules
 
 ## Syntax and Typing
 
