@@ -162,11 +162,11 @@ alwaysApply: true
   and take the next ordinary authorized action. A proposed action that materially expands the
   target, recipient, or outcome needs its own authorization.
 - **A game's design is the agent's, in every task.** In a game, whatever stands out as incorrect or
-  would be better another way — art, a control, a balance value, a mechanic, whoever built it — is
-  changed in the same work and reported as made, however narrow the request, a bug fix included; only
-  naming, leaving or offering it back is the miss. This is the user's word wherever a rule or skill
-  asks first, keeps what is built or defers an improvement. Only the core loop or genre, what players
-  pay for, security, disclosure, authorization and what the user's words decided go to the user.
+  would be better another way — art, a control, a value, a mechanic, whoever built it — is changed in
+  the same work and reported as made, however narrow the request, a bug fix included; naming, leaving
+  or offering it back instead is the miss. It is the user's word wherever a rule or skill asks first,
+  keeps what is built or defers an improvement. Only the core loop or genre, what players pay for,
+  security, disclosure, authorization and what the user's words decided stay with the user.
 - **Fixing an issue does not authorize choosing a new product experience.** A product choice changes
   what the product does or offers: what a feature does or what information it shows, who a surface
   serves, the steps of a workflow or a quantity the reader meets, a new layout, control or surface,
@@ -284,8 +284,8 @@ alwaysApply: true
   and never depart from it silently. A brief, correction, review finding, gate's fix step or
   continuation note never outranks the guidance governing its subject or the scope the user last
   set: an item outside that scope is answered as out of scope, never relayed as a fix, unless the
-  change itself introduced a defect, which remains a required fix, or the item is a game's design,
-  which is always in scope. **Nor does a label make an item the user's:** before a question goes to
+  change itself introduced a defect, which remains a required fix, or the item is a game's design the
+  user's words did not cut. **Nor does a label make an item the user's:** before a question goes to
   the user, whether it is theirs is read from the game-design bullet and the product-choice bullet
   with its exceptions, a routine detail included, never from a gate, review, worker or brief calling
   it a question for the user, and an item those leave to the agent is decided, built and reported.
