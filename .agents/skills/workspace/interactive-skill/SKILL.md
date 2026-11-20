@@ -103,8 +103,9 @@ Please pick a choice to proceed.
 
 ## Match The Reply
 
-Trim the reply and ignore case and surrounding punctuation. A reply that is a new request is settled
-first, as the bullet below the table says; otherwise take the first rule that matches:
+Trim the reply and ignore case and surrounding punctuation. A reply that gives no answer, as the
+bullet below the table defines it, is settled first; every other reply, a cancel included, takes the
+first rule that matches:
 
 | Reply | Means |
 | --- | --- |
@@ -118,11 +119,11 @@ first, as the bullet below the table says; otherwise take the first rule that ma
 | For `text`: the answering option's label with nothing typed | The prompt again; that label is never the answer. |
 | For `text`: anything else, or nothing when there is a `default` | The answer as typed, or the default. |
 
-- **A reply that is a new request is not an answer**, even to a `text` prompt. A full sentence,
-  question or instruction that names no choice and is about something other than the menu or its
-  prompt is handled as it stands, and the menu is asked again with the reply to it, until the user
-  answers, withdraws it or stops the task, as the global rules' question-retry bullet says; the
-  calling skill waits on that answer.
+- **A reply that gives no answer is not one**, even to a `text` prompt: a new request, or a
+  question, correction or complaint about the menu or its prompt. It is handled on its own wherever
+  its handling does not depend on the answer, and the menu is asked again with the reply to it,
+  until the user answers, withdraws it or stops the task, as the global rules' question-retry bullet
+  says; the calling skill waits on that answer.
 - **Any other reply that matches no choice, or more than one, gets the menu again**, never a pick
   made for the user, as often as it takes. Put one line above it, or in the question text when the
   question tool asks: "That did not match a choice. Please reply with a number from 1 to <n> or a
