@@ -34,8 +34,9 @@ paths:
   ports, test accounts, deployment targets and file layouts are read from the code, configuration
   and help output that own them, and from the README a person reads. A copy in guidance reads to the
   next agent as a contract to preserve, so it holds the tooling back from changing and goes stale
-  when it does. Guidance states what an agent must or must not do; a repository keeps no
-  `.agents/references/` folder.
+  when it does. Guidance states what an agent must or must not do by what it achieves, such as
+  starting a test run from an empty database, never by the command, port or account that does it
+  today; a repository keeps no `.agents/references/` folder.
 - A rule that cannot be stated without naming something this repository owns belongs in
   `.agents/project.md`. Move it there rather than rewording it into something generic but untrue.
 - **A new rule file is only ever a guidance correction**, written through `edit-skill` for guidance
@@ -255,7 +256,7 @@ template; record-specific facts belong inside that structure rather than a secti
 thing returned. Keep procedure in the workflow and the output contract in Output.
 
 Output is the last section unless Guardrails is present, in which case Output immediately precedes
-it. Guardrails is always the final section; no workflow, report or reference section follows it.
+it.
 
 For user-facing responses, the template names the facts the response carries and puts per-item
 detail past five items in a file sent with the response, as the global rule **User-Facing Output**
