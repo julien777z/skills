@@ -17,7 +17,7 @@ doubles and its name.
   conditional skips and fixture branches that choose between real and simulated execution. Missing
   credentials or an unavailable required service fail the suite; neither turns it into a skipped or
   mocked success. Fixtures may own real client setup, scenario construction and cleanup.
-- Apply the global **Tools and environments** live-deployment mutation rules. Always-live
+- Apply `pre-production`'s **Built Artifacts And Live Deployments** mutation rules. Always-live
   execution grants no additional mutation authority.
 - Every directory holding tests must be reachable from a runner target, and a test should assert that correspondence. A suite that no target selects is a suite nothing reports on.
 

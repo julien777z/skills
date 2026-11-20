@@ -295,7 +295,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   pending step as a punishment; keep them for a refusal the reader can do nothing about. A status
   label or badge is not such a sentence: it names the state plainly, as the status bullet above
   says. A notice only the product's own team reads states the condition and its values instead, as
-  the global rules' **Product Copy** says.
+  `pre-production`'s product-copy reference says.
 
 ### Confirmation Dialogs
 
@@ -370,7 +370,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   actions stay together; give structured content the room its columns and relationships need.
   Content that cannot get that room at some width never gets it by squeezing values until they
   wrap, truncate or shrink; which of it to remove or hide below that width is the user's choice,
-  as the global rules' product-choice bullet says. Compact controls do not require a narrow
+  as `pre-production`'s **Product Choices** says. Compact controls do not require a narrow
   container, and a wide container does not require stretched controls. Use the product's
   established layout and control sizes, preserving comparable widths under **Forms**, rather than
   shrinking the section or creating a new peer-section row.
@@ -567,7 +567,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   to its state owner, writers and prerequisites. If they cannot legitimately coexist, fix the state
   or transition that produced them; a display selector does not repair it. If more than two legitimate
   non-error conditions require banners, surface the product or flow conflict and the concrete alternatives
-  that would resolve it for the user's decision, under the global product-experience boundary. Preserve established banner
+  that would resolve it for the user's decision, under `pre-production`'s **Product Choices**. Preserve established banner
   rendering while that decision waits; combining messages, changing presentation, prioritizing,
   capping, hiding or dismissing an unresolved condition is not a repair. Continue independent
   authorized work. Verify an approved state or flow remedy at its producing transitions and on the
@@ -853,7 +853,7 @@ export function SearchInput() {
 - **Writes are Server Actions**, and Server Actions authenticate their caller and authorize what they read or change. A write re-renders the page when it finishes. A client-side data layer for reads — SWR, React Query, a fetching hook, a fallback cache seeded from the server — is the shape this replaces, not a companion to it, and a status that has to update live refreshes the server render on an interval instead of fetching on the client. A read that depends on input an open control holds in its own state — a city search as the reader types, a preview of the choices in a dialog — is a read-only Server Action that control calls, never a route handler it fetches; input that belongs in the address, such as a list's filters, stays search params the page renders from.
 - **The address carries only state that differs from the page's default.** The first page, an empty search, and the default filter, tab or sort stay out of every link, redirect and router push, so a URL never reads `?page=1` or `?search=`. The helper that builds the address drops a default value itself, so no caller has to remember to.
 - **Expected refusals carry a specific, human-readable message the reader can act on**, worded as
-  the global rules' **Product Copy** says. Trace generic copy for a known validation or business refusal to its service
+  `pre-production`'s product-copy reference says. Trace generic copy for a known validation or business refusal to its service
   and fix that error contract there, rather than inventing replacement client copy. Expected
   refusals must not escape as internal server errors. Genuine 500 responses may keep a safe,
   generic message; diagnose and repair an unexpected 500 encountered during normal operation

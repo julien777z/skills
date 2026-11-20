@@ -58,8 +58,7 @@ change writes:
   item or question, apart from a merge that branch protection rejects for it, whose rejection is
   reported with its provider evidence. No report claims the excluded check passed either; it
   covers the checks the change answers for. This exclusion does not cover a defect the user assigned, a suite past its
-  runtime budget, as the testing rule's **Every suite finishes within five minutes of wall time**
-  bullet says, deprecated usage or a printed warning, as the
+  runtime budget, deprecated usage or a printed warning, as the
   deprecated-usage bullet below says, a failure of the behavior the task must establish,
   or a confirmed finding independently established by a review or source inspection apart from
   diagnosis of the excluded check. Do not reopen an exclusion by relabeling that same failure as a
@@ -104,10 +103,10 @@ with an obsolete owned contract or revision.
   job is never its fix.
 
 - **A test that costs far more than it covers is removed.** When one test, parametrized family or
-  module is disproportionate under the testing rule's **Test Cost** criteria and cannot be made cheap as those
-  criteria allow, apply that rule's **Test Deletion Evidence** requirements before deleting it.
+  module costs far more to run than the failure it could catch warrants and its own setup cannot
+  make it cheap, record the evidence its deletion requires before deleting it.
   Keep or extend a cheaper test of the same classification where the contract needs one. Never keep it
-  in any of the ways the testing rules list for absorbing a slow test.
+  by absorbing its cost, such as a skip, a job of its own or a run pull requests deselect.
 
 ## Scope Follows The Defect, Not The Request
 
@@ -166,7 +165,8 @@ with an obsolete owned contract or revision.
   dependency its owner has deprecated, and any warning a test run, build, install or CI log prints,
   is fixed in the change in flight: move to the supported replacement, or turn on the default the
   owner says is coming; a dependency that itself calls deprecated code is upgraded or replaced,
-  apart from the testing rule's narrow third-party ignore. A check a library warns it will start
+  apart from a narrow ignore for a defect inside a third-party package that nothing the
+  repository controls resolves. A check a library warns it will start
   enforcing is deprecated usage when left off, never a missing safeguard. The replacement changing
   behavior, such as a stricter check, a refused token or a different sign-in, is part of the fix,
   never a reason to keep the deprecated form, call it pre-existing, or put the move to the user;
@@ -188,8 +188,7 @@ with an obsolete owned contract or revision.
   the product already intends; only a change that widens access or changes who the feature serves
   goes to the user, as **Product Choices** says. Every mitigation
   within reach is carried in the change, and a remaining step only another party can take, such as
-  rotating a credential they hold, is reported as a gate with its owner and saved next action, as
-  the global rules' **Tools and environments** says. It is never put to the user as something to
+  rotating a credential they hold, is reported as a gate with its owner and saved next action. It is never put to the user as something to
   consider or an option, recorded as deferred, left as a hardening note, or answered with a
   recommendation to run an audit of any kind later.
 - **Incidental cleanup has a size budget.** Incidental cleanup is everything the request did not
@@ -334,7 +333,7 @@ the issue should be ignored.
   approach fails. Offer a different outcome only when a verified constraint rules out restoring
   the intended behavior within that scope, or the user explicitly requests alternatives. If a
   constraint can be removed only by expanding scope or authority, explain the constraint and ask
-  about that expansion under the global rules.
+  about that expansion as the global rules' **Asking the user** says.
 - **Keep independent work moving while a product choice waits.** If a remedy changes the intended
   behavior and **Product Choices** reserves that decision for the user, state the choice plainly and
   carry on with work that does not depend on the answer.
@@ -354,7 +353,8 @@ the issue should be ignored.
   instead, as the global rules' standing-guidance bullet says of design rules.
   The user may take the trade-off or refuse it; they cannot weigh what they were not told.
 - Reserve a blocking question for a decision that is genuinely theirs — a security posture, a product
-  behavior, a disclosure boundary — under the global rules' **Task execution and authorization**.
+  behavior, a disclosure boundary — as **Product Choices** reserves it, asked as the global rules'
+  **Asking the user** says.
   A change to the product experience is not exempt because its consequence seems small or its
   remedy obvious, but a routine presentation or interaction detail is not such a change: it is
   decided and reported as **Product Choices** says. Routine internal changes within the settled
@@ -402,7 +402,7 @@ the issue should be ignored.
   first, as the code-conventions reference's **A better shape is proposed, never swept in** says.
 - **An owned contract stays owned across repositories.** A consumer in a sibling repository the
   user owns makes the break multi-repository work, never somebody else's decision; only a consumer
-  outside the user's control freezes a shape. **Scope Follows The Defect** holds for a break as for
+  outside the user's control freezes a shape. **Scope Follows The Defect, Not The Request** holds for a break as for
   a bug: the new shape reaches every site answering the same question, never only the one the work
   started from.
 - Do not weaken a compatibility gate to hide an intentional break. Report the exact failure and the

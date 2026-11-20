@@ -28,7 +28,7 @@ checks before delivery; retain evidence that the change has not invalidated.
   substitute; where the two disagree, the workflow is right. A job that needs a hosted service or a
   running stack, or is too slow to run before every push, joins the slow verification below and is
   named in the report. Room on this machine never leaves a job to its hosted run: a shortage of
-  disk, memory or ports is recovered as the global rules' local-stack bullet says, and the job runs
+  disk, memory or ports is recovered as `pre-production`'s **Local Stacks** says, and the job runs
   here. Only a hosted service or credentials the session lacks, each established as the
   verification reference's cannot-run bullet says, or runner-specific behavior does.
   A non-essential check left red on findings the change did not write, as `pre-production`'s
@@ -63,7 +63,7 @@ bug or a passing formatter does not satisfy this spacing check.
   still in review in another repository, an unreleased package version, a sibling pull request not
   yet merged, CI expected to stay red until one of those lands: the branch consumes the
   dependency's pull-request branch, or its default branch once merged — in the manifest, the
-  lockfile and any workflow checkout, as the global rules' version-reference bullet allows while
+  lockfile and any workflow checkout, as `pre-production`'s **Versions** allows while
   developing — or builds on a same-repository sibling's branch as the GitHub rule's branch bullets
   set out, and pushes. Every build, test and walkthrough runs against that checked-in reference,
   never a local copy the manifest does not name. A consumer that cannot build until its dependency
@@ -81,7 +81,7 @@ bug or a passing formatter does not satisfy this spacing check.
   worker fix every defect it meets, in the product or the repository's tooling, and report as left
   alone only cleanup past `pre-production`'s size budget and any item
   `pre-production`'s scope bullets leave to the user. The delegating agent reads that head under
-  the global rules’ **Reported Outcomes** before any dependent work starts. The worker
+  [reported outcomes](outcomes.md) before any dependent work starts. The worker
   ends with nothing uncommitted and nothing unpushed beyond the one exception above,
   never amends or rebases a pushed commit, and
   its report names the branch and head.

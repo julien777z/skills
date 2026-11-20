@@ -49,7 +49,7 @@ writing, keeping or removing, and how suites are laid out, configured and budget
 
 ## Suites And Failures
 
-- Before selecting a test invocation, apply the global rules' **Tools and environments** verification
+- Before selecting a test invocation, apply `pre-production`'s **Verification And Experiments**
   boundary to the repository's actual runner, target declarations and setup/cleanup lifecycle.
   Run through its test-runner skill at the required scope, preserving the runner's execution
   partitions rather than joining paths in one framework invocation. A single suite is for iterating
@@ -59,7 +59,7 @@ writing, keeping or removing, and how suites are laid out, configured and budget
   name it and say why alongside the result, because a result reported without that caveat claims
   coverage that was never achieved.
   - A suite cannot run only when this session found why itself: its own runner refused with a
-    concrete cause after the recovery the global rules' local-stack bullet gives, or a credential or
+    concrete cause after the recovery `pre-production`'s **Local Stacks** gives, or a credential or
     hosted service it requires is absent from where the repository configures it (its settings,
     secrets or environment).
   - When a reviewer, worker or plan says a suite needs credentials, a service or access, check that
@@ -76,8 +76,8 @@ writing, keeping or removing, and how suites are laid out, configured and budget
 - For every pull request an agent creates, ensure all test-related CI jobs pass before considering
   delivery complete; investigate and fix any failures within the pull request's scope.
 - When CI tests fail, read the job logs by whichever route reaches them, such as the hosting
-  service's API, CLI or connector. Ask the user for the failure output only once the global rules'
-  reach check finds no route.
+  service's API, CLI or connector. Ask the user for the failure output only once the reach check in
+  [authorization](authorization.md)'s **Steps Only The User Can Take** finds no route.
 
 ## Environments
 

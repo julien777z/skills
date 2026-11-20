@@ -113,7 +113,7 @@ setup, parametrization, and assertion conventions, but never import from a sibli
 genuinely shared support to the nearest common test owner instead.
 
 Trace each reused fixture, sample, or helper import to its defining module before treating it as
-canonical. Apply the global **Code layout** boundary between executable consumers and reusable
+canonical. Apply `pre-production`'s **Code Layout** boundary between executable consumers and reusable
 owners: test-only setup belongs in established test support, while behavior used by applications
 and commands belongs in its existing reusable source owner. Move the definition and update all
 consumers rather than re-exporting it through a command or copying it into test support. Inspect
@@ -273,7 +273,7 @@ subsystem for that subsystem.
 Keep one test class per file, but create a class only for a substantial coherent responsibility. Before creating a class or file, inspect the existing class that owns the source behavior and its parameter sets; extend them for small related cases. A helper, operation, boundary case, or pair of tests does not by itself earn a class. When several small classes cover one owner, merge their related cases into the broader owning class and its file, preserving independent coverage; split a substantial suite only where independently maintained responsibilities justify separate classes.
 
 Before adding or relocating model-factory machinery, discover and extend the established shared
-factory owner the repository's test-utilities package holds. Apply the global rules' **A new file is the last resort** bullet to all related
+factory owner the repository's test-utilities package holds. Apply `pre-production`'s **A new file is the last resort** bullet to all related
 implementations and consumers; a package that accepts a new factory is not necessarily its owner.
 Complete any ownership move rather than leaving existing factories in a competing location. Keep
 lifecycle helpers with their own responsibilities and inject application model types when needed

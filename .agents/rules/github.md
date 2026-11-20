@@ -38,7 +38,7 @@ alwaysApply: true
 - Keep `run` steps declarative. Invoke checked-in scripts for control flow, validation, filesystem changes, or other implementation logic instead of embedding arbitrary shell or program code in workflow YAML; place those scripts under `.github/scripts/` and prefer Python.
 - Do not hard-code runtime versions when a shared action, reusable workflow, or repository version file supplies them; omit `python-version` when shared Python automation provides it, and use `node-version-file: ".nvmrc"` for Node.js workflows.
 - **A required workflow or action input is declared `required: true` with no `default`**, and no
-  step is skipped when it is empty; the global rules' **Configuration** section says which inputs
+  step is skipped when it is empty; `pre-production`'s **Configuration** says which inputs
   are required. An action's checked-in script also fails, naming the input, when the value is
   empty, since GitHub does not enforce `required` on an action's inputs.
 - Name repository-owned Boolean action and workflow inputs `use-<capability>`, so the name states
@@ -100,8 +100,8 @@ alwaysApply: true
   coordination and combined status in user chat and private task evidence.
 - Before publishing or updating those artifacts, check the final text against the target
   repository's diff and evidence. Remove foreign references, including from dependency and delivery
-  notes, and replace every example value the user supplied with an invented one, as the global
-  rules' **Repository guidance** says. Describe a consumed interface or unresolved delivery
+  notes, and replace every example value the user supplied with an invented one, as
+  `pre-production`'s **Examples And Paths** says. Describe a consumed interface or unresolved delivery
   requirement in terms of this repository's own contract; disclose provider PR links and merge
   ordering to the user in chat.
   `merge-gate` still owns the complete dependency inventory and merge gate.
@@ -114,7 +114,7 @@ alwaysApply: true
   difference in that text at once, under the authorization the original post had; a commit message
   is read back before its push and amended only while unpushed. The current text is what readers
   act on: earlier revisions in the edit history are left alone and never raised with the user,
-  unless one holds a credential the global rules' **Logging** section counts as exposed.
+  unless one holds a credential `pre-production`'s **Logging** counts as exposed.
 - **Put follow-up source work on the session's in-progress source pull request for that repository.**
   Before proposing a branch, assigning a worker, or starting edits, resolve the session's source
   pull request from its creation or authorized continuation receipt and verify that it is open.
@@ -203,7 +203,7 @@ alwaysApply: true
   closes the pull request this session opened.
 - Before reporting a pull request whose merge no instruction authorizes, classify the complete
   actual diff against the standing permissions below; one they cover may merge under them, and any
-  other is reported without asking for its merge, as the global rules' merge-authorization bullet
+  other is reported without asking for its merge, as the global rules' **Authorization**
   says. A filename, extension, line count or change label is not a behavioral classification.
   Preserve genuine edits; never remove them merely to qualify for an exception.
 - A pull request limited to minor type, lint, import, formatting or text corrections may merge

@@ -63,7 +63,7 @@ Good:
 
 If anything is left open, name ONE thing the reader can do in under two minutes. Even "open the file" counts. This picks a next action; it never removes other unanswered questions from the decision list. The action is work the reader does, such as reviewing a pull request at its link, never a request that they authorize a merge, deployment, publication or release, which the global rules reserve to their own words, and never an answer to a decision, which rule 4 puts to the question tool.
 
-**This closing line is the reader's action, never the agent's.** Authorized work the agent has not finished is done in this turn, never named as next, as the global rules' pending-result bullet in **Tools and environments** says. "Next: nothing needed from you. I'm moving on to the release notes." ends a turn on work never started: start the release notes instead.
+**This closing line is the reader's action, never the agent's.** Authorized work the agent has not finished is done in this turn, never named as next. "Next: nothing needed from you. I'm moving on to the release notes." ends a turn on work never started: start the release notes instead.
 
 Bad: "Hope that helps. Let me know if you want to dig deeper."
 Good: "Next: run `npm test` and paste the first failing line."
@@ -101,7 +101,7 @@ numbered list: each item starts with a **bold subject**. An evidence-pending ite
 work; a ready item identifies the question-tool request already sent for it, in the turn its
 supporting material was ready, and the work depending on it. An item with neither a sent request
 nor pending evidence work is asked now.
-Keep the question and its choices in that request under the global question-tool procedure, with
+Keep the question and its choices in that request under the global rules' **Asking the user** procedure, with
 any captures, table, plan or other material it needs shown before it as `share-media` says for
 the harness, rather than soliciting an answer in chat, whether by a list item phrased as a
 question, a report's closing line, a recommendation ending "should I?", or a section of a skill's
@@ -113,8 +113,8 @@ preserve the result’s own shape. This supplement never changes machine-consume
 
 **An action the reader owns is not an unresolved decision**, and never joins that list: renewing
 a certificate, approving a sign-in on their phone, a manual step outside the session. When the
-work waits on it, ask for it through the question tool, as the global rules' user-action
-bullet says, with what it unblocks; otherwise name it once, when it arises, with what it unblocks.
+work waits on it, ask for it through the question tool once everything the agent can prepare is ready, with
+what it unblocks; otherwise name it once, when it arises, with what it unblocks.
 Raise it again only when it now blocks the next step
 or the reader asks what they owe; once they say they will do it later, it is settled and stays out
 of every later message. When the reader has said they will review later, a report omits its `Next:`
@@ -123,11 +123,12 @@ it with `session-ledger` (an active-work entry owned by the reader, with the def
 observation) so the settled state survives compaction and handoff.
 
 Restating an existing decision is not a duplicate approval request. Follow the global rules'
-**Task execution and authorization** question-tool procedure for surfacing questions and retrying
+**Asking the user** procedure for surfacing questions and retrying
 timeouts; restating a still-pending request does not open a duplicate. Do not ask for routine
 continuation or repeat the list on every background poll or unchanged status update without a new
 user message. Continue authorized work that does not need the answer;
-Keep named work active and wait for pending results under the global rules.
+Keep named work active, as the global rules' **Skills that always run** says, and wait for a
+pending result rather than reporting it as a blocker.
 
 ### 5. Restate state every turn
 

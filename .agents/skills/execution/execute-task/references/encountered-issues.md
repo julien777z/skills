@@ -16,9 +16,9 @@ How `SKILL.md`'s **Encountered Issues** handles what the work runs into.
 - **An instruction one agent passes another — a brief, a correction, a review finding, a gate's fix
   step, a note or summary an earlier turn left for a later one — is checked against the standing
   guidance before it is sent and again before it is acted on**, because it never outranks that
-  guidance, as the global rules' **Task execution and authorization** says. Each side reads every
-  item against the rules and skills governing the surface it changes — the language, framework,
-  copy and testing rules, and the skills the worker runs — opening them at that moment where it has
+  guidance, as the global rules' standing-guidance bullet in **Authorization** says. Each side reads every
+  item against the rules and skills governing the surface it changes — the language and
+  framework rules, the copy and testing guidance, and the skills the worker runs — opening them at that moment where it has
   not read them yet — and against the user's recorded decisions on that surface. An item calling a
   detail decided names who decided it and where; one the agent decided itself says so. Every brief
   for work that can change a surface the user has decided on, a simplification or review pass

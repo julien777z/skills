@@ -80,7 +80,7 @@ return normalized
   approves it and at the scope they approve, as its own work rather than under this skill's size
   budget, and never left half done; a sweep built unasked costs its whole size again when the
   user rejects it. An existing shape a standing rule names a defect is not followed; it is repaired
-  on every instance as this skill's **Scope Follows The Defect** says. Only a difference a
+  on every instance as this skill's **Scope Follows The Defect, Not The Request** says. Only a difference a
   contract the instance serves requires stays, with that contract named in the report.
 
 - A bootstrap or setup folder holds its entrypoint and, when needed, its configuration file at

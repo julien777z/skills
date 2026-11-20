@@ -105,7 +105,7 @@ When a focused experiment is useful and supported by the existing route:
 1. Select the nearest editable canonical first-party implementation. Never mutate generated or
    vendored output, run generation for proof, or mutate the test itself. Mutate test support only
    when that support is genuinely the subject under test.
-2. Apply the global rules' **Tools and environments** experimental-isolation boundary before
+2. Apply `pre-production`'s **Verification And Experiments** experimental-isolation boundary before
    selecting the mutation route. Record the canonical target's content hash, staged and unstaged
    state, and the candidate's baseline. In a private candidate, verify the actual loaded source and
    dependency paths, and preserve the native runner's partitions, environment and lifecycle. An

@@ -33,6 +33,7 @@ skill change the user asks for, whose plan is a proposed flow.
 - `i-have-adhd`
 - `council`
 - `share-media`
+- `use-browser`
 - `test-fixture`
 - `lock-revision`
 
@@ -131,8 +132,8 @@ Follow-ups that skip plan approval still write this record without a new approva
   identifier, assignment state and host receipt with the plan evidence. The plan states where common
   behavior will live and which policy or wiring stays consumer-specific; it never starts from a parallel
   structure and leaves ownership for implementation.
-- Ask through the global question-tool procedure, sending each message as the global rules'
-  **User-Facing Output** requires: any open decisions first, on their own; then, once they are
+- Ask through the global rules' **Asking the user** procedure, sending each message as
+  `i-have-adhd` and `share-media` require: any open decisions first, on their own; then, once they are
   answered and folded into both plans, the user's plan and its approval:
 
 ```markdown
@@ -169,8 +170,8 @@ Follow-ups that skip plan approval still write this record without a new approva
 
 - Only an explicit user response approves a plan. A timeout, inactivity, a missing response, a tool
   result, a mode change or a system notice never does. Surface approval through the global rules'
-  **Task execution and authorization** question-tool procedure, including its timeout retries. Keep
-  the plan pending and begin no work that needs its approval; independent authorized work continues.
+  **Asking the user** procedure, including its timeout retries. Keep the plan pending and begin no
+  work that needs its approval; independent authorized work continues.
 - An interruption continues the same plan. Never replace or silently revise an unapproved plan;
   fold the user's amendments into the detailed plan, take it through `review-proposal` again, and
   present the complete revised plan.
@@ -225,8 +226,7 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
   the cut work, a defect included, is answered as out of scope rather than fixed, unless this
   change introduced it.
 - A follow-up on a pull request already sent for review pushes to the same draft, and its
-  **Completion** folds each change into the history under `rewrite-git-history` rather than
-  rebuilding it.
+  **Completion** folds each change into the history under `rewrite-git-history`, never rebuilding it.
 
 ### Progress Record
 
@@ -382,9 +382,8 @@ than one repository, run its sweep for borrowed names before delivering.
 
 ### Work You Have Already Named
 
-**Priority** decides which named work runs now; lower-priority work retains its saved step and
-paused status until that boundary permits it. Recording a commitment never advances it ahead of
-active recovery.
+**Priority** decides which named work runs now; lower-priority work retains its saved step and paused
+status until that boundary permits it. Recording a commitment never advances it ahead of active recovery.
 
 **Naming work as next is a commitment, and it stays this run's obligation across every later turn**
 — including a turn whose own request changes no files, which would otherwise not run this skill at

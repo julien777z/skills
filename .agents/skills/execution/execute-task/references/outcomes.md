@@ -13,7 +13,7 @@ built on.
     expected: conflicted, failing, running, or passing, on the head or target named, with "done",
     "ready", a merge step or a review hand-off written only once that read says so and nothing this
     run started still changes it, the report otherwise saying it is still changing; a file sent
-    with it is checked as the global rules' **User-Facing Output** requires.
+    with it is read whole first, as `share-media`'s **What reaches the user, and when** requires.
   - A milestone report, gate classification or final response reads the authorized outcome's state
     and owning diagnostics the same way and reconciles every required step with the task record: a
     successful substep does not establish the parent outcome, and its saved next action resumes
