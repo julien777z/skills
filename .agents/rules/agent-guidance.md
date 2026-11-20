@@ -292,8 +292,7 @@ a template where correct results genuinely vary in shape.
   requirement it holds. Add a section only when no existing one covers the subject, and name it
   for the whole subject: a heading that states one rule invites the next rule on that subject
   into a heading of its own. A restriction on one subject goes under that subject's heading;
-  `## Guardrails`, always the last section when present, holds only constraints that span the
-  file's subjects.
+  `## Guardrails` holds only constraints that span the file's subjects.
 - **A section, subsection or bullet, added, moved or reordered, goes where its reader needs it,
   never beside the text it most resembles.** Read the file's existing order first. Guidance every
   reader of the file needs comes before guidance only some cases need, and each part follows the
