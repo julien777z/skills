@@ -13,6 +13,7 @@ Create a story players want to act in, not a synopsis pasted over chores. Work a
 - `subagent-matrix`
 - `council`
 - `roblox-gameplay`
+- `share-media`
 
 ## Workflow
 
@@ -26,7 +27,7 @@ Create a story players want to act in, not a synopsis pasted over chores. Work a
 
 ## Output
 
-Each subagent and the orchestrator returns valid YAML using the [output schema](references/output-schema.yaml). Populate every section; use empty lists and explicit `unknown` values rather than inventing evidence. IDs are stable within the artifact, and character relationships, beat prerequisites, story-web edges, and setup/payoff links reference existing story IDs. A proposal may leave `selection` empty; the final artifact includes selection rationale, rejected alternatives, critique findings and their dispositions, concrete changes, unresolved risks, and verification status. Return a concise player-facing premise, and send the full YAML as the User-Facing Output rule requires. Keep spoilers in the artifact rather than accidentally revealing them in player-facing copy.
+Each subagent and the orchestrator returns valid YAML using the [output schema](references/output-schema.yaml). Populate every section; use empty lists and explicit `unknown` values rather than inventing evidence. IDs are stable within the artifact, and character relationships, beat prerequisites, story-web edges, and setup/payoff links reference existing story IDs. A proposal may leave `selection` empty; the final artifact includes selection rationale, rejected alternatives, critique findings and their dispositions, concrete changes, unresolved risks, and verification status. Return a concise player-facing premise, and send the full YAML as `share-media`'s **A file the user should see reaches them where they read** bullet requires. Keep spoilers in the artifact rather than accidentally revealing them in player-facing copy.
 
 ## Guardrails
 

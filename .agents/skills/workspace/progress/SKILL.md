@@ -14,6 +14,8 @@ and deliver the same dashboard again on every request so the user keeps one page
 - `list-prs`
 - `use-dashboard`
 - `pre-production`
+- `execute-task`
+- `merge-gate`
 
 ## Workflow
 
@@ -48,7 +50,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 6. **Report and return to the caller.** Through the selected route, send the link or file and one
    line: percent complete, time remaining, and how many questions wait on the user, each the figure
    the dashboard shows. When reporting interrupts unfinished authorized work, carry out the active
-   run's saved next action under the global rules' pending-work boundary. A report without
+   run's saved next action under `execute-task`'s **Waits And Awaited Results**. A report without
    that action does not complete this step; when an awaited result holds the action, retain that
    owner's wait and resume route.
 
@@ -170,8 +172,8 @@ and deliver the same dashboard again on every request so the user keeps one page
   what deploying sets off, such as a migration running.
 - **`outline` "Once live"**: per environment, what the user can check after it deploys to know the
   change works there, such as a page to open, a job to watch or a log line to look for, each with a
-  link where one exists; the agent checks none of it, as the global rules' **A merge leaves no
-  deploy work** bullet says. In these three outlines, `tone` is `critical` when skipping the item
+  link where one exists; the agent checks none of it, as `merge-gate`'s **No Deploy
+  Work** says. In these three outlines, `tone` is `critical` when skipping the item
   breaks the next step and `warning` otherwise.
 - **`links` "Pull requests"**: each open and draft pull request, leaving out merged and closed
   ones, which need nothing more from the reader, with `group_label` "Repository". `label` its

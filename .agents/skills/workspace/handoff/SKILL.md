@@ -18,6 +18,7 @@ skill ends with.
 - `session-ledger`
 - `pre-production`
 - `lock-revision`
+- `execute-task`
 
 ## Scope
 
@@ -34,7 +35,7 @@ skill ends with.
   that needs the user is written in the hand-off comment as an instruction to the next agent to put
   that question to the user and wait, exactly as this session would have. A merge, deployment,
   publication or release the user has not authorized is written as an instruction to report it as
-  remaining for the user, never to ask for it, as the global rules' merge-authorization bullet says.
+  remaining for the user, never to ask for it, as the global rules' **Authorization** says.
 
 ## Workflow
 
@@ -67,7 +68,7 @@ skill ends with.
    the merge is clean or named in the queue with the exact merge still to do. Commit uncommitted
    changes with a message that says what state they are in, using a `wip:` prefix when they are
    incomplete. Then run the pre-push checks
-   the GitHub rule’s **Pre-Push Gate** defines, report-only: every failing check is pushed unfixed and
+   `execute-task`'s **Pre-Push Gate** defines, report-only: every failing check is pushed unfixed and
    goes first in the queue — the one push that does not wait on its checks, because unpushed work
    is lost with the session. Apply and commit any stash. Never rewrite history or force-push.
    **Commits `lock-revision`'s hold keeps local are pushed too, so ask the user first whether the

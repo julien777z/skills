@@ -78,7 +78,7 @@ source checkout, remote branches and unrelated edits throughout.
    comparison.
 8. For a source branch, regenerate lockfiles, generated contracts and provider mirrors from the
    resolved sources with the repository's tooling, never by hand. Run `git diff --check` and the
-   GitHub rule's **Pre-Push Gate** checks, push the resolved result, then re-query mergeability.
+   pre-push checks the running task's workflow sets, push the resolved result, then re-query mergeability.
    Run `acceptance-gate`'s **Base incorporation** procedure with the previous base, incorporated
    base, originating change and intent, and resolved result.
 

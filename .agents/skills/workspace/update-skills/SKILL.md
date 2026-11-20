@@ -97,8 +97,9 @@ and lock ownership throughout.
    overlay worktree, use the main checkout it is a linked worktree of. Confirm the checkout is the
    shared skills repository and its README identifies `bootstrap/install.sh`.
 2. Delete every copy a file-sync service or the operating system made in the checkout, its Git
-   directory, each `skills-overlay/` worktree and every user-level agent root, confirming and
-   deleting each as the global rules' **Tools and environments** says. A copy that rule deletes is
+   directory, each `skills-overlay/` worktree and every user-level agent root: find them by a
+   name search of each tree and its Git directories, and delete each that holds nothing its
+   original or Git lacks once no process, worktree or session uses it. A copy deleted this way is
    neither an uncommitted edit nor damaged Git state: it takes no backup, and step 4.3's snapshot
    leaves out one still waiting to be deleted. A copy with content of its own is an ordinary
    uncommitted edit. Then record the checkout's current commit, branch, working-tree

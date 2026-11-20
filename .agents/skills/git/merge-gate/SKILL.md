@@ -44,6 +44,7 @@ for an agent-configuration change, Agent Sync handling before this skill finishe
 - `merge-conflict`
 - `pre-production`
 - `update-skills`
+- `test-fixture`
 
 ## Inputs
 
@@ -122,8 +123,8 @@ whether the accepted head can merge.
    duplicate attempt, and each caller-supplied exclusion with its evidence. A completed successful
    representative supplies coverage for an equivalent duplicate that remains pending; a changed
    trigger, condition, execution input, or affected behavior does not. Every unsuccessful terminal
-   duplicate remains subject to step 8. Read each test job's suite wall time against the testing
-   rule's budget; a suite past it is an unsuccessful result for step 8 even when its job passed.
+   duplicate remains subject to step 8. Read each test job's suite wall time against the budget
+   `test-fixture`'s **Time Budgets** sets; a suite past it is an unsuccessful result for step 8 even when its job passed.
    A skipped or neutral job supplies no coverage: establish whether its native condition makes it
    inapplicable, or required validation is missing. Draft skips never supply test coverage. A job
    without a check run or status needs the same applicability decision, not an assumed pass.
@@ -168,7 +169,8 @@ whether the accepted head can merge.
    failure on the head goes into one push**: read all of them before fixing any, reproduce each
    with the job's own command where it can run locally, and push only once each reproduced failure
    passes locally, so the next hosted run is the last. Only a failure that cannot run locally —
-   a hosted service or credentials, each established as the testing rules' cannot-run bullet says,
+   a hosted service or credentials this session itself found absent from where the repository
+   configures them, never taken on a reviewer's, worker's or plan's word,
    or runner-specific behavior, never disk, memory or ports the session can free — is pushed
    without local proof. A relevant
    external-service failure is an encountered issue under `pre-production` and is fixed the same way;

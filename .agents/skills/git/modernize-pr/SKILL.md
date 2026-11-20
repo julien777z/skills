@@ -17,6 +17,7 @@ belongs in the product, and Git reporting no conflicts does not make it current.
 - `pre-production`
 - `subagent-matrix`
 - `use-dashboard`
+- `execute-task`
 
 ## Scope
 
@@ -27,7 +28,7 @@ disposition, since landing one half without the other leaves each repository wro
 The invocation authorizes reading each pull request and, for a `MODERNIZE` disposition, bringing
 its branch up to date and pushing it. That is the user's direction to continue those pull requests,
 whoever opened them. Merging, closing, changing the base branch and widening the change stay with
-the user, as the global rules and the GitHub rules say.
+the user, as the global rules' **Authorization** and the GitHub rules say.
 
 Record each pull request with `session-ledger` before reading it, as a `reference`, and as
 `touched` once this run pushes to it.
@@ -40,7 +41,8 @@ about three. A cross-repository set stays whole in one worker even past three, a
 requests each worker takes a larger batch rather than a fourth worker starting. Each worker runs **Establish The Intent**, **Check What Changed Around It** and **Choose A
 Disposition** for its share, read-only, and returns each set's **Output** fields with the evidence
 behind every answer: the command, test or file and line it read. The parent checks each answer at
-its source before it reaches the user, as the global rules' **Reported Outcomes** says, and runs
+its source before it reaches the user, since `execute-task` treats a delegated worker's report of
+an outcome as a claim, never evidence, and runs
 **Bring It Up To Date** only after that check.
 
 ## Establish The Intent
@@ -101,7 +103,7 @@ says. Another open pull request holding the same change is not the base, and one
 pull request's branch holds it only by building on it. One with any part still unsolved is `REWORK`,
 scoped to that part, and a set with any part unsolved is `REWORK` as a whole.
 
-Each choice goes to the user through the question tool, as the global rules' question-tool bullet
+Each choice goes to the user through the question tool, as the global rules' **Asking the user**
 says, after the dashboard **Output** describes:
 
 - **The `CLOSE` pull requests form one stale batch**, approved once: a single question whose
@@ -124,7 +126,7 @@ For a `MODERNIZE` disposition:
    disagreement reopens the disposition rather than being guessed through.
 3. Compare the series before and after with `git range-diff`, and read the final diff against the
    base: no intended behavior is gone, and nothing the base already has is brought back.
-4. Run the checks the GitHub rules' **Pre-Push Gate** requires for the touched area. Tell a real
+4. Run the checks `execute-task`'s **Pre-Push Gate** requires for the touched area. Tell a real
    failure from one the base already has or one the environment caused, with its evidence.
 5. Push with `--force-with-lease` pinned to the remote head recorded before the update. When the
    lease fails, fetch and judge again rather than overwrite someone's new work.

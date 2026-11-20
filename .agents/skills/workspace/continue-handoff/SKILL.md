@@ -54,7 +54,7 @@ For each pull request, in the order given:
 ## Continuing
 
 1. **Reassess the open questions before putting them to the user**: validate their factual premises
-   under Setting Up and apply the global question boundary. Preserve the user's prior answers;
+   under Setting Up and apply the global rules' standing-guidance bullet on whether a question is the user's. Preserve the user's prior answers;
    resolve questions current evidence or governing guidance already answers. Put only the remaining
    genuine decisions to the user, with current options, recommendation and supporting evidence.
    Work that depends on an answer waits; everything else proceeds.

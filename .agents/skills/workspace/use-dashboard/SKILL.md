@@ -272,8 +272,8 @@ data exists, or a change to the app — runs on one made-up scenario, never on r
 
 ## Render
 
-1. Write the spec and the page to the task's working-files folder, as the global rules' **Tools and
-   environments** section places it. A dashboard of a subject that outlives the session keeps its
+1. Write the spec and the page to the task's working-files folder, `.agent_sources/` at the
+   root of the task's worktree. A dashboard of a subject that outlives the session keeps its
    spec, its page and anything a later render reuses in a folder of its own under the user's state
    directory (`$XDG_STATE_HOME`, by default `~/.local/state`) instead. Copy the page to the host's
    scratch directory only when the delivery route reads from there alone.

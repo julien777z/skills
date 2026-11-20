@@ -618,8 +618,8 @@ before input, and bound key holds. Check existing guest Accessibility and Screen
 use normal guest permission/login UI when required, never disable authentication or edit privacy
 databases. SSH access alone does not establish UI permission or an unlocked guest.
 
-Every setting and permission change in the VM is the agent's own step under the global rules'
-user-action bullet, since the agent controls the whole VM. Input posted inside the VM leaves the host's cursor alone and
+Every setting and permission change in the VM is the agent's own step, never a request
+to the user, since the agent controls the whole VM. Input posted inside the VM leaves the host's cursor alone and
 is the route for the VM's UI work; a host viewer click moves the user's cursor and serves only where
 posted input cannot reach. Read the VM's Accessibility list first: a Cirrus Labs image already
 grants `osascript`, `sshd-keygen-wrapper` and `tart-guest-agent`, so `osascript -l JavaScript`

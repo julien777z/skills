@@ -36,6 +36,7 @@ specific set.
 - `review-pass`
 - `merge-gate`
 - `session-ledger`
+- `execute-task`
 
 ## Targets
 
@@ -114,7 +115,7 @@ Follow the active task's recorded priorities when choosing the next eligible uni
    - every exclusion it returned, with its evidence;
    - the fix rule for every fix `merge-gate` makes — a check fix, a conflict resolution, a commit
      someone else pushed: `review-pass` runs again over that fix's delta, and the fix is pushed through
-     the GitHub rule’s **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
+     `execute-task`'s **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
      passed.
 3. After a verified merge, run **Local Checkout**. Record the merge and checkout outcome, or the
    gate that holds the merge, with `session-ledger`, and continue to the next unit.

@@ -86,8 +86,8 @@ user as speech.
 
 ## Previews for a choice
 
-Which choices carry rendered options, and how each is rendered, is the global rules' bullet on
-choices between substantially different versions of a page. Options that differ in how a game or a
+A choice between substantially different versions of a page, whose options differ in layout,
+structure or the controls the reader uses, carries every option rendered. Options that differ in how a game or a
 generated image looks carry every option rendered too, at the devices or widths where they differ,
 as page versions do. This is how those previews are sent.
 

@@ -22,6 +22,7 @@ is two invocations, and the user asks for both.
 - `subagent-matrix`
 - `session-ledger`
 - `defer-scope`
+- `execute-task`
 
 ## The decision
 
@@ -68,7 +69,7 @@ The worktree leaves the current branch's working tree untouched.
    and host receipt with the scope's evidence in the task ledger through `session-ledger`, as
    `subagent-matrix`'s **Dispatch** requires. This keeps the
    parent session's own state and working directory where they were. Give the worker the scope, the worktree
-   path, and the commit and push cadence the GitHub rule’s **Pre-Push Gate** sets for delegated edits.
+   path, and the commit and push cadence `execute-task`'s **Pre-Push Gate** sets for delegated edits.
 
 3. **Validate inside the worktree** with the repository's own checks for what changed.
 
