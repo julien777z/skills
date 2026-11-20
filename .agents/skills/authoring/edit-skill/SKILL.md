@@ -178,8 +178,8 @@ user's review of the source pull request overlaps it.
   its own pull request, dropping one, accepting a residual miss — are the agent's, a contested one
   going to `council` in **Ask** mode. No question, report, pending-decision list or note puts such a
   choice to the user or describes a pending batch as waiting on them; one that does is corrected,
-  never carried forward; a policy change **Behavior** step 2 sends to the user and a user-review
-  hold stay theirs.
+  never carried forward; a policy change **Behavior** step 2 sends to the user, dropping it
+  included, and a user-review hold stay theirs.
 - At a checkpoint and before reporting its state, record the complete pull-request head and file
   list, the target repository's lifecycle, its current state, and its next transition. A draft
   confined to canonical agent configuration records `agent-configuration exception`
