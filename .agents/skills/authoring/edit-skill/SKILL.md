@@ -10,20 +10,17 @@ Upsert `.agents` source-of-truth files for agents, skills, or rules based on use
 every edit through the same delivery whether the user invoked this skill or the edit arose while
 doing other work. An edit that skipped this is unverified, and the report says so.
 
-**Only a new process waits for its run.** A correction that encodes a process the work has not yet
-carried out waits until it has worked, as the next paragraph says. Every other correction — a gap a
-guidance failure exposed, a rule the user states — depends on nothing the current work does: record
-it and write its edit at once under **Recording During A Task**, which sets when it is delivered,
-while the current work is corrected beside it. A problem the current work meets while it is being
-corrected is that work's own issue, never a reason to hold or drop a correction that does not depend
-on it.
-
-**A process is encoded only once it has worked.** A request to put a new process into guidance — a
-workflow, a procedure, a tool or route, a way of building or delivering something — is first carried
-out on the work in hand and verified to work; the guidance is then written from that run: the steps
-and commands it used, what had to differ from the source that described the process, and what
-failed along the way. Documentation, a plan, a worker's proposal or the request's own description
-of the process is the source to try, never the text to encode.
+**A process is encoded only once it has worked, and only a new process waits.** A request to put a
+new process into guidance — a workflow, a procedure, a tool or route, a way of building or
+delivering something — is first carried out on the work in hand and verified to work; the guidance
+is then written from that run: the steps and commands it used, what had to differ from the source
+that described the process, and what failed along the way. Documentation, a plan, a worker's
+proposal or the request's own description of the process is the source to try, never the text to
+encode. Every other correction — a gap a guidance failure exposed, a rule the user states — depends
+on nothing the current work does: record it and write its edit at once under **Recording During A
+Task**, which sets when it is delivered, while the current work is corrected beside it. A problem
+the current work meets while it is being corrected is that work's own issue, never a reason to hold
+or drop a correction that does not depend on it.
 
 An open `.agents` pull request is not a delivery result. Processing continues through its source
 check, required review steps, merge or hold, Agent Sync result, and verification of generated root
