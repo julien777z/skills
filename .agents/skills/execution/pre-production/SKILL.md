@@ -58,10 +58,12 @@ Build the clean target contract instead of preserving transitional behavior.
   a request, apart from that rejection.
 - **Only essential checks have to pass: the test suites, and only for what the change answers for.**
   A non-essential check, such as lint, formatting or other static analysis, that fails on findings
-  in code the change did not write is expected to stay red. That holds whether the findings predate
-  the change or the change brought them to light, such as a new lint rule meeting existing code or a
+  in code the change did not write may stay red. That holds whether the findings predate the change
+  or the change brought them to light, such as a new lint rule meeting existing code or a
   changed-file lint run meeting older code in a file the change touched. Fix the findings in lines
-  the change writes and leave the rest for later work on that code. Never sweep the rest to turn the
+  the change writes. Every other finding is incidental cleanup under the size budget below: fixed
+  while it fits the budget in force, such as a line past the length limit in a file the change
+  edits, and left for later work on that code past it. Never fix past that budget to turn the
   check green, never loosen, disable, rescope or ignore the check, and never report the red check to
   the user or ask about it, apart from a merge branch protection rejects for it, reported as the
   bullet above says. A finding that shows a defect, such as deprecated usage or a vulnerability,
@@ -180,8 +182,9 @@ with an obsolete owned contract or revision.
   change that edits either one, keeping every criterion either copy carries. Cleanup in another
   skill keeps the budget in force.
   - **The default budget:** cleanup that fixes no defect — duplication, dead code, a misplaced
-    helper, an abstraction with one implementation, layout — fits only inside the files the change
-    already edits and while it stays small beside the requested part.
+    helper, an abstraction with one implementation, layout, an older finding a non-essential check
+    reports — fits only inside the files the change already edits and while it stays small beside
+    the requested part.
   - **The widened budget**, which holds instead while a decision the user scoped to the whole
     session widens it, until they withdraw it: such cleanup fits when its fix touches about five
     files or fewer, needs no design decision from the user, does not change what the product does
