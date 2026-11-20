@@ -1,31 +1,38 @@
----
-description: Apply when writing, creating, placing, or validating anything under `.agents` — skills, rules, agent definitions, hooks, settings, references, and project guidance — and the harnesses it serves.
-alwaysApply: false
-paths:
-- '.agents/**'
-- '**/SKILL.md'
----
+# Authoring Agent Guidance
 
-# Agent Guidance Rules
+This reference of `edit-skill` holds how anything under `.agents` is written, placed, served to
+harnesses and validated. The skill's workflow names the section each step applies.
 
 ## Where Guidance Lives
 
-- **Guidance about anything under `.agents` lives in this rule**, however widely it holds: how a
-  skill, rule, agent definition, hook, setting, reference or project guidance is written, where it
+- **Guidance about anything under `.agents` lives in this reference**, however widely it holds: how
+  a skill, rule, agent definition, hook, setting, reference or project guidance is written, where it
   goes, which harnesses it serves, how its generated mirrors are produced, and how a change to it is
-  validated. Any other rule or `.agents/global.md` keeps only what its own subject needs and points
-  here for the rest.
+  validated. A rule, another skill or `.agents/global.md` keeps only what its own subject needs and
+  names this skill for the rest.
 - **Guidance lives in skills and rules, never in a harness's memory.** A correction, preference,
   limit, exception or operating fact that tells agents how to work — such as a cap on workers, a
   repository that gets only minimal changes, or a machine whose processes may be ended — goes
-  through `edit-skill` into the skill, rule, project guidance or reference that owns it, so every
+  through this skill into the skill, rule, project guidance or reference that owns it, so every
   harness and session reads the same copy. A harness's memory, such as an auto-memory file, holds
   none of it. A memory found holding guidance is moved to its owner and deleted.
-- `.agents/global.md` states guidance that holds in every repository and that no rule's subject
-  covers, and every `.agents/rules/*.md` file guidance that holds in any repository using its
-  technology. Keep their examples generic —
-  invented names and placeholder shapes, never this repository's modules, helpers, packages, paths,
-  or domain vocabulary, and never the product, tool, or platform whose incident prompted the change.
+- **A requirement goes in the skill that runs when it applies; a rule or `.agents/global.md` takes
+  only what no skill can carry.** Before adding to `.agents/global.md` or a rule, name the skill
+  that runs when the requirement applies.
+  - A requirement about how a kind of work is done goes in the skill that runs when that work is
+    done: executing a task in the skill that runs execution, merging in the skill that merges, test
+    writing in the skill that runs for tests.
+  - A rule file, `.agents/rules/*.md`, exists only for a subject no skill runs for: a language,
+    framework or tool matched by file pattern, or a host such as GitHub whose rules span many
+    skills. A requirement goes in one only when no skill runs where it applies, and it holds in any
+    repository using that technology or host.
+  - `.agents/global.md` holds only what must bind before any skill has loaded: which skills to
+    start, who can authorize a merge, a deployment or a skill run, that only the user's words are
+    approval, and how questions reach the user. A requirement goes there only when it must bind
+    with no skill loaded.
+  - Examples in `.agents/global.md` and a rule stay generic: invented names and
+    placeholder shapes, never this repository's modules, helpers, packages, paths, or domain
+    vocabulary, and never the product, tool, or platform whose incident prompted the change.
 - `.agents/project.md` is the home for repository-specific guidance: the rules and conventions an
   agent follows there, such as which base classes and helpers to use and its generated sections.
 - **Guidance never keeps a copy of how a repository's tooling behaves today.** Commands, flags,
@@ -37,10 +44,10 @@ paths:
   today; a repository keeps no `.agents/references/` folder.
 - A rule that cannot be stated without naming something this repository owns belongs in
   `.agents/project.md`. Move it there rather than rewording it into something generic but untrue.
-- **A new rule file is only ever a guidance correction**, written through `edit-skill` for guidance
-  a rule's subject owns, as the bullets above place it. A system an agent built, such as a booking
+- **A new rule file is only ever a guidance correction**, written through this skill for a subject
+  no skill runs for, as the placement bullet above says. A system an agent built, such as a booking
   service's flows, is documented in its code and README, never in guidance; repository guidance
-  that says to add a rule per system is itself corrected under `edit-skill`.
+  that says to add a rule per system is itself corrected through this skill.
 - **Shared or repository-owned.** Generic skills live in one shared skills repository and reach
   every session through a user-level skill root; repository-specific skills, every rule, and
   repository-specific agents live in the repository they describe. Inspect a skill's content and
@@ -71,9 +78,9 @@ paths:
   task — and ask whether the guidance would still be true where that condition does not hold. If
   it would, that file is too narrow, however close its neighboring section: the guidance goes to
   the file whose subject matches its own. Scope is judged by subject, never reach: guidance that
-  holds in every repository still goes to the rule owning its subject, as the first bullet places
-  guidance about `.agents` content, and `.agents/global.md` takes only what no rule's subject
-  covers. Neither
+  holds in every repository still goes to the skill or rule owning its subject, as the first bullet
+  places guidance about `.agents` content, and `.agents/global.md` takes only what the placement
+  bullet above leaves it. Neither
   running on every task nor already holding a related rule, such as one on required fields when
   the guidance is about required settings, makes a narrower file the owner.
 - Paths inside a repository's `.agents`:
@@ -115,11 +122,13 @@ paths:
 - **Every rule file carries a frontmatter `description`**: one sentence that says when to read it,
   in the words a task arrives in. A rule listed without one shows its file name alone, which tells a
   reader of the rule index nothing about work its file patterns cannot identify.
-- **Rules that load for the same files are read as one document.** Before adding or changing a
-  ruling or an example in a scoped rule, read what `.agents/global.md` and every rule sharing one of
-  its `paths` patterns say on the same point. A ruling that differs names the rule it narrows and
-  the case it covers, and an example obeys every one of those rules, since a reader copies an
-  example before it reads the rule elsewhere that forbids it.
+- **Files that load together are read as one document.** Before adding or changing a ruling or an
+  example, read what every file that loads alongside the edited one says on the same point:
+  `.agents/global.md` always, every rule sharing one of a scoped rule's `paths` patterns, and for a
+  skill its own references, its declared dependencies and the rules matching the files it works on.
+  A ruling that differs names the file it narrows and the case it covers, and an example obeys
+  every one of those files, since a reader copies an example before it reads the text elsewhere
+  that forbids it.
 - Before adding a requirement to a shared rule, test it against a repository, skill or file without the feature that prompted it; a requirement true only for the skill that prompted it goes in that skill. If it prescribes the current repository's documentation sections, inventory, or generation workflow, put it in `.agents/project.md`; keep the shared rule limited to guidance that still makes sense elsewhere.
 
 ## Skills
@@ -217,7 +226,7 @@ restriction. Gate a single user-only workflow inside an otherwise usable skill i
   flags, copied policy, a call hidden in a reference, or a name dropped while the policy read stays.
   A `/name` command the skill tells the user they can run is not a reference: the user runs it, the
   skill does not, so it is no dependency and no cycle. The command form is for that alone.
-  `edit-skill`'s source check refuses a dependency cycle and an undeclared skill it finds named in a
+  This skill's source check refuses a dependency cycle and an undeclared skill it finds named in a
   package's Markdown, skipping the packages `external_resources.json` refreshes from upstream. It
   matches name forms only, so a description, a `/name` command and a declared edge back toward a
   caller pass it, and passing it never meets this bullet.
@@ -345,11 +354,11 @@ a template where correct results genuinely vary in shape.
   only as one instance. A rule written for the symptom is silent on the next one, and the
   next one is what it will be read for. A named field, file, section, document kind, tool,
   or step, including the place a request says to put the fix, is an example of its class and
-  a candidate home under `edit-skill`'s owner search, never the limit of the rule, unless the
+  a candidate home under this skill's owner search, never the limit of the rule, unless the
   contract requires its exact identity. Broaden to the class the user plainly meant, never to a
   neighboring subject. Wording handed over — rule text in the request or in a delegating agent's
   brief — remains input, not the spec: draft against the invariant and alternate routes
-  `edit-skill`'s failure-class diagnosis classified, then apply that decision to every instruction
+  this skill's failure-class diagnosis classified, then apply that decision to every instruction
   in the file that does the same work.
   One section rewritten while a neighbor still does the narrow thing is the draft only half
   done, and it is rewritten until the neighbor changes too. An agent delegating an edit
