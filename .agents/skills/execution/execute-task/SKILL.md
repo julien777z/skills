@@ -79,18 +79,18 @@ without a new approval step; only an edit that adds nothing skips it.
   added work and state the next action; do not turn its implementation outline into another
   approval question. Ask only about a concrete unresolved choice and continue independent work.
   Completing that choice does not require approval of a separate plan. Canonical guidance changes
-  under `.agents`, apart from the skill changes the next bullet plans, do not wait for a plan or an output-format approval: their request or an encountered guidance gap starts
+  under `.agents`, apart from the substantial skill change the next bullet holds, do not wait for a plan or an output-format approval: their request or an encountered guidance gap starts
   the guidance-correction workflow, and the gate set the GitHub rule's **Merge Authorization**
   states verifies it, on the timing `edit-skill`'s **Recording During A Task** sets for an active task,
   whether the user asked for the correction directly or the run noticed it.
-- **A skill change the user asks for gets a plan when a source change of its size would, and that
-  plan is a proposed flow.** A trivial skill change, or a small, clearly specified follow-up, is
-  delivered as the bullet above says. Any other change to how skills run goes on the draft guidance
-  pull request and is shown to the user as
-  `guidance-flow`'s proposed-flow comparison of that branch against the default branch, in place of a
-  written plan, so they see what the change does to how the skills run. Until the user approves it
-  in their own words, that pull request gets no `test-skill` round, no merge and no auto-merge;
-  each edit they ask for lands on the same branch and the comparison is rendered again in place.
+- **A guidance change whose flow is affected is shown as a proposed flow.** Whenever a change's
+  statement of scope records `flow affected`, as `edit-skill`'s **Scope Statement** defines it,
+  whatever kind of guidance change it is, build `guidance-flow`'s proposed-flow comparison of its
+  pushed branch against the default branch and show it to the user; delivery proceeds unless that
+  statement lists something waiting for them. **A substantial skill change the user asks for is
+  held on it**, in place of a written plan, where a source change of its size would get one: until
+  the user approves it in their own words, that pull request gets no `test-skill` round, no merge
+  and no auto-merge; each edit they ask for lands on that branch and it is rendered again in place.
 - Work the approved plan already covers takes no new plan: an encountered issue, a gate's or a
   review's flag, a failing check, or a guidance correction discovered during the run. `edit-skill`
   records verified guidance corrections and `process-ledger` processes them at **Completion**.
@@ -439,8 +439,8 @@ Two streams run side by side from here: the guidance stream and the source strea
 its accepted head and before any of them merges; a pull request outside that set waits on none.
 
 - **Guidance stream.** Invoke `process-ledger` for the task's private ledger. It sends the
-  `guidance_correction` batch it freezes to `edit-skill`'s **Guidance Delivery** route, delegated
-  so its review and checks never wait on the source stream. Before a source pull request's source-stream step 1,
+  `guidance_correction` batch it freezes to `edit-skill`'s **Guidance Delivery** route, which the
+  primary agent coordinates so its review and checks never wait on the source stream. Before a source pull request's source-stream step 1,
   every pending `guidance_correction` entry the GitHub rule's **Branches and Pull Requests** puts
   on it, in the batch in flight or the one after it, is pushed to it and passes its source check,
   as **Guidance Delivery** step 1 says, so its review pass, history and ready message cover them. An entry recorded after the batch in flight merged is delivered in the batch frozen

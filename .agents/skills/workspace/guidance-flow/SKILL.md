@@ -291,11 +291,21 @@ question: what would change in how the skills run and which rules they read. It 
    listed as changed, with the new files. Map every page whose flow reaches one of those skills,
    through an invocation, a launch or a borrowed rubric, or cites one of those rules, on either
    side, so a caller whose totals the change moves is mapped too; on the current side, read only
-   those pages. A changed rule that loads always maps only the pages whose skills cite it.
+   those pages. **A neighbor that only inherits is mapped as well**: every skill that reads a
+   changed rule or cites a changed section of a skill appears on its page with what changes for
+   it, found from the citations **Workflow** step 2 records and from the readers a scope statement
+   the invocation supplies for the change lists. A changed rule that loads always or by file
+   pattern maps to the pages whose steps its changed sections govern — the steps that make the
+   decision a section changed, found by that decision's subject — whether or not a skill there
+   cites it, and never to every page because it loads everywhere.
    Split the reading by side between at most two read-only readers, one current and one proposed.
 2. **Compare the maps.** For each skill on a mapped page, record what was added, removed or changed:
-   a skill, a step, a launch, a loop, an invocation or a borrow, a count, a scope or a cap. A change
-   of wording that changes none of these is no change. For each changed rule, record the sections
+   a skill, a step, a launch, a loop, an invocation or a borrow, a count, a scope or a cap, or a
+   decision: what an agent decides or does at a step, though no launch, loop or count moves, such
+   as who decides, whether it acts or asks, keeps or removes, stops or continues, or what a rule
+   the step reads requires of it. A change of wording that changes none of these is no change. An
+   inheriting skill's record names the step that reads the changed text and what that step
+   decides on each side, or that nothing changes for it. For each changed rule, record the sections
    added, removed, changed or moved, and the skill or rule each moved to; a section whose
    requirements all arrive elsewhere is a move, never a removal beside an addition.
 3. **Build the spec** as **Workflow** step 5 does, with these differences:
@@ -305,9 +315,11 @@ question: what would change in how the skills run and which rules they read. It 
      side removed. Each added, removed or changed
      skill's reference opens `details` instead of a link: a `changes` section titled with the skill's
      name, described by what changed in one sentence, one item per change step 2 recorded for it —
-     each step, launch, loop, invocation, borrow, count, scope or cap — its `current` what the
-     current side does and its `proposed` what the proposed side does instead, and `links` to the
-     skill's `SKILL.md` on each side that has it. An unchanged skill's reference stays a link. Each
+     each step, launch, loop, invocation, borrow, count, scope, cap or decision — its `current`
+     what the current side does and its `proposed` what the proposed side does instead, and `links` to the
+     skill's `SKILL.md` on each side that has it. A skill that only inherits a change opens the
+     same `details`, with one item per inherited decision, and one that reads the changed text with
+     nothing changing for it stays a link, as an unchanged skill's reference does. Each
      added, removed or changed rule's reference opens `details` the same way: a `changes` section
      titled with the rule's name as words, one item per section step 2 recorded for it, its
      `current` what the current side holds and its `proposed` where the proposed side puts it, and
@@ -322,8 +334,9 @@ question: what would change in how the skills run and which rules they read. It 
      Subagents per run (current → proposed), Loops (current → proposed) and Change (a few words),
      each row's `details` an outline of that page's changes, changed rules included; one `changes`
      section `Skills and rules`, `counted`, one item per added, removed or changed skill, with
-     `group` "Skills", and per added, removed or changed rule, with `group` "Rules", each with what
-     changed in one sentence, a removed or split rule naming where its text went; and `notes`
+     `group` "Skills", per skill that only inherits a changed decision, with `group` "Inherits",
+     and per added, removed or changed rule, with `group` "Rules", each with what changed in one
+     sentence, a removed or split rule naming where its text went; and `notes`
      naming in one line the pages with no change, which the `Changed` page leaves out.
    - `Usage`: a `table` `Subagents per run`, one row per skill a person starts that changed, with
      the columns Skill, Current, Proposed and What changed, most subagents saved first; a `changes`

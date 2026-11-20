@@ -16,7 +16,8 @@ Read at **Behavior** step 2.
   review evidence it used, what next action those required, and how its chosen action differed.
   Repair that decision step at its owner rather than restating the substantive rule or ending
   with a noncompliance report. Remove conflicting permissions and test other routes in the same
-  failure class, then replay the original decision under the repair before closing the issue.
+  failure class, and none outside it, then replay the original decision under the repair before
+  closing the issue.
   Record missing historical evidence without inventing a cause; it does not prevent repairing
   the observed decision path. When the owning skill was not invoked, harden its frontmatter
   description first; body text cannot control a run that never loads the skill.
@@ -27,6 +28,49 @@ Read at **Behavior** step 2.
   authorized repair. Do not mechanically apply a requested wording change or add a general
   reminder beside a stop rule it cannot override. The original scenario must demonstrate that
   the causal correction changes the reader's next action.
+
+## Scope Statement
+
+Read at **Behavior** step 2. The statement is written before the edit, in the shape `SKILL.md`'s
+**Output** gives, and revised when the written text turns out to change more or less than it says.
+
+- **Each line says one thing the user can check against what they meant.**
+  - *You said* quotes the user's words, each example value named by its kind in brackets as
+    `pre-production`'s **Examples And Paths** says; for a gap the agent noticed itself the line
+    reads `Noticed:` and states the gap.
+  - *From now on* names the situation, what agents do there and what they did before.
+  - *Also changes, same class* lists every other situation of that class the edit changes, by the
+    skill or rule that governs it.
+  - *Stays as it is* names the nearest case outside the class, the one a broader reading of the
+    user's words would have changed, and what agents still do there.
+  - *Inherited without an edit* lists each skill, rule and flow that reads the changed text and is
+    not itself edited, with what changes for it or `no change`.
+  - *Beyond what you said, waiting for you* lists each change the edit does not make until the
+    user answers.
+- **Narrow probe.** Test the draft against the original decision path as **Causal Diagnosis**
+  says: could a reader follow the text and still repeat the miss? Then test one further case of
+  the same class that the request never mentioned, a different kind of thing from its examples. A
+  case the draft would still handle as before means the draft only renamed the examples; it is
+  rewritten until that case changes, and the case is listed under *Also changes*.
+- **Broad probe.** Name the nearest case outside the class and read the draft, and every reader
+  the inheritance search finds, for that case. It must be handled as before: a draft that changes
+  it is narrowed until it does not, and the case is the *Stays as it is* line. Then ask of every
+  item under *Also changes*, and every behavior change under *Inherited*, whether the user,
+  reading only their own words, would expect it. An item that fails leaves the draft, moves to
+  *Beyond what you said* and takes the policy-change route, while the rest proceeds.
+- **Finding what inherits is a search the editing agent makes itself.** List the readers of each
+  changed skill, rule and section as `skill-pass`'s **Source Check** says, then search the rules
+  and skills by the subject of the changed decision for a reader that makes that decision without
+  citing the text. For a rule that loads in every session or by file pattern, the inheriting
+  skills are the ones whose steps make the changed decision. Read each hit's sentence in its
+  context and state what changes for that reader.
+- **Flow is affected** when any line names a changed step, launch, loop, invocation, borrow, read,
+  count, scope or cap in how skills run, or a decision a neighboring skill or rule now makes
+  differently: who decides, act or ask, keep or remove, stop or continue. The statement's heading
+  records which, and a wording fix with no such effect records `flow not affected`.
+- **What the statement feeds.** It is the intent statement the review and the acceptance gate
+  receive, and its *Stays as it is* line reaches the skill test as the case a scenario must leave
+  unchanged.
 
 ## Shared Targets
 
@@ -70,6 +114,18 @@ Read at **Behavior** step 5.
   skill to produce that shape, then validate it through the required skill-test run, review, and
   acceptance gate. A guidance-output format is routine guidance design, not a user approval gate; a change to the product
   a skill operates still follows `pre-production`'s **Product Choices**.
+
+## Moved Text
+
+Read at **Behavior** step 5.
+
+Guidance moved between files — a skill relocated, bullets gathered into a new rule or out of one —
+that lands beside a statement of the same requirement is merged with it into one in the same
+change, keeping every distinct criterion and exception, and any other defect a standing rule names
+that the move brings to light is fixed in it, as `pre-production`'s **Scope Follows The Defect, Not
+The Request** says of a defect the work notices, with `acceptance-gate` judging the repair's scope
+and size. Moving text unchanged proves it survived; it is never a reason to report a defect as
+left for the user.
 
 ## Tools And Dependency References
 

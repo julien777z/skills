@@ -8,6 +8,7 @@ import subprocess
 import sys
 import tempfile
 import venv
+from collections.abc import Iterator
 from pathlib import Path
 from typing import Final
 from urllib.parse import unquote
@@ -84,6 +85,13 @@ RULE_PATH_PATTERN: Final[re.Pattern[str]] = re.compile(
 )
 RULE_FILE_MENTION_PATTERN: Final[re.Pattern[str]] = re.compile(
     r"`(?P<name>[A-Za-z0-9_-]+)\.md`\s+rule\b"
+)
+RULE_MENTION_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"(?:\b[Tt]he\s+(?P<word>[A-Za-z][A-Za-z0-9-]*)|`(?P<tick>[A-Za-z0-9_-]+)(?:\.md)?`)"
+    r"\s+rules?(?:(?:['’]s|['’])\s+\*\*(?P<section>[^*]+)\*\*|\b)"
+)
+ALWAYS_LOADED_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"\A---\n.*?^alwaysApply:\s*true\s*$.*?^---$", re.MULTILINE | re.DOTALL
 )
 SECTION_TRAILING_PUNCTUATION: Final[str] = ".:,;!?"
 SECTION_START_PATTERN: Final[re.Pattern[str]] = re.compile(r"$|\W")
@@ -249,8 +257,8 @@ def declared_dependencies(entry_point: str) -> set[str]:
     return set(DEPENDENCY_ENTRY_PATTERN.findall(section.group(1)))
 
 
-def named_skills(text: str, skill_names: set[str]) -> set[str]:
-    """Return the skills a text names, code blocks included.
+def skill_mentions(text: str, skill_names: set[str]) -> Iterator[re.Match[str]]:
+    """Yield each place a text names a skill, code blocks included.
 
     A hyphenated name in backticks counts anywhere. Any other backticked or hyphenated mention
     counts only in skill context, since a name also spells ordinary words, fields and keywords:
@@ -258,8 +266,6 @@ def named_skills(text: str, skill_names: set[str]) -> set[str]:
     as invoke, use, run, switch to or hand off to, or through or via. A `/name` command is one the
     user is told to run, never a reference, and an unquoted one-word name never counts.
     """
-
-    named: set[str] = set()
 
     for match in SKILL_NAME_PATTERN.finditer(text):
         name = match.group("name")
@@ -275,9 +281,13 @@ def named_skills(text: str, skill_names: set[str]) -> set[str]:
             continue
 
         if (quoted and hyphenated) or is_in_skill_context(text, match):
-            named.add(name)
+            yield match
 
-    return named
+
+def named_skills(text: str, skill_names: set[str]) -> set[str]:
+    """Return the skills a text names, as `skill_mentions` finds them."""
+
+    return {match.group("name") for match in skill_mentions(text, skill_names)}
 
 
 def is_in_skill_context(text: str, match: re.Match[str]) -> bool:
@@ -566,6 +576,96 @@ def find_citation_problems(agents_dir: Path) -> list[str]:
     return problems
 
 
+def find_readers(agents_dir: Path, name: str, section: str | None) -> list[str]:
+    """Return one line per place in canonical guidance that reads a skill or a rule.
+
+    A skill's readers are the packages that declare it and every line that names it; a rule's are
+    the lines that cite one of its sections, name its file or call it the <Name> rule. With a
+    section, only the lines citing that section count. A rule that loads in every session is read
+    by every skill whether or not one cites it, and the first line says so. Generated mirrors are
+    not read, a line naming the target inside its own package is not a reader, and matching is by
+    name form, so a reader that identifies the target by description is found only by reading.
+    """
+
+    root = agents_dir.parent
+    skills_dir = agents_dir / SKILLS_DIRNAME
+    packages = {
+        entry.parent.name: entry.parent for entry in source_files(skills_dir, SKILL_ENTRY_FILENAME)
+    }
+    rule_paths = {
+        path.stem.casefold(): path for path in sorted((agents_dir / RULES_DIRNAME).glob("*.md"))
+    }
+    global_rules = agents_dir / GLOBAL_RULES_FILENAME
+
+    if global_rules.exists():
+        rule_paths[GLOBAL_RULES_NAME] = global_rules
+
+    rule_path = None if name in packages else rule_paths.get(name.casefold())
+
+    if name not in packages and rule_path is None:
+        raise RuntimeError(f"{name} is neither a skill nor a rule under {agents_dir}")
+
+    wanted = None if section is None else normalized_section_name(section)
+    own_dir = packages.get(name)
+    readers: list[str] = []
+
+    if rule_path is not None and (
+        rule_path == global_rules or ALWAYS_LOADED_PATTERN.search(rule_path.read_text())
+    ):
+        readers.append(
+            f"{rule_path.relative_to(root).as_posix()}: loads in every session, so every skill reads it"
+        )
+
+    if own_dir is not None and wanted is None:
+        for _, package in sorted(packages.items()):
+            entry = package / SKILL_ENTRY_FILENAME
+
+            if name in declared_dependencies(entry.read_text()):
+                readers.append(f"{entry.relative_to(root).as_posix()}: declares `{name}`")
+
+    for path in source_files(agents_dir, "*.md"):
+        if GENERATED_DIRNAME in path.parts or path == rule_path:
+            continue
+
+        if own_dir is not None and own_dir in path.parents:
+            continue
+
+        text = path.read_text(encoding="utf-8")
+        mentions: dict[int, str | None] = {}
+
+        if rule_path is None:
+            for match in skill_mentions(text, {name}):
+                mentions[match.start("name")] = None
+
+            for match in SKILL_SECTION_CITATION_PATTERN.finditer(text):
+                if match.group("name") == name:
+                    mentions[match.start("name")] = match.group("section")
+        else:
+            for pattern in (RULE_PATH_PATTERN, RULE_FILE_MENTION_PATTERN):
+                for match in pattern.finditer(text):
+                    if match.group("name").casefold() == rule_path.stem.casefold():
+                        mentions[match.start()] = None
+
+            for match in RULE_MENTION_PATTERN.finditer(text):
+                cited_name = match.group("word") or match.group("tick")
+
+                if rule_paths.get(cited_name.casefold()) == rule_path:
+                    mentions[match.start()] = match.group("section")
+
+        for offset, cited_section in sorted(mentions.items()):
+            where = f"{path.relative_to(root).as_posix()}:{line_number(text, offset)}"
+
+            if cited_section is None and wanted is None:
+                readers.append(f"{where}: names it")
+            elif cited_section is not None and wanted in (
+                None,
+                normalized_section_name(cited_section),
+            ):
+                readers.append(f"{where}: cites **{' '.join(cited_section.split())}**")
+
+    return readers
+
+
 def parse_arguments() -> argparse.Namespace:
     """Parse the command and the tree it runs on."""
 
@@ -585,7 +685,7 @@ def parse_arguments() -> argparse.Namespace:
     )
 
     parser = argparse.ArgumentParser(
-        description="Run the sync tool the repository's workflow pins over its canonical agent sources."
+        description="Check the repository's canonical agent sources with the sync tool its workflow pins, or list what reads one of them."
     )
     commands = parser.add_subparsers(dest="command", required=True)
 
@@ -607,13 +707,28 @@ def parse_arguments() -> argparse.Namespace:
         help="Directory, relative to the root, that receives the provider mirrors.",
     )
 
+    readers = commands.add_parser(
+        SourceCommand.READERS,
+        parents=[tree],
+        help="List the canonical guidance that declares, names or cites a skill or a rule.",
+    )
+
+    readers.add_argument(
+        "name",
+        help="Skill name, or rule file name without its extension; global is the global rules.",
+    )
+
+    readers.add_argument(
+        "--section",
+        help="Section of that skill or rule; only the lines citing it are listed.",
+    )
+
     return parser.parse_args()
 
 
-def main() -> SyncOutcome:
-    """Run the requested command from the command line."""
+def main(arguments: argparse.Namespace) -> SyncOutcome:
+    """Run a command that needs the pinned sync tool."""
 
-    arguments = parse_arguments()
     command = SourceCommand(arguments.command)
     root: Path = arguments.root.resolve()
     agents_dirname: str = arguments.agents_dir
@@ -678,8 +793,25 @@ def main() -> SyncOutcome:
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 
+    arguments = parse_arguments()
+
+    if SourceCommand(arguments.command) is SourceCommand.READERS:
+        try:
+            readers = find_readers(
+                arguments.root.resolve() / arguments.agents_dir, arguments.name, arguments.section
+            )
+        except (OSError, RuntimeError) as exc:
+            logger.error("%s", exc)
+
+            raise SystemExit(EXIT_CODES[SyncOutcome.UNAVAILABLE]) from exc
+
+        for reader in readers:
+            print(reader)
+
+        raise SystemExit(EXIT_CODES[SyncOutcome.VALID])
+
     try:
-        outcome = main()
+        outcome = main(arguments)
     except (OSError, RuntimeError, subprocess.CalledProcessError) as exc:
         logger.error("%s", exc)
 

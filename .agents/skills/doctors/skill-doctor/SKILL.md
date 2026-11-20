@@ -47,7 +47,7 @@ gate and any flag that hides the skill from the listing, declared dependencies, 
 it, its bundled files with sizes and how deep their references chain, and each launch of subagents
 its text describes. Every agent definition, hook (where it is registered, whether its command
 exists), settings file, and registry entry, one line each. A vendored skill is inventoried and
-never edited; a finding on one lands on its registry entry.
+read as **Lenses** says of a registered external skill.
 
 Every installed copy of a skill, in each project, user, system, plugin and provider root the host
 loads skills from: its path, the target a link resolves to, its scope, and a digest of its
@@ -80,6 +80,18 @@ Measured once before fan-out:
 
 Each check is reported file by file. A threshold the vendors publish is a default the fetched
 guidance overrides; a threshold `skill-pass` sets is the repository's recorded decision.
+
+**A registered external skill's text is its upstream's, and no lens raises a finding on it.** A
+skill the external-resources registry, `.agents/external_resources.json`, lists is vendored: its
+frontmatter, description, body and bundled files are read only for what the repository's own files
+need from them, such as whether one names, depends on or duplicates it. What a lens would report
+inside that text — a flag that hides it from the listing or a description with no trigger under
+Unreachable, a description's length or wording under Budget and the two description lenses, a
+sentence under Restates, Wrong Altitude, Scope Calibration or Authoring Sections, a skill name
+under Dependencies — is listed once in the report as upstream, with the registry entry and the
+upstream repository, and is never a finding, a remedy or an edit. A finding lands on the registry
+entry only when it is about the entry itself: one with no directory, one whose skill duplicates
+an owned skill, or a whole-entry cut under **Dispositions**.
 
 ### Budget
 
@@ -205,7 +217,7 @@ the entry point's `## Dependencies`. Remedy: the one that section's criteria sta
 Nothing leads in: a skill no file names whose description carries no trigger; a subject a skill
 owns that no clause of its description names, as `skill-pass`'s **Descriptions** and its conflict
 criteria require; a variant file no router row links; a hook on disk not registered; a skill the
-usage measurement shows never invoked; and a skill hidden from the listing by a frontmatter flag,
+usage measurement shows never invoked; and an owned skill hidden from the listing by a frontmatter flag,
 which that **Descriptions** section counts as a defect whatever the skill's invocation name.
 Evidence: the reference counts, the description beside the skill's section headings, and usage.
 Remedy: add the clause, remove the flag and state the user-only gate in the description, or a
@@ -279,7 +291,6 @@ description, and `skill-pass`'s **Scripts** keeps tests of skills out of the tre
 
 ## Dispositions
 
-- A vendored skill is never edited; its registry entry is.
 - Cutting a whole rule file, skill, or registry entry is a user decision, presented with four
   things: the files that name it; the usage measurement over a stated window, or unmeasured with
   the reason; the sentences that survive the Restates and Redundant lenses, which are what it
@@ -331,6 +342,7 @@ reads the whole catalog; the grouping says who reports which checks.
 - each URL fetched, with its date and any redirect;
 - each whole-file cut proposed, its trial runs and its outcome, and each untried candidate;
 - each installed copy reported;
+- what the lenses met inside registered external skills, listed as upstream;
 - each hook, description clause, or guard added;
 - the reviewers started, by role, and the skill-test round run for the changed guidance or the
   reason none ran.

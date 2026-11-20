@@ -3,10 +3,11 @@ from typing import NotRequired, TypedDict
 
 
 class SourceCommand(StrEnum):
-    """An operation the script runs with the pinned sync tool."""
+    """An operation the script runs over the canonical agent sources."""
 
     CHECK = "check"
     MIRROR = "mirror"
+    READERS = "readers"
 
 
 class SyncOutcome(StrEnum):

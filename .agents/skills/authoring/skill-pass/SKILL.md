@@ -1,6 +1,6 @@
 ---
 name: skill-pass
-description: 'How agent guidance under `.agents` is written, placed and checked — the criteria and the source check for a skill, rule, agent definition, hook, setting, reference or project guidance. Read when writing, editing, reviewing or auditing guidance, for where a requirement lives among the global rules, a rule file and a skill; frontmatter descriptions; skill dependencies and their declaration; conflicting instructions; citations that must resolve; size budgets; harness support; subagent counts; output sections; routers; prose duplication; validating guidance; and how a reviewer or gate of a guidance diff is briefed. It starts no subagents.'
+description: 'How agent guidance under `.agents` is written, placed and checked — the criteria and the source check for a skill, rule, agent definition, hook, setting, reference or project guidance. Read when writing, editing, reviewing or auditing guidance, for where a requirement lives among the global rules, a rule file and a skill; frontmatter descriptions; skill dependencies and their declaration; conflicting instructions; citations that must resolve; size budgets; harness support; subagent counts; output sections; routers; prose duplication; validating guidance; listing which skills and rules read a skill, a rule or one of its sections; and how a reviewer or gate of a guidance diff is briefed. It starts no subagents.'
 short_description: 'Apply the writing, placement, conflict and source checks to agent guidance.'
 ---
 
@@ -69,6 +69,13 @@ included, so a clean changed file does not make a failing tree pass.
   ruling or example disagrees with a file that loads beside it, and that the file is within its
   budget.
 - Generated mirrors are left to Agent Sync and are never read or repaired by this check.
+- **What reads a skill or a rule.** `scripts/validate_sources.py readers <name>` lists each package
+  that declares the skill named and each line of canonical guidance that names it or cites one of
+  its sections; for a rule file's name, or `global` for the global rules, it lists each line that
+  cites the rule, and says first when the rule loads in every session. `--section "<Section>"`
+  keeps only the lines citing that section. It installs nothing and matches name forms only, so a
+  reader that makes the same decision without citing the text is found by searching for the
+  decision's subject.
 
 ## Conflict Check
 
@@ -114,18 +121,35 @@ for these shapes:
 A reviewer or gate judging guidance is handed this skill and reads the authoring reference whole,
 since nothing loads it for a reader of `.agents` files. Its brief asks:
 
-- whether the guidance holds at the breadth the authoring reference's **Writing** asks for, and no
-  broader: a rule written for one symptom is a finding, and so is a requirement its case never
-  needed, a neighboring subject swept in, or an absolute applied past the cases its reason covers;
+- whether the guidance holds at the breadth the authoring reference's **Writing** asks for, no
+  narrower and no broader: a rule written for one symptom is a finding, and so is a requirement its
+  case never needed, a neighboring subject swept in, or an absolute applied past the cases its
+  reason covers;
 - whether every mechanism it adds earns its place;
 - whether generic guidance names a tool, surface or workaround its contract does not depend on,
   which is a finding.
 
-For a diff written to answer a request, the brief also carries the request's intent, the real case
-behind it, and the incident's vocabulary — the product, its record and page nouns, the labels the
-request quoted — so an example carrying any of it is a finding, and the incident's route must not
-narrow the durable decision boundary. For standing guidance read with no request, the reviewer
-judges breadth from the text itself and its neighbors.
+For a diff written to answer a request, the brief also carries the statement of scope its editor
+recorded — what the user said, what changes from now on and in the same class, the nearest case
+that stays as it is, what inherits the change, and what waits for the user — with the real case
+behind the request and the incident's vocabulary: the product, its record and page nouns, the
+labels the request quoted. Against that statement the reader flags, each as a finding:
+
+- text narrower than what the statement says changes, including a rule the incident's route has
+  narrowed to its own symptom;
+- any behavior change in the resulting package that the statement does not list, the case it says
+  stays as it is included;
+- anything written that the statement lists as waiting for the user;
+- an example carrying the incident's vocabulary.
+
+For standing guidance read with no request, the reviewer judges breadth from the text itself and
+its neighbors.
+
+**Each check on a guidance diff has one owner, and a brief asks no reader for another's.** The
+editor's own pass and the simplification pass hold the requirement stated twice and the size
+budget. A review-loop reviewer reads the diff against the statement and standing guidance, for the
+findings above and for conflicts. The acceptance gate reads the resulting package whole and walks
+the real case through it. A skill test exercises it.
 
 ## Output
 

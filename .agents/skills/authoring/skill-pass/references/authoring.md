@@ -353,29 +353,35 @@ a template where correct results genuinely vary in shape.
   Cite a section by its name, never by a step number, which moves with the next edit, and resolve a
   skill's own script from the skill's directory, never from a repository path.
 - Normalize the touched file's nearby structure when needed: combine narrow sections and remove redundant wording.
-- **Prefer the broad statement, and let the request's shape be its example.** A request
-  arrives as one symptom, and the rule it needs names the class that symptom belongs to; the
-  symptom's shape stays as one illustration of it. In shared guidance that illustration never
-  carries the incident's own vocabulary — the labels, headings, records, screens or values of
-  the product that prompted it, however ordinary they read: a label lifted from the screen
-  under review is that screen's copy. Retell it with invented nouns from an unrelated domain, as
-  **Where Guidance Lives** requires, and replace any such noun already in the
-  section the edit touches. Asked for `Final` on string constants, write `Final` for
-  every module-level constant; asked for a walkthrough rule because a page reloaded in a
-  loop once a back-end change was absent, write that the run is judged against intended
-  behavior because an API error surfaces as any unintended behavior, and name the loop
-  only as one instance. A rule written for the symptom is silent on the next one, and the
-  next one is what it will be read for. A named field, file, section, document kind, tool,
-  or step, including the place a request says to put the fix, is an example of its class and
-  a candidate home for the edit's owner search, never the limit of the rule, unless the
-  contract requires its exact identity. Broaden to the class the user plainly meant, never to a
-  neighboring subject. Wording handed over — rule text in the request or in a delegating agent's
-  brief — remains input, not the spec: draft against the invariant and alternate routes
-  the edit's failure-class diagnosis supplies, then apply that decision to every instruction
-  in the file that does the same work.
-  One section rewritten while a neighbor still does the narrow thing is the draft only half
-  done, and it is rewritten until the neighbor changes too. An agent delegating an edit
-  passes the class and the evidence, not finished rule text for one case.
+- **State the class the user plainly meant, no narrower and no broader; the request's shape is
+  its example.** A request arrives as one symptom, and the rule it needs names the class that
+  symptom belongs to, with the symptom's shape kept as one illustration of it.
+  - **No narrower.** A rule written for the symptom is silent on the next one, and the next one is
+    what it will be read for. Asked for `Final` on string constants, write `Final` for every
+    module-level constant; asked for a walkthrough rule because a page reloaded in a loop once a
+    back-end change was absent, write that the run is judged against intended behavior because an
+    API error surfaces as any unintended behavior, and name the loop only as one instance. A named
+    field, file, section, document kind, tool, or step, including the place a request says to put
+    the fix, is an example of its class and a candidate home for the edit's owner search, never
+    the limit of the rule, unless the contract requires its exact identity.
+  - **No broader.** The class ends where the user's words stop being about it. Name the nearest
+    case outside it, the one a broader reading would change, and confirm the draft leaves it as it
+    was: the `Final` rule reaches every module-level constant and stops before a function's local
+    names, which nobody raised. A neighboring subject, a requirement the case never needed, and a
+    change the user would not expect from their own words stay out of the draft and are put to
+    the user.
+  - **Every instruction that does the same work, and none that does other work.** Apply the
+    decision to each instruction in the file that does the same work: one section rewritten while
+    a neighbor still does the narrow thing is the draft half done.
+  - **Handed wording is input, not the spec.** Rule text in the request or in a delegating agent's
+    brief is drafted again against the invariant and alternate routes the edit's failure-class
+    diagnosis supplies. An agent delegating an edit passes the class, its outer edge and the
+    evidence, not finished rule text for one case.
+  - **The illustration never carries the incident's own vocabulary** in shared guidance — the
+    labels, headings, records, screens or values of the product that prompted it, however ordinary
+    they read: a label lifted from the screen under review is that screen's copy. Retell it with
+    invented nouns from an unrelated domain, as **Where Guidance Lives** requires, and replace any
+    such noun already in the section the edit touches.
 - Describe reusable roles, boundaries, and decision criteria generically even in
   repository-focused guidance when the pattern is not repository-specific.
 - Guidance states a transferable decision or procedure. Incident dates, machine inventories,

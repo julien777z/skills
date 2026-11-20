@@ -243,11 +243,12 @@ changed. Make the smallest changes that answer real findings, and push back on t
   its group's paths and the whole diff as context, so a finding that crosses groups is still seen.
   Merge their findings into one ledger before answering. Later rounds go back to one reviewer over
   the changed code and the open findings.
-- **Panel round 1 for risky deltas:** when the delta touches data loss or concurrency, round 1 goes
-  to `council` in **Ask** mode with the round's brief, in place of the single reviewer, and its
-  findings become the ledger. When round 1 is also split, the risky area group goes to `council`
-  and the other groups share the remaining two of the five reviewers. A delta that matches
-  **Workflow** step 4's patterns has that step's Diff Review beside the single reviewer.
+- **Panel round 1 for risky deltas:** when the delta touches security, permissions, auth, data loss
+  or concurrency, round 1 goes to `council` in **Ask** mode with the round's brief, in place of the
+  single reviewer, and its findings become the ledger. When round 1 is also split, the risky area
+  group goes to `council` and the other groups share the remaining two of the five reviewers.
+  **Workflow** step 4's Diff Review is a separate check that neither replaces the panel nor is
+  replaced by it: it runs beside round 1, whoever reads that round, on a line-pattern match.
 - **Brief:** send [the reviewer brief](references/reviewer-brief.md), this skill's reference holding
   the round text and severity scale, with the repository, base, intent, out-of-scope note, check
   results, applicable repository rules, and the Whole and Guidance intent fields filled in.

@@ -223,15 +223,24 @@ alwaysApply: true
   pauses and exclusions; this permission authorizes no deployment or release.
 - A pull request confined to agent configuration — skills with their own scripts, assets and
   templates; rules; agent definitions; and static metadata — may be merged without a separate
-  request once its full gate set has passed on the head that merges:
-  - a simplification pass over the change, with its findings resolved;
-  - a review pass over the change;
-  - an independent acceptance gate over the complete diff;
-  - for an edit that changes behavior, a skill-test round against the exact pull-request head;
-  - the checks a skill's changed scripts own, such as a type check or a test render.
+  request once the gate set for its change has passed on the head that merges. This bullet is the
+  one statement of the sets, and other guidance cites it:
+  - **The short set**, for a pull request whose every edit changes one requirement in one file,
+    changes nothing about how skills run — no step, launch, loop, invocation, borrowed criteria,
+    read, count, scope or cap — and nothing a neighboring skill or rule decides, adds or removes
+    no skill, rule, dependency or script, and carries no change beyond what the user said: the
+    source check, the authoring pass and a simplification pass, each made by the editing agent
+    itself; one independent acceptance gate over the change; and one skill-test scenario, with no
+    control run on the original text.
+  - **The full set**, for every other change: a simplification pass over the change, with its
+    findings resolved; a review pass over the change; an independent acceptance gate over the
+    complete diff; for an edit that changes behavior, a skill-test round against the exact
+    pull-request head; and the checks a skill's changed scripts own, such as a type check or a
+    test render.
+  - A pull request that changes no instruction a reader follows, such as a spelling or dead-link
+    correction, is a text correction under the minor-corrections bullet above, with the source check as its gate.
 
-  No shorter set qualifies, and this bullet is the one statement of the set: other guidance cites
-  it. One that adds a doctor skill waits instead for the user's review together with everything in
+  One that adds a doctor skill waits instead for the user's review together with everything in
   its batch. A workflow, installer, or repository tooling outside a skill's folder is source work
   when its execution changes, even when it sits under `.agents`. Check that the complete pull
   request remains confined to this agent configuration before using this exception.
@@ -439,16 +448,12 @@ incidental size budget; an unrelated bug or a passing formatter does not satisfy
 - **No edit sits uncommitted through a long wait outside the checks.** Before the slow verification
   below, a background worker, CI on the pushed head, or a question to the user, bring the work to a
   coherent step, commit it, and push it; the checks' own runs are part of the push, not such a wait.
-- **Delegated edits run at this cadence.** A brief handing a worker edits states it, names the
-  branch the worker pushes to — the branch of the pull request the work continues, under
-  **Branches and Pull Requests** — and names the exact files to change. The
-  worker pushes each step once its checks pass and reports the branch and head. The brief has the
-  worker fix every defect it meets, in the product or the repository's tooling, and report as left
-  alone only cleanup past the incidental size budget and any item that is the user's decision. The
-  delegating agent reads that head at its source before any dependent work starts. The worker
-  ends with nothing uncommitted and nothing unpushed beyond the exceptions above,
-  never amends or rebases a pushed commit, and
-  its report names the branch and head.
+- **Delegated edits run at this cadence.** A brief handing a worker edits takes the brief form the
+  delegation skill defines, and states this cadence and the branch the worker pushes to: the
+  branch of the pull request the work continues, under **Branches and Pull Requests**. The worker
+  pushes each step once its checks pass, never amends or rebases a pushed commit, ends with
+  nothing uncommitted and nothing unpushed beyond the exceptions above, and reports the branch
+  and head, which the delegating agent reads at its source before any dependent work starts.
 - **A pull request stays draft until the last step before its authorized merge**, as **Branches and
   Pull Requests** says, so these pushes start no test jobs. Marking it ready can enqueue duplicate
   hosted jobs without changing the head; the skill running the merge decides whether completed

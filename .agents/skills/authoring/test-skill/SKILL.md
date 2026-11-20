@@ -36,15 +36,26 @@ confuse those conclusions.
   meaning or reachability changed.
 - **An invocation that names several heads is tested in one coordinated round.** Freeze the exact
   head and guidance package for every named pull request, and retain results per head. The round
-  runs when, and on the head the caller supplies.
+  runs when, and on the head the caller supplies. A caller may start it on a pushed head before
+  that head's review ends: the round concludes on the head the caller names as accepted, with
+  each result carried there or rerun as the carry-forward bullet below says.
 - **Each scenario gets its own reader for each variant it runs**, so its context holds that one
   task: one edited reader per scenario step 1 writes, plus its original control where the next
-  bullet requires one. Add readers only for a distinct named risk.
-- **An original control runs where an improvement claim or conflicting instruction needs
-  comparison**: in a scenario's first round, and in a later round only where the edited run missed
-  and the retained control cannot carry forward; a straightforward clarification may omit it only
-  with that justification recorded. The original control stays blind to the edited diff, criteria,
-  and reports.
+  bullet requires one. Add readers only for a distinct named risk. A round starts one scenario
+  writer, one reader per scenario, a second per scenario that runs a control, and one grader per
+  eight scenarios; the count grows only with the failure classes the batch holds.
+- **An original control runs only where the comparison has nothing else to stand on.** It is
+  required for a new skill, as the last bullet here says; where two instructions conflict and the
+  comparison decides between them; and for an edit with no observed miss under the original text
+  whose pull request is to claim improvement. It is not run where the caller's record holds the
+  miss observed under the original text on the real case: that observation is the control,
+  labeled observed in **Output** and never rerun. A required control runs in a scenario's first
+  round, and in a later round only where the edited run missed and the retained control cannot
+  carry forward. The original control stays blind to the edited diff, criteria, and reports.
+- **The single-scenario form** serves an invocation that names one changed requirement in one file
+  and asks for it: one scenario for that requirement, one edited reader and no control, with
+  step 1's writer and step 5's grader as in any round. Its comparison reports conformance, beside
+  the observed miss where the caller recorded one. Any other invocation runs the full round.
 - **A retained result carries to a new head only when everything its scenario depends on is
   unchanged there.** For each scenario, record each item's recorded value beside its current one,
   and carry it, with no rerun, when every pair matches:
@@ -72,7 +83,8 @@ Run after `code-simplify` completes its pass.
    scenario rather than one of its own, each mapped to the changed boundary with its observable
    pass criteria. A failure that came from real work is tested on a fixture built from
    that real case; a reproduction scenario the caller supplies is the writer's input, never a
-   scenario itself. Include relevant conflicting guidance in the edited reading list and, when a
+   scenario itself. Where the caller names the nearest case the edit must leave unchanged, each
+   scenario that case can arise in carries one criterion that behavior there is as before. Include relevant conflicting guidance in the edited reading list and, when a
    control is required, in its matching reading list.
 2. **Choose and verify the environment.** Use the smallest environment that exercises the actual
    decision or operation. A review can inspect a relevant live codebase read-only, a frozen diff,
@@ -231,7 +243,7 @@ Miss: <one sentence>
 
 A reads the edited text. B reads the original only when the recorded comparison requires a control.
 
-Comparison: improvement demonstrated | both meet the behavior; no improvement demonstrated | conformance only; control not run: <reason under When It Runs>
+Comparison: improvement demonstrated | both meet the behavior; no improvement demonstrated | conformance; miss observed under the original text on the real case, not rerun | conformance only; control not run: <reason under When It Runs>
 
 Disposition: retain | reshape | remove | separate independent changes — <value judgment and evidence>
 
