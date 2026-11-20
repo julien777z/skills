@@ -37,11 +37,11 @@ Canonical guidance lives in `.agents/`.
   names it, as in [garden-api#42](https://github.com/example/garden-api/pull/42) or
   [garden-api](https://github.com/example/garden-api); a bare number, name or hash leaves the reader
   to look it up. Where the text names more than one repository, an item named outside a section or
-  table scoped to its own repository carries that repository inside its link text, as above, never as a
-  plain name beside a linked number, and a repository named in passing, such as the other half of a
-  paired change, is linked too. Every item in a list gets a link, however long the list. A surface
-  that cannot render a link, such as a question tool's option, names the item the way people do,
-  such as a pull request by its title, and its link goes in a message the reader gets before it.
+  table scoped to its own repository carries that repository inside its link text, as above, never
+  as a plain name beside a linked number. Every item in a list gets a link, however long the list. A
+  surface that cannot render a link, such as a question tool's option, names each item by the exact
+  name its page shows and by nothing more, such as a pull request by its title with no number beside
+  it, never by a number or a paraphrase, and its link goes in a message the reader gets before it.
 - **A web product's views are pages.** Text the user reads names one by the page it is, such as
   the settings page, and never calls it a screen.
 - **A file the user should see reaches them where they read.** Per-item detail past five items —
@@ -313,16 +313,16 @@ Canonical guidance lives in `.agents/`.
   unseen**: the reader answers the question tool, and chat text around it, or in some harnesses all
   text before a tool call, may never reach them. Ask directly in chat only when the harness has no
   question tool. The question's own text and option descriptions therefore carry what the decision
-  needs: what happens today, stated as fact and where; what each option changes; and the
-  recommendation with its reason. A hypothetical, such as "if the API sends only IDs", or internals
-  named without what they do leave the reader asking for the facts. A short plan put for approval
-  goes into the question whole. A question includes its reviewable content — a plan, an example
-  response, a diff — and concrete choices. The option that approves a plan or proposal reads
-  "Approved", never "Go" or another word, and is asked only once every decision the plan or proposal
-  depends on is answered: those decisions go to the user first, on their own, and the plan or
-  proposal shown for approval is written for their answers, with nothing in it conditional on one.
-  Material too large for the question, such as captures or a long diff, reaches the user as
-  `share-media` says, in a message they see before the question, and the question names it.
+  needs: what happens today, stated as fact and where; what each option changes; the recommendation
+  with its reason; and each item named by the exact name its page shows, as the link bullet says. A
+  hypothetical, such as "if the API sends only IDs", or internals named without what they do leave
+  the reader asking for the facts. A question includes its reviewable content — a short plan for
+  approval whole, an example response, a diff — and concrete choices. The option that approves a
+  plan or proposal reads "Approved", never "Go" or another word, and is asked only once every
+  decision the plan or proposal depends on is answered: those decisions go to the user first, on
+  their own, and the plan or proposal shown for approval is written for their answers, with nothing
+  in it conditional on one. Material too large for a question, such as captures or a long diff,
+  reaches the user as `share-media` says, in a message they see first, and the question names it.
 - **A step only the user can take, which the work waits on, is asked through that tool too, never
   left in chat.** Granting a permission, signing in, approving on another device, or running a
   command that needs their password each goes out as a question once everything the agent can

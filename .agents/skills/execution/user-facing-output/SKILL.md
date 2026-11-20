@@ -96,11 +96,11 @@ output.
   [garden-api](https://github.com/example/garden-api); a bare number, name or hash leaves the
   reader to look it up. Where the text names more than one repository, an item named outside a
   section or table scoped to its own repository carries that repository inside its link text, as
-  above, never as a plain name beside a linked number, and a repository named in passing, such as
-  the other half of a paired change, is linked too. Every item in a list gets a link, however long
-  the list. A surface that cannot render a link, such as a question tool's option, names the item
-  the way people do, such as a pull request by its title, and its link goes in a message the reader
-  gets before it.
+  above, never as a plain name beside a linked number. Every item in a list gets a link, however
+  long the list. A surface that cannot render a link, such as a question tool's option, names each
+  item by the exact name its page shows and by nothing more, such as a pull request by its title
+  with no number beside it, never by a number or a paraphrase, and its link goes in a message the
+  reader gets before it.
 - **A web product's views are pages.** Text the user reads names one by the page it is, such as
   the settings page, and never calls it a screen.
 - **What the user reads is written for them.** A plan, proposal or report prepared for the agent's

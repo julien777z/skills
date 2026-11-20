@@ -104,17 +104,17 @@ only a subject no skill runs for.
   unseen**: the reader answers the question tool, and chat text around it, or in some harnesses all
   text before a tool call, may never reach them. Ask directly in chat only when the harness has no
   question tool. The question's own text and option descriptions therefore carry what the decision
-  needs: what happens today, stated as fact and where; what each option changes; and the
-  recommendation with its reason. A hypothetical, such as "if the API sends only IDs", or internals
-  named without what they do leave the reader asking for the facts. A short plan put for approval
-  goes into the question whole. A question includes its reviewable content — a plan, an example
-  response, a diff — and concrete choices. The option that approves a plan or proposal reads
-  "Approved", never "Go" or another word, and is asked only once every decision the plan or proposal
-  depends on is answered: those decisions go to the user first, on their own, and the plan or
-  proposal shown for approval is written for their answers, with nothing in it conditional on one.
-  Material too large for the question, such as captures or a long diff, reaches the user in
-  a message they see before the question, sent as the skill covering captures and files shown to
-  the user says, and the question names it.
+  needs: what happens today, stated as fact and where; what each option changes; the recommendation
+  with its reason; and each item named by the exact name its page shows and by nothing more, such
+  as a pull request by its title with no number beside it. A hypothetical, such as "if the API sends
+  only IDs", or internals named without what they do leave the reader asking for the facts. A
+  question includes its reviewable content — a short plan for approval whole, an example response,
+  a diff — and concrete choices. The option that approves a plan or proposal reads "Approved", never
+  "Go" or another word, and is asked only once every decision the plan or proposal depends on is
+  answered: those decisions go to the user first, on their own, and the plan or proposal shown for
+  approval is written for their answers, with nothing in it conditional on one. Material too large
+  for a question, such as captures or a long diff, reaches the user in a message they see first,
+  sent as the skill covering captures and files shown to the user says, and the question names it.
 - After a question-tool request actually times out without an answer, or the user replies with a
   message that states no choice in words — a related correction, a complaint about the subject, a
   new request — invoke it again with the same question, choices and supporting content, in the
