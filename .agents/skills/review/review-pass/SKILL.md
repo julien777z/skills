@@ -185,7 +185,7 @@ until it returns; a quiet interval or a yielded wait is not completion.
 
 These run in the order below, in process unless a pass says otherwise.
 
-- **Layout:** for the delta's changed Python files, run `acceptance-gate`'s
+- **Python rules:** for the delta's changed Python files, run `acceptance-gate`'s
   `scripts/python_rule_findings.py` over them; each finding it lists gets its fix, and each
   paragraph candidate the global code-layout rule makes a boundary gets its blank line.
 - **Simplification:** when the delta adds a module or declaration (an enum, constant set, mapping,
@@ -264,7 +264,7 @@ changed. Make the smallest changes that answer real findings, and push back on t
 ```markdown
 **Review pass:** <accepted head> · <full | delta `<reviewed head>..<head>` | empty> · recorded <whole | delta>
 
-- **Local passes:** <layout pairs fixed · code-simplify result · test sweep result, each or not run>
+- **Local passes:** <Python rule findings fixed · code-simplify result · test sweep result, each or not run>
 - **Review loop:** <n> round(s) with <model> — <approved | waiting on the user for <ids> | review only> · panel <round 1 | ruled on <ids> | not used> · diff <shortstat before> → <shortstat after>
 - **Fixed:** <one line per fix, marking those review surfaced rather than the task required, or none>
 - **Threads:** <disposition per thread, or none>
