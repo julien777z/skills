@@ -1,6 +1,6 @@
 ---
 name: review-pass
-description: Review a change and fix what the review finds, through an independent reviewer on another provider's model in a short loop. Use when the user asks for a code review, a review loop or "sol loop", or to watch, monitor or babysit a pull request for review feedback, or as a step of a workflow that finishes a pull request before its merge. Never merges.
+description: Review a change and fix what the review finds, through an independent reviewer on another provider's model in a short loop, and, when a task or run covers more than one open pull request, review them together for flaws only the combination has before any of them merges. Use when the user asks for a code review, a review loop or "sol loop", or to watch, monitor or babysit a pull request for review feedback, or as a step of a workflow that finishes a pull request before its merge. Never merges.
 short_description: 'Review and fix what a pull request has not had reviewed yet, then record the reviewed head.'
 ---
 
@@ -57,6 +57,8 @@ skill never readies, merges or deploys.
   `pre-production`'s **Encountered Issues** says, and each thread waiting on the user. A draft runs no test jobs, so
   its watch reports `draft: watch ended, tests not run`; this mode never readies or merges a pull
   request.
+- **Combined** (the invocation names more than one open pull request, each with its accepted head
+  and intent statement): run **Combined Review** over the set.
 
 ## Targets
 
@@ -252,6 +254,48 @@ changed. Make the smallest changes that answer real findings, and push back on t
   change and accepting it with the remaining findings recorded, within the limit its **Ask** sets
   on what a ruling accepts.
 
+## Combined Review
+
+Pull requests reviewed one at a time can each be right and still be wrong together. One reviewer
+reads the whole set for flaws only the combination has; it does not repeat each pull request's own
+review.
+
+- **Set and timing:** the set is every open pull request the task or run in hand covers: in one
+  repository or several, source and agent configuration alike, stacked or independent, one whose
+  merge is withheld or held included. The round runs once, after its own review has accepted a
+  head of every pull request in the set and before any of them merges. A pull request whose own
+  review ends with its change reverted or the pull request closed, under the ruling the round limit
+  calls for, leaves the set, and the round runs over the rest. With one pull request it does not run.
+- **Reviewer:** one per round, however many pull requests the set holds, resolved and launched as
+  **Review Loop**'s **Reviewer** bullet says, read-only and starting no subagents. Send the
+  **Combined review** form of [the reviewer brief](references/reviewer-brief.md) with each pull
+  request's checkout, base, accepted head, intent statement and description. The reviewer reads
+  every complete merge-base diff together; a stacked pull request's diff is its own patch against
+  the branch it builds on.
+- **What it looks for**, each a flaw of the combination:
+  - an interface, contract, schema, configuration name or generated type one pull request provides
+    and another consumes that does not match;
+  - a merge or deploy order under which an intermediate state breaks, named with the safe order or
+    the missing guard;
+  - one concern solved twice, or two mechanisms for one thing, across the set;
+  - behavior correct in each pull request and wrong with both applied;
+  - a trust boundary, permission or data exposure that opens only across the set, judged against
+    `security-audit`'s rubric;
+  - guidance that describes behavior another pull request in the set changes;
+  - a claim in one pull request's description that another contradicts.
+- **Findings:** check each against the code as **Answer each finding** says. A confirmed finding
+  goes to the pull request that owns the fix, or to both when both must change. It is repaired
+  there and reviewed as that pull request's new delta under **Workflow**, and it counts within that
+  change's limit of 3 review rounds, as `acceptance-gate`'s **Bounds** counts them. A finding that
+  spans repositories is reported in user chat; each fix's commits, description and threads speak
+  only of their own repository, under the GitHub rule's independent publishing context.
+- **A later round** runs only when a later change moves a head the round read: the reviewer reads
+  what changed, with the other heads as context and a pull request merged since at its merged
+  commit. A rewrite whose tree is identical keeps the verdict.
+- **Verdict:** one per head. With `session-ledger`, add to each head's `review` entry the heads it
+  was read with and `accepted` or the findings still open. A head this round has not accepted is
+  returned as held and is not a head to merge.
+
 ## Harness Compatibility
 
 - **T3 Code:** call `orchestrator_capabilities` once, pick that provider's advanced-level model at
@@ -270,6 +314,7 @@ changed. Make the smallest changes that answer real findings, and push back on t
 - **Checks:** <passed | exclusions with evidence, leaving out baseline failures and non-essential checks left red>
 - **Security:** <Diff Review result | not applicable>
 - **Acceptance:** <accept | flag and what it named>
+- **Combined review:** <heads read · accepted, or findings by pull request | not run: one pull request>
 - **Deferred:** <record link: what it covers, or none>
 - **Holds:** <the gate that holds, or none>
 ```

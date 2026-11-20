@@ -15,3 +15,33 @@ export function TextList({ items, numbered = false }: { items: string[]; numbere
     </Stack>
   );
 }
+
+interface ComparedSides {
+  current?: string;
+  proposed?: string;
+}
+
+/** What a part does on the current side and on the proposed side, each on its own labeled line. */
+export function ComparedLines({ current, proposed }: ComparedSides): ReactNode {
+  const lines = [
+    { label: 'Current', text: current },
+    { label: 'Proposed', text: proposed },
+  ].flatMap(({ label, text }) => (text ? [{ label, text }] : []));
+
+  if (lines.length === 0) {
+    return null;
+  }
+
+  return (
+    <Stack gap="xs">
+      {lines.map(({ label, text }) => (
+        <Text key={label} as="p" size="sm" tone="muted" breakAnywhere>
+          <Text as="b" weight="semibold" tone="strong">
+            {label}
+          </Text>{' '}
+          <RichText text={text} />
+        </Text>
+      ))}
+    </Stack>
+  );
+}

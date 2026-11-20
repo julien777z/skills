@@ -476,6 +476,15 @@ def check_tabs(tabs: dict[str, object], path: str) -> None:
         raise DashboardSpecError(f"{path}.tabs must hold a tab with sections")
 
 
+def check_outline_item_text(item: dict[str, object], path: str) -> None:
+    """Require an outline item to say something under its title."""
+
+    if not {"detail", "current", "proposed"} & set(item):
+        raise DashboardSpecError(
+            f"{path} must have at least one of detail, current and proposed"
+        )
+
+
 def check_reference_target(reference: dict[str, object], path: str) -> None:
     """Require a reference to link to a URL or open details, never both or neither."""
 
@@ -670,6 +679,8 @@ CHANGE_ITEM_SHAPE: Final[ObjectShape] = ObjectShape(
         "name": TEXT,
         "change": CHANGE,
         "detail": TEXT,
+        "current": TEXT,
+        "proposed": TEXT,
         "links": SOURCE_LINKS,
         "group": TEXT,
     },
@@ -680,13 +691,16 @@ OUTLINE_ITEM_SHAPE: Final[ObjectShape] = ObjectShape(
     fields={
         "title": TEXT,
         "detail": TEXT,
+        "current": TEXT,
+        "proposed": TEXT,
         "tone": TONE,
         "tag": TEXT,
         "meta": TEXT,
         "links": SOURCE_LINKS,
         "points": TEXTS,
     },
-    required=frozenset({"title", "detail"}),
+    required=frozenset({"title"}),
+    relations=check_outline_item_text,
 )
 OUTLINE_GROUP_SHAPE: Final[ObjectShape] = ObjectShape(
     name="OutlineGroup",

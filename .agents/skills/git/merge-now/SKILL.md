@@ -1,20 +1,21 @@
 ---
 name: merge-now
-description: Merge the task's finished source pull requests now, each once acceptance and its check gate pass, then review what merged unreviewed and merge the fixes. Run only when the user asks for it.
+description: Merge the task's finished source pull requests now, each once acceptance, the combined review of the set and its check gate pass, then review what merged unreviewed and merge the fixes. Run only when the user asks for it.
 short_description: 'Merge finished pull requests now, then review what merged unreviewed.'
 ---
 
 # Merge Now
 
-Merge the work the user has reviewed without a review loop at merge time, apart from the review of
-any fix `merge-gate` makes, and review afterwards whatever merged without an earlier `review-pass`.
+Merge the work the user has reviewed without a review loop at merge time, apart from the combined
+review of the set and the review of any fix `merge-gate` makes, and review afterwards whatever
+merged without an earlier `review-pass`.
 
 ## Authorization
 
 - Only a direct user invocation starts this workflow. Creating or editing this skill, a plan step,
   an earlier run, or an automatic caller is never an invocation.
 - The invocation authorizes, for this run only: the squash merge of each target below;
-  `review-pass` over each merged range; the fix pull requests its findings need, one per
+  `review-pass`'s **Combined Review** before the first merge and `review-pass` over each merged range; the fix pull requests its findings need, one per
   repository; and their merges. It authorizes no deployment,
   release, or review of unrelated work.
 - Never ask to merge a target and never end by offering a merge; what stops one is a gate under
@@ -42,7 +43,9 @@ any fix `merge-gate` makes, and review afterwards whatever merged without an ear
 ## Merge
 
 Targets with no dependency on one another proceed concurrently; a consumer waits for the target it
-depends on to merge.
+depends on to merge. When the task has more than one open pull request, an agent-configuration one
+**Targets** leaves out included, no target passes step 2 until step 1 has accepted every target and
+`review-pass`'s **Combined Review** has accepted its head.
 
 1. **Acceptance.** Reuse `acceptance-gate`'s final-acceptance verdict when the head it accepted is
    the current head, or a rewrite whose tree is identical to it. Otherwise put the head to the

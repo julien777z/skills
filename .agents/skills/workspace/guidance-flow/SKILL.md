@@ -268,9 +268,11 @@ pages it reaches. Pages follow the categories as the sources stand when they are
      what those subagents exist to catch or produce; and "Good to know", what a reader tuning the flow
      should know, such as the condition that starts a launch, what a later round reruns, a scope
      another skill also reads in the same run, or a count that grows with the size of the change.
-   - `references` make each skill's name a link to its whole `SKILL.md`, and each rule's name as
-     words a link to its file, at the commit read, wherever the page's text names it; outline items
-     carry no `links`.
+   - `references` hold one entry per mapped skill and one per mapped rule: `text` the skill's name,
+     or the rule's name as words, exactly as the page's text writes it, and `url` its whole
+     `SKILL.md` or rule file at the commit read. A skill or rule named anywhere in a tree, an
+     outline, a diagram's `steps` or a `changes` item is then a link, so every such text writes the
+     name in that one form; outline items carry no `links`.
 6. **Deliver** through `use-dashboard`, as a dashboard of a subject that outlives the session, so an
    existing page with the same title and topic, the repository, is updated when this session can
    update it. Name what is incomplete, if anything, in one line.
@@ -298,16 +300,22 @@ question: what would change in how the skills run and which rules they read. It 
    requirements all arrive elsewhere is a move, never a removal beside an addition.
 3. **Build the spec** as **Workflow** step 5 does, with these differences:
    - `title` `Guidance Flow Dashboard`, `topic` "Proposed flow", `subtitle` "Current <short commit> →
-     proposed <ref>.", and `references` linking both commits. Each added, removed or changed
+     proposed <ref>.", and `references` linking both commits beside the entry per mapped skill and
+     rule, which links to the proposed side's file, or to the current side's for one the proposed
+     side removed. Each added, removed or changed
      skill's reference opens `details` instead of a link: a `changes` section titled with the skill's
      name, described by what changed in one sentence, one item per change step 2 recorded for it —
-     each step, launch, loop, invocation, borrow, count, scope or cap — its `detail` saying what the
-     current side does and what the proposed side does instead, and `links` to the skill's
-     `SKILL.md` on each side that has it. An unchanged skill's reference stays a link. Each
+     each step, launch, loop, invocation, borrow, count, scope or cap — its `current` what the
+     current side does and its `proposed` what the proposed side does instead, and `links` to the
+     skill's `SKILL.md` on each side that has it. An unchanged skill's reference stays a link. Each
      added, removed or changed rule's reference opens `details` the same way: a `changes` section
      titled with the rule's name as words, one item per section step 2 recorded for it, its
-     `detail` what the current side holds and where the proposed side puts it, and `links` to the
-     rule's file on each side that has it.
+     `current` what the current side holds and its `proposed` where the proposed side puts it, and
+     `links` to the rule's file on each side that has it.
+   - Every `changes` and `outline` item on the page that says what the current side does and what
+     the proposed side does instead puts each in `current` and `proposed`, never in one `detail`
+     sentence: an added item sets only `proposed`, a removed one only `current`, and `detail` holds
+     only what belongs to neither side.
    - `metrics`: the four **Workflow** names, each `value` "<current> → <proposed>", such as "~25 →
      ~12", and `detail` what moved it in a few words.
    - `Overview`: a `table` `What changed` with a row per mapped page and the columns Page,
@@ -319,8 +327,8 @@ question: what would change in how the skills run and which rules they read. It 
      naming in one line the pages with no change, which the `Changed` page leaves out.
    - `Usage`: a `table` `Subagents per run`, one row per skill a person starts that changed, with
      the columns Skill, Current, Proposed and What changed, most subagents saved first; a `changes`
-     section `Loops`, one item per loop added, removed or changed, its `detail` the cap and what a
-     round reruns on each side.
+     section `Loops`, one item per loop added, removed or changed, its `current` and `proposed` the
+     cap and what a round reruns on each side.
    - `Changed`, the second page, with `icon` `compare`, holds one `tabs` section `Changed flows`
      with a tab per mapped page, labeled with the page's name and in the order the Show dashboard orders them, so the
      reader moves between the changed categories on one page. Each tab holds a `diagram` `Flow` of
@@ -332,8 +340,8 @@ question: what would change in how the skills run and which rules they read. It 
      that side's **Workflow** `How it runs` tree, so the reader opens one side at a time. After
      the category tabs comes a tab `Rules`, left off when no rule changed, holding a `changes`
      section `Rule moves`: one item per section step 2 recorded, `name` "<rule>: <section>",
-     `group` the rule's name as words, and `detail` where it moved, or what was added, removed or
-     changed. Scenarios, the `Skills` table, the `Rules` page and a page per category are left out.
+     `group` the rule's name as words, `current` where the section sits and what it holds, and
+     `proposed` where it moved or what it holds instead. Scenarios, the `Skills` table, the `Rules` page and a page per category are left out.
 4. **Deliver** as **Workflow** step 6 does, as its own dashboard beside the one Show builds.
 
 ## Interrogate

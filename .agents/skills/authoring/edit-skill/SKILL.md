@@ -164,7 +164,9 @@ user's review of the source pull request overlaps it.
    reproduction scenario as an input and entries that share a failure class grouped into one
    scenario, then **Hold each changed output to its concrete example** through **Read the merged text back before using it**. A guidance repair the skill-test round makes, here or on a source pull
    request under step 1, goes back through `review-pass` over its delta, and the skill-test round reruns
-   every scenario `test-skill` does not carry forward, on the head that review accepts.
+   every scenario `test-skill` does not carry forward, on the head that review accepts. Where the
+   task in hand has another open pull request, a source one included, the batch's pull request
+   merges only at a head `review-pass`'s **Combined Review** accepted beside the others.
 5. After each completed or failed stage, record its exact head, stage result, and first
    nonterminal next stage in each entry. Resume from that stage without repeating completed work.
    After the skill-test round, record the pull request, its head, the skill-test results and the merge or
@@ -422,7 +424,7 @@ user's review of the source pull request overlaps it.
       formatter run or a file picked up by `git add -A` looks identical to intent. A path outside
       `.agents` leaves this branch — dropped when it was never meant, moved to the source pull
       request the work continues under **Branch and commit** when it was — and the new head goes back through **Brief `review-pass`'s final acceptance**. Everything
-      in `.agents`, merge it through `merge-gate` with the head `acceptance-gate` accepted — but first
+      in `.agents`, merge it through `merge-gate` with the head `acceptance-gate` accepted, and the combined review accepted where **Guidance Delivery** requires one — but first
       ask whether any line it adds or drops is true only once a still-open source pull request
       merges. Select where dependent guidance goes under the GitHub rule's **Branches and Pull Requests**,
       and report any hold under its **Merge Authorization**. Otherwise a pull request carrying a

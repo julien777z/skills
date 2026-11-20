@@ -6,7 +6,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { withKeys } from '@/lib/utils';
 import type { OutlineGroup, OutlineSection as OutlineSectionSpec } from '@/spec';
 import { SectionCard } from './section-card';
-import { TextList } from './text-list';
+import { ComparedLines, TextList } from './text-list';
 
 const OPEN_GROUP_LIMIT: number = 2;
 const DETAIL_LINE_LENGTH: number = 80;
@@ -23,7 +23,12 @@ function groupWeight(group: OutlineGroup, expanded: boolean): number {
       sum +
       2 +
       (item.links ? 1 : 0) +
-      (open ? Math.ceil(item.detail.length / DETAIL_LINE_LENGTH) + (item.points?.length ?? 0) : 0),
+      (open
+        ? [item.detail, item.current, item.proposed].reduce(
+            (lines, text) => lines + Math.ceil((text?.length ?? 0) / DETAIL_LINE_LENGTH),
+            item.points?.length ?? 0,
+          )
+        : 0),
     1,
   );
 }
@@ -71,16 +76,19 @@ function PlainGroup({ group, first }: { group: OutlineGroup; first: boolean }): 
               <Stack gap="xs">
                 <Stack direction="row" align="start" gap="sm" wrap>
                   {item.tag && <StatusBadge label={item.tag} tone={item.tone} dot={false} />}
-                  <Text size="sm" breakAnywhere>
-                    <RichText text={item.detail} />
-                    {item.meta && (
-                      <Text as="span" size="sm" tone="muted">
-                        {' · '}
-                        <RichText text={item.meta} />
-                      </Text>
-                    )}
-                  </Text>
+                  {(item.detail || item.meta) && (
+                    <Text size="sm" breakAnywhere>
+                      {item.detail && <RichText text={item.detail} />}
+                      {item.meta && (
+                        <Text as="span" size="sm" tone="muted">
+                          {item.detail && ' · '}
+                          <RichText text={item.meta} />
+                        </Text>
+                      )}
+                    </Text>
+                  )}
                 </Stack>
+                <ComparedLines current={item.current} proposed={item.proposed} />
                 {item.points && <TextList items={item.points} />}
                 {item.links && <SourceLinks links={item.links} />}
               </Stack>
@@ -162,9 +170,12 @@ function Group({ group, expanded }: { group: OutlineGroup; expanded: boolean }):
                 className="pl-[18px] text-muted-foreground [overflow-wrap:anywhere]"
               >
                 <Stack gap="sm">
-                  <Text as="p">
-                    <RichText text={item.detail} />
-                  </Text>
+                  {item.detail && (
+                    <Text as="p">
+                      <RichText text={item.detail} />
+                    </Text>
+                  )}
+                  <ComparedLines current={item.current} proposed={item.proposed} />
                   {item.points && <TextList items={item.points} />}
                 </Stack>
               </AccordionContent>

@@ -1,6 +1,7 @@
 # Reviewer Brief
 
-The `review-pass` skill's brief for each **Review Loop** round. The reviewer gets no history, so the
+The `review-pass` skill's brief for each **Review Loop** round, and its **Combined review** form for
+a **Combined Review** round. The reviewer gets no history, so the
 brief carries everything; fill every `<…>` field.
 
 ```text
@@ -38,3 +39,29 @@ A later round sends this brief again with the ledger (`fixed:`, `disagree:`, `de
 evidence), the same base diff and the change since the last round, and asks the reviewer to check
 open ids and changed code, marking each `resolved` or `still open: <reason>`; a `Whole:` skill or
 rule is still read in full at the new head every round.
+
+## Combined review
+
+```text
+Review only. Do not edit, commit, push, comment on PRs, or start subagents.
+Set: for each pull request: <repo abs path> Base: <sha> Head: <accepted sha> Intent: <intent>
+Description: <title and body> See: git diff <base>...<head>
+Changed since the last combined round: <per head, git diff <read head>..<head>, or first round>
+Each pull request passed its own review. Read every diff together and report only flaws of the
+combination, each naming the pull requests it needs:
+- an interface, contract, schema, configuration name or generated type one provides and another
+  consumes that does not match;
+- a merge or deploy order under which an intermediate state breaks: name the safe order or the
+  missing guard;
+- one concern solved twice, or two mechanisms for one thing, across the set;
+- behavior correct in each and wrong with both applied;
+- a trust boundary, permission or data exposure that opens only across the set, held to the
+  security-audit rubric's bar for an exploitable finding: <rubric path>;
+- guidance that describes behavior another pull request in the set changes;
+- a claim in one description that another contradicts.
+blocker, should and nit as in the round brief above.
+Reply:
+VERDICT per head: <pull request> <head> ACCEPT or CHANGES
+C1 [blocker|should|nit] owner: <pull request, or both> <file>:<line> <claim>. Fix: <suggestion>
+Order: <safe merge and deploy order, or any>
+```

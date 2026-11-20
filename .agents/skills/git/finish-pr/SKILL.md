@@ -64,10 +64,11 @@ specific set.
   **Dependent Pull Requests**.
 
 Each target is an independent unit with its own range, intent, threads, validation, acceptance, and
-exact-head merge gate. A compact agent-configuration unit may run right after its related source unit
-in another repository only when its complete diff changes one non-executable `.agents` Markdown file
-and documents behavior the source unit introduces: merge the source unit first, then complete the
-guidance unit's own gates.
+exact-head merge gate; with more than one selected unit, **Workflow**'s combined review reads them
+together before the first merge. A compact agent-configuration unit may run right after its related
+source unit in another repository only when its complete diff changes one non-executable `.agents`
+Markdown file and documents behavior the source unit introduces: review it before the combined
+review as any unit, merge the source unit first, then complete the guidance unit's merge gate.
 
 ## Dependent Pull Requests
 
@@ -99,7 +100,8 @@ dependent unit. Its dependency gates its merge, never its review:
 
 Process each eligible unit through these steps, preserving their order within that unit. A held unit
 does not delay starting another independent unit whose current work and dependencies permit it;
-hold only the unit that needs the unresolved result, recording its gate and saved next action.
+hold only the unit that needs the unresolved result, recording its gate and saved next action; step
+2 alone waits for every unit's step 1.
 Follow the active task's recorded priorities when choosing the next eligible unit.
 
 1. Invoke `review-pass` on the pull request with its intent statement, asking for the whole pull
@@ -107,7 +109,11 @@ Follow the active task's recorded priorities when choosing the next eligible uni
    sibling modules. Its **Range** decides what an earlier whole pass already covers, so a pull
    request already reviewed whole — one an earlier run held for a dependency, say — gets only its
    delta since that accepted head. It returns the accepted head.
-2. When merge is withheld, the unit ends at that head, its pull request left draft. A dependent unit
+2. With more than one selected unit, once step 1 has returned for every unit and before the first
+   merge, invoke `review-pass`'s **Combined Review** over them all, a unit whose merge is withheld
+   or held for a dependency included; a unit goes on only at a head that round accepted, and a later
+   change to a head it read, a repoint included, returns to it as that section says.
+3. When merge is withheld, the unit ends at that head, its pull request left draft. A dependent unit
    holds at that head until its dependency merges and then repoints, as **Dependent Pull Requests**
    says. Otherwise invoke `merge-gate` with:
    - the pull request and the head `review-pass` accepted, or a dependent unit's repointed head;
@@ -118,7 +124,7 @@ Follow the active task's recorded priorities when choosing the next eligible uni
      someone else pushed: `review-pass` runs again over that fix's delta, and the fix is pushed through
      the GitHub rule's **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
      passed.
-3. After a verified merge, run **Local Checkout**. Record the merge and checkout outcome, or the
+4. After a verified merge, run **Local Checkout**. Record the merge and checkout outcome, or the
    gate that holds the merge, with `session-ledger`, and continue to the next unit.
 
 Before concluding, require discovery to be complete and reconcile the recorded target inventory
@@ -180,6 +186,6 @@ of agent configuration, run here after every verified merge.
 
 Every terminal report includes a clickable Markdown link for every pull request created, updated,
 reviewed, or merged during the run; never replace links with repository names, numbers, counts, or
-bare URLs. For each unit, report `review-pass`'s **Output** in full and the merge commit or the
-gate that holds it. For a merged unit, include the local checkout outcome and resulting commit,
+bare URLs. For each unit, report `review-pass`'s **Output** in full, its combined review line
+included, and the merge commit or the gate that holds it. For a merged unit, include the local checkout outcome and resulting commit,
 or the reason it could not be refreshed.

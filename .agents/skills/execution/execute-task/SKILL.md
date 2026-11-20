@@ -406,8 +406,7 @@ Apply [named work](references/named-work.md):
 
 When **Priority**'s broken-deployed-operation recovery applies, first reconcile it against the
 actual deployed operation. Its unmet branch checkpoint or failed default-source retry keeps this
-checkpoint paused; a completed diagnostic or implementation
-substep does not start either delivery stream.
+checkpoint paused; a completed diagnostic or implementation substep does not start either stream.
 
 When an operational, external, or other non-source outcome reaches its authoritative terminal state,
 re-enter this checkpoint before any final report. Reconcile the saved work and pending guidance
@@ -436,11 +435,13 @@ a small review and a large one a full review of the new work.
 
 Follow the selected workflow’s declared verification and delivery sequence and any hold it places on delivery.
 
-Two streams run side by side from here: the guidance stream and the source stream.
+Two streams run side by side from here: the guidance stream and the source stream. When the task
+has more than one open pull request, in either stream and any repository, invoke `review-pass`'s
+**Combined Review** over them once each has its accepted head and before any of them merges.
 
 - **Guidance stream.** Invoke `process-ledger` for the task's private ledger. It sends the
   `guidance_correction` batch it freezes to `edit-skill`'s **Guidance Delivery** route, delegated
-  so it never waits on the source stream. Before a source pull request's source-stream step 1,
+  so its review and checks never wait on the source stream. Before a source pull request's source-stream step 1,
   every pending `guidance_correction` entry the GitHub rule's **Branches and Pull Requests** puts
   on it, in the batch in flight or the one after it, is pushed to it and passes its source check,
   as **Guidance Delivery** step 1 says, so its review pass, history and ready message cover them. An entry recorded after the batch in flight merged is delivered in the batch frozen
