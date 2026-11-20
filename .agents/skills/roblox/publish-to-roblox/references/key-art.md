@@ -82,8 +82,10 @@ rebuild it from the frozen head with the build command and integrity check of th
   placeholders, upscale blur, and a wordmark crowding the subject.
 - Lay the whole set out as one sheet with every picture shrunk to 150 px, beside the trending
   sheets, read it whole, and ask whether each picture still says what the game is.
-- Redo any picture that fails either check, and put each redone picture through both checks again,
-  with a new 150 px sheet, so the last sheet read holds exactly the pictures that will be uploaded.
+- Redo any picture that fails either check, keeping everything **Composite** adds, such as moving or
+  resizing a crowding wordmark rather than leaving it out, and put each redone picture through both
+  checks again, with a new 150 px sheet, so the last sheet read holds exactly the pictures that will
+  be uploaded.
   State where the set still falls short of the trending pictures.
 
 ## Upload and Set
