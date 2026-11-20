@@ -79,20 +79,17 @@ Do not infer a domain invariant from current non-null rows, one observed payload
 producer, or a test written around the current shape. Enumerate every valid producer and live
 consumer before tightening or simplifying a shared field.
 
-**Shared index.** Doctors run in a row share one index of the repository, keyed by commit in the
-worktree's working-files folder. This doctor reads its file inventory, symbol and import tables and
-dependency list where the current commit's copy holds them, and rebuilds only what is missing or
-stale. It writes the model field table — every model with its field names, annotations, owner and
-boundary — and the table and index inventory.
+**Shared index.** From the index `doctor-protocol`'s **Share The Index** keeps, this doctor reads
+the file inventory, symbol and import tables and dependency list. It writes the model field table —
+every model with its field names, annotations, owner and boundary — and the table and index
+inventory.
 
 ### Pre-Pass
 
 These are the mechanical steps `doctor-protocol` runs once before any reviewer reads; a reviewer
-confirms or rejects their candidates and traces the flows no command can. Use the tool the
-repository already configures for a job. Where it configures none, a tool the machine already has is
-run read-only with nothing committed, and one neither has is recorded as not run, as
-`doctor-protocol`'s **Measure Before Fan-Out** says, and is never installed into the project
-unasked. A database the run cannot reach read-only is recorded the same way.
+confirms or rejects their candidates and traces the flows no command can. A tool the repository does
+not configure is handled as `doctor-protocol`'s **Measure Before Fan-Out** says. A database the run
+cannot reach read-only is recorded the same way.
 
 - **Field dump** — a script kept in the run's working files loads every first-party model and
   prints its field names and annotations: a validation library's declared fields, the ORM's table
@@ -399,10 +396,9 @@ requiredness, simplification, or index change whose evidence does not establish 
 semantics. The parent states the end-to-end conclusion for each selected field, model, and
 persisted table.
 
-The final adversarial reviewer tries to disprove the requiredness and simplification decisions,
-checks retained nullable and separate states, challenges shared ownership and index dispositions,
-and reviews unresolved evidence and cross-boundary consistency; the reviewer verifying completion
-confirms every planned field and model cascade reached each live consumer.
+The final reviewer challenges the requiredness and simplification decisions, retained nullable and
+separate states, shared ownership and index dispositions, and cross-boundary consistency; the
+completion check confirms every planned field and model cascade reached each live consumer.
 
 ## Dispositions
 

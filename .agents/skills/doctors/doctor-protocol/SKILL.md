@@ -1,6 +1,6 @@
 ---
 name: doctor-protocol
-description: The audit-and-fix protocol every doctor skill runs on — scope resolution, a mechanical pre-pass, a partitioned read-only audit under a reviewer cap, a resumable run ledger, a remediation plan shown and started at once, fixes by area on one pull request, one final review, deferral of leftovers, and the report skeleton. Read from a doctor skill that declares it; never invoked on its own.
+description: The audit-and-fix protocol every doctor skill runs on — scope resolution, a repository index doctors share, a mechanical pre-pass, a partitioned read-only audit under a reviewer cap, a resumable run ledger, a remediation plan shown and started at once, fixes by area on one pull request, one final review, deferral of leftovers, and the report skeleton. Read from a doctor skill that declares it; never invoked on its own.
 short_description: 'Set the audit, fix, review, and reporting process used by every doctor skill.'
 ---
 
@@ -51,7 +51,7 @@ protocol's, a reviewer capability level, and a late audit as **Implement In Wave
 
 A doctor runs one fixed workflow: it defines no effort levels, mode menus, or hidden switches,
 and does not infer alternate execution from an effort word, flag, or implicit setting. Scope,
-phase, lens, and path selectors only bound the inventory, and the size of that scope alone selects
+area, lens, and path selectors only bound the inventory, and the size of that scope alone selects
 a route in **Launches**. Declare fixed dependency settings at the actual call in the doctor entrypoint body; they are not caller-selectable doctor options. Anything else a doctor states is
 either this protocol restated, which is skill-to-skill duplication, or a rule the repository already owns.
 
@@ -68,14 +68,14 @@ selects none, with any reviewer fallback the doctor specifies; workers run at st
 | Plan gate | 1 | 1 |
 | Workers | 1 | 1 per group, as many at once as `subagent-matrix`'s **Dispatch** allows |
 | Final reviewers | 1 | 2, or up to 5 when the diff is read in slices |
-| Final gate | 1 | 1, or 1 per slice, at most 4 |
+| Final gate | 1 | 1, or 1 per slice and 1 for the seams between slices, at most 5 |
 
 - **The small route is 5 launches.** It applies when the caller's selection resolves to at most
   ten files holding at most 2,000 lines together. It takes no manifest, no cross-cutting reviewer
   and no plan attackers.
 - **The whole route usually takes 15 launches** on a repository of four partitions and six groups:
   5 audit reviewers, 1 plan gate, 6 workers, 2 final reviewers and 1 final gate. On a diff read in
-  slices the same run takes up to 21.
+  slices the same run takes up to 22.
 - **A run starts at most twelve audit reviewers.** A doctor may set a lower cap, never a higher
   one. A domain dependency's own agents follow that dependency's counts and stand outside this cap.
 - **What adds launches beyond the table:** one verifier for a partition whose reviewer returned
@@ -88,9 +88,10 @@ selects none, with any reviewer fallback the doctor specifies; workers run at st
 
 Use an explicit domain, service, path, or other concrete selection supplied by the caller.
 Otherwise audit the whole repository. A doctor run sets its own scope, so `pre-production`'s
-incidental size budget does not apply. Before fan-out, read through `defer-scope` the declined
-records for that scope, each with its reconsideration criterion. A finding one covers enters the
-ledger as declined and is skipped, never presented again, unless its criterion is met.
+incidental size budget does not apply. Before fan-out, take `defer-scope`'s **Reading A Scope** for
+that scope, which returns its declined and canceled records with the reason each was declined and
+what would reopen it. A finding one covers enters the ledger as declined and is skipped, never
+presented again, unless what would reopen it has happened.
 
 An explicit selection controls which inventory items are audited, not how little context may be
 read. Trace each selected item across ownership boundaries far enough to establish its evidence.
@@ -134,6 +135,26 @@ stage.
 - Do not infer an invariant from one observation: one passing run, one fixture, one file that
   happens to follow a convention. Enumerate the items before deciding what the convention is.
 
+## Share The Index
+
+Doctors run one after another on the same commit share one index of the repository, so each reads
+what an earlier one built.
+
+- **Where it lives.** `.agent_sources/doctor-index/<commit>/`, in the working-files folder of the
+  worktree the run works in, beside the run records and kept out of Git the same way. The commit
+  is the one its tables were built from. [Run records](references/run-records.md) gives its files.
+- **What it holds.** The file inventory, the symbol table, the import table and the dependency
+  list with each manifest's declarations, and each further table a doctor says it writes.
+- **Who writes and reuses it.** The parent, before the mechanical pre-pass. It reads each table
+  the doctor says it reads where the folder for the audited commit holds it, builds only the ones
+  that are missing, and writes the tables the doctor says it writes. Reviewers and workers read
+  the index and never write it. A doctor states which tables it reads and which it writes, and
+  nothing else about the index.
+- **When it is stale.** A table serves only the commit its folder names, and only for files with
+  no uncommitted change. Once the head moves, by the run's own fix commits included, a table read
+  again is rebuilt in the new head's folder, and the folders of commits no branch of the worktree
+  points at are deleted.
+
 ## Measure Before Fan-Out
 
 Before any reviewer launches, the parent runs three things once and saves each result in the run
@@ -146,9 +167,11 @@ folder. Every reviewer reads the same results and repeats none of them.
 - **Mechanical pre-pass.** Each command the doctor declares runs in its read-only mode over the
   scope, and its output is saved as the candidate list for the lens it serves. A reviewer judges
   each candidate in its partition, confirming or rejecting it with a reason, and reads for what no
-  command finds. A tool the repository does not have is recorded as not run, with the lens it
-  would have served, and that lens falls to the reviewers' reading; the run never installs a tool
-  into the project, adds one to its manifests or configures one unasked.
+  command finds. A command uses the tool the repository configures for its job. A tool the
+  repository does not declare but the machine already has may run read-only, with nothing
+  installed, configured or committed. A tool neither has is recorded as not run, with the lens it
+  would have served, and that lens falls back to the reviewers' reading; the run never installs a
+  tool, adds one to a manifest or configures one unasked.
 - **Measures.** The doctor's declared measures and any other baseline its inventory declares, such
   as a timing or a replay. A collection may need repeated samples to tell a finding from noise. A
   measure that cannot be taken is recorded as unmeasured with the reason.
@@ -344,7 +367,9 @@ fails its third round gets that reference's disposition.
 Once review is clean, put the complete diff to `acceptance-gate`'s final-acceptance question
 against the intent statement. A diff read in slices is put slice by slice, the same slices, each
 gate given its slice's diff as content with the intent statement and the list of files the other
-slices change. Answer every flag under `acceptance-gate`'s **Bounds**, pushing each fix as its own
+slices change, and every slice must be accepted. One more gate then reads the seams between
+slices, as `acceptance-gate`'s final-acceptance question allows: each place one slice's change
+calls, imports or shares a contract with a file another slice changes. Answer every flag under `acceptance-gate`'s **Bounds**, pushing each fix as its own
 increment through the GitHub rule's **Pre-Push Gate**.
 
 When acceptance passes, record a `review` entry with `session-ledger` for each pull request: the

@@ -96,20 +96,17 @@ a table rather than rebuilding it:
   across source, tests, scripts and workflow helpers, and every tool invocation in CI, scripts and
   hooks.
 
-**Shared index.** Doctors run in a row share one index of the repository, keyed by commit in the
-worktree's working-files folder. This doctor reads its file inventory, symbol and import tables and
-dependency list where the current commit's copy holds them, and rebuilds only what is missing or
-stale. It writes the module table, the symbol index, the import graph, the slot tables, the
-configuration matrix and the dependency list with each manifest's declarations.
+**Shared index.** From the index `doctor-protocol`'s **Share The Index** keeps, this doctor reads
+the file inventory, symbol and import tables and dependency list. It writes the module table, the
+symbol index, the import graph, the slot tables, the configuration matrix and the dependency list
+with each manifest's declarations.
 
 ### Pre-Pass
 
 These are the mechanical commands `doctor-protocol` runs once before any reviewer reads, each
-listing candidates for the lens named beside it. Use the tool the repository already configures for
-a job. Where it configures none, a tool the machine already has is run read-only with nothing
-committed, and one neither has is recorded as not run, as `doctor-protocol`'s **Measure Before
-Fan-Out** says, and is never installed into the project unasked. The commands below name the usual
-tool per language.
+listing candidates for the lens named beside it. A tool the repository does not configure is handled
+as `doctor-protocol`'s **Measure Before Fan-Out** says. The commands below name the usual tool per
+language.
 
 - **Lint and type findings** — the repository's configured lint and type checks over the scope with
   no changed-lines filter.

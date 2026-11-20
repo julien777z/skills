@@ -28,20 +28,17 @@ the current tree, the commands the manifests declare, the runner's targets, and 
 Generated documentation is excluded and corrected at its generator; vendored documents are
 excluded as another owner's.
 
-**Shared index.** Doctors run in a row share one index of the repository, keyed by commit in the
-worktree's working-files folder. This doctor reads its file inventory, symbol table, dependency list
-with each manifest's scripts, and configuration names where the current commit's copy holds them,
-and rebuilds only what is missing or stale. It writes the reference table: one row per reference
-with its document, line, kind and whether it resolved.
+**Shared index.** From the index `doctor-protocol`'s **Share The Index** keeps, this doctor reads
+the file inventory, symbol table, dependency list with each manifest's scripts, and configuration
+names. It writes the reference table: one row per reference with its document, line, kind and
+whether it resolved.
 
 ### Pre-Pass
 
 These are the mechanical steps `doctor-protocol` runs once before any reviewer reads. They fill the
 reference table: a reference that resolved is read by nobody, and a reviewer judges only the rows
-that did not and the lenses no step covers. Use the tool the repository already configures for a
-job. Where it configures none, a tool the machine already has is run read-only with nothing
-committed, and one neither has is recorded as not run, as `doctor-protocol`'s **Measure Before
-Fan-Out** says, and is never installed into the project unasked.
+that did not and the lenses no step covers. A tool the repository does not configure is handled as
+`doctor-protocol`'s **Measure Before Fan-Out** says.
 
 - **Extract** — a script kept in the run's working files lists, per Markdown file and docstring,
   every backticked token, link target and fenced command, each classified as a path, command,

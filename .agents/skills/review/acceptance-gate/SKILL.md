@@ -291,7 +291,10 @@ question and never a level of its own:
 - **Base incorporation — what did the base bring in that the change must refactor?** The procedure
   below.
 - **Final acceptance — may this merge?** The complete pull-request diff, read once after review is
-  clean and before any check gate.
+  clean and before any check gate. A calling workflow that states the size past which it reads a
+  diff in slices puts that diff slice by slice instead, one gate per slice, and then puts the
+  seams between slices to one more gate. The diff is accepted when every slice and the seams are;
+  each line is still read once.
 
 ### Base incorporation
 

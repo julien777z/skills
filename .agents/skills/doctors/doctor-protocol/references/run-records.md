@@ -40,6 +40,20 @@ run:
 A stage is `done` only when every file it owes is written. A late audit a doctor declares adds its
 own `audit` and `verify` entries, named for the lenses it covers.
 
+## Shared Index
+
+```text
+.agent_sources/doctor-index/<commit>/
+  index.yaml                each table, the doctor that wrote it and its file
+  files.yaml                the file inventory: path, lines, language and owning area
+  symbols.yaml              each exported symbol with its file, line and importers
+  imports.yaml              each first-party and third-party import by file
+  dependencies.yaml         each manifest's declarations, scripts and lockfile entries
+  <table key>.yaml          one further table a doctor writes
+```
+
+`SKILL.md`'s **Share The Index** says who writes each file and when one is rebuilt.
+
 ## Manifest
 
 ```yaml

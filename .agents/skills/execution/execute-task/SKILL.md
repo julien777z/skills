@@ -153,14 +153,15 @@ without a plan of their own; only an edit that adds nothing skips it.
 
 ### Showing The Plan
 
-- **The user sees a plan once `review-proposal` has accepted it, and never before.** A plan still
-  being drafted or reviewed stays with the run: nothing the user reads — a report, a summary, a
-  status line, a task list, a dashboard or a question — shows its steps, estimates or an outline
+- **The user sees a plan once `review-proposal` has accepted it, or, where the running workflow
+  states a plan route straight to the Proposal gate, once that gate has, and never before.** A plan
+  still being drafted or reviewed stays with the run: nothing the user reads — a report, a summary,
+  a status line, a task list, a dashboard or a question — shows its steps, estimates or an outline
   of them, and a draft is never offered as a preview; a report says only that a plan is being
   prepared. This holds back the plan, never its open decisions, which go first.
-- Before showing a plan, invoke `review-proposal` on the detailed plan once the user's answers to
-  its decisions are folded in, with its intent and verified ownership evidence; the user's short
-  plan consumes that receipt while it adds nothing the detailed plan lacks.
+- Off that route, before showing a plan, invoke `review-proposal` on the detailed plan once the
+  user's answers to its decisions are folded in, with its intent and verified ownership evidence;
+  the user's short plan consumes that receipt while it adds nothing the detailed plan lacks.
   [Authorization](references/authorization.md)'s **Approval Boundaries** consumes the receipt, and
   its **Choices Between Versions Of A Page** applies to a decision between versions of a page.
 - **A plan with no open decision is shown, and its work starts in the same turn.** An open decision
@@ -398,8 +399,7 @@ Apply [named work](references/named-work.md):
 - Before a report goes out, compare each outstanding item against the line the last report carried
   for it; an unchanged line means the item is finished in this turn when **Priority** permits it.
 - A wait blocks only the work that depends on what is awaited. Every wait applies that test to the
-  whole plan record, and an awaited result is pending, never a blocker, until it has a terminal
-  result.
+  whole plan record, and an awaited result is pending, never a blocker, until it is terminal.
 
 ### Completion
 

@@ -39,21 +39,17 @@ with the calls one run makes to it per account and per destination; and any tigh
 the repository configures, such as a documented target, with runner and CI timeouts recorded as
 hang bounds rather than budgets.
 
-**Shared index.** Doctors run in a row share one index of the repository, keyed by commit in the
-worktree's working-files folder. This doctor reads its file inventory, symbol and import tables and
-dependency list where the current commit's copy holds them, and rebuilds only what is missing or
-stale. It writes the test-to-source map, the collected test list, the fixture and doubles tables,
-the duplication detector's pairs over test trees, and each suite's timing and coverage.
+**Shared index.** From the index `doctor-protocol`'s **Share The Index** keeps, this doctor reads
+the file inventory, symbol and import tables and dependency list. It writes the test-to-source map,
+the collected test list, the fixture and doubles tables, the duplication detector's pairs over test
+trees, and each suite's timing and coverage.
 
 ### Pre-Pass
 
 These are the mechanical commands `doctor-protocol` runs once before any reviewer reads, serialized
-as the runner requires, each listing candidates for the lenses that read it. Use the tool the
-repository already configures for a job. Where it configures none, a tool the machine already has is
-run read-only with nothing committed, and one neither has is recorded as not run, as
-`doctor-protocol`'s **Measure Before Fan-Out** says, and is never installed into the project
-unasked. The commands below are pytest's, and a suite on another runner uses that runner's
-equivalent.
+as the runner requires, each listing candidates for the lenses that read it. A tool the repository
+does not configure is handled as `doctor-protocol`'s **Measure Before Fan-Out** says. The commands
+below are pytest's, and a suite on another runner uses that runner's equivalent.
 
 - **Collected tests** — every test the runner collects per target, and every test directory no
   target reaches.
@@ -158,7 +154,7 @@ across suites, since a seam one suite uses and its sibling patches around is vis
 and sums each provider's per-run calls per account and per destination across slices, since a
 shared account's total is visible only there.
 
-The final adversarial reviewer re-times every suite the run cut or reduced against the reported
+The final reviewer challenges the result this way: it re-times every suite the run cut or reduced against the reported
 numbers, re-checks each merged parametrization and folded assertion against the coverage
 comparison for a fact that was dropped, confirms each retained skip or xfail still has a live
 condition, and challenges every coverage gap the run left open.

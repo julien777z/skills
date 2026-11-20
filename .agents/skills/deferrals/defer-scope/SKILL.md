@@ -1,6 +1,6 @@
 ---
 name: defer-scope
-description: Record deferred work in the repository it affects, using Linear or that repository's ledger as an availability fallback; with no scope, read its active records. Use when work is consciously left undone, when a change would take a recorded deferral out of the active set, or when asked what is deferred, outstanding, or still open.
+description: Record deferred work in the repository it affects, using Linear or that repository's ledger as an availability fallback; with no scope, read its active records, or for a caller's scope read every record that covers it, declined and canceled ones included. Use when work is consciously left undone, when a change would take a recorded deferral out of the active set, or when asked what is deferred, outstanding, or still open.
 short_description: 'Record unfinished work in the repository it affects, or read its active records.'
 ---
 
@@ -22,6 +22,10 @@ before any write.
 **Read** when no scope is given. Report the combined active set from Linear and the
 repository ledger, and write nothing. A recorded item is resolved by the user running
 `/execute-defer-scope` on it.
+
+**Read a scope** when a caller that is not recording asks which records cover a scope it is about
+to audit or change. **Reading A Scope** returns them, declined and canceled ones included, and
+writes nothing.
 
 ## When Recording Runs
 
@@ -132,3 +136,20 @@ pull-request, and problem evidence.
 Report one concise entry per deferral with its title, why it remains open, source (`Linear` or
 `repository`), and durable link. If Linear is unavailable, report that limitation and return the
 repository set rather than claiming the combined ledger is empty.
+
+### Reading A Scope
+
+For a scope a caller names — a repository, or a domain, service or path inside it — return every
+record whose affected surface falls in that scope, whatever its state:
+
+- from Linear, the issues carrying the deferral label in every state, completed, canceled and
+  archived included;
+- from the repository ledger, every `deferrals/` child, `deferrals/declined/` included, on the
+  fetched remote default branch and in each open pull request's `deferrals/` diff.
+
+Report one entry per record: its stable key, title, affected surface, state (active, declined,
+canceled or resolved), source and durable link. A declined or canceled entry also carries the
+reason it was declined and its reconsideration criterion, which is what would reopen it, both
+quoted from the record; one that states neither is reported as missing them, never filled in.
+The caller decides what a returned record means for its own findings; this read changes no record
+and admits none.

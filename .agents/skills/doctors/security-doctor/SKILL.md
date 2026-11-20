@@ -27,17 +27,9 @@ mechanism, and every input surface — routes, handlers, jobs, webhooks, message
 entry points, file and archive readers, outbound requests, and configuration that reaches
 behavior. Generated and vendored code is excluded, since neither is fixed where it sits.
 
-**Shared index.** Doctors run in a row share one index of the repository, keyed by commit in the
-worktree's working-files folder. This doctor reads its file inventory, symbol and import tables and
-dependency list where the current commit's copy holds them, and rebuilds only what is missing or
-stale. It writes the deployables with their entry points and input surfaces, and the configuration
-names that reach behavior.
-
-**Run order.** When several doctors run in a row, each run changes what the later ones read, so run
-them in this order, each found through `get-doctors` by what it audits: security first, since its
-fixes add guards and tests; then contract schemas, so models settle; then code slop, which removes
-code, tests and configuration; then tests; then documentation, which resolves references to
-everything removed; and agent guidance last.
+**Shared index.** From the index `doctor-protocol`'s **Share The Index** keeps, this doctor reads
+the file inventory, symbol and import tables and dependency list. It writes the deployables with
+their entry points and input surfaces, and the configuration names that reach behavior.
 
 Findings a supplied `security-audit` report names enter as candidates by their ids. Run one
 `security-audit` codebase audit at `high` effort, composed through
@@ -51,11 +43,9 @@ report.
 
 These are the mechanical commands `doctor-protocol` runs once before fan-out, and every hunter and
 reviewer reads their output: a hit is a candidate to trace, never a finding, and each still passes
-the audit's validation and verification. Use the tool the repository already configures for a job.
-Where it configures none, a tool the machine already has is run read-only with nothing committed,
-and one neither has is recorded as not run, as `doctor-protocol`'s **Measure Before Fan-Out** says,
-and is never installed into the project unasked. The commands below name the usual scanner for each
-job.
+the audit's validation and verification. A tool the repository does not configure is handled as
+`doctor-protocol`'s **Measure Before Fan-Out** says. The commands below name the usual scanner for
+each job.
 
 - **Secrets** — a secret scan over the tree and its history.
 - **Obvious things** — the literal searches the catalog's **Obvious things** class lists: secret
