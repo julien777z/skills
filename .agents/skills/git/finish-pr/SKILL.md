@@ -23,9 +23,11 @@ specific set.
 - **So never ask the user for permission to merge, and never end a run by offering the merge as the
   remaining step.** The answer was given when the skill was invoked. When the gates are green and the
   head is the accepted one, merge it.
-- The same invocation authorizes `review-pass` and `merge-gate` for every selected pull request. It
-  does not authorize separately dispatching a release workflow, creating a deployment, or an
-  unrelated provider mutation.
+- The same invocation authorizes `review-pass` and `merge-gate` for every selected pull request.
+  It does not authorize separately dispatching a release workflow, creating a deployment, or an
+  unrelated provider mutation: `merge-gate`'s **Authorization** says what authorizes those, its
+  **No Deploy Work** what follows each merge, and its **Pull Request Activity** when a pull request
+  is polled.
 - Once started, the run keeps its authorization, targets and merge authority through ordinary user
   interruptions, status requests and separately requested work. Only an explicit pause, stop, handoff, replacement, or terminal result ends it.
 
@@ -139,8 +141,10 @@ head lag and a retryable rate limit are nonterminal.
   and was not subsequently reverted. Compare staged and unstaged changes, including file mode and binary
   changes, before restoring anything. For a file with mixed or uncertain changes, preserve the
   entire file unless the landed and local-only changes can be verified independently.
-- A copy a file-sync service or the operating system made, confirmed as the global rules' **Tools
-  and environments** says, is not local work: it is deleted as that bullet says, never saved.
+- A copy a file-sync service or the operating system left behind is not local work: one whose name
+  is the original's plus a copy suffix, and whose content its original or a version Git holds
+  already has, is deleted once no process, worktree or session uses it, never saved, and named in
+  the report. A copy with content of its own stays as an ordinary file.
 - Stage the remaining local-only edits by path, including untracked files that belong to the work.
   When a path has different staged and working-tree edits, keep its index entry intact. Save the
   index, working tree, and untracked files in a named local stash and verify the saved versions

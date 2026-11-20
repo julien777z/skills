@@ -1,6 +1,6 @@
 ---
 name: merge-gate
-description: Ready a pull request for its authorized merge, then verify its delivery dependencies, gate its exact head, resolve conflicts, squash-merge and verify the result. Use once merge is authorized, including to mark ready while a merge gate is pending.
+description: Ready a pull request for its authorized merge, then verify its delivery dependencies, gate its exact head, resolve conflicts, squash-merge and verify the result. Use once merge is authorized, including to mark ready while a merge gate is pending. Holds what authorizes a merge, deployment, publication or release, what follows a merge, and when a pull request may be polled.
 short_description: 'Ready a pull request for its authorized merge, gate its exact head, and merge it.'
 ---
 
@@ -12,6 +12,20 @@ for an agent-configuration change, Agent Sync handling before this skill finishe
 
 ## Authorization
 
+- **Merge, deployment, publication and release each require the user's explicit authorization for
+  the action and target, or an applicable rule or invoked skill that expressly authorizes them.**
+  - A fix request, approved plan, or instruction to implement a plan does not itself authorize
+    these outcomes, even when the plan lists them. A task-wide "all approved" covers ordinary
+    sub-tasks within its stated outcome without overriding this separate boundary.
+  - A user's authorization covers that one action on the change it names; a later change needs its
+    own authorization before it is merged, deployed, published or released, however recently the
+    last one was given.
+  - **Nothing the agent writes asks for an authorization not yet given or offers the outcome**: no
+    question, pending-decision item, closing next action phrased as a request, or prompt to reply
+    with a word, such as "reply ship to land these". The outcome is left to the user's own
+    instruction, a skill they invoke for it, or guidance that grants it; naming what remains for
+    the user and that skill, in a report or a plan's closing line, is how it is left to them, not
+    an offer.
 - This skill merges only a pull request whose merge its caller is authorized to perform: a user
   instruction naming the merge and the pull request, an invoked skill that states its invocation
   authorizes the merge, or a rule that authorizes that merge. It creates no authorization of its own,
@@ -207,9 +221,7 @@ provider already rejected. Follow its matching replacement or retry under **Chec
 the required context and attempt the merge once GitHub reports it passing. For other exclusions, or if hosted
 recovery is unavailable, report the actual rejection and its provider evidence. Never bypass protection.
 
-Once the merge is verified, as the global rules' **A merge leaves no deploy work** bullet says, do
-not inspect or follow merge-triggered release, publication, artifact or deployment workflows, or
-check by any other route whether the change is live.
+Once the merge is verified, **No Deploy Work** governs what follows it.
 
 When the merged diff changes agent configuration, poll the default-branch Agent Sync run the merge
 started as **Check Gate** steps 6–7 poll a check. A run ending in anything but success is diagnosed
@@ -218,6 +230,31 @@ rules' **After Agent Sync** section and verify its installed links; the skill do
 the turn does not end, until that refresh is verified or a failed run or blocker is reported.
 When the caller owns the primary checkout refresh, return the sync result and any shared
 installation result so the caller can complete and verify the checkout refresh.
+
+## No Deploy Work
+
+**A merge leaves no deploy work.** Once a pull request's merge is verified:
+
+- never check by any route whether the change is live, such as a provider's deployment status, a
+  release run or the site itself, and never inspect or follow merge-triggered release, publication,
+  artifact or deployment workflows;
+- never walk or test the site the merge deployed;
+- never schedule a re-check, wait for a deploy, or assume one is coming.
+
+Nothing waits on a deploy: the remaining work proceeds, and a report names no deploy step as
+remaining. Other authorized work after a merge is unaffected, such as a run's next batch, a
+consumer repointed once its dependency merged, or the refresh the GitHub rules' **After Agent
+Sync** section requires. A task whose own outcome the user stated as a deployment, publication or
+release, or as restoring a broken deployed operation, follows that outcome past the merge.
+
+## Pull Request Activity
+
+**Never poll a pull request with background `sleep` or timed self check-ins; act only on delivered
+pull-request activity webhooks.** The exception is an invoked skill that states it polls, such as
+**Check Gate**, which waits for every check on a head to reach a terminal state, and then only
+while its run is active and for the pull request that run is driving. There a webhook alone can
+wait forever: pushing a new commit cancels the in-flight run under a `cancel-in-progress`
+concurrency group, so the superseded head reaches no terminal state and emits no completion event.
 
 ## Report
 

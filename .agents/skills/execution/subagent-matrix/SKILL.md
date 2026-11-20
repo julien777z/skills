@@ -49,8 +49,9 @@ agent; the calling agent launches the actual assignment with the selected model.
    repairing the agent's own client or runtime is that repair, never a repository or global settings change,
    which this step forbids below. Repair the component that actually holds the refused value, read from the
    running request path rather than from the refusal's own advice, such as a proxy between the agent and the
-   provider. Only when that component is out of reach, as the global rules' bullet on a step only the user can
-   take settles it, does its repair go to the user as such a step, with the exact command. Record the original
+   provider. Only when that component is out of reach — every route the agent's tools have to it has been tried,
+   and what remains needs the user's own identity, device, password or physical presence — does its
+   repair go to the user, as a question naming the whole step with the exact command. Record the original
    refusal, the repair attempted, and any relaunch receipt. If the failure remains operational or the repair
    cannot be made, use the launch fallback and retain that classification. Model substitution requires an
    explicit receipt that the exact model is unsupported or, where step 4 allows it, denied.
@@ -121,6 +122,17 @@ agent; the calling agent launches the actual assignment with the selected model.
    arguments the host accepted; a missing or mismatched field is an invalid dispatch,
    not review evidence. Replace that reader with an explicitly selected reader before counting
    the required review or gate as complete.
+
+## When To Delegate
+
+Delegate execution to subagents where the work splits into independent parts, needs an independent
+reader, or would crowd the coordinator's own context; do small or tightly coupled work directly.
+
+- The primary agent coordinates the work, retains integration and decisions, and starts independent
+  tasks concurrently when their ownership, dependencies and resources permit.
+- A worker hands required independent reviews, gates and additional capacity needs up to its
+  delegating agent when it cannot launch them itself, as **Dispatch**'s launch fallback says.
+- Delegation does not extend the user's authorization or relax safety and sequencing requirements.
 
 ## Dispatch
 
