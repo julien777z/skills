@@ -1,6 +1,6 @@
 ---
 name: acceptance-gate
-description: Independent read-only verdict on a pull request's complete diff before merge, run once per pull request; also for a triage or deferral decision, a list of borderline incidental items, and base incorporation; per plan step only for a finished step that later steps build on. Never run per fix, apart from a fresh gate over each repair of, or answer to, a gate's flag. Load it before dispatching any gate, however the gate is launched, for the pre-gate check its caller runs first.
+description: Independent read-only verdict on a pull request's complete diff before merge, run once per pull request; also for a triage or deferral decision, a list of borderline incidental items, and base incorporation; per plan step only for a finished step that later steps build on. Never run per fix, apart from a fresh gate over each repair of, or answer to, a gate's flag.
 short_description: 'Have an independent reviewer decide whether a proposed change fits the task and the repository.'
 ---
 
@@ -330,10 +330,9 @@ closed as its paragraph below says, and the decision the global rules' review-ro
 **Each flag carries its severity, `defect` or `style`.** A style flag concerns only the form of
 lines whose behavior, structure and contract stand: a docstring's or comment's length, a missing
 blank line, a name's length, wording that misstates nothing. Everything else is a defect, however
-small its fix. The author fixes a style flag and runs the checks covering it, and a gate confirms it
-before the change counts as accepted: final acceptance when the change still gets one, otherwise,
-as for a style flag final acceptance raised, a fresh re-check of those lines alone. A style flag
-costs no round, under the global rules' review-round limit or the repair rounds below, and never
+small its fix. The author fixes a style flag and runs the checks covering it, and final acceptance,
+which every change gets before it merges, confirms it; a style flag final acceptance raised is
+confirmed by a fresh re-check of those lines alone. A style flag costs no round, under the global rules' review-round limit or the repair rounds below, and never
 goes to `council`.
 
 **A gap in the evidence a gate was given is not a failed round.** A gate whose verdict waits only

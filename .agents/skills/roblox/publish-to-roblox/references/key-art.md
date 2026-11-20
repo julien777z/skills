@@ -28,9 +28,8 @@ A player-height gameplay screenshot is not a game picture, however good the scen
 
 ## Stage From the Game's Own Assets
 
-Stage, and take every capture, a trial shot included, in a scratch copy of a built place, never
-saved over a source file, with the game's own characters, creatures, outfits, props, effects and
-places.
+Stage in a scratch copy of a built place, with the game's own characters, creatures, outfits,
+props, effects and places; the source place file is never written.
 
 - **Pose, then anchor.** Pose characters and creatures through their joint offsets, such as a
   `Motor6D`'s `C0`, or freeze an animation at a strong frame. Then anchor every part where it
@@ -75,10 +74,11 @@ places.
 
 ## Check
 
-- Read each picture whole at full size, looking for clipping, a floating or hidden subject, stray
-  text or names, grey placeholders, upscale blur, and a wordmark crowding the subject.
-- Shrink it to 150 px beside the trending sheets and ask whether it still says what the game is.
-  Redo any picture that fails, and state where the set still falls short of the trending pictures.
+- Lay the whole set out as two sheets beside the trending sheets, one at full size and one with
+  every picture shrunk to 150 px, and read both whole.
+- At full size, look for clipping, a floating or hidden subject, stray text or names, grey
+  placeholders, upscale blur, and a wordmark crowding the subject; at 150 px, ask whether each
+  picture still says what the game is. Redo any picture that fails, and state where the set still falls short of the trending pictures.
 
 ## Upload and Set
 
@@ -108,6 +108,7 @@ through whichever route the project provides for them.
   `https://thumbnails.roblox.com/v1/places/gameicons?placeIds=<ids>&size=512x512&format=Png`,
   `https://thumbnails.roblox.com/v1/games/icons?universeIds=<id>&size=512x512&format=Png`, and the
   `multiget/thumbnails` call above for the universe.
-- Download each image and read it whole, confirming it is the new picture and not the placeholder.
+- Download every set picture into one sheet and read it whole, confirming each is the new picture
+  and not the placeholder.
 - A state other than `Completed`, such as `Pending`, means moderation is still reviewing the image:
   read again until it completes or a bounded wait passes, and report the state as read.
