@@ -62,10 +62,9 @@ Build the clean target contract instead of preserving transitional behavior.
   in code the change did not write may stay red. That holds whether the findings predate the change
   or the change brought them to light, such as a new lint rule meeting existing code or a
   changed-file lint run meeting older code in a file the change touched. Fix the findings in lines
-  the change writes. Every other finding is incidental cleanup under the size budget below: fixed
-  while it fits the budget in force, and left for later work on that code past it. Never fix past
-  that budget to turn the
-  check green, never loosen, disable, rescope or ignore the check, and never report the red check to
+  the change writes. Every other finding that shows no defect is incidental cleanup, fixed or left
+  as the size budget below says. Never fix past that budget to turn the check green, never
+  loosen, disable, rescope or ignore the check, and never report the red check to
   the user or ask about it, apart from a merge branch protection rejects for it, reported as the
   bullet above says. A finding that shows a defect, such as deprecated usage or a vulnerability,
   stays one, fixed as the bullets below say. A finding the change's own code or contract change
@@ -192,8 +191,10 @@ with an obsolete owned contract or revision.
     and needs no plan of its own. Each such fix gets its own commit, named for what it repairs.
   - Cleanup past the budget in force is deferred work: returned to the caller to record, listed in
     the change's report one line each with its record, and never fixed in the change or put to the
-    user as a question. A defect, a security vulnerability included, is never past it. An explicitly
-    requested broad refactor sets its own scope and carries no budget.
+    user as a question. An older finding a non-essential check reports is the exception: past the
+    budget it is left for later work on that code, neither recorded nor reported. A defect, a
+    security vulnerability included, is never past it. An explicitly requested broad refactor sets
+    its own scope and carries no budget.
 - **A correction to how one screen looks or reads reaches every page when the user makes it a
   rule, and that screen alone when they do not.** A correction the user asks to have codified, or
   gives a reason for that holds wherever the shape appears, such as "labels sit above their fields
