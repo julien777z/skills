@@ -146,9 +146,9 @@ harnesses and validated. The skill's workflow names the section each step applie
   or invoke another skill. Scripts the skill runs go under `scripts/`; supporting files may live
   under `assets/`, `resources/`, or another directory named for their role. Keep only files the skill
   needs.
-- Never add `agents/openai.yaml` to a repository skill. Repository skills contain `SKILL.md` and
-  only supporting files required by the skill; provider UI metadata stays outside repositories
-  and is never propagated.
+- Never add `agents/openai.yaml` to a repository skill, and remove one found in a canonical
+  package. Repository skills contain `SKILL.md` and only supporting files required by the skill;
+  provider UI metadata stays outside repositories and is never propagated.
 - Critical decisions and when to load a reference are visible in `SKILL.md`. A reader following the
   entry point reaches all guidance needed for the selected route before acting.
 - Each reference has a descriptive subject, a resolved link, and a clear role within its owning

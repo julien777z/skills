@@ -272,8 +272,9 @@ when only one suite uses it. Fixture lifecycle wiring and scenario inputs stay i
 Inject application model types where a shared import would invert dependencies.
 Discover that owner from existing implementations and the repository's test-utilities package
 before relocating anything.
-Complete the ownership move as `pre-production`'s **A new file is the last resort** convention requires: inspect every related implementation and
-consumer, and flag a partial move even when the factory left behind was already there. Generic
+Complete the ownership move as `pre-production`'s **Scope Follows The Defect, Not The Request**
+says of a parallel copy: inspect every related implementation, move every consumer onto the one
+owner, and flag a partial move even when the factory left behind was already there. Generic
 lifecycle helpers retain their own owners; a shared word does not establish shared responsibility.
 
 Run `test-fixture`'s **Factory Contents** checks over every factory module in the suite, with
@@ -360,7 +361,10 @@ green, and the durations are re-taken against the same workload.
 Application changes qualify only for the performance exception below, removal of a proven dead
 test-only seam, or repair of a product defect exposed by a baseline failing test. For a seam,
 inspect non-test callers and history, move coverage to its real owner boundary, then remove the
-unused export, flag, wrapper, injection hook, or dead path without a compatibility alias. For a
+unused export, flag, wrapper, injection hook, or dead path without a compatibility alias. A test
+failing at this run's baseline measurement is this doctor's own finding: a run the user invoked to
+repair tests is the one exception to `pre-production`'s **Encountered Issues** baseline exclusion,
+which records and leaves a test already failing on the default branch that other work meets. For a
 baseline failure, reproduce the product defect, fix it at its owner in a separate commit, and show
 the same harness failing with the fix absent and passing with it present. Do not weaken, skip, or
 delete tests to conceal a defect. Other application correctness and structural changes remain

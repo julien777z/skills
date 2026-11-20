@@ -163,9 +163,6 @@ type Status = (typeof Status)[keyof typeof Status];
   or filtered once by the repository's lint gate, with its reason beside it, for every package and
   every file, never for one named package — the one configuration entry this section admits. A category turned off for dependencies is off for our own code too; the
   checks that stay on keep our own errors reported.
-- The Comments section's exception admits a tooling directive as something other than prose, so a
-  sweep that strips comments leaves it alone. That is about not deleting one that already exists; it
-  is not license to add one.
 
 ## Comments
 
@@ -174,8 +171,9 @@ type Status = (typeof Status)[keyof typeof Status];
   from the code the way the sentence does. Where a line needs prose to be understood, rename it,
   split it, or give the value a type that states what it is. That includes JSDoc on a prop, field,
   type or component: a prop's name and type carry what the block would say.
-- The exception is a directive the tooling reads — a linter suppression, a type-checker instruction
-  — which is not prose and stays.
+- The exception is a directive the compiler or a build tool reads, such as a triple-slash
+  reference, which is not prose and stays. A suppression a sweep finds is not deleted as a comment:
+  **Suppressions** governs it, and none is added.
 - **The other exception is behavior somebody else owns, which no amount of renaming can make the
   code show.** A framework that consumes its own headers before your code runs, a browser that sends
   a request for a document when nobody navigated, a library whose call means something other than it

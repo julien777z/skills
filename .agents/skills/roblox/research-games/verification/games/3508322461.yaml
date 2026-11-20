@@ -52,7 +52,7 @@ context:
   play_style: Action / Battlegrounds & Fighting (API genre_l1 Action, genre_l2 Battlegrounds & Fighting)
   camera_perspective: third-person (spawn view, not operated)
   device_and_input: macOS Roblox player in a VM; no input sent Videos show PC keyboard and mouse (source_4), a gamepad with relabeled tiles (source_5) and mobile/iPad touch (source_6).
-  observation_environment: Isolated macOS guest VM over SSH, 1920x1200 points, captures downscaled to 1200 px
+  observation_environment: Isolated macOS VM over SSH, 1920x1200 points, captures downscaled to 1200 px
   visible_server_population: About 12 players listed in the kill leaderboard at join; API maxPlayers 25, 106,003 playing at retrieval
   solo_or_group: Public free-for-all server (inferred from leaderboard and other avatars in view)
   game_version_if_known: Halloween title tag; place updated 2026-11-05T05:29:22Z

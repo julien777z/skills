@@ -52,8 +52,7 @@ Use `use-browser` for browser control through its supported route. Apply `test-f
 
 ## Work out which repositories are present
 
-The stack spans a backend and a frontend that live in separate repositories, and either may be
-absent. Detect what is checked out — from this repository's root and its sibling directories —
+A stack can span repositories, such as a backend and a frontend, and any may be absent. Detect what is checked out — from this repository's root and its sibling directories —
 and scale the work to match:
 
 | Present | What to do |

@@ -228,8 +228,8 @@ Left alone: a slot whose difference a contract requires, with the contract named
 Code spread over more files and folders than its responsibilities need.
 
 - every module with one or two small public symbols whose siblings would hold them;
-- every module, whatever its count, that the code-simplify rubric's standard 2 merges into an
-  existing owner, or into one a broader name would make its owner;
+- every module, whatever its count, that the `code-simplify` rubric's **A new module whose concern an existing module already owns**
+  standard merges into an existing owner, or into one a broader name would make its owner;
 - every UI area folder whose modules include **Pass-Through Layer**'s wrapper components or links
   of its chains;
 - every pair of modules or folders answering the same question, and every concern split across
@@ -532,7 +532,7 @@ budgets, cross-suite layout and coverage maps belong to another doctor and are n
 - Data a removal leaves in the old shape — a flag whose retirement backfill has not run, a chain to
   collapse — follows `pre-production`'s **Product State** and **Target Contract** and the
   repository's database-migration skill, never a question.
-- The user decides what `pre-production`'s **Trade-Offs Are Surfaced, Never Enforced** reserves
+- The user decides what `pre-production`'s **Product Choices** reserves
   for them. A contract a consumer outside the user's control speaks stays as it is and is reported,
   under its **Target Contract**.
 - Fix the reader or the writer, never both. A tolerance that hides a wiring defect is a confirmed

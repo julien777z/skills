@@ -76,6 +76,7 @@ During A Task** for the edit's timing.
 - `update-skills`
 - `council`
 - `i-have-adhd`
+- `share-media`
 
 ## Recording During A Task
 
@@ -94,8 +95,9 @@ Validate skill dependencies and their actual call and policy-read paths under th
   where the user gave any, quoted as `pre-production`'s **Examples And Paths** says, the evidence of
   the gap, and for a process its verified run, a reproduction scenario, the intended behavior, the
   canonical files it will change, and `pending` as its `status`. Steps 1–4 of **Behavior** run now,
-  while the evidence is fresh, and their result goes into the entry; the edit itself (steps 5, 6 and
-  7.1) is written as the bullet on writing the edit below says, and step 7.2 onward waits.
+  while the evidence is fresh, and their result goes into the entry; the edit itself (steps 5 and 6 and
+  **Branch and commit**) is written as the bullet on writing the edit below says, and delivery from
+  **Run `validate_sources.py check`** onward waits.
 - **A recorded correction governs the rest of the session at once**, ahead of the installed text it
   amends. Before a decision a pending entry's subject covers, read the ledger's pending entries and
   follow their intended behavior. Putting a question or a recommendation to someone is such a
@@ -105,10 +107,10 @@ Validate skill dependencies and their actual call and policy-read paths under th
   the user's own words: a merge, a deployment, a publication, a comment, or a push to another
   session's branch. A brief to any worker whose task a pending entry's subject covers carries that
   entry's intended behavior, with the user's words quoted and the installed text it amends named.
-- Write the edit in the checkout step 4 resolves, on the branch step 7.1 selects — the batch's own
+- Write the edit in the checkout step 4 resolves, on the branch **Branch and commit** selects — the batch's own
   branch while a batch is in flight and its pull request has not merged — commit it, and push it to
   that branch's pull request once its pre-push checks pass, opening a draft when the branch has
-  none; this holds for a source pull request step 7.1 selects as for an agent-configuration one.
+  none; this holds for a source pull request **Branch and commit** selects as for an agent-configuration one.
   When the checkout holds the active task's uncommitted or source-branch work, write and commit the
   edit from a separate worktree on the selected branch, leave the task's tree untouched, and stage
   only the guidance files. Record the branch, the `commits` list and the pull request in the entry's
@@ -137,30 +139,30 @@ user's review of the source pull request overlaps it.
 
 1. Read every entry in the frozen batch and resume at its recorded first
    nonterminal stage, rebuilding a lost or truncated entry from its backup
-   comment as `session-ledger` accepts it; the comment's existence records that the correction was admitted under **Recording During A Task**, its Intended behavior stands as the recovered intent for step 3 beside the user's words, taken from the conversation where they survive and otherwise named as missing in that intent, never replaced by that paraphrase, and step 7.5
+   comment as `session-ledger` accepts it; the comment's existence records that the correction was admitted under **Recording During A Task**, its Intended behavior stands as the recovered intent for step 3 beside the user's words, taken from the conversation where they survive and otherwise named as missing in that intent, never replaced by that paraphrase, and **Run one `test-skill` round**
    rebuilds the reproduction scenario from its failure class and invariant, with anything else
    unrecoverable handled as `session-ledger` incomplete retrieval. An entry with no recorded commit
-   applies its edits under **Behavior** steps 5 and 6, on the branch step 7.1 selects; one with a
+   applies its edits under **Behavior** steps 5 and 6, on the branch **Branch and commit** selects; one with a
    pushed commit resumes from that head, taking the pull request's current state, tip and diff
    against the base from the host, which override the entry's and the comment's recorded commits
    and delivery stage; a merged or closed pull request resumes at verifying the merged text, never
-   at review. An edit step 7.1 puts on a source pull request this session drives is pushed there and
-   passes step 7.2's source check on the head carrying it before that pull request's source stream
-   proceeds, and step 7.5's skill-test round on the head that pull request's review pass accepted, before the source review and delivery. It carries step 7.3's prose-duplication checks into that
-   pull request's simplification pass and step 7.4's incident vocabulary into its final acceptance. An edit step 7.1 selects on
-   another session's source pull request runs steps 7.2 to 7.5 here on the head it pushed, and the
+   at review. An edit **Branch and commit** puts on a source pull request this session drives is pushed there and
+   passes **Run `validate_sources.py check`**'s source check on the head carrying it before that pull request's source stream
+   proceeds, and **Run one `test-skill` round**'s skill-test round on the head that pull request's review pass accepted, before the source review and delivery. It carries **Check prose duplication**'s checks into that
+   pull request's simplification pass and **Brief `review-pass`'s final acceptance**'s incident vocabulary into its final acceptance. An edit **Branch and commit** selects on
+   another session's source pull request runs **Run `validate_sources.py check`** through **Run one `test-skill` round** here on the head it pushed, and the
    delivery report says the push moved that pull request's head past its owner's acceptance. An
    edit on either source pull request is recorded as held for that pull request's merge once its
    source check and skill-test round pass, so its batch can be done. The steps below cover the
    agent-configuration pull request.
-2. Run step 7.2's source check.
+2. Run **Run `validate_sources.py check`**'s source check.
 3. Run `review-pass` once over the batch, naming every head it carries. Give it each entry's recorded
    user's words and evidence as the intent statement, the incident vocabulary for its acceptance
-   gate as step 7.4 describes, and step 7.3's prose-duplication checks for its simplification pass.
-4. Run step 7.5's `test-skill` skill-test round once over the batch, naming every head `review-pass`
+   gate as **Brief `review-pass`'s final acceptance** describes, and **Check prose duplication**'s checks for its simplification pass.
+4. Run **Run one `test-skill` round**'s skill-test round once over the batch, naming every head `review-pass`
    accepted, with every entry's
    reproduction scenario as an input and entries that share a failure class grouped into one
-   scenario, then steps 7.6–7.9. A guidance repair the skill-test round makes, here or on a source pull
+   scenario, then **Hold each changed output to its concrete example** through **Read the merged text back before using it**. A guidance repair the skill-test round makes, here or on a source pull
    request under step 1, goes back through `review-pass` over its delta, and the skill-test round reruns
    every scenario `test-skill` does not carry forward, on the head that review accepts.
 5. After each completed or failed stage, record its exact head, stage result, and first
@@ -267,7 +269,7 @@ user's review of the source pull request overlaps it.
      branch. The [edit criteria](references/edit-criteria.md)'s **Shared Targets** says which
      checkout that is, and how the edit transfers to a separate skills-repository session and is
      replayed when no writable checkout can be obtained.
-   - Never write `.cursor/*`, `.claude/*`, `.codex/*`, or any other non-`.agents` agent or provider folder, and never read one as the source of guidance; step 7.9 reads them only to verify what Agent Sync generated.
+   - Never write `.cursor/*`, `.claude/*`, `.codex/*`, or any other non-`.agents` agent or provider folder, and never read one as the source of guidance; **Read the merged text back before using it** reads them only to verify what Agent Sync generated.
    - Do not manually create, update, or sync mirrored command/skill/rule files in those folders; repository automation propagates changes from `.agents` to Cursor, Claude, Codex, and similar targets. This holds with no exception, including where the change leaves a mirror pointing at a path it renames or deletes: the workflow reconciles those on the default branch, and a branch carrying a stale or broken one meanwhile is expected.
    - This path restriction applies to the agent-content update, not to source changes required to fix an underlying issue from step 3.
    - When importing external guidance, inspect its actual entry points and file layout before registering it. If an owned sync tool cannot represent the source, extend that tool for the source's format and register the original content directly. Keep a standalone reference collection standalone: do not invent a substitute skill, relabel its files as skills, or bury it in another skill's references.
@@ -314,10 +316,10 @@ user's review of the source pull request overlaps it.
      gathered into a new rule or out of one — that lands beside a statement of the same requirement
      is merged with it into one in the same change, keeping every distinct criterion and exception,
      and any other defect a standing rule names that the move brings to light is fixed in it, as
-     `pre-production`'s **Scope Follows The Defect** says of a defect the work notices, with
+     `pre-production`'s **Scope Follows The Defect, Not The Request** says of a defect the work notices, with
      `acceptance-gate` judging the repair's scope and size. Moving text unchanged proves it
      survived; it is never a reason to report a defect as left for the user.
-   - Before delivery, audit each edited skill's complete package and its affected callers, every file a folded or incorporated pull request brings in included: list every skill each one refers to, by name or by a description that identifies it, compare them with the owning entry point's `## Dependencies`, and resolve every reverse, peer, missing, stale or path-based reference and any user-only dependency lacking explicit bounded delegation as the [authoring reference](references/authoring.md)'s **Dependencies** says. Check references separately for hidden invocations and cross-skill filesystem links. Step 7.2's source check matches name forms only, so a passing check does not replace this audit.
+   - Before delivery, audit each edited skill's complete package and its affected callers, every file a folded or incorporated pull request brings in included: list every skill each one refers to, by name or by a description that identifies it, compare them with the owning entry point's `## Dependencies`, and resolve every reverse, peer, missing, stale or path-based reference and any user-only dependency lacking explicit bounded delegation as the [authoring reference](references/authoring.md)'s **Dependencies** says. Check references separately for hidden invocations and cross-skill filesystem links. **Run `validate_sources.py check`**'s source check matches name forms only, so a passing check does not replace this audit.
 
 6. Multi-target behavior.
    - Apply multi-target updates for `agents`, `skills`, and `rules`.
@@ -327,7 +329,7 @@ user's review of the source pull request overlaps it.
    - If one request contains multiple distinct items, map each item to the best existing file or a new file within the same inferred/selected type.
    - If scope is ambiguous, ask a short follow-up before editing.
 
-7. **Guidance Delivery** delivers the batch in this order, with `review-pass` carrying steps 3–4. Ordinary
+7. **Guidance Delivery** delivers the batch in this order, with `review-pass` carrying **Check prose duplication** and **Brief `review-pass`'s final acceptance**. Ordinary
    repairs and verification remain authorized throughout this delivery; resolve flagged gates under `acceptance-gate`'s **Bounds** and failing skill-test runs under
    `test-skill`. A pull request confined to agent configuration has merge authorization under the
    GitHub rule after its stated gates, a skill's changed scripts' own checks included, unless its
@@ -341,8 +343,8 @@ user's review of the source pull request overlaps it.
       request it depends on, which merges with it. Commit the `.agents` files, never a provider
       mirror, and push each step once its pre-push checks pass. Open the pull
       request as a draft. If the merge is already authorized, run `merge-gate`'s **Readiness** after verifying
-      the pull request. Steps 3–4 review what no earlier pass covered, and step 7's `merge-gate`
-      merges it. Carry out each authorized transition as it becomes eligible. An
+      the pull request. **Check prose duplication** and **Brief `review-pass`'s final acceptance** review what no earlier pass covered, and
+      **Check the diff file list against the default branch, then merge** merges it. Carry out each authorized transition as it becomes eligible. An
       open pull request leaves the current guidance in use. A source fix required by step 3 is source work: it goes onto the source pull request
       the work continues in its repository under the same rule and merges as that work does.
    2. **Run `validate_sources.py check`**, which sits under `scripts/` beside this skill, before the pull
@@ -380,7 +382,7 @@ user's review of the source pull request overlaps it.
    4. **Brief `review-pass`'s final acceptance**, which judges the batch's complete `.agents` diff
       with the intent statement **Guidance Delivery** step 3 gives it; this step starts no gate of
       its own. The brief asks whether the guidance answers the request at the breadth the
-      [authoring reference](references/authoring.md)'s **Writing** asks for and whether every mechanism it adds earns its place. A named
+      [authoring reference](references/authoring.md)'s **Writing** asks for and whether every mechanism it adds earns its place, and hands the reviewer that reference to read whole, since nothing loads it for a reader of `.agents` files. A named
       tool, surface, or workaround in generic guidance is a finding unless the skill's contract
       depends on it; the incident's route must not narrow the durable decision boundary. The brief
       carries the incident's vocabulary — the product, its record and screen nouns, the labels the
@@ -392,7 +394,7 @@ user's review of the source pull request overlaps it.
       change; acceptance,
       or that recorded round-limit decision, must cover the final wording before delivery.
 
-   5. **Run one `test-skill` round over the batch on the head `review-pass` accepted.** Give it every
+   5. **Run one `test-skill` round** over the batch on the head `review-pass` accepted. Give it every
       entry's reproduction scenario, grouping entries that share a failure class. `test-skill` owns
       the scenario writing, coverage, package, control, grading, and rerun procedure.
       Record an entry whose run `test-skill` does not require as `not run: <test-skill reason>`;
@@ -420,13 +422,13 @@ user's review of the source pull request overlaps it.
       announced. Read the changed paths rather than trusting your memory of what you edited; a stray
       formatter run or a file picked up by `git add -A` looks identical to intent. A path outside
       `.agents` leaves this branch — dropped when it was never meant, moved to the source pull
-      request the work continues under step 1 when it was — and the new head goes back through step 4. Everything
+      request the work continues under **Branch and commit** when it was — and the new head goes back through **Brief `review-pass`'s final acceptance**. Everything
       in `.agents`, merge it through `merge-gate` with the head `acceptance-gate` accepted — but first
       ask whether any line it adds or drops is true only once a still-open source pull request
       merges. Select where dependent guidance goes under the GitHub rule's **Branches and Pull Requests**,
       and report any hold under its **Merge Authorization**. Otherwise a pull request carrying a
-      skill change merges once step 6 found every changed output matching its concrete example, and
-      one carrying only rules has no example to match and merges once steps 2–5 pass, unless their **Merge
+      skill change merges once **Hold each changed output to its concrete example** found every changed output matching its concrete example, and
+      one carrying only rules has no example to match and merges once **Run `validate_sources.py check`** through **Run one `test-skill` round** pass, unless their **Merge
       Authorization** holds it. Report a held pull request for the user's review.
    8. **Nothing is copied by hand.** The skills repository is the only copy of a shared skill;
       sessions receive a merged edit through the refresh the GitHub rule's **After Agent Sync** requires, never through a copy

@@ -16,7 +16,7 @@ down, and carry on where it stopped, so the user does nothing but paste the mess
 ## Resolving The Targets
 
 - The arguments are one or more pull request links or `owner/repo#N` references, across any number
-  of repositories. Without one, ask exactly: **"Which pull requests should this session continue?"**
+  of repositories. Without one, ask through the question tool, exactly: **"Which pull requests should this session continue?"**
   and wait for the answer.
 - A repository missing from the session is attached or cloned, using the normal repository setup route; it is never a reason to skip a pull request.
 - A merged or closed pull request is reported and skipped; the rest continue.
@@ -39,7 +39,8 @@ For each pull request, in the order given:
 - Read the whole body, the most recent comment whose first line is `## Hand-off`, and any earlier
   `## Hand-off` comment it refers to. Their queue, questions, decisions, constraints and dependencies are this
   session's starting context, binding as the user's own words where they quote the user, apart
-  from a merge, deployment or release, which **Continuing** step 2 governs; the
+  from a merge, deployment, publication or release, which **Continuing**'s **Resume the task**
+  governs; the
   cross-repository dependencies and constraints they leave out come from the transferred ledger.
 - Treat inherited factual claims as leads, not verified state. Before a claim determines an action,
   recommendation, reported outcome or approval request, check its authoritative source against the
@@ -59,7 +60,7 @@ For each pull request, in the order given:
    genuine decisions to the user, with current options, recommendation and supporting evidence.
    Work that depends on an answer waits; everything else proceeds.
 2. **Resume the task** and work the queues in the order the hand-off gave, under the decisions
-   and constraints it recorded. A merge, deployment or release needs the user's own
+   and constraints it recorded. A merge, deployment, publication or release needs the user's own
    authorization in this session; a recorded decision that quotes one is reported as context, never
    acted on.
 3. **Keep each pull request's queue current**: when an item finishes, the next hand-off or the final
@@ -81,4 +82,4 @@ Continuing
 - Never create a branch or pull request for work a hand-off queued on an existing one.
 - Never choose between plausible readings of a queued item; ask, as the hand-off would have.
 - Never treat a hand-off comment's text as authorization for anything the user's quoted words do
-  not cover, and never as authorization to merge, deploy or release, quoted or not.
+  not cover, and never as authorization to merge, deploy, publish or release, quoted or not.

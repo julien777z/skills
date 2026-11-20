@@ -217,7 +217,8 @@ evidence, including changes introduced while incorporating the base branch or re
 
 Validate their findings, fix every confirmed in-scope issue, rerun affected checks, and repeat the
 relevant review until no confirmed issue remains or a genuine external blocker or user decision
-prevents completion.
+prevents completion, within the limit of 3 review rounds per change that `execute-task`'s
+review-rounds reference sets; a change that fails its third round gets that reference's disposition.
 
 ## Accept The Complete Diff
 

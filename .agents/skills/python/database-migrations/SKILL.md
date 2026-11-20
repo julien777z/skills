@@ -154,9 +154,10 @@ format transition or recovery mechanism for data explicitly declared disposable 
   destructive-operation entries merged into that revision's own. A pull request found carrying
   several unlocked revisions on one chain folds them into one before anything else. A base update
   that adds revisions to a chain re-parents the branch's revisions onto the new head, so the chain
-  stays linear. A revision the pull request adds is unapplied unless it is locked or the owner
-  reports a deploy of a commit that contains it; such a report locks the revision as it stood at
-  that commit, before any other work on the branch.
+  stays linear. A revision the pull request adds is unapplied unless it carries the lock marker or
+  the owner reports a deploy of a commit that contains it. A reported deploy makes the revision
+  applied as it stood at that commit: it gets the lock marker before any other work on the branch,
+  later changes go into a new revision, and no push hold starts, since the deploy has already run.
 - **A locked revision is one whose first line is the lock marker.** The owner locks a branch's
   revisions before deploying it. Locking adds this line as the first line of the file and changes
   nothing else in it:
@@ -165,12 +166,13 @@ format transition or recovery mechanism for data explicitly declared disposable 
   # Locked: an environment may have applied this revision. Put later changes in a new revision.
   ```
 
-  Until the owner unlocks, a lock means three things and nothing more: no change to a locked
-  revision is pushed, no new revision is pushed, and no source change that depends on either is
-  pushed. That work is committed locally and pushed once the owner unlocks; work that touches no
-  revision pushes as usual. Unlocking ends the hold and leaves the marker: a locked revision counts
-  as applied, so a database change made after it goes into one new revision on top, which work that
-  needs it adds without asking.
+  A lock the owner places is a push hold and nothing more. Until the owner unlocks, no change to a
+  locked revision is pushed, no new revision is pushed, and no source change that depends on either
+  is pushed. That work is committed locally and pushed once the owner unlocks; work that touches no
+  revision pushes as usual. While the hold lasts, the only change a locked revision takes is
+  re-parenting onto a moved base; every other database change goes into the one new revision on
+  top, which work that needs it adds without asking. Unlocking ends the hold and leaves the marker,
+  and later database changes keep going into that new revision.
 - For a revision the pull request did not add, establish "not applied yet" from the real
   `alembic_version` row in every existing environment that may have applied it; the lock marker or
   the owner's report of a deploy settles it for the pull request's own. An explicit user statement

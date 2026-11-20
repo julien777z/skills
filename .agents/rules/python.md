@@ -1,5 +1,5 @@
 ---
-description: Follow modern Python typing, import, formatting, error handling, and maintainability conventions.
+description: Apply when editing Python typing, modules, control flow, errors, logging, or style.
 alwaysApply: false
 paths:
 - '**/*.py'
@@ -106,8 +106,7 @@ async def pay_invoice(invoice_id: UUID) -> Payment:
     return await pay_invoice_in_ledger(invoice_id=invoice_id)
 ```
 
-- Do not start Python files with module docstrings. Begin with imports.
-- Keep ALL imports at the top of the file.
+- Keep all imports at the top of the file.
 - Never import inside functions, methods, or test cases.
 - Group imports: stdlib, third-party, local (separated by blank lines).
 - Prefer **absolute imports** from the top-level package (for example `from application.routes.resources import resources_router`) over **relative imports** with parent segments (for example `from ....routes.resources import resources_router`). Absolute imports are stable when modules move, easier to grep, and avoid brittle `..` depth. Same rule applies to other installable packages: always anchor imports on the package name, not on the file’s directory depth.
@@ -687,9 +686,9 @@ ALLOWED_STATES: Final[frozenset[str]] = frozenset({"ready", "complete"})
 ```
 
 - Add a blank line before multi-line assert statements.
-- Do NOT put docstrings or comments at the top of files (no module-level docstrings, no module-level comments, and no encoding header comments like `# coding: utf-8`).
+- Do not put docstrings or comments at the top of files (no module-level docstrings, no module-level comments, and no encoding header comments like `# coding: utf-8`).
   A migration revision file's first line may be the lock marker `database-migrations` defines: it
-  is a machine-read marker that counts the revision as applied, and it stays verbatim.
+  is a machine-read marker, and it stays verbatim.
 
 - Every **function**, **method**, and **class** should have a concise docstring (purpose or role). Include `main()` and nested helpers the same way unless the file’s existing style omits docstrings on tiny locals—when in doubt, add one line.
 - Keep ordinary docstrings to a single line. Do not include Args, Returns, or Raises sections.

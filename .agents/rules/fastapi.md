@@ -1,5 +1,5 @@
 ---
-description: Use APIRouter-based route organization, validate in models, and keep response handling consistent.
+description: Apply when changing Python routes, dependencies, request handling, or responses.
 alwaysApply: false
 paths:
 - '**/*.py'

@@ -1,13 +1,14 @@
 ---
 name: lock-revision
-description: Lock the database revisions a branch has added or changed so far, including default-branch revisions it re-parented or edited, because they may be deployed to a test environment, so every later schema or stored-data change goes into a new revision. Each invocation locks the revisions added or changed since the last one. Use to lock the branch's revisions. Run only when the user asks for it.
-short_description: 'Lock the current migration revisions before a test deploy; later changes go in a new revision, pushed once the user lets revisions resume.'
+description: Lock the database revisions a branch has added or changed so far, including default-branch revisions it re-parented or edited, because the user is about to deploy them to a test environment; until the user unlocks, no revision change and no source change that depends on one is pushed. Each invocation locks the revisions added or changed since the last one. Use to lock the branch's revisions. Run only when the user asks for it.
+short_description: 'Lock the current migration revisions before a test deploy; revision changes are held unpushed until the user unlocks.'
 ---
 
 # Lock Revision
 
 Invoking this skill means the user is about to deploy the branch's current changes to an
-environment, so its revisions may be applied there. From then on, each of those revisions is history.
+environment, so its revisions may be applied there. The lock is a push hold and nothing more, as
+**After Locking** says.
 
 The user is waiting to deploy, so this run is the next work in the session, ahead of every
 queued item, and it does only the steps below. Those numbered steps
@@ -48,6 +49,3 @@ depends on either. Commit that work locally; work that touches no revision keeps
 
 Only the user's own words unlock. Once they do, push the held commits and record the unlock with
 `session-ledger`.
-
-A session that hands its work to another pushes every commit first, so it asks the user whether to
-unlock; when the answer is no, it asks what should happen to the held commits and waits.

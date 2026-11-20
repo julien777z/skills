@@ -91,7 +91,7 @@ evidence:
       screenshots: ["10771871836-1.png", "10771871836-2.png", "10771871836-3.png", "10771871836-4.png", "10771871836-5.png", "10771871836-9.png", "10771871836-10.png", "10771871836-14-r.png", "10771871836-15.png", "10771871836-18-r.png", "10771871836-19.png", "10771871836-23.png", "10771871836-25.png", "10771871836-26-1.png", "10771871836-26-3.png", "10771871836-33.png", "10771871836-39.png"]
       limitations:
           - "VM rendering looked correct for this flat 2D scene; no garbling observed."
-          - "Peeps move continuously and the capture-to-click loop took several seconds, so many shots missed their subject; a guest-side color detector was used to aim at the hat, couple and spiky character. Missed shots reflect this harness latency, not necessarily game difficulty for a human."
+          - "Peeps move continuously and the capture-to-click loop took several seconds, so many shots missed their subject; a VM-side color detector was used to aim at the hat, couple and spiky character. Missed shots reflect this harness latency, not necessarily game difficulty for a human."
           - "Chapter 1 did not reach an ending within the 1500 s cap; four story beats were reached."
     - id: video_onboarding_1
       kind: gameplay_video
@@ -187,7 +187,7 @@ ui:
         font_family_if_verified: null
         size_observation: "Broadcast headlines about 45-60 px cap height at 1200 px capture width; card labels small (~10 px)"
         size_basis: visual_estimate
-        viewport_resolution: "1920x1200 guest points"
+        viewport_resolution: "1920x1200 VM points"
         readability: "Headlines very readable; left card labels small but paired with large icons"
     controls:
         primary_actions: "Mouse moves a four-corner viewfinder bracket; click takes the photo"

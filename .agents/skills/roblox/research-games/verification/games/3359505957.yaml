@@ -46,11 +46,11 @@ play_coordination:
   expires_at: "2026-11-08T23:57:57Z"
   released_at: "2026-11-08T23:54:35Z"
   release_verified: true
-  expiry_or_blocker: "Acquired after R03's lease expired (expired_owner R03); before any input the guest showed only the -launchToTray RobloxPlayer process and no game window. Released before expiry; after quit only the tray process remained. Active play overran five minutes by about 32 s because the final quest-reward claim and its capture finished after the limit."
+  expiry_or_blocker: "Acquired after R03's lease expired (expired_owner R03); before any input the VM showed only the -launchToTray RobloxPlayer process and no game window. Released before expiry; after quit only the tray process remained. Active play overran five minutes by about 32 s because the final quest-reward claim and its capture finished after the limit."
 context:
   play_style: "Simulation / Incremental Simulator (API); pet hatching and collection simulator"
   camera_perspective: "Third-person follow camera"
-  device_and_input: "macOS guest VM, keyboard (WASD, Space, I/O zoom) and mouse clicks"
+  device_and_input: "macOS VM, keyboard (WASD, Space, I/O zoom) and mouse clicks"
   observation_environment: "Published Roblox client 0.746 in a macOS VM, fullscreen 1920x1200 points; captures resized to 1200 px wide"
   visible_server_population: "Leaderboard top-right listed several players (server max 12 per API); exact count obscured by VM notifications"
   solo_or_group: "Solo player on a public server"

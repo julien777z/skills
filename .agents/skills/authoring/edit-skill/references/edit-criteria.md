@@ -7,8 +7,7 @@ it and checking it. `SKILL.md` names the section each step reads; the order and 
 
 Read at **Behavior** step 2.
 
-- **A violated instruction, or any guidance failure the user points out, calls for causal
-  diagnosis and an application repair.** Before editing, trace the actual path from the request
+- Before editing, trace the actual path from the request
   to the missed behavior: whether the instruction was absent, its skill loaded, its trigger or
   sequence kept it from the decision, a conflicting instruction overrode it, or the agent failed
   to apply guidance it had. Read exceptions and
@@ -54,8 +53,7 @@ Read at **Behavior** step 4.
 
 Read at **Behavior** step 5.
 
-- **A change to what a skill returns the user is specified with a concrete example before the
-  skill is written to produce it.** The class is any new or changed user-facing output shape — a
+- The changes that take a concrete example are any new or changed user-facing output shape — a
   table, a report layout, a sent file, a message template, a listing — in a skill whose response
   the user reads or acts on. It is changed when the user would notice it in the response itself: a
   new or moved column, a different grouping, a link where there was none. A new status value or a
@@ -68,7 +66,7 @@ Read at **Behavior** step 5.
   was run.**`. Only where the work in hand gives the output nothing to show does the example use
   an invented scenario with invented names, first line `**EXAMPLE — fictional output; no skill
   test was run.**`. The example is task evidence: the skill text it leads to still keeps its own
-  examples generic. Read it whole before sending it, write the
+  examples generic. Read it whole and send it as `share-media`'s **What reaches the user, and when** says, write the
   skill to produce that shape, then validate it through the required skill-test run, review, and
   acceptance gate. A guidance-output format is routine guidance design, not a user approval gate; a change to the product
   a skill operates still follows `pre-production`'s **Product Choices**.
@@ -93,7 +91,7 @@ Read at **Behavior** step 5.
 
 ## Source Check Routes
 
-Read at **Behavior** step 7.2.
+Read at **Behavior**'s **Run `validate_sources.py check`**.
 
 When the sync tool cannot reach an imported skill's source repository, that is an environment
 refusal, not a blocker: attach or clone the repository, and when the tool
@@ -101,7 +99,7 @@ fetches through a path the environment refuses, fix the tool to use one it serve
 
 When the guidance needs a change in an unreleased tool owned by another repository, point
 the draft consuming workflow at that tool's active branch and validate against it, without
-waiting for the tool's review loop. That workflow change is source work under **Behavior** step 7.1's source
+waiting for the tool's review loop. That workflow change is source work under **Branch and commit**'s source
 route; its delivery follows `merge-gate`'s dependency gate rather than merging a testing reference.
 The guidance rides that workflow's source pull request, as the GitHub rule's **Branches and
 Pull Requests** says, and merges with it; that pull request waits for the tool through the
@@ -110,18 +108,16 @@ Dependency References**. No merge here authorizes a release.
 
 ## Relocations
 
-Read at **Behavior** step 7.5.
+Read at **Behavior**'s **Run one `test-skill` round**.
 
-**A skill that arrives by relocation is not a skill the change adds.** Moving one between
-repositories, or generalizing local copies into one every repository can adopt, produces a new
+Moving a skill between repositories, or generalizing local copies into one every repository can adopt, produces a new
 file and no new guidance, and a skill-test run against a miss nobody had proves nothing. What makes
 it a relocation is that the guidance survives, so establish that rather than asserting it:
 diff the new file against every original line by line, and account for each line the diff
 removes as either the same instruction in repository-neutral words or guidance relocated to a
 named home — the owning repository's project guidance for what only that repository can state.
-A line carrying an instruction no original carried is an edit riding along, and **Behavior**
-step 7.5's skill-test round decides it on its own terms. The report says `not run: relocation, guidance preserved` and names where each
-original's specifics went.
+A line carrying an instruction no original carried is an edit riding along, and
+**Run one `test-skill` round**'s skill-test round decides it on its own terms.
 
 Where the originals disagreed, the disagreement is the thing to get right, and neither answer
 may be picked for both. Carry the shared guidance and hand the contested question back to each

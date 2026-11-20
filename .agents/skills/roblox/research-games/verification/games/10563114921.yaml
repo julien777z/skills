@@ -50,7 +50,7 @@ play_coordination:
 context:
   play_style: "Simulation / Tycoon (API genre_l1 Simulation, genre_l2 Tycoon); steal-and-hatch pet tycoon"
   camera_perspective: "Third-person follow camera, zoomable to first person"
-  device_and_input: "macOS guest VM, keyboard (WASD, arrow keys for camera, I/O zoom, number keys) and mouse clicks"
+  device_and_input: "macOS VM, keyboard (WASD, arrow keys for camera, I/O zoom, number keys) and mouse clicks"
   observation_environment: "Published Roblox client 0.746 in a macOS VM, fullscreen 1920x1200 points; captures resized to 1200 px wide"
   visible_server_population: "Leaderboard listed at least 4 players (server max 7 per API)"
   solo_or_group: "Solo player on a public server with strangers"

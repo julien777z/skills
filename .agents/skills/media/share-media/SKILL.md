@@ -31,7 +31,7 @@ user as speech.
   a section it does not concern, a message repeated, a wrong value or tone — is named with the
   capture and fixed rather than offered, as `pre-production`'s **Encountered Issues** says. A defect
   the work in hand can fix is fixed and captured again; the capture that showed it goes out only as
-  the before half of that pair, or with the defect named as left and why.
+  the before half of that pair; a defect whose fix a named gate holds goes out with that gate named.
 - **A capture of a change reaches the user while the work is still running.** A screenshot, a
   recording, or a generated image that shows something the run changed — the screen after an edit, a
   before-and-after pair, a design it generated — is shown to the user as this skill says, once the
@@ -118,7 +118,7 @@ exchange is heard and recorded at once.
 - **Make and send each spoken reply** as [the spoken-replies reference](references/spoken-replies.md),
   this skill's procedure for the voice service and for making and showing a clip, describes. A
   question the reply asks goes through the question tool once the player and its text are shown,
-  ordered as **Previews for a choice** step 3 orders a question after its images.
+  ordered as **Previews for a choice** orders a question after its option images.
 - Never play a clip on the agent machine's speakers as the reply: the user may not be at that machine.
 
 ## Harness compatibility
@@ -142,5 +142,7 @@ exchange is heard and recorded at once.
   path, `[name](/absolute/path/to/plan.md)`, kept where **Keep the file** above says; T3 opens it in its files viewer. A spoken reply's player page is shown with `html_render`,
   at a height of 80 pixels: a Markdown link to an audio file does not play when the user's client
   connects to the agent's machine remotely, and a player that carries its sound in the page does.
-- **Any other harness:** show a spoken reply's player page the way the harness shows a rendered HTML
-  preview; where it has none, send the page as a file the user opens.
+- **Any other harness:** show a capture or file through the harness's own way of attaching or
+  rendering a local file in the reply; where it has none, say so and put what fits inline. Show a
+  spoken reply's player page the way the harness shows a rendered HTML preview; where it has none,
+  send the page as a file the user opens.

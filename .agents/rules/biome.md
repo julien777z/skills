@@ -29,5 +29,5 @@ Let Biome own configured indentation, quote style, semicolons, trailing commas, 
 ## Suppressions
 
 Never add a `biome-ignore` or `biome-ignore-file` comment; the TypeScript rule's **Suppressions**
-section governs every report. A category is turned off only in `biome.json`, with its reason beside
-it.
+section governs every report. The only category turned off in `biome.json` is the one that section admits for a
+third-party package's missing types, with its reason beside it.
