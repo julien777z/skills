@@ -6,7 +6,7 @@ short_description: 'Create or improve a coherent game story with playable beats 
 
 # Storyline
 
-Create a story players want to act in, not a synopsis pasted over chores. Work across genres and engines; obtain game-specific facts from the current project. Distinguish proposed canon from implemented and playtested content.
+Create a story players want to act in, not a synopsis pasted over chores. Work across genres; obtain game-specific facts from the current project. Distinguish proposed canon from implemented and playtested content.
 
 ## Dependencies
 

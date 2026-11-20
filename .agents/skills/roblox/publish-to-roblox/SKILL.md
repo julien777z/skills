@@ -11,6 +11,11 @@ live, and report how to play it. A run authorizes one publish to the experience 
 resolves below, with the pictures its **Workflow** gives them in its pictures step; it authorizes no other change to the
 experience's audience, settings or monetization, and no publish to any other experience.
 
+## Dependencies
+
+- `roblox-studio`
+- `agent-lock`
+
 ## When to publish
 
 - **Staging, at each milestone, without being asked.** When a batch of work reaches a milestone,
@@ -25,11 +30,6 @@ experience's audience, settings or monetization, and no publish to any other exp
 - **Production only on the user's own request.** A milestone never publishes to a production
   experience, and neither does any standing instruction; only a request in the user's words that
   names production publishes there, once.
-
-## Dependencies
-
-- `roblox-studio`
-- `agent-lock`
 
 ## Target
 

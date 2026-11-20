@@ -76,7 +76,7 @@ What every helper must get right:
   already open reads as new.
 - **Run a check longer than one lease in segments.** `agent-lock` grants at most `MAX_LEASE`
   (900 s), and every client call refuses to start when the lease left cannot cover it. Each segment
-  takes an editor with `acquire_editor_lock`, opens what it needs, does a bounded part of the
+  takes a slot with `acquire_editor_lock`, opens what it needs, does a bounded part of the
   check, closes every editor and test process it started, and releases with `release_runner_lock`;
   the next segment acquires again and reopens. Open right after acquiring: `open_place` and
   `open_cloud_place` check `open_bound(registration_wait)` themselves and refuse before they start
@@ -93,9 +93,9 @@ What every helper must get right:
   `OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK]` for the release. Add `LEASE_CHECK_BOUND` once for
   every call the step and that cleanup make that reaches the VM, since each of those checks the
   lease before it starts, and read every bound from `studio_mcp`. End the segment there when it does
-  not fit, rather than letting a call or the cleanup after it refuse midway. Its editor's warm editor is the one
-  editor a segment leaves open. A segment whose open meets `RunnerLockBusy`, because other editors' launches kept the
-  VM's focus, releases its editor and runs again rather than failing the check.
+  not fit, rather than letting a call or the cleanup after it refuse midway. The slot's warm editor is the one
+  editor a segment leaves open. A segment whose open meets `RunnerLockBusy`, because other slots' launches kept the
+  VM's focus, releases its slot and runs again rather than failing the check.
 
 Workers use these helpers and extend them for each new repeatable step; a repeatable step is never
 a throwaway script in a temporary folder or Luau pasted into one run. Each helper returns a
@@ -228,7 +228,7 @@ This example applies only when the host configures the shared values in `~/.conf
 
 | Key | Held for |
 | --- | --- |
-| `<vm>/editor-<n>`, one per editor | One check in that editor: its Play sessions, its captures, its VM folder and its code sync. A check takes whichever editor comes free first with `acquire_editor_lock` |
+| `<vm>/editor-<n>`, one per slot | One check in that slot: its Play sessions, its captures, its VM folder and its code sync. A check takes whichever slot comes free first with `acquire_editor_lock` |
 | `<vm>` | Work on the whole VM: starting, stopping, restarting or resizing it, updating Studio, signing in, renaming. `acquire_runner_lock` takes it and then every editor's key, so the work starts once no check holds an editor; the key alone holds off no check and launches no editor |
 | `<vm>/focus` | A step that reaches only the VM's frontmost window, held through `focused_input` for that step alone: an editor launch until the editor registers, and a click or capture another editor's window would take |
 
@@ -704,18 +704,20 @@ no sign-out. When Studio shows its sign-in screen, or its log reports `Authentic
 2. **Read the code immediately before each asking**, a re-ask after a timeout included, since it
    expires in about two minutes: from the newest `awaitQuickSignIn via polling: code=` line in
    Studio's log when it is there, or from a VM capture of the code Studio shows.
-3. **Ask through the question tool** for that one step: enter the code at
+3. **Confirm the code in the VM's own browser** when the VM's Safari is signed in to the same
+   Roblox account, which `https://www.roblox.com/home` shows by its account name: open the
+   confirmation page there with input posted inside the VM under its focus lock, enter the code
+   and confirm. Go on to step 4 only when that browser is signed in to another account or none, or
+   the page asks for something only the user can give.
+4. **Ask through the question tool** for that one step: enter the code at
    <https://www.roblox.com/crossdevicelogin/ConfirmCode>, or in the Roblox app under More, then
    Quick Sign In, on a device already signed in to Roblox, with a Done option, one for a new code
-   and one for later. **First try the VM's own browser**: when the VM's Safari is signed in to
-   the same Roblox account, which `https://www.roblox.com/home` shows by its account name, open the
-   confirmation page there with input posted inside the VM under its focus lock, enter the code
-   and confirm, and ask the user only when that page asks for something only they can give. A new-code answer, or a timeout, goes back to step 2. **A question that can
+   and one for later. A new-code answer, or a timeout, goes back to step 2. **A question that can
    reach the user minutes late**, such as one a delegated worker asks, goes first as its own
    question, asking the user to open the page and say when they are ready, with a Ready option;
    step 2 then reads a fresh code the moment they answer, under the VM's focus lock alone, and
    this step asks for it at once.
-4. **Finish every later screen of the sign-in yourself**, such as choosing the account and its
+5. **Finish every later screen of the sign-in yourself**, such as choosing the account and its
    **Continue**, leaving an acceptance prompt to the user as the lead above says. Then
    confirm `Authenticated : YES` in the log and the account on Studio's start page before relying on
    the runner, then close that start window, which no editor slot owns.
@@ -728,14 +730,14 @@ session cookies. Continue independent work while the question waits.
 ## Keep the game's editors warm
 
 The default check loop reuses the editors kept open in the game's VM on the game's built place, one
-per editor of its pool, each with source synced into it over its own Studio MCP connection, so a
+per slot of its pool, each with source synced into it over its own Studio MCP connection, so a
 check costs a sync and a Play session rather than a build, a copy and an editor launch, and as many
-checks run at once as the pool has editors.
+checks run at once as the pool has slots.
 
-- **Each editor of the pool has its own of everything a check touches.** Its lock key, its VM
-  folder `studio-places/editor-<n>/` holding its place copy, its place file named for the editor, so
+- **Each slot of the pool has its own of everything a check touches.** Its lock key, its VM
+  folder `studio-places/editor-<n>/` holding its place copy, its place file named for the slot, so
   `list_roblox_studios` tells the editors apart, its MCP connection, and its own Play session and test
-  processes. `studio_mcp.editor_slots` names them; a check reaches only the editor its receipt holds,
+  processes. `studio_mcp.editor_slots` names them; a check reaches only the slot its receipt holds,
   which `runner_lease` reports.
 - **A slot runs one editor, and the VM no more than its pool has slots.** A check that needs a place
   of its own, such as a save or a fixture place, closes its slot's warm editor and opens that place in
@@ -744,17 +746,16 @@ checks run at once as the pool has editors.
   sign-in check read, and an editor of a place outside every slot's folder.
   A cloud place's editor, which has no VM folder, stays with the check that opened it.
   `open_place` and `open_cloud_place` refuse a launch while the VM already runs one editor per slot,
-  one under an editor's lock in another project than that editor's, and one under the VM's own lock
-  without its editors' receipts beside it: each extra
-  editor takes a share of the VM's processors even when idle, and with five running, commands in the
-  VM overran their bounds and editors stopped answering.
+  one under a slot's lock in another project than that slot's, and one under the VM's own lock
+  without its slots' receipts beside it: each extra editor takes a share of the VM's processors even
+  when idle, which slows every check the VM runs.
 - **Each check names its device, and leaves the default.** Set the device simulator a check needs in
   Edit before Play and read it back from the editor; once the check ends, return the editor to the
   game's default device and read that back too, so a later check never inherits a phone layout.
-- **Open each once.** Build the place, open it with `studio_mcp.open_place` under the editor's
+- **Open each once.** Build the place, open it with `studio_mcp.open_place` under the slot's
   project name as the step's first VM operation, while the lease still covers the open's bound,
   and leave it open until the VM shuts down as [End of session for a retained VM](#end-of-session-for-a-retained-vm)
-  says: it belongs to the game's VM, not to the task that opened it. A session finds its editor's
+  says: it belongs to the game's VM, not to the task that opened it. A session finds its slot's
   warm editor with `studio_mcp.listed_place_editors`, which waits for a running warm editor to
   list, and uses it after confirming its place name; only an editor no process holds open is
   opened again.

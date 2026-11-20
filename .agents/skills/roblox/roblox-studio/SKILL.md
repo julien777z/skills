@@ -83,7 +83,7 @@ For visual work, inspect actual screenshots and movement, including camera angle
 
 ## Deliver the verified result
 
-Save the authorized source, artwork, and place artifacts and verify their destination and content. A publish to the project's staging experience runs at each milestone without being asked; a publish to a production experience runs only on the user's own request naming it. When publishing, publish to the verified experience, owner, place, and visibility, and confirm terminal publication success and version. Do not infer live-client behavior from Studio evidence; run published-client tests only when requested or needed to investigate a live-only defect. Report any unverified live-only behavior accurately.
+Save the authorized source, artwork, and place artifacts and verify their destination and content. When publishing, publish to the verified experience, owner, place, and visibility, and confirm terminal publication success and version. Do not infer live-client behavior from Studio evidence; run published-client tests only when requested or needed to investigate a live-only defect. Report any unverified live-only behavior accurately.
 
 ## Output
 

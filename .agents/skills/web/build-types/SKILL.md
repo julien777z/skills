@@ -8,9 +8,6 @@ short_description: 'Regenerate generated API types from an OpenAPI document, usi
 
 Treat generated API types as output of the canonical OpenAPI contract. Regenerate them instead of hand-editing a stale contract; read the generated-file path and its consumers from the repository's generation command and the files that import its output.
 
-## Dependencies
-- `execute-task`
-
 ## Pick the source of the OpenAPI document
 
 Read the local exporter, generated-file path, deployed contract URL, and runner commands from the repository's tooling, configuration and README. The document comes from the API this branch deploys with: a checkout of the API branch whose change it consumes, exported locally, or the deployed API when this branch needs nothing that is not deployed yet.
@@ -21,7 +18,7 @@ Read the local exporter, generated-file path, deployed contract URL, and runner 
 
 ## After generating
 
-Run the pre-push checks the GitHub rule's **Pre-Push Gate** defines. Update every consumer to the generated API shape, including string-based field access that a type check can miss. Fix the upstream schema when the intended field is absent. Review the complete generated diff for unintended source or version drift.
+Run the pre-push checks the GitHub rule's **Pre-Push Gate** defines. Update every consumer to the generated API shape, including string-based field access that a type check can miss. Review the complete generated diff for unintended source or version drift.
 
 ## Guardrails
 
