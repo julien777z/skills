@@ -253,7 +253,7 @@ template; record-specific facts belong inside that structure rather than a secti
 thing returned. Keep procedure in the workflow and the output contract in Output.
 
 Output is the last section unless Guardrails is present, in which case Output immediately precedes
-it. Guardrails is always the final section; no workflow, report or reference section follows it.
+it.
 
 For user-facing responses, the template names the facts the response carries and puts per-item
 detail past five items in a file sent with the response, as the global rule **User-Facing Output**
@@ -292,7 +292,8 @@ a template where correct results genuinely vary in shape.
   requirement it holds. Add a section only when no existing one covers the subject, and name it
   for the whole subject: a heading that states one rule invites the next rule on that subject
   into a heading of its own. A restriction on one subject goes under that subject's heading;
-  `## Guardrails` holds only constraints that span the file's subjects.
+  `## Guardrails`, always the last section when present, holds only constraints that span the
+  file's subjects.
 - **A section, subsection or bullet, added, moved or reordered, goes where its reader needs it,
   never beside the text it most resembles.** Read the file's existing order first. Guidance every
   reader of the file needs comes before guidance only some cases need, and each part follows the
