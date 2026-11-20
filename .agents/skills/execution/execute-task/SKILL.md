@@ -29,9 +29,10 @@ is a proposed flow.
 - `list-prs`
 - `session-ledger`
 - `edit-skill`
-- `skill-flow`
+- `guidance-flow`
 - `test-skill`
 - `i-have-adhd`
+- `user-facing-output`
 - `council`
 - `share-media`
 - `use-browser`
@@ -86,7 +87,7 @@ Follow-ups that skip plan approval still write this record without a new approva
   plan is a proposed flow.** A trivial skill change, or a small, clearly specified follow-up, is
   delivered as the bullet above says. Any other change to how skills run goes on the draft guidance
   pull request and is shown to the user as
-  `skill-flow`'s proposed-flow comparison of that branch against the default branch, in place of a
+  `guidance-flow`'s proposed-flow comparison of that branch against the default branch, in place of a
   written plan, so they see what the change does to how the skills run. Until the user approves it
   in their own words, that pull request gets no `test-skill` round, no merge and no auto-merge;
   each edit they ask for lands on the same branch and the comparison is rendered again in place.
@@ -133,7 +134,7 @@ Follow-ups that skip plan approval still write this record without a new approva
   behavior will live and which policy or wiring stays consumer-specific; it never starts from a parallel
   structure and leaves ownership for implementation.
 - Ask through the global rules' **Asking the user** procedure, sending each message as
-  `i-have-adhd` and `share-media` require: any open decisions first, on their own; then, once they are
+  `user-facing-output` and `share-media` require: any open decisions first, on their own; then, once they are
   answered and folded into both plans, the user's plan and its approval:
 
 ```markdown

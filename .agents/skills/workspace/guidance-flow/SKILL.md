@@ -1,10 +1,13 @@
 ---
-name: skill-flow
-description: "Show how the skills run as a dashboard: one page per category of skills, taken from the skills repository or chosen by kind of work when it has none, each a diagram of which skill invokes, spawns or borrows from which, where subagents start and how many, read from the current canonical guidance; or interrogate a skill or a whole flow, asking the user about each substantial step with a recommendation for using fewer subagents to better effect, and applying what they agree; or compare the current flows with a proposed set of skills. Use when asked how skills run, what calls what, where subagents spawn, for the flow of one skill or category, to review, tune or interrogate skill flows, or how a change to the skills compares with what runs now. It never runs the workflows it shows."
-short_description: 'Show how the skills run, or interrogate a flow to tune it.'
+name: guidance-flow
+description: "Show how the guidance runs — the skills and the rules they read — as a dashboard: one page per category of skills, taken from the skills repository or chosen by kind of work when it has none, each a diagram of which skill invokes, spawns or borrows from which and which rules it reads, where subagents start and how many, and a page of every rule with how it loads and which skills read it, read from the current canonical guidance; or interrogate a skill or a whole flow, asking the user about each substantial step with a recommendation for using fewer subagents to better effect, and applying what they agree; or compare the current flows with a proposed set of skills and rules. Use when asked how skills or rules run, what calls what, which rules a skill reads or which skills read a rule, where subagents spawn, for the flow of one skill or category, to review, tune or interrogate skill flows, or how a change to the skills or rules compares with what runs now. It never runs the workflows it shows."
+short_description: 'Show how the skills and rules run, or interrogate a flow to tune it.'
 ---
 
-# Skill Flow
+# Guidance Flow
+
+The map covers the guidance as it runs: the skills, and the rules they read. A rule is a file under
+`.agents/rules/`, `.agents/global.md`, or `.agents/project.md` where the repository has one.
 
 ## Dependencies
 - `interactive-skill`
@@ -18,14 +21,14 @@ short_description: 'Show how the skills run, or interrogate a flow to tune it.'
 When the request does not select a mode, offer this menu through `interactive-skill`.
 
 ```yaml
-prompt: What do you want to do with the skill flows?
+prompt: What do you want to do with the guidance flows?
 kind: choice
 choices:
   - id: show
     label: Show
-    detail: build the dashboard of how the skills run
+    detail: build the dashboard of how the skills run and which rules they read
     aliases: [dashboard, map, view]
-    when: the request asks how skills run, what calls what, or where subagents start
+    when: the request asks how skills run, what calls what, which rules a skill reads, or where subagents start
   - id: interrogate
     label: Interrogate
     detail: walk a skill or flow with you, step by step, and tune it
@@ -33,9 +36,9 @@ choices:
     when: the request asks to question, configure, tune or change how a skill or flow runs
   - id: proposed
     label: Proposed flow
-    detail: compare the current flows with a proposed set and show what changes
+    detail: compare the current flows with a proposed set of skills and rules and show what changes
     aliases: [compare, diff, before and after]
-    when: the request asks how a change to the skills compares with what runs now
+    when: the request asks how a change to the skills or rules compares with what runs now
 ```
 
 **Show** follows **Pages** and **Workflow**; **Interrogate** follows **Interrogate**; **Proposed
@@ -60,8 +63,9 @@ choices:
 ## Pages
 
 The dashboard's `icon` is `diagram`. After `Overview` comes `Usage`, the view across every skill
-of where subagents start, what they read and how often review repeats, then one page per category
-of skills, holding the skills that category's flows run through. A skill sits on the page of its
+of where subagents start, what they read and how often review repeats, then `Rules`, every rule
+with how it loads and which skills read it, then one page per category of skills, holding the
+skills that category's flows run through and the rules they read. A skill sits on the page of its
 category and appears on another only as a node that page's flow reaches.
 
 - **The categories are the skills repository's own when it has them**: the grouping its skills are
@@ -73,37 +77,46 @@ category and appears on another only as a node that page's flow reaches.
   to completion), review (the review loop before a merge), delivery (a draft pull request to its
   merge) or guidance (editing and delivering skills).
 - A category whose skills invoke, launch and borrow nothing gets no page, and the Overview's
-  `notes` name it in one line. Its skills still count in **Skills mapped** and appear as nodes on
-  the pages that reach them.
+  `notes` name it in one line. Its skills still count in **Skills and rules mapped**, appear as
+  nodes on the pages that reach them, and are named in the `Rules` table beside each rule they read.
 - Each page's `icon` is the one from `use-dashboard`'s icons that best names its category, every
-  one different and none of `diagram`, `overview`, `chart`, `settings` or `compare`, which the dashboard
-  and its other pages use. A page's starting skills are the skills in its category that no other skill
+  one different and none of `diagram`, `overview`, `chart`, `legal`, `settings` or `compare`, which
+  the dashboard and its other pages use. A page's starting skills are the skills in its category that no other skill
   in that category starts and that a person, or a skill in another category, starts.
 
-A request that names one skill or one category builds `Overview`, `Usage` and only the pages it
-reaches. Pages follow the categories as the sources stand when they are read.
+A request that names one skill or one category builds `Overview`, `Usage`, `Rules` and only the
+pages it reaches. Pages follow the categories as the sources stand when they are read.
 
 ## Workflow
 
-1. **Locate the sources.** Find the current canonical skills, from the skills repository's checkout
-   or the installed canonical links, never by assuming the working directory holds them. Record the
-   repository, the commit read, whether any source file is uncommitted, and the categories
-   **Pages** finds.
+1. **Locate the sources.** Find the current canonical skills and rules, from the skills
+   repository's checkout or the installed canonical links, never by assuming the working directory
+   holds them. Record the repository, the commit read, whether any source file is uncommitted, the
+   categories **Pages** finds, and every rule file.
 2. **Read each page's flow.** From each page's starting skills, read the entry points and follow
    every invocation, subagent launch and borrowed rubric the flow reaches, including conditional
    ones, such as a security review that runs only for some changes. Read `subagent-matrix` and its
    capability reference for who each launch the flow describes uses. Note, for every claim, the
    `SKILL.md` lines that state it.
 
+   While reading a page's flow, record every rule a skill on the page reads: each rule its text
+   cites, by name, by file or by section, such as "the GitHub rule's **Pre-Push Gate**", with the
+   section cited and the lines that cite it. From each rule file's frontmatter and headings, record
+   how it loads — always, when `alwaysApply` is true; by file pattern, with its `paths`; or only
+   when a skill cites it — and its sections, each with what it governs in a few words. The agent
+   running this skill reads the rule files' frontmatter and headings itself, once.
+
    The reading is split between at most two read-only subagents, launched under
    `subagent-matrix`, each taking about half the pages and reading them itself without starting
    subagents of its own. A scope of one or two pages takes one. Each returns, per page, the map
-   facts and the `SKILL.md` lines that state them. Merging their maps, checking the claims and
+   facts, the rule citations and the `SKILL.md` lines that state them. Merging their maps, checking the claims and
    building the spec stay with the agent running this skill.
 3. **Map it.** For each page, record the order, the choices, the parallel streams, the repair and
-   rerun loops, and which skill owns each step. Keep three kinds of connection apart: one skill
-   invoking another, one launching subagents, and one borrowing another's criteria. Invoking a skill
-   or borrowing its rubric starts no extra agent. Record each subagent launch with its owner, role,
+   rerun loops, and which skill owns each step. Keep four kinds of connection apart: one skill
+   invoking another, one launching subagents, one borrowing another's criteria, and one reading a
+   rule, recorded as `reads`. Invoking a skill, borrowing its rubric or reading a rule starts no
+   extra agent. For each rule, record how it loads, its sections, and the skills that cite it with
+   the section each cites; a rule no skill cites is still recorded, with how it loads. Record each subagent launch with its owner, role,
    capability, whether it always or only sometimes runs, how many run per round, and whether it
    recurs. A count that depends on the work is recorded as what it grows with, such as "1 per
    area touched" or "1 per finding", with the most the skill allows when it sets one, such as
@@ -126,9 +139,10 @@ reaches. Pages follow the categories as the sources stand when they are read.
    leaves it standing, and links stay on the commit read. A source that is missing or still
    changing makes the map incomplete, and the page says which connection is unknown.
 5. **Build the spec** for `use-dashboard`:
-   - `title` `Skill Flow Dashboard`, `topic` the repository's name, `icon` `diagram`, and `subtitle` "How the skills run, read from
-     <repository> at <short commit>.", with `references` linking the repository and the commit.
-   - `metrics`: **Skills mapped**; **Subagents in a typical task**, the usual figure for the run of
+   - `title` `Guidance Flow Dashboard`, `topic` the repository's name, `icon` `diagram`, and `subtitle` "How the skills run and
+     which rules they read, from <repository> at <short commit>.", with `references` linking the repository and the commit.
+   - `metrics`: **Skills and rules mapped**, its `value` both counts, such as "62 skills · 14
+     rules"; **Subagents in a typical task**, the usual figure for the run of
      the skill that carries a task from start to merge, or of the skill a person starts most often
      when none does, `detail` "from start to merge, before findings add more"; **Skills that start
      subagents**, `detail` "of <n> mapped"; and **Launches with no limit**, the "No limit set" gaps,
@@ -145,9 +159,9 @@ reaches. Pages follow the categories as the sources stand when they are read.
        each only when it has items — with one item per gap: `title` the gap in a few plain words,
        such as "Style reviewers have no maximum", `tag` the skill it sits in, and `detail` one or
        two sentences on what is open and why it matters, with no line numbers;
-     - `notes` `How to read the flows`, one line each for an invocation arrow, a launch arrow and a
-       borrowed-rubric arrow as their labels show them, then one line naming each category left
-       without a page.
+     - `notes` `How to read the flows`, one line each for an invocation arrow, a launch arrow, a
+       borrowed-rubric arrow and a `reads` arrow, from a skill to a rule it reads, as their labels
+       show them, then one line naming each category left without a page.
    - `Usage`, `icon` `chart` and `layout` `rows`, across every skill the dashboard maps:
      - a `tree` `Where subagents go`, `open_depth` 2, one root per skill a person starts directly,
        most subagents first. Its `figure` is the subagents one run usually starts, everything
@@ -182,14 +196,28 @@ reaches. Pages follow the categories as the sources stand when they are read.
        another, such as the diff and the diff with its callers, titled with that code and naming
        each skill and what it is doing when it reads it, toned `warning` when every one of those
        launches always runs; left out when nothing overlaps.
+   - `Rules`, `icon` `legal` and `layout` `rows`: a `table` `Rules` with a row per rule, the
+     always-loading rules first, and the columns Rule (its name as words, such as `GitHub rule` or
+     `Global rules`), Loads ("Always", "By file pattern: <patterns>" or "When cited"), Read by (the
+     skills that cite it, or "No skill cites it") and What it governs (a few words). Each row's
+     `details` is an `outline` titled with the rule's name, its `description` when the rule's
+     frontmatter says to read it, with one item per section of the rule: `title` the heading,
+     `detail` what the section governs in a sentence, and `meta` the skills that cite that section.
    - Each category page, `layout` `rows`: a `diagram` `Flow` whose nodes are the skills the
      page's starting skills reach directly, each labeled with its name and given its role in a few
      words as its `detail`, and one node per launch labeled with the short name of the subagents it
      starts, such as `Draft reviewers`, with how many and how often, such as "×3 per round", in its
+     `detail`, and one node per rule the page's skills read, labeled with the rule's name as
+     words, such as `GitHub rule` or `Global rules`, with what it governs in a few words as its
      `detail`. Edges are labeled `invokes`,
-     `launches` (from the skill to its launch node) or `borrows`, and `steps` say in order how the
+     `launches` (from the skill to its launch node), `borrows` or `reads` (from a skill to a rule
+     it cites), and `steps` say in order how the
      work moves through them; a skill reached only further down appears in the `Skills` table
-     alone. Then a `tree` `Scenarios`, `open_depth` 1: two to four stories this work commonly
+     alone. A rule keeps the diagram readable by appearing once: one that most of the page's skills
+     cite, or that loads always and none of them cites, such as the global rules, has a single
+     `reads` edge from the page's first starting skill, and the `steps` say it applies throughout;
+     a rule that loads by file pattern and that no skill on the page cites stays on the `Rules`
+     page alone. Then a `tree` `Scenarios`, `open_depth` 1: two to four stories this work commonly
      meets, each one concrete run told in order, such as a review that finds nothing, a lens that
      finds a bug, or findings that keep coming for three rounds. A root names the story. Beneath it,
      what happens in run order: each round or step, such as "Review round 1", holding one leaf
@@ -240,42 +268,54 @@ reaches. Pages follow the categories as the sources stand when they are read.
      what those subagents exist to catch or produce; and "Good to know", what a reader tuning the flow
      should know, such as the condition that starts a launch, what a later round reruns, a scope
      another skill also reads in the same run, or a count that grows with the size of the change.
-   - `references` make each skill's name a link to its whole `SKILL.md`, at the commit read,
-     wherever the page's text names it; outline items carry no `links`.
+   - `references` make each skill's name a link to its whole `SKILL.md`, and each rule's name as
+     words a link to its file, at the commit read, wherever the page's text names it; outline items
+     carry no `links`.
 6. **Deliver** through `use-dashboard`, as a dashboard of a subject that outlives the session, so an
    existing page with the same title and topic, the repository, is updated when this session can
    update it. Name what is incomplete, if anything, in one line.
 
 ## Proposed Flow
 
-Compare two sets of skills: the **current** flows, the default branch as freshly fetched, and the
+Compare two sets of skills and rules: the **current** flows, the default branch as freshly fetched, and the
 **proposed** flows, the set the request names — a branch, a pull request, a commit, or the
 checkout's uncommitted edits — or, when it names none, the checked-out branch. The page answers one
-question: what would change in how the skills run. It shows the change, not two whole dashboards.
+question: what would change in how the skills run and which rules they read. It shows the change, not two whole dashboards.
 
 1. **Map both sets** as **Workflow** steps 1 to 4 do, recording each set's repository, commit and
    uncommitted state. List the skills whose package differs between them, with the skills added and
-   removed. Map every page whose flow reaches one of those skills, through an invocation, a launch or
-   a borrowed rubric, on either side, so a caller whose totals the change moves is mapped too; on the
-   current side, read only those pages.
+   removed, and the rules whose file differs, with the rules added and removed. A rule whose text
+   moved into a skill is listed as removed, with where it went; a rule split into several files is
+   listed as changed, with the new files. Map every page whose flow reaches one of those skills,
+   through an invocation, a launch or a borrowed rubric, or cites one of those rules, on either
+   side, so a caller whose totals the change moves is mapped too; on the current side, read only
+   those pages. A changed rule that loads always maps only the pages whose skills cite it.
    Split the reading by side between at most two read-only readers, one current and one proposed.
 2. **Compare the maps.** For each skill on a mapped page, record what was added, removed or changed:
    a skill, a step, a launch, a loop, an invocation or a borrow, a count, a scope or a cap. A change
-   of wording that changes none of these is no change.
+   of wording that changes none of these is no change. For each changed rule, record the sections
+   added, removed, changed or moved, and the skill or rule each moved to; a section whose
+   requirements all arrive elsewhere is a move, never a removal beside an addition.
 3. **Build the spec** as **Workflow** step 5 does, with these differences:
-   - `title` `Skill Flow Dashboard`, `topic` "Proposed flow", `subtitle` "Current <short commit> →
+   - `title` `Guidance Flow Dashboard`, `topic` "Proposed flow", `subtitle` "Current <short commit> →
      proposed <ref>.", and `references` linking both commits. Each added, removed or changed
      skill's reference opens `details` instead of a link: a `changes` section titled with the skill's
      name, described by what changed in one sentence, one item per change step 2 recorded for it —
      each step, launch, loop, invocation, borrow, count, scope or cap — its `detail` saying what the
      current side does and what the proposed side does instead, and `links` to the skill's
-     `SKILL.md` on each side that has it. An unchanged skill's reference stays a link.
+     `SKILL.md` on each side that has it. An unchanged skill's reference stays a link. Each
+     added, removed or changed rule's reference opens `details` the same way: a `changes` section
+     titled with the rule's name as words, one item per section step 2 recorded for it, its
+     `detail` what the current side holds and where the proposed side puts it, and `links` to the
+     rule's file on each side that has it.
    - `metrics`: the four **Workflow** names, each `value` "<current> → <proposed>", such as "~25 →
      ~12", and `detail` what moved it in a few words.
    - `Overview`: a `table` `What changed` with a row per mapped page and the columns Page,
      Subagents per run (current → proposed), Loops (current → proposed) and Change (a few words),
-     each row's `details` an outline of that page's changes; a `changes` section `Skills`, `counted`,
-     one item per added, removed or changed skill with what changed in one sentence; and `notes`
+     each row's `details` an outline of that page's changes, changed rules included; one `changes`
+     section `Skills and rules`, `counted`, one item per added, removed or changed skill, with
+     `group` "Skills", and per added, removed or changed rule, with `group` "Rules", each with what
+     changed in one sentence, a removed or split rule naming where its text went; and `notes`
      naming in one line the pages with no change, which the `Changed` page leaves out.
    - `Usage`: a `table` `Subagents per run`, one row per skill a person starts that changed, with
      the columns Skill, Current, Proposed and What changed, most subagents saved first; a `changes`
@@ -284,12 +324,16 @@ question: what would change in how the skills run. It shows the change, not two 
    - `Changed`, the second page, with `icon` `compare`, holds one `tabs` section `Changed flows`
      with a tab per mapped page, labeled with the page's name and in the order the Show dashboard orders them, so the
      reader moves between the changed categories on one page. Each tab holds a `diagram` `Flow` of
-     the proposed flow with the current flow's removed parts left in, each node and edge carrying
+     the proposed flow with the current flow's removed parts left in, each node and edge, rule
+     nodes and `reads` edges included, carrying
      `change` `added`, `removed` or `changed` and no `change` when unchanged, with `steps` saying
      what changed in order; then a `changes` section `What changed`, one item per change the diagram
      marks; then a `tabs` section `How it runs` with the tabs `Proposed` and `Current`, each holding
-     that side's **Workflow** `How it runs` tree, so the reader opens one side at a time. Scenarios,
-     the `Skills` table and a page per category are left out.
+     that side's **Workflow** `How it runs` tree, so the reader opens one side at a time. After
+     the category tabs comes a tab `Rules`, left off when no rule changed, holding a `changes`
+     section `Rule moves`: one item per section step 2 recorded, `name` "<rule>: <section>",
+     `group` the rule's name as words, and `detail` where it moved, or what was added, removed or
+     changed. Scenarios, the `Skills` table, the `Rules` page and a page per category are left out.
 4. **Deliver** as **Workflow** step 6 does, as its own dashboard beside the one Show builds.
 
 ## Interrogate
@@ -350,7 +394,8 @@ step exists to catch.
    that fires rarely, such as a security review of trust-boundary code or the review of a plan,
    keeping it is recommended unless the change only removes reads that add no coverage. Every fact
    it states is read from the lines that state it before it is asked, so a question never rests on a
-   repeat or a gap the sources do not have. Its choices are keeping it as it is and one or two
+   repeat or a gap the sources do not have. A question about a step that reads a rule names the
+   rule and what its cited section requires of the step. Its choices are keeping it as it is and one or two
    concrete changes, such as fewer subagents, a narrower scope, a condition on the launch, fewer
    rounds, or later rounds that rerun only the reviewers a repair affects. The recommended choice
    comes first, with its reason in what it saves and what it could miss.
@@ -364,7 +409,7 @@ step exists to catch.
 ## Guardrails
 
 - Never invoke or dispatch a workflow the dashboard shows, apart from the read-only readers step 2
-  launches under `subagent-matrix`; reading the sources is the whole job of Show, and of
-  Interrogate until the user answers.
+  launches under `subagent-matrix`; reading the sources, skill and rule files alike, is the whole
+  job of Show, and of Interrogate until the user answers.
 - Show draws the current flow only. A proposed change, or a recommendation, appears only when the
   request asks for it, as an outline beside the flow, never drawn into it.
