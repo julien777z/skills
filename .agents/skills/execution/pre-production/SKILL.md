@@ -62,8 +62,8 @@ Build the clean target contract instead of preserving transitional behavior.
   or the change brought them to light, such as a new lint rule meeting existing code or a
   changed-file lint run meeting older code in a file the change touched. Fix the findings in lines
   the change writes. Every other finding is incidental cleanup under the size budget below: fixed
-  while it fits the budget in force, such as a line past the length limit in a file the change
-  edits, and left for later work on that code past it. Never fix past that budget to turn the
+  while it fits the budget in force, and left for later work on that code past it. Never fix past
+  that budget to turn the
   check green, never loosen, disable, rescope or ignore the check, and never report the red check to
   the user or ask about it, apart from a merge branch protection rejects for it, reported as the
   bullet above says. A finding that shows a defect, such as deprecated usage or a vulnerability,
