@@ -104,7 +104,7 @@ def relocated_entry(entry: dict[str, object], hooks_dir: Path, path: Path) -> di
 
 
 def is_installer_handler(handler: dict[str, object], hooks_dir: Path) -> bool:
-    """Tell whether a handler's command is exactly one the installer writes for this hooks folder."""
+    """Tell whether a handler's command is one the installer writes for this hooks folder."""
 
     command = handler.get("command")
 

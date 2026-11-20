@@ -17,36 +17,41 @@ FRONTMATTER_PATTERN: Final[re.Pattern[str]] = re.compile(
     r"\A---[^\S\r\n]*\r?\n.*?\r?\n---[^\S\r\n]*(?:\r?\n|\Z)", re.DOTALL
 )
 CONTEXT_JSON_EVENT_NAME: Final[str] = "sessionStart"
-LOADED_SKILL_TEMPLATE: Final[str] = (
-    "The `{name}` skill is loaded for this session. Its instructions follow and apply "
-    "as if the skill had been invoked.\n\n{body}\n"
-)
-OVERSIZED_SKILL_TEMPLATE: Final[str] = (
-    "The `{name}` skill applies to this session. Read {path} in full before the first response.\n"
-)
+PROMPTS_DIRECTORY_NAME: Final[str] = "prompts"
+LOADED_SKILL_PROMPT_FILENAME: Final[str] = "skill-loaded.md"
+SKILL_TO_READ_PROMPT_FILENAME: Final[str] = "skill-to-read.md"
+
+
+def hook_directory() -> Path:
+    """Return this hook's folder as it is linked, without following the link."""
+
+    return Path(os.path.abspath(__file__)).parent
 
 
 def installed_skill_path(name: str) -> Path:
     """Return where a skill's entry file sits in the user-level root this hook is linked into."""
 
-    user_root = Path(os.path.abspath(__file__)).parent.parent.parent
+    user_root = hook_directory().parent.parent
 
     return user_root / SKILLS_DIRECTORY_NAME / name / SKILL_ENTRY_FILENAME
 
 
 def session_context(name: str) -> str | None:
-    """Return the text that loads an installed skill, or None when the skill is not installed."""
+    """Return the text that loads an installed skill, or None when it or a prompt is absent."""
 
     path = installed_skill_path(name)
+    prompts = hook_directory() / PROMPTS_DIRECTORY_NAME
+    loaded_prompt = prompts / LOADED_SKILL_PROMPT_FILENAME
+    skill_to_read_prompt = prompts / SKILL_TO_READ_PROMPT_FILENAME
 
-    if not path.is_file():
+    if not (path.is_file() and loaded_prompt.is_file() and skill_to_read_prompt.is_file()):
         return None
 
     body = FRONTMATTER_PATTERN.sub("", path.read_text(encoding="utf-8"), count=1).strip()
-    context = LOADED_SKILL_TEMPLATE.format(name=name, body=body)
+    context = loaded_prompt.read_text(encoding="utf-8").format(name=name, body=body)
 
     if len(context) > MAX_CONTEXT_CHARACTERS:
-        return OVERSIZED_SKILL_TEMPLATE.format(name=name, path=path)
+        return skill_to_read_prompt.read_text(encoding="utf-8").format(name=name, path=path)
 
     return context
 
