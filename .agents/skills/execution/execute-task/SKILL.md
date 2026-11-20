@@ -33,6 +33,8 @@ skill change the user asks for, whose plan is a proposed flow.
 - `i-have-adhd`
 - `council`
 - `share-media`
+- `test-fixture`
+- `lock-revision`
 
 ## One Run Per Task
 

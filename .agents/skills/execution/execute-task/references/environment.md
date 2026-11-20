@@ -72,3 +72,12 @@ copy once no process, worktree or session uses it, naming each in the report:
   allowed — "The permission check blocked `<command>`; it runs once you allow it, and everything
   else is done." Whether the action is wanted was settled by the guidance before the check ran, so
   the report never asks it or offers options: "Delete X? Yes or no" is the defect.
+
+## Steps That Cannot Be Taken Back
+
+- **A step that cannot be taken back runs only once the agent has read and judged what its gating
+  check found.** A deletion, an overwrite, a push, a merge or a post never shares a command, chain
+  or parallel batch with the comparison, diff, listing or test that decides it: a chain follows the
+  exit status, and a check can exit 0 while it reports what should stop the step, such as a folder
+  comparison listing two differing files before the chained removal deletes the folder. Where one
+  command must carry both, it tests the finding itself, such as a count of zero, and stops otherwise.
