@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Before proposing or editing guidance, derive the observable failure and test the proposed scope against alternative implementations of it. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. A correction that encodes a new process waits until that process has worked on the work in hand; every other correction is recorded and written at once, whatever happens to the current work's repair. While another task is active, every correction, a direct request to edit guidance included, is pushed to a draft guidance pull request and recorded, with a generic backup comment there, and the rest of its delivery runs in bulk when that task completes; one arriving while a guidance batch is in flight joins that batch's pull request, which reruns only the checks the new edit invalidates. Deliver every behavior-changing guidance edit through `review-pass`, the acceptance gate, and `test-skill` before its pull request merges.
+description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Before proposing or editing guidance, derive the observable failure and test the proposed scope against alternative implementations of it. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. A correction that encodes a new process waits until that process has worked on the work in hand; every other correction is recorded and written at once, whatever happens to the current work's repair. While another task is active, every correction, a direct request to edit guidance included, is pushed to a draft guidance pull request and recorded, with a generic backup comment there, and the rest of its delivery runs in bulk when that task completes; one arriving while a guidance batch is in flight joins that batch's pull request, which reruns only the checks the new edit invalidates. Use it too when carrying a guidance batch through delivery to its merge or hold. Deliver every behavior-changing guidance edit through `review-pass`, the acceptance gate, and `test-skill` before its pull request merges.
 short_description: 'Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.'
 ---
 
@@ -10,20 +10,17 @@ Upsert `.agents` source-of-truth files for agents, skills, or rules based on use
 every edit through the same delivery whether the user invoked this skill or the edit arose while
 doing other work. An edit that skipped this is unverified, and the report says so.
 
-**Only a new process waits for its run.** A correction that encodes a process the work has not yet
-carried out waits until it has worked, as the next paragraph says. Every other correction — a gap a
-guidance failure exposed, a rule the user states — depends on nothing the current work does: record
-it and write its edit at once under **Recording During A Task**, which sets when it is delivered,
-while the current work is corrected beside it. A problem the current work meets while it is being
-corrected is that work's own issue, never a reason to hold or drop a correction that does not depend
-on it.
-
-**A process is encoded only once it has worked.** A request to put a new process into guidance — a
-workflow, a procedure, a tool or route, a way of building or delivering something — is first carried
-out on the work in hand and verified to work; the guidance is then written from that run: the steps
-and commands it used, what had to differ from the source that described the process, and what
-failed along the way. Documentation, a plan, a worker's proposal or the request's own description
-of the process is the source to try, never the text to encode.
+**A process is encoded only once it has worked, and only a new process waits.** A request to put a
+new process into guidance — a workflow, a procedure, a tool or route, a way of building or
+delivering something — is first carried out on the work in hand and verified to work; the guidance
+is then written from that run: the steps and commands it used, what had to differ from the source
+that described the process, and what failed along the way. Documentation, a plan, a worker's
+proposal or the request's own description of the process is the source to try, never the text to
+encode. Every other correction — a gap a guidance failure exposed, a rule the user states — depends
+on nothing the current work does: record it and write its edit at once under **Recording During A
+Task**, which sets when it is delivered, while the current work is corrected beside it. A problem
+the current work meets while it is being corrected is that work's own issue, never a reason to hold
+or drop a correction that does not depend on it.
 
 An open `.agents` pull request is not a delivery result. Processing continues through its source
 check, required review steps, merge or hold, Agent Sync result, and verification of generated root
@@ -181,8 +178,8 @@ user's review of the source pull request overlaps it.
   its own pull request, dropping one, accepting a residual miss — are the agent's, a contested one
   going to `council` in **Ask** mode. No question, report, pending-decision list or note puts such a
   choice to the user or describes a pending batch as waiting on them; one that does is corrected,
-  never carried forward; a policy change **Behavior** step 2 sends to the user and a user-review
-  hold stay theirs.
+  never carried forward. A policy change **Behavior** step 2 sends to the user, dropping it
+  included, and a user-review hold stay theirs, the policy change asked through the question tool.
 - At a checkpoint and before reporting its state, record the complete pull-request head and file
   list, the target repository's lifecycle, its current state, and its next transition. A draft
   confined to canonical agent configuration records `agent-configuration exception`

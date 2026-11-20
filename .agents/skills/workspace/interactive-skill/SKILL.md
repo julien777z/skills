@@ -1,6 +1,6 @@
 ---
 name: interactive-skill
-description: Give a skill a command-line-style menu of what it can do. Skip the menu when the request already says which choice the user wants; otherwise ask, and accept the answer in any common form (a number, a name, a short prefix, or "y" for yes in a yes-or-no question). Use as a dependency of any skill that declares a menu, whenever that skill starts or reaches a point where the user picks what happens next.
+description: Give a skill a command-line-style menu of what it can do. Skip the menu when the request already says which choice the user wants; otherwise ask, and accept the answer in any common form (a number, a name, a short prefix, or "y" for yes in a yes-or-no question). Use as a dependency of any skill that declares a menu, whenever that skill starts or reaches a point where the user picks what happens next; a skill that declares a menu asks it only through this skill, never by rebuilding the menu itself.
 short_description: 'Offer a skill’s choices as a menu, skipped when the request already says.'
 ---
 
@@ -103,7 +103,9 @@ Please pick a choice to proceed.
 
 ## Match The Reply
 
-Trim the reply and ignore case and surrounding punctuation. Then take the first rule that matches:
+Trim the reply and ignore case and surrounding punctuation. A reply that is not an answer, as the
+bullet below the table says, is settled first; every other reply, a cancel included, takes the first
+rule that matches:
 
 | Reply | Means |
 | --- | --- |
@@ -117,9 +119,14 @@ Trim the reply and ignore case and surrounding punctuation. Then take the first 
 | For `text`: the answering option's label with nothing typed | The prompt again; that label is never the answer. |
 | For `text`: anything else, or nothing when there is a `default` | The answer as typed, or the default. |
 
-- **A reply that is a new request is not an answer.** A full sentence, question or instruction that
-  names no choice and is about something other than the menu drops the menu, and the calling skill
-  is not continued; the new request is handled as it stands.
+- **A reply that is not an answer is handled as the global rules' question-retry bullet says**,
+  even to a `text` prompt: for a `choice`, `multi` or `confirm` menu, a reply that states no choice
+  in words, as the corrections, complaints and new requests that bullet names do; for a `text`
+  prompt, a reply that, read as a whole, does not answer the prompt. A reply that tries to answer,
+  `none` or `nothing` to a `multi` menu and `no` to a `confirm` included, goes to the table, and one
+  that matches no row gets the menu again as the bullet below says. The global bullet says how a
+  reply that is not an answer is handled, how the menu is asked again and when asking again stops;
+  the calling skill waits on the answer.
 - **Any other reply that matches no choice, or more than one, gets the menu again**, never a pick
   made for the user, as often as it takes. Put one line above it, or in the question text when the
   question tool asks: "That did not match a choice. Please reply with a number from 1 to <n> or a

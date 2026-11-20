@@ -1,6 +1,6 @@
 ---
 name: pre-production
-description: Apply target-contract and product-state constraints to implementation, review, and operational data tasks, including maintenance, cleanup, tooling, and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update its owned consumers and migrate retained data instead. Apply to relevant CI failures after validation classification.
+description: Apply target-contract and product-state constraints to implementation, review, and operational data tasks, including maintenance, cleanup, tooling, and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update its owned consumers and migrate retained data instead. Apply to relevant CI failures after validation classification, and whenever a lint, formatting or other non-essential check is red on code the change did not write.
 short_description: 'Apply target-contract constraints to implementation and review tasks.'
 ---
 
