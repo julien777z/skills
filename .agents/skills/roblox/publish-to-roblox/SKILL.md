@@ -74,7 +74,8 @@ experience's audience, settings or monetization, and no publish to any other exp
    dialog's success, and compare it with the times the workflow run's summary reports.
 6. **Give the experience and every place it publishes the pictures top games have.** Read each
    one's icon and thumbnails through Roblox's public thumbnails API. One still showing the default
-   placeholder icon, or with no thumbnails, gets them in this run, made and set as the
+   placeholder icon, with no thumbnails, or with pictures short of that standard, such as a gameplay
+   screenshot or text alone, gets them in this run, made and set as the
    [key art reference](references/key-art.md) says:
    - study the icons and thumbnails of the games in Roblox's current top sorts first, as contact
      sheets;

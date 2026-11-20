@@ -1,6 +1,6 @@
 # Blender and imported assets
 
-Use Blender for original reusable meshes when it improves the result: characters/creatures, accessories, vegetation, props, architecture details, focal objects, and spell models. Background Python scripts can create and export a cohesive library; save the editable `.blend` files and inspect a render/contact sheet before import.
+Use Blender for original reusable meshes when it improves the result: characters/creatures, accessories, vegetation, props, architecture details, focal objects, and effect models. Background Python scripts can create and export a cohesive library; save the editable `.blend` files and inspect a render/contact sheet before import.
 
 - Establish scale, origin/pivot, material names, normals, and object/model names before export. Use model-level scaling where appropriate and verify actual bounds after import.
 - Prefer named material pieces and intentional material assignments. An FBX may import its geometry successfully while dropping the expected Blender colors. Inspect actual Studio MeshParts; repair named-piece colors/materials or supported textures explicitly, then verify again.

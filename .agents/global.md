@@ -139,11 +139,11 @@ alwaysApply: true
   will land. A change is one plan step, worker task or finding fix, and its rounds are counted
   together across every kind of check; a round a broken runner, fixture or provider cut short before
   judging the change, a style flag and a gap in a gate's evidence, as `acceptance-gate`'s **Bounds**
-  defines them, are not counted, and no council is convened over style alone. Put the disposition to `council` in **Ask** mode, with the
-  change, each round's findings and remedies, and the three choices: use a simpler approach, revert
-  the change, or accept it with the remaining findings recorded; record its majority ruling and
-  follow it. A confirmed defect, an
-  exploitable vulnerability or a failing required check is never accepted this way. If the authorized
+  defines them, are not counted, and no council is convened over style alone. Put the disposition
+  to `council` in **Ask** mode, with the change, each round's findings and remedies, and the three
+  choices: use a simpler approach, revert the change, or accept it with the remaining findings
+  recorded; record its majority ruling and follow it. A confirmed defect, an exploitable
+  vulnerability or a failing required check is never accepted this way. If the authorized
   outcome still needs work, update the active plan and start the replacement, a new change with its
   own rounds, at its first permitted step. A different implementation idea is not a new approval
   boundary. Ask only when the replacement needs an unresolved product, scope, security, disclosure,

@@ -68,7 +68,9 @@ characters, creatures, outfits, props, effects and places.
   picture may add the place's name beneath it.
 - Keep the subject centered with a margin, since Roblox rounds an icon's corners and crops
   thumbnails on small cards. An icon is 512×512 and a thumbnail 1920×1080.
-- Keep the scripts that reproduce each picture with the task's working files.
+- The steps every picture repeats — stitching the tiles, the overlap check, the cut-out and the
+  composite — run from one helper in the repository's `.agents/tools/`, committed with the task's
+  source work; each picture's own parameters stay with the task's working files.
 
 ## Check
 
