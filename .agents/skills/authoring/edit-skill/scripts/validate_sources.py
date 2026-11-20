@@ -10,6 +10,7 @@ import tempfile
 import venv
 from pathlib import Path
 from typing import Final
+from urllib.parse import unquote
 
 from models import ActionReference, ExternalResource, SourceCommand, SyncOutcome
 
@@ -45,6 +46,47 @@ CONTEXT_BEFORE_CHARS: Final[int] = 30
 CONTEXT_AFTER_CHARS: Final[int] = 10
 SKILL_RESOURCE_KIND: Final[str] = "skill"
 INSTALLED_PACKAGES_DIRNAME: Final[str] = "node_modules"
+GENERATED_DIRNAME: Final[str] = ".auto_generated"
+RULES_DIRNAME: Final[str] = "rules"
+REFERENCES_DIRNAME: Final[str] = "references"
+GLOBAL_RULES_FILENAME: Final[str] = "global.md"
+GLOBAL_RULES_NAME: Final[str] = "global"
+FENCED_BLOCK_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"^[ \t]*(?P<fence>```+|~~~+).*?^[ \t]*(?P=fence)[ \t]*$", re.MULTILINE | re.DOTALL
+)
+INLINE_CODE_PATTERN: Final[re.Pattern[str]] = re.compile(r"`[^`\n]*`")
+HEADING_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"^ {0,3}#{1,6}[ \t]+(?P<title>.+?)[ \t]*#*[ \t]*$", re.MULTILINE
+)
+BOLD_LEAD_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"^[ \t]*(?:>[ \t]*)?(?:(?:[-*+]|\d+[.)])[ \t]+)?(?:\[[ xX]\][ \t]+)?\*\*(?P<lead>[^*]+)\*\*",
+    re.MULTILINE,
+)
+HTML_ANCHOR_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"<a\s[^>]*?\b(?:id|name)=[\"'](?P<anchor>[^\"']+)[\"']", re.IGNORECASE
+)
+MARKDOWN_LINK_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"\[(?P<text>[^\]\n]*(?:\n[^\]\n]+)?)\]\((?P<target>[^()\s]+)(?:\s+\"[^\"\n]*\")?\)"
+)
+LINK_TEXT_PATTERN: Final[re.Pattern[str]] = re.compile(r"\[([^\]]*)\]\([^)]*\)")
+URL_SCHEME_PATTERN: Final[re.Pattern[str]] = re.compile(r"^[A-Za-z][A-Za-z0-9+.-]*:")
+LINK_PLACEHOLDER_CHARS: Final[frozenset[str]] = frozenset("<>{}$*")
+SLUG_DROPPED_PATTERN: Final[re.Pattern[str]] = re.compile(r"[^\w\- ]")
+SKILL_SECTION_CITATION_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"`(?P<name>[a-z0-9]+(?:-[a-z0-9]+)*)`['’]s\s+\*\*(?P<section>[^*]+)\*\*"
+)
+RULE_SECTION_CITATION_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"(?:\b[Tt]he\s+(?P<word>[A-Za-z][A-Za-z0-9-]*)|`(?P<tick>[A-Za-z0-9_-]+)(?:\.md)?`)"
+    r"\s+rules?(?:['’]s|s?['’])\s+\*\*(?P<section>[^*]+)\*\*"
+)
+RULE_PATH_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"(?<![\w/.-])(?P<prefix>(?:[\w.-]+/)*)rules/(?P<name>[A-Za-z0-9_-]+)\.md(?![\w-])"
+)
+RULE_FILE_MENTION_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"`(?P<name>[A-Za-z0-9_-]+)\.md`\s+rule\b"
+)
+SECTION_TRAILING_PUNCTUATION: Final[str] = ".:,;!?"
+SECTION_START_PATTERN: Final[re.Pattern[str]] = re.compile(r"$|\W")
 
 
 EXIT_CODES: Final[dict[SyncOutcome, int]] = {
@@ -321,6 +363,209 @@ def find_dependency_problems(skills_dir: Path) -> list[str]:
     return problems
 
 
+def blank_matches(text: str, pattern: re.Pattern[str]) -> str:
+    """Replace every match of a pattern with spaces, keeping each line and offset where it was."""
+
+    return pattern.sub(lambda match: re.sub(r"[^\n]", " ", match.group(0)), text)
+
+
+def line_number(text: str, offset: int) -> int:
+    """Return the one-based line an offset of a text falls on."""
+
+    return text.count("\n", 0, offset) + 1
+
+
+def normalized_section_name(name: str) -> str:
+    """Return a heading or bold lead in the form two spellings of it are compared in."""
+
+    words = " ".join(name.replace("`", "").replace("’", "'").split())
+
+    return words.rstrip(SECTION_TRAILING_PUNCTUATION).casefold()
+
+
+def heading_titles(prose: str) -> list[str]:
+    """Return a document's headings in order, given its text without code blocks."""
+
+    return [match.group("title") for match in HEADING_PATTERN.finditer(prose)]
+
+
+def heading_anchors(prose: str) -> set[str]:
+    """Return the anchors a document's headings and explicit anchor tags answer to."""
+
+    anchors = {match.group("anchor").casefold() for match in HTML_ANCHOR_PATTERN.finditer(prose)}
+    seen: dict[str, int] = {}
+
+    for title in heading_titles(prose):
+        plain = LINK_TEXT_PATTERN.sub(r"\1", title).replace("`", "").replace("*", "")
+        slug = SLUG_DROPPED_PATTERN.sub("", plain.strip().lower()).replace(" ", "-")
+        count = seen.get(slug, 0)
+
+        seen[slug] = count + 1
+
+        anchors.add(slug if count == 0 else f"{slug}-{count}")
+
+    return anchors
+
+
+def section_names(prose: str) -> tuple[set[str], set[str]]:
+    """Return a document's normalized headings and the bold leads of its bullets and paragraphs."""
+
+    headings = {normalized_section_name(title) for title in heading_titles(prose)}
+    leads = {
+        normalized_section_name(match.group("lead"))
+        for match in BOLD_LEAD_PATTERN.finditer(prose)
+        if "\n\n" not in match.group("lead")
+    }
+
+    return headings, leads
+
+
+def find_citation_problems(agents_dir: Path) -> list[str]:
+    """Report citations in canonical guidance that point at nothing.
+
+    A relative markdown link must reach a file, and its anchor a heading there. A section cited as
+    `skill-name`'s **Section**, the global rules' **Section** or the <Name> rule's **Section** must
+    be a heading or the bold lead of a bullet or paragraph, or the words one starts with, in that
+    skill's entry point and references or in that rule. A rule file named as `rules/<name>.md` or as the `<name>.md` rule
+    must exist. Generated mirrors and packages refreshed from upstream are not read, and a mention
+    whose target is ambiguous is passed over.
+    """
+
+    root = agents_dir.parent
+    skills_dir = agents_dir / SKILLS_DIRNAME
+    rules_dir = agents_dir / RULES_DIRNAME
+    packages = {
+        entry.parent.name: entry.parent for entry in source_files(skills_dir, SKILL_ENTRY_FILENAME)
+    }
+    third_party_dirs = {
+        package
+        for name, package in packages.items()
+        if name in third_party_skill_names(skills_dir)
+    }
+    package_dirs = set(packages.values())
+    rule_paths = {path.stem.casefold(): path for path in sorted(rules_dir.glob("*.md"))}
+    global_rules = agents_dir / GLOBAL_RULES_FILENAME
+
+    if global_rules.exists():
+        rule_paths[GLOBAL_RULES_NAME] = global_rules
+
+    prose_by_path: dict[Path, str] = {}
+
+    def prose_of(path: Path) -> str:
+        if path not in prose_by_path:
+            prose_by_path[path] = blank_matches(
+                path.read_text(encoding="utf-8"), FENCED_BLOCK_PATTERN
+            )
+
+        return prose_by_path[path]
+
+    def has_section(targets: list[Path], section: str) -> bool:
+        cited = normalized_section_name(section)
+
+        for target in targets:
+            headings, leads = section_names(prose_of(target))
+
+            if any(
+                SECTION_START_PATTERN.match(name[len(cited) :])
+                for name in headings | leads
+                if name.startswith(cited)
+            ):
+                return True
+
+        return False
+
+    problems: list[str] = []
+
+    for path in source_files(agents_dir, "*.md"):
+        if GENERATED_DIRNAME in path.parts or not third_party_dirs.isdisjoint(path.parents):
+            continue
+
+        prose = prose_of(path)
+        label = path.relative_to(root).as_posix()
+        package = next((parent for parent in path.parents if parent in package_dirs), None)
+        local_dirs = [path.parent] if package is None else [path.parent, package]
+
+        for match in MARKDOWN_LINK_PATTERN.finditer(blank_matches(prose, INLINE_CODE_PATTERN)):
+            target = match.group("target")
+
+            if (
+                URL_SCHEME_PATTERN.match(target)
+                or target.startswith(("/", "//"))
+                or not LINK_PLACEHOLDER_CHARS.isdisjoint(target)
+            ):
+                continue
+
+            file_part, _, anchor = target.partition("#")
+            linked = (path.parent / unquote(file_part)).resolve() if file_part else path
+            where = f"{label}:{line_number(prose, match.start())}"
+
+            if not linked.exists():
+                problems.append(f"{where}: link target `{target}` does not exist")
+
+                continue
+
+            if not anchor or linked.suffix != ".md":
+                continue
+
+            if unquote(anchor).casefold() not in heading_anchors(prose_of(linked)):
+                problems.append(f"{where}: link `{target}` names an anchor no heading there has")
+
+        for match in SKILL_SECTION_CITATION_PATTERN.finditer(prose):
+            name = match.group("name")
+            section = " ".join(match.group("section").split())
+
+            if name not in packages or "\n\n" in match.group("section"):
+                continue
+
+            cited_package = packages[name]
+            targets = [cited_package / SKILL_ENTRY_FILENAME] + source_files(
+                cited_package / REFERENCES_DIRNAME, "*.md"
+            )
+
+            if not has_section(targets, section):
+                problems.append(
+                    f"{label}:{line_number(prose, match.start())}: `{name}` has no section"
+                    f" **{section}** in its {SKILL_ENTRY_FILENAME} or references"
+                )
+
+        for match in RULE_SECTION_CITATION_PATTERN.finditer(prose):
+            name = match.group("word") or match.group("tick")
+            section = " ".join(match.group("section").split())
+            rule_path = rule_paths.get(name.casefold())
+
+            if rule_path is None or "\n\n" in match.group("section"):
+                continue
+
+            if not has_section([rule_path], section):
+                problems.append(
+                    f"{label}:{line_number(prose, match.start())}:"
+                    f" {rule_path.relative_to(root).as_posix()} has no section **{section}**"
+                )
+
+        mentions = [
+            (match, match.group("prefix") in ("", f"{agents_dir.name}/"))
+            for match in RULE_PATH_PATTERN.finditer(prose)
+        ] + [(match, True) for match in RULE_FILE_MENTION_PATTERN.finditer(prose)]
+
+        for match, is_rule_reference in sorted(mentions, key=lambda mention: mention[0].start()):
+            filename = f"{match.group('name')}.md"
+            is_local = any(
+                (directory / candidate).exists()
+                for directory in local_dirs
+                for candidate in (filename, f"{RULES_DIRNAME}/{filename}")
+            )
+
+            if not is_rule_reference or is_local or (rules_dir / filename).exists():
+                continue
+
+            problems.append(
+                f"{label}:{line_number(prose, match.start())}: rule file"
+                f" {rules_dir.relative_to(root).as_posix()}/{filename} does not exist"
+            )
+
+    return problems
+
+
 def parse_arguments() -> argparse.Namespace:
     """Parse the command and the tree it runs on."""
 
@@ -347,7 +592,7 @@ def parse_arguments() -> argparse.Namespace:
     commands.add_parser(
         SourceCommand.CHECK,
         parents=[tree],
-        help="Validate skill dependencies and the canonical sources in a scratch copy.",
+        help="Validate skill dependencies, citations and the canonical sources in a scratch copy.",
     )
 
     mirror = commands.add_parser(
@@ -407,6 +652,13 @@ def main() -> SyncOutcome:
 
     for problem in problems:
         logger.error("Skill dependencies: %s", problem)
+
+    citation_problems = find_citation_problems(root / agents_dirname)
+
+    for problem in citation_problems:
+        logger.error("Citations: %s", problem)
+
+    problems += citation_problems
 
     logger.info(
         "Validating %s in a scratch copy with %s@%s",
