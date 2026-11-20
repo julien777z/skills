@@ -1,6 +1,6 @@
 ---
 name: acceptance-gate
-description: Independent read-only verdict on a pull request's complete diff before merge, run once per pull request; also for a triage or deferral decision, a list of borderline incidental items, and base incorporation; per plan step only for a finished step that later steps build on. Never run per fix, apart from a fresh gate over each repair of, or answer to, a gate's flag. Before dispatching any gate, however it is launched, the caller runs this skill's pre-gate Python check and fixes what it lists.
+description: Independent read-only verdict on a pull request's complete diff before merge, run once per pull request; also for a triage or deferral decision, a list of borderline incidental items, and base incorporation; per plan step only for a finished step that later steps build on. Never run per fix, apart from a fresh gate over each repair of, or answer to, a gate's flag. Load it before dispatching any gate, however the gate is launched, for the pre-gate check its caller runs first.
 short_description: 'Have an independent reviewer decide whether a proposed change fits the task and the repository.'
 ---
 
