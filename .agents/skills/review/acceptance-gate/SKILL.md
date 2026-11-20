@@ -332,8 +332,8 @@ lines whose behavior, structure and contract stand: a docstring's or comment's l
 blank line, a name's length, wording that misstates nothing. Everything else is a defect, however
 small its fix. The author fixes a style flag and runs the checks covering it, and final acceptance,
 which every change gets before it merges, confirms it; a style flag final acceptance raised is
-confirmed by a fresh re-check of those lines alone. A style flag costs no round, under the global rules' review-round limit or the repair rounds below, and never
-goes to `council`.
+confirmed by a fresh re-check of those lines alone. A style flag costs no round, under the global
+rules' review-round limit or the repair rounds below, and never goes to `council`.
 
 **A gap in the evidence a gate was given is not a failed round.** A gate whose verdict waits only
 on evidence it names, such as a source excerpt or a run's output, receives that evidence in the same
