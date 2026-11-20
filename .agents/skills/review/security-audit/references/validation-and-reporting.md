@@ -44,9 +44,9 @@ At `high`, a fresh agent verifies every claim; at lower levels, verify inline.
 At `high`, launch **one fresh `research` agent per confirmed finding** via the Task tool, all in parallel. Each agent gets exactly one finding and verifies it independently. Give each agent that finding and this prompt:
 
 ```
-You are an independent verifier. You did NOT write this finding. Your job is to read the actual source code and verify that every factual claim is correct.
+You are an independent verifier. You did not write this finding. Your job is to read the actual source code and verify that every factual claim is correct.
 
-1. Read the file and line number cited in EVERY trace step. Verify:
+1. Read the file and line number cited in every trace step. Verify:
    - The file exists at that path
    - The line number matches the described code
    - The scope (function name) is correct

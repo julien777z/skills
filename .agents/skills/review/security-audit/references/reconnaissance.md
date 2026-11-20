@@ -18,7 +18,7 @@ Return specific file paths for key entry points.
 
 **Agent 1b: Trust boundaries and access control**
 ```
-Explore the codebase at <path>. Find and read ALL code related to:
+Explore the codebase at <path>. Find and read all code related to:
 1. Trust boundaries — where does untrusted input enter the system? (HTTP requests, CLI args, file reads, IPC, message queues, environment variables, config files, etc.)
 2. Authentication — how do callers prove identity? (sessions, tokens, API keys, mTLS, Unix sockets, etc.) If there's no authentication, note that.
 3. Authorization — how are permissions enforced? (middleware, decorators, capability checks, file permissions, etc.) If there's no authorization model, note that.

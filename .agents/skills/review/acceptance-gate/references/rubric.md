@@ -392,8 +392,8 @@ unmeasured and does not hold an otherwise validated repair.
 is that scenario, in the same change.
 
 **An added guard is priced like a missing one.** For every guard, refusal, validation, or branch a
-diff adds, the gate opens the writers `code-simplify`'s standard 1 says to read and names them in the
-verdict. A guard that standard calls dead withholds nothing from anyone under **Product State**'s
+diff adds, the gate opens the writers `code-simplify`'s **Should this exist at all?** standard says
+to read and names them in the verdict. A guard that standard calls dead withholds nothing from anyone under **Product State**'s
 safeguard test and is flagged with that standard's remedy, and so is a reachable-state guard its
 sibling paths lack. An added check is never accepted as a security gain on its face.
 

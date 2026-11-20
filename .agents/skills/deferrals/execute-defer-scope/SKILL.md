@@ -1,6 +1,6 @@
 ---
 name: execute-defer-scope
-description: Evaluate and resolve recorded deferrals from Linear and the legacy repository ledger, using the current session or an explicit issue, key, path, pull request, or aggregate scope. Use to execute, resolve, reconsider, or act on recorded deferrals. Run only when the user asks for it.
+description: Evaluate and resolve recorded deferrals from Linear and the repository ledger, using the current session or an explicit issue, key, path, pull request, or aggregate scope. Use to execute, resolve, reconsider, or act on recorded deferrals. Run only when the user asks for it.
 short_description: 'Review and resolve recorded deferred work for a chosen issue, path, or pull request.'
 ---
 
@@ -20,7 +20,7 @@ Resolve recorded deferrals instead of treating their proposed work as automatica
 
 With no explicit scope, retrieve session-created pull requests from `session-ledger`. Query Linear
 issues carrying the deferral label the repository's project guidance names using the repository and origin or resolution PR metadata
-written by `defer-scope`. Include legacy records and pull requests carrying records created in the session.
+written by `defer-scope`. Include repository-ledger records and pull requests carrying records created in the session.
 Never infer an issue, stable key, path, or pull-request number.
 
 An explicit scope replaces that default:
@@ -28,25 +28,25 @@ An explicit scope replaces that default:
 - A Linear issue identifier or URL, stable key, or repository path selects its exact confident
   match. A pull request selects every record whose exact origin or resolution metadata names it;
   ambiguous fuzzy references select nothing until the user resolves them.
-- `all` selects every active Linear deferral issue for the repository plus active legacy records
+- `all` selects every active Linear deferral issue for the repository plus active repository-ledger records
   on the fetched remote default branch and in open pull requests.
 - `all including declined` also selects canceled or archived Linear issues and records under
   `deferrals/declined/`.
-- An exact canceled issue or declined legacy path selects it without the broader phrase.
+- An exact canceled issue or declined repository-ledger path selects it without the broader phrase.
 
 Fetch the remote default branch and current pull-request state before inventorying. Include
 completed, canceled, and archived Linear results during deduplication even when they are not part of
 the selected active scope. Deduplicate only on strong repository, stable-key, pull-request, affected
 surface, and problem evidence. If the selection is empty, report it and mutate nothing.
 
-If Linear preflight is unavailable, continue any selected legacy records, report that Linear records
+If Linear preflight is unavailable, continue any selected repository-ledger records, report that Linear records
 could not be inventoried, and do not claim an aggregate or session scope is complete.
 
 ## Assess Every Record
 
 Apply `pre-production` to decide which problems and target contracts belong in the release.
 
-Read the complete Linear issue with comments or the complete legacy record with supporting files and
+Read the complete Linear issue with comments or the complete repository-ledger record with supporting files and
 the pull request carrying it. Read the current implementation and history of the code it names. Confirm that
 the problem still exists before considering its proposed solution.
 
@@ -137,7 +137,7 @@ When inventorying, reconcile completed issues whose resolution pull request late
 merging. Record that evidence and return them to the appropriate active state so ordinary `all`
 selection cannot hide work that never reached the default branch.
 
-## Resolve Legacy Records
+## Resolve Repository-Ledger Records
 
 Do not migrate existing repository records to Linear in this run. Preserve their current lifecycle:
 
@@ -159,7 +159,7 @@ resolution pull request carry the disposition.
 
 Run `code-simplify` across the implementation, complete changed files, analogous code, and sibling
 modules. Run the repository's required validation for every behavioral change and every specialized
-migration or contract check. A legacy disposition-only documentation diff gets artifact validation
+migration or contract check. A repository-ledger disposition-only documentation diff gets artifact validation
 and `git diff --check`, not application tests.
 
 Report every selected record, source, disposition, both gate outcomes, Linear state change,

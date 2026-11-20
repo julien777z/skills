@@ -19,7 +19,8 @@ short_description: 'Ask three strong models what they think, or review with them
   the majority of the three unless the asker sets another threshold, and a question that is a product, scope, security, disclosure or authorization choice
   is the user's: the council's answers go to them as advice. A ruling between more than two
   options, such as simplify, revert or accept, takes the option most members pick first; a
-  three-way split takes the option the asker lists first.
+  three-way split takes the option the asker lists first. A ruling never accepts a confirmed
+  defect, an exploitable vulnerability or a failing required check.
 - **Loop:** the user asks the council to review or give feedback on work, such as "council this
   pull request". Run **Rounds**, fixing between them.
 
@@ -56,7 +57,8 @@ explore new ideas, skip fixes to code that is being replaced.
 3. Send the next round to the same members, with those answers and the diff since the last round.
    Each full review pass is one round.
 4. Stop when every member is satisfied, or after three rounds. An open disagreement then is settled
-   by the members' majority and listed with its ruling; one that is a product, scope, security, disclosure or authorization choice goes
+   by the members' majority, within the limit **Ask** sets on what a ruling accepts, and listed
+   with its ruling; one that is a product, scope, security, disclosure or authorization choice goes
    to the user.
 
 ## Harness Compatibility

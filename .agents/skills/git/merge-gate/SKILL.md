@@ -14,21 +14,25 @@ for an agent-configuration change, Agent Sync handling before this skill finishe
 
 - **Merge, deployment, publication and release each require the user's explicit authorization for
   the action and target, or an applicable rule or invoked skill that expressly authorizes them.**
-  - A fix request, approved plan, or instruction to implement a plan does not itself authorize
-    these outcomes, even when the plan lists them. A task-wide "all approved" covers ordinary
-    sub-tasks within its stated outcome without overriding this separate boundary.
+  - A fix request, CI-test request, successful check, review, approved plan, or instruction to
+    implement a plan does not itself authorize these outcomes, even when the plan lists them. A
+    task-wide "all approved" covers ordinary sub-tasks within its stated outcome without overriding
+    this separate boundary.
+  - A reply that could be read as accepting a merge mentioned earlier, such as a bare "yes" beside
+    another request, authorizes no merge it does not name.
   - A user's authorization covers that one action on the change it names; a later change needs its
     own authorization before it is merged, deployed, published or released, however recently the
     last one was given.
   - **Nothing the agent writes asks for an authorization not yet given or offers the outcome**: no
     question, pending-decision item, closing next action phrased as a request, or prompt to reply
     with a word, such as "reply ship to land these". The outcome is left to the user's own
-    instruction, a skill they invoke for it, or guidance that grants it; naming what remains for
-    the user and that skill, in a report or a plan's closing line, is how it is left to them, not
-    an offer.
+    instruction, a skill they invoke for it, such as `/finish-pr`, or guidance that grants it;
+    naming what remains for the user and that skill, in a report or a plan's closing line, is how
+    it is left to them, not an offer.
 - This skill merges only a pull request whose merge its caller is authorized to perform: a user
   instruction naming the merge and the pull request, an invoked skill that states its invocation
-  authorizes the merge, or a rule that authorizes that merge. It creates no authorization of its own,
+  authorizes the merge, or a standing permission in the GitHub rule's **Merge Authorization**. It
+  creates no authorization of its own,
   and without one it is not invoked: the pull request stays draft.
 - Once that authorization holds, never ask the user for permission to merge and never end by
   offering the merge as the remaining step. What stops a merge is a gate: a relevant required check
@@ -47,8 +51,6 @@ for an agent-configuration change, Agent Sync handling before this skill finishe
 - `test-fixture`
 
 ## Inputs
-
-After successful Agent Sync, invoke `update-skills` when the GitHub rules select that route.
 
 The caller supplies the repository, the pull request, the head SHA its final acceptance passed, the
 affected behaviors its local tests already cover, and the rule that decides what a fix made here
@@ -150,8 +152,8 @@ whether the accepted head can merge.
    job's own output — the run's jobs listing and decisively its log, which a finished job ends with
    its summary and cleanup. A log showing completion **is** the terminal result. Never diagnose a
    hang, push a speculative fix, cancel, re-run, or report the run stuck from a pending status alone.
-8. **Classify every unsuccessful check before repair.** A caller-supplied exclusion, a current-user
-   waiver for its named test or check is excluded. Preserve established baseline classifications;
+8. **Classify every unsuccessful check before repair.** A caller-supplied exclusion, or a
+   current-user waiver naming the test or check, is excluded. Preserve established baseline classifications;
    classify a newly encountered possible baseline under `pre-production`'s **Encountered Issues**,
    without reentering that skill's active run. A non-essential check failing only on findings
    `pre-production`'s essential-checks bullet leaves red is an exclusion too. Record an exclusion's
@@ -228,7 +230,8 @@ Once the merge is verified, **No Deploy Work** governs what follows it.
 When the merged diff changes agent configuration, poll the default-branch Agent Sync run the merge
 started as **Check Gate** steps 6–7 poll a check. A run ending in anything but success is diagnosed
 from its log and reported. After a successful run, complete the refresh selected by the GitHub
-rules' **After Agent Sync** section and verify its installed links; the skill does not return, and
+rules' **After Agent Sync** section, invoking `update-skills` when that section selects it, and
+verify its installed links; the skill does not return, and
 the turn does not end, until that refresh is verified or a failed run or blocker is reported.
 When the caller owns the primary checkout refresh, return the sync result and any shared
 installation result so the caller can complete and verify the checkout refresh.
@@ -261,8 +264,11 @@ concurrency group, so the superseded head reaches no terminal state and emits no
 ## Report
 
 ```markdown
-Merged: [<owner>/<repo>#<number>](<url>) at <short sha> — checks: <local only | names of hosted checks and results, baseline failures left out> — consumers: <none pinned | repointed: <consumer PR> at <short sha> | owned elsewhere: <consumer PR> pins <reference>> — sync: <run result | not agent configuration>; refresh: <installed source and commit | blocked: exact reason | not agent configuration>
+Merged: [<owner>/<repo>#<number>](<url>) at <short sha> — checks: <local only | names of hosted checks and results> — consumers: <none pinned | repointed: <consumer PR> at <short sha> | owned elsewhere: <consumer PR> pins <reference>> — sync: <run result | not agent configuration>; refresh: <installed source and commit | blocked: exact reason | not agent configuration>
 ```
+
+The checks field leaves out baseline failures and non-essential checks left red, as
+`pre-production`'s **Encountered Issues** says.
 
 Or, when a gate holds: `Not merged: <link> — <gate>: <evidence>`. The evidence includes each
 relevant check's terminal result, read from its log where its status was stale.

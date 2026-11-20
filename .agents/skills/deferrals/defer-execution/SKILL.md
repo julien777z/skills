@@ -69,7 +69,7 @@ The worktree leaves the current branch's working tree untouched.
    and host receipt with the scope's evidence in the task ledger through `session-ledger`, as
    `subagent-matrix`'s **Dispatch** requires. This keeps the
    parent session's own state and working directory where they were. Give the worker the scope, the worktree
-   path, and the commit and push cadence `execute-task`'s **Pre-Push Gate** sets for delegated edits.
+   path, and the commit and push cadence `execute-task`'s pre-push reference sets for delegated edits.
 
 3. **Validate inside the worktree** with the repository's own checks for what changed.
 
@@ -100,7 +100,7 @@ The work is owed once the originating pull request lands.
 3. **The merge is observed, never watched for.** It arrives through something delivered or something
    already being read: the merge call's own result, a pull-request-closed notification, a fetch
    showing the squash commit on the default branch, or the user saying it merged. Never arm a timer,
-   monitor, or scheduled check-in for it. The repository's ban on those holds here, and this route
+   monitor, or scheduled check-in for it. The ban on polling a pull request holds here, and this route
    needs no exception to it, because the trigger arrives on its own.
 
 4. **The turn that observes the merge is the turn the branch is created.** Post-merge finalization

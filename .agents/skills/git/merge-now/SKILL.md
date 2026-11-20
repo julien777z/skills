@@ -52,7 +52,7 @@ depends on to merge.
 2. **Check gate.** Invoke `merge-gate` with the accepted head, validation receipts, established
    exclusions and the fix rule for every fix it makes — a check fix, a conflict resolution, a commit
    someone else pushed: `review-pass` runs again over that fix's delta, and the fix is pushed through
-   `execute-task`'s **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
+   `execute-task`'s pre-push reference, whose verdict is its gate. A fix counts only once both have
    passed. `merge-gate`'s **Check Gate** owns complete-diff classification, check inventory, failure
    handling and the evidence required before merging.
 3. **Merge.** `merge-gate` squash-merges at the gated head and verifies it. Record the merge commit and its first parent with `session-ledger`.
@@ -79,7 +79,7 @@ or says nothing is needed.
 
 | PR | Acceptance | Check gate | Merged at |
 | --- | --- | --- | --- |
-| [<owner>/<repo>#<number>](<url>) | <reused (head unchanged) | accepted on `<sha>`> | <passed | passed; verified exclusion: `<check>` — <gate evidence>, baseline failures left out> | `<sha>` |
+| [<owner>/<repo>#<number>](<url>) | <reused (head unchanged) | accepted on `<sha>`> | <passed | passed; verified exclusion: `<check>` — <gate evidence>> | `<sha>` |
 
 **Review of what merged**
 - <repo>: <nothing unreviewed | clean, no fix PR | <n> confirmed finding(s), <one-line summary>. Fixed in [<repo>#<number>](<url>), accepted, check gate passed, merged at `<sha>`.>
@@ -88,3 +88,6 @@ or says nothing is needed.
 
 **Next:** <one action, or nothing needed>
 ```
+
+The check-gate column leaves out baseline failures and non-essential checks left red, as
+`pre-production`'s **Encountered Issues** says.

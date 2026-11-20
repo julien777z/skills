@@ -115,7 +115,7 @@ Follow the active task's recorded priorities when choosing the next eligible uni
    - every exclusion it returned, with its evidence;
    - the fix rule for every fix `merge-gate` makes — a check fix, a conflict resolution, a commit
      someone else pushed: `review-pass` runs again over that fix's delta, and the fix is pushed through
-     `execute-task`'s **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
+     `execute-task`'s pre-push reference, whose verdict is its gate. A fix counts only once both have
      passed.
 3. After a verified merge, run **Local Checkout**. Record the merge and checkout outcome, or the
    gate that holds the merge, with `session-ledger`, and continue to the next unit.
@@ -142,10 +142,8 @@ head lag and a retryable rate limit are nonterminal.
   and was not subsequently reverted. Compare staged and unstaged changes, including file mode and binary
   changes, before restoring anything. For a file with mixed or uncertain changes, preserve the
   entire file unless the landed and local-only changes can be verified independently.
-- A copy a file-sync service or the operating system left behind is not local work: one whose name
-  is the original's plus a copy suffix, and whose content its original or a version Git holds
-  already has, is deleted once no process, worktree or session uses it, never saved, and named in
-  the report. A copy with content of its own stays as an ordinary file.
+- A copy a file-sync service or the operating system left behind is not local work: delete it as
+  `execute-task`'s **Copies A Sync Service Left Behind** says, never save it.
 - Stage the remaining local-only edits by path, including untracked files that belong to the work.
   When a path has different staged and working-tree edits, keep its index entry intact. Save the
   index, working tree, and untracked files in a named local stash and verify the saved versions

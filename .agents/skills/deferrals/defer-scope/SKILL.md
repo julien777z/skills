@@ -19,13 +19,13 @@ Keep a problem alive after the conversation ends without scheduling its implemen
 **Repository fallback** only when the session exposes no Linear integration or preflight reports it unavailable
 before any write.
 
-**Read** when no scope is given. Report the combined active set from Linear and the legacy
+**Read** when no scope is given. Report the combined active set from Linear and the
 repository ledger, and write nothing. A recorded item is resolved by the user running
 `/execute-defer-scope` on it.
 
 ## When Recording Runs
 
-A defect is never recorded: `pre-production` has it fixed in the change in flight, whatever its size. Fix other work instead whenever one focused pass can finish it within `pre-production`'s size budget. A stale reference, rename, wrong path,
+Fix work instead of recording it whenever one focused pass can finish it within `pre-production`'s size budget. A stale reference, rename, wrong path,
 missing assertion, lint or type finding, or small extraction costs less to fix than to record.
 Attempt the fix before concluding that work is deferrable; `acceptance-gate`'s admission question
 lists the only justifications for a record, and a flagged attempt is one of them.
@@ -49,7 +49,7 @@ redesign, a broad sweep somebody could reasonably decline — or that is blocked
 awaits a decision already put to its owner and still open, or one the user declined in the current
 request; a question nobody has asked yet is asked, not recorded. **A defect is never recorded**, a defect as `pre-production`'s **Scope
 Follows The Defect, Not The Request** defines one, whether the change introduced it, the task asked
-to fix it or the work only ran into it: it is fixed in the change in flight. Only cleanup that fixes
+to fix it or the work only ran into it: it is fixed in the change in flight, whatever its size. Only cleanup that fixes
 no defect follows `pre-production`'s size budget, and only what that budget defers is recorded here.
 Never offer the user the choice between fixing and recording. When part of a cleanup is small, fix
 that part and record only the remainder. Record consciously deferred work immediately, at the
@@ -86,7 +86,7 @@ the canonical repository identity and the current change's pull-request number w
    `acceptance-gate`'s admission question. A refusal ends recording. Reusing an active match is
    admitted the same way as creating one; appending to a record is still deferring.
 4. Reuse and update a confident active Linear match. Do not reactivate a completed or canceled issue,
-   duplicate a legacy record, or choose among ambiguous matches without user direction.
+   duplicate a repository-ledger record, or choose among ambiguous matches without user direction.
 5. Create one issue when no match exists. State what is deferred, why it remains open, the scope of
    picking it up, supporting evidence by durable link or concise excerpt, and concrete resolution
    criteria. Use the metadata contract from `linear` with `Source: defer-scope` and the stable key. Write
@@ -95,7 +95,7 @@ the canonical repository identity and the current change's pull-request number w
    a mechanical condition — a symbol gone, a file absent — can be satisfied by putting that shape
    back somewhere else, and the record then closes on a regression. Write the admission verdict in
    the issue body below the description.
-6. Return the issue identifier and URL, or the matching legacy record. Recording does not create a
+6. Return the issue identifier and URL, or the matching repository-ledger record. Recording does not create a
    repository branch or pull request when Linear succeeds.
 
 If creation has an unknown outcome, follow `linear`'s bounded reconciliation search and do not retry

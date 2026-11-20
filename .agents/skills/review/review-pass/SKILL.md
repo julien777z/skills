@@ -25,10 +25,9 @@ skill never readies, merges or deploys.
 ## Invocation
 
 - The invocation names the target and supplies the intent statement: what the change is for and what
-  is out of scope. An intent that does not name a bug never bounds it: one the pass finds outside
-  the diff or the intent is fixed in the change, as **Answer each finding** says for one outside the
-  change, unless the intent records the user cutting that work and the change did not introduce
-  the bug.
+  is out of scope. An intent that does not name a bug never bounds it: **Answer each finding**
+  governs one the pass finds outside the diff or the intent, unless the intent records the user
+  cutting that work and the change did not introduce the bug.
 - The invocation authorizes the declared dependencies over that target, pushing fixes to its
   working pull request, refreshing its title and description, resolving its review threads and
   posting the replies **Review Threads** allows, and, on the merged-range route only, creating the
@@ -54,7 +53,7 @@ skill never readies, merges or deploys.
   an exclusion under **Checks**, and every thread is resolved, outdated or put to the user. It then
   runs `code-simplify` once over the pull request's whole diff, in process or by slice as **Local
   Passes** says; a fix that pass pushes is watched to the same end, and the watch then stops. The
-  report names each exclusion other than a baseline failure, which it leaves out as
+  report names each exclusion, leaving out baseline failures and non-essential checks left red as
   `pre-production`'s **Encountered Issues** says, and each thread waiting on the user. A draft runs no test jobs, so
   its watch reports `draft: watch ended, tests not run`; this mode never readies or merges a pull
   request.
@@ -173,10 +172,8 @@ validation exclusion is recorded with its evidence and not repaired, rerun or wa
    pass to step 6, and new commits return it to step 1. When all inputs match, record the accepted
    head under **Range** and return its **Output**.
 
-A finding outside the change follows **Review Loop**'s rule for it: every defect is fixed here,
-whatever its size, and only cleanup past `pre-production`'s size budget is recorded with
-`defer-scope`. A recorded deferral is discharged, never a gate on the review or the merge, and never
-covers a defect.
+A finding outside the change follows **Answer each finding**. A recorded deferral is discharged,
+never a gate on the review or the merge, and never covers a defect.
 
 Keep the session active until the pass reaches its result. A delegated reviewer is nonterminal
 until it returns; a quiet interval or a yielded wait is not completion.
@@ -205,8 +202,8 @@ changed. Make the smallest changes that answer real findings, and push back on t
 - **Budget:** three rounds. Round 1 reviews the whole target; later rounds review the changed code
   and the findings still open, whatever the delta touches. Stop early
   when a round returns only nits; a declined nit or an edit that changes only wording or formatting
-  needs no new round. These rounds count the pull request's review loop; one finding's fix still follows the
-  limit of 3 review rounds per change.
+  needs no new round. These rounds count the pull request's review loop; one finding's fix still
+  follows the limit of 3 review rounds per change, as `acceptance-gate`'s **Bounds** counts them.
 - **Reviewer:** a model of a different provider from the author when one is reachable, so it does
   not share the author's blind spots; the user may name another. Resolve it through
   `subagent-matrix` at the advanced level of that provider's families and medium effort, applying
@@ -238,8 +235,8 @@ changed. Make the smallest changes that answer real findings, and push back on t
     the loop;
   - nit: fix it when it is a one-line change in a line the change already touches, otherwise decline
     it in one line;
-  - outside the change: fix every bug, and record cleanup past `pre-production`'s size budget with
-    `defer-scope`.
+  - outside the change: fix every bug, whatever its size, and record only cleanup past
+    `pre-production`'s size budget with `defer-scope`.
 - **Next round** only while budget remains and a blocker or should is open, or code or guidance
   behavior changed since the last approval. Rerun the checks and `git diff --shortstat <base>` first; if
   review grew the diff past what the intent needs, cut it first. Never agree just to end the loop.
@@ -251,7 +248,8 @@ changed. Make the smallest changes that answer real findings, and push back on t
   reviewer's case and yours with their evidence, and the code it concerns; its ruling settles it:
   fix it, or record it declined with the ruling. A spent budget with a blocker or should still open
   goes to `council` in **Ask** mode, which decides between a simpler approach, reverting the
-  change and accepting it with the remaining findings recorded.
+  change and accepting it with the remaining findings recorded, within the limit its **Ask** sets
+  on what a ruling accepts.
 
 ## Harness Compatibility
 
@@ -268,7 +266,7 @@ changed. Make the smallest changes that answer real findings, and push back on t
 - **Review loop:** <n> round(s) with <model> — <approved | waiting on the user for <ids> | review only> · panel <round 1 | ruled on <ids> | not used> · diff <shortstat before> → <shortstat after>
 - **Fixed:** <one line per fix, marking those review surfaced rather than the task required, or none>
 - **Threads:** <disposition per thread, or none>
-- **Checks:** <passed | exclusions with evidence, baseline failures left out>
+- **Checks:** <passed | exclusions with evidence, leaving out baseline failures and non-essential checks left red>
 - **Security:** <Diff Review result | not applicable>
 - **Acceptance:** <accept | flag and what it named>
 - **Deferred:** <record link: what it covers, or none>

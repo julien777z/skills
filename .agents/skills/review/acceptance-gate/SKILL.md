@@ -26,11 +26,6 @@ while a gate's flag is closed only by a fresh gate under **Bounds**.
 
 ## The Intent Statement
 
-Apply `pre-production` to the scope decision, `test-fixture` to test costs and existing reporting
-evidence, and `run-site`'s **Scenarios** to changes that add or alter product states.
-
-Apply `security-audit` at `low` effort as a single in-process rubric pass without delegated agents; take its exploitable findings into the verdict.
-
 The caller produces the statement once per change, updates it when accepted requirements or the
 user's scope change, and passes it to every gate. The gate judges within the scope the user set,
 as the statement records it: work the user cut is reported as out of scope, never flagged as work
@@ -123,6 +118,11 @@ receives five things and nothing else:
    file list and every finding that run prints, including an explicit empty result. The reader
    verifies each reported shape against the source and rule;
 5. exactly one question from the list below.
+
+**The gate judges with its dependencies' criteria.** Apply `pre-production` to the scope decision,
+`test-fixture` to test costs and existing reporting evidence, and `run-site`'s **Scenarios** to
+changes that add or alter product states. Apply `security-audit` at `low` effort as a single
+in-process rubric pass without delegated agents; take its exploitable findings into the verdict.
 
 **The gate has no shell, so every diff reaches it as content, never as a reference.** The caller
 pastes the originating diff and a diff item into the prompt, or writes each to a file the prompt
@@ -340,18 +340,26 @@ run and finishes its verdict, and that verdict is the round's. Only evidence tra
 change to the diff, or to any text the gate judges, goes to a fresh gate, and no gate judges wording
 it proposed itself.
 
-**Repair rounds are counted per objection and per change.** A change gets at most 3 rounds across
-every kind of check, the first and 2 after repairs: once 3 have failed it, whatever each raised, `council` in
-**Ask** mode decides between a simpler approach, reverting the change and accepting it with the
-remaining findings recorded, and that decision replaces another repair, and an acceptance with recorded findings that decision makes is the one exception to
-the rules below on flagged diffs. While the change is under that limit, a flag gets at most two
-repair rounds of its own, and one a fresh gate raises for the first time starts at zero. A flag the
-gate still raises after its own second repair, with the change still under the limit, goes to
-`council` in **Ask** mode with the open flag, each remedy tried and its evidence, and the gate's
-proposed remedy. Its ruling decides the remedy, which is applied and checked as any repair is, and
-the caller's result names the flag and the ruling. A flag the council returns as the user's choice
-goes to the user, as a report of those facts with a recommended next step, never as a choice about
-whether to fix it or leave it in place. Every other flag keeps its own repair and gate meanwhile.
+**Repair rounds are counted per objection and per change, in every review loop.**
+
+- **Per change:** a change is one plan step, worker task or finding fix, and it gets at most 3
+  rounds across every kind of check, such as a review, a gate, a smoke test or CI: the first and 2
+  after repairs. A round fails a change only when it raised a finding or flag on that change's
+  lines. A round a broken runner, fixture or provider cut short before judging the change is not
+  counted, and neither are a style flag and an evidence gap, as the paragraphs above say.
+- **At the limit:** once 3 rounds have failed a change, whatever each raised, `council` in **Ask**
+  mode decides between a simpler approach, reverting the change and accepting it with the remaining
+  findings recorded, within the limit `council`'s **Ask** sets on what a ruling accepts. That
+  decision replaces another repair, and an acceptance with recorded findings it makes is the one
+  exception to the rules below on flagged diffs.
+- **Per flag:** while the change is under that limit, a flag gets at most two repair rounds of its
+  own, and one a fresh gate raises for the first time starts at zero. A flag the gate still raises
+  after its own second repair, with the change still under the limit, goes to `council` in **Ask**
+  mode with the open flag, each remedy tried and its evidence, and the gate's proposed remedy. Its
+  ruling decides the remedy, which is applied and checked as any repair is, and the caller's result
+  names the flag and the ruling. Every other flag keeps its own repair and gate meanwhile.
+- A flag the council returns as the user's choice goes to the user, as a report of those facts with
+  a recommended next step, never as a choice about whether to fix it or leave it in place.
 
 Never rerun an unchanged item hoping for acceptance, argue it through the same gate, rename it to
 reset its history, or keep flagged code because the caller can authorize its merge. Carry unresolved

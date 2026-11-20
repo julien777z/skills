@@ -75,6 +75,7 @@ alwaysApply: true
   request; never add it and revert it within a session. Cheaper non-test checks, such as lint, may
   keep running on drafts. This bounds what drafts cost and is never a way past a failing test: no
   test is skipped, disabled, or quarantined to reach green.
+- A job that runs a test suite follows `test-fixture`'s **Time Budgets**.
 
 ## Branches and Pull Requests
 
@@ -104,7 +105,7 @@ alwaysApply: true
   `pre-production`'s **Examples And Paths** says. Describe a consumed interface or unresolved delivery
   requirement in terms of this repository's own contract; disclose provider PR links and merge
   ordering to the user in chat.
-  `merge-gate` still owns the complete dependency inventory and merge gate.
+  `merge-gate` owns the complete dependency inventory and merge gate.
 - **Text handed to Git or the hosting service is staged where only its author writes and read back
   once published.** A commit message, title, description, comment or issue body goes inline, on
   standard input, or from a file whose path was generated for that one text, such as one `mktemp`
@@ -184,12 +185,9 @@ alwaysApply: true
 ### Merge Authorization
 
 - Agents may create branches and pull requests, commit, and push scoped changes without additional approval.
-- Merging any pull request requires explicit user authorization in the current request or explicit
-  applicable guidance in a rule or invoked skill for that pull request. A fix request, CI-test
-  request, successful check, review, or request to implement a plan that lists a merge does not
-  itself authorize merging. A reply that could be read as accepting a merge mentioned earlier, such
-  as a bare "yes" beside another request, authorizes no merge it does not name. If neither
-  authorization source applies, do not merge or enable auto-merge.
+- `merge-gate`'s **Authorization** says what authorizes a merge; the bullets below are the standing
+  permissions and holds it refers to. Where neither the user's authorization nor one of those
+  permissions applies, do not merge or enable auto-merge.
 - Honor the selected workflow's delivery hold before the standing permissions below; a pull
   request held for user review cannot use those exceptions or auto-merge.
 - **Guidance for something the user is still trying out is held for their review.** Once the user
@@ -288,7 +286,7 @@ alwaysApply: true
 
 - Use conventional commit messages when applicable and keep commits atomic and focused.
 - Commit each small coherent step and push it promptly once the pre-push checks pass, sub-agents
-  included; `execute-task`'s **Pre-Push Gate** defines those checks. Work only one machine holds is
+  included; `execute-task`'s pre-push reference defines those checks. Work only one machine holds is
   lost with it.
 - Commit only the files the change wrote. Stage each by its own file path — never `git add -A`, `git
   add .`, `git commit -a` or a directory — then run `git diff --cached --name-only` before

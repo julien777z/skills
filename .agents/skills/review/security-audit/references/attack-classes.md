@@ -81,7 +81,7 @@ Some starting points, but don't limit yourself to these:
 - What would you do if you had a valid account but wanted to cause maximum damage without being detected? Not escalation — sabotage. Corrupting data, poisoning caches, exhausting resources, creating confusing state.
 - Are there any operations that are irreversible? What if you trick an admin into performing one?
 - What assumptions does the code make about the environment? That the database is local, that the clock is accurate, that DNS is trustworthy, that the filesystem is case-sensitive?
-- Look at the test files — what are they NOT testing? What edge cases did the developer think about (tests exist) vs. what they didn't (no tests)?
+- Look at the test files — what are they not testing? What edge cases did the developer think about (tests exist) vs. what they didn't (no tests)?
 
 Follow rabbit holes. If something looks weird, dig. If a function has a comment explaining why it's safe, verify the explanation. If a variable is named `temp` or `hack` or `legacy`, read every line of it.
 
