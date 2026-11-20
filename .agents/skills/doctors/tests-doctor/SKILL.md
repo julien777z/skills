@@ -1,6 +1,6 @@
 ---
 name: tests-doctor
-description: Audit and correct existing tests for contract value, redundancy, weak assertions, naming, runtime, third-party rate limits, coverage by test, and determinism. It aligns suites with their source owners, consolidates duplicate proof, preserves independent contracts, measures runtime, and repairs proven defects. Use to review, clean up, speed up, de-duplicate, or find gaps in tests. Run only when the user asks for it.
+description: Audit and correct existing tests for contract value, redundancy, weak assertions, naming, runtime, third-party rate limits, coverage by test, determinism, and suite configuration such as skips, warnings and time limits. It aligns suites with their source owners, consolidates duplicate proof, preserves independent contracts, measures runtime, and repairs proven defects. Use to review, clean up, speed up, de-duplicate, or find gaps in tests across a repository. Run only when the user asks for it.
 short_description: 'Audit tests for contract value, redundant proof, weak assertions, runtime, provider rate limits, and determinism.'
 ---
 
@@ -39,13 +39,65 @@ with the calls one run makes to it per account and per destination; and any tigh
 the repository configures, such as a documented target, with runner and CI timeouts recorded as
 hang bounds rather than budgets.
 
-The measurement taken once before fan-out is the timing of every runner target through the
-runner's own per-test and per-fixture duration reporting, serialized as the runner requires. Use
-existing reporting capabilities; missing attribution is recorded as unmeasured, not filled by a new
-maintained diagnostic system.
-Record baseline pass/fail state and available suite wall times. Rank cases and fixtures only where
-existing reporting attributes their costs; unavailable rankings remain unmeasured. A suite that
-cannot run locally uses its existing CI timing when available.
+**Shared index.** Doctors run in a row share one index of the repository, keyed by commit in the
+worktree's working-files folder. This doctor reads its file inventory, symbol and import tables and
+dependency list where the current commit's copy holds them, and rebuilds only what is missing or
+stale. It writes the test-to-source map, the collected test list, the fixture and doubles tables,
+the duplication detector's pairs over test trees, and each suite's timing and coverage.
+
+### Pre-Pass
+
+These are the mechanical commands `doctor-protocol` runs once before any reviewer reads, serialized
+as the runner requires, each listing candidates for the lenses that read it. Use the tool the
+repository already configures for a job. Where it configures none, a tool the machine already has is
+run read-only with nothing committed, and one neither has is recorded as not run, as
+`doctor-protocol`'s **Measure Before Fan-Out** says, and is never installed into the project
+unasked. The commands below are pytest's, and a suite on another runner uses that runner's
+equivalent.
+
+- **Collected tests** — every test the runner collects per target, and every test directory no
+  target reaches.
+- **Timing** — every runner target through the runner's own per-test and per-fixture duration
+  reporting, with baseline pass and fail state and suite wall times. Rank cases and fixtures only
+  where existing reporting attributes their costs; missing attribution is recorded as unmeasured,
+  not filled by a new maintained diagnostic system. A suite that cannot run locally uses its
+  existing CI timing when available.
+- **Coverage by test** — line coverage per suite with the test that covers each line, where the
+  runner's coverage plugin records it.
+- **Fixtures** — every fixture the runner knows against the references to it, listing those no
+  test requests, and every fixture definition by module.
+- **Doubles** — a syntax-tree script kept in the run's working files that lists every patch target
+  and mock construction with the module that owns the target.
+- **Skips** — every skip mark, xfail mark, conditional skip and commented-out test.
+- **Repeated blocks** — the repository's cross-file duplication detector over every test tree, at
+  the tool's default similarity.
+- **Symbols only tests consume** — every module-level symbol in an application package with its
+  consumers classified by root, from the symbol table or a dead-code detector run with and without
+  the test roots; and every import from a test root into an executable, from the import table.
+- **Test-to-source map** — one row per test module with the source module or package it resolves
+  to, as **Align Structure With Siblings And Source** lays the table out.
+
+```sh
+pytest --collect-only -q
+pytest --durations=0 --durations-min=0
+pytest --cov --cov-context=test
+pytest --fixtures -q
+rg -n 'pytest\.mark\.(skip|skipif|xfail)|pytest\.skip\(|pytest\.importorskip|^\s*#\s*(async )?def test_'
+rg -n '@pytest\.fixture' -g 'test_*.py' -g 'conftest.py'
+vulture <source roots> --min-confidence 80
+```
+
+### Measures
+
+The counts `doctor-protocol` takes before the audit and again after the fixes: per suite, wall time
+against its budget, the sum of test call durations, tests collected, and line coverage; across the
+test trees, duplication-detector pairs, skips and xfails, doubles of repository-owned code, unused
+fixtures, test modules mirroring no source, and names a naming check reports; and per provider,
+account and destination, real calls per run.
+
+**A source line covered before a fold, merge or cut and uncovered after it is a dropped fact.** The
+second coverage run is compared with the first line by line, and the run restores what proved each
+such line, or names the removed disproportionate case that accounts for it.
 
 The budget is the suite budget `test-fixture`'s **Time Budgets** set, and within it no test, parametrized family
 or module is disproportionate under `test-fixture`'s cost question.
@@ -64,276 +116,52 @@ outside test bodies, not a particular fixture. Use existing setup and fixture at
 investigate repeated client, organization, persisted-aggregate or authenticated-session creation.
 Report available totals and mark missing attribution unmeasured under `test-fixture`'s procedure.
 
-## Partition The Reviewers
-
-One domain reviewer per suite family — each application, service, and package suite, and each
-cross-boundary group such as end-to-end, migration, script, or front-end as its own slice — applies
-the redundancy, naming, runtime, third-party limit, doubles, and construction lenses to its slice.
-The cross-cutting reviewer owns the layout and coverage lenses and the duplicates across suites of
-one classification, because those are visible only across slices, and compares the doubles table
-across suites, since a seam one suite uses and its sibling patches around is visible only there. It
-also sums each provider's per-run calls per account and per destination across slices, since a
-shared account's total is visible only there. A narrow scope gets two independent passes.
-
-The final adversarial reviewer re-times every suite the run cut or reduced against the reported
-numbers, re-checks each merged parametrization and folded assertion for a fact that was dropped,
-confirms each retained skip or xfail still has a live condition, and challenges every coverage gap
-the run left open.
-
 ## Lenses
 
-### Align Structure With Siblings And Source
+Read [the lens criteria](references/lenses.md) before building the inventory: each lens named here
+and in this skill's other sections is a section of that reference, stating what the lens flags, the
+checks that find every instance, what is left alone, and its remedy where **Findings** below does
+not already give it. A partition lens is judged inside one suite family; a whole-repository lens
+needs every suite at once, so the cross-cutting reviewer owns it.
 
-Establish the convention the majority of sibling suites follow for shared support — a fixture
-package, a helper package, a case package, and a `conftest.py` reserved for lifecycle wiring —
-then run every check below over the whole scope. Each item is a finding, and each names the
-mechanical check that finds every instance rather than the first one noticed:
+| Lens | Flags | Reach |
+| --- | --- | --- |
+| **Align Structure With Siblings And Source** | A suite laid out unlike its siblings or its source, and application symbols only tests consume. | Whole repository. |
+| **Audit Test Value And Repair Weak Proof** | A test that proves nothing, proves it weakly, or repeats a literal or a case its owner declares. | Partition. |
+| **Find Repeated Blocks With A Detector** | A block copied between test modules. | Whole repository. |
+| **Name Cases As Labels** | A test, fixture, factory or helper name that is not a label. | Partition. |
+| **Bring Every Suite Under Budget** | A suite over its budget, a disproportionate case, and what makes a test flaky. | Partition, by suite. |
+| **Stay Inside Third-Party Limits** | A run that draws a limit refusal from a third party. | Partition; each provider's calls are summed across the repository. |
+| **Map Coverage By Test** | A journey, boundary crossing or pure function with no test in the classification that should reach it. | Whole repository. |
+| **Make Doubles Honest** | A double of repository-owned code, or one placed off the declared seam. | Partition; the doubles table is compared across suites. |
+| **Keep Construction Out Of Test Modules** | Model construction, factories and mirrored types outside their shared owner. | Partition. |
+| **Keep Test Data In The Repository's Domain** | A suite speaking a domain its source does not own. | Partition. |
+| **Hold Suite Configuration To Its Rules** | Runner and job configuration off the suite rules: skips, warnings, markers, environment values, time limits. | Whole repository. |
 
-- a fixture defined at module level in a test module (grep `@pytest.fixture` in `test_*.py` and
-  keep only definitions outside a class), or a domain fixture defined in `conftest.py`;
-- a test module that mirrors no source module or package. The check is a table and the table is
-  the report: one row per `test_<name>.py` with five columns — its path; the source directory it
-  resolves to after the test root, the suite, and the classification are stripped; whether
-  `<name>.py` exists there; whether a package `<name>/` exists there; whether the module's own
-  directory is named for a source module beside it. Three noes make the row a finding, and nothing
-  the module contains overturns that: a module that sweeps every route of a package, drives
-  requests across several modules, or tests a concern rather than a file has still claimed a
-  source module that does not exist. `routes/test_pagination_bounds.py` with no
-  `routes/pagination_bounds.py` is that finding.
-  It moves under the source module it covers, as a behavior module in a directory named for that
-  module, or is named for the package it sweeps beside that package (`test_routes.py` next to
-  `routes/`, for the sweep above);
-- a source suite fragmented into tiny classes/files, or a file with multiple test classes: apply test-fixture's class/file boundary test, map cases to the substantial owning class, and merge small related classes before deciding whether independently maintained responsibilities justify separate files; keep one class per resulting file and preserve distinct proof;
-- a test class whose name obscures the substantial responsibility it owns: name the class and its one-class module for that responsibility; a new label alone never justifies a small standalone class;
-- a support `utils/` or `fixtures/` directory that holds `test_*.py` modules: distinguish support
-  from source tests by tracing the source owner. Keep all utility tests in `utils/`, move support to
-  the nearest fixture or utility package that does not hide that owner, and verify runner targets
-  reach its files;
-- shared support at a different depth from the siblings, or a helper module named for a catch-all;
-- a module at a suite root whose subject is one source module inside a subpackage, when a
-  directory in this suite carries that subpackage's name or the classification's sibling suites
-  nest their modules by it (list every suite-root module in a table: its subject — the source
-  module its imports name, or, for a test that drives a request, the route and service module
-  that request reaches, read from the route table — that module's subpackage, whether this suite
-  has a directory of that name, whether a sibling suite of the classification nests modules under
-  it; report every row): a row with either yes is misplaced and belongs in that directory under
-  the source module's own name; a flow that deliberately spans several source modules stays at the
-  shared owner;
-- a module named for one source file whose imports cover another (for each module, list the
-  source modules it imports and compare them with the source file its name claims): it is
-  misnamed, or it duplicates the module that already covers that source, and a test class name
-  that appears in two modules is the duplicate;
-- a test directory carrying the `test_` prefix;
-- an import from a sibling suite;
-- a symbol defined in an application package — a service, an app, or a library package outside its
-  own test-utilities package — whose every consumer is under `tests/`, a test-utilities package, or
-  a CI script using it for the same disposable-environment purpose the tests do (for every
-  module-level `def` and `class` the scope adds or touches, grep the symbol across the repository
-  and classify each hit's root): it is a test utility and moves to the shared test-utilities package
-  the repository's layout holds, a test-support change under **Change Boundary** rather than an
-  application change. Two shapes stay where they are, and the report names every symbol it leaves
-  for one of them with that reason, so a reviewer does not go hunting: an import-time registration
-  such as a SQLAlchemy `@compiles` hook, whose consumer is the import itself and whose call-site
-  count says nothing; and a helper CI tooling or bootstrap runs to produce a repository artifact or
-  bring an environment up, which is a machine consumer;
-- a test directory no runner target reaches, an empty mirror package, an orphaned module, or a
-  numbered duplicate file;
-- runner configuration blocks that disagree on markers or environment.
+Every finding is recorded in `doctor-protocol`'s finding shape. Its fix names the owner each block,
+fixture or case moves to and what is deleted; its proving check is the affected suite re-run green,
+with the timing or coverage measure re-taken where the finding concerns one.
 
-### Audit Test Value And Repair Weak Proof
+## Reviewers
 
-Apply `test-fixture`'s **Test Value And Retention**, its dispositions included, to every test
-declaration in scope, parameter rows that need different dispositions included, and record each
-declaration's disposition, actual assertion and the contract it protects.
+Reviewers are capped as `doctor-protocol`'s **Launches** sets; this doctor sets no lower cap. The
+suite family dictates the partition cut: each application, service, and package suite, and each
+cross-boundary group such as end-to-end, migration, script, or front-end, is a partition of its own
+or is split inside itself, never merged with another family. The lens catalog a reviewer is given is
+the lens criteria reference together with the **Lenses** table.
 
-### Find Repeated Blocks With A Detector
+The cross-cutting reviewer works from the test-to-source map, the collected test list, the
+detector's pairs, the coverage by test and the doubles table in the pre-pass output, and owns the
+whole-repository lenses: layout, coverage, suite configuration and the duplicates across suites of
+one classification, because those are visible only across slices. It compares the doubles table
+across suites, since a seam one suite uses and its sibling patches around is visible only there,
+and sums each provider's per-run calls per account and per destination across slices, since a
+shared account's total is visible only there.
 
-Every other lens reads one module at a time or searches for one shape it can name, so a block copied
-into two files — most of all into two different suites — survives all of them. Run a cross-file
-duplication detector over every test tree in scope, at the tool's own default similarity rather than
-a threshold picked to quiet it, and read what it reports:
-
-```
-<the repository's configured cross-file duplication detector, over every test tree>
-```
-
-Run the detector the repository's tooling already configures for its language; the checks below
-name pytest shapes, and a suite on another runner reads them as that runner's equivalent.
-
-**Every pair it reports is a finding, whether or not this run introduced it.** Nothing else in the
-audit reports these, so the pairs that predate the run are precisely what the lens exists to catch,
-and a count of what the branch added is not the measure: the measure is zero.
-
-Name the owner each block moves to before editing: repeated setup goes to the fixture package of the
-suite that reads it, a repeated call to that suite's utility package, repeated model construction to
-the repository's established shared factory owner, and a repeated list of field or column names
-derives from the model or table that declares them. Where two callers differ only in a value, the
-owner takes it as a parameter rather than growing a second copy.
-
-**The report names the detector and what it returned, whatever it returned.** Reading the modules,
-or grepping for a shape somebody already suspects, is not this lens and does not stand in for it: the
-pairs it exists to catch are the ones nobody suspects, which is why nothing else in the audit reports
-them. Where the detector cannot be run at all, say that and say why, rather than presenting an
-inspection as its result.
-
-Re-run the detector after each cluster and keep going until it reports none. A pair that survives
-because the lines it matched are still identical says the owner was wrong or the call site still
-spells the call over four lines; shorten the call or move the boundary, and never settle it by
-widening the tool's threshold or disabling the check.
-
-### Name Cases As Labels
-
-Run `test-fixture`'s **Naming Checks** over every `def test_`, fixture, factory and test helper in
-the scope and report each check's result, an empty result included. Every naming and structural
-check in this section is a finding the run fixes. A check that reports its rows and leaves them
-standing, or a row admitted as an observation, is the miss this doctor exists to close.
-
-### Bring Every Suite Under Budget
-
-For each suite over budget and each dominating case or fixture, establish the cause: fixture scope,
-sleeps and polling, real network or filesystem work, a service booted per test, serial independent
-work, unbounded data, or a genuinely slow application path. Order, wall-clock, randomness, network,
-and shared-state dependence are findings in the same pass, because they are what makes a slow test
-also a flaky one.
-
-**Weigh every dominating case against what it proves.** A test earns its runtime by the failure it
-would catch, so the question is what a reader loses if it goes, not whether it passes. One that
-asserts little for a large share of the suite's wall time is folded into a case of the same
-classification that is already paying that setup, or made cheaper where it stands. In a
-pre-production repository folding and speeding up cases is ordinary rather than a last resort: a
-suite nobody will wait for is coverage nobody runs. A case or module disproportionate under
-`test-fixture`'s cost question that cannot be made cheap as that question allows is removed, as
-`pre-production` says.
-
-**No budget removes a test as redundant because a test of another classification makes the same
-assertion.** A disproportionate cost is a separate reason, decided above. An
-end-to-end test that an integration or unit test also reaches is not cut as redundant, however
-far over budget its suite is and whatever stage the repository is in: its worth is that it runs the
-real services, which the cheaper test does not. Being over budget, being pre-production, and the
-cheaper test being "sufficient" are not reasons to cut it as redundant; bring the suite under budget
-by making its cases cheaper, folding them into cases of the same classification, or removing a
-disproportionate one as above.
-
-Preserve every unique guarantee while doing it, except where a disproportionate case is removed
-for its cost. Cutting a case whose assertion nothing else in its classification makes is otherwise a
-coverage loss wearing a timing win, so name what each cut proved and where that fact now lives.
-
-### Stay Inside Third-Party Limits
-
-**A run that draws a limit refusal from a third party it calls is a defect in the suite** — an HTTP
-429, a provider's throttling or quota code, a refusal to deliver to a destination sent to too often.
-It is never a flake. Runs overlap by design: every pull request's CI and every local run share the
-provider account and usually one test destination, so a suite that fits the limit only when it runs
-alone fails whenever it does not, and a refusal in any log is the evidence.
-
-The inventory's per-run calls to each provider, per account and per destination, are the evidence;
-read them with the service logs against the limits the provider documents and the ones it answered
-with. Then clear the refusal without losing a step the tests prove, taking these in order:
-
-- fold tests of one classification that make the same real call, the way **Audit Test Value And
-  Repair Weak Proof** folds duplicate proof;
-- make the contract's real call once per run and share its outcome, the way a slow suite's setup is
-  widened to the tests that share it;
-- clear the state the repository keeps about earlier calls to the provider — a counter or cooldown
-  keyed by account or destination — before the test, since state an earlier run left behind is
-  shared state like any other; clearing it is not raising the limit;
-- close what the test opened at the provider — cancel, expire, delete — so the next run starts from
-  nothing;
-- where the provider limits a destination across runs, give each run its own destination, or pace
-  the call against the provider's own record of the last one before making it — waiting before the
-  call is pacing, waiting after a refusal is a retry.
-
-Skipping the test, mocking the provider in an end-to-end test, retrying after a refusal, sleeping
-until green, raising a limit only for tests, and widening the assertion to accept the refusal are
-not remedies: each keeps the collision and loses what the test proved. **No end-to-end test swaps
-its real call for a double to make room for another's** — reading the outcome of the run's one real
-call is not a double; one test kept real beside a second that now doubles the provider is still an
-end-to-end test with its provider mocked; fold the two instead.
-
-### Map Coverage By Test
-
-Map entry points — routes, RPC methods, commands, jobs, event consumers — gateways and clients,
-persistence and migrations, and user journeys to the tests that exercise them in each
-classification. A journey with no end-to-end test, a boundary crossing with no integration test, and a flow covered
-only with its boundary mocked are gaps; a pure function covered only end-to-end is a unit gap.
-Integration and end-to-end coverage outrank unit coverage for anything that crosses a boundary: a
-unit test added for a flow whose integration or end-to-end path is untested is itself the gap.
-
-### Make Doubles Honest
-
-The inventory's table of doubles — target, owner, boundary, declared seam — is the evidence. Run
-`test-fixture`'s **Auditing Existing Doubles** checks over it and report each check's result, an
-empty result included, and name each double it leaves alone with its reason.
-
-### Keep Construction Out Of Test Modules
-
-Model-factory machinery belongs in the repository's established shared factory owner, including
-when only one suite uses it. Fixture lifecycle wiring and scenario inputs stay in the suite.
-Inject application model types where a shared import would invert dependencies.
-Discover that owner from existing implementations and the repository's test-utilities package
-before relocating anything.
-Complete the ownership move as `pre-production`'s **Scope Follows The Defect, Not The Request**
-says of a parallel copy: inspect every related implementation, move every consumer onto the one
-owner, and flag a partial move even when the factory left behind was already there. Generic
-lifecycle helpers retain their own owners; a shared word does not establish shared responsibility.
-
-Run `test-fixture`'s **Factory Contents** checks over every factory module in the suite, with
-the inventory and check rows that section requires in the report.
-
-Every placement check below runs over the whole suite; each names the mechanical check that finds
-every instance:
-
-- a `ModelFactory` or `SQLAlchemyFactory` subclass anywhere under `tests/`, including
-  `fixtures/`, `utils/`, and factory modules; enumerate direct and indirect factory subclasses,
-  and move the machinery to the shared test-utilities package the repository's layout holds;
-- model-generation functions, methods, or nested builders anywhere under the test tree, including
-  `conftest.py`, fixture packages, and utilities: trace constructor calls and returned models, then
-  apply `test-fixture`'s ownership dispositions to each implementation and its consumers; a clean
-  factory-subclass search alone does not cover construction;
-- a module-level function in a test module that builds a domain model, request, response,
-  scenario, or options object, whatever it is called (list the module-level `def`s in every
-  `test_*.py`);
-- a test-only type, in a test module or in the fixture package, that mirrors a contract the
-  application already declares (list every `TypedDict` and model the suite declares; for each,
-  grep the application source for a class of the same name and for the same field set, and report
-  the match or its absence): a match is the finding, and sibling suites carrying their own copies
-  are more instances of it, never a convention that excuses it;
-- the same inline aggregate construction repeated across tests;
-- a random or hand-typed identity where a canonical fixture owns that identity, and a factory
-  whose model carries a person's or organization's identity — an email, a name, credentials, an
-  account at a third party (list every factory in a table: the model it builds, the fields that
-  model declares, which of them a root fixture already owns, and whether the model names a person,
-  an organization, or an account at a third party; report every row): a row whose fields a root
-  fixture owns is a finding — the identity is read from the fixture, whatever field a test
-  overrides and whatever the test asserts — and a row whose model names a person, an organization,
-  or a third-party account is a second finding: the factory belongs in the shared test-utilities
-  package, extended, never in one suite's module;
-- a fixture that differs from a sibling fixture by one field or flag (list every fixture that
-  inserts a row in a table: the table, the fields its payload sets; report every row): two rows for
-  one table whose payloads differ by one field or flag are one fixture with a typed selector, per
-  `test-fixture`, never a parallel fixture; the role each docstring claims is what the selector's
-  value expresses, never a reason to keep two.
-
-The permitted residue is a trivial predicate or formatter one module reads.
-
-### Keep Test Data In The Repository's Domain
-
-A suite speaks the vocabulary of the source it mirrors, or none. Its data, names, fixtures, and
-scenarios draw on the nouns that source already uses — an application's tests are about the
-businesses and people it serves, a library's tests about the shapes the library defines — and on
-neutral placeholders where that source has no domain of its own. A consumer's table, schema, model,
-or product name in a library's tests, the application's nouns in the tests of a generic package
-beside it, and a setting the application does not serve invented for one test are all a domain the
-source does not own leaking into its suite, and the tests then describe somebody else's system.
-
-The check is mechanical and reported noun by noun: for each suite, list every domain noun it uses —
-in identifiers, string values, fixture and scenario names, and the fixtures it imports — that the
-source it mirrors never uses, and report each with the tests and fixtures that carry it. The same
-leak has a dependency form: a generic package's suite that imports the application's packages, its
-fixtures, or its test utilities depends on a system its source does not, and could not run were the
-package extracted; list every such import beside the nouns. Left alone: the vocabulary of a third
-party the source integrates with, a standard placeholder such as an example address, and a neutral
-noun the suite's own fixtures invent.
+The final adversarial reviewer re-times every suite the run cut or reduced against the reported
+numbers, re-checks each merged parametrization and folded assertion against the coverage
+comparison for a fact that was dropped, confirms each retained skip or xfail still has a live
+condition, and challenges every coverage gap the run left open.
 
 ## Dispositions
 
@@ -359,8 +187,9 @@ the isolation model is verified the same way as any other edit here: the affecte
 green, and the durations are re-taken against the same workload.
 
 Application changes qualify only for the performance exception below, removal of a proven dead
-test-only seam, or repair of a product defect or vulnerability the run notices, one a baseline
-failing test exposes included. For a seam,
+test-only seam or of an application symbol whose only consumers are the tests that exercise it,
+or repair of a product defect or vulnerability the run notices, one a baseline failing test
+exposes included. For a seam,
 inspect non-test callers and history, move coverage to its real owner boundary, then remove the
 unused export, flag, wrapper, injection hook, or dead path without a compatibility alias. A test
 failing at this run's baseline measurement is this doctor's own finding: a run the user invoked to
@@ -386,8 +215,7 @@ Before proposing an application change, establish all three conditions:
 
 Record the workload, baseline, budget, bottleneck evidence, expected suite-level improvement, and
 correctness guarantees before adding a distinct performance entry to the remediation plan. Missing
-measurements and differences within measurement noise leave the exception unproven. Approval of a
-generated plan does not substitute for this evidence.
+measurements and differences within measurement noise leave the exception unproven. A shown plan does not substitute for this evidence.
 
 After implementation, repeat the same suite workload, verify its budget outcome and correctness,
 and report the before/after evidence. The improvement must exceed measurement noise. Preserve every
@@ -434,7 +262,11 @@ before delivery and verify that none enters the delivered diff.
   folds the repeated shape into one generator taking the value that varied; the model's default and
   the plain attribute already say the same thing.
 - A test utility found in application code moves to the shared test-utilities owner with every
-  consumer, in the same change.
+  consumer, in the same change. An application symbol tests only exercise as their subject is
+  deleted with those tests, never moved.
+- A suite-configuration finding takes the setting the cited section of `test-fixture`'s suites
+  reference states; a skip or xfail that is a finding is repaired and unskipped, or deleted with
+  its deletion evidence.
 - A foreign-domain finding rewrites the data in the mirrored source's own nouns where it has them
   and in neutral placeholders where it is a library with none; a fixture that introduced the noun
   is the finding, fixed once for every test it serves.
@@ -466,7 +298,9 @@ Give it measured durations and unmeasured dispositions, without narration of the
 - each case folded or made cheaper for disproportionate runtime, with what it proved and where that
   now lives;
 - per suite: tests removed, parametrized, renamed, moved, and added;
-- skip and xfail marks resolved;
+- skip and xfail marks resolved, and each suite-configuration section's result;
+- each source line the coverage comparison showed dropped, and what restored it;
+- each application symbol only tests consumed, moved as a test utility or deleted as dead code;
 - per suite, foreign domain nouns removed and the fixtures that carried them;
 - the coverage map by test, with gaps closed and gaps recorded;
 - per provider, account and destination: real calls per run before and after, and the refusals

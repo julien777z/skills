@@ -14,6 +14,7 @@ does not start a doctor audit.
 - `doctor-protocol`
 - `get-doctors`
 - `edit-skill`
+- `execute-task`
 
 ## Workflow
 
@@ -23,18 +24,28 @@ does not start a doctor audit.
    and is mechanical enough to check on every run. A class a linter, type checker, or test already
    enforces gets no doctor; a lens over such a class verifies the enforcement still runs rather
    than re-implementing it.
-3. **Write the five things** the protocol says a doctor owns, in this order after the title and a
-   one-sentence lead: `## Dependencies` (`doctor-protocol` first, then the generic skills whose
-   policy it applies, then any repository-specific skill referred to by role); `## Inventory`,
-   naming any measurement the protocol takes once before fan-out; `## Lenses`, one `###` per lens
-   stating the defect shape, the evidence that establishes it, and the remedy; `## Dispositions`,
-   in order, naming the user decisions this domain adds, what the cross-cutting reviewer compares
-   and what the final reviewer challenges; `## Report Additions`. A decision a dependency already
-   settles — breaking an owned contract, what stored data owes, which product changes are the
-   user's — is cited by its section in Dispositions, never restated or reclassified. A reviewer
-   partition the domain dictates may take its own heading; nothing that restates a protocol
-   section may. Declare no delivery cadence: the protocol leaves the run's pull requests draft for
-   the user under the doctor's review-only delivery contract.
+3. **Write what the protocol says a doctor owns**, in this order after the title and a
+   one-sentence lead:
+   - `## Dependencies`: `doctor-protocol` first, then the generic skills whose policy it applies,
+     then any repository-specific skill referred to by role.
+   - `## Inventory`, opening with the instruction to run `doctor-protocol`. It names what is
+     enumerated and what is excluded; the mechanical commands whose output lists candidates, by
+     kind and found in the repository's configuration at runtime; and the before-and-after
+     measures, each a count one of those commands produces.
+   - `## Lenses`, one `###` per lens, each stating six things: the defect shape; the evidence that
+     establishes it; the remedy; the checks that find every instance, never only the first one
+     noticed; what is left alone, so a reviewer does not go hunting; and whether the lens is
+     whole-repository, judged only across partitions, or judged within one file or area.
+   - `## Dispositions`, in order, naming the user decisions this domain adds, what the
+     cross-cutting reviewer compares and what the final reviewer challenges.
+   - `## Report Additions`.
+
+   A decision a dependency already settles — breaking an owned contract, what stored data owes,
+   which product changes are the user's — is cited by its section in Dispositions, never restated
+   or reclassified. What dictates the domain's partition cut may take its own heading, and it
+   states a reviewer cap only when lower than the protocol's; nothing that restates a protocol
+   section may take one. Declare no delivery cadence: the protocol leaves the run's pull requests
+   draft for the user under the doctor's review-only delivery contract.
 4. **Keep it generic.** Discover layouts, tools, frameworks, and budgets at runtime. Never name the
    current repository's paths, packages, products, commands, or thresholds. State a default
    threshold as one the repository's configuration overrides. Refer to a repository-specific skill
@@ -78,9 +89,10 @@ own.
 - **Pass.** Every planted or real violation is reported under the right lens with the remedy the
   doctor's dispositions state; the control produces no finding; the near miss is not flagged.
 - **A miss or a false positive is a defect in the lens text, never in the reader.** Rewrite the
-  lens's defect shape, evidence, or remedy, and the round reruns that scenario on a fresh reader
-  until it passes. Never fix a miss by hinting the reader, and never narrow the target to what
-  the reader already found.
+  lens's defect shape, evidence, checks, or remedy, and the round reruns that scenario on a fresh
+  reader, within the limit of 3 review rounds per change that `execute-task`'s review-rounds
+  reference sets; a lens that fails its third round gets that reference's disposition. Never fix
+  a miss by hinting the reader, and never narrow the target to what the reader already found.
 - **Launches.** The round's own: its scenario writer, one reader per scenario, the control
   readers it requires for a new skill, and its grader, so the count grows only with the lenses.
 - **Report** per doctor: the lenses exercised, real and invented targets, the model used, each miss

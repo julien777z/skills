@@ -13,12 +13,15 @@ Return the doctors the skill listing declares and what each one audits, and noth
 
 ## Workflow
 
-1. Read the `SKILL.md` of every skill the host's skill listing declares, shared and repository-owned alike.
-2. A doctor is a skill whose `## Dependencies` section names `doctor-protocol`. The protocol
-   itself, a skill that reads the protocol without running on it, and a skill that merely mentions
-   a doctor are not doctors.
-3. The summary is the first sentence of the skill's frontmatter `description`, verbatim, so the
-   listing cannot drift from the skill.
+1. Search, never read whole, the `SKILL.md` files of the skills the host's skill listing
+   declares, shared and repository-owned alike, for the ones that declare `doctor-protocol` as a
+   dependency: in a frontmatter dependency field or as an entry of the `## Dependencies` section.
+2. A doctor is one of those matches whose body runs the protocol. Search the matches for the
+   protocol's name and read only the matching lines: a doctor carries the instruction to run it.
+   The protocol itself, a skill that declares the protocol to read it without running on it, and
+   a skill that merely mentions a doctor are not doctors.
+3. Read only each doctor's frontmatter. The summary is the first sentence of its `description`,
+   verbatim, so the listing cannot drift from the skill.
 4. Sort by name.
 
 ## Output

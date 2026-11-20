@@ -1,6 +1,6 @@
 ---
 name: schema-doctor
-description: Audit and correct unjustified nullability, model complexity, primary-key design, and index design across repository API contracts, serialized schemas, persisted schemas, and the field flows connecting them. Use to review requiredness, optional fields, nullable columns, duplicated contract models, unnecessary fields, shared model ownership, missing or redundant indexes, primary keys, or schema consistency. Run only when the user asks for it.
+description: Audit and correct unjustified nullability, model complexity, primary-key design, index design, and table and model declarations that depart from the repository's rules, across repository API contracts, serialized schemas, persisted schemas, and the field flows connecting them. Use to review requiredness, optional fields, nullable columns, duplicated contract models, unnecessary fields, shared model ownership, missing or redundant indexes, primary keys, or schema consistency across a repository. Run only when the user asks for it.
 short_description: 'Check models and schemas for unnecessary nulls, complexity, keys, and indexes.'
 ---
 
@@ -14,7 +14,7 @@ contract and index design.
 - `doctor-protocol`
 - `pre-production`
 
-## Inventory Fields And Contract Models
+## Inventory
 
 Run `doctor-protocol`.
 
@@ -65,39 +65,11 @@ boundary contract **is** a live consumer, and the trace reaches it. Only state t
 default field inventory. Read generated output and vendored definitions when they are evidence, but
 edit their canonical source or regenerate them through their owner.
 
-## Build The Contract Ledger
+### Ledgers
 
-Maintain a field-level working ledger for the complete audit. For every field record:
-
-- its domain and canonical declaration;
-- its authoritative source and presence guarantee;
-- every producer, validation or transformation step, serialized boundary, persistence target, and
-  live read consumer;
-- the required, nullable, omitted, defaulted, or presence-indistinguishable shape at each edge;
-- the evidence supporting the disposition and any unresolved edge.
-
-Maintain a model-level ledger beside it. For every contract model record:
-
-- its authoritative owner, dependency direction, producers, and live consumers;
-- the distinct lifecycle, authorization, disclosure, persistence, and wire guarantees it represents;
-- overlapping models and fields, conversion layers, wrappers, aliases, enums, and intermediate
-  representations serving the same concept;
-- fields and models with no live consumer;
-- the evidence for retaining, removing, merging, reshaping, or sharing it, plus any unresolved
-  ownership or semantic distinction.
-
-Maintain an index-level ledger for every persisted table in scope:
-
-- the table's primary-key constraint or justified keyless design, any database-specific physical
-  primary or clustered arrangement, and each unique, foreign-key-supporting, standalone, composite,
-  partial, expression, and covering index the database and canonical schema actually define;
-- its ordered keys, included values, predicate, uniqueness, access method, and owning constraint;
-- every live query, join, ordering, grouping, pagination path, mutation, or referential action it
-  serves;
-- overlap with other indexes, expected read benefit, write and storage cost, and available query-plan
-  or database-statistics evidence;
-- the evidence for retaining, adding, reshaping, or removing it, plus any unresolved workload or
-  selectivity question.
+Keep a field ledger, a model ledger and an index ledger for the complete audit, each entry holding
+what [the ledger reference](references/ledgers.md) lists for its kind, as the detail behind the
+protocol's ledger entries.
 
 Build the corresponding directed field-flow graph while auditing even when the caller did not ask
 to see a diagram. Group equivalent fields only when they have the same guarantees and traverse the
@@ -107,7 +79,86 @@ Do not infer a domain invariant from current non-null rows, one observed payload
 producer, or a test written around the current shape. Enumerate every valid producer and live
 consumer before tightening or simplifying a shared field.
 
-## Decide Requiredness
+**Shared index.** Doctors run in a row share one index of the repository, keyed by commit in the
+worktree's working-files folder. This doctor reads its file inventory, symbol and import tables and
+dependency list where the current commit's copy holds them, and rebuilds only what is missing or
+stale. It writes the model field table — every model with its field names, annotations, owner and
+boundary — and the table and index inventory.
+
+### Pre-Pass
+
+These are the mechanical steps `doctor-protocol` runs once before any reviewer reads; a reviewer
+confirms or rejects their candidates and traces the flows no command can. Use the tool the
+repository already configures for a job. Where it configures none, a tool the machine already has is
+run read-only with nothing committed, and one neither has is recorded as not run, as
+`doctor-protocol`'s **Measure Before Fan-Out** says, and is never installed into the project
+unasked. A database the run cannot reach read-only is recorded the same way.
+
+- **Field dump** — a script kept in the run's working files loads every first-party model and
+  prints its field names and annotations: a validation library's declared fields, the ORM's table
+  metadata, protobuf descriptors, and exported types in another language through its compiler. It
+  then prints, per pair of models, the shared names, the names one holds and the other lacks, and
+  each shared name whose annotations differ.
+- **Nullable declarations** — every optional annotation, nullable column, optional protobuf field
+  and default of absence, by declaration.
+- **Drift** — the migration tool's own check that the models and the migrated schema agree.
+- **Declaration shapes** — the searches below for the shapes **Declarations** names.
+- **Indexes**, where a database is reachable read-only — its index definitions, the indexes its
+  usage statistics show unused, and every foreign key with no index leading on its columns. The
+  queries below are PostgreSQL's; another engine uses its own catalog.
+- **Null counts**, where a database is reachable read-only — rows holding null per nullable
+  column, as supporting evidence only: current non-null rows prove no invariant.
+
+```sh
+rg -n 'Optional\[|\| None|nullable=True|\boptional\b'
+rg -n '@dataclass|NamedTuple|create_model\(|Field\(description='
+rg -n '\bColumn\(|lazy=|DateTime\(|\btext\(|execute\(f?"'
+```
+
+```sql
+SELECT schemaname, tablename, indexname, indexdef FROM pg_indexes
+WHERE schemaname NOT IN ('pg_catalog', 'information_schema');
+
+SELECT relname, indexrelname, idx_scan FROM pg_stat_user_indexes WHERE idx_scan = 0;
+
+SELECT c.conrelid::regclass AS referencing_table, c.conname
+FROM pg_constraint c
+WHERE c.contype = 'f'
+  AND NOT EXISTS (
+    SELECT 1 FROM pg_index i
+    WHERE i.indrelid = c.conrelid
+      AND (i.indkey::int2[])[0:cardinality(c.conkey) - 1] @> c.conkey
+  );
+```
+
+### Measures
+
+The counts `doctor-protocol` takes before the audit and again after the fixes: contract models and
+fields; nullable declarations; model pairs with overlapping field sets, and shared names with
+divergent annotations; drift-check findings; declaration-shape hits; and, where a database was read,
+indexes, unused indexes and foreign keys with no supporting index.
+
+## Lenses
+
+A partition lens is judged inside one schema, service or contract owner; a whole-repository lens
+needs every model at once, so the cross-cutting reviewer owns it. Every finding is recorded in
+`doctor-protocol`'s finding shape: its fix names the declaration that changes and every producer,
+consumer, migration and generated output that changes with it, and its proving check is the
+repository's contract, generation and migration checks over that cascade.
+
+| Lens | Flags | Reach |
+| --- | --- | --- |
+| **Nullability** | A field nullable, omittable or defaulted where no supported state is absent, or required where one is. | Partition; a field crossing services is traced across the repository. |
+| **Convergence** | Models that overlap, diverge in type or name, or validate one concept two ways. | Whole repository. |
+| **Model Surplus** | A field, model or translation layer the live system does not need. | Whole repository: a live consumer may sit in any partition or language. |
+| **Keys And Indexes** | A primary key or index the live operations do not justify, or one they need and lack. | Partition, by persisted schema. |
+| **Declarations** | A table or model declared against the repository's declaration rules. | Partition. |
+
+### Nullability
+
+Flags a declaration or flow edge whose required, nullable or omittable shape its authoritative
+source does not support. The checks: every candidate in the pre-pass's nullable list, and every
+required field a valid producer cannot supply, each traced through the field-flow graph.
 
 Assign every declaration and flow edge one evidence-backed disposition, then record the resulting
 end-to-end conclusion for the field. A field may legitimately change disposition after an owned
@@ -136,12 +187,51 @@ For a requiredness migration, invoke `pre-production` and the repository's migra
 data, migration-only placeholder, constraint, survivorship, and validation policies control the
 implementation. A placeholder is never evidence that a genuinely optional field should be required.
 
-## Detect Convergence
+Left alone: a nullable field whose absence is a supported state, with the variant or provider
+outcome named in the ledger.
+
+#### Third-Party Contracts
+
+For data received from an external provider, first find official documentation, published schemas,
+or specifications matching the integrated API and version. Then inspect the pinned SDK's models,
+generated definitions, and runtime serialization contract. Prefer primary sources and record the
+version or contract surface that makes the evidence applicable.
+
+If provider documentation and the integrated SDK disagree, determine whether they describe different
+versions or operations. Do not choose whichever source supports a desired conclusion. If the
+guarantee remains uncertain, mark that external edge unresolved and make no change that depends on
+it. Continue auditing and correcting independently provable internal edges in the same domain.
+
+A local provider-shaped model must represent what the provider can actually send. A narrower
+repository model may require a provider field only after an owned validation or selection boundary
+proves its presence.
+
+#### Protobuf Presence
+
+Treat protobuf source and descriptors as canonical contract evidence. Inspect field presence,
+default-value semantics, messages, optional fields, oneofs, wrappers, validation annotations, RPC
+methods, conversion layers, and every producer and consumer.
+
+Do not equate a scalar that decodes to a default value with a required field: some protobuf editions
+and field kinds cannot distinguish omission from an explicitly supplied default. Express the intended
+guarantee through the repository's canonical protobuf or boundary-validation mechanism. If the
+current wire shape cannot express the invariant cleanly, use `pre-production` to choose the cleaner
+breaking message shape rather than preserving ambiguity.
+
+Edit protobuf source rather than generated output, update every producer and consumer the user controls, in any repository,
+regenerate all owned targets, and run the repository-native generation and contract checks. Never
+weaken a compatibility gate. Report the exact expected failure caused by an intentional break and
+separate it from any unintended break detected in the same run.
+
+### Convergence
+
+Flags models that answer one question in two shapes. The checks are the four comparisons below,
+run over the pre-pass's field dump.
 
 Enumerate every first-party model in scope and **compare them pairwise**. Reading files and noting
 what looks familiar catches only what a reader happens to notice, and it reliably misses a type
-divergence spread across twenty shared field names. Run the comparison and let its output drive the
-simplification below.
+divergence spread across twenty shared field names. The pre-pass's field dump runs the comparison
+over the whole repository, and its output drives the simplification below.
 
 Report each of these, with the pair and the fields:
 
@@ -167,11 +257,17 @@ is one declaration. Under `pre-production` an API, protobuf, or model contract b
 preferred resolution rather than a compatibility path — the reverse of the instinct to keep both
 shapes working.
 
-The guard in **Simplify Contract Models** below still applies to every unification: a real
+The guard in **Model Surplus** below still applies to every unification: a real
 authorization, disclosure, persistence, or wire distinction is never erased merely to reduce the
 declaration count.
 
-## Simplify Contract Models
+Left alone: an implementation-only declaration that crosses no serialized or stored boundary, which
+another doctor owns; and a pair whose difference **Model Surplus** retains.
+
+### Model Surplus
+
+Flags a field, model, wrapper or conversion with no live producer-to-consumer purpose, and a second
+model standing where an annotation would do. The checks and each one's remedy:
 
 Challenge every in-scope field and contract model after establishing its runtime flow. Prefer the
 smallest set of models and fields that preserves the domain, lifecycle, authorization, disclosure,
@@ -221,11 +317,15 @@ Take these in order, and the first that fits is the answer:
   date formats, its nesting, its keys. Its vocabulary does not: field names, casing, and domain terms
   stay the repository's own, reached through aliases.
 
-The separate rule at **Verify Third-Party Contracts** is unaffected: a local provider-shaped model
+The separate rule at **Third-Party Contracts** is unaffected: a local provider-shaped model
 must still represent what the provider can actually send. That rule constrains what the model may
 require; it never licenses a second model to hold it.
 
-## Audit Indexes
+### Keys And Indexes
+
+Flags a table with no justified key, a key whose shape its reads and writes do not support, an
+access path or referential action with no index, and an index nothing uses or another covers. The
+checks, read against the pre-pass's index lists where a database was reachable:
 
 Discover the database engine, version, schema owner, migration mechanism, index features, and
 automatic constraint-index behavior at runtime. Never assume that defining a primary key, unique
@@ -257,63 +357,70 @@ constraint, or foreign key creates every index needed by related reads or refere
 Add, reshape, or remove an index only when its live operations and database semantics justify the
 change. Mark workload-dependent decisions unresolved when the required plans or statistics are
 unavailable; continue correcting structurally provable gaps such as a referential action that must
-scan an unbounded referencing table. Apply approved changes through the canonical schema and
+scan an unbounded referencing table. Apply each change through the canonical schema and
 the repository's migration skill, including its data safety, lock-risk, reversibility, and
 validation requirements. Never issue an ad hoc index change against a live database.
 
-## Verify Third-Party Contracts
+Left alone: an index whose worth depends on workload evidence the run cannot read, recorded
+unresolved with the missing plan or statistic.
 
-For data received from an external provider, first find official documentation, published schemas,
-or specifications matching the integrated API and version. Then inspect the pinned SDK's models,
-generated definitions, and runtime serialization contract. Prefer primary sources and record the
-version or contract surface that makes the evidence applicable.
+### Declarations
 
-If provider documentation and the integrated SDK disagree, determine whether they describe different
-versions or operations. Do not choose whichever source supports a desired conclusion. If the
-guarantee remains uncertain, mark that external edge unresolved and make no change that depends on
-it. Continue auditing and correcting independently provable internal edges in the same domain.
+Flags a table or model declared in a shape the repository's declaration rules name a defect,
+whatever its nullability. Run each rule section over every declaration in scope and report each
+section's result, an empty one included:
 
-A local provider-shaped model must represent what the provider can actually send. A narrower
-repository model may require a provider field only after an owned validation or selection boundary
-proves its presence.
+- persisted tables against the SQLAlchemy rules' **Table Definitions**, and that rule file's
+  sections on relationships, query methods and time handling: an untyped column, a table without
+  its explicit name and arguments, a relationship without the loading strategy the rule sets, a
+  timestamp that is not timezone-aware, and a query assembled as a string;
+- data-holding classes against the Pydantic rules' **Model Design**, and that rule file's sections
+  on model construction and on fields and serialization: a dataclass, named tuple or dynamically
+  created model, a Protocol standing for data, a module-level helper that only constructs a model,
+  a field declared through the field function only to describe it, and a field named in the
+  provider's casing rather than aliased.
 
-## Audit Protobuf Presence
+Remedy: the shape the cited section states, with every reader updated in the same change and a
+migration through the repository's migration skill where the stored shape changes. Left alone: a
+declaration a generator emits, corrected at its source; and a settings class, which the
+configuration rules own.
 
-Treat protobuf source and descriptors as canonical contract evidence. Inspect field presence,
-default-value semantics, messages, optional fields, oneofs, wrappers, validation annotations, RPC
-methods, conversion layers, and every producer and consumer.
+## Reviewers
 
-Do not equate a scalar that decodes to a default value with a required field: some protobuf editions
-and field kinds cannot distinguish omission from an explicitly supplied default. Express the intended
-guarantee through the repository's canonical protobuf or boundary-validation mechanism. If the
-current wire shape cannot express the invariant cleanly, use `pre-production` to choose the cleaner
-breaking message shape rather than preserving ambiguity.
+Reviewers are capped as `doctor-protocol`'s **Launches** sets; this doctor sets no lower cap. The
+schema, service, or contract owner dictates the partition cut, and each partition reviewer returns
+ledger entries for its declarations.
 
-Edit protobuf source rather than generated output, update every producer and consumer the user controls, in any repository,
-regenerate all owned targets, and run the repository-native generation and contract checks. Never
-weaken a compatibility gate. Report the exact expected failure caused by an intentional break and
-separate it from any unintended break detected in the same run.
-
-## Apply The Protocol
-
-Partition domain reviewers by schema, service, or contract owner; each returns ledger entries for
-its declarations. The cross-cutting reviewer compares the domain ledgers, traces shared and
-cross-service fields and models, finds missing producers or live consumers, identifies canonical
+The cross-cutting reviewer owns **Convergence** and **Model Surplus**, working from the field dump
+with its pairwise comparison in the pre-pass output and from the domain ledgers. It compares the
+domain ledgers, traces shared and cross-service fields and models, finds missing producers or live consumers, identifies canonical
 shared owners, compares database access paths with index coverage, and challenges every proposed
 requiredness, simplification, or index change whose evidence does not establish the full flow and
 semantics. The parent states the end-to-end conclusion for each selected field, model, and
 persisted table.
 
-The final reviewers divide the same way: one verifies that every approved field and model cascade
-and live consumer was migrated completely; the other tries to disprove the requiredness and
-simplification decisions, checks retained nullable and separate states, challenges shared ownership
-and index dispositions, and reviews unresolved evidence and cross-boundary consistency.
+The final adversarial reviewer tries to disprove the requiredness and simplification decisions,
+checks retained nullable and separate states, challenges shared ownership and index dispositions,
+and reviews unresolved evidence and cross-boundary consistency; the reviewer verifying completion
+confirms every planned field and model cascade reached each live consumer.
 
-Never retain a transitional nullable path. For index changes, also run the repository's
-database-specific schema checks and representative read-only query-plan validation when
-configured.
+## Dispositions
 
-## Render Requested Maps
+- **Change boundary.** This doctor changes contract and persistence declarations, their
+  validation, serialization, migrations and generated outputs, and every producer and consumer the
+  user controls, in any repository, that a changed field, model, key or index reaches. Application
+  logic beyond those edges is outside it.
+- Breaking an owned API, protobuf or model contract to reach the clean shape is ordinary work, made
+  as `pre-production`'s **Target Contract** says; a contract a party outside the user's control
+  speaks stays as it is and is reported.
+- Never retain a transitional nullable path.
+- Every schema change lands through the canonical schema and the repository's migration skill. For
+  index changes, also run the repository's database-specific schema checks and representative
+  read-only query-plan validation when configured.
+- An equivalence, ownership or workload question the evidence does not settle is recorded
+  unresolved, and no change that depends on it is made.
+
+## Requested Maps
 
 When the caller asks for a map, return Mermaid flowcharts in the response unless they explicitly ask
 for a repository artifact.
@@ -348,3 +455,5 @@ Append to the protocol's report:
 - every unresolved provider or schema edge and the sources that were unavailable or contradictory;
 - migrations, backfills or placeholders, generated outputs, and deliberate contract breaks;
 - expected compatibility failures, separated from any unintended break.
+- each database the pre-pass could not read;
+- each declaration brought to its rule, by rule section.

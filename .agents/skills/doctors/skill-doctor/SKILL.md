@@ -62,26 +62,56 @@ skill listing.
 Commit dates enter the inventory only when the clone is not shallow; otherwise they are unmeasured
 with that reason. Age is never evidence on its own.
 
-Measured once before fan-out:
+**Shared index.** Doctors run in a row share one index of the repository, keyed by commit in the
+worktree's working-files folder. This doctor reads its file inventory where the current commit's
+copy holds it, and rebuilds only what is missing or stale. It writes the guidance inventory above,
+the dependency graph between skills and the citation table.
+
+### Pre-Pass
+
+These are the mechanical steps `doctor-protocol` runs once before any reviewer reads, so no reviewer
+spends a read on what a step already lists. A step whose tool or source the machine lacks is
+recorded as not run, as `doctor-protocol`'s **Measure Before Fan-Out** says, and nothing is
+installed into the repository unasked.
 
 1. `skill-pass`'s **Source Check**, over the whole canonical tree. Every report it prints enters
    the ledger as a finding under the lens that owns its shape, **Stale** for a link, section or
-   rule file that does not resolve and **Dependencies** for an undeclared name or a cycle, and
-   every reviewer reads the output, so no reviewer spends a read on what the script finds.
-2. The vendors' current authoring guidance. Fetch every URL in the references table; a cross-host
+   rule file that does not resolve and **Dependencies** for an undeclared name or a cycle.
+2. Near-duplicate statements. A script kept in the run's working files splits every canonical
+   file under `.agents` into bullets and sentences, normalizes each — case, markup and punctuation
+   removed — and compares their word shingles across every file, printing each pair whose overlap
+   passes a threshold the run states, 0.6 of five-word shingles by default, with both locations.
+   The pairs are **Redundant**'s candidates.
+3. Countable wording shapes, per file: bullets carrying emphasis as a share of all bullets,
+   headings with one bullet, bullets past the length `skill-pass`'s **Writing** allows, each
+   description's grammatical person, and hits for each term `banned-terminology` lists. They are
+   **Wrong Altitude**'s counts.
+4. The vendors' current authoring guidance. Fetch every URL in the references table; a cross-host
    redirect comes back to the caller rather than being followed, so record its target as a new row
    and fetch that; search for a successor when a page is gone. Rewrite the dated summary. Every
    reviewer reads the file. Offline, the cached summary is read and its date reported. A fetched
    number overrides a default below; a fetched recommendation that conflicts with a decision the
    repository's guidance records is a Contradictory finding for the user, never an automatic win.
-3. Usage: the host's usage report where it has one, and the count of invocations per skill in the
+5. Usage: the host's usage report where it has one, and the count of invocations per skill in the
    host's local transcripts over a stated window.
-4. The byte, line, and token totals above.
+6. The byte, line, and token totals above.
+
+### Measures
+
+The counts `doctor-protocol` takes before the audit and again after the fixes: bytes, lines and
+approximate tokens per file and loaded per turn for each host; source-check reports; near-duplicate
+pairs; each countable wording shape; files past the size budget; descriptions past the listing
+truncation; and, per skill that starts subagents, its usual structural count.
 
 ## Lenses
 
 Each check is reported file by file. A threshold the vendors publish is a default the fetched
 guidance overrides; a threshold `skill-pass` sets is the repository's recorded decision.
+**Reviewers** says which lenses are judged inside one partition and which need the whole tree.
+Every finding is recorded in `doctor-protocol`'s finding shape: its fix quotes the sentence that
+goes or the text that replaces it and names the owner a moved requirement lands in, and its
+proving check is the pre-pass step or source check that listed it, or the passages a reader
+compares.
 
 **A registered external skill's text is its upstream's, and no lens raises a finding on it.** A
 skill the external-resources registry, `.agents/external_resources.json`, lists is vendored: its
@@ -125,7 +155,9 @@ One statement with two homes: a requirement in two rule files, in a rule and in 
 when it applies, twice in one file, in a caller and a skill it always invokes, two skills whose
 bodies differ only by a noun, and each shape `skill-pass`'s **Prose Duplication** lists. A skill
 restating an ambient rule at its point of use is judged as `skill-pass`'s **Writing** allows.
-Evidence: the sentence pairs quoted. Remedy: one owner, chosen as `skill-pass`'s **Where Guidance
+The pre-pass's near-duplicate pairs are the candidates, each confirmed or rejected by reading both
+passages; a pair that words one requirement too differently for the script to match is still
+reported when a reviewer meets it. Evidence: the sentence pairs quoted. Remedy: one owner, chosen as `skill-pass`'s **Where Guidance
 Lives** places a requirement, and the copies go; two noun-different skills become one taking the
 kind as an argument, a user decision because it retires an invocation name.
 
@@ -166,15 +198,18 @@ and let the departing skill state its own departure.
 
 ### Wrong Altitude
 
-Text at the wrong height for the reader: emphasis on a share of bullets above the guidance's
-example, hedges, brittle step-by-step logic where a heuristic would do, vagueness where a decision
-was needed, a menu of options where one default belongs, a heading with one bullet, a bullet
-carrying an appended exception past the length `skill-pass`'s **Writing** allows, banned terms,
-incident narrative or evidence that belongs in a project or verification record, and a description
-in the first or second person, or addressed to the reader as an instruction, where the host's
-guidance wants the third person — reported once as a convention when every description shares it,
-never as a finding per file. Evidence: counts per file, reported and never thresholded. Remedy:
-rewrite at the altitude the guidance describes, explaining the why.
+Text at the wrong height for the reader, in two groups. The countable shapes come from the
+pre-pass and no reviewer recounts them: emphasis on a share of bullets above the guidance's
+example, a heading with one bullet, a bullet carrying an appended exception past the length
+`skill-pass`'s **Writing** allows, banned terms, and a description in the first or second person,
+or addressed to the reader as an instruction, where the host's guidance wants the third person —
+reported once as a convention when every description shares it, never as a finding per file. The
+judgment shapes are what a reviewer reads for: hedges, brittle step-by-step logic where a heuristic
+would do, vagueness where a decision was needed, a menu of options where one default belongs, and
+incident narrative or evidence that belongs in a project or verification record. Evidence: the
+pre-pass's counts per file, reported and never thresholded, and for a judgment shape the passage
+quoted with what its reader cannot decide from it. Remedy: rewrite at the altitude the guidance
+describes, explaining the why.
 
 ### Scope Calibration
 
@@ -291,6 +326,28 @@ Evidence: the tree and the summary. Remedy: add the rule, hook or description cl
 kept in a rules file and a committed evaluation are never the remedy: a skill is found by its
 description, and `skill-pass`'s **Scripts** keeps tests of skills out of the tree.
 
+## Reviewers
+
+**Lenses are grouped onto reviewers, never one reviewer per lens or per file.** Every reviewer
+reads the whole catalog; the grouping says who reports which checks.
+
+- Reviewers are capped as `doctor-protocol`'s **Launches** sets; this doctor sets no lower cap. The
+  repository's skill categories dictate the partition cut: a skill's whole package stays in one
+  partition, a category is split only between packages, and the rule files and every other non-skill
+  file form partitions of their own.
+- A partition reviewer reports the lenses judged within a file or package: the per-file Budget
+  table, Restates, Stale, Wrong Altitude, Scope Calibration, Authoring Sections, Dependencies, the
+  two description lenses, and the launch records Flow needs for each skill in its slice.
+- The cross-cutting reviewer reports the whole-repository lenses, what is visible only across files,
+  working from the pre-pass output and the dependency graph: Redundant, Contradictory, Misplaced,
+  Unreachable, Missing, Installed Copies, the Flow checks that span a caller and the skills it
+  runs, and the unconditional set judged as one document against the per-host budget.
+- The final reviewers and the final acceptance gate are briefed with `skill-pass`'s **Reviewer
+  Brief**. The adversarial one takes each proposed cut and tries to name a task the sentence would
+  have prevented a mistake on, takes each retained instruction and tries to show the model
+  does it unprompted, and takes each Flow remedy and tries to name a defect the removed launch
+  would have caught.
+
 ## Dispositions
 
 - Cutting a whole rule file, skill, or registry entry is a user decision, presented with four
@@ -314,31 +371,10 @@ description, and `skill-pass`'s **Scripts** keeps tests of skills out of the tre
   when the generated rules file reaches its cap, when a registry entry has no directory, when two
   rule files share a byte-identical bullet.
 
-**Lenses are grouped onto reviewers, never one reviewer per lens or per file.** Every reviewer
-reads the whole catalog; the grouping says who reports which checks.
-
-- A whole-tree run starts at most five audit reviewers: up to four partition reviewers, the tree
-  split by the repository's skill categories into slices of similar size with the rule files and
-  every other non-skill file in one slice, and one cross-cutting reviewer. A scoped run, one
-  category, skill or path, starts three: two independent passes over the scope and the
-  cross-cutting reviewer.
-- A partition reviewer reports the lenses judged within a file or package: the per-file Budget
-  table, Restates, Stale, Wrong Altitude, Scope Calibration, Authoring Sections, Dependencies, the
-  two description lenses, and the launch records Flow needs for each skill in its slice.
-- The cross-cutting reviewer reports what is visible only across files: Redundant, Contradictory,
-  Misplaced, Unreachable, Missing, Installed Copies, the Flow checks that span a caller and the
-  skills it runs, and the unconditional set judged as one document against the per-host budget.
-- Final review starts the protocol's two reviewers per round. Both, and the final acceptance gate,
-  are briefed with `skill-pass`'s **Reviewer Brief**. The adversarial one takes each proposed cut and tries to name a task the sentence
-  would have prevented a mistake on, takes each retained instruction and tries to show the model
-  does it unprompted, and takes each Flow remedy and tries to name a defect the removed launch
-  would have caught.
-
 ## Report Additions
 
 - per file, bytes and lines before and after; per host, the loaded-per-turn total against its
   budget;
-- the source check's result before and after;
 - each cut with its evidence;
 - per skill whose flow changed, the usual structural subagent count before and after;
 - each URL fetched, with its date and any redirect;

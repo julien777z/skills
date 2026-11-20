@@ -1,7 +1,7 @@
 ---
 name: code-slop-doctor
-description: Strip the complexity a codebase does not need and the code a reviewer reads as generated slop — pass-through layers and wrapper components, one-case abstractions, use cases split across many calls, duplicates, divergent siblings, legacy paths, hand-written styling in apps, tangled or padded code, and surplus migrations, build files, configuration names and dependencies. Use to deslop a repository or one of its phases, lenses or paths. Run only when the user asks for it.
-short_description: 'Remove unneeded layers, wrappers, abstractions, duplicates, legacy paths, hand-written styling, code that reads as slop, configuration names and dependencies.'
+description: Strip the complexity a codebase does not need and the code a reviewer reads as generated slop — pass-through layers and wrapper components, one-case abstractions, use cases split across many calls or left unbounded, duplicates, divergent siblings, legacy paths, dead code, suppressions, censored logs and deprecated usage, hand-written styling in apps, tangled or padded code, names that do not say their subject, prompts held in code, and surplus or outdated migrations, build and workflow files, configuration names and dependencies. Use to deslop a whole repository or one of its areas, lenses or paths. Run only when the user asks for it.
+short_description: 'Remove unneeded layers, wrappers, abstractions, duplicates, legacy paths, dead and suppressed code, hand-written styling, code that reads as slop, and stale configuration, workflows and dependencies.'
 ---
 
 # Code Slop Doctor
@@ -15,11 +15,11 @@ does nothing or makes a reader wince, and takes it out.
 - `pre-production`
 - `code-simplify`
 - `test-fixture`
+- `banned-terminology`
 - `defer-scope`
-- `acceptance-gate`
 - `get-doctors`
 
-## Phases
+## Areas
 
 Also read, when the skill listing declares them and found by their descriptions, the repository's
 database-migration skill, its test-runner skill, its checklist for adding a configuration value and
@@ -28,7 +28,9 @@ every correction in their areas and are cited here, never restated; the deployme
 read-only guidance is how a deployment's environment is read, and reading activates nothing else it
 offers.
 
-The run works in five phases, in this order, and each phase is one batch:
+The run is one audit, one plan and one set of waves, as `doctor-protocol` runs them. The five areas
+below are how the inventory is partitioned and the order the plan gives its groups; none is an
+audit, a plan or an approval of its own:
 
 1. **Application code** — services, apps, workers, shared packages and libraries other than UI
    ones.
@@ -38,27 +40,32 @@ The run works in five phases, in this order, and each phase is one batch:
 3. **Migrations** — every migration chain, its registries, backfills and tooling.
 4. **Build, configuration and dependencies** — container files, workflows, scripts, tool and root
    configuration, every place a configuration name is declared or read, manifests and lockfiles.
-5. **Tests** — after the code they test has settled. A test an earlier phase's change breaks — one
-   importing a moved path, one exercising only a removed layer — is repaired or deleted in that
-   phase's batch under **Test Slop**'s remedy, so every batch passes; this phase audits the rest.
+5. **Tests** — audited in the same audit as the code, under **Test Slop**, with their fixes ordered
+   after the fixes to the code they test. A test another group's change breaks — one importing a
+   moved path, one exercising only a removed layer — is repaired or deleted in that group under
+   **Test Slop**'s remedy, so every wave passes.
 
-A phase the repository has nothing for is skipped and reported. A scope argument selects phases,
-lenses, or paths; a run scoped to one lens or phase applies only that lens or phase.
+An area the repository has nothing for is skipped and reported. A scope argument selects areas,
+lenses, or paths; a run scoped to one lens or area applies only that lens or area.
 
 ## Inventory
 
 Run `doctor-protocol`.
 
-Exclude generated code by the repository's own markers. Enumerate, per phase in scope, every item a
-lens's checks name, and build these tables before judging anything:
+Exclude generated code by the repository's own markers, and vendored code, since neither is fixed where it sits. Enumerate, per area in scope, every item a
+lens's checks name. The pre-pass builds these tables before anything is judged, and a reviewer reads
+a table rather than rebuilding it:
 
 - the deployables, grouped by kind — RPC server, HTTP app, worker, CLI, frontend app — with a
   **slot table** per kind: one row per structural slot (entrypoint, server or app construction,
   startup and shutdown lifecycle, health and readiness, configuration, middleware or interceptors,
   logging, dependency wiring, data fetching for a frontend) and one column per deployable naming
   the file and symbol that fills it, or `none`;
-- every module with its public symbol count and the concern it serves, and every catch-all module
-  (`utils`, `helpers`, `common`, `misc`);
+- a **module table**: every module with its line count, its public symbol count and the concern it
+  serves, and every catch-all module (`utils`, `helpers`, `common`, `misc`);
+- a **symbol index** over the whole repository, whatever the scope: every exported symbol with its
+  name, kind, signature, first docstring line and module, and its reference counts split into
+  application, test and script;
 - every comment, constant or message carrying a compatibility word — legacy, compat, fallback,
   deprecated, kept for, formerly, transitional, temporary, old format — as a search key pointing at
   code, never removing an existing to-do note unprompted;
@@ -71,54 +78,182 @@ lens's checks name, and build these tables before judging anything:
   files, documentation, and every reader — application code, a library that reads the variable
   itself, a compose service, a workflow step, a front end — names only, never values. A deployment
   whose environment lives on a hosting platform is one column, read by name through the deployment
-  skill; one that cannot be read is recorded unread, never empty. For every field whose default is
-  absence, record whether its reader refuses it, branches on it, or passes it through;
-- a **use-case table**: one row per use case — a page loading, a user action, a job run, a
-  request handler or RPC operation serving its caller — naming its entry point and every call it
-  makes to an operation the repository owns, whether an HTTP endpoint, an RPC operation or another
-  internal service, at every hop behind it, with which calls wait on another's result and how long
-  the use case waits; a frontend use case is read from the network log of the loaded page, an
-  internal one from traces or service logs;
-- per language and project: every manifest and its sections, every lockfile, tools a workflow
-  installs outside a manifest, first-party imports across source, tests, scripts and workflow
-  helpers, and every tool invocation in CI, scripts and hooks.
+  skill; one that cannot be read is recorded unread, never empty. For every field with a default,
+  record whether a production deployment running on that default gets the value's full behavior,
+  and for every field whose default is absence, whether its reader refuses it, branches on it, or
+  passes it through;
+- a **use-case table**, built from the code first: one row per use case — a page loading, a user
+  action, a job run, a request handler or RPC operation serving its caller — naming its entry point
+  and every call it makes to an operation the repository owns, whether an HTTP endpoint, an RPC
+  operation or another internal service, at every hop behind it. A row is a candidate when it makes
+  several owned calls, makes a call inside a loop, a list render or a fan-out, awaits calls in turn
+  where no later call reads an earlier result, or reads a collection with no bound. Only candidate
+  rows are run: each is loaded on the running local stack and its calls, their order and its wait
+  recorded, a frontend use case from the network log of the loaded page and an internal one from
+  traces or service logs. A row the code clears is never loaded;
+- per language and project: every manifest and its sections, every lockfile, every runtime version
+  file and container base image, tools a workflow installs outside a manifest, first-party imports
+  across source, tests, scripts and workflow helpers, and every tool invocation in CI, scripts and
+  hooks.
 
-The measurements taken once before fan-out: the repository's configured lint and type checks over
-the scope with no changed-lines filter; its cross-file duplication detector over each phase's trees
-at the tool's default similarity; the chain replay and drift check its migration tooling defines;
-each use case's calls and timing on the running local stack; each app's hand-written styling count,
-as **Hand-Written Styling** defines it; and each deployment's configuration column, read by name
-once.
+**Shared index.** Doctors run in a row share one index of the repository, keyed by commit in the
+worktree's working-files folder. This doctor reads its file inventory, symbol and import tables and
+dependency list where the current commit's copy holds them, and rebuilds only what is missing or
+stale. It writes the module table, the symbol index, the import graph, the slot tables, the
+configuration matrix and the dependency list with each manifest's declarations.
+
+### Pre-Pass
+
+These are the mechanical commands `doctor-protocol` runs once before any reviewer reads, each
+listing candidates for the lens named beside it. Use the tool the repository already configures for
+a job. Where it configures none, a tool the machine already has is run read-only with nothing
+committed, and one neither has is recorded as not run, as `doctor-protocol`'s **Measure Before
+Fan-Out** says, and is never installed into the project unasked. The commands below name the usual
+tool per language.
+
+- **Lint and type findings** — the repository's configured lint and type checks over the scope with
+  no changed-lines filter.
+- **Tangled flow, ceremony and long functions** (**Reads As Slop**) — the repository's linter with
+  its complexity and simplification rules switched on for this one run: for Python the first or
+  second command below, for TypeScript Biome's complexity group.
+- **Copied blocks** (**Duplicate Implementation**) — the repository's cross-file duplication
+  detector over each area's trees other than tests, at the tool's default similarity.
+- **Dead code** (**Tolerated Past**) — Python: `vulture`, once with the test roots included and
+  once without, so a symbol only tests consume stands out; TypeScript: `knip`.
+- **Dependencies** (**Dependency Drift**) — unused, undeclared and transitive-only packages from
+  `deptry` or `knip`; outdated ones from the package manager, with each runtime version file and
+  each container file's `FROM` line set beside the newest stable release; advisories from the
+  package manager's audit; and commit-hash pins from the search below, run over workflows,
+  manifests and shared checkouts.
+- **One-call wrappers** (**Pass-Through Layer**) — a syntax-tree script kept in the run's working
+  files, on Python's `ast` or TypeScript's `ts-morph`: every function whose body, after its
+  docstring, is one returned or bare call whose arguments are its own parameter names or constants,
+  printed with its target and caller count.
+- **Single-implementation abstractions** (**Speculative Abstraction**) — the same kind of script:
+  every Protocol, abstract base, interface or abstract class with its implementers and subclasses
+  counted across the whole tree, listing those with zero or one.
+- **Module table, symbol index and import graph** (**Scattered Structure**, **Duplicate
+  Implementation**, **Divergent Siblings**) — public names per module from the syntax tree, the
+  catch-all search and line counts below, and the import graph from `import-linter` contracts or
+  `pydeps` for Python and `madge` for TypeScript, with every edge into an executable marked.
+- **Suppressions and escape hatches** (**Tolerated Past**) — the suppression search below, counted
+  per file.
+- **Warnings** (**Tolerated Past**) — install, build and each suite run once with warnings as
+  errors, through the interpreter's or the runner's own setting, and the list kept.
+- **Environment reads** (**Configuration Drift**) — the environment search below outside the
+  settings modules, and each deployment's configuration column, read by name once.
+- **One-machine paths and banned terms** (**Repeated Literal**, **Reads As Slop**) — the path
+  search below over committed files, and a whole-word, case-insensitive search for each term
+  `banned-terminology`'s list and the repository's own table hold, over identifiers and file names.
+- **Migration replay** (**Migration Chain**) — the chain replay and drift check the repository's
+  migration tooling defines.
+- **Use-case candidates** (**Fragmented Use Case**) — the use-case table's candidate rows, each
+  loaded and timed as **Inventory** says.
+- **Styling count** (**Hand-Written Styling**) — each app's hand-written styling count, as that
+  lens defines it.
+
+```sh
+ruff check --select SIM,RET,C90,PLR,ARG --no-fix <source roots>
+pylint --disable=all --enable=R1702,R0915,R0912,C0121,R1703,R1705,R1719,W0611 <source roots>
+vulture <source roots> <test roots> --min-confidence 80
+vulture <source roots> --min-confidence 80
+npx knip --reporter json
+deptry .
+npx knip --dependencies
+poetry show --outdated
+npm outdated --json
+pip-audit
+npm audit --omit=dev
+rg -n 'uses: .+@[0-9a-f]{40}' .github
+rg -n '\b[0-9a-f]{40}\b' <manifests>
+rg --files -g '{utils,helpers,common,misc}*'
+git ls-files | xargs wc -l
+pydeps --show-deps <package>
+npx madge --circular --json <source root>
+rg -c 'type: ignore|pyright: ignore|noqa|pylint: disable|@ts-ignore|@ts-expect-error|biome-ignore|eslint-disable|\bAny\b|cast\('
+rg -n 'os\.environ|os\.getenv|process\.env|import\.meta\.env'
+rg -n '/home/|/Users/|/tmp/|[A-Za-z]:\\'
+python -W error -m <the runner>
+```
+
+### Measures
+
+The counts `doctor-protocol` takes before the audit and again after the fixes: lines and files per
+project (`cloc`, or `wc -l` over tracked files); exported symbols; declared dependencies, and how
+many are outdated or carry an advisory; suppressions and escape hatches; duplication-detector pairs;
+lint and type findings; dead-code, one-call-wrapper and single-implementation candidates; files past
+the size limit; warnings printed by install, build and suites; environment reads outside the
+settings modules; each app's hand-written styling count; and, per use case the run changed, its
+calls and wait.
 
 ## Lenses
 
-Each lens states its defect shape, the checks that find every instance, the remedy, and what is left
-alone so a reviewer does not go hunting. Every lens applies in every phase, read in that phase's
-language; **Hand-Written Styling** belongs to the frontend phase, **Migration Chain** to the
-migrations phase, **Build And Root**, **Configuration Drift** and **Dependency Drift** to the build
-phase, and **Test Slop** to the test phase.
+Read [the lens criteria](references/lenses.md) before building the inventory: each lens named here
+and in this skill's other sections is a section of that reference, stating what the lens flags, the
+checks that find every instance, the remedy, and what is left alone so a reviewer does not go
+hunting. Its **Behavior Kept** section binds every lens that removes or rewrites executable code.
+Every lens applies in every area, read in that area's language; **Hand-Written Styling** belongs to
+the frontend area, **Migration Chain** to the migrations area, **Build And Root**, **Configuration
+Drift** and **Dependency Drift** to the build area, and **Test Slop** to the tests area.
 
-Read [the lens criteria](references/lenses.md) before building the inventory, and give them to every
-reviewer with its phase: each lens named here and in this skill's other sections is a section of
-that reference.
+A partition lens is judged inside one partition. A whole-repository lens needs every partition at
+once, so the cross-cutting reviewer owns it and partition reviewers report only what its checks
+show inside their own files.
 
-| Lens | Defect shape |
-| --- | --- |
-| **Pass-Through Layer** | A layer, wrapper or alias that only hands the call on. |
-| **Speculative Abstraction** | Structure built for cases that never arrived. |
-| **Duplicate Implementation** | One question answered twice. |
-| **Fragmented Use Case** | One use case paying for many calls to operations the repository owns. |
-| **Divergent Siblings** | Things of one kind built in different shapes. |
-| **Scattered Structure** | Code spread over more files and folders than its responsibilities need. |
-| **Repeated Literal** | One meaning spelled out many times. |
-| **Hand-Written Styling** | Styling written by hand where a shared component owns it. |
-| **Reads As Slop** | Code a reviewer recognizes as generated: correct, and still a shape no careful author writes. |
-| **Tolerated Past** | Code that tolerates a past the repository no longer has. |
-| **Migration Chain** | A chain, its registries and its tooling, held to one shape and no more machinery than the job. |
-| **Build And Root** | Build, CI and root files carrying more than they need. |
-| **Configuration Drift** | A configuration name that the matrix shows out of step. |
-| **Dependency Drift** | Declared dependencies out of step with what the code imports and the checks invoke. |
-| **Test Slop** | Tests that cost reading time and prove nothing, found after the code has settled. |
+| Lens | Flags | Reach |
+| --- | --- | --- |
+| **Pass-Through Layer** | A layer, wrapper or alias that only hands the call on. | Partition; caller and importer counts come from the symbol index. |
+| **Speculative Abstraction** | Structure built for cases that never arrived. | Whole repository: implementers and callers are counted across the tree. |
+| **Duplicate Implementation** | One question answered twice. | Whole repository. |
+| **Fragmented Use Case** | One use case paying for many calls to owned operations, or for unbounded work. | Partition, by use case. |
+| **Divergent Siblings** | Things of one kind built in different shapes. | Whole repository. |
+| **Scattered Structure** | Code spread over more files and folders than its responsibilities need, or held in the wrong kind of file. | Partition; module pairs and split concerns are whole repository. |
+| **Repeated Literal** | One meaning spelled out many times, or a literal that belongs to one machine. | Whole repository. |
+| **Hand-Written Styling** | Styling written by hand where a shared component owns it. | Partition, by app. |
+| **Reads As Slop** | Code a reviewer recognizes as generated: correct, and still a shape no careful author writes. | Partition. |
+| **Tolerated Past** | Code that tolerates a past the repository no longer has, or silences what would report it. | Partition; dead entries and unused exports are whole repository. |
+| **Migration Chain** | A chain, its registries and its tooling, held to one shape and no more machinery than the job. | Partition, by chain; chains are compared across the repository. |
+| **Build And Root** | Build, CI and root files carrying more than they need, or built against the workflow rules. | Whole repository. |
+| **Configuration Drift** | A configuration name out of step in the matrix, or optional where a deployment needs it. | Whole repository. |
+| **Dependency Drift** | Dependencies out of step with what the code imports, or behind their owners' releases. | Whole repository. |
+| **Test Slop** | Tests that cost reading time and prove nothing. | Partition. |
+
+Every finding is recorded in `doctor-protocol`'s finding shape. Its fix names the surviving owner,
+each caller or importer that moves and what is deleted; its proving check is the covering check
+**Behavior Kept** requires.
+
+## Reviewers
+
+Reviewers are capped as `doctor-protocol`'s **Launches** sets; this doctor sets no lower cap. The
+areas dictate the partition cut: a partition never spans two areas, and inside an area it follows
+the repository's ownership boundaries. The lens catalog a reviewer is given is the lens criteria
+reference together with the **Lenses** table.
+
+The cross-cutting reviewer owns the whole-repository lenses, working from the symbol index, the
+module table, the import graph, every slot table, the configuration matrix and the dependency lists
+in the pre-pass output. It matches helpers, declarations and modules that answer one question
+across partitions, counts each abstraction's implementers and each export's consumers across the
+tree, and lists every kind built in two shapes. It compares each kind's slot table across its
+deployables, one shape across
+packages, apps and languages, and every value defaulted in one package against its producer in
+another; compares migration chains and registries with each other; reads each deployment column
+against the settings model its process loads, one name declared on two models, and the locations
+each checklist, manifest and example file names against the configuration matrix; and compares
+manifests for one package pinned differently across projects or languages and a check one project
+runs that its sibling does not.
+
+The final adversarial reviewer tries to reach each removed layer,
+branch, alias and operation from a live caller, confirms each merged operation returns only what
+every run of its use cases needs, each batch or merged operation authorizes each item and each
+returned field as the operations it replaced did, and each use case waits no longer than before,
+confirms no import of a moved or renamed module still points at its old path, replays every chain
+the run touched, confirms a stacked migration correction did not narrow the planned downgrade or
+survivorship coverage, challenges every revision kept as applied without version-table evidence,
+confirms each removed configuration name and package has no surviving reader or importer, re-traces
+every retained package to an importer or an invocation, re-derives the matrix for every retained
+mismatch, re-reads the deployment columns for every field kept as a local-development tool, confirms
+each regenerated lockfile resolves its constraints, re-counts every app's hand-written styling and
+confirms it reads zero, and re-runs each rewrite's covering check.
 
 ## Dispositions
 
@@ -153,47 +288,37 @@ that reference.
   defect or vulnerability met in another doctor's area is fixed in this run, as `doctor-protocol`'s
   **Resolve The Scope** says.
 
-The cross-cutting reviewer compares each kind's slot table across its deployables, one shape across
-packages, apps and languages, and every value defaulted in one package against its producer in
-another; compares migration chains and registries with each other; reads each deployment column
-against the settings model its process loads, one name declared on two models, and the locations
-each checklist, manifest and example file names against the configuration matrix; and compares
-manifests for one package pinned differently across projects or languages and a check one project
-runs that its sibling does not. The final adversarial reviewer tries to reach each removed layer,
-branch, alias and operation from a live caller, confirms each merged operation returns only what
-every run of its use cases needs, each batch or merged operation authorizes each item and each
-returned field as the operations it replaced did, and each use case waits no longer than before,
-confirms no import of a moved or renamed module still points at its old path, replays every chain
-the run touched, confirms a stacked migration correction did not narrow the approved downgrade or
-survivorship coverage, challenges every revision kept as applied without version-table evidence,
-confirms each removed configuration name and package has no surviving reader or importer, re-traces
-every retained package to an importer or an invocation, re-derives the matrix for every retained
-mismatch, re-reads the deployment columns for every field kept as a local-development tool, confirms
-each regenerated lockfile resolves its constraints, re-counts every app's hand-written styling and
-confirms it reads zero, and confirms that the repository's tests pass on each batch.
-
 ## Report Additions
 
-- per phase and lens: findings and dispositions by package and language;
+
+- per area and lens: findings and dispositions by package and language;
+- each pre-pass command with the tool that ran it;
 - each kind's slot table before and after;
 - each module merged, moved, renamed, collapsed or split, with its importers moved;
 - each layer, abstraction and alias removed, with its callers;
-- the use-case table before and after: calls and wait per use case, each operation merged, batched
-  or deleted with its callers moved, and each merge put to the user with its recommendation and
-  their answer;
-- each duplicate and its surviving owner;
-- each flag gating a former behavior, its readers and retiring backfill; each suppression removed
-  and the rule code proposed as its guard; each check whose verdict gates again;
+- the use-case table's candidate rows before and after: calls and wait per use case, each operation
+  merged, batched, bounded or deleted with its callers moved, and each merge put to the user with
+  its recommendation and their answer;
+- each duplicate and its surviving owner; each kind brought to one shape, and each better shape
+  proposed to the user;
+- each flag gating a former behavior, its readers and retiring backfill; each suppression and
+  escape hatch removed and the rule code proposed as its guard; each check whose verdict gates
+  again; each warning cleared and each deprecated usage replaced;
 - per migration chain: heads, revisions checked by lens, corrections, policy coverage before and
   after, and the evidence for applied state;
-- each build, CI and root file consolidated or deleted;
+- each build, CI and root file consolidated or deleted, and each workflow finding by the bullet it
+  broke;
 - the configuration matrix with every changed cell, and each deployment column read or unread with
   the reason; the readers traced for each removal; for every field no deployment sets, its outcome;
-- per manifest: declarations removed, added and re-ranged; each lockfile regenerated with its
-  command; audit tools wired in or removed;
+  each value made required with the absence branch deleted;
+- per manifest: declarations removed, added, upgraded and re-ranged; each runtime and base image
+  moved; each pin replaced; each lockfile regenerated with its command; audit tools wired in or
+  removed; each package held back with the failure that holds it;
 - each app's hand-written styling count before and after, and each variant or prop added to a shared
   component in its place;
-- each shape **Reads As Slop** rewrote, by check, with the test proving each executable rewrite's
-  behavior unchanged and the test that carries each deleted comment's behavioral guarantee;
+- each shape **Reads As Slop** rewrote, by check, each rule change it proposed for a shape a rule
+  keeps, and the test that carries each deleted comment's behavioral guarantee;
+- each rewrite's covering check with its result before and after, and each test written first
+  because none reached the code;
 - each test removed or repaired with the layer it exercised;
 - each finding another doctor owns, named with that doctor.
