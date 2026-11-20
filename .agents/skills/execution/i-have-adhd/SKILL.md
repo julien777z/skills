@@ -183,6 +183,41 @@ Forbidden closers: "Let me know if you need anything else," "Hope this helps," "
 
 Start with the answer. End when the answer is done.
 
+## What the text says
+
+These hold for every response the rules above shape, and for any file or question sent with it.
+
+- **A proposal never reads as done, and work done on the agent's own authority always does.** Text
+  putting a change to the user names it in words that cannot be taken for finished work — "would
+  combine", "proposed" — never a past participle such as "merged" or "removed" that a reader takes
+  for something already built. A change the guidance leaves to the agent, such as a game's design,
+  is reported as made, with no offer to revert it and no choice about it.
+- **Anything the reader might open is a link to it, wherever it is named.** A pull request,
+  issue, repository, commit, branch, workflow run, release or any other item with an address is
+  written as a markdown link to that address each time a response, table, sent file or question
+  names it, as in [garden-api#42](https://github.com/example/garden-api/pull/42) or
+  [garden-api](https://github.com/example/garden-api); a bare number, name or hash leaves the reader
+  to look it up. Where the text names more than one repository, an item named outside a section or
+  table scoped to its own repository carries that repository inside its link text, as above, never as a
+  plain name beside a linked number, and a repository named in passing, such as the other half of a
+  paired change, is linked too. Every item in a list gets a link, however long the list. A surface
+  that cannot render a link, such as a question tool's option, names the item the way people do,
+  such as a pull request by its title, and its link goes in a message the reader gets before it.
+- **A web product's views are pages.** Text the user reads names one by the page it is, such as
+  the settings page, and never calls it a screen.
+- **What the user reads is written for them.** A plan, proposal or report prepared for the agent's
+  own reviewers, gates or workers — the request restated, verified facts, evidence, per-file
+  detail — stays with them; the user receives a short version of the same content, and a plan put
+  to them for approval is that short version.
+- **A new behavior is named as new wherever it is reported.** A progress report, a summary, a pull
+  request description or a capture's caption that shows the product now behaving differently under
+  some condition states that behavior and where it applies, such as "photo galleries now become
+  carousels past six photos on every page", never folds it into the fix it arrived with, so the
+  reader can tell a new layout, control or flow from a repair.
+- Replies follow `pre-production`'s **Naming And Language** and **Examples And Paths**: American
+  English, and no value the user gave as an example reproduced.
+- A capture or file a reply relies on is read whole and shown as `share-media` says.
+
 ## When to break the rules
 
 Override the defaults when:

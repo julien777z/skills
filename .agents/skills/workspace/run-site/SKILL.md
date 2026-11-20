@@ -80,6 +80,14 @@ restored snapshot restores files, not a running daemon. Check ownership before t
 services; a running container does not prove another test is active. Keep secrets out of logs and
 preserve configured ports.
 
+- **Use OrbStack for local containers when it is installed.** Before starting container-backed
+  work for any application on macOS, check whether OrbStack is installed even if the current Docker
+  context points elsewhere. Start OrbStack if it is stopped, then verify that Docker can reach its
+  engine. Use the OrbStack context for Docker and Compose. Pass it through `DOCKER_CONTEXT` when an
+  application launcher invokes those commands, then verify the containers are running in OrbStack.
+  If its engine is unavailable, diagnose startup and context selection without falling back to
+  Docker Desktop. When OrbStack is absent, follow the host's configured container runtime.
+
 | Symptom | Likely cause | Fix at the owner |
 |---|---|---|
 | Every authenticated request returns 401 | A checked-in placeholder shadowed the real value from the session environment | Make the environment win over the dotenv layers; read the running process's environment to confirm |
@@ -136,8 +144,8 @@ reuse what exists: never invent a test identity or turn a provider fixture into 
 **Never work around the sign-in wall**: a preview route, a stubbed page, a component mounted where
 it does not ship, or a widened public-route matcher proves the component renders and nothing about
 the screen a user reaches. If sign-in genuinely cannot complete, report the walkthrough as not done.
-Drive browser automation through the tab selected under the global browser procedure; never read the
-user's saved passwords, cookies, local storage, or session files.
+Drive browser automation through the tab selected as `use-browser`'s **Selecting And Binding A Tab**
+says; never read the user's saved passwords, cookies, local storage, or session files.
 
 Keep a password or one-time sign-in token out of argv and the transcript: put it in an environment
 variable for the one command that fills the field or opens the link, build that script, and pipe it
@@ -265,6 +273,6 @@ ffmpeg -y -i <path>.webm -c:v libx264 -pix_fmt yuv420p -movflags +faststart -an 
 
 Send the recording and a still of the view the change touched, unasked, plus a still per width
 walked, the page with its requests failing, and each defect with the fix that resolved it — as the
-run produces them, as the User-Facing Output rule requires, through `share-media`. Captures left
+run produces them, as `share-media` requires and through it. Captures left
 on disk are a walkthrough the reader never saw. The report names the widths checked, whether the run without the API changes was done,
 and what the screens were read against.
