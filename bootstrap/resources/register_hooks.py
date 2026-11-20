@@ -11,7 +11,7 @@ from typing import Final
 
 NEW_SETTINGS_MODE: Final[int] = 0o600
 SOURCE_COMMAND_PATTERN: Final[re.Pattern[str]] = re.compile(
-    r'python3 "\$\(git rev-parse --show-toplevel\)/\.agents/hooks/([\w-]+)/main\.py"'
+    r'python3 "\$\(git rev-parse --show-toplevel\)/\.agents/hooks/([\w-]+)/main\.py"((?: [\w-]+)*)'
 )
 HOOK_NAME_PATTERN: Final[re.Pattern[str]] = re.compile(r"[\w-]+")
 HOOK_ENTRY_POINT: Final[str] = "main.py"
@@ -72,10 +72,10 @@ def entry_handlers(entry: dict[str, object]) -> list[dict[str, object]] | None:
     return grouped if isinstance(grouped, list) else None
 
 
-def installer_command(hooks_dir: Path, name: str) -> str:
-    """Return the command that runs one linked hook from the user-level hooks directory."""
+def installer_command(hooks_dir: Path, name: str, arguments: list[str]) -> str:
+    """Return the command that runs one linked hook with its arguments from the hooks directory."""
 
-    return f"python3 {shlex.quote(str(hooks_dir / name / HOOK_ENTRY_POINT))}"
+    return shlex.join(["python3", str(hooks_dir / name / HOOK_ENTRY_POINT), *arguments])
 
 
 def relocated_handler(handler: dict[str, object], hooks_dir: Path, path: Path) -> dict[str, object]:
@@ -87,7 +87,9 @@ def relocated_handler(handler: dict[str, object], hooks_dir: Path, path: Path) -
     if match is None:
         raise SettingsConflict(f"{path} has a hook command that is not a generated hook command")
 
-    return {**handler, "command": installer_command(hooks_dir, match.group(1))}
+    arguments = match.group(2).split()
+
+    return {**handler, "command": installer_command(hooks_dir, match.group(1), arguments)}
 
 
 def relocated_entry(entry: dict[str, object], hooks_dir: Path, path: Path) -> dict[str, object]:
@@ -102,7 +104,7 @@ def relocated_entry(entry: dict[str, object], hooks_dir: Path, path: Path) -> di
 
 
 def is_installer_handler(handler: dict[str, object], hooks_dir: Path) -> bool:
-    """Tell whether a handler's command is exactly one the installer writes for this hooks folder."""
+    """Tell whether a handler's command is one the installer writes for this hooks folder."""
 
     command = handler.get("command")
 
@@ -114,17 +116,18 @@ def is_installer_handler(handler: dict[str, object], hooks_dir: Path) -> bool:
     except ValueError:
         return False
 
-    if len(words) != 2:
+    if len(words) < 2:
         return False
 
     hook = Path(words[1])
     name = hook.parent.name
+    arguments = words[2:]
 
     return (
         hook.name == HOOK_ENTRY_POINT
         and hook.parent.parent == hooks_dir
-        and HOOK_NAME_PATTERN.fullmatch(name) is not None
-        and command == installer_command(hooks_dir, name)
+        and all(HOOK_NAME_PATTERN.fullmatch(word) is not None for word in (name, *arguments))
+        and command == installer_command(hooks_dir, name, arguments)
     )
 
 

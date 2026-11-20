@@ -433,11 +433,13 @@ run_skill_operation() {
 }
 
 skill_contract() {
-  local provider="$1" root="$2" skill name source
+  local provider="$1" root="$2" skill name source owned
   local sources=()
 
   if [ "$provider" = claude ]; then
-    printf 'protected:synced\n'
+    for owned in $CLAUDE_OWNED_SKILLS; do
+      printf 'protected:%s\n' "$owned"
+    done
   fi
 
   for skill in ${CANONICAL_CATALOG[@]+"${CANONICAL_CATALOG[@]}"}; do
