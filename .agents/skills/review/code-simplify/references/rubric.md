@@ -113,7 +113,7 @@ owners and primitives. Before deciding, write all three fields in the task recor
 10. **Configuration is required unless it has a safe default or its owner documents an absence.** A
    settings field, environment variable, secret, config key or workflow input the change adds or
    reads as optional, with a default that is not safe or a branch that skips or weakens its work
-   when it is unset, is a `should` finding under the global rules' **Configuration** section: a
+   when it is unset, is a `should` finding under `pre-production`'s **Configuration** convention: a
    deployment that misses it runs without what it provides. Local runs or tests lacking the value
    are not such a documented absence. The remedy makes it required and deletes the absence branch.
 

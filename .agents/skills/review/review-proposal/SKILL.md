@@ -7,7 +7,7 @@ short_description: 'Challenge a proposal and obtain independent acceptance befor
 # Review Proposal
 
 The calling agent runs this workflow directly. It prepares the decision; the caller presents it
-and obtains the user's approval under the global question procedure.
+and obtains the user's approval under the global rules' **Asking the user** procedure.
 
 ## Dependencies
 - `pre-production`
@@ -81,7 +81,7 @@ Follow the dependency's fallback procedure without inventing a compliant launch 
 
 Reuse a ready receipt only for its exact proposal, reviewed inputs and affected-owner map. A changed
 item invalidates that acceptance receipt even when earlier attack evidence can be carried forward.
-The caller consumes the ready receipt once through the global question procedure; encountering it
+The caller consumes the ready receipt once through the global rules' **Asking the user** procedure; encountering it
 again is not a reason to rerun the workflow. Keep unresolved user choices separate from technical
 readiness and continue independent authorized work while they wait.
 

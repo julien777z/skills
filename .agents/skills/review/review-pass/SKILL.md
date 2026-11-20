@@ -49,7 +49,7 @@ skill never readies, merges or deploys.
   mode polls. Every 30–60 seconds it reads the pull request's checks, threads and comments on the
   current head: it runs **Review Threads** over the pull request first, then again on each new or
   updated thread and comment, and on a check that fails it reads the log and fixes what the change
-  broke as **Checks** says, pushing each fix through the GitHub rule's **Pre-Push Gate**. Polling
+  broke as **Checks** says, pushing each fix once the running task's pre-push checks pass. Polling
   ends when every check that runs on the current head is terminal and either green or recorded as
   an exclusion under **Checks**, and every thread is resolved, outdated or put to the user. It then
   runs `code-simplify` once over the pull request's whole diff, in process or by slice as **Local
@@ -68,7 +68,7 @@ skill never readies, merges or deploys.
 - **No pull request:** the local task diff against its merge base is the target; description
   refresh and review threads do not apply, and fixes are committed in the task's own checkout
   without pushing.
-- **A repository the owner does not own**, as the global rules' **Repository guidance** defines it:
+- **A repository the owner does not own**, as `pre-production`'s **Whose Standards Apply** defines it:
   the pass fixes the request's own issues and the defects it finds, wherever they sit. **Local
   Passes** do not run, the reviewer brief's rules are that repository's own guidance, the final
   acceptance brief names the repository as someone else's, and a finding that rests only on a
@@ -156,8 +156,8 @@ validation exclusion is recorded with its evidence and not repaired, rerun or wa
    `medium` over the delta, with the merge-base diff as context, and fix what it confirms.
 4. Run **Local Passes** over the delta and push their fixes.
 5. Run **Review Loop** once over the delta, with the intent statement, the merge-base diff and the
-   full touched files as context. Push each fix as its own commit through the GitHub rule's
-   **Pre-Push Gate**. A finding that is the user's decision holds the pass: put it to the user
+   full touched files as context. Push each fix as its own commit once the running
+   task's pre-push checks pass. A finding that is the user's decision holds the pass: put it to the user
    with both sides, and continue independent work.
 6. When the base moved again, run **Base** and recompute **Range**. If the incorporation introduced
    a delta or changed governing guidance, return to step 2 for the affected review and checks.
@@ -187,7 +187,7 @@ These run in the order below, in process unless a pass says otherwise.
 
 - **Python rules:** for the delta's changed Python files, run `acceptance-gate`'s
   `scripts/python_rule_findings.py` over them; each finding it lists gets its fix, and each
-  paragraph candidate the global code-layout rule makes a boundary gets its blank line.
+  paragraph candidate `pre-production`'s **Code Layout** makes a boundary gets its blank line.
 - **Simplification:** when the delta adds a module or declaration (an enum, constant set, mapping,
   or model), changes guidance under `.agents`, or is covered by `code-simplify`'s
   **Before Choosing A Design** check, run `code-simplify` over the delta with the
@@ -206,7 +206,7 @@ changed. Make the smallest changes that answer real findings, and push back on t
   and the findings still open, whatever the delta touches. Stop early
   when a round returns only nits; a declined nit or an edit that changes only wording or formatting
   needs no new round. These rounds count the pull request's review loop; one finding's fix still follows the
-  global rules' review-round limit.
+  limit of 3 review rounds per change.
 - **Reviewer:** a model of a different provider from the author when one is reachable, so it does
   not share the author's blind spots; the user may name another. Resolve it through
   `subagent-matrix` at the advanced level of that provider's families and medium effort, applying
@@ -246,11 +246,12 @@ changed. Make the smallest changes that answer real findings, and push back on t
 - **Stop** when the reviewer approves the current diff with no blocker or should open and no concern
   of your own. A spent budget is not approval.
 - **A finding still disputed after two replies** goes to the user when it is the user's decision,
-  as the shared `agent-guidance.md` rule's **Decisions** names them, with both sides in two or three
+  a product, scope, security, disclosure or authorization choice, with both sides in two or three
   lines each. Any other goes to `council` in **Ask** mode for a ruling, with the finding, the
   reviewer's case and yours with their evidence, and the code it concerns; its ruling settles it:
   fix it, or record it declined with the ruling. A spent budget with a blocker or should still open
-  goes to `council` as the global rules' review-round limit says.
+  goes to `council` in **Ask** mode, which decides between a simpler approach, reverting the
+  change and accepting it with the remaining findings recorded.
 
 ## Harness Compatibility
 

@@ -24,8 +24,8 @@ or drop a correction that does not depend on it.
 
 An open `.agents` pull request is not a delivery result. Processing continues through its source
 check, required review steps, merge or hold, Agent Sync result, and verification of generated root
-instructions and provider output. A genuine gate holds its dependent step while repair or resolution
-remains active under the global rules' **Tools and environments** boundary.
+instructions and provider output. A genuine gate holds only its dependent step while repair or resolution
+remains active.
 
 **A gap you notice yourself starts this skill, exactly as a request does.** Guidance that let a miss
 through, a skill whose trigger did not fire when it should have, one that says nothing about the case
@@ -59,7 +59,7 @@ authorizes the canonical `.agents` correction, except a policy change, which **B
 sends to the user. Do not ask for a plan or for approval of a guidance-output example; an approval
 hold the invoking workflow sets is that workflow's and still applies. An example renders the settled
 instruction and is task evidence, not a new product experience because a user reads it. A guidance
-edit that intentionally changes the product still follows the global product-decision boundary. The
+edit that intentionally changes the product still follows `pre-production`'s **Product Choices**. The
 required skill test, review, and acceptance gate validate the correction. When a separate source
 task is active, or a guidance batch is in flight, preserve its execution and follow **Recording
 During A Task** for the edit's timing.
@@ -91,7 +91,7 @@ Validate skill dependencies and their actual call and policy-read paths under th
   the current work, and the guidance edit is its record. While a guidance batch is in flight, its
   delivery is that action and the user's words are its evidence.
 - Record the correction as a `guidance_correction` entry with `session-ledger`: the user's words,
-  where the user gave any, quoted as the global rules' example-value bullet says, the evidence of
+  where the user gave any, quoted as `pre-production`'s **Examples And Paths** says, the evidence of
   the gap, and for a process its verified run, a reproduction scenario, the intended behavior, the
   canonical files it will change, and `pending` as its `status`. Steps 1–4 of **Behavior** run now,
   while the evidence is fresh, and their result goes into the entry; the edit itself (steps 5, 6 and
@@ -101,14 +101,13 @@ Validate skill dependencies and their actual call and policy-read paths under th
   follow their intended behavior. Putting a question or a recommendation to someone is such a
   decision, as much as acting is: the entry decides what it carries. Recording a correction and then
   repeating the miss it records is the failure this section exists to prevent. A pending entry may
-  restate or tighten the installed text, never grant an authorization the global rules reserve to
+  restate or tighten the installed text, never grant an authorization the global rules' **Authorization** or the GitHub rule reserves to
   the user's own words: a merge, a deployment, a publication, a comment, or a push to another
   session's branch. A brief to any worker whose task a pending entry's subject covers carries that
-  entry's intended behavior, with the user's words quoted and the installed text it amends named, as
-  the global rules require.
+  entry's intended behavior, with the user's words quoted and the installed text it amends named.
 - Write the edit in the checkout step 4 resolves, on the branch step 7.1 selects — the batch's own
   branch while a batch is in flight and its pull request has not merged — commit it, and push it to
-  that branch's pull request once the **Pre-Push Gate** passes, opening a draft when the branch has
+  that branch's pull request once its pre-push checks pass, opening a draft when the branch has
   none; this holds for a source pull request step 7.1 selects as for an agent-configuration one.
   When the checkout holds the active task's uncommitted or source-branch work, write and commit the
   edit from a separate worktree on the selected branch, leave the task's tree untouched, and stage
@@ -170,8 +169,8 @@ user's review of the source pull request overlaps it.
    hold. Keep its `status` `pending` while a hold remains, with its concrete dependency and saved next
    action. This route never sets an entry's terminal status.
 - Before the surrounding task ends or hands off, every `pending` entry is processed, or carries its
-  concrete blocking decision, failed gate or unavailable dependency under the global rules' **Tools
-  and environments** pending-result boundary. Never lose a correction, treat a recorded one as
+  concrete blocking decision, failed gate or unavailable dependency, with its evidence and saved next
+  action. Never lose a correction, treat a recorded one as
   delivered, or hold the source pull request for it beyond the checks its ridden edits need and the
   delivery of the batch carrying them.
 - **Delivery is the agent's own work, never the user's errand.** It starts at its own trigger
@@ -235,30 +234,16 @@ user's review of the source pull request overlaps it.
      is this skill's job.
    - **A violated instruction, or any guidance failure the user points out, calls for causal
      diagnosis and an application repair.** Before editing, trace the actual path from the request
-     to the missed behavior: whether the instruction was absent, its skill loaded, its trigger or
-     sequence kept it from the decision, a conflicting instruction overrode it, or the agent failed
-     to apply guidance it had. Read exceptions and
-     stopping clauses with its callers. When the substantive rule is already correct, inspect the
-     step that produced the rejected recommendation, triage, brief or action: what instruction and
-     review evidence it used, what next action those required, and how its chosen action differed.
-     Repair that decision step at its owner rather than restating the substantive rule or ending
-     with a noncompliance report. Remove conflicting permissions and test other routes in the same
-     failure class, then replay the original decision under the repair before closing the issue.
-     Record missing historical evidence without inventing a cause; it does not prevent repairing
-     the observed decision path. When the owning skill was not invoked, harden its frontmatter
-     description first; body text cannot control a run that never loads the skill.
-   - Test the proposed instruction against that original decision path before proposing or writing it. If a
-     reader could follow it and still repeat the miss, explain the mismatch to the user, name the
-     instruction that actually caused or allowed the decision, and correct that owning path and
-     its conflicting callers. Escalate a genuine unresolved choice, not permission for an already
-     authorized repair. Do not mechanically apply a requested wording change or add a general
-     reminder beside a stop rule it cannot override. The original scenario must demonstrate that
-     the causal correction changes the reader's next action.
+     to the missed behavior, and test the proposed instruction against that path before proposing or
+     writing it, as the [edit criteria](references/edit-criteria.md)'s **Causal Diagnosis** says.
+     Repair the decision step at its owner rather than restating the substantive rule or ending
+     with a noncompliance report, and replay the original decision under the repair before closing
+     the issue.
    - Treat a named addition as the starting point, not the limit. Inspect the owning guidance,
      related callers and dependencies for other gaps needed to solve the same issue. Before
      applying those additional corrections, tell the user which gaps you found, what you will add
      and why. Apply relevant guidance fixes without waiting to be invited to think more broadly;
-     product choices still follow the global authorization boundary. **An edit writes only what
+     product choices still follow `pre-production`'s **Product Choices**. **An edit writes only what
      the request and the failure it repairs need.** Two kinds of edit are policy changes, proposed
      to the user with the standing text they would change and written only once the user's own words,
      or an invoked skill's explicit instruction for that change, approve them: a requirement neither the request nor its failure needs, such as a step, a routing
@@ -277,22 +262,11 @@ user's review of the source pull request overlaps it.
 4. Resolve which repository owns the target, then its path inside that repository's `.agents`.
    - Decide whether the target is shared or repository-owned, and its path for its type, as the
      [authoring reference](references/authoring.md)'s **Where Guidance Lives** says.
-   - A shared target is edited in the skills repository's checkout — the one the user-level link
-     resolves to, or the main checkout behind it when the link resolves into `update-skills`'
-     overlay worktree, or, when the session has no editing checkout, a writable checkout attached to
-     or cloned into the session — on a branch and pull request in that repository, never through the
-     link's path from another repository's branch. A cloud setup clone installed only to provide
-     skills is not the editing checkout. Transfer the edit to a separate skills-repository session
-     only when no writable checkout can be obtained, never by editing the installed clone. The
-     originating session supplies the observed miss and its failure class, original task, relevant
-     diff or small file set, repository commit, original skill text and the outcome the user
-     requires, with a sanitized fixture when the skills session cannot read the originating
-     repository. The skills session tests original and proposed wording against the same case and
-     names the exact proposed pull-request head. For repository-dependent behavior, the originating
-     session then replays the case against that head before merge as `test-skill` runs a scenario,
-     its reader given that head's files, fetched or received as a scratch artifact, and carries the
-     result across heads only as `test-skill` carries one. Do not assume a pull request
-     automatically installs its skill.
+   - A shared target is edited in a writable checkout of the skills repository, on a branch and
+     pull request in that repository, never through the link's path from another repository's
+     branch. The [edit criteria](references/edit-criteria.md)'s **Shared Targets** says which
+     checkout that is, and how the edit transfers to a separate skills-repository session and is
+     replayed when no writable checkout can be obtained.
    - Never write `.cursor/*`, `.claude/*`, `.codex/*`, or any other non-`.agents` agent or provider folder, and never read one as the source of guidance; step 7.9 reads them only to verify what Agent Sync generated.
    - Do not manually create, update, or sync mirrored command/skill/rule files in those folders; repository automation propagates changes from `.agents` to Cursor, Claude, Codex, and similar targets. This holds with no exception, including where the change leaves a mirror pointing at a path it renames or deletes: the workflow reconciles those on the default branch, and a branch carrying a stale or broken one meanwhile is expected.
    - This path restriction applies to the agent-content update, not to source changes required to fix an underlying issue from step 3.
@@ -304,23 +278,10 @@ user's review of the source pull request overlaps it.
      package; reviewing only `SKILL.md` or the edited hunk is incomplete. Apply the same genericity,
      ownership, clarity, and evidence standards to every file.
    - **A change to what a skill returns the user is specified with a concrete example before the
-     skill is written to produce it.** The class is any new or changed user-facing output shape — a
-     table, a report layout, a sent file, a message template, a listing — in a skill whose response
-     the user reads or acts on. It is changed when the user would notice it in the response itself: a
-     new or moved column, a different grouping, a link where there was none. A new status value or a
-     reworded label is not that, and a skill whose result is edits, a merge, a deployment, a verdict
-     another skill consumes, or a report only an agent reads has no such response. Whether an output
-     changed is the editor's call, from what the skill returns before and after. **Model the example
-     on a small slice of the work in hand**, cut to a scope read in a minute, with every value the run
-     would produce — numbers, hashes, findings — stated as made up. Write it as one markdown file
-     whose first line is `**EXAMPLE — modeled on a small slice of the current work; no skill test
-     was run.**`. Only where the work in hand gives the output nothing to show does the example use
-     an invented scenario with invented names, first line `**EXAMPLE — fictional output; no skill
-     test was run.**`. The example is task evidence: the skill text it leads to still keeps its own
-     examples generic. Check it as the global rules' **User-Facing Output** requires, write the
-     skill to produce that shape, then validate it through the required skill-test run, review, and
-     acceptance gate. A guidance-output format is routine guidance design, not a user approval gate; a change to the product
-     a skill operates still follows the global product-decision boundary.
+     skill is written to produce it.** The [edit criteria](references/edit-criteria.md)'s **Changed
+     Output Examples** says which changes count and how the example is modeled and written. Write
+     the skill to produce that shape, then validate it through the required skill-test run, review,
+     and acceptance gate; the example is task evidence, not a user approval gate.
    - Trace each miss to the instruction that produced or allowed it, including instructions for
      adding or recording guidance. Name that governing instruction and its replacement in the
      change. Removing a bad example while retaining a directive that regenerates it is incomplete.
@@ -344,19 +305,9 @@ user's review of the source pull request overlaps it.
      with one further case the request never mentioned, a different kind of thing from its examples.
      State that case and its expected outcome in validation. A case the draft would still handle as
      before means the draft only renamed the examples, and it is rewritten until that case changes too.
-   - Treat a missing tool required to run, build, test, or review a repository as source work. First
-     use a standard-library or already-provided equivalent when it fully serves the task; remove any
-     existing repository dependency, bootstrap installation, and repository references it displaces,
-     rather than leaving obsolete tooling behind. Do not add a dependency for an incidental harness.
-     When the tool is essential, install it through the repository's shared `bootstrap/install.sh`:
-     create that entry point when it is absent, or extend it when it exists, and verify a fresh
-     bootstrap provides the tool. Keep that bootstrap repository-neutral — it serves every developer
-     and agent, so its name, behavior, and messages must not be Claude- or Codex-branded.
-   - Follow the user's explicit consumer-reference choice; otherwise, after a dependency receives a
-     separately authorized release, replace its branch reference with a maintained version tag. Use
-     a minor release for a new capability or a patch release for a bug fix; verify any moving major
-     tag points to that release and validate the consumer against it. Never use an unpublished tag;
-     use the default branch when the user chose it or applicable reference guidance permits it.
+   - A missing tool the repository needs to run, build, test or review, and a consumer's reference
+     to a dependency, follow the [edit criteria](references/edit-criteria.md)'s **Tools And
+     Dependency References**.
    - Write every added or changed instruction as the [authoring reference](references/authoring.md) says, under
      each of its sections the edited file's kind and content fall under, **Harnesses** included for anything a harness runs or reads.
    - **Moved text is added text.** Guidance moved between files — a skill relocated, bullets
@@ -388,7 +339,7 @@ user's review of the source pull request overlaps it.
    1. **Branch and commit.** Select the edit's pull request under the GitHub rule's **Branches and Pull Requests** — never put it onto a
       source branch, the one checked out included, except guidance that rule puts on the source pull
       request it depends on, which merges with it. Commit the `.agents` files, never a provider
-      mirror, and push each step once the GitHub rule’s **Pre-Push Gate** checks pass. Open the pull
+      mirror, and push each step once its pre-push checks pass. Open the pull
       request as a draft. If the merge is already authorized, run `merge-gate`'s **Readiness** after verifying
       the pull request. Steps 3–4 review what no earlier pass covered, and step 7's `merge-gate`
       merges it. Carry out each authorized transition as it becomes eligible. An
@@ -404,20 +355,14 @@ user's review of the source pull request overlaps it.
       interpreter or any interpreter meeting the sync tool's version, and fix every
       report it prints before pushing; a description holding a colon followed by a space is the usual
       one, and quoting the value is the fix.
-      When the sync tool cannot reach an imported skill's source repository, that is an environment
-      refusal, not a blocker: attach or clone the repository, and when the tool
-      fetches through a path the environment refuses, fix the tool to use one it serves.
+      When the sync tool cannot reach an imported skill's source repository, or the guidance needs a
+      change in an unreleased tool another repository owns, follow the
+      [edit criteria](references/edit-criteria.md)'s **Source Check Routes**: neither is a blocker,
+      the tool's consuming workflow change is source work whose delivery follows `merge-gate`'s
+      dependency gate, and no merge here authorizes a release.
       Check the entire canonical skills tree against the authoring reference's **Package And
       References**, imported skills included, rather than only the files being edited; leave generated
       mirrors to Agent Sync. A clean changed file does not make a failing tree validation pass.
-      When the guidance needs a change in an unreleased tool owned by another repository, point
-      the draft consuming workflow at that tool's active branch and validate against it, without
-      waiting for the tool's review loop. That workflow change is source work under step 1's source
-      route; its delivery follows `merge-gate`'s dependency gate rather than merging a testing reference.
-      The guidance rides that workflow's source pull request, as the GitHub rule's **Branches and
-      Pull Requests** says, and merges with it; that pull request waits for the tool through the
-      same gate. After the tool merges, the consumer adopts and validates its maintained target under the reference guidance
-      above. No merge here authorizes a release.
       The script checks skill names only. For each file the batch changes, also check by reading
       and searching what the [authoring reference](references/authoring.md)'s **Writing** and **Rules** sections
       require: every cited section, path, script, command and flag resolves; no ruling or example
@@ -443,7 +388,8 @@ user's review of the source pull request overlaps it.
       behind the request. Resolve each flag through `acceptance-gate`'s **Bounds**: repair the
       owning instruction, push the changed increment, and put it to the fresh gate those **Bounds**
       require. Repeated flags do not permit dropping owed work or merging flagged guidance, apart
-      from the decision the global rules' review-round limit calls for after 3 rounds; acceptance,
+      from the `council` decision that replaces another repair once 3 review rounds have failed the
+      change; acceptance,
       or that recorded round-limit decision, must cover the final wording before delivery.
 
    5. **Run one `test-skill` round over the batch on the head `review-pass` accepted.** Give it every
@@ -461,22 +407,10 @@ user's review of the source pull request overlaps it.
       text and generated outputs are verified. The report names either the merged state or a
       concrete documented gate with its evidence; draft alone is neither.
 
-      **A skill that arrives by relocation is not a skill the change adds.** Moving one between
-      repositories, or generalizing local copies into one every repository can adopt, produces a new
-      file and no new guidance, and a skill-test run against a miss nobody had proves nothing. What makes
-      it a relocation is that the guidance survives, so establish that rather than asserting it:
-      diff the new file against every original line by line, and account for each line the diff
-      removes as either the same instruction in repository-neutral words or guidance relocated to a
-      named home — the owning repository's project guidance for what only that repository can state.
-      A line carrying an instruction no original carried is an edit riding along, and the paragraph
-      above decides it on its own terms. The report says `not run: relocation, guidance preserved` and names where each
-      original's specifics went.
-
-      Where the originals disagreed, the disagreement is the thing to get right, and neither answer
-      may be picked for both. Carry the shared guidance and hand the contested question back to each
-      repository, checking that each one already states its answer where the skill now sends its
-      reader; a repository that does not is the flag, because the merge silently gave it the other
-      one's answer.
+      **A skill that arrives by relocation is not a skill the change adds.** Establish that the
+      guidance survives, and settle where the originals disagreed, as the
+      [edit criteria](references/edit-criteria.md)'s **Relocations** says. The report then says
+      `not run: relocation, guidance preserved` and names where each original's specifics went.
    6. **Hold each changed output to its concrete example.** For every skill whose output changed,
       compare one run of your own on the branch in flight and every required skill-test run against that
       example: headings, columns, order, file shape. A divergence is the skill's wording, fixed and
@@ -495,7 +429,7 @@ user's review of the source pull request overlaps it.
       one carrying only rules has no example to match and merges once steps 2–5 pass, unless their **Merge
       Authorization** holds it. Report a held pull request for the user's review.
    8. **Nothing is copied by hand.** The skills repository is the only copy of a shared skill;
-      sessions receive a merged edit through the refresh **After Agent Sync** runs, never through a copy
+      sessions receive a merged edit through the refresh the GitHub rule's **After Agent Sync** requires, never through a copy
       placed in another repository or install. A skill that reads generically but was written into one repository's `.agents` is
       moved to the skills repository in the same change rather than left as a second copy.
    9. **Read the merged text back before using it.** A merge changes the default branch, not the
@@ -516,51 +450,15 @@ user's review of the source pull request overlaps it.
 
 ## Manual verification
 
-When skill behavior needs a live agent chat, use `subagent-matrix` to choose the least-capable
-sufficient capability and resolve its exact host dispatch identifier. Select that identifier in the chat UI and
-record catalog state, dispatch identifier, assignment state and receipt, tested branch, exact commit, session
-type, and observed result separately. A catalog-hidden candidate remains dispatch-required until the actual
-chat assignment is accepted; a missing identifier or any rejection other than an explicit unsupported receipt
-holds manual verification rather than selecting a substitute. An explicit unsupported receipt records the chat
-as unavailable and keeps manual verification blocked. A resumed container proves its maintenance path, not a
-fresh setup run.
+When skill behavior needs a live agent chat, follow the
+[manual verification reference](references/manual-verification.md): how the dispatch is chosen
+through `subagent-matrix` and recorded, and the Claude Desktop and Codex cloud procedures.
 
-### Claude Desktop
-
-1. In Claude Desktop's Code view, choose Remote, open the environment picker, and use the settings
-   control beside the selected environment to edit its setup script. Check out the pull-request
-   branch and invoke the installer from that checkout. Preserve unrelated setup commands and
-   settings; save the script and verify the editor reports the update.
-2. Start a new cloud session with the pull-request branch attached. Verify from session evidence
-   that setup ran the script at the intended commit, then check the skill and rule used by the
-   session resolve into the intended checkout in both Claude's cloud home and the runtime's home.
-   If the session reused an older setup image, record that result and obtain a fresh setup run
-   before claiming setup passed.
-3. After the source pull request merges and the verification task is finalized and closed, update
-   the remote setup script to check out the repository's default branch. Save the script. Remove
-   only stale test sessions created for this verification:
-   right-click each session in Claude Desktop and delete it through the UI, one at a time; never
-   use a script or API to delete sessions.
-
-### Codex cloud
-
-1. In Codex cloud Settings → Environments, create or edit an environment attached to the repository.
-   Set its setup script to obtain the Skills checkout on the pull-request branch and invoke its
-   installer. Set its maintenance script to invoke the same installer on a resumed container. Keep
-   the network access needed by the test.
-2. Start a fresh task on the pull-request branch. Verify the installed skill and shared rule links,
-   and Codex's global `AGENTS.md`, resolve into the installed checkout at the intended commit.
-   Run the installer again and verify it succeeds without changing unrelated content.
-3. Resume a cached container and verify the maintenance script ran and the same links still resolve.
-   Distinguish this result from a fresh setup result.
-4. After the source pull request merges and the verification task is finalized and closed, update
-   the environment setup script to obtain the Skills checkout on the repository's default branch.
-   Save the script. Archive test tasks created for this verification.
 
 ## Output
 
 Return this report, filled in; keep every heading, write `None` under one with nothing to list, and
-send a file holding the items past five under any heading as the User-Facing Output rule requires:
+send a file holding the items past five under any heading:
 
 ```markdown
 Files

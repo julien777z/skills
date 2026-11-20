@@ -65,7 +65,7 @@ choices:
     detail: recon fanned out, two hunters on the riskiest classes and one elsewhere, then a refuter and an independent verifier per finding, repeated until a completed round finds no new confirmed and independently verified finding
 ```
 
-Follow the global rules' **Task execution and authorization** question-tool procedure, including
+Follow the global rules' **Asking the user** question-tool procedure, including
 timeout retries. If neither a question tool nor chat can reach the user, retain the missing effort
 as a gate with its saved next action rather than selecting it from silence. An effort explicitly
 supplied by the invocation or its calling workflow needs no question.
@@ -111,8 +111,7 @@ Use the platform's equivalent capabilities while preserving the specified roles,
 ## What The Audit Writes
 
 The output is a report: one findings file in `.agent_sources/` at the root of the worktree the
-review runs in, added to the repository's local exclude file first as the global rules' working-files
-bullet says, sent to the user with the chat summary. A report file the request names, such as one at
+review runs in, added to the repository's local exclude file first so it stays out of Git, sent to the user with the chat summary. A report file the request names, such as one at
 the worktree's root, carries the summary and the findings file's path, never the findings in its
 place. Phase 5 of [validation and reporting](references/validation-and-reporting.md) sets what the
 file and the summary hold. Nothing is committed to the target repository, and the audit changes no

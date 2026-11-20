@@ -242,8 +242,8 @@ restriction. Gate a single user-only workflow inside an otherwise usable skill i
 
 ### Decisions
 
-- **A skill sends a decision to the user only when it is the user's**: a product, scope, security, disclosure or authorization choice, as the global
-  rules' product-choice bullet defines one, or a step only the user can take. Every other contested
+- **A skill sends a decision to the user only when it is the user's**: a product, scope, security, disclosure or authorization choice, as
+  `pre-production`'s **Product Choices** defines one, or a step only the user can take. Every other contested
   call a workflow's own checks cannot settle — a disputed finding, a flag that survives its
   repairs, a stuck review, the disposition of a change that keeps failing — goes to `council` in
   **Ask** mode, and its ruling, by majority unless the skill sets a stricter threshold, is followed and named in the skill's result. A skill whose
@@ -275,8 +275,7 @@ Output is the last section unless Guardrails is present, in which case Output im
 it.
 
 For user-facing responses, the template names the facts the response carries and puts per-item
-detail past five items in a file sent with the response, as the global rule **User-Facing Output**
-requires; a word limit it sets binds only while `i-have-adhd` is active. A skill whose result is
+detail past five items in a file sent with the response; a word limit it sets binds only while `i-have-adhd` is active. A skill whose result is
 edits, a merge, a deployment, or a running system carries the report line its delivery step owes,
 not a forced template for the execution result. Decide from what the skill returns, and leave out
 a template where correct results genuinely vary in shape.

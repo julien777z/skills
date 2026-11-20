@@ -47,7 +47,7 @@ Record baseline pass/fail state and available suite wall times. Rank cases and f
 existing reporting attributes their costs; unavailable rankings remain unmeasured. A suite that
 cannot run locally uses its existing CI timing when available.
 
-The budget is the suite budget the testing rules set, and within it no test, parametrized family
+The budget is the suite budget `test-fixture`'s **Time Budgets** set, and within it no test, parametrized family
 or module is disproportionate under `test-fixture`'s cost question.
 
 **The budget binds the run, and a breach is never an end state.** A suite measured over it is worked
@@ -272,7 +272,7 @@ when only one suite uses it. Fixture lifecycle wiring and scenario inputs stay i
 Inject application model types where a shared import would invert dependencies.
 Discover that owner from existing implementations and the repository's test-utilities package
 before relocating anything.
-Complete the ownership move as the global rules' **A new file is the last resort** bullet requires: inspect every related implementation and
+Complete the ownership move as `pre-production`'s **A new file is the last resort** convention requires: inspect every related implementation and
 consumer, and flag a partial move even when the factory left behind was already there. Generic
 lifecycle helpers retain their own owners; a shared word does not establish shared responsibility.
 
@@ -400,7 +400,7 @@ before delivery and verify that none enters the delivered diff.
   or make them cheaper where they stand; fix the remaining test-side causes; admit a focused
   application fix only through the performance exception; remove a disproportionate case that cannot
   be made cheap; parallelize independent work where the runner and shared resources allow, never
-  across a shared database or lock and never in a way the testing rules list as absorbing a slow
+  across a shared database or lock and never in a way `test-fixture`'s **Test Cost** lists as absorbing a slow
   test. Re-time after implementation against the
   same workload. A suite still over budget is unfinished work, not a line in the report: carry on
   with the next disposition; when the remaining choice is between dispositions, put it to `council`

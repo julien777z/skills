@@ -20,7 +20,7 @@ Ground intent in the user's accepted requirements, the change's history, and the
 The statement names:
 
 - the user's request in their own words, quoted, with each example value it holds named by its kind
-  in brackets as the global rules' **Repository guidance** says, and with every later word of theirs
+  in brackets as `pre-production`'s **Examples And Paths** says, and with every later word of theirs
   that widened or narrowed it. Those words bound the change's scope: a restatement in the agent's
   words, a plan step it wrote or a brief never widens it, and a remedy whose product effect — what a feature does or
   shows, or a visible change on surfaces the user did not name — reaches past them is flagged as a
@@ -263,7 +263,7 @@ run an audit of any kind later never stands in for it.
 ## The Tests Behind Each Question
 
 **An example the user gave is never reproduced.** On every question, each hit in the intent
-statement's example search outside the uses the global rules' **Repository guidance** permits
+statement's example search outside the uses `pre-production`'s **Examples And Paths** permits
 is a flag, and so is any literal in the searched places that looks lifted from real data rather than
 invented. The remedy is an invented value keeping only the trait the case turns on. A missing
 example search, or a bracketed kind in the quoted request the search does not list, holds a clean
@@ -323,8 +323,8 @@ ends the question.
    repository the dependency is, never from where it sits or from a record calling it out of scope.
    That the code under change is deployed or running somewhere, a backfill in flight on live data
    included, is the order the fix rolls out in, stated in the pull request; it is never a blocker.
-   The gate never routes work to a decision on its own: where a fix's remedy is a product choice the
-   global rules reserve to the user, the fork is put to the user now, before that remedy is built,
+   The gate never routes work to a decision on its own: where a fix's remedy is a product choice
+   `pre-production`'s **Product Choices** reserves to the user, the fork is put to the user now, before that remedy is built,
    never filed as theirs unasked; a trade-off inside a choice the user's words already settled takes
    the cleanest fix and states it in the pull request. A defer also requires that the record's
    resolution criteria describe an end state and name the intent a fix has to preserve, never a
@@ -383,7 +383,7 @@ anything else.
 
 **A test is priced by what it costs to run.** Flag a test the diff adds or changes, or the module
 holding it, that `test-fixture`'s cost question calls disproportionate, and any change that absorbs
-a slow test in a way the testing rules list; the remedy is making it cheap or removing it, as that
+a slow test in a way `test-fixture`'s **Test Cost** lists; the remedy is making it cheap or removing it, as that
 rubric and `pre-production` decide. For existing-reporting evidence, missing
 available evidence holds a clean verdict; attribution the native route cannot provide is recorded
 unmeasured and does not hold an otherwise validated repair.

@@ -113,13 +113,13 @@ receives five things and nothing else:
 4. the affected-repository map required by `code-simplify`'s **Trace Changed Flows**. For each
    changed file group, resolve its project guidance, scoped repository rules and installed shared
    rules by path. Supply the complete text and scope of each source inline or in a named file. In a
-   repository the owner does not own, as the global rules' **Repository guidance** defines it, the
+   repository the owner does not own, as `pre-production`'s **Whose Standards Apply** defines it, the
    brief says so: the gate judges the change against the request, its defects and that repository's
    own guidance and conventions, and a shared rule's standard is no flag there.
    **The pre-gate check runs before every gate.** When the Python rules apply, the caller runs
    `scripts/python_rule_findings.py` with the project's Python interpreter on the in-scope Python
-   files before dispatch, fixes each finding, and each paragraph candidate the global code-layout
-   rule makes a boundary, in the lines the change writes or edits, then runs it again. Supply the
+   files before dispatch, fixes each finding, and each paragraph candidate `pre-production`'s **Code
+   Layout** makes a boundary, in the lines the change writes or edits, then runs it again. Supply the
    file list and every finding that run prints, including an explicit empty result. The reader
    verifies each reported shape against the source and rule;
 5. exactly one question from the list below.
@@ -134,7 +134,7 @@ model-dispatch record; never replace it with a generic “largest model” label
 the diff adds, moves or rewrites whole; moved and renamed code is judged as if it were new. A diff
 that changes a skill or rule is judged as the package it results in: every file of each skill and
 rule it touches is read whole at the head, and a requirement stated in more than one place there,
-or growth past the shared `agent-guidance.md` rule's size budget, is a flag. Where the item
+or growth of a `SKILL.md` or rule past 500 lines, is a flag. Where the item
 carries a real case the guidance governs, the gate walks the resulting text through it and flags
 the step a reader would take wrongly. Apply the rubric's **Guidance Intent** check. Record
 the evidence for a clean result under `Also read`. Before
@@ -219,13 +219,13 @@ consumer accepts and how it excludes each obsolete representation. Flag missing 
 Distinct meanings carried by the canonical representation still receive the ordinary guard checks.
 A verdict with no added guard says `no guard added` in those words.
 
-**Then it lists every product choice the diff makes**, as the global rules define one — a change to
+**Then it lists every product choice the diff makes**, as `pre-production`'s **Product Choices** defines one — a change to
 what a feature does or shows, a remedy whose visible effect is large, such as a layout, control or
 flow changing across many pages, a change carried past the surface the user named — each with the
 user's words in the intent statement that settle it. Small presentation decisions on the surface in
 hand are not listed; neither is a game's design, which the global rules' game-design bullet makes
 the agent's decision and never a question for the user, a new control or room included; nor is local
-test tooling or the records it seeds, which the global rules' local-stack bullet leaves to the
+test tooling or the records it seeds, which `pre-production`'s **Local Stacks** leaves to the
 agent. A product choice with no such words is a flag whose remedy is putting the choice to the
 user before the code stands, whatever the change calls itself, a fix included. An earlier
 acceptance, a plan record without the user's words, or a brief calling the choice decided is not
@@ -322,18 +322,17 @@ a repair re-reads the changed lines against the flag's objection and remedy and 
 covering that code; then the repair, or a settled, out-of-scope or council-dropped answer with its
 evidence, goes to a fresh gate under the Diff question, following `subagent-matrix`'s
 **Dispatch**, and only that gate's acceptance closes the flag. Each such gate is one of the change's
-re-reviews under the global rules' review-round limit, and a repair's gate one of the flag's own
+re-reviews under the limit of 3 review rounds per change, and a repair's gate one of the flag's own
 repair rounds below. The exceptions are a style flag and a flag naming only missing evidence, each
-closed as its paragraph below says, and the decision the global rules' review-round limit has
-`council` make once 3 rounds have failed the change, which settles its flags as it rules.
+closed as its paragraph below says, and the decision `council` makes once 3 review rounds have failed the change, which settles its flags as it rules.
 
 **Each flag carries its severity, `defect` or `style`.** A style flag concerns only the form of
 lines whose behavior, structure and contract stand: a docstring's or comment's length, a missing
 blank line, a name's length, wording that misstates nothing. Everything else is a defect, however
 small its fix. The author fixes a style flag and runs the checks covering it, and final acceptance,
 which every change gets before it merges, confirms it; a style flag final acceptance raised is
-confirmed by a fresh re-check of those lines alone. A style flag costs no round, under the global
-rules' review-round limit or the repair rounds below, and never goes to `council`.
+confirmed by a fresh re-check of those lines alone. A style flag costs no round, under the
+3-round limit or the repair rounds below, and never goes to `council`.
 
 **A gap in the evidence a gate was given is not a failed round.** A gate whose verdict waits only
 on evidence it names, such as a source excerpt or a run's output, receives that evidence in the same
@@ -342,9 +341,9 @@ change to the diff, or to any text the gate judges, goes to a fresh gate, and no
 it proposed itself.
 
 **Repair rounds are counted per objection and per change.** A change gets at most 3 rounds across
-every kind of check, the first and 2 after repairs, as the global rules' review-round limit counts
-them: once 3 have failed it, whatever each raised, the decision that bullet calls for replaces
-another repair, and an acceptance with recorded findings that decision makes is the one exception to
+every kind of check, the first and 2 after repairs: once 3 have failed it, whatever each raised, `council` in
+**Ask** mode decides between a simpler approach, reverting the change and accepting it with the
+remaining findings recorded, and that decision replaces another repair, and an acceptance with recorded findings that decision makes is the one exception to
 the rules below on flagged diffs. While the change is under that limit, a flag gets at most two
 repair rounds of its own, and one a fresh gate raises for the first time starts at zero. A flag the
 gate still raises after its own second repair, with the change still under the limit, goes to

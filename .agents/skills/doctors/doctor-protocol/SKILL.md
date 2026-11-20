@@ -16,6 +16,7 @@ run; each doctor owns only its domain.
 - `acceptance-gate`
 - `defer-scope`
 - `pre-production`
+- `execute-task`
 
 ## Declare What The Doctor Owns
 
@@ -168,7 +169,7 @@ combined result, and the full suite and every check that needs a shared resource
   as one finishes, the next group in the wave starts.
 - **Each worker gets one group.** Its brief carries the group's entries and files, the remedies the
   lenses state, the intent statement and the run's branch it pushes to. It works in its own git
-  worktree detached at that branch's remote head, changes only its group's files, runs the pre-push checks the GitHub rule’s **Pre-Push Gate**
+  worktree detached at that branch's remote head, changes only its group's files, runs the pre-push checks `execute-task`'s **Pre-Push Gate**
   defines, and pushes each step with `git push origin HEAD:<branch>` after fetching and rebasing,
   as the GitHub rule's **Branches and Pull Requests** says.
 - **A shared resource is never used by two workers at once** — a database, a port, a running stack.
@@ -177,7 +178,7 @@ combined result, and the full suite and every check that needs a shared resource
 - **A worker that finds work outside its group reports it instead of editing it.** The parent
   records it in the ledger and schedules it into a later wave.
 - **Each wave's combined diff is gated before dependent work:**
-  the parent reads each worker's reported head under the global rules' **Reported Outcomes**, runs one
+  the parent reads each worker's reported head as a claim to check at its source, as `execute-task`'s reported-outcomes reference says, runs one
   in-process `code-simplify` pass over the wave's pushed heads, and returns what it flags as fix
   steps in the next wave. A wave a later wave builds on also gets `acceptance-gate`'s Diff question
   before that wave starts. Neither that pass, nor a merge the parent makes of the wave, holds a
@@ -196,7 +197,7 @@ behavior.
 
 ## Run Repository-Native Checks
 
-Run the pre-push checks the GitHub rule’s **Pre-Push Gate** defines, then any further
+Run the pre-push checks `execute-task`'s **Pre-Push Gate** defines, then any further
 repository-native check applicable to the changed files and their consumers: formatting, static
 analysis, tests, builds, code generation, and contract checks. Report a check category that is not
 configured rather than inventing one.
@@ -222,7 +223,7 @@ prevents completion.
 
 Once review is clean, put the complete diff to `acceptance-gate`'s final-acceptance question
 against the intent statement. Answer every flag under `acceptance-gate`'s **Bounds**, pushing each
-fix as its own increment through the GitHub rule's **Pre-Push Gate**.
+fix as its own increment through `execute-task`'s **Pre-Push Gate**.
 
 ## Defer Leftovers
 

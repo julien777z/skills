@@ -37,8 +37,8 @@ unless its trace shows the precedent's own condition broken.
 - **Logging.** Logging URLs or non-sensitive data is not a finding; logging a secret or a credential
   is, and so is personal data in a record that reports no failure. A failure's message, its
   traceback and the values of a warning or error are never a finding for the personal data or other
-  values they hold; a secret or credential in them still is, since the global Logging rule conceals
-  it.
+  values they hold; a secret or credential in them still is, since `pre-production`'s **Logging**
+  convention conceals it.
 - **Outbound requests.** Server-side request forgery needs control of the host or protocol;
   controlling only the path is not a finding.
 - **Model prompts.** User content placed in a model's prompt is not a finding on its own; what the
@@ -168,7 +168,7 @@ smallest-fix order above, applied before there is anything to fix.
 - **Add no surface the request does not need.** No debug route, permissive fallback, wildcard
   origin, optional bypass or unused mode. A surface that does not exist needs no guard.
 - **A control's own setting is required.** A key, secret, allow-list or limit a control reads is
-  required configuration, as the global rules' **Configuration** section says, so a deployment
+  required configuration, as `pre-production`'s **Configuration** convention says, so a deployment
   without it fails to start; only a default that gives the control its full protection may stand
   in. A control that skips or weakens itself when its setting is unset is the optional bypass
   above, a defect of the change that adds it, fixed there.

@@ -94,7 +94,7 @@ Run after `code-simplify` completes its pass.
    A subagent of the running session stands in only when its loaded guidance lists no copy of a
    skill or rule under test, with the variant in its brief. Record the route, the command, the
    scratch root's file list with digests, and the harness's record of the guidance it loaded. With
-   neither route, the round is a concrete gate under the global rules' **Tools and environments**;
+   neither route, the round is a concrete gate, surfaced with its evidence and saved next action;
    it never passes with a reader that saw another variant.
    Before freezing the reader package, exercise its required fixture interfaces in a disposable
    copy: discovery must expose the identifiers the task needs, operations must be available, and
@@ -156,9 +156,9 @@ Run after `code-simplify` completes its pass.
    where authorized; keep coupled instructions and their required repairs together. This assessment
    recommends which changes should merge and decides no merge itself. A passing skill test alone
    never decides that a pull request should merge.
-7. **Repair and rerun until verified**, within the global rules' review-round limit of 3 rounds per
-   change: after the third failing round over the same edit, that bullet's decision replaces another
-   repair. Diagnose each reported issue at its owner. Fix guidance that permits the wrong behavior;
+7. **Repair and rerun until verified**, within the limit of 3 review rounds per
+   change: after the third failing round over the same edit, a decision between a simpler approach,
+   reverting the edit and accepting it with the remaining findings recorded replaces another repair. Diagnose each reported issue at its owner. Fix guidance that permits the wrong behavior;
    fix an invalid fixture, unavailable simulated operation, wrong reading list, ambiguous criterion
    or broken runner before judging guidance. Retain the diagnosis and earlier results. Recover
    missing evidence from the actual run or rerun the affected task; never reconstruct a result from
