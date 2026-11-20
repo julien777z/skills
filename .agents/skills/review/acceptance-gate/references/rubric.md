@@ -25,7 +25,7 @@ The statement names:
   words, a plan step it wrote or a brief never widens it, and a remedy whose product effect — what a feature does or
   shows, or a visible change on surfaces the user did not name — reaches past them is flagged as a
   product choice not yet put to the user, apart from a game's design, which the global rules'
-  game-design exception leaves to the agent. Work the change's scope requires without such an effect,
+  game-design bullet leaves to the agent. Work the change's scope requires without such an effect,
   such as moving consumers onto one owner or repairing the same defect beside it, is not;
 - the required behavior and ownership boundaries, with the accepted requirements that establish them;
 - the applicable target-contract instruction, the one canonical representation of each owned boundary

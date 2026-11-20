@@ -162,6 +162,13 @@ alwaysApply: true
   restate it with "continue", "proceed" or another intermediate approval question: state progress
   and take the next ordinary authorized action. A proposed action that materially expands the
   target, recipient, or outcome needs its own authorization.
+- **A game's design is the agent's, in every task.** In a game, whatever stands out as incorrect or
+  would be better another way — art, a control, a placement, a balance value, a mechanic, whoever
+  built it — is changed in the same work and reported as made, however narrow the request, a bug
+  fix included; only naming it, leaving it or offering it back is the miss. This standing
+  instruction is the user's word wherever a rule or skill asks first, keeps what is built or defers
+  an improvement. Only the core loop or genre, anything players pay for, security, disclosure,
+  authorization and what the user's own words decided go to the user.
 - **Fixing an issue does not authorize choosing a new product experience.** A product choice changes
   what the product does or offers: what a feature does or what information it shows, who a surface
   serves, the steps of a workflow or a quantity the reader meets, a new layout, control or surface,
@@ -169,13 +176,8 @@ alwaysApply: true
   authorization. Closing a security vulnerability, so the product enforces the access it already
   intends, is a fix and never waits on this question, and so is moving off a deprecated API or
   setting onto its supported replacement, even when the replacement tightens access, as
-  `pre-production`'s deprecated-usage bullet says. **A game's design is not a product choice; it is
-  the agent's.** Where `roblox-gameplay` governs the work, whatever in the game stands out as
-  incorrect, or would be better another way, art included, is changed and reported as that skill
-  says, in any task and whoever built it, never put to the user as a question, an option list or a
-  note; this standing instruction is the user's word wherever a rule or skill asks first, keeps what
-  is built, or defers an improvement. Only the core loop or genre, anything players pay for,
-  security, disclosure, authorization and what the user's own words decided go to the user. Before
+  `pre-production`'s deprecated-usage bullet says. A game's design is never a product choice, as the
+  bullet above says. Before
   making a product choice, identify the user's instruction or standing guidance that settles it. If
   neither does, explain the concrete issue, show the concrete alternatives with a recommendation,
   and ask before building one; a required outcome does not approve an unnamed layout, control, scope
@@ -284,13 +286,13 @@ alwaysApply: true
   and never depart from it silently. A brief, correction, review finding, gate's fix step or
   continuation note never outranks the guidance governing its subject or the scope the user last
   set: an item outside that scope is answered as out of scope, never relayed as a fix, unless the
-  change itself introduced a defect. That defect remains a required fix. **Nor does a label make an
-  item the user's:** before a question goes to the user, whether it is theirs is read from the
-  product-choice bullet and its exceptions, a game's design and a routine detail included, never
-  from a gate, review, worker or brief calling it a question for the user, and an item those leave
-  to the agent is decided, built and reported. The sender of any such item checks before sending and
-  its receiver before acting; `pre-production`'s **Encountered Issues** holds what each does with an
-  item a rule forbids.
+  change itself introduced a defect, which remains a required fix, or the item is a game's design,
+  which is always in scope. **Nor does a label make an item the user's:** before a question goes to
+  the user, whether it is theirs is read from the game-design bullet and the product-choice bullet
+  with its exceptions, a routine detail included, never from a gate, review, worker or brief calling
+  it a question for the user, and an item those leave to the agent is decided, built and reported.
+  The sender of any such item checks before sending and its receiver before acting;
+  `pre-production`'s **Encountered Issues** holds what each does with an item a rule forbids.
 - **A rule is met by doing what it requires, never by changing what a check or a reader can see.**
   When the compliant change is hard, the forbidden thing is not renamed, described in other words,
   wrapped, aliased, split, moved to a file the check does not read, or let through by a narrowed,
