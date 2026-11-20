@@ -14,7 +14,7 @@ short_description: 'Build and improve Roblox worlds, terrain, structures, props,
 
 ## Give every map a purpose
 
-Build worlds that make sense, look intentional, and reward exploration. Keep the requested genre; change existing artwork, gameplay or visual identity where it stands out as incorrect or would be better another way, in any task, as the global rules' game-design exception says. Use this skill for environment work.
+Build worlds that make sense, look intentional, and reward exploration. Keep the requested genre; change existing artwork, gameplay or visual identity where it stands out as incorrect or would be better another way, in any task, as the global rules' game-design bullet says. Use this skill for environment work.
 
 Before extending a world, identify its role in the overall game, arrival/exit routes, neighboring maps, landmarks, terrain, inhabitants, activities, and intended traversal. Give each region a recognizable identity within one coherent palette and architectural language. Its geography and connections should be understandable: roads lead somewhere useful, bridges cross meaningful obstacles, water and terrain connect plausibly, and settlements have believable entrances and functions.
 

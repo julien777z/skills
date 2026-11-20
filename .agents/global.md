@@ -25,12 +25,11 @@ alwaysApply: true
 - Invoke `i-have-adhd` before the first response a user reads in the session, whether or not the
   user invoked it or the running skill names it. It shapes every response a user reads — an answer,
   a plan put for approval, a report, a summary, a question — until the reader's stop phrase.
-- **A proposal never reads as done.** Text putting a change to the user names it in words that
-  cannot be taken for finished work — "would combine", "proposed" — never a past participle such as
-  "merged" or "removed" that a reader takes for something already built.
-- **Work done on the agent's own authority reads as done.** A change the guidance leaves to the
-  agent, such as a game's design, is reported as made, with no offer to revert it and no choice
-  about it.
+- **A proposal never reads as done, and work done on the agent's own authority always does.** Text
+  putting a change to the user names it in words that cannot be taken for finished work — "would
+  combine", "proposed" — never a past participle such as "merged" or "removed" that a reader takes
+  for something already built. A change the guidance leaves to the agent, such as a game's design,
+  is reported as made, with no offer to revert it and no choice about it.
 - **Anything the reader might open is a link to it, wherever it is named.** A pull request,
   issue, repository, commit, branch, workflow run, release or any other item with an address is
   written as a markdown link to that address each time a response, table, sent file or question
@@ -163,12 +162,11 @@ alwaysApply: true
   and take the next ordinary authorized action. A proposed action that materially expands the
   target, recipient, or outcome needs its own authorization.
 - **A game's design is the agent's, in every task.** In a game, whatever stands out as incorrect or
-  would be better another way — art, a control, a placement, a balance value, a mechanic, whoever
-  built it — is changed in the same work and reported as made, however narrow the request, a bug
-  fix included; only naming it, leaving it or offering it back is the miss. This standing
-  instruction is the user's word wherever a rule or skill asks first, keeps what is built or defers
-  an improvement. Only the core loop or genre, anything players pay for, security, disclosure,
-  authorization and what the user's own words decided go to the user.
+  would be better another way — art, a control, a balance value, a mechanic, whoever built it — is
+  changed in the same work and reported as made, however narrow the request, a bug fix included; only
+  naming, leaving or offering it back is the miss. This is the user's word wherever a rule or skill
+  asks first, keeps what is built or defers an improvement. Only the core loop or genre, what players
+  pay for, security, disclosure, authorization and what the user's words decided go to the user.
 - **Fixing an issue does not authorize choosing a new product experience.** A product choice changes
   what the product does or offers: what a feature does or what information it shows, who a surface
   serves, the steps of a workflow or a quantity the reader meets, a new layout, control or surface,
