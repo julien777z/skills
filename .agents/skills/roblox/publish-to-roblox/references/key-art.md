@@ -28,8 +28,9 @@ A player-height gameplay screenshot is not a game picture, however good the scen
 
 ## Stage From the Game's Own Assets
 
-Stage, and take every capture, a trial shot included, in a scratch copy of a built place, never saved over a source file, with the game's own
-characters, creatures, outfits, props, effects and places.
+Stage, and take every capture, a trial shot included, in a scratch copy of a built place, never
+saved over a source file, with the game's own characters, creatures, outfits, props, effects and
+places.
 
 - **Pose, then anchor.** Pose characters and creatures through their joint offsets, such as a
   `Motor6D`'s `C0`, or freeze an animation at a strong frame. Then anchor every part where it
