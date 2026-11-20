@@ -1,13 +1,14 @@
 ---
 name: review-proposal
-description: "Prepare a proposed change for an existing user-approval boundary or a directly requested proposal review. Challenge the whole proposal with three fresh standard reviewers per round, count nit-only rounds as clean, and obtain independent Proposal acceptance after two substantive clean rounds or a council ruling once two rounds pass without them. Technical readiness never grants user approval."
-short_description: 'Challenge a proposal and obtain independent acceptance before presenting it for approval.'
+description: "Prepare an implementation plan before the user sees it, a proposed change for an existing user-approval boundary, or a directly requested proposal review. Challenge the whole proposal with three fresh standard reviewers per round, count nit-only rounds as clean, and obtain independent Proposal acceptance after two substantive clean rounds or a council ruling once two rounds pass without them. Technical readiness never grants user approval, and a plan it accepts is shown, not approved."
+short_description: 'Challenge a proposal and obtain independent acceptance before the user sees it.'
 ---
 
 # Review Proposal
 
-The calling agent runs this workflow directly. It prepares the decision; the caller presents it
-and obtains the user's approval under the global rules' **Asking the user** procedure.
+The calling agent runs this workflow directly. It prepares the proposal; the caller presents it as
+its own rule says: a plan with nothing left for the user to decide is shown and proceeds, and a
+proposal held for approval is asked under the global rules' **Asking the user** procedure.
 
 ## Dependencies
 - `pre-production`
@@ -20,8 +21,9 @@ and obtains the user's approval under the global rules' **Asking the user** proc
 
 Apply `pre-production` to the proposal and each alternative. Invoke `acceptance-gate` for the independent Proposal verdict and its repair procedure. Use `session-ledger` to retain the proposal, inputs, evidence, dispositions and pending decision.
 
-Use where approval of a proposed change is already required: implementation plans and explicit
-product, security, disclosure or scope alternatives. This creates no new approval requirement.
+Use on an implementation plan before the user sees it, and where approval of a proposed change is
+already required: explicit product, security, disclosure or scope alternatives. This creates no
+new approval requirement.
 Factual questions, status reports, routine authorized actions and a platform's separate action-time
 confirmation do not enter this workflow. Optional factual discovery is not an attack slot.
 
@@ -77,11 +79,12 @@ Follow the dependency's fallback procedure without inventing a compliant launch 
    material design cycle retains its preceding history and the same two-round adjudication
    checkpoint; renaming or caller re-entry cannot erase objections or reset a cycle. Missing or lost
    gate output follows subagent-matrix recovery without redoing valid attacker evidence. Return the
-   result to the caller. Do not request approval here or recursively review the gate itself.
+   result to the caller. Do not present the proposal or request approval here, or recursively
+   review the gate itself.
 
 Reuse a ready receipt only for its exact proposal, reviewed inputs and affected-owner map. A changed
 item invalidates that acceptance receipt even when earlier attack evidence can be carried forward.
-The caller consumes the ready receipt once through the global rules' **Asking the user** procedure; encountering it
+The caller consumes the ready receipt once, when it shows the plan or asks for the approval; encountering it
 again is not a reason to rerun the workflow. Keep unresolved user choices separate from technical
 readiness and continue independent authorized work while they wait.
 
@@ -90,7 +93,7 @@ readiness and continue independent authorized work while they wait.
 Return this record through session-ledger, with detailed evidence at private locators:
 
 ```yaml
-status: ready-for-user-approval | held | needs-evidence
+status: ready | held | needs-evidence
 proposal: <locator and exact content identity>
 inputs: <reviewed input identities and affected-owner map>
 rounds: <actual history, clean streak and normal/adjudication route>
@@ -99,5 +102,6 @@ gate: <exact packet, dispatch and original verdict, or missing evidence>
 next_action: <caller presentation or concrete repair/recovery>
 ```
 
-`ready-for-user-approval` requires independent acceptance. It never authorizes implementation,
-merging, deployment, publication or a separate user-triggered action.
+`ready` requires independent acceptance. It is technical readiness, never the user's approval: the
+caller's rule says whether the proposal is then shown or asked, and it never authorizes merging,
+deployment, publication or a separate user-triggered action.

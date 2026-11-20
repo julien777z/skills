@@ -127,6 +127,10 @@ if its values are valid in another context or it passes the mechanical checks. A
 also satisfy the same requirements. For example, if model IDs must be discovered at runtime,
 a valid provider ID built into a fallback is a violation.
 
+Where the item carries the statement of scope its editor recorded, read the resulting package
+against it as `skill-pass`'s **Reviewer Brief** says: a behavior change the statement does not
+list is a flag as much as text narrower than what it says changes.
+
 Record the controlling intent and the decisive path and evidence in the verdict. A contradiction
 or a missing source needed to establish conformance prevents acceptance.
 

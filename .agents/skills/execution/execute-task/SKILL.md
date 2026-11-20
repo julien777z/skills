@@ -1,14 +1,14 @@
 ---
 name: execute-task
 description: "Always run this. Invoke once at the start of every task authorized to change files — including one whose edits sub-agents make or that starts because work turned up a defect — before recommending, delegating or making edits, and keep it active until verified completion or the user stops or hands it off. Never invoke it from inside a skill it runs. Its references also govern, in any task whether or not it changes files, what an invocation or authorization covers, approval boundaries, steps only the user can take, steps that cannot be taken back, reading state after a push or merge, checking a worker's claim and tracing a cause before reporting it, where working files go, waits and awaited results, and verification cadence and suite choice."
-short_description: 'Plan source and product changes for approval; validate canonical guidance changes through their delivery gates.'
+short_description: 'Plan source and product changes and show the plan; validate canonical guidance changes through their delivery gates.'
 ---
 
 # Execute Task
 
-Plan source and product changes, get them approved, then run them the same way every time.
-**Plan** decides what will be built; canonical guidance changes enter **Execution** directly and
-are validated by the gate set the GitHub rule's **Merge Authorization** states for an
+Plan source and product changes, show the plan, then run it the same way every time. **Plan**
+decides what will be built; canonical guidance changes enter **Execution** directly and are
+validated by the gate set the GitHub rule's **Merge Authorization** states for an
 agent-configuration pull request, except a substantial skill change the user asks for, whose plan
 is a proposed flow.
 
@@ -51,7 +51,7 @@ the task. Where it owns a stage, return its result to this run rather than start
   interruptions. Nothing in the task re-enters the skill; the run simply has not ended.
 - The session agent selects independently applicable specialized skills from their descriptions once.
   They return outcomes, pending decisions and required coordinator work to the caller.
-- A selected workflow presents its own plan through its declared approval route.
+- A selected workflow presents its own plan through the route it declares, an approval it requires included.
 - A read-only task — a question answered from the code, a listing, a report with no edit — does
   not run this skill, though it still reads the reference of this skill that governs a subject it
   meets, as the description lists them; a task whose edits sub-agents make is not read-only for the
@@ -65,11 +65,11 @@ Every task that changes files starts here, and so does every follow-up that arri
 Before choosing a design, and before the first edit on a path that takes no plan, apply
 `code-simplify`'s **Before Choosing A Design** check to everything the change will add and write
 its receipt in the task record. A small follow-up, a bug fix and a worker's task each write it
-without a new approval step; only an edit that adds nothing skips it.
+without a plan of their own; only an edit that adds nothing skips it.
 
 ### When A Plan Is Needed
 
-- **Every source or product change gets a plan put to the user before its first edit, except a
+- **Every source or product change gets a plan shown to the user before its first edit, except a
   trivial change or a small, clearly specified follow-up to active work.** A trivial change has no
   design choice in it: a typo, a one-line fix, a rename the user named. A small follow-up directly
   extends the active task using an established behavior or component, with the user naming the
@@ -78,7 +78,7 @@ without a new approval step; only an edit that adds nothing skips it.
   verification, even when more than one file or an internal dependency must change. Record the
   added work and state the next action; do not turn its implementation outline into another
   approval question. Ask only about a concrete unresolved choice and continue independent work.
-  Completing that choice does not require approval of a separate plan. Canonical guidance changes
+  Completing that choice takes no separate plan. Canonical guidance changes
   under `.agents`, apart from the substantial skill change the next bullet holds, do not wait for a plan or an output-format approval: their request or an encountered guidance gap starts
   the guidance-correction workflow, and the gate set the GitHub rule's **Merge Authorization**
   states verifies it, on the timing `edit-skill`'s **Recording During A Task** sets for an active task,
@@ -91,7 +91,7 @@ without a new approval step; only an edit that adds nothing skips it.
   held on it**, in place of a written plan, where a source change of its size would get one: until
   the user approves it in their own words, that pull request gets no `test-skill` round, no merge
   and no auto-merge; each edit they ask for lands on that branch and it is rendered again in place.
-- Work the approved plan already covers takes no new plan: an encountered issue, a gate's or a
+- Work a plan in execution already covers takes no new plan: an encountered issue, a gate's or a
   review's flag, a failing check, or a guidance correction discovered during the run. `edit-skill`
   records verified guidance corrections and `process-ledger` processes them at **Completion**.
 
@@ -121,7 +121,7 @@ without a new approval step; only an edit that adds nothing skips it.
   a deploy, apart from the tasks `merge-gate`'s **No Deploy Work** excepts.
 - **An estimate is the executing agent's own wall-clock, never the effort the same work would
   take a person.** Build each step's from [plan estimates](references/plan-estimates.md), and list
-  what the plan needs from the user — an approval, a merge, a manual action — separately and
+  what the plan needs from the user — a review, a merge, a manual action — separately and
   outside the total, with no time, since the agent cannot know how long the user takes.
 - Schedule steps by `subagent-matrix`'s **Dispatch**: coupled work stays sequential, and
   independent scopes with separate owners, files and resources overlap once their inputs are
@@ -133,9 +133,9 @@ without a new approval step; only an edit that adds nothing skips it.
   identifier, assignment state and host receipt with the plan evidence. The plan states where common
   behavior will live and which policy or wiring stays consumer-specific; it never starts from a parallel
   structure and leaves ownership for implementation.
-- Ask through the global rules' **Asking the user** procedure, sending each message as
-  `user-facing-output` and `share-media` require: any open decisions first, on their own; then, once they are
-  answered and folded into both plans, the user's plan and its approval:
+- Send each message as `user-facing-output` and `share-media` require: any open decisions first,
+  on their own, through the global rules' **Asking the user** procedure; then, once they are
+  answered and folded into both plans, or when there were none, the user's plan as a message:
 
 ```markdown
 **Decision needed:**
@@ -143,40 +143,40 @@ without a new approval step; only an edit that adds nothing skips it.
 ```
 
 ```markdown
-**Proposed plan**
+**Plan, starting now**
 
 1. <step> (~<n> min)
 2. <step> (~<n> min)
 
-**Total: ~<n> min.** Then <what the user does next, such as review or merge; never a deploy the request does not name>.
+**Total: ~<n> min.** Then <what the user does next, such as review or merge; never a deploy the request does not name>. Interrupt to change any of it.
 ```
 
-### Approval
+### Showing The Plan
 
 - **The user sees a plan once `review-proposal` has accepted it, and never before.** A plan still
   being drafted or reviewed stays with the run: nothing the user reads — a report, a summary, a
   status line, a task list, a dashboard or a question — shows its steps, estimates or an outline
-  of them, and a draft is never offered as a preview pending approval. While it is in review, a
-  report says only that a plan is being prepared, and the user's next sight of it is the accepted
-  plan put for approval. This holds back the plan, not its open decisions, which go first as
-  **What The Plan Holds** says.
-- Before recommending an approval-requiring plan, invoke `review-proposal` on the detailed plan once
-  the user's answers to its decisions are folded in, with its intent and verified ownership
-  evidence; the user's short plan consumes that receipt while it adds nothing the detailed plan
-  lacks. [Authorization](references/authorization.md)'s **Approval Boundaries** consumes its ready
-  receipt before presenting the decision, and its **Choices Between Versions Of A Page** applies
-  to a decision between versions of a page.
-  Reuse verified factual inventories; keep **When A Plan Is Needed**'s exceptions rather than
-  creating another approval requirement.
-- Only an explicit user response approves a plan. A timeout, inactivity, a missing response, a tool
-  result, a mode change or a system notice never does. Surface approval through the global rules'
-  **Asking the user** procedure, including its timeout retries. Keep the plan pending and begin no
-  work that needs its approval; independent authorized work continues.
-- An interruption continues the same plan. Never replace or silently revise an unapproved plan;
-  fold the user's amendments into the detailed plan, take it through `review-proposal` again, and
-  present the complete revised plan.
-- Approval authorizes ordinary implementation and verification, never a merge, deployment,
-  publication or release the plan happens to list; **Task Authorization** says what does.
+  of them, and a draft is never offered as a preview; a report says only that a plan is being
+  prepared. This holds back the plan, never its open decisions, which go first.
+- Before showing a plan, invoke `review-proposal` on the detailed plan once the user's answers to
+  its decisions are folded in, with its intent and verified ownership evidence; the user's short
+  plan consumes that receipt while it adds nothing the detailed plan lacks.
+  [Authorization](references/authorization.md)'s **Approval Boundaries** consumes the receipt, and
+  its **Choices Between Versions Of A Page** applies to a decision between versions of a page.
+- **A plan with no open decision is shown, and its work starts in the same turn.** An open decision
+  is a product, scope, security, disclosure or authorization choice that is the user's and that
+  they have not answered. A plan holding one sends those decisions first and starts only
+  independent authorized work until they are answered. Once they are, or when the plan never held
+  one, the accepted plan goes to the user as a message with no approval question, **Execution**
+  starts without waiting for a reply, and the user can interrupt at any point.
+- **A plan shown this way is never called approved**: every record, report,
+  dashboard and brief says it was shown with no open decision, and when.
+- Showing a plan starts ordinary implementation and verification under the task's authorization.
+  A merge, deployment, publication or release it lists still waits for what **Task Authorization**
+  names, and a substantial skill change the user asked for stays held on its proposed flow.
+- An interruption continues the same plan. Never replace or silently revise a plan the user has
+  seen: pause the work an amendment affects, fold it into the detailed plan, ask any decision it
+  opens, take the plan through `review-proposal` again, and show the complete revised plan.
 - **Offering the next step as a choice is a stop wearing a question mark.** "Say the word and I will
   start the next group" hands back an instruction the user gave once. Ask only for a decision that
   is genuinely the user's, and put it in the question rather than in the plan's continuation.
@@ -199,26 +199,26 @@ This order grants no deployment or merge authority: **Task Authorization** still
 
 ### Follow-Ups
 
-Classify each source or product follow-up under **When A Plan Is Needed** before preparing a plan. A small, clearly specified follow-up executes on the user's request; only a follow-up outside that exception needs its own plan. A canonical guidance correction follows **When A Plan Is Needed** and does not wait for approval; while a guidance batch is in flight it joins that batch, as `edit-skill`'s **Recording During A Task** says. **Priority** decides when other follow-ups run and whether affected work pauses now; none of the routes below makes arrival order a reason to preempt active recovery.
+Classify each source or product follow-up under **When A Plan Is Needed** before preparing a plan. A small, clearly specified follow-up executes on the user's request; only a follow-up outside that exception needs its own plan. A canonical guidance correction follows **When A Plan Is Needed** and waits for no plan; while a guidance batch is in flight it joins that batch, as `edit-skill`'s **Recording During A Task** says. **Priority** decides when other follow-ups run and whether affected work pauses now; none of the routes below makes arrival order a reason to preempt active recovery.
 
 - **One that touches nothing in flight** — other files, another outcome — leaves the running work
   going. It gets a plan only when **When A Plan Is Needed** calls for one, and runs beside that work
-  once any required approval is present and **Priority** permits, under `subagent-matrix`'s
+  once any decision it opens is answered and **Priority** permits, under `subagent-matrix`'s
   **Dispatch**. Send this template only for a follow-up that needs a plan:
 
 ```markdown
 **Running work keeps going:** <step in flight> doesn't touch <what the follow-up changes>.
 
-<**Decision needed:** …, asked on its own first | **Proposed plan for the follow-up**, once no decision is open>
+<**Decision needed:** …, asked on its own first | **Plan for the follow-up, starting now**, once no decision is open>
 1. <step> (~<n> min)
 ```
 
 - **One that changes what is being built** — a source or product follow-up — records the affected
   work and its saved next step under **Work You Have Already Named**, then updates the active
-  plan record. Present an amended plan for approval only when **When A Plan Is Needed** requires
-  one; a small, clearly specified follow-up starts without another approval request.
+  plan record. Show an amended plan, as **Showing The Plan** says, only when **When A Plan Is
+  Needed** requires one; a small, clearly specified follow-up starts without one.
   Pause affected work when **Priority** brings the amendment into execution; otherwise retain it
-  for after the active work. Resume once any required approval is present and its priority permits. Unaffected work keeps
+  for after the active work. Resume once any decision it opens is answered and its priority permits. Unaffected work keeps
   running while the user decides.
 - **One that narrows scope reaches the work already in flight, at once.** Message every running
   worker to stop the work the cut removes and has not yet done, keeping what it already finished,
@@ -232,16 +232,16 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
 
 - **The ledger holds the plan's current state, so nothing about progress depends on what the chat
   still remembers.** When an accepted plan goes to the user, record it with `session-ledger` as a
-  `plan` entry holding the fields `session-ledger` names for one, filled from the planning work even
-  where the plan shown to the user leaves them out. Work the user adds to an active task, with or
-  without a plan of its own, becomes a step on that plan or a plan entry of its own, with the user's
-  words and its approval time, or the time the user added it when it has no plan, before the first
+  `plan` entry holding the fields `session-ledger` names for one, its status `shown` with that time,
+  filled from the planning work even where the plan shown to the user leaves them out. Work the user
+  adds to an active task, with or without a plan of its own, becomes a step on that plan or a plan
+  entry of its own, with the user's words and the time they added it, before the first
   edit or dispatch it authorizes; a harness task list, the chat or a summary is never where it first
   lives. A step the agent adds, or widens past what the user asked, is recorded as agent-originated,
-  proceeds under the task's authorization like the work **When A Plan Is Needed** says an approved
-  plan covers, and is never shown as user-approved; one that is a product choice goes to the user
+  proceeds under the task's authorization like the work **When A Plan Is Needed** says a plan in
+  execution covers, and is never shown as user-approved; one that is a product choice goes to the user
   before it is built, as `pre-production`'s **Product Choices** says. Update it when the state
-  changes, not when a report is due: approval, a step starting, finishing, blocking or being
+  changes, not when a report is due: the plan being shown, a step starting, finishing, blocking or being
   skipped, a follow-up's plan.
 - **A step that waits on other work records what it waits for**: the gate, merge or result whose
   outcome lets it start. Every relayed result is checked against those records, and a result that
@@ -250,11 +250,11 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
 - **A step estimated over 30 minutes is recorded with its parts**: bounded pieces of that step's
   work, each with its own estimate in whole minutes, at least 1, together adding up to the step's.
   Mark each part done as it finishes, so recorded progress moves while a long step runs. The plan
-  the user approves keeps its numbered steps; the parts live in the record.
+  the user reads keeps its numbered steps; the parts live in the record.
 
 ## Execution
 
-Execution starts once a required plan is approved, or immediately when **When A Plan Is Needed** requires no plan. Canonical guidance corrections follow `edit-skill`'s **Recording During A Task** timing.
+Execution starts once a required plan has been shown, or immediately when **When A Plan Is Needed** requires no plan. Canonical guidance corrections follow `edit-skill`'s **Recording During A Task** timing.
 
 ### Assigning Work
 

@@ -1,6 +1,6 @@
 # Authorization
 
-What `SKILL.md`'s **Task Authorization** and **Approval** apply: what an authorization covers, when a
+What `SKILL.md`'s **Task Authorization** and **Showing The Plan** apply: what an authorization covers, when a
 step is a new approval boundary, and how a step or choice reaches the user.
 
 ## What An Authorization Covers
@@ -8,7 +8,7 @@ step is a new approval boundary, and how a step or choice reaches the user.
 - **A direct invocation authorizes one full run at the requested scope.** An explicit request to
   continue a loop authorizes repeated runs only within that loop until its outcome or the user's
   explicit stop or handoff. Start the invoked skill and ask before narrowing its scope.
-- **An authorized task, including a fix request or approved plan, covers its ordinary work for as
+- **An authorized task, including a fix request or a plan in execution, covers its ordinary work for as
   long as it stays active**: implementation, verification, scoped external changes, retries,
   recovery and cleanup. A follow-up, interruption, failed attempt or context reset does not require
   the user to approve those sub-steps again. Never ask the user to restate the task with
@@ -50,10 +50,11 @@ step is a new approval boundary, and how a step or choice reaches the user.
   - After a required confirmation, complete the remaining authorized work without another approval
     question. A refused or unanswered confirmation blocks only the action it governs, as **Work You
     Have Already Named** says of every wait.
-- **A proposed change presented at an existing user-approval boundary carries `review-proposal`'s
-  ready receipt.** First check for its valid ready receipt for the exact proposal and reviewed
-  inputs; when present, present the supporting content and ask without re-entering it. Otherwise
-  prepare that receipt before asking. This applies to approval-requiring change proposals, not
+- **A plan shown to the user, and a proposed change presented at a user-approval boundary, each
+  carry `review-proposal`'s ready receipt.** First check for its valid ready receipt for the exact
+  proposal and reviewed inputs; when present, show the plan, or present the supporting content and
+  ask, without re-entering it. Otherwise prepare that receipt first. This applies to plans and to
+  approval-requiring change proposals, not
   factual questions, routine authorized work or a platform's separate action-time confirmation.
   `acceptance-gate`'s technical verdict is not a user-approval request and never recursively
   enters this procedure.

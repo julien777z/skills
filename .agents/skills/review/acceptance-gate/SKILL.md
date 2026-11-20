@@ -23,6 +23,7 @@ while a gate's flag is closed only by a fresh gate under **Bounds**.
 - `test-fixture`
 - `run-site`
 - `council`
+- `skill-pass`
 
 ## The Intent Statement
 
@@ -83,8 +84,8 @@ checks analogous implementations and the evidence for retained differences; miss
 pull-request context is a flag to obtain that context, not permission to assume consistency.
 
 The gate is read-only and distinct from the author. If its reader cannot launch, apply
-`subagent-matrix`'s launch fallback. Invoke `subagent-matrix` at its advanced
-capability level. Dispatch the gate with that exact identifier, and retain catalog state, identifier, assignment
+`subagent-matrix`'s launch fallback. Invoke `subagent-matrix` at the capability level
+**Questions** gives the gate's question. Dispatch the gate with that exact identifier, and retain catalog state, identifier, assignment
 state and host receipt in the gate record. Its reader freshness follows `subagent-matrix`'s **Dispatch**. Its
 prompt carries five things and nothing else; what it reads from the tree itself, the paragraphs
 after them say:
@@ -139,8 +140,8 @@ model-dispatch record; never replace it with a generic “largest model” label
 **A diff review judges the code as it stands, not only the lines that changed.** Read every module
 the diff adds, moves or rewrites whole; moved and renamed code is judged as if it were new. A diff
 that changes a skill or rule is judged as the package it results in: every file of each skill and
-rule it touches is read whole at the head, and a requirement stated in more than one place there,
-or growth of a `SKILL.md` or rule past 500 lines, is a flag. Where the item
+rule it touches is read whole at the head, for the checks `skill-pass`'s **Reviewer Brief**
+assigns the acceptance gate and no other reader's. Where the item
 carries a real case the guidance governs, the gate walks the resulting text through it and flags
 the step a reader would take wrongly. Apply the rubric's **Guidance Intent** check. Record
 the evidence for a clean result under `Also read`. Before
@@ -274,7 +275,10 @@ question never lets an author judge their own work or collapse distinct verdicts
 
 Exactly one per gate, each decided by the tests in `references/rubric.md`, with nothing appended.
 Whether an item is the change's doing or predates it is never asked, since no disposition turns on
-it:
+it. The question sets the gate's capability level, at `subagent-matrix`'s default effort: Proposal,
+Diff and Final acceptance run at advanced, and Triage, Admission and Base incorporation, whose
+packets are small and whose answers accept no diff for merge, run at standard. A caller names the
+question and never a level of its own:
 
 - **Triage — what should happen to this?** An issue, a finding or a proposed record, or a list of
   them in one call; the answer is one of fix, close, defer

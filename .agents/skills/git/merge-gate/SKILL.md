@@ -14,7 +14,7 @@ for an agent-configuration change, Agent Sync handling before this skill finishe
 
 - **Merge, deployment, publication and release each require the user's explicit authorization for
   the action and target, or an applicable rule or invoked skill that expressly authorizes them.**
-  - A fix request, CI-test request, successful check, review, approved plan, or instruction to
+  - A fix request, CI-test request, successful check, review, plan shown or approved, or instruction to
     implement a plan does not itself authorize these outcomes, even when the plan lists them. A
     task-wide "all approved" covers ordinary sub-tasks within its stated outcome without overriding
     this separate boundary.

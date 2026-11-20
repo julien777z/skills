@@ -72,22 +72,25 @@ identity, never a second authoritative copy of its records.
      or observing an automated output establishes only a reference, never task work. Acting on a
      pre-existing artifact never makes it session-created.
    - For a correction, keep the observed issue, evidence or user instruction, reproduction scenario,
-     intended behavior, canonical files, local branch, checkpoint and delivery `status` (`pending`,
+     intended behavior, the statement of scope its editor wrote, canonical files, local branch, checkpoint and delivery `status` (`pending`,
      `complete` or `withdrawn`). Keep other
      context needed to resume: decisions and constraints, affected callers, dependencies, check
      results and their validity conditions, open questions and next actions. Choose useful `data`
      fields for the record; local work is never an externally verified artifact claim.
-   - For a plan put to the user, record a `plan` entry: its title, goal, the context it starts from,
-     status (`proposed`, `approved`, `complete` or `withdrawn`) with the user's words approving it,
-     the message they came in and its time, which steps overlap, the decisions it settled with their
+   - For a plan shown or put to the user, record a `plan` entry: its title, goal, the context it
+     starts from, status (`proposed` while a decision or a required approval is open, `shown` for
+     one shown with no open decision, with that time, `approved` only with the user's words
+     approving it, the message they came in and its time, `complete` or `withdrawn`), which steps
+     overlap, the decisions it settled with their
      reasons, how its result will be verified, what it needs from the user, and its ordered steps,
      each with a title, what the step changes and how, origin (`user` for a step the user saw in
      that form, `agent` for one the agent added or widened past what the user asked), status
      (`next`, `active`, `done`, `blocked` or `skipped`), wall-clock estimate, the observed start and
      finish times once known, and any parts, each with a title, a status from that same set and an
      estimate. A plan's total is the sum of its step estimates, with steps the plan records as
-     overlapping counted once, at the longest of them. An `agent` step proceeds under the task's
-     authorization unless it is a product choice, and is never recorded or shown as user-approved.
+     overlapping counted once, at the longest of them. A `shown` plan and an `agent` step proceed
+     under the task's authorization, the step unless it is a product choice, and neither is ever
+     recorded or shown as user-approved.
      Change a step's status when the work changes it, with an observation for the transition; a
      follow-up plan is an entry of its own.
    - For a question put to the user, record a `question` entry: the question, its options, the
@@ -108,7 +111,8 @@ identity, never a second authoritative copy of its records.
      came in, and records approval or an answer only from those words. Agent-written sources — a
      harness task list, worker reports, a summary after compaction, a brief, a gate verdict — show
      what was done, never what the user approved or decided: a step or decision found only there is
-     recorded with origin `agent` and unapproved, never folded into an approved plan.
+     recorded with origin `agent` and unapproved, never folded into an approved plan, and a plan
+     found only there is `shown` at most.
    - For active work, record its owner, priority, status, next action, dependencies and concrete
      blockers so a handoff can resume it without reconstructing the task. Record a priority change
      with its user instruction or urgency evidence and preserve the displaced step. Follow-ups keep

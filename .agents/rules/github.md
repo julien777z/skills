@@ -191,7 +191,7 @@ alwaysApply: true
 - Agents may create branches and pull requests, commit, and push scoped changes without additional approval.
 - Merging a pull request requires the user's explicit authorization naming the merge and that pull
   request, an invoked skill that states its invocation authorizes the merge, or one of the standing
-  permissions below. A fix request, an approved plan, a passing check or a review authorizes none.
+  permissions below. A fix request, a plan shown or approved, a passing check or a review authorizes none.
   Where none applies, do not merge or enable auto-merge.
 - Honor the selected workflow's delivery hold before the standing permissions below; a pull
   request held for user review cannot use those exceptions or auto-merge.
@@ -236,7 +236,9 @@ alwaysApply: true
     findings resolved; a review pass over the change; an independent acceptance gate over the
     complete diff; for an edit that changes behavior, a skill-test round against the exact
     pull-request head; and the checks a skill's changed scripts own, such as a type check or a
-    test render.
+    test render. Where the workflow that made the change already ran an independent review and
+    an independent acceptance gate over that complete diff, on a head unchanged since, those
+    are this set's review pass and gate and neither runs again.
   - A pull request that changes no instruction a reader follows, such as a spelling or dead-link
     correction, is a text correction under the minor-corrections bullet above, with the source check as its gate.
 

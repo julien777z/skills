@@ -24,7 +24,7 @@ running artifact; a client request alone establishes neither a remote dependency
 behavior. An independent inventory receives the request, observed evidence and unresolved facts,
 not a proposed topology to assume. Its result must reconcile that runtime path before it supports
 a new mechanism or a product question. Reconcile the complete
-accepted target with the user's instructions, approved plan, repository guidance and observed
+accepted target with the user's instructions, the plan, repository guidance and observed
 mechanism; record each settled outcome or constraint with its source and the evidence the proposed
 implementation will need to satisfy it. Identify unresolved facts rather than silently replacing
 them with an assumption. Compare the proposal against every part of this receipt before selecting

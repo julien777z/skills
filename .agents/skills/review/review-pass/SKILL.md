@@ -21,6 +21,7 @@ skill never readies, merges or deploys.
 - `pre-production`
 - `council`
 - `subagent-matrix`
+- `skill-pass`
 
 ## Invocation
 
@@ -103,9 +104,10 @@ Each pass reviews only what no earlier pass reviewed.
   thread fix is a new delta.
 - **A delta that touches a skill or rule is reviewed as the package it results in.** The **Review
   Loop** and the final acceptance read every file of each skill and rule it touches whole at the
-  head, judged as `acceptance-gate`'s **Guidance Intent** rubric requires, with the real case the
-  invocation supplies. Give both readers the base guidance and the user's explicit requirements
-  and later corrections in their words. An earlier approval cannot stand for that comparison.
+  head, each making the checks `skill-pass`'s **Reviewer Brief** assigns that reader and no
+  other's, judged as `acceptance-gate`'s **Guidance Intent** rubric requires. Give both readers
+  that brief, the base guidance and the user's explicit requirements and later corrections in
+  their words, and the gate the real case the invocation supplies. An earlier approval cannot stand for that comparison.
 
 ## Description Refresh
 

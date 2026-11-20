@@ -18,7 +18,7 @@ exists to end wasted rounds, never to add questions, and the task stays active.
   round's findings and remedies. Record its ruling and follow it.
 - If the authorized outcome still needs work, update the active plan and start the replacement, a
   new change with its own rounds, at its first step **Priority** permits, under the existing
-  authorization and without another plan approval. A different implementation idea is not a new
+  authorization and without a new plan. A different implementation idea is not a new
   approval boundary.
 - Ask only when the replacement needs an unresolved product, scope, security, disclosure or
   authorization decision, and join that question to the questions already open rather than sending

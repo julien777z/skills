@@ -27,9 +27,11 @@ authoring reference whole, and a lens below cites the section it applies rather 
 Apply `banned-terminology` to wording findings and deliver remediation through `edit-skill`, leaving
 its pull request open for the user.
 
-**The doctor runs no skill-test round across the guidance it audits.** An audit reads; a
-skill-test round runs only for the guidance the run's fixes change, once, through `edit-skill`'s
-**Guidance Delivery**, and a run that changes nothing runs none.
+**The run's fixes are reviewed once and tested once.** The protocol's final review and final
+acceptance are their delivery review, as `doctor-protocol`'s **Deliver** says, so `edit-skill`'s
+**Guidance Delivery** adds only the source check and one skill-test round, for the guidance the
+fixes change. The doctor runs no skill-test round across the guidance it audits, and a run that
+changes nothing runs none.
 
 Also read the host's skill-authoring skill and skill diagnostics when the host has them, found by
 their descriptions: a description optimizer, a trigger evaluation, a report of listing cost and
@@ -326,8 +328,8 @@ reads the whole catalog; the grouping says who reports which checks.
 - The cross-cutting reviewer reports what is visible only across files: Redundant, Contradictory,
   Misplaced, Unreachable, Missing, Installed Copies, the Flow checks that span a caller and the
   skills it runs, and the unconditional set judged as one document against the per-host budget.
-- Final review starts the protocol's two reviewers per round. The adversarial one is briefed with
-  `skill-pass`'s **Reviewer Brief**, takes each proposed cut and tries to name a task the sentence
+- Final review starts the protocol's two reviewers per round. Both, and the final acceptance gate,
+  are briefed with `skill-pass`'s **Reviewer Brief**. The adversarial one takes each proposed cut and tries to name a task the sentence
   would have prevented a mistake on, takes each retained instruction and tries to show the model
   does it unprompted, and takes each Flow remedy and tries to name a defect the removed launch
   would have caught.

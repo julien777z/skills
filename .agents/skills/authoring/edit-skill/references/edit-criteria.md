@@ -162,6 +162,28 @@ Pull Requests** says, and merges with it; that pull request waits for the tool t
 same gate. After the tool merges, the consumer adopts and validates its maintained target under **Tools And
 Dependency References**. No merge here authorizes a release.
 
+## Already Reviewed Batches
+
+Read at **Guidance Delivery**'s choice of route.
+
+A workflow that fixes guidance under its own review, such as a doctor run, hands the route a head
+it has already reviewed and accepted. The route takes that review and acceptance as its own when
+the invocation supplies all of these for the batch's complete `.agents` diff at its current head:
+
+- an independent review whose confirmed findings are resolved;
+- an independent final acceptance by `acceptance-gate`, read after that review;
+- the brief both readers were handed, which is `skill-pass`'s **Reviewer Brief**, with the
+  workflow's intent statement where no Scope Statement exists.
+
+The route then runs **Run `validate_sources.py check`** and
+**Run one `test-skill` round** for the guidance the diff changed, started on that head, and no
+`review-pass`. A repair the skill-test round makes goes through `review-pass` over its delta, as
+**Guidance Delivery** step 4 says, and a head that moved since the acceptance for any other reason
+is a batch like any other. The pull request then merges or holds as the handing workflow's
+delivery rule and the GitHub rule's **Merge Authorization** say.
+
+Every other batch takes the short or the full route, whatever started it.
+
 ## Relocations
 
 Read at **Behavior**'s **Run one `test-skill` round**.

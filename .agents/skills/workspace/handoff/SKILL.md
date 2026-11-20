@@ -51,8 +51,9 @@ skill ends with.
    last report and its worktree. Stop any background process a worker left running.
 3. **Sweep the session for loose ends** across the whole conversation, compacted summaries and the
    harness task list included: work stated as deferred, skipped, "later", or "follow-up"; a scope
-   queued to run after a merge; a plan presented and not explicitly approved, read from wherever the
-   host keeps the live plan, where a timeout or a mode exit counts as unapproved; questions put to
+   queued to run after a merge; a plan held for the user's decisions or approval and not yet
+   answered, read from wherever the host keeps the live plan, where a timeout or a mode exit counts
+   as unanswered, and a plan shown with no open decision, which is queued work described as shown; questions put to
    the user and still unanswered; decisions the user made and the words they made them in; standing
    constraints the user set for the work, such as accounts never to touch or actions that need their
    say-so; promises the agent made and did not complete; anything the session changed outside the
@@ -126,7 +127,7 @@ Task: `<task token>`
 ### Depends on
 - <what this branch needs from, or offers to, other work, as this repository's own contract>
 
-### Plan presented, not approved
+### Plan waiting on the user
 <the plan verbatim, with references to other repositories replaced as step 8 says>
 
 ### Recorded elsewhere

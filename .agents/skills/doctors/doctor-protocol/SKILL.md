@@ -17,6 +17,7 @@ run; each doctor owns only its domain.
 - `defer-scope`
 - `pre-production`
 - `execute-task`
+- `edit-skill`
 
 ## Declare What The Doctor Owns
 
@@ -257,6 +258,12 @@ every approved entry continuously; checkpoints sequence work on those drafts and
 merge. Run **Run Repository-Native Checks**, **Review The Result**, and **Accept The Complete Diff**
 over the completed work before reporting it for the user's review. Confirm that every approved
 disposition landed.
+
+**A run's guidance fixes are reviewed once.** Where the run changed agent configuration, **Review
+The Result** and **Accept The Complete Diff** are that change's delivery review and acceptance,
+their reviewers and gate briefed as `edit-skill`'s **Guidance Delivery** asks of a guidance diff's
+readers. Hand that route the accepted head as already reviewed: it adds the source check and one
+skill-test round for the guidance the fixes changed, and starts no second review or acceptance.
 
 ## Report
 

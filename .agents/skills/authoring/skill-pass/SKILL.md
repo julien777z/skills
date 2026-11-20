@@ -148,8 +148,8 @@ its neighbors.
 **Each check on a guidance diff has one owner, and a brief asks no reader for another's.** The
 editor's own pass and the simplification pass hold the requirement stated twice and the size
 budget. A review-loop reviewer reads the diff against the statement and standing guidance, for the
-findings above and for conflicts. The acceptance gate reads the resulting package whole and walks
-the real case through it. A skill test exercises it.
+findings above and for conflicts. The acceptance gate reads the resulting package whole against
+that statement and walks the real case through it. A skill test exercises it.
 
 ## Output
 

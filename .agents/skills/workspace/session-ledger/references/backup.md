@@ -23,6 +23,7 @@ Task: `<task token>`
 - **Failure class:** <the class of miss, stated generically>
 - **Invariant:** <what must hold>
 - **Intended behavior:** <what the guidance now says>
+- **Scope:** <what changes from now on and in the same class, the nearest case that stays as it is, what inherits the change, whether a flow is affected, and what waits for the user, each stated generically>
 - **Canonical files:** <files>
 - **Commits:** <short SHAs>
 - **Delivery:** <status> — <current stage and next action>

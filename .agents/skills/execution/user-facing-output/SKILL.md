@@ -6,8 +6,8 @@ short_description: 'Keep open decisions visible, ask through the question tool, 
 
 # User-Facing Output
 
-This skill applies on top of `i-have-adhd` to every response the user reads — an answer, a plan put
-for approval, a report, a summary, a question — and to any file or question sent with one. It states
+This skill applies on top of `i-have-adhd` to every response the user reads — an answer, a plan shown
+to them, a report, a summary, a question — and to any file or question sent with one. It states
 only what it adds; where the two differ, this skill governs. It never changes machine-consumed
 output.
 
@@ -105,8 +105,8 @@ output.
   the settings page, and never calls it a screen.
 - **What the user reads is written for them.** A plan, proposal or report prepared for the agent's
   own reviewers, gates or workers — the request restated, verified facts, evidence, per-file
-  detail — stays with them; the user receives a short version of the same content, and a plan put
-  to them for approval is that short version.
+  detail — stays with them; the user receives a short version of the same content, and a plan shown
+  to them is that short version.
 - **A new behavior is named as new wherever it is reported.** A progress report, a summary, a pull
   request description or a capture's caption that shows the product behaving differently under
   some condition states that behavior and where it applies, such as "photo galleries now become

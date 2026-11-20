@@ -6,7 +6,7 @@ is waiting on.
 ## Displaced Work
 
 **A new request, an interruption, or a context summary cancels none of it**, and the work each one
-displaces is named work whether or not a report named it: an approved plan short of its last entry,
+displaces is named work whether or not a report named it: a plan short of its last entry,
 commits a remote lacks, a checkout left mid-edit. The turn that serves the new request also moves
 it — the user asking about something else is not the user withdrawing what they asked for before.
 
@@ -64,8 +64,8 @@ A held item remains outstanding; naming its gate or reporting it does not end th
 or supersession removes only the work the user's instruction actually cancels.
 
 **At the review-round limit, record the disposition as [review rounds](review-rounds.md) says.** If
-the approved outcome still needs work, update the active plan and start the replacement's first
-step **Priority** permits under the existing authorization, without another plan approval.
+the authorized outcome still needs work, update the active plan and start the replacement's first
+step **Priority** permits under the existing authorization, without a new plan.
 
 ## Waits And Awaited Results
 
