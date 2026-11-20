@@ -25,7 +25,9 @@ Apply `pre-production` to the scope of issues encountered while tracing a test s
    files or test infrastructure. Where tests are allowed, compare existing patterns with the
    applicable guidance; do not adopt a conflicting pattern merely because it already exists or
    matches the source language. The runtime under test and the assertion framework are separate
-   choices. Read the complete [rubric](references/rubric.md) before inspecting, reviewing, changing,
+   choices. Read the complete [rubric](references/rubric.md) and the
+   [suites reference](references/suites.md), which holds suite, module, configuration and
+   time-budget conventions, before inspecting, reviewing, changing,
    or executing any covered test surface. Discover the repository's test roots, distribution and build
    roots, artifact boundaries, fixture packages, factory owner, shared test utilities, runner
    targets, and analogous sibling tests. For a test of shell, process, container, browser, network,

@@ -1,10 +1,12 @@
 # Test Fixture Rubric
 
-Apply these criteria to every test, test-data, test-support, and test-configuration change.
+Apply these criteria to every test, test-data, test-support, and test-configuration change. The
+suites reference beside this file holds the conventions for suites, test modules, test
+configuration and time budgets.
 
 ## Test Value And Retention
 
-**A test is never redundant with a test of another classification — unit, integration, or
+**A test is never redundant with a test of another classification — unit, integration, smoke, or
 end-to-end.** End-to-end tests run the real services, integration tests replace some of them with
 doubles, and unit tests replace all of them, so the same assertion proves something different in
 each: an end-to-end test that an integration test also reaches stays, and so does an integration
@@ -20,7 +22,7 @@ Before adding a test, answer five questions; a missing answer means do not add i
    setup in the same change.
 4. Does it need a production seam — an export, flag, wrapper, or injection hook — that no production
    caller needs? If so, move the test to the real boundary instead.
-5. Is what it proves worth what it costs to run? Apply the testing rule's **Test Cost** criteria.
+5. Is what it proves worth what it costs to run? Apply **Test Cost** below.
 
 Check new and existing tests against these low-value patterns:
 
@@ -44,16 +46,50 @@ behavior-preserving source reorganization is asserting implementation rather tha
 it to the owning boundary. Bug regressions fail on the pre-fix code for the intended reason and pass
 after the owner repair. One regression per classification that reaches the bug covers it.
 
+For a substantial behavior change, cover the normal path, each meaningful boundary, and the relevant
+validation or failure path. A single assertion or a single happy-path case is not sufficient
+coverage for a multi-path contract.
+
 Keep a test when it independently enforces a public API, plugin interface, protocol, configuration,
 migration, storage, security, platform, default, exact user-facing bytes, generated cross-language,
 package, release, or architecture contract. Also keep observable call ordering and regressions with
 a credible failure mode. Source inspection can be the cheapest independent guard when it fails as
 the user-facing key, byte, or path changes and survives an identifier-only refactor. Static is not
 a deletion reason, and neither is ordinary slowness; a disproportionate cost under question 5 is,
-as `pre-production` decides. A baseline failure may expose a product bug; reproduce it and repair the
-owner rather than deleting its test.
+as **Test Cost** sets out and `pre-production` decides. A test already failing on the default branch is a baseline failure:
+record it as `pre-production`'s **Encountered Issues** says and move on, without reproducing,
+investigating or repairing it, and never delete its test for failing.
 
-Before deleting an existing test, apply the testing rule's **Test Deletion Evidence** requirements.
+### Test Deletion Evidence
+
+Before deleting an existing test, record its exact name and location, the failure it can detect,
+non-test callers of the covered source or support seam, the proof of the same classification that
+remains (or why none is needed), relevant history, the source or support deletion it unlocks, risk,
+and a focused validation command. Missing evidence leaves the candidate unready for deletion.
+Read the complete test and production owner, entry point, callers, callees, sibling implementations,
+overlapping tests, and CI routing; inspect dependency source or types for dependency-backed claims.
+
+### Test Cost
+
+Use existing runner duration reporting,
+including setup where existing reporting attributes it. Missing attribution remains unmeasured;
+use available suite timing without inferring individual costs. A test or
+parametrized family whose durations sum to more than a minute, or a module whose tests together
+take two minutes or more, is disproportionate. Make it cheap through its own setup —
+build an immutable resource once, cut the cases to the ones that differ — or remove the tests
+that still cost more than they prove, keeping a cheaper test of the same classification where
+the contract still needs one. A speedup that needs code existing only for tests — a production
+seam, flag, shortened timer or test-only branch — does not make it cheap, and neither does any
+way of absorbing a slow test listed below. Below those lines the same trade still
+applies: a test whose runtime is large beside the failure it could catch is folded into a case
+already paying that setup, or cut.
+
+**A test, parametrized family or module that dominates its suite's runtime is the cause, not the
+suite around it.** A disproportionate one is made cheap or removed, as above. Absorbing it instead
+keeps the cost and hides it, exactly as a raised timeout does: retuning the runner's distribution
+mode, worker count, ordering or grouping, giving it a job of its own, skipping it, marking it for a
+run pull requests deselect, or moving it to a scheduled workflow. The suites reference's **Time
+Budgets** set the budget a whole suite fits.
 
 ### Dispositions For Existing Tests
 
@@ -64,8 +100,9 @@ longer holds is revived or deleted. For each contract duplicated within one clas
 keeper of that classification and carry every unique assertion into it before removing the replay;
 a test of another classification is never the keeper. Repair vacuous assertions and negative
 controls that pass for the wrong reason, and validate new or strengthened guarantees through the
-existing-check procedure in the owning entry point. A failing baseline test is investigated as a possible product defect, not treated as
-cleanup.
+existing-check procedure in the owning entry point. A test already failing on the default branch
+is recorded and left as **Test Value And Retention** says: it is not reproduced, investigated or
+repaired, and is not removed as cleanup.
 
 ## Find The Canonical Test Data
 
@@ -86,7 +123,14 @@ consumers of the moved symbol. Direct tests of the command itself remain command
 
 Use the value from the fixture or factory that owns the domain object. When that canonical surface
 lacks a field the test needs, extend it and update its consumers instead of hard-coding the value,
-adding a parallel fixture, or constructing a second representation in the test.
+adding a parallel fixture, or constructing a second representation in the test:
+`UUID("00000000-...")` is `entity_fixture.id`, `name="John Doe"` is `user_fixture.name`, and
+`email="test@example.com"` is `user_fixture.email`. Where a model exists for sample, request,
+response, or provider data, construct the typed model; never maintain a parallel hand-written
+dictionary of that contract.
+
+Use clearly synthetic data that is unique to each test or parametrized case unless an exact protocol
+or catalog literal is the contract under test.
 
 Test data speaks the domain of the source its suite mirrors, or none. Draw names, values,
 fixtures, and scenarios from the nouns that source already uses; where it is a library with no
@@ -104,12 +148,16 @@ Provider request and response bodies remain domain data when a test uses them as
 Build them from the canonical fixture or response model rather than reproducing their names,
 addresses, identifiers, or other field values inline.
 
-A test-only helper has three possible homes, and how many test readers it has decides which. A trivial predicate
-or formatter that one module reads may stay in that module. A helper one suite reads goes in that
+A test-only helper has three possible homes, and how many test readers it has decides which. A trivial,
+non-construction predicate, formatter, or assertion adapter such as `to_comparable_string` that one
+module reads may stay in that module. A helper one suite reads goes in that
 suite's `utils` module. A helper more than one suite reads goes in the tests' `utils/` package,
 under a topic-named module. Reaching into a sibling suite instead is what turns one suite's helper
 directory into an unofficial shared home, and once the tests have several of those, nothing
-distinguishes real setup from a workaround someone parked next to a failing test.
+distinguishes real setup from a workaround someone parked next to a failing test. A helper is
+defined at module level, never inside a test, with a single-line docstring. A helper that only
+formats one URL or returns one fixture or model field is not written: inline a one-off value, or
+reuse an existing shared boundary when the operation is repeated or nontrivial.
 
 The suite's canonical root fixtures are the roots of test data. Put reusable subordinate identity,
 report, form, billing, and business data on those typed fixture models instead of creating parallel
@@ -163,10 +211,26 @@ runner, lint, type-check, CI, test imports, and package-source resolution explic
 currently excludes nested tests from its artifact still has the wrong ownership boundary; exclusion
 does not justify test-only code inside a distributable package.
 
-Mirror source directly beneath the test classification directory. Utility tests, including tests of
-test-only source helpers, live in `utils/`; keep test support in the nearest fixture or utility
-package that does not hide a source owner. Preserve a repository's revision-support convention for
-migrations.
+Mirror source directly beneath the test classification directory: where the source has `core/`,
+`models/`, `routes/`, or `services/`, the `unit/` and `integration/` folders keep those boundaries,
+and a test sits beside the source subdomain it verifies, not in a loosely related folder. Utility
+tests, including tests of test-only source helpers, live in `utils/`; keep test support in the
+nearest fixture or utility package that does not hide a source owner. Preserve a repository's
+revision-support convention for migrations, and drop a generated revision or timestamp prefix from a
+migration test's name, keeping the descriptive remainder. The suites reference sets the layout of
+smoke tests, which this mirroring does not govern.
+
+**The `test_` prefix marks modules, never the directories that hold them.** A directory holding
+tests is named for the source it mirrors, so `test_identity/` is `identity/`. Pytest collects on
+the module name, so the prefix earns nothing on a folder while making every import path read as
+though the directory were itself a test. A directory that holds material the tests read rather than
+tests themselves keeps the prefix, because there it is not a marker: `test_cases/` holds the
+scenarios other modules import, and `test_utils/` covers a source package named that, so the name is
+the subject rather than a label.
+
+Proto conversion round-trip tests are unit tests. Keep tests of the serialization layer itself in a
+dedicated `proto/` test folder; gateway, runtime, and servicer tests that merely consume proto
+messages stay beside their owning source subdomain.
 
 An ordinary test mirrors the source path for the concern it exercises after removing the source and
 test roots and test-classification segments such as unit or integration. The paths need not be
@@ -203,7 +267,8 @@ Test-owned structures may follow the testing concern rather than a production pa
   modules named for independently maintained behaviors, when those behaviors change for different reasons.
   A function or class is never such a behavior on its own account.
 
-Place a cross-module test at the nearest shared source owner.
+Place a cross-module test at the nearest shared source owner, and name a test that spans a
+subsystem for that subsystem.
 
 Keep one test class per file, but create a class only for a substantial coherent responsibility. Before creating a class or file, inspect the existing class that owns the source behavior and its parameter sets; extend them for small related cases. A helper, operation, boundary case, or pair of tests does not by itself earn a class. When several small classes cover one owner, merge their related cases into the broader owning class and its file, preserving independent coverage; split a substantial suite only where independently maintained responsibilities justify separate classes.
 
@@ -221,7 +286,8 @@ not by itself establish a separate owner.
 ## Prefer Parametrized Cases
 
 Before adding a test, inspect the existing tests for the same behavior. When setup, exercised flow,
-and assertions are the same and only inputs or expected outcomes differ, extend or convert the
+and assertions are the same and only inputs or expected outcomes differ — authorization errors,
+not-found beside invalid-id, different name formats — extend or convert the
 existing test with `pytest.mark.parametrize` instead of adding another test method. Give cases
 readable IDs, parametrize with readable lists or tuples and convert to a set inside the test when
 the subject needs one, and keep shared fixture context outside the parameter table.
@@ -317,6 +383,10 @@ Outside Tests** below sets out. A name coined from an abstraction or an adjectiv
 a mechanism, a synonym for the thing — where the concrete thing it provides or lacks would name it is a finding,
 renamed for that thing.
 
+Name several results in one test for their scenario or domain role, such as
+`invited_member_response` and `created_member_response`, never with a letter or a number, such as
+`response_a`, `response_b`, `result_1`, or `result_2`.
+
 A test class names its substantial coherent responsibility. Remove filler and misleading synonyms; small related cases extend their existing owning class rather than earning a separate class by being named. A helper that builds a model in a suite's `utils/` or `fixtures/`
 package is named `create_<shape>` (list every module-level `def` in those packages whose return type
 is a model, with its name; report every row): a bare noun (`flag`), a mechanics prefix
@@ -335,9 +405,16 @@ word the sibling suite already uses for the same shape wins over a new one.
 Never define a builder in a test module, including for its first caller.
 
 - Put structured model construction in the repository's shared test-utilities package, using
-  its configured factory mechanism. No `ModelFactory` or `SQLAlchemyFactory` class belongs
+  its configured factory mechanism. For Pydantic and SQLAlchemy data that is Polyfactory: a
+  concrete `ModelFactory` or `SQLAlchemyFactory` class that sets `__model__`, provides
+  deterministic, realistic domain defaults, constructs real nested relationships, and is called
+  from tests directly as `.build(**overrides)`; `SQLAlchemyFactory` builds non-persisted ORM models.
+  Common structured payloads come from such a class for the real request model, and from a
+  service-specific pytest fixture in the suite's fixture package only where no model or Polyfactory
+  path exists. No `ModelFactory` or `SQLAlchemyFactory` class belongs
   anywhere under `tests/`, even for its first or only consumer. Let the factory generate valid
   incidental values and express cross-field constraints without a manual replacement `build()`.
+  Never wrap a factory class in a callable pytest fixture solely for dependency injection.
   Inject application model types into shared machinery when importing them would invert
   dependencies. Suite fixtures may bind those model types and scenario inputs; keep lifecycle
   wiring local. Use the concrete factory type rather than a parallel `Protocol`.
@@ -351,7 +428,7 @@ Never define a builder in a test module, including for its first caller.
 Factories construct meaningful aggregates, complete boundary models, persisted roots, or
 multi-object scenarios; a leaf value, a relationship row, or a payload fragment gets no factory and
 is built through its owning root. A factory's name is domain-qualified — `create_order`,
-`create_customer` — never generic, numbered, prefixed with setup mechanics such as `persisted_*`,
+`create_customer` — never generic such as `record_factory`, numbered, prefixed with setup mechanics such as `persisted_*`,
 or suffixed with persistence mechanics such as `*_orm_factory`. Its inputs are typed aggregates or
 boundary models rather than positional identity scalars, nested override dictionaries, relationship
 rows, or payload fragments.
@@ -366,6 +443,19 @@ back. A helper named for its mechanism — an HTTP verb that is not also the act
 where siblings differ only in what they return, the difference (`request_order_creation` returns
 the response a failure test reads, `create_order` the parsed result). A reader that returns what
 storage holds, in a test about storage, is named for that and keeps the word.
+
+```python
+async def create_entity(
+    client: httpx.AsyncClient, tenant_id: str, payload: CreateEntityPayload
+):
+    """Create an entity."""
+
+    response_data = parse_response(
+        await client.post(...),
+        CreateEntityResponse,
+    )
+    return response_data
+```
 
 Prefer a ready, function-scoped fixture named for a domain role or state — the concrete thing it
 provides or lacks, never a coined adjective — when each test needs one standard
@@ -384,22 +474,36 @@ A suite keeps its reusable fixtures in a `fixtures/` package of topic-named modu
 `conftest.py` imports or registers, and keeps `conftest.py` for lifecycle wiring: the database
 session, the event loop, autouse environment setup, plugin registration. A suite that puts domain
 fixtures in `conftest.py` while its sibling puts them in `fixtures/` makes a reader look in two
-places for the same thing. Name shared test modules for the domain or boundary they own rather than
+places for the same thing. Keep `conftest.py` at shared test boundaries rather than scattering
+topic-local ones. Name shared test modules for the domain or boundary they own rather than
 introducing a `models.py`, `helpers.py`, or `utils.py` catch-all where a focused module is the
 natural home.
+
+Never declare a reusable request, response, persistence-payload or fixture model inside a test
+module or lifecycle wiring, and never duplicate a helper model or utility type across test files.
+Use the production boundary model when one exists; otherwise the typed declaration lives once in
+its shared fixture or model owner.
 
 When several tests need the same configuration overrides, expose one fixture helper in the suite's
 fixture package instead of repeating `monkeypatch.setattr(...)` in each test.
 
 For HTTP endpoint tests, build request payloads from the request models the application's routes
 and services use, and use their native serialization with explicit contract-required options, such
-as `model_dump(mode="json")`. Share serialization behavior only when it adds a transformation or
+as `model_dump(mode="json")`, never an ad-hoc inline dictionary passed to `json=` where a request
+model exists. Share serialization behavior only when it adds a transformation or
 contract decision beyond the model's native options; repeated calls with the same options do not
 justify a fixed-argument forwarding helper. Use enum members rather than hard-coded strings, derive
 an invalid payload from a valid one and mutate it deliberately, and serialize mocked response bodies
-from the application's response models rather than hand-rolled dictionaries. A test-only
+from the application's response models, or shared contract response models, rather than
+hand-rolled dictionaries. A test-only
 `BaseModel` mirroring a contract is the fallback where no application model exists; a
 `SimpleNamespace` never is.
+
+```python
+class TreeNode(BaseModel):
+    name: str
+    children: list["TreeNode"] = Field(default_factory=list)
+```
 
 ```python
 # Bad: a hard-coded property in a test payload
@@ -500,13 +604,17 @@ is rebuilding the library to check what the caller passed it.
 Use `AsyncMock` for async functions. `MagicMock` is acceptable for external boundaries such as SDK
 response containers, subprocess handles, and network wrappers, and never for ORM or domain entities,
 which come from concrete factories, ready fixtures, or domain-named creation fixtures returning real
-instances. A mocked third-party library raises its real exception types, and a reusable fake prefers
+instances. A mocked third-party library raises its real exception types, such as
+`stripe.error.StripeError`, never a mock-specific custom exception, and a reusable fake prefers
 real SDK or HTTP models and response objects over `MagicMock`.
 
 Test the documented and implemented SDK contract, not speculative runtime shapes: no defensive test
 for a surface the integration contract guarantees, and tests of a required SDK method focus on its
 valid responses and real failure modes. Keep names and docstrings about behavior and outcomes rather
-than SDK internals.
+than SDK internals: no exact required-method name, and no wording such as "when `<method>` is
+available."
+
+For database verification, query the database directly and compare fields.
 
 ### Auditing Existing Doubles
 
