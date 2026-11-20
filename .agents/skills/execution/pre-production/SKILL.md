@@ -62,8 +62,9 @@ Build the clean target contract instead of preserving transitional behavior.
   in code the change did not write may stay red. That holds whether the findings predate the change
   or the change brought them to light, such as a new lint rule meeting existing code or a
   changed-file lint run meeting older code in a file the change touched. Fix the findings in lines
-  the change writes, and the other findings in a file the change edits while they fit the size
-  budget in force below, measured as it measures cleanup. Leave the rest for
+  the change writes, and the other findings in a file the change edits, other than one edited only
+  for an incidental fix, while they fit the size budget in force below, measured as it measures
+  cleanup. Leave the rest for
   later work on that code: it is not deferred work, so it is neither recorded nor reported. Never
   fix past that to turn the check green, never loosen, disable, rescope or ignore the check, and
   never report the red check to the user or ask about it, apart from a merge branch protection
@@ -128,10 +129,11 @@ with an obsolete owned contract or revision.
   of spread, not a cap on the repair itself: a necessary migration may be wide, while a small
   unrelated rewrite may already be disproportionate.
 - **Incidental work goes one hop, never further.** What the work notices while making the requested
-  change — in a file it opened, a check it ran, a capture it read — is a defect, fixed as below, or
-  cleanup, handled under the size budget below. A file opened or edited only to make such an
-  incidental fix is never itself a source of more incidental cleanup: what else it holds is deferred,
-  not chased.
+  change — in a file it opened, a check it ran, a capture it read — is a defect, fixed as below, a
+  non-essential check's finding, decided by the essential-checks bullet above, or cleanup, handled
+  under the size budget below. A file opened or edited only to make such an incidental fix is never
+  itself a source of more incidental work: what else it holds is not chased, its cleanup deferred
+  and its non-essential checks' findings left as the essential-checks bullet says.
 - **A defect is anything the system does or shows that a reader would call broken**, and the system
   includes the repository's tooling: its tests, fixtures, build, setup and CI. An image that never
   loads, a wrong value, a state shown in the wrong place, a control that does nothing, a lost write
