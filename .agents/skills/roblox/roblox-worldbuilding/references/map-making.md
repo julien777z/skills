@@ -49,9 +49,14 @@ accepting a map or a visual pass:
   read as one room repeated, however well each is furnished. A shared builder is fine when
   its parameters change the plan and structure, not only the colors.
 - **Fronts.** List every object with a front, such as a sign, bench, fireplace, notice board,
-  statue or stage, and confirm from the captures that each front faces the space players stand
-  in or approach from. A front turned to a wall is moved, rotated or replaced before the pass is
-  accepted.
+  statue or stage, and confirm from the captures that each front faces what it serves: the space
+  players stand in or approach from, or the view or centerpiece it is placed for. A front turned
+  to a wall or to nothing is moved, rotated or replaced before the pass is accepted.
+- **Stamped treatments.** List each accent or piece of set dressing applied to a kind of thing,
+  such as a ground patch at a building's door, a planter at a crossing or trim along a roof, and
+  count how many of that kind carry it. One every instance carries by default reads as generated:
+  choose accents per place, where they fit its setting, such as a worn shortcut or a garden bed,
+  and reach each entrance by its own designed approach from the route that serves it.
 - **Light and palette.** Capture the arrival area and each region from the gameplay camera under
   the lighting and time of day players see at runtime, with runtime-loaded terrain present, and
   compare the result with the game's stated art direction or the reference the user gave. Lighting
@@ -94,13 +99,20 @@ functional tests; move, reorient, or remove unexplained placements before passin
 
 Treat visible intersections as map defects to repair during the affected visual pass, even when compilation and gameplay assertions pass. Preserve intentional embedded foundations, overlaps, and terrain variation.
 
+- **No two objects pass into each other unless the contact is meant**, such as a foundation set
+  into the ground or a beam resting in a wall. Vegetation, props, built pieces and moving parts
+  keep clear of every solid around them, measured from their full extent, such as a tree's whole
+  canopy, a sign's board or a turning part's whole sweep, never from a trunk, a post or a center,
+  and the placement or scatter rule that set them keeps that clearance. The audit flags every
+  unintended intersection across the world, built piece against built piece included, and each
+  is fixed where it was placed: moved, reshaped or removed, never hidden behind something else.
 - Inspect the entire footprint and perimeter of circular plazas, disks, pools, steps, thin slabs, roof edges, and other parts touching terrain or geometry. Checking only the center misses grass wedges at curved edges and crossings at road joins.
 - Trace the actual source of clipping: solid terrain, decorative grass, a placed plant/mesh, intersecting parts, or nearly coplanar faces. Fix the relevant geometry/material/placement rather than concealing it with lighting or a camera restriction.
 - Clear or grade terrain beneath paving with enough margin for the voxel surface's interpolation. Use suitable non-grass material under hard surfaces when needed to prevent blades protruding. Prefer a local terrain edit that preserves nearby water, landscaping, and contours. Do not globally remove vegetation to fix one plaza.
 - Thin parts need a deliberate foundation and clearance. Avoid exposed undersides, unsupported rims, holes, or floating slabs. Increasing thickness below the intended walking surface can help; simply raising the top can create an unintended step and leave the original terrain collision unresolved.
 - **Every placed piece rests on the support actually built, never at a height a builder calculated.** A calculated ground height drifts from the terrain and parts the place ends up with, and the piece floats or sinks. Builders mark each piece for grounding instead, and one pass grounds them all once the terrain and every builder's parts exist: a piece on open ground drops onto the terrain, and is left out where it would land on a path, under a root or more than 3 studs from where it was placed; a piece set on a structure rests on whatever surface lies under it; a piece on water floats at the water's surface. A piece that hangs, such as a lantern from a beam, is marked as hanging instead, and grounding leaves it where it was placed. A pickup may hover a little above its support so it reads as collectible; any other piece's base meets the support. A plant rests on its stem bottoms, never on its bounding box.
-- **Paving and every flat-based piece meet the ground across their whole footprint.** On a slope, paving steps or tilts with the grade, or the terrain is graded to it, so no edge stands above the ground beside it beyond its curb; a grade too steep to walk gets steps or a ramp. A flat-based resting piece, such as a mailbox, a crate or a statue's base, stands on a flat spot, a base shaped to the slope or a small graded pad, never with one side hanging over falling ground. Grounding by its lowest point alone leaves the rest of it floating.
-- **Walkable seams are flush, and no two overlapping surfaces share a plane.** Where paving pieces, a path and a floor, or a slab and the ground meet, the walking surface carries on with no step and no piece lying on top of another. Overlapping faces on one plane, or nearly so, part against part or part against terrain, shimmer as the camera moves, so one is lowered, trimmed or removed; a still capture can hide it, so the visual check moves the camera across each seam.
+- **Paving and every flat-based piece meet the ground across their whole footprint.** On a slope, paving steps or tilts with the grade, or the terrain is graded to it, so no edge stands above the ground beside it beyond its curb; a grade too steep to walk gets steps or a ramp. A flat-based resting piece, such as a mailbox, a crate or a statue's base, stands on a flat spot, a base shaped to the slope or a small graded pad, never with one side hanging over falling ground, and rests wholly on one support, set back from its edge, never with a foot over the edge onto another surface. Grounding by its lowest point alone leaves the rest of it floating.
+- **Walkable seams are flush, and no two overlapping surfaces share a plane.** Where paving pieces, a path and a floor, or a slab and the ground meet, the walking surface carries on with no step and no piece lying on top of another. Where one surface ends on another, such as a walkway meeting a round square, its end is shaped to the other's edge, so the two read as one surface with no straight cut line across it. Overlapping faces on one plane, or nearly so, part against part or part against terrain, shimmer as the camera moves, so one is lowered, trimmed or removed; a still capture can hide it, so the visual check moves the camera across each seam.
 - **Fit adjacent roads, ramps, curbs, and circular edges into continuous walkable approaches, and run every edging strip along its whole edge.** Blend the surrounding grade; do not leave a trench or conspicuous bare ring as the fix. An edging strip, such as a curb, border or trim, runs parallel and flush with the edge it lines, with no stretch of that edge left bare and through every bend, built from that edge's own geometry, never placed by eye or at a fixed angle. Check actual imported bounds and terrain raycasts rather than assuming mathematical centers or analytic terrain heights match the rendered surface.
 - Correct both the canonical builder/source and the saved map: run the builder over the affected areas and save those area, asset or terrain files, then verify a fresh `rojo build` of the place so the defect does not return on rebuild.
 
