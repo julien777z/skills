@@ -103,8 +103,12 @@ only a subject no skill runs for.
 - Surface every question through the harness's user-question tool, including approvals and standalone questions. **A question asked anywhere else goes
   unseen**: the reader answers the question tool, and chat text around it, or in some harnesses all
   text before a tool call, may never reach them. Ask directly in chat only when the harness has no
-  question tool. The question's own text and option descriptions therefore carry what the decision
-  needs: what happens today, stated as fact and where; what each option changes; the recommendation
+  question tool. **One question holds one decision**, with options that answer it alone: several
+  decisions are never folded into one question, offered as one choice that settles them all, such as
+  following every recommendation, or listed as a multi-select question's checkboxes. When the
+  decisions outnumber what one request holds, send one full request and the next only once the
+  user has submitted it. The question's own text and option descriptions therefore carry what the
+  decision needs: what happens today, stated as fact and where; what each option changes; the recommendation
   with its reason; and each item named by the exact name its page shows and by nothing more, such
   as a pull request by its title with no number beside it. A hypothetical, such as "if the API sends
   only IDs", or internals named without what they do leave the reader asking for the facts. A
