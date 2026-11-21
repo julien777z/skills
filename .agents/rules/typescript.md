@@ -60,28 +60,19 @@ type Status = (typeof Status)[keyof typeof Status];
 - A function with one caller belongs in that caller unless it is genuinely reused, genuinely
   recursive, or long enough that inlining would bury the caller's own shape.
 - **A module that only forwards is not a layer.** When every function in it is one call to the module
-  beneath with the same arguments, delete it and let consumers reach that module. An area's index is
-  not this: it re-exports rather than wraps, and adds no call.
+  beneath with the same arguments, delete it and let consumers reach that module.
 - Never alias a project import to a second name. A collision between two modules' exports is a naming
   defect in one of them; rename it rather than aliasing at the import site.
 
-## Area Imports
+## Imports
 
-- **An area publishes what it offers, and a consumer reaches it in one line.** A directory several
-  modules import from — the controls, the hooks, the helpers, the shared screens — carries an index
-  that re-exports its modules, and a consumer imports the names it needs from that directory rather
-  than from each file inside it. A file wanting four controls and a hook then opens with two import
-  lines instead of five, and moving a module within an area rewrites nothing outside it.
-- **That index is the area's surface, not a shim.** It re-exports every module the area holds and
-  grows as modules are added. The re-export the rule above forbids is the one left behind at a
-  module's old path after a rename, which exists only so stale importers keep resolving; update
-  those importers and delete it.
-- Modules inside an area import their siblings by relative path, never through their own index, so
-  an area never depends on itself. An area whose index would have to re-export another area's
-  modules is two areas rather than one, and an index that would import from a module that imports it
-  back names the cycle rather than creating it.
-- Two names that collide across an area's modules cannot both be published from one index. Rename
-  one for what it is; an index that silently drops the duplicate is a name nobody can import.
+- **Import each name from the module that defines it**, and keep no index file that re-exports a
+  folder's modules (a barrel). Importing through a barrel makes the bundler, the dev server and the
+  test runner load every module it re-exports, which slows builds, cold starts and tests and pulls
+  unused code into a bundle, and it gives every symbol a second path to reach it by. An editor's
+  auto-import and a rename both work on the defining path, so a direct import costs no upkeep.
+- A package published to consumers outside the repository keeps the one entry point its manifest
+  declares as its public surface; nothing inside the repository imports through it.
 
 ## Functions
 

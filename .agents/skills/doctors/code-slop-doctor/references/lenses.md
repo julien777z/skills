@@ -38,7 +38,8 @@ A layer, wrapper or alias that only hands the call on.
 - every module layer — a service over a gateway, a lib under a route, a hook over one library call —
   whose members all forward to the next layer down;
 - every barrel and re-export: count live imports through each path, tests separately; two live paths
-  to one symbol, or a path whose only importers are tests, is a finding;
+  to one symbol, a path whose only importers are tests, or a barrel the language rules forbid, is a
+  finding;
 - every second name bound to one value, and every route, field or parameter accepted under two
   spellings.
 

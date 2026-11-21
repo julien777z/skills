@@ -14,8 +14,8 @@ paths:
 - **A module exports exactly one component**, with its props type at most, and is named for it. The
   helper components it needs stay in that file, unexported, so no other module can reach them. A
   module exporting two — a navigation shell that also exports a toggle and a menu — is two modules.
-- **Components that belong together go in a folder named for their area, one file each**, published
-  through the area's index as the TypeScript rules' **Area Imports** describe. The folder holds
+- **Components that belong together go in a folder named for their area, one file each**, each
+  imported from its own file as the TypeScript rules' **Imports** describe. The folder holds
   components that each earn their place under the next bullet; it never shelters one that is
   another's variant or a hook's wrapper. A client component's `"use client"` directive goes on the
   first line of its own file.
