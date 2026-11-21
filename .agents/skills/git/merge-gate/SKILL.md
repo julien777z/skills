@@ -171,7 +171,12 @@ test jobs run once, on the head about to merge.
    representative supplies coverage for an equivalent duplicate that remains pending; a changed
    trigger, condition, execution input, or affected behavior does not. Every unsuccessful terminal
    duplicate remains subject to step 8. Read each test job's suite wall time against the budget
-   `test-fixture`'s **Time Budgets** sets; a suite past it is an unsuccessful result for step 8 even when its job passed.
+   `test-fixture`'s **Time Budgets** sets, and for a suite past it, against the same job's latest
+   run on the base branch. The merge is held only for slowness this pull request caused, so a
+   suite it made slower than that base run is an unsuccessful result for step 8 even when its job
+   passed. A suite already past its budget that this pull request did not slow does not hold the
+   merge: it is a defect the work noticed, and its fix is placed as `pre-production`'s **Scope
+   Follows The Defect, Not The Request** says.
    A skipped or neutral job supplies no coverage: establish whether its native condition makes it
    inapplicable, or required validation is missing. Draft skips never supply test coverage. A job
    without a check run or status needs the same applicability decision, not an assumed pass.
