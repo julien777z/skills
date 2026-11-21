@@ -147,14 +147,19 @@ Do not migrate existing repository records to Linear in this run. Preserve their
   reconsideration criterion;
 - blocked records remain unchanged, wherever they ride.
 
-Once the validated
-resolution pull request is ready, comment on and close each superseded open pull request that
-carries nothing but records included in that replacement, with the replacement and disposition.
-This holds whichever session opened that pull request: it is this skill's exception to the GitHub
-rule's **Branches and Pull Requests** bullets that close only a pull request the session opened. A
-superseded record riding a pull request that carries other work is removed from it when this
-session owns that pull request; on any other, report the record and its pull request and let the
-resolution pull request carry the disposition.
+**A superseded pull request closes only once its replacement has merged**, because until the
+default branch holds the replacement, the superseded pull request is still a route by which its
+records can land, and closing it early leaves them on a branch nothing tracks. So:
+
+- Once the validated resolution pull request is ready, report each open pull request that carries
+  nothing but records included in it, with a link to the replacement and each record's
+  disposition, and leave it open.
+- When a run finds that replacement merged, comment on each such pull request with the
+  replacement's link and the dispositions, then close it, whichever session opened it. This
+  skill's invocation is the authorization for that comment and that close.
+- A superseded record riding a pull request that carries other work is removed from it when this
+  session owns that pull request; on any other, report the record and its pull request and let the
+  resolution pull request carry the disposition.
 
 ## Validate And Report
 
