@@ -23,7 +23,7 @@ its captures.
 Use `use-browser` for browser control through its supported route. Apply `test-fixture` to any tests the scenario adds or updates.
 
 - Select browser verification before starting its stack, browser or sign-in prerequisites.
-  **A change whose effect a reader sees rendered — a page, a dialog, a layout, its copy or its
+  **A change whose effect a reader sees rendered — a page, a panel, a layout, its copy or its
   states — is looked at rendered before it is reported done or ready for review, in every
   execution environment.** Tests, type checks and a clean build show the code runs, never what the
   reader meets. In a local execution environment that inspection runs in a browser the agent
@@ -114,8 +114,8 @@ preserve configured ports.
 ### When a walkthrough is owed
 
 After selecting browser verification under **Principles**, perform the following walkthrough
-where it applies, and its sign-in, driving and capture steps for a local inspection. Passing tests, type checks, and a clean build do not replace an
-applicable walkthrough. A change that can alter what the app does — new or reordered UI, layout or
+where it applies, and its sign-in, driving and capture steps for a local inspection. Passing
+tests, type checks, and a clean build do not replace an applicable walkthrough. A change that can alter what the app does — new or reordered UI, layout or
 spacing, a component's props or state, a hook, a route, a redirect, middleware, an auth round trip, or the shape
 of a request — is walked end to end before it is reported done, however few lines it took; the
 walkthrough follows the push rather than holding it, as the GitHub rule’s **Pre-Push Gate** says. An

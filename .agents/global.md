@@ -709,7 +709,8 @@ return normalized
   plan, the intent statement, the ledger entry or the brief that first restates the case carries
   the invented value, because every later artifact copies from it and a worker handed a value
   cannot tell it came from the user. A value something it produced derives from the user's, such
-  as the same year in another date or the next number in a sequence, is the user's value too.
+  as the same digits reordered in another code or the next number in a sequence, is the user's
+  value too.
   - A quote of the user's words that holds such a value — an intent statement, a recorded answer, a
     handoff, a dashboard — keeps the rest of their words exactly and names the value by its kind in
     brackets, such as `[the reported plant code]`.
