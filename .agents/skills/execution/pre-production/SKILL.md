@@ -30,6 +30,13 @@ Build the clean target contract instead of preserving transitional behavior.
 
 ## Encountered Issues
 
+- **A failure in an owned dependency is actionable work.** When a candidate dependency fails
+  consumer validation, trace the failure to its owner. If repairing the owned source is in scope,
+  continue the repair there and rerun the provider and affected consumer checks. Keep an unproven
+  candidate out of the consumer's delivery, and report its result as a failed attempt or work in
+  progress. Report an external blocker only after authorized repair and supported recovery are
+  exhausted, or when a concrete capability or authorization outside the task is required.
+
 - **Classify validation failures first, before the failure is diagnosed, handed to a worker, or
   mentioned to the user.** Read the default branch's latest run of the
   same check, hosted or local, and reproduce there only when no such run exists. When that evidence

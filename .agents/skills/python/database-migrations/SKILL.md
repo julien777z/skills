@@ -48,6 +48,19 @@ a retention obligation for deployed data. Every chain is also replayed **populat
 
 Shared tooling lives in the project's shared migration package (runner, revision-graph helpers, drift comparison, file validation); the project's migration CI entry point and the test suite both build on it.
 
+- **Every retained revision uses the current shared implementation for each generic operation.**
+  When a shared operation changes, inventory its callers across the full retained chain, including
+  generated revisions, upgrades and downgrades. Convert every caller that performs the same
+  operation, removing private copies, legacy wrappers and branches selected by revision age.
+  Distinct database operations may use distinct shared helpers. Prove equivalence for applied
+  revisions under **Applied Is What Makes History** and run empty and populated replay against the
+  resolved library and database versions.
+- If an obsolete path cannot be removed from a retained revision without changing its applied
+  behavior, evaluate a rebaseline under `pre-production`'s **Product State** before retaining it.
+  Establish which environments still need the chain and protect retained data. Where the chain can
+  be replaced, validate the new baseline and its transition before removing the old chain and its
+  revision-owned code. Apply the existing authorization boundary for any reset or data loss.
+
 ## Authoring Rules
 
 - **Autogenerate is the default for a schema change** — the CI workflow generates the revision.
