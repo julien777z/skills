@@ -133,16 +133,22 @@ neither is a deferral record.
 
 ## Continuing deferred execution
 
-When a scope is already queued or a deferred pull request from this skill is open, **add every
-further deferred scope of its kind to that same branch and pull request** — agent configuration and
-source stay apart except guidance the GitHub rule's **Branches and Pull Requests** puts on the
-source pull request it depends on. This includes an active
-deferred pull request whose implementation is still in progress: do not create a second post-merge
-branch for related deferred work. Check both the session's queued work and open pull requests before
-starting. A scope that arrives before the first pull request opens joins the same future branch.
+**A further deferred scope joins an open or queued deferred branch only when it is on the same
+subject**, so each pull request stays one change a reviewer can judge and merge on its own. Same
+subject means the reviewer would read the two scopes together: the same feature, defect or area of
+the code, such as a second fix to the export page the queued scope already changes. A scope on any
+other subject starts its own branch from the default branch, on whichever route fits it, even while
+an earlier deferred pull request is open or still being implemented.
 
-Update the pull request body to cover the added work when appending. A body describing half of a
-branch is worse than no body.
+- Before starting, check both the session's queued work and its open deferred pull requests for one
+  on the scope's subject.
+- A scope that joins does so on the branch of its kind: agent configuration and source stay apart,
+  except guidance the GitHub rule's **Branches and Pull Requests** puts on the source pull request it
+  depends on.
+- A same-subject scope that arrives before the first pull request opens joins the same future
+  branch.
+- Update the pull request body to cover the added work when appending. A body describing half of a
+  branch is worse than no body.
 
 ## Guardrails
 
@@ -160,7 +166,8 @@ branch is worse than no body.
   that turn accomplished.
 - A queued scope survives a summary. Re-establish it and check its pull request rather than reading
   a skill listed as already run as a scope already done.
-- Reuse the existing deferred branch and pull request for every later scope.
+- A later scope reuses an existing deferred branch and pull request only when it is on the same
+  subject, as **Continuing deferred execution** says.
 - Report which route was taken and why, every time. "Deferred" without the route and its reason
   tells the user nothing about when to expect the work.
 - Scheduling is not merging. Opening the pull request completes this skill; merging it is a
