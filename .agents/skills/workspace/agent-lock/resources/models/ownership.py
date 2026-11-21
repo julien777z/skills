@@ -20,7 +20,7 @@ class Outcome(StrEnum):
 
 
 class Ownership(TypedDict):
-    """One exclusive claim with a fixed expiration time."""
+    """One exclusive claim, which expires once its holder stops renewing it."""
 
     version: Literal[1]
     key: str
@@ -80,7 +80,6 @@ class Acquisition(TypedDict):
     activity: str
     receipt_path: Path
     wait: timedelta
-    ttl: timedelta
     priority: bool
 
 
@@ -94,6 +93,7 @@ class LockResult(TypedDict):
     expired_owner: NotRequired[str | None]
     queue_position: NotRequired[int]
     waiters: NotRequired[list[Waiter]]
+    last_activity_at: NotRequired[datetime | None]
     message: NotRequired[str]
 
 

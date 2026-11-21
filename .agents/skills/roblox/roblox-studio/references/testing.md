@@ -74,28 +74,16 @@ What every helper must get right:
   adds, take the snapshot with `listed_editor_ids` before it and poll `new_editors` on that same
   connection after it; a snapshot from `studios` on a new connection is empty, so every editor
   already open reads as new.
-- **Run a check longer than one lease in segments.** `agent-lock` grants at most `MAX_LEASE`
-  (900 s), and every client call refuses to start when the lease left cannot cover it. Each segment
-  takes a slot with `acquire_editor_lock`, opens what it needs, does a bounded part of the
-  check, closes every editor and test process it started, and releases with `release_runner_lock`;
-  the next segment acquires again and reopens. Open right after acquiring: `open_place` and
-  `open_cloud_place` check `open_bound(registration_wait)` themselves and refuse before they start
-  anything, and that bound already reserves closing the editor after a failed open, so an open needs
-  no check of its own and keeps its registration wait. Before each later step of a loop, compare
-  `runner_lease(receipt)["remaining"]` with that step's worst case, plus the segment's cleanup. A
-  `Studio` call's worst case is `tool_call_bound(opens_session=False, timeout)` on an open connection,
-  plus `listing_recovery_bound()` when an earlier timeout may have closed it, since the call then
-  waits for the new connection to list the editor; `listed_place_editors` takes
-  `OPERATION_TIMEOUTS[RunnerOperation.PROCESS_LIST] + listing_recovery_bound()`, `listed_editor_ids`
-  `editor_wait_bound(EDITOR_LIST_WAIT)` and `wait_for_studios` `editor_wait_bound(wait)`. The cleanup is
-  `CLOSE_BOUND` for each place copy it opened, `CLOUD_CLOSE_BOUND` for each cloud editor,
-  `OPERATION_TIMEOUTS[RunnerOperation.STOP]` for the test processes it stops and
-  `OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK]` for the release. Add `LEASE_CHECK_BOUND` once for
-  every call the step and that cleanup make that reaches the VM, since each of those checks the
-  lease before it starts, and read every bound from `studio_mcp`. End the segment there when it does
-  not fit, rather than letting a call or the cleanup after it refuse midway. The slot's warm editor is the one
-  editor a segment leaves open. A segment whose open meets `RunnerLockBusy`, because other slots' launches kept the
-  VM's focus, releases its slot and runs again rather than failing the check.
+- **A check keeps its slot for as long as it renews it.** `agent-lock` hands a lock left unrenewed
+  for five minutes to the next waiter, so a session that dies frees its slot without anyone choosing
+  how long a check may run. Every `studio_mcp` call that reaches the VM renews the receipt's locks,
+  and a process that acquired or used a receipt keeps renewing them every minute in the background
+  until it releases them or exits; a check that runs as several separate scripts calls
+  `runner_lease(receipt)` about every minute between them. A check takes a slot with
+  `acquire_editor_lock`, opens what it needs right after acquiring, does the check, closes every
+  editor and test process it started, and releases with `release_runner_lock`. The slot's warm
+  editor is the one editor a check leaves open. A check whose open meets `RunnerLockBusy`, because
+  other slots' launches kept the VM's focus, releases its slot and runs again rather than failing.
 
 Workers use these helpers and extend them for each new repeatable step; a repeatable step is never
 a throwaway script in a temporary folder or Luau pasted into one run. Each helper returns a
@@ -271,19 +259,18 @@ from the installed `roblox-studio` skill's `scripts` folder, put on `sys.path`, 
 `__init__.py` exports (`from studio_mcp import Studio, open_place, ...`); no game keeps its own MCP client or copies
 one of these mechanisms. Each `Studio` holds its own MCP session through `runner_ssh.sh`, and the module has no shell
 command line. Every call that reaches the VM first confirms, once, through `agent-lock` that the caller's receipt
-owns the game's VM or one of its editors with enough of its lease left for everything the call does, each operation inside
-it counted at its full timeout, so no call outlives the lease or refuses partway; the few milliseconds a process takes
-to start or stop are not counted. Project and place file names use only letters, digits, `.`, `_` and `-`,
+owns the game's VM or one of its editors, renewing it, and the process keeps that receipt's locks renewed while it runs,
+so a call takes as long as its own timeouts allow. Project and place file names use only letters, digits, `.`, `_` and `-`,
 starting with a letter or digit.
 
 | Call                                                                                          | What it does                                                                                                                                                                                                                 |
 | --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `acquire_editor_lock(lock_receipt, owner, activity, lease=MAX_LEASE, wait=LOCK_WAIT)`         | Takes whichever of the game's editors comes free first for one segment of a check and returns the acquire report, whose `expired_owner` names a predecessor whose leftovers must be stopped first                            |
-| `acquire_runner_lock(lock_receipt, owner, activity, lease, wait, priority=False)`             | Takes the whole VM, its own key and then every editor's, writing each editor's receipt beside `lock_receipt`; `priority` for work that lets the waiters in                                                                   |
+| `acquire_editor_lock(lock_receipt, owner, activity, wait=LOCK_WAIT)`                          | Takes whichever of the game's editors comes free first for a check and returns the acquire report, whose `expired_owner` names a predecessor whose leftovers must be stopped first |
+| `acquire_runner_lock(lock_receipt, owner, activity, wait, priority=False)`                    | Takes the whole VM, its own key and then every editor's, writing each editor's receipt beside `lock_receipt`; `priority` for work that lets the waiters in |
 | `release_runner_lock(lock_receipt)`                                                           | Releases the editor, or the whole VM, a receipt holds, telling `agent-lock` it is idle, so the caller first closes every editor and process the segment started                                                              |
-| `runner_lease(lock_receipt)`                                                                  | The runner's configuration, the editor the receipt holds (`None` for the whole VM) and the time its lease has left, as `{"config", "editor", "remaining"}`                                                                   |
+| `runner_lease(lock_receipt)`                                                                  | Renews the receipt's locks and keeps them renewed while the process runs, returning the runner's configuration and the editor the receipt holds (`None` for the whole VM) as `{"config", "editor"}` |
 | `editor_slots(config)`                                                                        | The game's editors, each with its lock key and VM project folder (`editor-<n>`)                                                                                                                                           |
-| `focused_input(lock_receipt, activity, hold, wait)`                                           | Holds the VM's focus lock for a step that reaches only the frontmost window; `open_place` and `open_cloud_place` hold it themselves                                                                                       |
+| `focused_input(lock_receipt, activity, wait)`                                                 | Holds the VM's focus lock for a step that reaches only the frontmost window; `open_place` and `open_cloud_place` hold it themselves |
 | `open_place(project, place, out_dir, lock_receipt, registration_wait)`                        | Copies a built place into the VM under `studio-places/<project>/`, launches an editor for it and returns a `Studio` once the editor registers and its Edit data model runs code, over the connection that saw it register. Studio MCP names an editor by its place's file name alone, so it refuses a place whose file name any project already has open |
 | `open_cloud_place(place_id, universe_id, out_dir, lock_receipt, registration_wait)`           | Opens a published place in an editor the same way, returning it once its Edit data model reports that place and universe; it is never saved or published from there                                                          |
 | `close_place(project, place, lock_receipt)`                                                   | Ends the editor that has exactly that copy open and deletes the copy; raises, keeping the copy, when the editor stays open                                                                                                   |
@@ -298,7 +285,7 @@ Each lock call raises `RunnerLockBusy`, a `RuntimeError`, when the lock stays he
 can give its editor back and retry. An open holds the VM's focus lock from the launch until the editor
 registers, so editors launch one at a time: editors starting together each refresh the account's shared sign-in
 token, and Roblox revokes the session when one rotated token is used twice, which signs every editor out; several
-launching at once also starve the VM until none registers. `open_bound` counts the wait for that lock.
+launching at once also starve the VM until none registers.
 
 When the editor either open call launched never registers or never answers in its Edit data model, the call saves
 the VM's screen under `out_dir`, closes the editor and raises; any other failure once the launch starts closes
@@ -369,7 +356,7 @@ same procedure finishes a VM whose game's file records `ROBLOX_STUDIO_QUALIFIED=
 the first step whose check fails; no other Studio work runs in that VM until it does. A file without the
 variable belongs to a qualified VM and keeps working as it is. The game's VM name below
 is `<game>-vm` for a VM this procedure creates, or the `ROBLOX_STUDIO_VM` its file sets when
-resuming. Each step runs holding the whole VM, taken for that step within one lease, and before
+resuming. Each step runs holding the whole VM, taken for that step, and before
 acting checks again that the step is still needed. Until step 3 has written `games/<game>.env`,
 the step takes the VM's own key, the game's VM name, directly through `agent-lock`, since
 `acquire_runner_lock` reads the game's file to find its keys and a VM not yet set up has no editors
@@ -754,7 +741,7 @@ checks run at once as the pool has slots.
   Edit before Play and read it back from the editor; once the check ends, return the editor to the
   game's default device and read that back too, so a later check never inherits a phone layout.
 - **Open each once.** Build the place, open it with `studio_mcp.open_place` under the slot's
-  project name as the step's first VM operation, while the lease still covers the open's bound,
+  project name as the step's first VM operation,
   and leave it open until the VM shuts down as [End of session for a retained VM](#end-of-session-for-a-retained-vm)
   says: it belongs to the game's VM, not to the task that opened it. A session finds its slot's
   warm editor with `studio_mcp.listed_place_editors`, which waits for a running warm editor to
@@ -852,7 +839,8 @@ down in two cases only:
 
 - the user asks for it;
 - the host needs memory, and another session has a VM up that it has left idle: no lock on that VM
-  or any of its editors is held now or has been acquired or released in the last 30 minutes. That
+  or any of its editors is held now or shows a `last_activity_at`, in `agent-lock`'s `status` for
+  that key, within the last 30 minutes. That
   idle VM is the one shut down. A free lock alone does not show idleness, because a session keeps
   its game's warm editors open and unlocked between the steps of its work, and a shutdown then
   closes the editors it is about to reuse.

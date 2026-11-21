@@ -3,6 +3,8 @@ import os
 import shlex
 import subprocess
 import sys
+import threading
+import time
 from collections.abc import Iterator, Mapping, Sequence
 from contextlib import contextmanager
 from datetime import timedelta
@@ -38,12 +40,12 @@ OPERATION_TIMEOUTS: Final[Mapping[RunnerOperation, timedelta]] = MappingProxyTyp
     RunnerOperation.PLUGIN_ALERT: timedelta(seconds=90),
     RunnerOperation.DIAGNOSIS: timedelta(seconds=15),
 })
-LEASE_CHECK_BOUND: Final[timedelta] = (OPERATION_TIMEOUTS[RunnerOperation.DESCRIBE]
-                                       + OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK])
 LOCK_WAIT: Final[timedelta] = timedelta(seconds=50)
-# agent-lock refuses a lease longer than this.
-MAX_LEASE: Final[timedelta] = timedelta(seconds=900)
-FOCUS_LEASE: Final[timedelta] = timedelta(seconds=120)
+# agent-lock expires a lock its holder leaves unrenewed for five minutes and asks for a renewal about every minute.
+LOCK_RENEWAL_INTERVAL: Final[timedelta] = timedelta(minutes=1)
+# The receipts this process holds, which a background thread renews until each is released or lost.
+RENEWED_RECEIPTS: Final[set[Path]] = set()
+RENEWED_RECEIPTS_GUARD: Final[threading.Lock] = threading.Lock()
 # agent-lock's exit status for a lock that stayed held through the wait.
 AGENT_LOCK_BUSY: Final[int] = 2
 
@@ -67,6 +69,62 @@ def agent_lock_script() -> Path:
         raise FileNotFoundError(f"agent-lock is in neither {sibling} nor {repository_skills / '*' / AGENT_LOCK_ENTRY}")
 
     return categorized[0]
+
+
+def renewed_lock(lock_receipt: Path) -> AgentLockCheckReport:
+    """Renew the lock a receipt owns through agent-lock's check, raising when the receipt no longer owns it."""
+
+    result = subprocess.run([sys.executable, str(agent_lock_script()), "check", "--receipt", str(lock_receipt)],
+                            capture_output=True, text=True,
+                            timeout=OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK].total_seconds())
+
+    if result.returncode != 0:
+        raise RuntimeError(f"Receipt {lock_receipt} does not own a lock:\n{result.stderr}")
+
+    return json.loads(result.stdout)
+
+
+def renew_held_locks() -> None:
+    """Renew every receipt this process holds once per interval, dropping a receipt whose lock is gone."""
+
+    while True:
+        time.sleep(LOCK_RENEWAL_INTERVAL.total_seconds())
+
+        with RENEWED_RECEIPTS_GUARD:
+            receipts = sorted(RENEWED_RECEIPTS)
+
+        for receipt in receipts:
+            try:
+                renewed_lock(receipt)
+            except (RuntimeError, OSError, subprocess.TimeoutExpired):
+                stop_renewing_lock(receipt)
+
+
+@cache
+def lock_renewal_thread() -> threading.Thread:
+    """Start, once per process, the daemon thread that keeps this process's locks renewed while it runs."""
+
+    thread = threading.Thread(target=renew_held_locks, name="agent-lock renewal", daemon=True)
+
+    thread.start()
+
+    return thread
+
+
+def keep_lock_renewed(lock_receipt: Path) -> None:
+    """Renew a receipt's lock in the background for as long as this process runs or until it is released."""
+
+    with RENEWED_RECEIPTS_GUARD:
+        RENEWED_RECEIPTS.add(lock_receipt)
+
+    lock_renewal_thread()
+
+
+def stop_renewing_lock(lock_receipt: Path) -> None:
+    """Stop the background renewal of a receipt's lock."""
+
+    with RENEWED_RECEIPTS_GUARD:
+        RENEWED_RECEIPTS.discard(lock_receipt)
 
 
 class RunnerLockBusy(RuntimeError):
@@ -139,9 +197,10 @@ def agent_lock_status(output: str) -> str | None:
             return None
 
 
-def acquire_lock(keys: Sequence[str], lock_receipt: Path, owner: str, activity: str, lease: timedelta,
-                 wait: timedelta, priority: bool = False) -> AgentLockAcquireReport:
-    """Take one of the keys through agent-lock, writing its receipt to lock_receipt, or raise when they stay busy."""
+def acquire_lock(keys: Sequence[str], lock_receipt: Path, owner: str, activity: str, wait: timedelta,
+                 priority: bool = False) -> AgentLockAcquireReport:
+    """Take one of the keys through agent-lock, writing its receipt to lock_receipt and renewing it while this process
+    runs, or raise when they stay busy."""
 
     lock_receipt.parent.mkdir(parents=True, exist_ok=True)
 
@@ -150,7 +209,7 @@ def acquire_lock(keys: Sequence[str], lock_receipt: Path, owner: str, activity: 
 
     result = subprocess.run([sys.executable, str(agent_lock_script()), "acquire", *keys, *choice, *ordering,
                              "--owner", owner, "--activity", activity, "--receipt", str(lock_receipt),
-                             "--wait-seconds", str(wait.total_seconds()), "--ttl-seconds", str(lease.total_seconds())],
+                             "--wait-seconds", str(wait.total_seconds())],
                             capture_output=True, text=True,
                             timeout=(wait + OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK]).total_seconds())
 
@@ -161,11 +220,15 @@ def acquire_lock(keys: Sequence[str], lock_receipt: Path, owner: str, activity: 
         raise RuntimeError(f"The {' or '.join(keys)} lock was not acquired ({result.returncode}):\n"
                            f"{result.stdout}{result.stderr}")
 
+    keep_lock_renewed(lock_receipt)
+
     return json.loads(result.stdout)
 
 
 def release_lock(lock_receipt: Path) -> None:
     """Release the lock a receipt owns, stating to agent-lock that its resource is idle."""
+
+    stop_renewing_lock(lock_receipt)
 
     result = subprocess.run([sys.executable, str(agent_lock_script()), "release", "--receipt", str(lock_receipt),
                              "--resource-idle"], capture_output=True, text=True,
@@ -175,17 +238,17 @@ def release_lock(lock_receipt: Path) -> None:
         raise RuntimeError(f"Receipt {lock_receipt} did not release its lock:\n{result.stderr}")
 
 
-def acquire_editor_lock(lock_receipt: Path, owner: str, activity: str, lease: timedelta = MAX_LEASE,
+def acquire_editor_lock(lock_receipt: Path, owner: str, activity: str,
                         wait: timedelta = LOCK_WAIT) -> AgentLockAcquireReport:
-    """Take whichever of the game's editors comes free first for one segment of a check."""
+    """Take whichever of the game's editors comes free first for a check."""
 
     keys = [slot["lock_key"] for slot in editor_slots(runner_config())]
 
-    return acquire_lock(keys, lock_receipt, owner, activity, lease, wait)
+    return acquire_lock(keys, lock_receipt, owner, activity, wait)
 
 
-def acquire_runner_lock(lock_receipt: Path, owner: str, activity: str, lease: timedelta = MAX_LEASE,
-                        wait: timedelta = LOCK_WAIT, priority: bool = False) -> AgentLockAcquireReport:
+def acquire_runner_lock(lock_receipt: Path, owner: str, activity: str, wait: timedelta = LOCK_WAIT,
+                        priority: bool = False) -> AgentLockAcquireReport:
     """Take the whole runner VM: its own lock, then every editor's lock once that editor is free."""
 
     config = runner_config()
@@ -198,7 +261,7 @@ def acquire_runner_lock(lock_receipt: Path, owner: str, activity: str, lease: ti
 
     try:
         for key in sorted(receipts):
-            reports[key] = acquire_lock([key], receipts[key], owner, activity, lease, wait, priority)
+            reports[key] = acquire_lock([key], receipts[key], owner, activity, wait, priority)
             taken.append(receipts[key])
 
         acquired = True
@@ -227,50 +290,48 @@ def release_runner_lock(lock_receipt: Path) -> None:
 
 
 def runner_lease(lock_receipt: Path) -> RunnerLease:
-    """Return the game's runner, the editor the receipt holds, and how long its lease has left."""
+    """Renew the receipt's lock, with each editor lock a whole-VM receipt holds beside it, keep them renewed while this
+    process runs, and return the game's runner and the editor the receipt holds."""
 
     config = runner_config()
     vm = config["ROBLOX_STUDIO_VM"]
 
-    result = subprocess.run([sys.executable, str(agent_lock_script()), "check", "--receipt", str(lock_receipt)],
-                            capture_output=True, text=True,
-                            timeout=OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK].total_seconds())
-
-    if result.returncode != 0:
-        raise RuntimeError(f"Receipt {lock_receipt} does not own a lock:\n{result.stderr}")
-
-    report: AgentLockCheckReport = json.loads(result.stdout)
+    report = renewed_lock(lock_receipt)
     key = report["ownership"]["key"]
-    editor = next((slot for slot in editor_slots(config) if slot["lock_key"] == key), None)
+    slots = editor_slots(config)
+    editor = next((slot for slot in slots if slot["lock_key"] == key), None)
 
     if editor is None and key != vm:
         raise RuntimeError(f"Receipt {lock_receipt} owns {key}, not {vm} or one of its editors")
 
-    return RunnerLease(config=config, editor=editor, remaining=timedelta(seconds=report["remaining_seconds"]))
+    keep_lock_renewed(lock_receipt)
+
+    if editor is None:
+        for slot in slots:
+            receipt = member_receipt(lock_receipt, slot)
+
+            if receipt.is_file():
+                renewed_lock(receipt)
+
+                keep_lock_renewed(receipt)
+
+    return RunnerLease(config=config, editor=editor)
 
 
-def assert_runner_lease_covers(lock_receipt: Path, needed: timedelta) -> RunnerConfig:
-    """Assert that the receipt owns the game's runner or one of its editors for at least the needed time."""
+def assert_runner_lock_held(lock_receipt: Path) -> RunnerConfig:
+    """Assert that the receipt owns the game's runner or one of its editors, renewing it, and return the runner."""
 
-    lease = runner_lease(lock_receipt)
-
-    if lease["remaining"] < needed:
-        raise RuntimeError(f"The {lease['config']['ROBLOX_STUDIO_VM']} lease has "
-                           f"{lease['remaining'].total_seconds():.0f} s left; this call can take up to "
-                           f"{needed.total_seconds():.0f} s")
-
-    return lease["config"]
+    return runner_lease(lock_receipt)["config"]
 
 
 @contextmanager
-def focused_input(lock_receipt: Path, activity: str, hold: timedelta = FOCUS_LEASE,
-                  wait: timedelta = LOCK_WAIT) -> Iterator[None]:
+def focused_input(lock_receipt: Path, activity: str, wait: timedelta = LOCK_WAIT) -> Iterator[None]:
     """Hold the guest's focus for an editor launch, or input or a capture that reaches only its frontmost window."""
 
-    config = assert_runner_lease_covers(lock_receipt, wait + hold)
+    config = assert_runner_lock_held(lock_receipt)
     focus_receipt = lock_receipt.with_name(f"{lock_receipt.stem}.focus.json")
 
-    acquire_lock([focus_lock_key(config)], focus_receipt, f"focus for {lock_receipt.stem}", activity, hold, wait)
+    acquire_lock([focus_lock_key(config)], focus_receipt, f"focus for {lock_receipt.stem}", activity, wait)
 
     try:
         yield
@@ -283,7 +344,7 @@ def focused_input(lock_receipt: Path, activity: str, hold: timedelta = FOCUS_LEA
 def run_in_runner(command: str, lock_receipt: Path, timeout: timedelta, data: bytes | None = None) -> bytes:
     """Run a shell command in the runner guest."""
 
-    return run_guest_command(command, assert_runner_lease_covers(lock_receipt, timeout), timeout, data)
+    return run_guest_command(command, assert_runner_lock_held(lock_receipt), timeout, data)
 
 
 def run_guest_command(command: str, config: RunnerConfig, timeout: timedelta, data: bytes | None = None) -> bytes:

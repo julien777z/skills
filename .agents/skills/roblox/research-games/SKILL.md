@@ -155,7 +155,6 @@ games:
           resource_key: null # roblox-player for actual play
           wait_seconds: null
           acquired_at: null
-          expires_at: null
           released_at: null
           release_verified: null
           expiry_or_blocker: null

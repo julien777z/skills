@@ -53,20 +53,16 @@ an untrusted one is left out and reported.
 
 ## Refresh
 
-Hold `agent-lock` on the key `skills-install`, acquired with `--ttl-seconds 900`, from step 2 until
-step 6 finishes, so two sessions never build or remove overlays at once. Run its `check` before
-every write to shared state: step 2's deletions, step 3's stash, fast-forward and marker deletion,
-step 4.4's marker, step 5, each removal in step 6, and each repair of damaged Git state. A check
-that passes with under 300 seconds left ends that lease at this boundary: release it with
-`--resource-idle` and acquire a fresh one before the write, so a refresh longer than one lease goes
-on; a fresh acquisition that finds another holder is a lost lease. On a failed check or a lost
-lease, stop writes immediately, reacquire the lock, restore any stash this run pushed and verify its
-paths, then restart at step 2. Keep step 2's first record whole and the head each abandoned build
+Hold `agent-lock` on the key `skills-install` from step 2 until step 6 finishes, so two sessions
+never build or remove overlays at once. Its `check` renews the lock, so run it about every minute
+while the refresh runs and before every write to shared state: step 2's deletions, step 3's stash,
+fast-forward and marker deletion, step 4.4's marker, step 5, each removal in step 6, and each
+repair of damaged Git state. A failed check is a lost lease: stop writes immediately, reacquire the
+lock, restore any stash this run pushed and verify its paths, then restart at step 2. Keep step 2's first record whole and the head each abandoned build
 reached; the restarted step 2 adds only overlays that record lacks. Repeat recovery after each lost
 lease until verification succeeds. After safe cleanup, release the lock with `--resource-idle` once
-step 6 finishes. A release the tool refuses means a successor took the lock after its deadline:
-release nothing, and report that the lock expired and which overlays were removed after its
-deadline.
+step 6 finishes. A release the tool refuses means a successor took the lock after it went unrenewed:
+release nothing, and report that the lock expired and which overlays were removed after it did.
 
 **Local Git damage in the skills checkout never holds a refresh and is never put to the user; it is
 backed up and repaired, whoever's branch it is.** Damage is local Git state that makes a read, fetch

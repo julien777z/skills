@@ -1,6 +1,6 @@
 ---
 name: agent-lock
-description: Coordinate exclusive use of a shared resource between agents using an exact string key. Use as a dependency when concurrent agents would conflict over one VM desktop, browser session, or other shared mutable resource. Consume ownership for a command or delegate a bounded lock for a multi-tool agent task; no heartbeats are needed.
+description: Coordinate exclusive use of a shared resource between agents using an exact string key. Use as a dependency when concurrent agents would conflict over one VM desktop, browser session, or other shared mutable resource. Consume ownership for a command, which renews it while the command runs, or delegate a lock for a multi-tool agent task, whose holder renews it about every minute; a lock left unrenewed for five minutes expires.
 short_description: 'Coordinate exclusive use of a shared resource between agents using an exact string key.'
 ---
 
@@ -12,7 +12,7 @@ Use [resources/main.py](resources/main.py) with Python 3.12+ on macOS or Linux. 
 
 ## Consume ownership
 
-Prefer ownership scoped to the actual operation. **No heartbeat or renewal commands are needed.** Every lock expires after **600 seconds (10 minutes)** by default. Set `--ttl-seconds` when needed; the CLI rejects durations over **900 seconds (15 minutes)**, zero, negative, or nonfinite values. An operation that needs longer is too slow, never a reason for a longer lease: a test suite past its time budget is fixed, and a long multi-step job is split into operations that each take the lock. Expiry is a fixed deadline, not an inactivity timer. Finish cleanup before that deadline.
+Prefer ownership scoped to the actual operation. **A lock lasts as long as its holder keeps renewing it**, so nobody picks a duration in advance: a holder that is still working keeps the resource however long the work takes, and one that has died or wandered off loses it within minutes, without anyone having guessed how long the work would run. A lease is five minutes from the last acquisition or renewal; the holder renews about every minute, which leaves room for a slow call between renewals, and a lock nobody renews for five minutes expires and goes to the next waiter.
 
 For work represented by a foreground command, use `consume`:
 
@@ -20,12 +20,12 @@ For work represented by a foreground command, use `consume`:
 python3 "$AGENT_LOCK" consume "shared-resource" \
   --owner "task/researcher-1" --activity "Describe this operation" \
   --receipt .agent_sources/locks/researcher-1-lock.json --wait-seconds 50 \
-  --ttl-seconds 600 -- python3 path/to/actual_worker.py
+  -- python3 path/to/actual_worker.py
 ```
 
-The helper acquires once, runs the command, and releases automatically when the command finishes or fails. It stops the command at expiry or on SIGINT/SIGTERM. It also stops subprocesses in the command's process group. The command receives `AGENT_LOCK_RECEIPT` and sends its output to stderr; the helper writes its JSON result to stdout. Exit `124` means expiry; otherwise a started command's exit code is preserved. A killed supervisor falls back to the lock deadline. Do not daemonize or detach the protected operation, and do not wrap a dummy sleeping process to pretend it tracks an agent's lifetime.
+The helper acquires once, renews the lock every minute while the command runs, and releases automatically when the command finishes or fails. It never stops a command for running long; it stops the command, with its process group's subprocesses, on SIGINT/SIGTERM or when a renewal finds the lock lost, since the command then no longer owns the resource. The command receives `AGENT_LOCK_RECEIPT` and sends its output to stderr; the helper writes its JSON result to stdout. Exit `124` means the lock was lost; otherwise a started command's exit code is preserved. A killed supervisor stops renewing, so its lock expires five minutes later. Do not daemonize or detach the protected operation, and do not wrap a dummy sleeping process to pretend it tracks an agent's lifetime.
 
-For a researcher using several separate tools, the CLI cannot observe the logical subagent's completion by itself. **The orchestrator owns that task scope:** acquire once, give the worker its receipt/deadline, and release as part of handling the worker's completion, failure, or cancellation. Workers need no periodic maintenance. If the host provides a real task-finalization callback, attach cleanup there; otherwise use the orchestrator's existing completion handling. Do not claim this release is automatic OS process tracking.
+For a researcher using several separate tools, the CLI cannot observe the logical subagent's completion by itself. **The orchestrator owns that task scope:** acquire once, give the worker its receipt, and release as part of handling the worker's completion, failure, or cancellation. **The worker renews the lock with `check` about every minute while it works**, and before each group of external actions; a worker that stops renewing, because it died or hung, loses the lock five minutes later. If the host provides a real task-finalization callback, attach cleanup there; otherwise use the orchestrator's existing completion handling. Do not claim this release is automatic OS process tracking.
 
 ```sh
 python3 "$AGENT_LOCK" acquire "shared-resource" \
@@ -33,7 +33,7 @@ python3 "$AGENT_LOCK" acquire "shared-resource" \
   --receipt .agent_sources/locks/researcher-1-lock.json --wait-seconds 50
 ```
 
-Acquire immediately before the protected portion of the assignment, not before unrelated research. The orchestrator records the agent ID, resource key, receipt and expiry. Completion handling must finish or cancel the external operation, release held controls, verify the resource is idle, then run:
+Acquire immediately before the protected portion of the assignment, not before unrelated research. The orchestrator records the agent ID, resource key and receipt. Completion handling must finish or cancel the external operation, release held controls, verify the resource is idle, then run:
 
 ```sh
 python3 "$AGENT_LOCK" release \
@@ -70,7 +70,7 @@ parent key keeps a second such operation from interleaving with it.
 - **Waiters are served in arrival order.** A call that has to wait takes a place in the key's queue, and a released or expired lock goes only to the waiter at its front. A busy result reports `queue_position`, and `status` lists every waiter by position.
 - **Work on the resource itself that lets the waiters in takes `--priority`**, such as resizing, restarting or repairing the shared machine they are all waiting for. Its ticket goes ahead of every ordinary waiter, behind any earlier priority ticket, and takes the lock as soon as the current holder releases it. Never use it for ordinary work, which only moves one waiter's wait onto the others.
 - **A bounded-call waiter keeps its place by calling again at once with the same `--receipt`.** The receipt path is the place in the queue. A waiter's place lapses when its process dies, or 30 seconds after a busy result with no new call, and the next waiter moves up. So never sleep outside the tool and come back; work done between calls instead gives up the place once those 30 seconds pass.
-- `check --receipt <path>` verifies ownership before a group of external actions, especially after waiting. It does not refresh the deadline. A failed check means stop; the old receipt cannot release a successor's lock. Acquisition is non-reentrant.
-- JSON results include typed ownership records with ISO-8601 timestamps. `status "shared-resource"` reports `available`, `held`, or `expired` with the deadline and remaining seconds. Expired locks become claimable automatically; no recovery CLI or file deletion is needed. Never unlink mutex files, because waiters rely on their stable inode.
+- `check --receipt <path>` verifies ownership and renews it for another five minutes. Run it about every minute while holding the lock and before a group of external actions, especially after waiting. A failed check means the lock was lost: stop, since the old receipt cannot release a successor's lock. Acquisition is non-reentrant.
+- JSON results include typed ownership records with ISO-8601 timestamps. `status "shared-resource"` reports `available`, `held`, or `expired` with the expiry and remaining seconds, and `last_activity_at`, when the key's lock was last acquired, renewed or released (`null` for a key never used), so a caller can tell a resource nobody has touched in a while from one in use. Expired locks become claimable automatically; no recovery CLI or file deletion is needed. Never unlink mutex files, because waiters rely on their stable inode.
 - Expiry invalidates ownership but cannot close an external desktop/browser session left behind by a separate tool. If acquisition reports `expired_owner`, the orchestrator must stop any still-running old worker and bring the resource to a known idle state before giving the successor permission for input. Never let the previous owner clean up after the successor starts using it.
 - Use a unique receipt under the task's working-files folder, such as `.agent_sources/locks/`, for each acquisition. Share it only with the assigned worker and its orchestrator; never commit lock state. Keep expiry/cleanup blockers in the task evidence.

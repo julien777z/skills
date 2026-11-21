@@ -1,5 +1,4 @@
 from collections.abc import Mapping, Sequence
-from datetime import timedelta
 from enum import Enum, auto
 from typing import Literal, NotRequired, TypedDict
 
@@ -80,11 +79,10 @@ class AgentLockAcquireReport(TypedDict):
 
 
 class RunnerLease(TypedDict):
-    """The game's runner, the editor a receipt holds, or none for the whole VM, and how long its lease has left."""
+    """The game's runner and the editor a receipt holds, or none for the whole VM."""
 
     config: RunnerConfig
     editor: EditorSlot | None
-    remaining: timedelta
 
 
 class McpTextContent(TypedDict):

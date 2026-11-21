@@ -16,7 +16,7 @@ the hash of each file among them, and a `rejected` flag.
 | World | The area and room files the scene stands in, every art file a marker in them names, and its map's terrain file |
 | Camera | The scene's own spec: its kind, target, approach side, distances and heights |
 
-**The scene set is fixed before any lease: one scene for every part the pages show.** A scene the
+**The scene set is fixed before any capture: one scene for every part the pages show.** A scene the
 game keeps in its own scene list is used as the game defines it, and the game's list is never
 edited. A part the game's list leaves out gets a scene in the skill's own list beside the manifest,
 written once and kept for later runs. Owed scenes are those in the set that are new, rejected or
@@ -65,9 +65,9 @@ picked by hand is refused silently when the circle's ground is missing, uneven o
 Hold the camera beside the creature across the circle from the avatar, so it faces the camera, then
 leave the fight through the game's own exit, which may confirm in a screen of its own.
 
-**Batch by lease.** One script works through the owed scenes within a lease and stops while the
-lease still covers closing the editor. Then close, release, render and deliver, as the skill's **Run
-Order** step 3 says, before the next lease is acquired. A later lease skips captured scenes and
+**Batch the captures.** One script works through about ten minutes of owed scenes under one
+editor's lock and stops there. Then close, release, render and deliver, as the skill's **Run Order**
+step 3 says, before the next batch's lock is acquired. A later batch skips captured scenes and
 retries a failed one once.
 
 ## Framing Check
@@ -94,7 +94,7 @@ model: a scene with no named subject is captured unmeasured and read first.
   - for a portrait or a creature, facing the camera: the head's look direction points toward it.
     A character's facing point does not say which side its face is on, so this is measured, never
     assumed.
-- **Reframe in the same lease** when a check fails: move the camera to the avatar's other side when
+- **Reframe in the same batch** when a check fails: move the camera to the avatar's other side when
   the avatar covers the subject, closer when the subject is small, further when it leaves the frame,
   and to the subject's other side when it faces away. Try three framings, capture the last one even
   when it still fails, and record the failure so the agent reads that picture first.

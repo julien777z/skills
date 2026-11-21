@@ -27,8 +27,9 @@ from utils import (
     read_text_field,
 )
 
-DEFAULT_TTL: Final = timedelta(minutes=10)
-MAX_TTL: Final = timedelta(minutes=15)
+# A holder renews about every minute; a lock left unrenewed for five minutes has a holder that is gone.
+RENEWAL_INTERVAL: Final = timedelta(minutes=1)
+LEASE: Final = timedelta(minutes=5)
 POLL_SECONDS: Final = 0.25
 TICKET_RENEWAL: Final = timedelta(seconds=5)
 TICKET_GRACE: Final = timedelta(seconds=30)
@@ -219,8 +220,19 @@ def read_receipt(path: Path) -> Receipt:
     )
 
 
+def last_activity(path: Path) -> datetime | None:
+    """Return when the key's lock was last acquired, renewed or released, each of which rewrites its ownership file."""
+
+    try:
+        modified = state_path(path).stat().st_mtime
+    except FileNotFoundError:
+        return None
+
+    return datetime.fromtimestamp(modified, UTC)
+
+
 def ownership_status(ownership: Ownership | None) -> LockResult:
-    """Describe current ownership without extending its deadline."""
+    """Describe current ownership without renewing it."""
 
     if ownership is None:
         return LockResult(status=Outcome.AVAILABLE, ownership=None)
@@ -267,7 +279,7 @@ def claim_or_queue(key: str, path: Path, request: Acquisition, expired: bool) ->
                 owner=request["owner"],
                 activity=request["activity"],
                 acquired_at=now,
-                expires_at=now + request["ttl"],
+                expires_at=now + LEASE,
             )
             receipt = Receipt(lock_file=str(path), key=key, token=ownership["token"])
 
@@ -334,24 +346,31 @@ def acquire_resource(request: Acquisition) -> LockResult:
                 contention.append(result)
 
         if expired:
-            return min(contention, key=lambda result: result["queue_position"])
+            return min(contention, key=lambda result: result.get("queue_position", 0))
 
         sleep(min(POLL_SECONDS, max(0, deadline - monotonic())))
 
 
-def check_ownership(receipt: Receipt) -> LockResult:
-    """Assert that a receipt still owns an unexpired lock."""
+def renew_ownership(receipt: Receipt) -> LockResult:
+    """Assert that a receipt still owns an unexpired lock, and renew it for another lease."""
 
-    with exclusive_file(Path(receipt["lock_file"])):
-        current = read_ownership(Path(receipt["lock_file"]))
+    path = Path(receipt["lock_file"])
+
+    with exclusive_file(path):
+        current = read_ownership(path)
+        now = datetime.now(UTC)
 
         if (
             current is None
             or current["token"] != receipt["token"]
             or current["key"] != receipt["key"]
-            or datetime.now(UTC) >= current["expires_at"]
+            or now >= current["expires_at"]
         ):
             raise ValueError("This receipt no longer owns the resource. Stop acting on it.")
+
+        current["expires_at"] = now + LEASE
+
+        atomic_write(state_path(path), dumps(current, default=datetime.isoformat))
 
         result = ownership_status(current)
         result["status"] = Outcome.OWNED

@@ -1,6 +1,5 @@
-from collections.abc import Generator, Mapping, Sequence
+from collections.abc import Callable, Generator, Mapping, Sequence
 from contextlib import contextmanager
-from datetime import UTC, datetime
 from fcntl import LOCK_EX, LOCK_UN, flock
 from json import loads
 from math import isfinite
@@ -106,9 +105,15 @@ def positive_seconds(value: str) -> float:
 
 
 def run_command(
-    command: Sequence[str], environment: Mapping[str, str], expires_at: datetime
+    command: Sequence[str],
+    environment: Mapping[str, str],
+    renew: Callable[[], bool],
+    renewal_seconds: float,
 ) -> CommandResult:
-    """Run a foreground process group until completion or the deadline."""
+    """Run a foreground process group to completion, renewing its lock on each interval.
+
+    The command runs as long as it needs; it is stopped only on an interrupt or when a renewal finds the lock lost.
+    """
 
     def _interrupt(signum: int, _frame: FrameType | None) -> None:
         """Interrupt the supervisor's blocking wait."""
@@ -118,18 +123,24 @@ def run_command(
     previous_handlers = {signum: signal(signum, _interrupt) for signum in (SIGINT, SIGTERM)}
 
     try:
-        remaining = (expires_at - datetime.now(UTC)).total_seconds()
-
-        if remaining <= 0:
+        if not renew():
             return CommandResult(status=Outcome.EXPIRED, command_exit_code=124, interrupted_by=None)
 
         outcome = Outcome.COMPLETED
         interrupted_by: int | None = None
+
         with Popen(command, env=environment, stdout=stderr, start_new_session=True) as child:
             try:
-                child.wait(timeout=max(0, (expires_at - datetime.now(UTC)).total_seconds()))
-            except TimeoutExpired:
-                outcome = Outcome.EXPIRED
+                while True:
+                    try:
+                        child.wait(timeout=renewal_seconds)
+                    except TimeoutExpired:
+                        if renew():
+                            continue
+
+                        outcome = Outcome.EXPIRED
+
+                    break
             except InterruptedError as error:
                 outcome = Outcome.INTERRUPTED
                 interrupted_by = int(error.args[0])
