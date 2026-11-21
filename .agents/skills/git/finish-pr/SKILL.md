@@ -37,8 +37,10 @@ specific set.
 
 ## Targets
 
-- An explicit pull-request URL or recognized identifier in the user's own message is the sole set:
-  verify and resolve it directly. A pull request the message does not name is never added: not one
+- An explicit pull-request URL or recognized identifier in the user's own message is the sole set,
+  verified and resolved directly, apart from the task's open pull requests confined to deferral
+  records, which join every run's set since the GitHub rule's **Merge Authorization** already grants
+  their merge. Any other pull request the message does not name is never added: not one
   mentioned earlier as awaiting merge, not the dependency a held unit waits on, and not one a bare
   "yes" beside the request might answer. Such a dependency stays a gate under **Dependent Pull
   Requests**.

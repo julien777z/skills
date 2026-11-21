@@ -12,6 +12,7 @@ Keep a problem alive after the conversation ends without scheduling its implemen
 - `linear`
 - `acceptance-gate`
 - `pre-production`
+- `merge-gate`
 
 ## Modes
 
@@ -113,9 +114,12 @@ write:
    open — the admission verdict goes here — pickup scope, and a table of supporting files. Copy only
    supporting material required to keep the record durable.
 3. Commit only that directory on this session's source pull request in that repository, the one
-   the GitHub rules' source-ownership bullet selects, and push it there. Only when the session has
-   no source pull request there does the record open one, as a draft that later records and source
-   work join.
+   the GitHub rules' source-ownership bullet selects, and push it there; it merges with that pull
+   request. Only when the session has no open source pull request there does the record go on a
+   pull request holding only deferral records, the session's open one or a new draft from the
+   default branch, which later records join. Once its records are written, invoke `merge-gate` on
+   it under the GitHub rule's deferral-record permission: it is never left open, and no report or
+   next action leaves its merge to the user.
 
 Never mix Linear and repository records for one deferral. Existing repository records remain in
 place until separately migrated or resolved.
