@@ -31,7 +31,15 @@ Use `use-browser` for browser control through its supported route. Apply `test-f
   browser, windows or desktop, as the testing rule's **Environments** says. It brings the stack up
   under this skill, signs in, operates each control the change touched and captures each changed
   surface and state, as **Sign in**, **Drive the change** and **Widths and full-page captures**
-  say, against whatever the startup command serves, and owes no recording. The full walkthrough
+  say, against whatever the startup command serves, and owes no recording. **The inspection
+  covers what the change can affect, and its route follows from that.** A change confined to a
+  component's own presentation or interaction — its markup, styles, input handling — whose
+  behavior does not depend on the page's data, sign-in, routing or server is inspected by rendering
+  the shipped component, from the real package with its real styles, on a page the agent builds,
+  whenever the full stack cannot start or sign in for credentials or services the session lacks.
+  That page is the inspection, not a workaround: report it as checked, and ask the user for no
+  credential or service it would not use. A change that reaches the page's data, sign-in, routing,
+  server or its layout around the component needs the real screen. The full walkthrough
   below, with its recording, applies when the agent executes in a cloud environment. Classify the
   agent's execution environment, not the application's address: a cloud agent checking a service
   on localhost still follows the cloud requirement. A stack that will not start is a startup
@@ -141,9 +149,12 @@ pages it reaches**, signing in with the identity its seed configuration or READM
 walkthrough says nothing about what another sees. Where the repository provides a one-time sign-in
 link or token, sign in with it and leave the identity's password alone. Use those facts exactly and
 reuse what exists: never invent a test identity or turn a provider fixture into a generic workflow.
-**Never work around the sign-in wall**: a preview route, a stubbed page, a component mounted where
-it does not ship, or a widened public-route matcher proves the component renders and nothing about
-the screen a user reaches. If sign-in genuinely cannot complete, report the walkthrough as not done.
+**Never work around the sign-in wall for a change that reaches the screen behind it**: a preview
+route, a stubbed page, a component mounted where it does not ship, or a widened public-route matcher
+proves the component renders and nothing about the screen a user reaches. A change confined to a
+component's own behavior is the exception **Principles** names: its rendered page is the check. If
+sign-in genuinely cannot complete for a change that needs the real screen, report the walkthrough as
+not done.
 Drive browser automation through the tab selected under the global browser procedure; never read the
 user's saved passwords, cookies, local storage, or session files.
 
