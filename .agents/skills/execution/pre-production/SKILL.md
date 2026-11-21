@@ -398,6 +398,10 @@ the issue should be ignored.
   documentation, and instructions as well as runtime paths. An old owned consumer failing against
   the current contract is a reason to update it, not an exception; update affected owned consumers
   and migrate retained data onto the target contract instead.
+- **A partial update expresses intent through its existing field presence or field mask.** Apply
+  the fields that mechanism selects and leave every other field alone. Use the contract's own
+  representation for an explicit clear. A separate control earns a place only when it expresses
+  a distinct operation the update fields cannot represent.
 - Treat configuration inputs as owned contracts. Replace a stale deployed value at the existing
   setting and its deployment owner; do not add another file, environment key, or fallback path to
   override it.
