@@ -1,6 +1,6 @@
 ---
 name: security-doctor
-description: Find and fix the exploitable vulnerabilities in a codebase — injection, broken access control, unsafe file and resource handling, weak cryptography and leaked secrets, business-logic and feature abuse, chained trust gaps, and code built without the guard its siblings carry — each proven with a concrete attack and closed with the smallest fix and a regression test. Use to audit and repair a codebase's security, or to fix the findings of a security audit. Run only when the user asks for it.
+description: Find and fix the exploitable vulnerabilities in a codebase — injection, broken access control, unsafe file and resource handling, weak cryptography and leaked secrets, business-logic and feature abuse, chained trust gaps, and code built without the guard its siblings carry — each proven with a concrete attack and closed with the smallest fix and a regression test. Use to audit, pen-test or repair a codebase's security, or to fix the findings of a security review. Run only when the user asks for it.
 short_description: 'Find and fix the exploitable vulnerabilities in a codebase, each proven by a concrete attack.'
 ---
 
@@ -12,6 +12,7 @@ one that makes that attack fail and a test that proves it does.
 ## Dependencies
 - `doctor-protocol`
 - `security-audit`
+- `subagent-matrix`
 - `pre-production`
 - `test-fixture`
 - `get-doctors`
@@ -21,7 +22,8 @@ one that makes that attack fail and a test that proves it does.
 Run `doctor-protocol` with specialist capability for its audit, cross-cutting, and final
 reviewers, setting their Claude fallback tier to `advanced`. Its implementation workers retain the protocol default.
 
-`security-audit`'s Phase 1 reconnaissance, taken once before fan-out: what the application is and
+Reconnaissance, taken once before fan-out as the doctor's
+[reconnaissance](references/reconnaissance.md) reference maps it: what the application is and
 its comparable baseline; per deployable, its trust boundaries, authentication and authorization
 mechanism, and every input surface — routes, handlers, jobs, webhooks, message consumers, CLI
 entry points, file and archive readers, outbound requests, and configuration that reaches
@@ -31,19 +33,17 @@ behavior. Generated and vendored code is excluded, since neither is fixed where 
 the file inventory, symbol and import tables and dependency list. It writes the deployables with
 their entry points and input surfaces, and the configuration names that reach behavior.
 
-Findings a supplied `security-audit` report names enter as candidates by their ids. Run one
-`security-audit` codebase audit at `high` effort, composed through
-`doctor-protocol`'s **Delegate The Audit**. Every candidate, including one from the cross-cutting reviewer,
-passes the audit's validation and independent verification against the current tree before it
-enters the ledger. A candidate a precedent rejects is kept
+Findings a supplied security review names, such as a `security-audit` result, enter as candidates
+by their ids. Every candidate, including one from the cross-cutting reviewer, passes **Validation**
+against the current tree before it enters the ledger. A candidate a precedent rejects is kept
 outside the findings with its location and the precedent that rejected it, and counted in the
 report.
 
 ### Pre-Pass
 
-These are the mechanical commands `doctor-protocol` runs once before fan-out, and every hunter and
-reviewer reads their output: a hit is a candidate to trace, never a finding, and each still passes
-the audit's validation and verification. A tool the repository does not configure is handled as
+These are the mechanical commands `doctor-protocol` runs once before fan-out, and every reviewer
+reads their output: a hit is a candidate to trace, never a finding, and each still passes
+**Validation**. A tool the repository does not configure is handled as
 `doctor-protocol`'s **Measure Before Fan-Out** says. The commands below name the usual scanner for
 each job.
 
@@ -85,7 +85,7 @@ and line, the remedy is its smallest-fix order, and what a lens leaves alone is 
 needs every subsystem at once, so the cross-cutting reviewer owns it.
 
 Every finding is recorded in `doctor-protocol`'s finding shape: its evidence is the attack, who
-sends what and what they get, with the audit's own severity rating; its fix is the smallest one that makes
+sends what and what they get, with the rubric's severity rating; its fix is the smallest one that makes
 the attack fail; and its proving check is the regression test that performs the attack.
 
 ### Injection
@@ -159,8 +159,8 @@ Reach: whole repository.
 
 The catalog's **Wildcard** class: what no named class looks for — the strangest code, half-finished
 features, calls the API allows and no client makes, features mixed that were not designed
-together, and what the history reverted. No hunter is added for it beyond the audit's own: the
-cross-cutting reviewer runs it, reading across the classes. Reach: whole repository.
+together, and what the history reverted. No reviewer is added for it: the cross-cutting reviewer
+runs it, reading across the classes. Reach: whole repository.
 
 ### Unsafe Construction A Rule Names
 
@@ -174,10 +174,14 @@ which stays a hardening note. Reach: partition.
 
 ## Reviewers
 
-The audit's hunters are `security-audit`'s, at the count its `high` effort sets, and stand in for
-partition reviewers as `doctor-protocol`'s **Delegate The Audit** says of a domain dependency. The
-reconnaissance map dictates their cut: by subsystem and attack class, the riskiest first. This
-doctor adds one cross-cutting reviewer and no other audit reviewer.
+The audit reviewers are `doctor-protocol`'s, at its counts, and hunt: the reconnaissance map
+dictates their cut, by subsystem and attack class, the riskiest first, as `security-audit`'s hunting
+reference splits a surface. Each reviewer's brief carries what that reference says every hunter
+prompt includes — the architecture summary verbatim, its attack classes and scope, its starting
+paths, the hunting methodology and the validation rules — beside the protocol's partition inputs.
+A reviewer may start at most two research agents over its hunt, as that reference allows, each
+launched like the reviewer through `subagent-matrix` at specialist capability with `advanced` as
+its fallback. This doctor adds one cross-cutting reviewer and no other audit reviewer.
 
 The cross-cutting reviewer owns the whole-repository lenses, working from the reconnaissance map,
 the pre-pass output and every candidate. It compares every access path to the same
@@ -187,6 +191,25 @@ stored safely by one path and used unsafely by another, and runs **Wildcard**.
 The final reviewer challenges each hardening note, each candidate a precedent rejected, each
 advisory left for the dependency owner and each retained surface, for an attack the run dismissed
 too early.
+
+## Validation
+
+A hunter is biased toward keeping what it found, so every candidate faces agents that try to kill
+it before it enters the ledger, using the prompts in `security-audit`'s validation reference:
+
+1. **Refute.** The parent merges candidates that share a root cause, then gives each remaining
+   candidate one fresh read-only refuter, all in parallel.
+2. **Verify independently.** Each confirmed finding gets one fresh read-only verifier, who did not
+   write it, checking every factual claim against the source; its corrections are applied and
+   named in the report, and a rejected finding is dropped or reported as investigated.
+
+Each step starts at most ten agents, launched through `subagent-matrix` like the reviewers; past ten
+candidates or findings, each agent takes those of one subsystem. On the small route both steps run
+in process, against the same prompts.
+
+**Beyond `doctor-protocol`'s launch table**, the whole route therefore starts up to three
+reconnaissance agents, and three more when an area needs mapping again; up to two research agents
+per audit reviewer; and up to ten refuters and ten verifiers. The small route adds none.
 
 ## Dispositions
 
@@ -213,8 +236,10 @@ too early.
 
 ## Report Additions
 
-Ahead of the protocol's skeleton, a summary line: the scope and dependency audit coverage, findings
-fixed, product changes offered beside a shipped fix, hardening notes, and the pull request. Then:
+Ahead of the protocol's skeleton, a summary line: the scope and audit coverage, the baseline
+comparable the severities were calibrated against, findings fixed, product changes offered beside a
+shipped fix, hardening notes, and the pull request. Keep the report short: one longer than the
+codebase deserves is padding. Then:
 
 - a findings table — id, severity, the attack in one line, the fix shipped, and the simpler option
   offered or `none`; a product change offered beside the fix shows its options and the recommended
@@ -227,5 +252,6 @@ fixed, product changes offered beside a shipped fix, hardening notes, and the pu
 - guards added, each with the shape it holds;
 - what the codebase does well;
 - coverage: partitions or classes not reached, the statement that no run shows the code is clean,
-  and the next run recommended;
+  since each run explores different paths and the best single run finds roughly half of what
+  several surface, and the next run recommended;
 - **Next:** the one decision or review the user owes.

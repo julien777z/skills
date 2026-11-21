@@ -47,7 +47,8 @@ run `doctor-protocol`, and supplies:
 8. **report additions** — the rows it appends to the skeleton below.
 
 A doctor may also state what dictates its partition cut, a reviewer cap lower than this
-protocol's, a reviewer capability level, and a late audit as **Implement In Waves** allows one.
+protocol's, a reviewer capability level, launches it adds beyond the table below with their counts
+and caps, such as per-finding validation, and a late audit as **Implement In Waves** allows one.
 
 A doctor runs one fixed workflow: it defines no effort levels, mode menus, or hidden switches,
 and does not infer alternate execution from an effort word, flag, or implicit setting. Scope,
@@ -77,7 +78,8 @@ selects none, with any reviewer fallback the doctor specifies; workers run at st
   5 audit reviewers, 1 plan gate, 6 workers, 2 final reviewers and 1 final gate. On a diff read in
   slices the same run takes up to 22.
 - **A run starts at most twelve audit reviewers.** A doctor may set a lower cap, never a higher
-  one. A domain dependency's own agents follow that dependency's counts and stand outside this cap.
+  one. Launches a doctor adds beyond the table follow the counts the doctor states and stand outside
+  this cap.
 - **What adds launches beyond the table:** one verifier for a partition whose reviewer returned
   findings unverified; `review-proposal`'s rounds when a whole-route plan holds a remedy the run
   designed;
@@ -196,11 +198,9 @@ of this section is the whole route.
    partition whole and runs each lens check by check, reporting each check's result, an empty
    result included: a check whose result is not reported was not run. An instance of a
    whole-repository lens is returned as a candidate for the cross-cutting reviewer, never chased
-   across partitions. A domain dependency's qualifying independent hunters stand in for partition
-   reviewers over the scopes they cover; run that dependency once for the audit, never once per
-   reviewer, and give its hunters the audit's assigned attack classes and scopes.
-3. **Launch one fresh cross-cutting reviewer** once the partition reviewers and any dependency
-   audit have returned their final results. It is handed the manifest, the doctor's
+   across partitions.
+3. **Launch one fresh cross-cutting reviewer** once the partition reviewers have returned their
+   final results. It is handed the manifest, the doctor's
    whole-repository lenses, the pre-pass output, and every partition's findings and receipt. It
    finds what no single partition shows, such as duplicates and divergent siblings in different
    partitions and items that cross boundaries, compares what the doctor names, and challenges every
@@ -211,8 +211,8 @@ of this section is the whole route.
 5. **Findings are verified by partition, never all in the parent's context.** As its last step,
    each reviewer opens every finding's location again at the audited head, confirms the quote and
    runs the proving check where that is read-only. A partition whose reviewer returned findings
-   unverified gets one verifier. A candidate subject to a domain dependency's validation and
-   verification passes those phases first. A finding without evidence, or whose quote the file does
+   unverified gets one verifier. A candidate subject to validation the doctor adds passes it
+   first. A finding without evidence, or whose quote the file does
    not hold, is dropped and counted.
 6. **The parent reconciles from the returned records.** It merges duplicates, settles
    disagreements, rejects unsupported churn and records each entry's disposition in the ledger,

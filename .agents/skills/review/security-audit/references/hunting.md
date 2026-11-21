@@ -1,27 +1,28 @@
 # Vulnerability Hunting
 
-Contents: **Phase 2: Hunt for vulnerabilities** (how hunters are launched and the surface split),
-**Hunting methodology** (the prompt every hunter gets, with its angles and validation rules).
+Contents: **How the surface is split**, **Hunting methodology** (the prompt every hunter gets, with
+its angles and validation rules).
 
-The effort level in `SKILL.md` sets this phase's cohort at every level; where the table gives it
-no agents, the phase runs in process against the same rubric.
+A hunter is the agent, or the in-process pass, that reads a scope as an attacker would. The skill
+that launches hunters says how many; this reference says how they divide the surface and what each
+is told.
 
-### Phase 2: Hunt for vulnerabilities
+### How the surface is split
 
-Launch the hunters the effort table gives this phase as **`general` agents in parallel** via the Task tool. Use `general`, not `research` — general agents can spawn their own sub-agents via the Task tool, so when a hunter finds a rabbit hole that needs deeper investigation (e.g., tracing injection into an auth subsystem it doesn't fully understand), it can spin up a focused `research` sub-agent rather than trying to do everything in one context window.
+Split by attack class **and** by subsystem, because a focused hunter beats a broad one that runs
+out of context: where the map of the target reveals an auth system, a plugin system, a media
+pipeline and a comment engine, each is its own partition before any class is doubled up. Where
+there are fewer hunters than partitions, cover the riskiest partitions first and say in the result
+which were not reached.
 
-Each agent gets the architecture summary from Phase 1 injected into its prompt plus the hunting methodology and validation rules. Launch them in a single message so they run concurrently.
-
-**How is the surface split?** The effort table says how many hunters there are; Phase 1 says how to divide the surface between them. Split by attack class **and** by subsystem, because a focused hunter beats a broad one that runs out of context: where Phase 1 revealed an auth system, a plugin system, a media pipeline and a comment engine, each is its own partition before any class is doubled up. Where the table gives fewer hunters than partitions, cover the riskiest partitions first and say in the report which were not reached.
-
-Every agent prompt includes:
-1. The architecture summary from Phase 1 (copy it in verbatim)
+Every hunter prompt includes:
+1. The map of the target — its architecture, trust model and input surfaces — copied in verbatim
 2. The specific attack class and scope to investigate
-3. Relevant file paths from Phase 1 as starting points
+3. Relevant file paths from the map as starting points
 4. The hunting methodology (below)
 5. The validation rules (below)
 
-#### Hunting methodology — include in every Phase 2 agent prompt
+### Hunting methodology — include in every hunter prompt
 
 Tell each agent to think like an attacker, not a code reviewer:
 
@@ -94,7 +95,7 @@ Think about these angles:
     Anywhere self-declared identity, capability, or metadata influences an access
     or trust decision without independent verification.
 
-At medium or high effort, you may launch a research agent when evaluating a potential finding
+Where you can launch agents, you may launch a research agent when evaluating a potential finding
 needs a subsystem understood in depth, so its reading stays out of your own context. Launch at
 most two over your whole hunt, each with one subsystem and one question; read a single file
 yourself instead.

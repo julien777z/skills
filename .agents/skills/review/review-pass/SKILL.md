@@ -163,8 +163,8 @@ validation exclusion is recorded with its evidence and not repaired, rerun or wa
    run **Checks**.
 3. Run **Local Passes** over the delta and push their fixes.
 4. Check the delta's added and changed lines against the patterns below. A match decides, never a
-   judgment that the change is safe: on any match, run `security-audit`'s **Diff Review** at
-   `medium` over the delta, with the merge-base diff as context, and fix what it confirms. Its
+   judgment that the change is safe: on any match, run `security-audit` over the delta, with the
+   merge-base diff as context, and fix what it confirms. Its
    agents and step 5's round 1 only read this head and need nothing from each other, so start them
    together and answer both sets of findings in one fix batch.
    - an authentication, authorization, permission or ownership check, or a route, handler or job
@@ -346,7 +346,7 @@ review.
 - **Fixed:** <one line per fix, marking those review surfaced rather than the task required, or none>
 - **Threads:** <disposition per thread, or none>
 - **Checks:** <passed | exclusions with evidence, leaving out baseline failures and non-essential checks left red>
-- **Security:** <Diff Review result | no pattern matched>
+- **Security:** <security-audit result | no pattern matched>
 - **Acceptance:** <accept | flag and what it named>
 - **Combined review:** <heads read · accepted, or findings by pull request | not run: one pull request in the set>
 - **Deferred:** <record link: what it covers, or none>

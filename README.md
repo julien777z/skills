@@ -155,7 +155,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`roblox-worldbuilding`](.agents/skills/roblox/roblox-worldbuilding/SKILL.md) — Build and improve Roblox worlds, terrain, structures, props, and assets.
 - [`run-site`](.agents/skills/workspace/run-site/SKILL.md) — Start an application stack and perform browser verification where applicable.
 - [`schema-doctor`](.agents/skills/doctors/schema-doctor/SKILL.md) — Check models and schemas for unnecessary nulls, complexity, keys, and indexes.
-- [`security-audit`](.agents/skills/review/security-audit/SKILL.md) — Security guidance for writing code, reviewing a change, and auditing a codebase.
+- [`security-audit`](.agents/skills/review/security-audit/SKILL.md) — Security guidance for writing code and reviewing a change for exploitable vulnerabilities.
 - [`security-doctor`](.agents/skills/doctors/security-doctor/SKILL.md) — Find and fix the exploitable vulnerabilities in a codebase, each proven by a concrete attack.
 - [`session-ledger`](.agents/skills/workspace/session-ledger/SKILL.md) — Keep verified task artifacts in one private task file.
 - [`share-media`](.agents/skills/media/share-media/SKILL.md) — Show captures, option previews, spoken replies and the material a reply relies on where the user reads.

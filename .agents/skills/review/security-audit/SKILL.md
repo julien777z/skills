@@ -1,21 +1,19 @@
 ---
 name: security-audit
-description: Must be used before writing or changing code that crosses a trust boundary — input handling, authentication, authorization, sessions, secrets, cryptography, deserialization, file paths, subprocesses, outbound requests, templates — and for any security review of a branch, pull request or pending changes, or security audit of a codebase at a stated effort level. Its rubric owns what counts as an exploitable finding, the precedents that rule false positives out, how code is built safely, and the smallest fix; the skill reports, and its caller owns what happens to each finding. Use when asked to find security bugs, do a security review, audit for vulnerabilities, or pen-test the code.
-short_description: 'Security guidance for writing code, reviewing a change, and auditing a codebase.'
+description: Must be used before writing or changing code that crosses a trust boundary — input handling, authentication, authorization, sessions, secrets, cryptography, deserialization, file paths, subprocesses, outbound requests, templates — and for any security review of a branch, pull request or pending changes. Its rubric owns what counts as an exploitable finding, the precedents that rule false positives out, how code is built safely, and the smallest fix; the skill reports, and its caller owns what happens to each finding. Use when asked to check a change for security bugs or to security-review a change.
+short_description: 'Security guidance for writing code and reviewing a change for exploitable vulnerabilities.'
 ---
 
 # Security Audit
 
-You are a security auditor. Your job is to find **exploitable vulnerabilities with real impact**.
-
-`references/rubric.md` holds what counts as a finding, what it is worth, which precedents rule a
-finding out, how code that crosses a trust boundary is built, and what a remedy costs. This file
-holds how that judgment is applied: while writing code, over a change, and over a codebase. Read
-the rubric whole before any of them and apply it throughout.
+Find the **exploitable vulnerabilities with real impact** a change adds or makes reachable, and
+build code that crosses a trust boundary so it adds none. The skill's rubric reference,
+`references/rubric.md`, holds what counts as a finding, what it is worth, which precedents rule a
+finding out, how such code is built, and what a remedy costs; read it whole before writing or
+reviewing and apply it throughout. This file holds how that judgment is applied to one change.
 
 ## Dependencies
 - `subagent-matrix`
-- `interactive-skill`
 - `pre-production`
 
 ## While Writing Code
@@ -26,122 +24,67 @@ outbound requests, templates — read the rubric and apply **Building It Safely*
 change writes. A finding in those lines is the change's own defect: it is fixed in the change,
 never reported for a later decision.
 
-## Diff Review
+## 1. Scope
 
-A security review of a branch, a pull request or pending changes reviews the change, not the
-codebase. Its target is the merge-base diff against the repository's default branch plus any
-untracked files the branch adds, read with the callers, sinks and trust boundaries each changed line
-reaches, so a trace can run past the hunk. It hunts only what the change adds or makes reachable;
-a pre-existing finding it meets on that path is still reported as a finding.
+A security review of a branch, a pull request or pending changes reviews the change, because the
+change is what its caller can still alter before it merges.
 
-It runs every phase at the effort stated, over the changed lines and what they reach. A finding in
-lines the running task wrote is fixed in that task's change; any other finding is reported to the
-caller, who fixes it on the change or its own pull request as `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect
-places it by size, which `pre-production` applies to a vulnerability the work finds.
+1. Take the scope the caller names. Otherwise use the merge-base diff against the repository's
+   remote default branch plus the untracked files the branch adds.
+2. Read every changed line with the callers, sinks and trust boundaries it reaches, so a trace can
+   run past the hunk: the entry points that reach it, the authentication and authorization on that
+   path, and the sinks its data reaches.
+3. Choose from the skill's [attack classes](references/attack-classes.md) the classes those paths
+   can carry. Hunt what the change adds or makes reachable; a pre-existing finding met on that path
+   is still a finding.
 
-## Effort
+## 2. Review
 
-A **Diff Review** or codebase audit may state an effort level and a target: `/security-audit high`,
-`/security-audit low src/api`. A token matching an effort level sets the effort; anything else is
-the target — a path, or a branch, pull request or pending changes for **Diff Review** — which falls
-back to the current working directory.
+- **Small scopes in process.** When one reader can hold the diff and everything it reaches at once,
+  review in process and start no subagents. Apply the skill's [hunting](references/hunting.md)
+  methodology and its validation rules, then try to disprove each finding yourself with the
+  refuter's tests in the skill's [validation](references/validation.md) reference.
+- **An invocation that cannot launch agents runs in process over any scope**, and its result says
+  the review read in process, so its caller knows no independent refuter checked a finding.
+- **Larger scopes by slice.** Partition the reach by trust boundary or subsystem into at most four
+  slices, the riskiest first, and launch one read-only hunter per slice in parallel. Each gets the
+  scope's map from **Scope**, its slice and attack classes, and the hunting reference's prompt. A
+  hunter may start at most two research agents of its own, as that reference allows, so a review
+  starts at most twelve hunting agents.
+- **Every finding a hunter returns faces a refuter before it is reported.** Merge findings that
+  share a root cause, then give each remaining finding one fresh read-only refuter with the
+  validation reference's refute prompt, all in parallel: a hunter is biased toward keeping what it
+  found. At most ten refuters run; past ten findings, each refuter takes the findings of one
+  subsystem.
+- **Launch each agent through `subagent-matrix`** at its specialist capability level with
+  `advanced` as its fallback for authorized defensive work, including a research agent a hunter
+  starts, whose brief carries that selection.
+- **Subagents report; the parent decides.** The parent checks each confirmed finding's trace against
+  the source — every file, line and scope it cites — before it reports it, and drops one whose
+  trace does not hold.
 
-When a review or audit states no effort, ask through `interactive-skill` with this menu, each value
-described by its actual coverage and never replaced by a vague label such as "quick" or
-"thorough". Only an effort token picks it, and nothing launches until it is settled:
+A finding in lines the running task wrote is fixed in that task's change. Any other finding is
+returned to the caller, who places its fix on the change or its own pull request as
+`pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places
+it by size, which `pre-production` applies to a vulnerability the work finds. No findings file is
+committed, and the review changes no code.
 
-```yaml
-prompt: Which effort level should the audit run at?
-kind: choice
-choices:
-  - id: low
-    label: low
-    detail: one pass over the target against the rubric, with no delegated agents at all
-  - id: medium
-    label: medium
-    detail: recon inline, one hunter per attack class recon surfaced, one validator per finding
-  - id: high
-    label: high
-    detail: recon fanned out, two hunters on the riskiest classes and one elsewhere, then a refuter and an independent verifier per finding, repeated until a completed round finds no new confirmed and independently verified finding
+Give each finding a stable id (`F1`, `F2`, …) and each hardening note its own (`H1`, `H2`, …) when
+the result is first presented, and refer to it by that id everywhere afterwards — in chat, in a
+plan, in a commit. A title or a position in a list changes; an id does not.
+
+## Output
+
+```markdown
+**Security audit:** <scope> — <n> finding(s), <in process | <h> hunters, <r> refuters>
+
+- **Findings:** <id [severity] file:line — attack in one sentence; impact; conditions; smallest
+  remediation, with the materially simpler alternative beside it where one exists; or none>
+- **Hardening notes:** <id — why it is not exploitable, or none>
+- **Rejected by a precedent:** <count per precedent, or none>
+- **Read:** <the changed lines and the paths traced from them; a clean result says no exploitable
+  finding was seen in what was read, never that the code is safe>
 ```
 
-Follow the global rules' **Asking the user** question-tool procedure, including
-timeout retries. If neither a question tool nor chat can reach the user, retain the missing effort
-as a gate with its saved next action rather than selecting it from silence. An effort explicitly
-supplied by the invocation or its calling workflow needs no question.
-
-| Effort | Recon | Hunters | Validation | Independent verification |
-|---|---|---|---|---|
-| `low` | Inline | Inline, one pass | Inline | Inline |
-| `medium` | Inline | 1 per class recon surfaced | 1 validator per finding | Inline |
-| `high` | 3 agents | 2 on the riskiest classes, 1 elsewhere | 1 refuter per finding | 1 verifier per finding |
-
-At `low` every phase, including supplemental research, runs in process with no agents. From
-`medium` upward, launch the agents each phase names in parallel; capacity limits force batching, never omission and never an undeclared local skim. For each named
-agent, invoke `subagent-matrix` at its specialist capability level with `advanced` as its fallback capability level for authorized defensive work, launch the exact resolved identifier, and
-retain catalog state, identifier, assignment state and host receipt in the audit evidence; a research sub-agent a
-hunter starts launches the same way. Include in each hunter brief the explicit specialist selection and `advanced` fallback capability level
-for any research child it starts, and instruct the hunter to resolve the child's identifier and
-launch it through `subagent-matrix`. Each agent a level names is launched as
-`subagent-matrix`'s **Dispatch** section directs.
-
-**The rubric is the same at every level; only the cohort shrinks.** A `low` finding is held to
-exactly the bar in `references/rubric.md` — exploitable, with a concrete attack — because a thinner
-cohort is a reason to find less, never a reason to report worse.
-
-**What a level may claim is what it covered.** `low` reads what it was given, so its report says so
-and never reports as a codebase audit; only a level that fans out over the target says anything
-about the target as a whole. `low` launches no agents, so it
-runs where none can be launched.
-
-**An invocation that takes the findings into its own verdict gets them returned, never filed.**
-No findings file is written, and the invocation owns what happens to each finding.
-
-## Platform terminology
-
-This skill is agent-neutral. In the methodology:
-
-- **Task tool** means the coding agent's delegation or sub-agent mechanism.
-- **`research` agent** means a delegated agent optimized for focused codebase exploration and factual verification.
-- **`general` agent** means a delegated agent that can investigate broadly and spawn focused research agents.
-- **`subagent_type`** means the equivalent delegated-agent role supported by the current platform.
-
-Use the platform's equivalent capabilities while preserving the specified roles, parallelism, prompts, and independence boundaries.
-
-## What The Audit Writes
-
-The output is a report: one findings file in `.agent_sources/` at the root of the worktree the
-review runs in, added to the repository's local exclude file first so it stays out of Git, sent to the user with the chat summary. A report file the request names, such as one at
-the worktree's root, carries the summary and the findings file's path, never the findings in its
-place. Phase 5 of [validation and reporting](references/validation-and-reporting.md) sets what the
-file and the summary hold. Nothing is committed to the target repository, and the audit changes no
-code.
-
-A report is what this run found; it never asserts a codebase is clean. Each run explores different
-code paths depending on which agents find what and where they dig, and the best single run finds
-roughly half the vulnerabilities that surface across several. Say so in the report and recommend
-another run.
-
-## Workflow
-
-Every level runs every phase; **Effort** above says with what cohort.
-
-1. **Recon** — Run Phase 1 from [reconnaissance](references/reconnaissance.md) to map the
-   application's architecture, trust boundaries, and input surfaces. Hold the architecture summary in
-   the session; Phase 2 agent prompts are built from it.
-2. **Hunt** — Use [hunting](references/hunting.md) for orchestration and methodology; select scopes
-   from [attack classes](references/attack-classes.md).
-3. **Validate** — Use Phase 3 in [validation and reporting](references/validation-and-reporting.md)
-   to consolidate duplicates and independently try to disprove every finding, against the rubric's
-   **What A Surviving Finding Has Been Put Through**.
-4. **Verify independently** — Use Phase 4 there: at `high`, a fresh agent per surviving finding
-   checks every factual claim against the source; lower levels verify inline.
-5. **Repeat at high** — Recon runs once. Repeat hunt, validation and verification with prior findings
-   available to the hunters until a completed round yields no new confirmed, independently verified
-   finding. Rejected candidates and duplicates do not extend the loop. Incomplete coverage is
-   incomplete, never a clean round.
-6. **Report** — Use Phase 5 there, then stop: the report is the audit's result.
-
-Give each finding a stable id (`F1`, `F2`, …) and each hardening note its own (`H1`, `H2`, …) when the
-report is first presented, and refer to it by that id everywhere afterwards — in chat, in a plan,
-in a commit. A title or a position in a list changes; an id does not.
+Per-item detail past five items goes in a file in `.agent_sources/` at the root of the worktree the
+review runs in, sent with the result.

@@ -126,9 +126,9 @@ after them say:
 
 **The gate judges with its dependencies' criteria.** Apply `pre-production` to the scope decision,
 `test-fixture` to test costs and existing reporting evidence, and `run-site`'s **Scenarios** to
-changes that add or alter product states. Apply `security-audit` at `low` effort as a single
-in-process rubric pass without delegated agents; take its exploitable findings into the verdict.
-Where the item carries that skill's **Diff Review** result for the same range, read the result
+changes that add or alter product states. Apply `security-audit`'s review in process, as an
+invocation that cannot launch agents, with no delegated agents; take its exploitable findings into
+the verdict. Where the item carries that skill's result for the same range, read the result
 against the diff in place of that pass.
 
 **The gate has no shell, so every diff reaches it as content, never as a reference.** The caller

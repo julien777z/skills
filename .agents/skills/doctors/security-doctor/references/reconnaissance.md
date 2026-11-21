@@ -1,9 +1,6 @@
-# Phase 1: Understand the Application
+# Reconnaissance
 
-The effort level in `SKILL.md` sets this phase's cohort at every level; where the table gives it
-no agents, the phase runs in process against the same rubric.
-
-Before looking for bugs, understand what you're auditing. This requires depth, not just a directory listing. The aspects below are mapped by **`research` agents in parallel** where the effort table gives this phase agents, and read in one pass where it does not:
+Before looking for bugs, understand what you're auditing. This requires depth, not just a directory listing. The aspects below are mapped by **three read-only agents in parallel** on the whole route, and read in one pass in process on the small route, against the same questions:
 
 **Agent 1a: Overview, tech stack, and comparable baseline**
 ```
@@ -39,10 +36,10 @@ Explore the codebase at <path>. Produce a complete inventory of where external i
 Return specific file paths. Be exhaustive.
 ```
 
-Collect the outputs and synthesize them into an architecture summary held in the
-session — this phase writes no file:
+Collect the outputs and synthesize them into an architecture summary, saved with the run's records
+so a resumed run reads it rather than mapping again:
 - 1-2 page structured summary covering application type, tech stack, trust model, input surfaces, and baseline comparable
-- Include the key file paths from all agents — these become the starting points for Phase 2
-- This summary is injected verbatim into every Phase 2 agent prompt
+- Include the key file paths from all agents — these become the reviewers' starting points
+- This summary is copied verbatim into every reviewer's brief as the map of the target
 
-If Phase 1 reveals the codebase is larger or more complex than expected (e.g., plugin system, multi-tenant architecture, complex auth chains, multiple deployment targets), map those areas before proceeding — with additional `research` agents where this phase has them, and in process where it does not. The quality of Phase 2 depends entirely on the quality of Phase 1.
+If reconnaissance reveals the codebase is larger or more complex than expected (e.g., plugin system, multi-tenant architecture, complex auth chains, multiple deployment targets), map those areas before proceeding — with at most three further read-only agents on the whole route, and in process on the small route. The quality of the hunt depends entirely on the quality of this map.
