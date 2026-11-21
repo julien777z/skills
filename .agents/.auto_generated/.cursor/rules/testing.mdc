@@ -310,7 +310,8 @@ overlapping tests, and CI routing; inspect dependency source or types for depend
 ## Environments
 
 - Before planning browser walkthroughs or rendered UI inspections, read `run-site`'s **Principles**
-  and select its environment applicability. Required automated tests and builds still run.
+  and follow its environment selection: a change a reader sees rendered is inspected rendered in
+  every environment. Required automated tests and builds still run.
 - **Tests leave the user's desktop undisturbed.** Before selecting or launching a test that uses
   windows or apps, choose an isolated desktop, a headless runtime, or hidden test-owned windows.
   Suppress focus changes, app activation, taskbar or dock appearances, notifications, and sound;
