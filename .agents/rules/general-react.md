@@ -116,7 +116,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 - Extract reusable logic into custom hooks
 
 - Local state with `useState` for component-specific state
-- Reuse the repository's established shared-state and server-state libraries instead of introducing parallel state layers; in a Next.js App Router repository, server data follows **Rendering and Data** below and takes no client data layer.
+- Reuse the repository's established shared-state and server-state libraries instead of introducing parallel state layers; in a Next.js App Router repository, server data loads in Server Components and reaches the client as **Rendering and Data** below says.
 
 - Use `useRef` for DOM access and mutable values
 - Don't overuse refs for state that should cause re-renders
@@ -224,12 +224,14 @@ export function SearchInput() {
 }
 ```
 
-- **Render on the server.** A page, and every section of it that shows data, is an async Server Component that loads its data and renders it. A Client Component (`"use client"`) exists only for what the browser has to own — event handlers and input, state and effect hooks, browser-only APIs, a dialog, drag-and-drop, a third-party client widget — takes its data as props, and never fetches it.
-- **Writes are Server Actions**, and Server Actions authenticate their caller and authorize what they read or change. A write re-renders the page when it finishes. A client-side data layer for reads — SWR, React Query, a fetching hook, a fallback cache seeded from the server — is the shape this replaces, not a companion to it, and a status that has to update live refreshes the server render on an interval instead of fetching on the client. A read that depends on input an open control holds in its own state — a city search as the reader types, a preview of the choices in a dialog — is a read-only Server Action that control calls, never a route handler it fetches; input that belongs in the address, such as a list's filters, stays search params the page renders from.
+- **Render on the server by default.** A page, and every section of it that shows data, is an async Server Component that loads its data and renders it, so the data is fetched beside its source, secrets stay on the server and the browser downloads no fetching code. A Client Component (`"use client"`) exists only for what the browser has to own — event handlers and input, state and effect hooks, browser-only APIs, a dialog, drag-and-drop, a third-party client widget — and takes its data as props, or as a promise a Server Component started and passed down, which it reads with React's `use` inside a `Suspense` boundary so the page streams rather than waits.
+- **A read a client control drives, or one that must update while the page is open, runs on the client against a Route Handler**, through the client data library the repository uses, SWR or React Query; a repository with neither picks one and uses it for every such read. A city search as the reader types, a preview of the choices in a dialog and a status that changes live are such reads. Input that belongs in the address, such as a list's filters, stays search params the page renders from on the server.
+- **Writes are Server Actions**, and Server Actions authenticate their caller and authorize what they read or change. A write re-renders the page, or revalidates the client library's cached reads, when it finishes. A Server Action never serves a read: the client dispatches and awaits Server Actions one at a time, so reads sent through them run in turn instead of in parallel.
 - **The address carries only state that differs from the page's default.** The first page, an empty search, and the default filter, tab or sort stay out of every link, redirect and router push, so a URL never reads `?page=1` or `?search=`. The helper that builds the address drops a default value itself, so no caller has to remember to.
 - **Expected refusals carry a specific, human-readable message the reader can act on**, worded as
   a short, friendly request for the reader's next step that never repeats back what they entered.
-  Trace generic copy for a known validation or business refusal to its service and fix that error contract there, rather than inventing replacement client copy. Expected
+  Trace generic copy for a known validation or business refusal to its service and fix that error
+  contract there, rather than inventing replacement client copy. Expected
   refusals must not escape as internal server errors. Genuine 500 responses may keep a safe,
   generic message; diagnose and repair an unexpected 500 encountered during normal operation
   rather than accepting the failure feedback as a finished result. Clearly label failures deliberately
