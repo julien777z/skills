@@ -14,6 +14,7 @@ Resolve recorded deferrals instead of treating their proposed work as automatica
 - `pre-production`
 - `code-simplify`
 - `acceptance-gate`
+- `merge-gate`
 - `session-ledger`
 
 ## Select The Records
@@ -130,8 +131,13 @@ As soon as a validated resolution pull request is ready **and `acceptance-gate` 
 proposal and the diff**, update every
 included Linear issue's `Resolution PR` metadata and move implemented or simplified issues to a
 completed-category state. A flagged resolution moves nothing: the issue stays active.
-The user's completion condition is a ready validated pull request, not its merge. Do not merge the
-resolution pull request without separate authorization.
+The user's completion condition is a ready validated pull request, not its merge. Do not merge a
+resolution pull request carrying any other change without separate authorization. One confined to
+deferral records, such as legacy declined moves and retired records, merges under the GitHub rule's
+deferral-record permission: put its complete diff to `acceptance-gate`'s final-acceptance question,
+one gate per such pull request, then invoke `merge-gate` with that accepted head, no local test
+coverage, and the rule that a fix it makes goes back to final acceptance over its delta, one more
+gate per fix, capped by the global rules' review-round limit.
 
 When inventorying, reconcile completed issues whose resolution pull request later closed without
 merging. Record that evidence and return them to the appropriate active state so ordinary `all`

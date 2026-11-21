@@ -58,8 +58,9 @@ Where the game allows it, let what the player did stay visible in the world: gro
 - The rule that decides when each object shows lives in one shared place, which the builders and the saved world both read.
 - The hidden state wins over every other feature that changes the object's look, such as a fade, a flicker or a glow: their changes are held while it is hidden and applied once it shows.
 - A collected piece hides through its own state, so collecting and the quest's gate combine rather than overwrite each other.
+- A hidden object the world leads the player to has a stand-in while it is hidden: an ordinary object that fits the setting, gated the other way and carrying no quest prompt, so the way never ends at nothing. A clock tower's empty bell frame holds a weathered old bell until the step that brings the new one. The stand-in is the game's design: choose it, build it and report it as made, saying what it is, when it shows and that the quest object replaces it, with no question to the user about it.
 - A feature that depends on the objects follows the same gate, such as an offer to collect them that appears only while a piece the player can reach remains.
-- A change to quests or to the objects they use audits them: it lists each such object with the gate the shared rule gives it and whether a fresh profile can see it, names every one that has no gate or that a fresh profile sees, and reruns after the fixes until it names none. The report carries that list; a statement that the objects are gated is not an audit.
+- A change to quests or to the objects they use audits them: it lists each such object with the gate the shared rule gives it, whether a fresh profile can see it, and the stand-in of one the world leads the player to, names every one that has no gate, that a fresh profile sees, or that lacks its stand-in, and reruns after the fixes until it names none. The report carries that list; a statement that the objects are gated is not an audit. A project tool that runs the audit checks every one of these; add the check it lacks before relying on its result.
 
 ## Navigation, movement and travel presentation
 

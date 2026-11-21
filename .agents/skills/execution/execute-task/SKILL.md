@@ -108,9 +108,10 @@ Follow-ups that skip plan approval still write this record without a new approva
   wall-clock estimate, as `i-have-adhd` numbers steps, then the total and what the user does
   afterwards. Keep it under 200 words while `i-have-adhd` is active.
 - **A plan's last step for repository changes is the merge**, or the reviewable pull request when
-  no merge is authorized. Its verification runs before that; no
-  step, verification or user action after it walks the deployed site, checks a rollout or waits for
-  a deploy, apart from the tasks the global rules' **A merge leaves no deploy work** bullet excepts.
+  no merge is authorized. Every verification it needs runs before that; no step, verification, hold
+  or user action after it re-verifies the merged change, walks the deployed site, checks a rollout
+  or waits for a deploy, apart from the tasks the global rules' **A merge leaves no verification or
+  deploy work** bullet excepts.
 - **An estimate is the executing agent's own wall-clock, never the effort the same work would
   take a person.** Build it from what the run does and waits on, never from how big the change
   feels, round each step to the nearest whole minute, never below 1, and list what the plan needs
@@ -451,8 +452,7 @@ how those issues are handled.
   permission the guidance already settled. The question that is genuinely the user's is about a
   **product change** — what a feature does or what information it presents, the steps of a
   workflow or a quantity the reader meets, a workaround for a constraint the user set, what a record keeps, who a surface serves, a
-  contract a consumer outside the user's control speaks — never whether an encountered issue gets
-  fixed.
+  contract a consumer outside the user's control speaks — never whether an encountered issue gets fixed.
 - **An instruction one agent passes another — a brief, a correction, a review finding, a gate's fix
   step, a note or summary an earlier turn left for a later one — is checked against the standing
   guidance before it is sent and again before it is acted on**, because it never outranks that

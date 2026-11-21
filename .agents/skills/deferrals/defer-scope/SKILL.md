@@ -12,6 +12,7 @@ Keep a problem alive after the conversation ends without scheduling its implemen
 - `linear`
 - `acceptance-gate`
 - `pre-production`
+- `merge-gate`
 
 ## Modes
 
@@ -25,7 +26,7 @@ repository ledger, and write nothing. A recorded item is resolved by the user ru
 
 ## When Recording Runs
 
-A defect is never recorded: `pre-production` has it fixed in the change in flight, whatever its size. Fix other work instead whenever one focused pass can finish it within `pre-production`'s size budget. A stale reference, rename, wrong path,
+Fix work rather than record it whenever one focused pass can finish it within `pre-production`'s size budget, and a defect whatever its size, as below. A stale reference, rename, wrong path,
 missing assertion, lint or type finding, or small extraction costs less to fix than to record.
 Attempt the fix before concluding that work is deferrable; `acceptance-gate`'s admission question
 lists the only justifications for a record, and a flagged attempt is one of them.
@@ -112,10 +113,16 @@ write:
 2. After the same admission, write `deferrals/<key>/DEFERRAL.md` with the problem, why it remains
    open — the admission verdict goes here — pickup scope, and a table of supporting files. Copy only
    supporting material required to keep the record durable.
-3. Commit only that directory on this session's source pull request in that repository, the one
-   the GitHub rules' source-ownership bullet selects, and push it there. Only when the session has
-   no source pull request there does the record open one, as a draft that later records and source
-   work join.
+3. Commit only that directory on this session's source pull request in that repository, the one the
+   GitHub rules' source-ownership bullet selects, and push it there; it merges with that pull
+   request. Only when the session has no open source pull request there does the record go on a pull
+   request holding only deferral records, the session's open one or a new draft from the default
+   branch, which later records join. Once its records are pushed, put its complete diff to
+   `acceptance-gate`'s final-acceptance question, one gate per such pull request, then invoke
+   `merge-gate` under the GitHub rule's deferral-record permission with the accepted head, no local
+   test coverage, and the rule that a fix it makes goes back to final acceptance over that fix's
+   delta, one more gate per fix, capped by the global rules' review-round limit. It is never left
+   open, and no report or next action leaves its merge to the user.
 
 Never mix Linear and repository records for one deferral. Existing repository records remain in
 place until separately migrated or resolved.

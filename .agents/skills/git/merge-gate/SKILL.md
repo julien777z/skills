@@ -207,8 +207,8 @@ provider already rejected. Follow its matching replacement or retry under **Chec
 the required context and attempt the merge once GitHub reports it passing. For other exclusions, or if hosted
 recovery is unavailable, report the actual rejection and its provider evidence. Never bypass protection.
 
-Once the merge is verified, as the global rules' **A merge leaves no deploy work** bullet says, do
-not inspect or follow merge-triggered release, publication, artifact or deployment workflows, or
+Once the merge is verified, as the global rules' **A merge leaves no verification or deploy work**
+bullet says, do not inspect or follow merge-triggered release, publication, artifact or deployment workflows, or
 check by any other route whether the change is live.
 
 When the merged diff changes agent configuration, poll the default-branch Agent Sync run the merge
