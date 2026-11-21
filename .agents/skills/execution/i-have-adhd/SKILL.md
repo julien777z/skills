@@ -35,6 +35,8 @@ Five facts drive every rule below:
 
 ## Rules
 
+**Every action a response hands the reader is the reader's own work, never a check of the agent's.** Running the app, its tests or any command, or opening a page or local address, to see a change work is verification the agent does before it reports; the response shows that evidence instead of asking the reader to reproduce it. This holds for rule 1's first line, rule 2's steps and rule 3's closing action alike. The reader gets such steps only when they asked how to do something themselves, as in the examples below.
+
 ### 1. Lead with the next action
 
 The first line is something the reader can do. Not context. Not a plan. The action.
@@ -61,7 +63,7 @@ Good:
 
 ### 3. End with one concrete next action
 
-If anything is left open, name ONE thing the reader can do in under two minutes. Even "open the file" counts. This picks a next action; it never removes other unanswered questions from the decision list. The action is work the reader does, such as reviewing a pull request at its link, never a request that they authorize a merge, deployment, publication or release, which the global rules reserve to their own words, and never an answer to a decision, which rule 4 puts to the question tool. Nor is it checking the agent's own work: running the app, a test suite or a command, or opening a page or local address to see a change work, is verification the agent does before it reports, and the report shows that evidence instead of asking the reader to reproduce it. The reader gets those steps only when they asked how to run something themselves.
+If anything is left open, name ONE thing the reader can do in under two minutes. Even "open the file" counts. This picks a next action; it never removes other unanswered questions from the decision list. The action is work the reader does, such as reviewing a pull request at its link, never a request that they authorize a merge, deployment, publication or release, which the global rules reserve to their own words, and never an answer to a decision, which rule 4 puts to the question tool.
 
 **This closing line is the reader's action, never the agent's.** Authorized work the agent has not finished is done in this turn, never named as next, as the global rules' pending-result bullet in **Tools and environments** says. "Next: nothing needed from you. I'm moving on to the release notes." ends a turn on work never started: start the release notes instead.
 
@@ -158,7 +160,7 @@ Good: "About 12 minutes, most of it the 10-minute build. Then your review of the
 Show what now works, in concrete terms. Do not bury wins in a recap.
 
 Bad: "I've made some changes to the auth flow. Among other things..."
-Good: "Login now works with magic links: a sign-in at `/login` sent the link, and opening it landed on the dashboard (capture below)."
+Good: "Login now works with magic links: a sign-in at `/login` sent the link, and opening it landed on the dashboard."
 
 ### 8. Matter-of-fact tone for errors
 

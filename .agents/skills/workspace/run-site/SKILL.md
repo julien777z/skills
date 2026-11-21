@@ -25,25 +25,23 @@ Use `use-browser` for browser control through its supported route. Apply `test-f
 - Select browser verification before starting its stack, browser or sign-in prerequisites.
   **A change whose effect a reader sees rendered — a page, a panel, a layout, its copy or its
   states — is looked at rendered before it is reported done or ready for review, in every
-  execution environment.** Tests, type checks and a clean build show the code runs, never what the
-  reader meets. In a local execution environment that inspection runs in a browser the agent
-  launches and owns, headless by default, as `use-browser` routes it, and never in the user's own
-  browser, windows or desktop, as the testing rule's **Environments** says. It brings the stack up
-  under this skill, signs in, operates each control the change touched and captures each changed
-  surface and state, as **Sign in**, **Drive the change** and **Widths and full-page captures**
-  say, against whatever the startup command serves, and owes no recording. **The inspection
-  covers what the change can affect, and its route follows from that.** A change confined to a
-  component's own presentation or interaction — its markup, styles, input handling — whose
-  behavior does not depend on the page's data, sign-in, routing or server is inspected by rendering
-  the shipped component, from the real package with its real styles, on a page the agent builds,
-  whenever the full stack cannot start or sign in for credentials or services the session lacks.
-  That page is the inspection, not a workaround: report it as checked, and ask the user for no
-  credential or service it would not use. A change that reaches the page's data, sign-in, routing,
-  server or its layout around the component needs the real screen. The full walkthrough
-  below, with its recording, applies when the agent executes in a cloud environment. Classify the
-  agent's execution environment, not the application's address: a cloud agent checking a service
-  on localhost still follows the cloud requirement. A stack that will not start is a startup
-  blocker this skill repairs, never a reason to report a change unchecked. Browser work the user
+  execution environment.**
+- **In a local execution environment that inspection runs in a browser session the agent launches
+  and owns**, headless by default, as `use-browser` routes it, never in the user's own browser,
+  tabs, windows or desktop, as the testing rule's **Environments** says. It follows the walkthrough
+  below — its scenarios, sign-in, driving, captures and defects — and owes no recording.
+- **The inspection covers what the change can affect, and its route follows from that.** A change
+  confined to a component's own presentation or interaction — its markup, styles, input handling —
+  whose behavior does not depend on the page's data, sign-in, routing or server is inspected by
+  rendering the shipped component, from the real package with its real styles, on a page the agent
+  builds, when the startup command has run, its repairable blockers are fixed, and the stack still
+  cannot start or sign in only for credentials or services the session lacks. That page is the
+  inspection, not a workaround: report it as checked, and ask the user for no credential or service
+  it would not use. A change that reaches the page's data, sign-in, routing, server or its layout
+  around the component needs the real screen.
+- The full walkthrough below, with its recording, applies when the agent executes in a cloud
+  environment. Classify the agent's execution environment, not the application's address: a cloud
+  agent checking a service on localhost still follows the cloud requirement. Browser work the user
   explicitly requests, including debugging or verification, applies in either environment;
   reference material, ordinary implementation or plan approval, and delegated reviewer requests do
   not supply that direct user request.
@@ -114,10 +112,12 @@ preserve configured ports.
 ### When a walkthrough is owed
 
 After selecting browser verification under **Principles**, perform the following walkthrough
-where it applies, and its sign-in, driving and capture steps for a local inspection. Passing
-tests, type checks, and a clean build do not replace an applicable walkthrough. A change that can alter what the app does — new or reordered UI, layout or
-spacing, a component's props or state, a hook, a route, a redirect, middleware, an auth round trip, or the shape
-of a request — is walked end to end before it is reported done, however few lines it took; the
+where it applies, without its recording for a local inspection. Passing tests, type checks, and a
+clean build show the code runs, never what the reader meets, and do not replace it. A change that
+can alter what the app does — new or reordered UI, layout or spacing, a component's props or state,
+a hook, a route, a redirect, middleware, an auth round trip, or the shape of a request — is walked
+end to end before it is reported done, however few lines it took, apart from a change confined to a
+component's own behavior that **Principles** lets the agent check on a page it builds; the
 walkthrough follows the push rather than holding it, as the GitHub rule’s **Pre-Push Gate** says. An
 edit that provably cannot reach behavior — rewording text already rendered in its existing slot, a
 comment, prose in Markdown — is verified by reading it and by finding the new text in the build
@@ -155,8 +155,9 @@ proves the component renders and nothing about the screen a user reaches. A chan
 component's own behavior is the exception **Principles** names: its rendered page is the check. If
 sign-in genuinely cannot complete for a change that needs the real screen, report the walkthrough as
 not done.
-Drive browser automation through the tab selected under the global browser procedure; never read the
-user's saved passwords, cookies, local storage, or session files.
+Drive browser automation through the tab selected under the global browser procedure, which for a
+local inspection is the agent-owned session **Principles** names; never read the user's saved
+passwords, cookies, local storage, or session files.
 
 Keep a password or one-time sign-in token out of argv and the transcript: put it in an environment
 variable for the one command that fills the field or opens the link, build that script, and pipe it
