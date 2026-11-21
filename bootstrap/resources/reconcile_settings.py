@@ -16,6 +16,11 @@ SOURCE_COMMAND_PATTERN: Final[re.Pattern[str]] = re.compile(
 HOOK_NAME_PATTERN: Final[re.Pattern[str]] = re.compile(r"[\w-]+")
 HOOK_ENTRY_POINT: Final[str] = "main.py"
 CONFLICT_EXIT: Final[int] = 1
+# Agent Sync's own notes and the hooks, which are reconciled separately, are never merged as settings.
+UNMERGED_KEYS: Final[frozenset[str]] = frozenset({"$comment", "hooks"})
+RECORD_KEYS: Final[str] = "keys"
+RECORD_WRITTEN: Final[str] = "written"
+RECORD_PREVIOUS: Final[str] = "previous"
 
 
 class RegistrationCommand(StrEnum):
@@ -190,6 +195,53 @@ def reconciled(
     return result
 
 
+def read_settings_record(path: Path) -> dict[str, dict[str, object]]:
+    """Read the settings the installer wrote, with any value each replaced, by key."""
+
+    entries = read_json_object(path).get(RECORD_KEYS, {})
+
+    if not isinstance(entries, dict) or not all(
+        isinstance(entry, dict) and RECORD_WRITTEN in entry for entry in entries.values()
+    ):
+        raise SettingsConflict(f"{path} does not hold the installer's settings record")
+
+    return entries
+
+
+def merged_settings(
+    target: dict[str, object], source: dict[str, object], record: dict[str, dict[str, object]]
+) -> tuple[dict[str, object], dict[str, dict[str, object]]]:
+    """Return the target with the source's settings applied, and the record of what was written."""
+
+    settings = {key: value for key, value in source.items() if key not in UNMERGED_KEYS}
+    result = dict(target)
+    written: dict[str, dict[str, object]] = {}
+
+    for key, entry in record.items():
+        if key in settings or key not in result or result[key] != entry[RECORD_WRITTEN]:
+            continue
+
+        if RECORD_PREVIOUS in entry:
+            result[key] = entry[RECORD_PREVIOUS]
+        else:
+            del result[key]
+
+    for key, value in settings.items():
+        entry = record.get(key)
+
+        if entry is not None and result.get(key) == entry[RECORD_WRITTEN]:
+            replaced = {RECORD_PREVIOUS: entry[RECORD_PREVIOUS]} if RECORD_PREVIOUS in entry else {}
+        elif key in result:
+            replaced = {RECORD_PREVIOUS: result[key]}
+        else:
+            replaced = {}
+
+        result[key] = value
+        written[key] = {RECORD_WRITTEN: value, **replaced}
+
+    return result, written
+
+
 def write_json_object(path: Path, content: dict[str, object]) -> None:
     """Atomically replace a settings file, keeping its mode and owner."""
 
@@ -224,11 +276,16 @@ def parse_arguments() -> argparse.Namespace:
     files = argparse.ArgumentParser(add_help=False)
 
     files.add_argument("--target", type=Path, required=True, help="User-level settings file.")
-    files.add_argument("--source", type=Path, required=True, help="Generated hook registrations.")
+    files.add_argument("--source", type=Path, required=True, help="Generated settings file.")
     files.add_argument("--hooks-dir", type=Path, required=True, help="User-level hooks directory.")
+    files.add_argument(
+        "--settings-record",
+        type=Path,
+        help="File recording the settings the installer merged and the values they replaced.",
+    )
 
     parser = argparse.ArgumentParser(
-        description="Register the linked hooks in a user-level settings file."
+        description="Reconcile the generated hooks and settings into a user-level settings file."
     )
     commands = parser.add_subparsers(dest="command", required=True)
 
@@ -240,38 +297,52 @@ def parse_arguments() -> argparse.Namespace:
     commands.add_parser(
         RegistrationCommand.INSTALL,
         parents=[files],
-        help="Register the source's hooks, replacing the installer's earlier registrations.",
+        help="Apply the source's hooks and settings, replacing what the installer wrote earlier.",
     )
 
     return parser.parse_args()
 
 
 def main() -> int:
-    """Check or install the hook registrations of one user-level root."""
+    """Check or install the hooks and settings of one user-level root."""
 
     arguments = parse_arguments()
     command = RegistrationCommand(arguments.command)
     target_path = Path(os.path.realpath(arguments.target))
     source_path: Path = arguments.source
+    record_path: Path | None = arguments.settings_record
+    record: dict[str, dict[str, object]] = {}
+    written: dict[str, dict[str, object]] = {}
 
     try:
         target = read_json_object(target_path)
+        source = read_json_object(source_path)
         content = reconciled(
             target,
             target_path,
-            read_json_object(source_path),
+            source,
             source_path,
             Path(os.path.abspath(arguments.hooks_dir)),
         )
+
+        if record_path is not None:
+            record = read_settings_record(record_path)
+            content, written = merged_settings(content, source, record)
     except SettingsConflict as error:
         print(f"conflict: {error}", file=sys.stderr)
 
         return CONFLICT_EXIT
 
-    if command is RegistrationCommand.INSTALL and content != target:
+    if command is not RegistrationCommand.INSTALL:
+        return 0
+
+    if content != target:
         write_json_object(target_path, content)
 
-        print(f"{target_path}: hook registrations updated")
+        print(f"{target_path}: hooks and settings updated")
+
+    if record_path is not None and written != record:
+        write_json_object(record_path, {RECORD_KEYS: written})
 
     return 0
 

@@ -14,6 +14,7 @@ START_MARKER: Final[str] = "<!-- skills:start -->"
 END_MARKER: Final[str] = "<!-- skills:end -->"
 FRONT_MATTER_KEY_PATTERN: Final[re.Pattern[str]] = re.compile(r"^([A-Za-z][\w-]*):\s*(.*)$")
 SENTENCE_PATTERN: Final[re.Pattern[str]] = re.compile(r"(?<=[.!?])\s+")
+USER_ONLY_SENTENCE: Final[str] = "Run only when the user asks for it."
 
 
 def parse_front_matter(path: Path) -> dict[str, str]:
@@ -100,11 +101,17 @@ def render_links(skills: list[tuple[Path, dict[str, str]]]) -> str:
     )
 
 
+def is_user_invoked(front_matter: dict[str, str]) -> bool:
+    """Report whether the skill's description restricts it to the user's request."""
+
+    return front_matter["description"].rstrip().endswith(USER_ONLY_SENTENCE)
+
+
 def render_section(skills: list[tuple[Path, dict[str, str]]]) -> str:
     """Render both skill groups, split by how each one is invoked."""
 
-    user_invoked = [skill for skill in skills if skill[1].get("disable-model-invocation") == "true"]
-    model_invoked = [skill for skill in skills if skill[1].get("disable-model-invocation") != "true"]
+    user_invoked = [skill for skill in skills if is_user_invoked(skill[1])]
+    model_invoked = [skill for skill in skills if not is_user_invoked(skill[1])]
 
     return "\n".join(
         [
