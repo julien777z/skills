@@ -213,7 +213,7 @@ Read at **Guidance Delivery** step 1.
 
 Read every entry in the frozen batch and resume at its recorded first
 nonterminal stage, rebuilding a lost or truncated entry from its backup
-comment as `session-ledger` accepts it; the comment's existence records that the correction was admitted under **Recording During A Task**, its Intended behavior stands as the recovered intent for step 3 beside the user's words, taken from the conversation where they survive and otherwise named as missing in that intent, never replaced by that paraphrase, and **Run one `test-skill` round**
+comment as `session-ledger` accepts it; the comment's existence records that the correction was admitted under **Recording During A Task**, its Intended behavior stands as the recovered intent for **Guidance Delivery** step 3 beside the user's words, taken from the conversation where they survive and otherwise named as missing in that intent, never replaced by that paraphrase, and **Run one `test-skill` round**
 rebuilds the reproduction scenario from its failure class and invariant, with anything else
 unrecoverable handled as `session-ledger` incomplete retrieval. An entry with no recorded commit
 applies its edits under **Behavior** steps 5 and 6, on the branch **Branch and commit** selects; one with a
@@ -227,5 +227,4 @@ pull request's simplification pass and **Brief `review-pass`'s final acceptance*
 another session's source pull request runs **Run `validate_sources.py check`** through **Run one `test-skill` round** here on the head it pushed, and the
 delivery report says the push moved that pull request's head past its owner's acceptance. An
 edit on either source pull request is recorded as held for that pull request's merge once its
-source check and skill-test round pass, so its batch can be done. The steps below cover the
-agent-configuration pull request.
+source check and skill-test round pass, so its batch can be done.

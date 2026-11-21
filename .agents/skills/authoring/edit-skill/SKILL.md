@@ -155,7 +155,8 @@ small it looks.** Each route below is the gate set its batch passes on the head 
 
 1. Read every entry in the frozen batch and resume at its recorded first nonterminal stage, as the
    [edit criteria](references/edit-criteria.md)'s **Resuming A Batch** says, including an entry
-   rebuilt from its backup comment and an edit that rides a source pull request.
+   rebuilt from its backup comment and an edit that rides a source pull request. The steps below
+   cover the agent-configuration pull request.
 2. Run **Run `validate_sources.py check`**'s source check.
 3. Run `review-pass` once over the batch, naming every head it carries. Give it each entry's Scope
    Statement, with the user's words and evidence, as the intent statement, the brief **Brief
