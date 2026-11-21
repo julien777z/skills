@@ -240,11 +240,11 @@ alwaysApply: true
   status, a release run or the site itself, and no test, walk or audit of what it deployed or of
   the merged default branch. A verification step still open at the merge closes with it, and
   nothing waits on such a run or on a deploy: no plan step, ledger or guidance hold, worker brief
-  or report's next action. Other authorized work after a merge is unaffected, such
-  as a run's next batch, a consumer repointed once its dependency merged, or the refresh the GitHub
-  rules' **After Agent Sync** section requires. A task whose own outcome the user stated as a
-  deployment, publication or release, or as restoring a broken deployed operation, follows that
-  outcome past the merge.
+  or report's next action. Other authorized work after a merge is unaffected, such as a run's next
+  batch, a consumer repointed once its dependency merged, or the refresh the GitHub rules' **After
+  Agent Sync** section requires. A task whose own outcome the user stated as a deployment,
+  publication or release, or as restoring a broken deployed operation, follows that outcome past
+  the merge, and a workflow the user invokes to merge first, such as `merge-now`, keeps its review.
 - Authorization to message an agent or session this session did not start covers only the messages
   and purpose the user specified; ask before a later update to the same recipient unless the user
   explicitly approved an ongoing exchange. A running worker this session started is told which
