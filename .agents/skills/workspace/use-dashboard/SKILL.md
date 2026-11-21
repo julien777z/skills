@@ -307,9 +307,13 @@ request to update it never re-renders one on its own.
 
 Every render the user is shown goes out through this section, including a preview, a sample, or a
 test of a change to the page: a screenshot of a render is a capture of the page, never its delivery.
-Deliver through the routes the **Harness Router** below selects, in their order, and through the
-same route for every update of one dashboard. A local file or a screenshot does not replace a
-publishing route the harness's file names.
+Deliver through the routes the **Harness Router** below selects for the harness this session runs
+in, in their order, and through the same route for every update of one dashboard within that
+harness. A local file or a screenshot does not replace a publishing route the harness's file names.
+A dashboard an earlier session delivered through a route this harness does not offer, such as a
+published link a session in another harness made, is delivered here through this harness's route,
+never held for that route or put to the user as a step; the report says in one line that the earlier
+link stays at its last version.
 
 - **One published page per dashboard.** Before publishing, look for the link already published for
   this dashboard's purpose, and publish the update to it when there is one. A dashboard that changes

@@ -42,6 +42,11 @@ For each pull request, in the order given:
   from a merge, deployment, publication or release, which **Continuing**'s **Resume the task**
   governs; the
   cross-repository dependencies and constraints they leave out come from the transferred ledger.
+- **This session's harness may differ from the one that handed off**, so each item under the
+  hand-off's **Outside the repository**, and every delivery route an earlier session used, is checked
+  against what this harness can reach. Something this harness cannot reach, such as a published link
+  another harness's tool made, is carried forward through the route that works here and named in the
+  report; it is never a blocker or a step put to the user.
 - Treat inherited factual claims as leads, not verified state. Before a claim determines an action,
   recommendation, reported outcome or approval request, check its authoritative source against the
   current target and relevant environment. A pull request's body, hand-off, ledger or worker report
