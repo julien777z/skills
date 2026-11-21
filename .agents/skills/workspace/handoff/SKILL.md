@@ -54,11 +54,13 @@ skill ends with.
    queued to run after a merge; a plan held for the user's decisions or approval and not yet
    answered, read from wherever the host keeps the live plan, where a timeout or a mode exit counts
    as unanswered, and a plan shown with no open decision, which is queued work described as shown; questions put to
-   the user and still unanswered; decisions the user made and the words they made them in; standing
+   the user and still unanswered; decisions the user made and the words they made them in; calls the
+   agent made itself, without putting them to the user, on something the user asked its view on,
+   directly or indirectly, with the answer it reached and why; standing
    constraints the user set for the work, such as accounts never to touch or actions that need their
    say-so; promises the agent made and did not complete; anything the session changed outside the
    repository that is still in a temporary state. Classify each as **queued work**, **a question for
-   the user**, **context**, or **deferred repository work**.
+   the user**, **an agent's call**, **context**, or **deferred repository work**.
 4. **Record deferred repository work through `defer-scope`**, one scope per item, in the repository
    that owns it, and link each resulting record or Linear issue from the hand-off comments in that
    repository alone. An item `defer-scope`
@@ -85,7 +87,8 @@ skill ends with.
    says — from the session's own record of the work, not a walk through its commits. Every open pull request in the ledger gets this, however long its body.
 8. **Post the hand-off comment** on each pull request in the template below, written so an agent with
    no other context can continue: the queue in order with exact files, every question with the
-   options as they were put, and every decision and constraint that governs this repository's work.
+   options as they were put, every call the agent made itself with its answer and reason, and every
+   decision and constraint that governs this repository's work.
    It is published in this repository, so it follows the GitHub rule's independent publishing
    context exactly as `session-ledger`'s backup comments do: it states this repository's work in
    this repository's own terms and never names or links another repository, its pull requests or
@@ -120,6 +123,9 @@ Task: `<task token>`
 
 ### Ask the user before acting
 - <question, with the options as they were put and the recommendation> — <what waits on the answer>
+
+### Decided by the agent
+- <question the user asked the agent's view on> — <the agent's answer and why> — <what was built on it>
 
 ### Decisions and constraints
 - <decision or standing constraint governing this repository, in the user's words or paraphrased in this repository's terms>

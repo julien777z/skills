@@ -57,7 +57,11 @@ For each pull request, in the order given:
 1. **Reassess the open questions before putting them to the user**: validate their factual premises
    under Setting Up and apply the global rules' standing-guidance bullet on whether a question is the user's. Preserve the user's prior answers;
    resolve questions current evidence or governing guidance already answers. Put only the remaining
-   genuine decisions to the user, with current options, recommendation and supporting evidence.
+   genuine decisions to the user, with current options, recommendation and supporting evidence. A
+   call under the hand-off's **Decided by the agent** stays the agent's call, recorded as an
+   assumption and never as the user's answer; it is put to the user only where current evidence
+   contradicts it. A hand-off without that heading may have dropped such calls, so a question it
+   lists as open is reassessed as above even when an earlier session may have settled it.
    Work that depends on an answer waits; everything else proceeds.
 2. **Resume the task** and work the queues in the order the hand-off gave, under the decisions
    and constraints it recorded. A merge, deployment, publication or release needs the user's own
@@ -75,6 +79,7 @@ Continuing
 
 - https://github.com/owner/repository/pull/123 — `<branch>` at `<sha>` · <draft or ready> → `<base>` · Checks: <state, baseline failures left out> · Mergeable: <yes, or conflict> · Threads: <n> · Queue: <n items>
 - Skipped: <merged or closed pull requests, or None>
+- Decided by the agent: <each call, with its answer, or None>
 ```
 
 ## Guardrails
