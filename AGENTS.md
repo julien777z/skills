@@ -235,15 +235,17 @@ Canonical guidance lives in `.agents/`.
   instruction, a skill they invoke for it, such as `finish-pr`, or guidance that grants it; naming
   what remains for the user and that skill, in a report or a plan's closing line, is how it is left
   to them, not an offer.
-- **A merge leaves no deploy work.** Once a pull request's merge is verified, never check by any
-  route whether the change is live, such as a provider's deployment status, a release run or the
-  site itself; never walk or test the site the merge deployed; never schedule a re-check, wait for
-  a deploy, or assume one is coming. Nothing waits on a deploy: the remaining work proceeds, and a
-  report names no deploy step as remaining. Other authorized work after a merge is unaffected, such
-  as a run's next batch, a consumer repointed once its dependency merged, or the refresh the GitHub
-  rules' **After Agent Sync** section requires. A task whose own outcome the user stated as a
-  deployment, publication or release, or as restoring a broken deployed operation, follows that
-  outcome past the merge.
+- **A merge leaves no verification or deploy work.** Whatever a change needs verified — tests, a
+  playtest, a walkthrough, an audit, a fresh-eye review — runs before its merge. Once the merge is
+  verified nothing runs again to check it: no check by any route that it is live, such as a deploy
+  status, a release run or the site itself, and no test, walk or audit of what it deployed or of
+  the merged default branch. A verification step still open at the merge closes with it, and
+  nothing waits on such a run or on a deploy: no plan step, ledger or guidance hold, worker brief
+  or report's next action. Other authorized work after a merge is unaffected, such as a run's next
+  batch, a consumer repointed once its dependency merged, or the refresh the GitHub rules' **After
+  Agent Sync** section requires. A task whose own outcome the user stated as a deployment,
+  publication or release, or as restoring a broken deployed operation, follows that outcome past
+  the merge, and a workflow the user invokes to merge first, such as `merge-now`, keeps its review.
 - Authorization to message an agent or session this session did not start covers only the messages
   and purpose the user specified; ask before a later update to the same recipient unless the user
   explicitly approved an ongoing exchange. A running worker this session started is told which
@@ -455,16 +457,14 @@ Canonical guidance lives in `.agents/`.
   action, while the task stays active as **Task execution and authorization** says.
 
 - **Local stack resources are disposable, and repairing them is part of the work, never a question for the user.** Local databases and their migration state, Redis, Docker containers, volumes, networks, images and the daemon itself can be repaired, reset, dropped or recreated whenever the task needs them working. A database stuck on a revision a branch has since regenerated, a stale cache, a wedged container: fix it and carry on. The records a local stack holds are the same: create, edit, reset, reopen or convert them whenever the work needs them in a given state — a test account to sign in with, a submission held in review to show a banner, a record a new rule no longer accepts — as the repository's data policy says, report what was done, and never put the choice to the user. The tooling that brings a local stack to a state is the agent's in the same way: a scenario command, the test accounts and records it creates, and what each scenario seeds are added, changed or redesigned as the work needs, never put to the user in a plan, a question or a gate's remedy, and never a product choice, since no user of the product meets them. The same holds for what the session's own work leaves behind when disk, memory or a port runs short: build caches and the leases and snapshots holding them, stopped containers, orphaned processes and build output. The one limit is a resource another run is actively using, such as a test runner holding the stack's lock. Wait for it or use a separate resource; never stop it. A route that limit rules out, such as restarting a daemon a running test still uses, leaves narrower ones, such as removing only the leases, records or processes the session's own work created; recovery is exhausted, and reported as a gate, only once no route remains. **Development data in a non-production deployment is the agent's the same way** when the project's guidance or its release stage marks it disposable: an unreleased product's staging saves, its test profiles and accounts, and the records a staging environment holds for its testers are reset, converted or recreated whenever the work needs them, such as a test save that no longer loads after an item's ID changed, then reported, never put to the user. Production data, and records real users or other people own, stay with the user. Deployed and shared remote environments are otherwise not local; the following live-deployment rules govern them.
-- **A copy a file-sync service or the operating system left behind is deleted, never kept, left as
-  outside the task or put to the user.** Its name is the original's plus a copy suffix, such as
-  `budget 2.csv` or `HEAD 2`. On meeting one, list all with a name search of the whole tree and its
-  Git directories, such as `find` on the root, `git rev-parse --git-dir` and `--git-common-dir`,
-  never `git status` or `ls`, which miss ignored and hidden ones. A copy with content of its own
-  stays as an ordinary file. Before anything stages, stashes or snapshots the tree, delete each
-  other copy once no process, worktree or session uses it, naming each in the report:
-  - a file identical to its original or to any version of it Git holds;
-  - an entry in a Git directory outside `worktrees` and `modules`, once a branch holds each commit only it names;
-  - a folder or clone whose files, commits and stashes its original holds, removed as a plain folder.
+- **A copy a file-sync service or the operating system made is deleted once no process, worktree
+  or session uses it, whatever it holds.** Its name is the original's plus a copy suffix, such as
+  `budget 2.csv` or `HEAD 2`. Find every one with a name search of the whole tree and its Git
+  directories (`git rev-parse --git-dir` and `--git-common-dir`), never `git status` or `ls`, which
+  miss ignored and hidden ones, and delete each before anything stages, stashes or snapshots the
+  tree. A file, folder, clone or Git entry goes even when it differs from its original or names a
+  commit or branch the original lacks: nothing is compared, backed up or kept on a branch, since
+  what a session keeps lives in the original and on the remote. The report names each one deleted.
 
 - Do not rebuild, republish, or redeploy an already validated artifact solely because its source
   head advanced. Compare the edits with the artifact's actual source: cleanup proven to preserve
@@ -1033,6 +1033,12 @@ return normalized
 - **An agent-configuration pull request whose guidance depends on a still-open source pull request is held until that merge**, whatever its other gates say, unless the guidance rides that source pull request under **Branches and Pull Requests**. Guidance true on the default branch as it stands waits for nothing.
 - A hold does not authorize merging the source pull request to unblock the agent-configuration pull request. Finish both pull requests' independent checks, report the dependency, and leave the source pull request reviewable until its merge is separately authorized. After the source pull request merges, continue the held one under the selection rule above: incorporate the updated base and rerun the affected gates before using the agent-configuration merge exception.
 - When checks are still pending after those gates, auto-merge may be enabled for an eligible agent-configuration pull request; one held for a source pull request becomes eligible once that pull request has merged. Carry every in-scope agent-configuration pull request through conflict resolution, validation, draft readiness, and merge, when selected under the ownership rules above. Do not close or leave it open merely because it is draft or conflicts with the base; close only one this session opened, and only when its change is superseded or no longer wanted.
+- **A pull request confined to deferral records, active or declined, merges without a separate
+  request as soon as its records are written**, through `merge-gate` with its required checks: a
+  record left on an open branch is lost to every later session, which defeats recording it. It is
+  never left open, held for a later finishing run, or reported as waiting on the user. A record
+  that rides a source pull request merges with that pull request under that pull request's own
+  authority. Verify the complete diff holds only deferral records before using this permission.
 - An action-skill merge authorization applies only to its original target pull request, including one created during the skill's initial setup. Pull requests created afterward, including follow-up fixes, dependencies, replacements, and reapplications after a corrective revert, require separate current-request authorization, except each fix pull request a directly user-invoked skill's own authorization names, once that skill's merge gates pass; that authorization ends with the run.
 - An authorized merge is not held for a failing check the current user explicitly waives, an
   established baseline exclusion, or a non-essential check left red on findings the change did not
