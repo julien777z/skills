@@ -355,7 +355,7 @@ without that proof it is not a finding.
   error response, or redacts a warning or error wholesale, against `pre-production`'s **Logging**
   conventions: read every logging call inside a handler or beside a raise, and every redaction
   filter with what it matches.
-- **Deprecated usage** — every warning the pre-pass's install, build and suite logs printed, and
+- **Deprecated usage** — every warning the pre-pass's list collected from the baseline checks, and
   every call, setting, default or dependency its owner has deprecated, as `pre-production`'s
   **Deprecated usage and printed warnings are defects** says.
 - **Dead branch and dead entry** — every union member no caller passes and the arm handling it;

@@ -135,8 +135,10 @@ language.
   `pydeps` for Python and `madge` for TypeScript, with every edge into an executable marked.
 - **Suppressions and escape hatches** (**Tolerated Past**) — the suppression search below, counted
   per file.
-- **Warnings** (**Tolerated Past**) — install, build and each suite run once with warnings as
-  errors, through the interpreter's or the runner's own setting, and the list kept.
+- **Warnings** (**Tolerated Past**) — every warning printed in the saved output of
+  `doctor-protocol`'s baseline checks, which already run install, build and each suite once, kept
+  as a list. The pre-pass runs nothing again with warnings as errors, which would cost as long as
+  the suites again to find warnings that output already shows.
 - **Environment reads** (**Configuration Drift**) — the environment search below outside the
   settings modules, and each deployment's configuration column, read by name once.
 - **One-machine paths and banned terms** (**Repeated Literal**, **Reads As Slop**) — the path
