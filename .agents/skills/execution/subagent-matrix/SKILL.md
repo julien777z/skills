@@ -55,12 +55,18 @@ agent; the calling agent launches the actual assignment with the selected model.
    refusal, the repair attempted, and any relaunch receipt. If the failure remains operational or the repair
    cannot be made, use the launch fallback and retain that classification. Model substitution requires an
    explicit receipt that the exact model is unsupported or, where step 4 allows it, denied.
-   **A rate limit or quota refusal is temporary capacity, never unavailability**, even when it
-   names a long reset time: it permits no fallback, no other provider and no absorbing the work into the
-   coordinator's own process, and never a reason to hold work: a reset time the refusal names is a guess, not
-   a wait. Resume or relaunch the same worker on the same model as soon as the coordinator next answers, read
-   from the request path itself: the coordinator answering on that model, or the relaunch being accepted, shows
-   it has cleared, and only a refused relaunch shows it still holds. The accepted worker
+   **A rate limit or quota refusal moves the assignment to the other harness's matching model**: a
+   Codex model's refusal relaunches the same assignment, with the same brief and reasoning effort, on the
+   Claude family at the same capability level in **model capabilities**, and a Claude model's refusal on the
+   Codex family, because the refusal is one provider's capacity and the other's model at that level does the
+   same work without waiting out a reset time the refusal can only guess. It is not unavailability: it
+   permits none of step 4's unsupported-model fallbacks, no lower capability level and no absorbing the work
+   into the coordinator's own process, and it never holds work. Resolve the matching model through steps 2
+   and 3, and record the original refusal beside the relaunch. In a comparison pair, relaunch both sides on
+   the matching model so the pair keeps one model. When that model also refuses for capacity, or the host
+   cannot launch the other harness's models, or the user's explicit constraint names the refused model,
+   relaunch on whichever permitted model the request path shows cleared first: the coordinator answering on that model, or a relaunch being accepted, shows it has cleared, and
+   only a refused relaunch shows it still holds. The accepted worker
    performs the assignment; never launch a throwaway availability probe. Record the runtime identifier only
    when the host exposes its exact value. Generic provider or product
    branding, a worker-reported label, or no runtime identifier is neither confirmation nor a contradiction of
@@ -70,8 +76,8 @@ agent; the calling agent launches the actual assignment with the selected model.
    denied, launch the same assignment directly on the latest Claude family at the `frontier` tier, unless
    the calling skill explicitly selects a different ordinary fallback tier. Resolve its latest Claude family
    through steps 2 and 3 and apply that fallback only if it respects the user's
-   explicit model or capability constraint; otherwise hold the assignment. Do not try older Mythos
-   or another provider. Apply step 3's repair, retry, and capacity rules to every attempt,
+   explicit model or capability constraint; otherwise hold the assignment. Do not try older Mythos,
+   or another provider on an unsupported receipt. Apply step 3's repair, retry, and capacity rules to every attempt,
    including the selected fallback and Codex Astra. Hold when the selected fallback or specialist Codex Astra is confirmed
    unsupported or denied. Catalog omission, identifier-resolution failure, and operational or
    capacity failures do not establish Mythos unavailability or denial. No ordinary assignment may
@@ -150,7 +156,7 @@ context and returns its verdict into the step waiting on it; nothing else does b
   result-retention bullet below requires.
 - **Launch fallback: a worker that cannot launch a subagent its step needs hands the step up; never
   absorb it.** Attempt the native dispatch when available. This covers a host that gives the worker
-  no agent tool and a native dispatch that fails other than by a capacity refusal, which step 3 waits out and relaunches, for reviewers, lenses, validators, gates and
+  no agent tool and a native dispatch that fails other than by a capacity refusal, which step 3 relaunches on the other harness's matching model, for reviewers, lenses, validators, gates and
   further implementation workers alike. The worker writes the complete assignment — the inputs, the
   question, the reading list, the output shape, the originally requested tier, its fallback policy,
   and launch receipts — to a file, asks the agent that delegated to it to
@@ -246,7 +252,7 @@ context and returns its verdict into the step waiting on it; nothing else does b
 ## Launch Failure Reporting
 
 When a required direct subagent dispatch cannot start, preserve its exact attempted dispatch,
-record it, and apply the launch fallback in **Dispatch**; a capacity refusal is recorded and relaunched as Workflow step 3 says, never sent to that fallback. Do not turn a tool inventory from a nested bridge or an unrelated agent tool
+record it, and apply the launch fallback in **Dispatch**; a capacity refusal is recorded and relaunched on the other harness's matching model as Workflow step 3 says, never sent to that fallback. Do not turn a tool inventory from a nested bridge or an unrelated agent tool
 into evidence about the native launcher's availability.
 
 - Attempt the selected native dispatch once whenever its direct tool is exposed. Never claim an
