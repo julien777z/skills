@@ -229,7 +229,8 @@ CANONICAL_RULES="$REPO_ROOT/.agents/rules"
 CANONICAL_GLOBAL="$REPO_ROOT/.agents/global.md"
 
 if [ ! -f "$CANONICAL_GLOBAL" ]; then
-  CANONICAL_GLOBAL="$CANONICAL_RULES/global.md"
+  echo "Canonical global rules must be a file: $CANONICAL_GLOBAL" >&2
+  exit 1
 fi
 
 CANONICAL_RESOURCES="$REPO_ROOT/.agents/resources"
@@ -392,7 +393,7 @@ preflight_provider() {
     done
   fi
 
-  if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ "$CANONICAL_GLOBAL" != "$CANONICAL_RULES/global.md" ]; then
+  if [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; then
     check_directory "$root/rules" || failed=1
 
     name="global.md"
@@ -575,7 +576,7 @@ install_provider() {
     prune_links "$root/rules"
   fi
 
-  if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ "$CANONICAL_GLOBAL" != "$CANONICAL_RULES/global.md" ]; then
+  if [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; then
     name="global.md"
     if [ "$provider" = "cursor" ]; then name="global.mdc"; fi
 
