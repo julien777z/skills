@@ -403,6 +403,16 @@ category; they do not add unrelated categories. Expand only for a required depen
 instruction naming an additional operational category or outcome, never for a broad quantifier
 alone or everything a text search happens to return.
 
+Distinguish the outcome and verification targets the user selected from the mechanism that
+achieves them. Inspect the existing path and its ordinary ancillary effects; a target omitted from
+the desired result is not by itself a prohibition on those effects. Reuse the existing path when
+it serves the request within the user's actual constraints and authorization. Honor an explicit
+prohibition, and never infer authorization for an additional outcome or action from the path.
+Before writing a plan, if the request and observed path leave a material ambiguity about whether
+the user wants a different target, outcome, mechanism, or an ancillary effect avoided, ask a
+focused clarification rather than plan around an inferred constraint. A clear instruction or a
+routine implementation choice needs no question.
+
 Before recommending an implementation, asking a question that presupposes one, or delegating its
 edits, trace the requested behavior through the caller, transport, configured destination and
 execution owner, including the entrypoint that launches or deploys it. Establish where it runs and
