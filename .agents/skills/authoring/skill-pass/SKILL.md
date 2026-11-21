@@ -20,7 +20,7 @@ or the whole canonical tree — and the pass runs over that.
 ## The Pass
 
 Run the steps in order over what the invocation names. The
-[authoring reference](references/authoring.md) holds the criteria steps 2 and 5 to 8 apply, each
+[authoring reference](references/authoring.md) holds the criteria steps 2 and 6 to 9 apply, each
 step naming the section it reads, the
 [vendor rubric](references/vendor-rubric.md) holds the **Vendor rubric** step's, and the
 [conflict criteria](references/conflicting-instructions.md) hold the **Conflicts** step's.
@@ -31,29 +31,37 @@ step naming the section it reads, the
    each other section the file's kind and content fall under: **Rules** for a rule file;
    **Package And References**, **Decisions**, **Subagents**, **Output** and **Routers** for a skill;
    **Scripts** for a helper script; and **Harnesses** for anything a harness runs or reads.
-3. **Vendor rubric.** Read the vendor rubric when the pass covers a prohibition, a firm rule, an
+3. **Breadth.** For each rule the pass covers, name the intent its reason serves, then ask
+   whether the rule is stated for one instance of a class that reason covers whole. A rule that
+   keeps a date picker from opening past the screen edge, because the reader cannot reach what is
+   cut off, serves every popup, menu and tooltip: rewrite it for the class the reason covers, keep
+   the instance as one example, and apply the rewrite to every neighbor in the file that does the
+   same work. The class stops where the reason stops; a neighboring subject is never swept in. A
+   rule whose narrowness is the point stays as written: an exact contract or identity, a step that
+   must run exactly as stated, or a fact about one environment.
+4. **Vendor rubric.** Read the vendor rubric when the pass covers a prohibition, a firm rule, an
    example, a description, or text about thinking, tools or subagents, which is nearly every pass.
    Judge each such passage as its **How A Passage Is Judged** says — keep, reword, merge or cut —
    whatever its subject, and hold a cut to its **Cutting A Passage**. For a set of files or the
    whole tree, run `wording` as **Source Check** says first and start with the files it ranks
    highest.
-4. **Conflicts.** Apply **Conflict Check**.
-5. **Placement.** Test each requirement against the authoring reference's **Where Guidance Lives**:
+5. **Conflicts.** Apply **Conflict Check**.
+6. **Placement.** Test each requirement against the authoring reference's **Where Guidance Lives**:
    name the skill that runs when the requirement applies before accepting it in a rule file or
    `.agents/global.md`, check what the owning file's name and description bound, and confirm no rule
    file or `.agents/global.md` names an individual skill outside the one place that reference
    allows.
-6. **Description as the index.** For every subject a skill owns, confirm a clause of its frontmatter
+7. **Description as the index.** For every subject a skill owns, confirm a clause of its frontmatter
    description names it, and judge the description as the authoring reference's **Descriptions**
    says. An index of owners kept in a rule file, `.agents/global.md` or a table is a finding.
-7. **Budgets and flows.** Count the lines of every `SKILL.md` and rule file covered against the
+8. **Budgets and flows.** Count the lines of every `SKILL.md` and rule file covered against the
    budget **Writing** sets for how that file loads, a file loaded in every session included. Judge
    each launch of subagents against **Subagents** — a stated usual count, what it grows with, and
    a cap — and each workflow the text defines against **Flows** and **Decisions**: a delivery sized
    to its change, nothing read or run twice for one answer, a search for an existing owner before
    writing, an independent review on every route to done, and no stop for the user that guidance
    could settle.
-8. **Dependencies.** Apply **Dependency Audit**.
+9. **Dependencies.** Apply **Dependency Audit**.
 
 A skill-test round is not part of the pass. Exercising guidance against tasks belongs to the
 delivery of changed guidance, covers only what that delivery changed, and is never run across

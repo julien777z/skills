@@ -93,7 +93,8 @@ about formatting.
 - Principle: many narrow conditions, each added after one incident, read as a maze, and the
   reader fails in the gaps between them. The principle they share is stated once.
 - Violation: a paragraph in which each sentence is a separate "such as …, never …" case; a rule
-  that grew a clause per correction; one session's stumble written down as a permanent rule.
+  that grew a clause per correction; one session's stumble written down as a permanent rule; a
+  single rule stated for the one instance that prompted it while its own reason covers a class.
 - Better form: the shared reason, with one or two illustrations of different kinds. A fact about
   the environment that defies a reasonable assumption is different: such facts are kept and may
   accumulate, since no principle predicts them.
