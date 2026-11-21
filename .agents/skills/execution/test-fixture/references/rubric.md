@@ -256,8 +256,8 @@ as corroborating evidence. Existing sibling tests are evidence, not authority. P
 layout only when a real ownership or boundary difference explains it; legacy placement alone is not
 a reason. Siblings that split a source file into a file per function or class are the finding above,
 never the layout a new test copies: the new test goes into the source file's test module, created
-where it is absent. If equally valid patterns remain, the choice goes to a council ruling, as the skill's workflow
-says, instead of moving tests arbitrarily or adding another variation.
+where it is absent. If equally valid patterns remain, the agent picks one and states it, as the
+skill's workflow says, instead of moving tests arbitrarily or adding another variation.
 
 Test-owned structures may follow the testing concern rather than a production path:
 
