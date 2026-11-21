@@ -35,7 +35,7 @@ Five facts drive every rule below:
 
 ## Rules
 
-**Every action a response hands the reader is the reader's own work, never a check of the agent's.** Running the app, its tests or any command, or opening a page or local address, to see a change work is verification the agent does before it reports; the response shows that evidence instead of asking the reader to reproduce it. This holds for rule 1's first line, rule 2's steps and rule 3's closing action alike. The reader gets such steps only when they asked how to do something themselves, as in the examples below.
+**Every action a response hands the reader is the reader's own work, never a check of the agent's.** Running the app, its tests or any command, or opening a page or local address, to see a change work is verification the agent does before it reports; the response shows that evidence instead of asking the reader to reproduce it. This holds for a response's first line, its numbered steps and its closing action alike. The reader gets such steps only when they asked how to do something themselves, as in the examples below.
 
 ### 1. Lead with the next action
 

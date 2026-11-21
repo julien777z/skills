@@ -190,7 +190,8 @@ EOF
   Interim captures while the work is in flight may come from dev servers. Snapshot after every
   navigation; refs do not survive it.
 - **Operate the control the change touched, not the page that holds it**, with real input events on
-  every screen that mounts it, then read the state it was meant to leave — where the element landed,
+  every screen that mounts it, or on the page it builds for a change **Principles** confines to a
+  component, then read the state it was meant to leave — where the element landed,
   what the field holds, whether the list closed up — and reload where it persists something. A drag
   is several moves, not one jump:
 
@@ -272,10 +273,12 @@ run above; say which kind each capture shows, since the two look identical.
 
 ### Evidence
 
-Record the flow until the feature is exercised to its end — the form submitted and its result read
-back, the item seen in its list, the setting confirmed after a reload. Record through the selected
-tab's existing browser context, preserving its authenticated state; start before sign-in only when
-sign-in is part of the flow being exercised.
+A local inspection sends its stills as the last paragraph below says and skips the recording; the
+cloud walkthrough and one the user asks for record as follows. Record the flow until the feature is
+exercised to its end — the form submitted and its result read back, the item seen in its list, the
+setting confirmed after a reload. Record through the selected tab's existing browser context,
+preserving its authenticated state; start before sign-in only when sign-in is part of the flow being
+exercised.
 The recorder writes WebM, which some viewers cannot play; send the MP4:
 
 ```bash
@@ -284,8 +287,9 @@ agent-browser --session <name> record stop
 ffmpeg -y -i <path>.webm -c:v libx264 -pix_fmt yuv420p -movflags +faststart -an <path>.mp4
 ```
 
-Send the recording and a still of the view the change touched, unasked, plus a still per width
-walked, the page with its requests failing, and each defect with the fix that resolved it — as the
-run produces them, as the User-Facing Output rule requires, through `share-media`. Captures left
-on disk are a walkthrough the reader never saw. The report names the widths checked, whether the run without the API changes was done,
-and what the screens were read against.
+Send the recording, where one is owed, and a still of the view the change touched, unasked, plus a
+still per width walked, the page with its requests failing, and each defect with the fix that
+resolved it — as the run produces them, as the User-Facing Output rule requires, through
+`share-media`. Captures left on disk are a walkthrough the reader never saw. The report names the
+widths checked, whether the run without the API changes was done, and what the screens were read
+against.
