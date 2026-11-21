@@ -124,10 +124,14 @@ receives five things and nothing else:
    verifies each reported shape against the source and rule;
 5. exactly one question from the list below.
 
-**The gate has no shell, so every diff reaches it as content, never as a reference.** The caller
-pastes the originating diff and a diff item into the prompt, or writes each to a file the prompt
-names, with deletions intact; a commit range, a branch name, or a `git` command leaves the gate
-judging a working tree that other edits may have moved, or nothing at all. Its selector receipt is the
+**The gate has no shell, so every diff and every piece of history reaches it as content, never as a
+reference.** The caller pastes the originating diff and a diff item into the prompt, or writes each
+to a file the prompt names, with deletions intact; a commit range, a branch name, or a `git` command
+leaves the gate judging a working tree that other edits may have moved, or nothing at all. A triage
+or admission whose ground is that the work sits outside the change or past the size budget carries
+the pull request's complete file list against its merge base, each file marked added, modified or
+renamed, and the diff of the files the item concerns. A prompt never asks the gate to run Git or to
+settle a question only history answers; the caller supplies that history. Its selector receipt is the
 model-dispatch record; never replace it with a generic “largest model” label.
 
 **A diff review judges the code as it stands, not only the lines that changed.** Read every module
@@ -262,8 +266,10 @@ question never lets an author judge their own work or collapse distinct verdicts
 ## Questions
 
 Exactly one per gate, each decided by the tests in `references/rubric.md`, with nothing appended.
-Whether an item is the change's doing or predates it is never asked, since no disposition turns on
-it:
+Whether a defect is the change's doing or predates it is never asked, since no defect's disposition
+turns on it. Whether the pull request wrote the code a cleanup finding sits in does decide the
+finding, as the rubric's defer test says, and is read from the file list and diff the item
+carries:
 
 - **Triage — what should happen to this?** An issue, a finding or a proposed record, or a list of
   them in one call; the answer is one of fix, close, defer

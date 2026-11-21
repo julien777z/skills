@@ -25,7 +25,8 @@ Apply Guidance Intent to the resulting package and to every suggested remedy. An
 requirement contradicted on any path is a blocker. Missing evidence holds approval.
 blocker = intended case wrong. should = a real bug callers will hit, an unsafe input,
 an optional setting above, a workaround, a duplicate of an existing helper, or a break of a listed rule. nit = the rest.
-List problems you see outside the change separately, with the files a fix would touch.
+The change is everything the base diff holds, whatever this round checks; code it wrote, moved or
+recreated is inside it. List problems you see outside it separately, with the files a fix would touch.
 Reply:
 VERDICT: APPROVE or CHANGES
 Guidance intent evidence: <controlling requirement and decisive path and evidence, if applicable>

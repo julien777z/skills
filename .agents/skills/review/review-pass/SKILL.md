@@ -173,7 +173,9 @@ validation exclusion is recorded with its evidence and not repaired, rerun or wa
    pass to step 6, and new commits return it to step 1. When all inputs match, record the accepted
    head under **Range** and return its **Output**.
 
-A finding outside the change follows **Review Loop**'s rule for it: every defect is fixed here,
+A finding is outside the change only when it lies outside the pull request's whole diff against its
+merge base, as `code-simplify`'s rubric defines the change, never merely outside the delta a round
+or pass reviewed. A finding outside the change follows **Review Loop**'s rule for it: every defect is fixed here,
 whatever its size, and only cleanup past `pre-production`'s size budget is recorded with
 `defer-scope`. A recorded deferral is discharged, never a gate on the review or the merge, and never
 covers a defect.

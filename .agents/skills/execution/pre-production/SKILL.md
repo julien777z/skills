@@ -130,9 +130,10 @@ with an obsolete owned contract or revision.
 - **Incidental work goes one hop, never further.** What the work notices while making the requested
   change — in a file it opened, a check it ran, a capture it read — is a defect, fixed as below, a
   non-essential check's finding, decided by the essential-checks bullet above, or cleanup, handled
-  under the size budget below. A file opened or edited only to make such an incidental fix is never
-  itself a source of more incidental work: what else it holds is not chased, its cleanup deferred
-  and its non-essential checks' findings left as the essential-checks bullet says.
+  under the size budget below. Under the default budget, a file opened or edited only to make such
+  an incidental fix is never itself a source of more incidental work: what else it holds is not
+  chased, neither fixed nor recorded, and its non-essential checks' findings are left as the
+  essential-checks bullet says.
 - **A defect is anything the system does or shows that a reader would call broken**, and the system
   includes the repository's tooling: its tests, fixtures, build, setup and CI. An image that never
   loads, a wrong value, a state shown in the wrong place, a control that does nothing, a lost write
@@ -163,7 +164,10 @@ with an obsolete owned contract or revision.
   Sitting in a shared
   component, an owned library or another owned repository the pull request does not otherwise touch
   is no reason to leave it: the fix goes to that repository's pull request for this work. It is
-  never deferred or offered to the user as a question.
+  never deferred or offered to the user as a question. **A suspected defect whose confirmation is
+  in the agent's reach** — a run, a walk through the product, a measurement with its own tools — is
+  investigated in the change in flight and fixed there if it confirms; that it is unconfirmed,
+  needs a walk or lies beyond this change is never a reason to defer it.
 - **A security vulnerability the work finds is such a defect, whoever finds it and whenever it
   arrived.** One a gate, reviewer or audit reports in code the change never touched, one that
   predates the change, and one another layer is said to stop before that layer is traced on every
@@ -177,7 +181,9 @@ with an obsolete owned contract or revision.
   the global rules' **Tools and environments** says. It is never put to the user as something to
   consider or an option, recorded as deferred, left as a hardening note, or answered with a
   recommendation to run an audit of any kind later.
-- **Incidental cleanup has a size budget.** Incidental cleanup is everything the request did not
+- **Incidental cleanup has a size budget, measured against the scope the user set and the size of
+  the change in flight**, never against a fixed file count or only the files the change happened to
+  edit. Incidental cleanup is everything the request did not
   ask for that fixes no defect, outside the change's own design, the defect's shape above and the
   non-essential checks' findings the essential-checks bullet decides. A change to a skill edits
   that skill's whole folder, its `SKILL.md`, references, scripts and templates alike, and cleanup
@@ -186,15 +192,24 @@ with an obsolete owned contract or revision.
   change that edits either one, keeping every criterion either copy carries. Cleanup in another
   skill keeps the budget in force.
   - **The default budget:** cleanup that fixes no defect — duplication, dead code, a misplaced
-    helper, an abstraction with one implementation, layout — fits only inside the files the change
-    already edits and while it stays small beside the requested part.
-  - **The widened budget**, which holds instead while a decision the user scoped to the whole
-    session widens it, until they withdraw it: such cleanup fits when its fix touches about five
-    files or fewer, needs no design decision from the user, does not change what the product does
-    and needs no plan of its own. Each such fix gets its own commit, named for what it repairs.
-  - Cleanup past the budget in force is deferred work: returned to the caller to record, listed in
-    the change's report one line each with its record, and never fixed in the change or put to the
-    user as a question. A defect, a security vulnerability included, is never past it. An explicitly
+    helper, an abstraction with one implementation, layout — is done in the change wherever the
+    work met it while it is small beside the change in flight, such as a few files of cleanup met
+    by a change of dozens.
+  - **The widened budget** holds instead under a broad scope, where the user named the whole
+    product, the whole codebase or everything, and while a decision the user scoped to the whole
+    session widens it, until they withdraw it: every cleanup the work meets is in scope and done,
+    and the one-hop limit above does not bound it.
+  - Under either budget each cleanup fix gets its own commit, named for what it repairs.
+  - **A deferral record is reserved for three grounds:** cleanup comparable in size to the change
+    in flight, such as a sweep as large again as the work it came from; work an external blocker
+    holds, something outside every repository the user owns that the fix cannot be written
+    without; and a decision that is the user's, such as a design choice or a change to what the
+    product does, put to them as the global rules say. Such work is returned to the caller to
+    record, listed in the change's report one line each with its record and its ground, and never
+    fixed in the change. Everything else the work meets is done, since a record costs more than a
+    small fix: a later run must find, read, triage and execute it, and it can be lost or misstated
+    on the way. A defect, a security vulnerability included, and a suspected defect whose
+    confirmation is in reach are never past the budget, as the bullets above say. An explicitly
     requested broad refactor sets its own scope and carries no budget.
 - **A correction to how one screen looks or reads reaches every page when the user makes it a
   rule, and that screen alone when they do not.** A correction the user asks to have codified, or
