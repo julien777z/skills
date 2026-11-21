@@ -107,7 +107,10 @@ only a subject no skill runs for.
   decisions are never folded into one question, offered as one choice that settles them all, such as
   following every recommendation, or listed as a multi-select question's checkboxes. When the
   decisions outnumber what one request holds, send one full request and the next only once the
-  user has submitted it. The question's own text and option descriptions therefore carry what the
+  user has submitted it, and open each question with its place in the whole sequence and the
+  sequence's total, such as "48/52", so the reader always sees how many remain; a decision added
+  partway raises the total. A question names its subject in plain words, never by an internal label
+  such as a finding's ID. The question's own text and option descriptions therefore carry what the
   decision needs: what happens today, stated as fact and where; what each option changes; the recommendation
   with its reason; and each item named by the exact name its page shows and by nothing more, such
   as a pull request by its title with no number beside it. A hypothetical, such as "if the API sends
