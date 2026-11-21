@@ -60,9 +60,13 @@ doubles and its name.
     until the suite fits. The rubric's **Test Cost** names the test, family or module to act on.
   - Splitting the suite across jobs only to stay under the budget, or giving any suite a timeout
     above 15 minutes, hides the same defect.
-  - A suite stopped by its time limit, or past its budget, is fixed this way in the change in
-    flight even when the default branch overruns too: the runtime is the defect itself, so the
-    baseline exclusion in `pre-production`'s **Encountered Issues** never covers it.
+  - A suite stopped by its time limit, or past its budget, is a defect even when the default branch
+    overruns too, so the baseline exclusion in `pre-production`'s **Encountered Issues** never
+    covers it. Where its fix goes follows who caused it, so the change stays reviewable as itself:
+    - a suite the change made slower is fixed in the change, whatever the fix's size;
+    - a suite the change did not slow is a defect the work noticed, placed as `pre-production`'s
+      **Scope Follows The Defect, Not The Request** says: a small fix rides with the change and a
+      larger one gets a pull request of its own.
   - Every instruction about a suite's runtime — a worker's brief, a fix step, a gate's remedy —
     states the budget as its target, never only the timeout, since a suite that merely stays under
     the timeout can still be three times over budget.
