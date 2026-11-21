@@ -203,13 +203,30 @@ it before it enters the ledger, using the prompts in `security-audit`'s validati
    write it, checking every factual claim against the source; its corrections are applied and
    named in the report, and a rejected finding is dropped or reported as investigated.
 
-Each step starts at most ten agents, launched through `subagent-matrix` like the reviewers; past ten
+Each step starts at most ten agents a round, launched through `subagent-matrix` like the reviewers; past ten
 candidates or findings, each agent takes those of one subsystem. On the small route both steps run
 in process, against the same prompts.
 
-**Beyond `doctor-protocol`'s launch table**, the whole route therefore starts up to three
-reconnaissance agents, and three more when an area needs mapping again; up to two research agents
-per audit reviewer; and up to ten refuters and ten verifiers. The small route adds none.
+## Hunting Rounds
+
+One round finds roughly half of what several surface, because each reviewer digs where its own
+reading leads, so the hunt repeats until a round adds nothing. A round is the audit reviewers'
+hunt followed by **Validation**. Reconnaissance runs once, before the first.
+
+- **Rounds repeat until a completed round yields no new candidate that survives Validation**, with
+  no cap on the number of rounds: stopping earlier leaves findings a further round would have
+  surfaced. A rejected candidate or a duplicate does not extend the loop, and an incomplete round —
+  a partition unread, a reviewer that did not return — is incomplete, never a clean round.
+- **Each later round hunts only what earlier rounds did not cover**: the partitions and attack
+  classes where the last round confirmed a finding, which mark ground the hunt has not exhausted,
+  and any partition or class no round has reached. Its reviewers are fresh and get every prior
+  finding and rejected candidate, so they look past what is already known.
+- **Launches per round.** On the whole route a round starts the audit reviewers it re-hunts, at
+  most `doctor-protocol`'s cap and one per partition it covers, each with up to two research
+  agents; one cross-cutting reviewer when the round's candidates span partitions; and up to ten
+  refuters and ten verifiers. Reconnaissance adds up to three agents once, and three more when an
+  area needs mapping again. On the small route every round runs in process and adds none. The
+  number of rounds grows with what the hunt keeps finding.
 
 ## Dispositions
 
