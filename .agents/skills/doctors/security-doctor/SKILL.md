@@ -99,8 +99,8 @@ path that crosses subsystems is the cross-cutting reviewer's.
 A caller performing an action or reading a record the system gates from them: a weaker permission
 on another path to the same state change, a body field overriding a restriction, a bulk operation
 checking the batch and not each item, an endpoint that authenticates and never authorizes, a record
-read or written without the owner scoping **Building It Safely**'s *Authorize the object, not only
-the route* requires. A route, handler or job missing the guard its siblings carry is **Missing
+read or written without the owner scoping **Building It Safely**'s *Enforce caller policy at the
+trust boundary* requires. A route, handler or job missing the guard its siblings carry is **Missing
 Construction**'s. Reach: partition; every path to one resource is compared across the
 repository.
 
