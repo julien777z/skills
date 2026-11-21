@@ -228,8 +228,8 @@ export function SearchInput() {
 - **Writes are Server Actions**, and Server Actions authenticate their caller and authorize what they read or change. A write re-renders the page when it finishes. A client-side data layer for reads — SWR, React Query, a fetching hook, a fallback cache seeded from the server — is the shape this replaces, not a companion to it, and a status that has to update live refreshes the server render on an interval instead of fetching on the client. A read that depends on input an open control holds in its own state — a city search as the reader types, a preview of the choices in a dialog — is a read-only Server Action that control calls, never a route handler it fetches; input that belongs in the address, such as a list's filters, stays search params the page renders from.
 - **The address carries only state that differs from the page's default.** The first page, an empty search, and the default filter, tab or sort stay out of every link, redirect and router push, so a URL never reads `?page=1` or `?search=`. The helper that builds the address drops a default value itself, so no caller has to remember to.
 - **Expected refusals carry a specific, human-readable message the reader can act on**, worded as
-  `pre-production`'s product-copy reference says. Trace generic copy for a known validation or business refusal to its service
-  and fix that error contract there, rather than inventing replacement client copy. Expected
+  a short, friendly request for the reader's next step that never repeats back what they entered.
+  Trace generic copy for a known validation or business refusal to its service and fix that error contract there, rather than inventing replacement client copy. Expected
   refusals must not escape as internal server errors. Genuine 500 responses may keep a safe,
   generic message; diagnose and repair an unexpected 500 encountered during normal operation
   rather than accepting the failure feedback as a finished result. Clearly label failures deliberately

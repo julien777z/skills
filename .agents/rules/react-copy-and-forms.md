@@ -106,8 +106,9 @@ paths:
   confirm", which reads as a penalty. Words such as blocked, locked, denied, stay or until frame a
   pending step as a punishment; keep them for a refusal the reader can do nothing about. A status
   label or badge is not such a sentence: it names the state plainly, as the status bullet above
-  says. A notice only the product's own team reads states the condition and its values instead, as
-  `pre-production`'s product-copy reference says.
+  says. A notice only the product's own team reads states the observed condition and the values it
+  concerns instead, with no guessed cause and no request of anyone, since its reader is the one who
+  investigates.
 
 ### Confirmation Dialogs
 

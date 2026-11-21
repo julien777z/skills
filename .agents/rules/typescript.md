@@ -120,8 +120,9 @@ type Status = (typeof Status)[keyof typeof Status];
   side, the value stays where its owner put it.
 - Read environment variables only in the owning typed configuration module. Import validated values
   elsewhere, and keep server secrets out of modules that browser code can import.
-- That module validates every value `pre-production`'s **Configuration** makes required
-  when it loads, through the repository's schema validator where it has one, refusing an empty
+- That module validates every required configuration value when it loads, a value being required
+  unless it has a default a production deployment can run on with full behavior or its owner
+  documents a supported absence, through the repository's schema validator where it has one, refusing an empty
   string as it refuses an absent one, such as `z.string().min(1)`, and throws naming the missing
   value. A read that lets an unset value through, such as `process.env.NAME || null` or
   `?? ''`, followed by code that skips its work on the empty value, is the defect that section names.

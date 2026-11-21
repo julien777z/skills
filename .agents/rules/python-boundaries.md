@@ -11,7 +11,7 @@ paths:
 
 - Define each configuration owner's settings in one descriptively named `BaseSettings` class such as `ActionConfig` in its `config.py`. A repository may have distinct application, worker, or script configuration owners; do not combine unrelated settings merely to produce one repository-wide class. Keep each config module declarative: instantiate its settings once at that owner's composition boundary, then pass or import that validated object wherever settings are needed.
 - Put a value in that settings class when, and only when, its owner is likely to change it on its own — per deployment, per environment, per release, or while running the system — without changing the code that reads it. What kind of value it is never decides this: a timeout, retry count, or batch size the owner expects to revisit is configuration exactly as a credential, a host the deployment chooses, or a feature switch is. Every other value — one nobody expects to change except together with the code that reads it, including every value that code's correctness fixes, such as a pattern it parses with or a format or limit a protocol defines — is a typed module constant beside that code. Where the evidence settles neither side, the value stays where its owner put it.
-- Give configurable values typed defaults when the repository has a safe default, as `pre-production`'s **Configuration** defines one, and let `pydantic-settings` load environment values using the settings names governed by the Pydantic rule.
+- Give configurable values typed defaults when the repository has a safe default, one a production deployment running on it gets the full behavior from, and let `pydantic-settings` load environment values using the settings names governed by the Pydantic rule.
 - Use `TypedDict` only for static structured data that is not configuration.
 
 ```python
@@ -29,7 +29,7 @@ class ActionConfig(BaseSettings):
 APPLICATION_CONFIG = ActionConfig()
 ```
 
-- Before declaring or reviewing a setting, read its supported operations, consumers, and example/test configuration. A setting `pre-production`'s **Configuration** makes required, including an endpoint, API key or secret, is a required non-nullable Pydantic field with a nonempty field constraint, never `str | None = None` or an empty-string default. Declare a field optional only for the documented absence contract that section allows, at the settings class, never through a missing-value check in a consumer.
+- Before declaring or reviewing a setting, read its supported operations, consumers, and example/test configuration. A required setting, one with no safe default and no documented supported absence, including an endpoint, API key or secret, is a required non-nullable Pydantic field with a nonempty field constraint, never `str | None = None` or an empty-string default. Declare a field optional only for a documented absence contract, at the settings class, never through a missing-value check in a consumer.
 - Do not add useless config values like `DEFAULT_ENVIRONMENT`.
 - A provider's published sandbox and production hosts are constants in that provider's package, and the application's canonical environment check selects between them. Select a provider's host from that check (such as the settings object's `is_production`), never from a provider-specific environment setting or enum that restates what the deployment environment already decides.
 - Do not add helper functions like `_get_environment` when the value already exists on the shared settings object.
@@ -60,7 +60,7 @@ APPLICATION_CONFIG = ActionConfig()
 - Do not convert between models you own with `Target(**source.model_dump())`, `Target.model_validate(source.model_dump())`, or `Target(**source.__dict__)`. These dictionary-shaped conversions erase the relationship between the source and target contracts, can collide with explicitly supplied fields, and may re-run normalization or encryption.
 - Put the conversion on the target in a typed `from_<source>` or `build_*` classmethod that names the fields. If the copy becomes long, consolidate the models or carry the source model as a nested field instead of flattening it.
 - Reserve `model_dump()` for boundaries that leave the typed model layer, such as JSON, persistence, caches, and logs.
-- **A value with one canonical form is normalized once, by its field's type on the model.** A case-insensitive identifier such as a username or a hostname, or a code kept trimmed and upper-case, is declared with an annotated type or validator on the model, or a column type that normalizes on write, so every value the model holds is already canonical. Service code never calls `.lower()`, `.strip()` or the like on it, since one call site that misses the call is a bug; input compared against it goes through the same type. Rows already stored are migrated to the canonical form with the change, as `database-migrations` says.
+- **A value with one canonical form is normalized once, by its field's type on the model.** A case-insensitive identifier such as a username or a hostname, or a code kept trimmed and upper-case, is declared with an annotated type or validator on the model, or a column type that normalizes on write, so every value the model holds is already canonical. Service code never calls `.lower()`, `.strip()` or the like on it, since one call site that misses the call is a bug; input compared against it goes through the same type. Rows already stored are migrated to the canonical form with the change, through a migration revision.
 
 ```python
 Hostname = Annotated[str, AfterValidator(str.lower)]
@@ -70,7 +70,7 @@ class Mirror(BaseModel):
     hostname: Hostname
 ```
 
-- Application code (a function, method, property, class, constant, or field) with **zero non-test consumers** is dead code and must be deleted, along with the tests that only exist to exercise it. Consumers, and the writers a guard below is checked against, are counted where the change will land, as `code-simplify`'s rubric says.
+- Application code (a function, method, property, class, constant, or field) with **zero non-test consumers** is dead code and must be deleted, along with the tests that only exist to exercise it. Consumers, and the writers a guard below is checked against, are counted where the change will land: the branch it merges into and the open branches it ships with, in every repository the user controls.
 - **Tests do not justify keeping otherwise-unused application code.** A test that asserts a symbol no other application code reads is testing a fabricated contract; delete the symbol and that test together rather than preserving the symbol "because it's covered".
 - "Consumer" means live application/library code that reads the symbol — call sites, internal use by another live symbol, serialization, or a public package export in `__all__` that external packages import. Test modules are not consumers.
 - A symbol reached only indirectly through another symbol that is itself dead is also dead; remove the whole unused chain.

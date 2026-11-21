@@ -78,8 +78,9 @@ paths:
 - **A change to a shared mechanism is applied everywhere that mechanism appears, and on every
   sibling surface, in the same change.** A widget grid, a list row, a dialog shell, an edit-mode
   chrome, an empty state: when a fix arrives for one page built on it, the other pages built on it
-  are in scope too. Whether a correction the user makes to how one page looks or reads reaches
-  other pages is `pre-production`'s **Scope Follows The Defect, Not The Request** to decide.
+  are in scope too. A correction the user makes to how one page looks or reads reaches other pages
+  when the user makes it a rule or gives a reason that holds wherever the shape appears, and stays
+  on that page otherwise.
   Search for every surface that renders the same component or hook before editing, and every
   sibling surface — the variants of one document, the create and edit of one record, the same
   surface built for two audiences — whether or not it renders that component yet, since siblings
@@ -145,7 +146,7 @@ paths:
   actions stay together; give structured content the room its columns and relationships need.
   Content that cannot get that room at some width never gets it by squeezing values until they
   wrap, truncate or shrink; which of it to remove or hide below that width is the user's choice,
-  as `pre-production`'s **Product Choices** says. Compact controls do not require a narrow
+  since it changes what information the product shows, unless a skill in use settles it. Compact controls do not require a narrow
   container, and a wide container does not require stretched controls. Use the product's
   established layout and control sizes, preserving comparable widths under the React copy and forms rule's **Forms**, rather than
   shrinking the section or creating a new peer-section row.
@@ -342,7 +343,7 @@ paths:
   to its state owner, writers and prerequisites. If they cannot legitimately coexist, fix the state
   or transition that produced them; a display selector does not repair it. If more than two legitimate
   non-error conditions require banners, surface the product or flow conflict and the concrete alternatives
-  that would resolve it for the user's decision, under `pre-production`'s **Product Choices**. Preserve established banner
+  that would resolve it for the user's decision, unless a skill in use settles it. Preserve established banner
   rendering while that decision waits; combining messages, changing presentation, prioritizing,
   capping, hiding or dismissing an unresolved condition is not a repair. Continue independent
   authorized work. Verify an approved state or flow remedy at its producing transitions and on the

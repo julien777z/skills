@@ -129,7 +129,7 @@ alwaysApply: true
     a skill's folder is source work when its execution changes, even under `.agents`;
   - the focused revert of a pull request an agent merged by mistake, which may auto-merge.
 - **A pull request confined to deferral records, active or declined, merges without a separate
-  request as soon as its records are written**, through `merge-gate` with its required checks, once
+  request as soon as its records are written**, through the skill that runs a merge, with its required checks, once
   its complete diff is confirmed to hold only deferral records: a record left on an open branch is
   lost to every later session. It is never left open, held for a later finishing run, or reported
   as waiting on the user. A record that rides a source pull request merges with that pull request

@@ -19,7 +19,9 @@ or the whole canonical tree — and the pass runs over that.
 
 ## The Pass
 
-Run the steps in order over what the invocation names. The
+Run the steps in order over what the invocation names. A proposed guidance remedy — a question,
+recommendation or plan put to the user — is held to the same steps before it is put, as text being
+written is, because a remedy the user approves is then written as proposed, its defects with it. The
 [authoring reference](references/authoring.md) holds the criteria steps 2 and 6 to 9 apply, each
 step naming the section it reads, the
 [vendor rubric](references/vendor-rubric.md) holds the **Vendor rubric** step's, and the

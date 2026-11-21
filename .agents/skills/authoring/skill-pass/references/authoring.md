@@ -42,13 +42,19 @@ validated. The pass in `SKILL.md` names the section each step applies, and the
   - Examples in `.agents/global.md` and a rule stay generic: invented names and
     placeholder shapes, never this repository's modules, helpers, packages, paths, or domain
     vocabulary, and never the product, tool, or platform whose incident prompted the change.
-- **A rule file and `.agents/global.md` name no individual skill to carve an exception, grant a
-  permission or describe what that skill does.** Each states its own requirement in full and words
-  the opening generically, such as "unless an invoked skill authorizes it", "a skill that states it
-  polls" or "the skill running the merge". The skill that departs from the rule states its own
-  departure and cites the rule. `.agents/global.md` names skills in one place only, because naming
-  is its job: its instructions on which skills always start; anywhere else it cites an owner
-  generically by its subject, such as "the skill that runs a merge".
+- **Skills cite rules; a rule never names a skill.** A rule file names no specific skill for any
+  purpose: an exception, a permission, a citation of one of its sections, or a description of what
+  it does. A rule holds in every repository and loads before any skill is chosen, so a skill it
+  names may be absent, renamed or moved, and every exception listed there grows the rule by one
+  case per skill. The rule states its requirement in full and words each exception and owner
+  generically, such as "unless a skill in use authorizes it", "a skill that states it polls" or
+  "the skill that runs a merge"; where it needs a term a skill defines, it states the criterion
+  itself or names the subject, such as "the product-choice rule". A requirement that makes sense
+  only inside one skill moves to that skill. The skill that departs from or relies on a rule cites
+  the rule.
+  - `.agents/global.md` keeps the same form, with one exception, because naming is its job there:
+    its instructions on which skills always start. Anywhere else it cites an owner generically by
+    its subject.
 - **A skill is found by its frontmatter description, so every subject a skill owns is named in that
   description.** No rule file, `.agents/global.md` or index table lists which skill owns which
   subject: a list kept beside the descriptions goes stale and repeats what they already say. A
