@@ -56,6 +56,15 @@ Invoke `merge-conflict` when a push read-back shows a conflicting base.
 
 Every task that changes files starts here, and so does every follow-up that arrives while one runs.
 
+Before drafting a plan or selecting targets, apply **Product Constraints**' path trace and **Task Authorization**. Resolve broad words in the named outcome's context: for a follow-up, state the work's purpose and check each candidate's
+actual role; a shared mechanism, filename, label, directory or provider does not include unrelated automation.
+Words such as "every" quantify that category; neither they nor text-search matches expand it. Expand only for a required dependency or another named category or outcome.
+Separate selected outcome and verification targets from the existing path and its ordinary ancillary effects. An omitted
+target alone does not prohibit those effects; reuse the path when it serves the request within explicit constraints and
+authority, without inferring authorization for additional actions or outcomes. Honor explicit prohibitions. If the request
+and observed path leave a material ambiguity about a different target, outcome, mechanism or effect to avoid, ask a focused
+clarification before drafting; a clear instruction or routine implementation choice needs no question.
+
 Before choosing a design that adds an operation, helper, or guard or changes a shared operation,
 contract, subsystem, runtime boundary, or independent consumer, apply `code-simplify`'s
 **Before Choosing A Design** check and add the complete record to the task before deciding.
@@ -393,15 +402,6 @@ heredoc or temporary script is not a helper, though a skill's execution checks s
 announce the invocation before the first edit. Listing it as a dependency is not an invocation.
 Read the repository's product state from its project guidance before choosing how to change a
 contract or stored value.
-
-Resolve broad words in the context of the outcome the user named before selecting or inventorying
-implementation targets. For a contextual follow-up, derive the operational category from the purpose
-of the work being changed, not the implementation mechanism shared by candidates. State that purpose,
-then check each candidate's actual role against it. A shared filename, label, directory or provider does not make
-unrelated automation part of that scope. Broad words such as "every" or "anywhere" quantify that
-category; they do not add unrelated categories. Expand only for a required dependency or a user
-instruction naming an additional operational category or outcome, never for a broad quantifier
-alone or everything a text search happens to return.
 
 Before recommending an implementation, asking a question that presupposes one, or delegating its
 edits, trace the requested behavior through the caller, transport, configured destination and
