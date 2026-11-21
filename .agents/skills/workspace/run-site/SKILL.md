@@ -28,8 +28,8 @@ Use `use-browser` for browser control through its supported route. Apply `test-f
   execution environment.**
 - **In a local execution environment that inspection runs in a browser session the agent launches
   and owns**, headless by default, as `use-browser` routes it, never in the user's own browser,
-  tabs, windows or desktop, as the testing rule's **Environments** says. It follows the walkthrough
-  below — its scenarios, sign-in, driving, captures and defects — and owes no recording.
+  tabs, windows or desktop, as the testing rule's **Environments** says. It is the walkthrough
+  below without its recording.
 - **The inspection covers what the change can affect, and its route follows from that.** A change
   confined to a component's own presentation or interaction — its markup, styles, input handling —
   whose behavior does not depend on the page's data, sign-in, routing or server is inspected by
@@ -112,10 +112,9 @@ preserve configured ports.
 ### When a walkthrough is owed
 
 After selecting browser verification under **Principles**, perform the following walkthrough
-where it applies, without its recording for a local inspection. Passing tests, type checks, and a
-clean build show the code runs, never what the reader meets, and do not replace it. A change that
-can alter what the app does — new or reordered UI, layout or spacing, a component's props or state,
-a hook, a route, a redirect, middleware, an auth round trip, or the shape of a request — is walked
+where it applies. Passing tests, type checks, and a clean build show the code runs, never what the
+reader meets, and do not replace it. A change that can alter what the app does — new or reordered
+UI, layout or spacing, a component's props or state, a hook, a route, a redirect, middleware, an auth round trip, or the shape of a request — is walked
 end to end before it is reported done, however few lines it took, apart from a change confined to a
 component's own behavior that **Principles** lets the agent check on a page it builds; the
 walkthrough follows the push rather than holding it, as the GitHub rule’s **Pre-Push Gate** says. An
@@ -185,8 +184,9 @@ EOF
 
 - The final walkthrough drives the **local** production build the startup command serves, never a
   dev server and never the deployed domain: prefetching, caching, and middleware behave differently
-  under a dev server, and a deployed site proves nothing about this checkout. Interim captures while
-  the work is in flight may come from dev servers. Snapshot after every navigation; refs do not
+  under a dev server, and a deployed site proves nothing about this checkout. The component page
+  **Principles** allows renders the shipped package's build output, served however that page needs.
+  Interim captures while the work is in flight may come from dev servers. Snapshot after every navigation; refs do not
   survive it.
 - **Operate the control the change touched, not the page that holds it**, with real input events on
   every screen that mounts it, then read the state it was meant to leave — where the element landed,

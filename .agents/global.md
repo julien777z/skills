@@ -705,8 +705,8 @@ return normalized
   invented, plainly synthetic value that keeps only the trait the case turns on, such as a hyphen, a
   long value or an accented letter: a reported plant code `FERN-EXAMPLE-0042` becomes
   `PLANT-SAMPLE-0001`, and a reported total of `$9,876.54` becomes `$1,000.50`.
-  It is swapped at the **first retelling**, the plan, ledger entry or brief later work copies from;
-  a value derived from it, such as its digits reordered or the next in a sequence, is the user's too.
+  Outside the bullets below, it is swapped at the **first retelling** later work copies from: the
+  plan, ledger entry or brief. A value derived from it, such as its digits reordered, is the user's.
   - A quote of the user's words that holds such a value — an intent statement, a recorded answer, a
     handoff, a dashboard — keeps the rest of their words exactly and names the value by its kind in
     brackets, such as `[the reported plant code]`.
