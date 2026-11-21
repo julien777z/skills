@@ -201,7 +201,11 @@ an executable to its application, utility or test-support owner with every consu
 prompt into its own file in the application's prompts folder, which the code loads and fills,
 rename files and folders for what they hold, and regroup each declaration list by concept,
 renumbering an owned wire contract's fields to match — every importer, producer and consumer
-updated and every generated target regenerated in the same change, no re-export left behind. A UI
+updated and every generated target regenerated in the same change, no re-export left behind. A
+renumbering is a deliberate break of an owned contract, made as `pre-production`'s **Target
+Contract** says, because field numbers that record when each field was added leave the contract
+shaped by its history rather than its concepts: every consumer moves in the same change, and data
+stored in the old numbering is migrated through a revision rather than read by a second path. A UI
 area folder is judged by these checks once **Pass-Through Layer**'s wrappers in it have become
 variants on their owners. Left alone: a module boundary a framework prescribes, a package boundary
 a build or distribution artifact needs, the one-component-per-file split the general React rule requires
@@ -371,7 +375,9 @@ The remedy is the current path alone: read the contract, raise the violation, fi
 source, delete the suppression and let the check's verdict gate again, type the value the escape
 hatch hid, log the failure whole with only typed secrets concealed, move to the supported
 replacement or turn on the default its owner says is coming, delete the branch, the guard with its
-message, the widened type and the test that only exercised it, and delete a symbol only tests
+message, the widened type and the test that only exercised it, remove a reserved or deprecated
+owned wire field and merge a concept's two fields into one, with consumers and stored data moved
+as **Scattered Structure**'s renumbering is, and delete a symbol only tests
 consume together with those tests, as the `python-boundaries.md` rule says of dead code. Left
 alone: a genuinely optional third-party field; failover between live providers; a non-temporal
 second strategy; a catch that compensates and re-raises; a cancellation carve-out; a pattern the
