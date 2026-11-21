@@ -235,7 +235,9 @@ fi
 
 CANONICAL_RESOURCES="$REPO_ROOT/.agents/resources"
 CANONICAL_HOOKS="$REPO_ROOT/.agents/hooks"
-HOOK_REGISTRAR="$INSTALLER_DIR/resources/register_hooks.py"
+SETTINGS_RECONCILER="$INSTALLER_DIR/resources/reconcile_settings.py"
+# Records the settings the installer merged into each root, so a later run can remove its own.
+readonly SETTINGS_RECORD_NAME=.skills-installer-settings.json
 GENERATED_ROOT="$REPO_ROOT/$GENERATED_DIRNAME"
 PROVIDERS=(claude codex cursor)
 found_root=0
@@ -312,22 +314,26 @@ physical_path_key() {
   python3 "$PATH_HELPER" "$@"
 }
 
-register_hooks() {
+reconcile_settings() {
   local action="$1" provider="$2" root="$3" settings=hooks.json
+  local record=()
 
-  [ "$provider" = claude ] && settings=settings.json
+  if [ "$provider" = claude ]; then
+    settings=settings.json
+    record=(--settings-record "$root/$SETTINGS_RECORD_NAME")
+  fi
 
   if [ "$hook_python" -eq 0 ]; then
     if [ "$action" = install ] && [ "$hook_python_warned" -eq 0 ]; then
-      echo "python3 3.11 or newer not found; hooks are linked but not registered." >&2
+      echo "python3 3.11 or newer not found; hooks are linked but no hooks or settings were registered." >&2
       hook_python_warned=1
     fi
 
     return 0
   fi
 
-  python3 -B "$HOOK_REGISTRAR" "$action" --target "$root/$settings" \
-    --source "$GENERATED_ROOT/.$provider/$settings" --hooks-dir "$root/hooks"
+  python3 -B "$SETTINGS_RECONCILER" "$action" --target "$root/$settings" \
+    --source "$GENERATED_ROOT/.$provider/$settings" --hooks-dir "$root/hooks" ${record[@]+"${record[@]}"}
 }
 
 preflight_provider() {
@@ -363,7 +369,7 @@ preflight_provider() {
     done
   fi
 
-  register_hooks check "$provider" "$root" || failed=1
+  reconcile_settings check "$provider" "$root" || failed=1
 
   if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ -d "$CANONICAL_AGENTS" ]; then
     check_directory "$root/agents" || failed=1
@@ -542,7 +548,7 @@ install_provider() {
   fi
 
   prune_links "$root/hooks"
-  register_hooks install "$provider" "$root"
+  reconcile_settings install "$provider" "$root"
 
   if { [ "$provider" = "claude" ] || [ "$provider" = "cursor" ]; } && [ -d "$CANONICAL_AGENTS" ]; then
     mkdir -p "$root/agents"
@@ -736,7 +742,7 @@ for index in "${!INSTALL_ROOTS[@]}"; do
 done
 
 if [ "$preflight_ok" -eq 0 ]; then
-  echo "Resolve the listed conflicts before installing; no links or hook registrations were changed." >&2
+  echo "Resolve the listed conflicts before installing; no links, hook registrations or settings were changed." >&2
   exit 1
 fi
 

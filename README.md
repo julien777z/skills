@@ -59,6 +59,18 @@ session writes lacks a backup comment, it keeps the turn going in Claude Code an
 a follow-up message in Cursor. Codex runs a newly registered hook once it has been reviewed and
 trusted there.
 
+The installer also merges the settings in Claude's generated `settings.json` other than its hooks
+into the user-level `~/.claude/settings.json`, so they apply in every repository:
+
+| Setting | What the installer does |
+|---|---|
+| Set in the generated file | Written to the user file, replacing the user's value. |
+| Not set in the generated file | Left as the user has it. |
+| Removed from the generated file | Removed from the user file, or restored to the value the installer replaced, unless the user has changed it since. |
+
+`~/.claude/.skills-installer-settings.json` records which settings the installer wrote and the
+values they replaced.
+
 ## Layout
 
 | Path | Purpose |
@@ -72,7 +84,7 @@ trusted there.
 | `.agents/resources/<name>/` | Vendored reference files, linked into each supported user-level root under `resources/<name>/`. |
 | `.agents/.auto_generated/` | Provider mirrors the workflow generates on `main`; never edited by hand. |
 | `AGENTS.md` | Repository instructions the workflow generates at the root; never edited by hand. |
-| `bootstrap/install.sh` | Refreshes a cloud setup clone when used there, then links skills, resources, agents, rules, and hooks into user-level roots and registers the hooks. |
+| `bootstrap/install.sh` | Refreshes a cloud setup clone when used there, then links skills, resources, agents, rules, and hooks into user-level roots, registers the hooks, and merges Claude's generated settings. |
 
 ## Skills
 
