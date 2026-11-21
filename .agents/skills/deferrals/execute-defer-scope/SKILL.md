@@ -116,12 +116,13 @@ Apply dispositions as follows:
 
 - **Implement** or **Simplify and incorporate** — make the complete correction and update every
   affected test, contract, migration, generated artifact, and consumer.
-- **Already resolved** — add the evidence and move the issue to a completed-category state.
+- **Already resolved** — the default branch did the work or a landed change made it irrelevant: add
+  the evidence and move the issue to a completed-category state.
 - **Decline** — add the reason and the concrete fact that would justify reconsideration, then move
   the issue to a canceled-category state. The work is real and someone may pick it up, so the
   record stays.
-- **Void** — the record describes nothing to do: opened by mistake, a duplicate, a finding that
-  proved wrong, or work a landed change already made irrelevant. Delete it rather than canceling
+- **Void** — the record never described work: opened by mistake, a duplicate, or a finding that
+  proved wrong. Delete it rather than canceling
   it, following the cancel-or-delete rule in `linear`, which also covers what to do when the
   integration exposes no delete operation.
 - **Blocked** — record the blocker and required decision or external change; keep the issue active.

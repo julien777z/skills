@@ -330,6 +330,7 @@ question: what would change in how the skills run and which rules they read. It 
      only what belongs to neither side.
    - `metrics`: the four **Workflow** names, each `value` "<current> → <proposed>", such as "~25 →
      ~12", and `detail` what moved it in a few words.
+   - The pages run in this order: `Overview`, `Changed`, `Usage`.
    - `Overview`: a `table` `What changed` with a row per mapped page and the columns Page,
      Subagents per run (current → proposed), Loops (current → proposed) and Change (a few words),
      each row's `details` an outline of that page's changes, changed rules included; one `changes`
@@ -342,7 +343,7 @@ question: what would change in how the skills run and which rules they read. It 
      the columns Skill, Current, Proposed and What changed, most subagents saved first; a `changes`
      section `Loops`, one item per loop added, removed or changed, its `current` and `proposed` the
      cap and what a round reruns on each side.
-   - `Changed`, the second page, with `icon` `compare`, holds one `tabs` section `Changed flows`
+   - `Changed`, with `icon` `compare`, holds one `tabs` section `Changed flows`
      with a tab per mapped page, labeled with the page's name and in the order the Show dashboard orders them, so the
      reader moves between the changed categories on one page. Each tab holds a `diagram` `Flow` of
      the proposed flow with the current flow's removed parts left in, each node and edge, rule

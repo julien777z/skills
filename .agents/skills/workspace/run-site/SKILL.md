@@ -59,7 +59,7 @@ and scale the work to match:
 
 | Present | What to do |
 |---|---|
-| Backend only | Start the services, verify the health endpoints and `/docs`, exercise the API directly |
+| Backend only | Start the services, verify the health and API documentation endpoints its tooling names, exercise the API directly |
 | Frontend only | Serve the site; when browser verification applies, drive the UI as far as it goes without a live API |
 | Both | Start and verify both; when browser verification applies, perform the full walkthrough below |
 

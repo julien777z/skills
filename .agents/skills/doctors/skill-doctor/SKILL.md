@@ -387,7 +387,7 @@ description, and `skill-pass`'s **Scripts** keeps tests of skills out of the tre
 ## Reviewers
 
 **Lenses are grouped onto reviewers, never one reviewer per lens or per file.** Every reviewer
-reads the whole catalog; the grouping says who reports which checks.
+reads the whole **Lenses** section; the grouping says who reports which checks.
 
 - Reviewers are capped as `doctor-protocol`'s **Launches** sets; this doctor sets no lower cap. The
   repository's skill categories dictate the partition cut: a skill's whole package stays in one
@@ -443,9 +443,9 @@ reads the whole catalog; the grouping says who reports which checks.
 - A rule that must be deterministic becomes a hook, and the rule stays for hosts without hooks.
 - A wording change within a file that removes no requirement is ordinary work, unlike a
   contradiction, whose disposition the Contradictory lens already states.
-- Each mechanical check gets a guard where the repository keeps structural tests: a test that fails
-  when the generated rules file reaches its cap, when a registry entry has no directory, when two
-  rule files share a byte-identical bullet.
+- Each mechanical check gets a guard in `skill-pass`'s source check or a hook, never a committed
+  test, as its **Scripts** says: a check that fails when the generated rules file reaches its cap,
+  when a registry entry has no directory, when two rule files share a byte-identical bullet.
 
 ## Report Additions
 

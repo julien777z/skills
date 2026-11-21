@@ -68,8 +68,8 @@ choices:
 
 ## Ask
 
-- **Use the harness's question tool when the menu fits it.** Claude's question tool holds two to
-  four options. Each available choice becomes an option, its `label` as the label and its `detail`
+- **Use the harness's question tool when the menu fits it**, within that tool's option limit, such
+  as two to four options. Each available choice becomes an option, its `label` as the label and its `detail`
   as the description. A `multi` menu allows several selections, and a `confirm` offers Yes and No,
   its Yes labeled Approved when it approves a plan or proposal.
   A reply typed into the tool's free-text answer is matched as below.

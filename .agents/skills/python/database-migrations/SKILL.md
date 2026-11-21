@@ -41,16 +41,17 @@ its revision.
 Migrations live under the project's revision directory. Each service has one canonical migration
 chain shared by every configured deployment domain.
 
-Every chain is **replayable from an empty database**: its root revision (the project's initial-schema revision name pattern) creates the service schema and all objects, and `alembic upgrade head` on an empty database must always succeed. The migration suite replays all chains from empty on every PR and verifies the result matches the current SQLAlchemy metadata — a migration that cannot deploy fails CI before merge.
+Every chain is **replayable from an empty database**: its root revision (the project's initial-schema revision name pattern) creates the service schema and all objects, and `alembic upgrade head` on an empty database must always succeed. The project's migration replay check, which its CI runs on every pull request, replays all chains from empty and verifies the result matches the current SQLAlchemy metadata, so a migration that cannot deploy fails before merge.
 
 Generated replay rows test the declared migration behavior; they do not expand **Data Scope** into
-a retention obligation for deployed data. Every chain is also replayed **populated**: the project's populated replay test fills every table with generated rows before each revision and compares an exact per-row census before and after each step. Every stored value of every row must survive byte-identical unless the revision's entry in the project's survivorship policy registry declares the change and verifies it per row. A revision that loses or corrupts any row's data without a declaration fails CI. The destructive-operation check additionally scans each revision's `upgrade()` for destructive operations (drops, type changes, UPDATE/DELETE statements, unclassifiable SQL) and requires each one to carry an exact acknowledgment in the same policy registry — missing and stale acknowledgments both fail.
+a retention obligation for deployed data. Every chain is also replayed **populated**: the project's populated replay check fills every table with generated rows before each revision and compares an exact per-row census before and after each step. Every stored value of every row must survive byte-identical unless the revision's entry in the project's survivorship policy registry declares the change and verifies it per row. A revision that loses or corrupts any row's data without a declaration fails that check. The project's destructive-operation check additionally scans each revision's `upgrade()` for destructive operations (drops, type changes, UPDATE/DELETE statements, unclassifiable SQL) and requires each one to carry an exact acknowledgment in the same policy registry — missing and stale acknowledgments both fail.
 
 Shared tooling lives in the project's shared migration package (runner, revision-graph helpers, drift comparison, file validation); the project's migration CI entry point and the test suite both build on it.
 
 ## Authoring Rules
 
-- **Autogenerate is the default for a schema change** — the CI workflow generates the revision.
+- **Autogenerate is the default for a schema change**: the project's revision-generation tooling,
+  which its project guidance or CI names, generates the revision.
   It creates a chain's revision only when the pull request has no unlocked revision on that chain.
   When it has one, the change goes into that file, generated and moved in or written by hand, under
   **Applied Is What Makes History** below; a schema change never opens a second revision.
@@ -60,8 +61,8 @@ Shared tooling lives in the project's shared migration package (runner, revision
   rename is indistinguishable from a drop plus an add, so it renders every rename as `drop_column` +
   `add_column` and discards the column's data. Write `op.alter_column(table, old_name,
   new_column_name=new_name)`, which moves the values with the column, and mirror it in `downgrade()`.
-  `reject_implicit_column_renames` refuses to emit the drop-plus-add shape, so this fails at
-  generation rather than in production.
+  The project's revision-generation tooling refuses to emit the drop-plus-add shape, so this fails
+  at generation rather than in production.
 - Handwritten backfill and schema-repair migrations keep their Alembic entrypoints in `versions/`
   and place substantial revision-specific logic in the project's revision-owned backfill package.
 - Put generic backfill and rollback mechanics in the project's shared backfill runtime package, with
@@ -71,7 +72,7 @@ Shared tooling lives in the project's shared migration package (runner, revision
 - A revision-specific helper under the project's revision-specific fixture package uses the migration filename with
   its leading revision hash and underscore removed. Its test module uses the same name prefixed
   with `test_`: `<revision_id>_<migration_name>.py` pairs with
-  `revisions/<migration_name>.py` and `test_<migration_name>.py`.
+  `<revision fixture package>/<migration_name>.py` and `test_<migration_name>.py`.
 - **Migration scenarios use typed fixtures for every identity.** Reuse the suite's canonical user,
   organization, and related-record fixtures instead of creating ad hoc UUIDs or synthetic rows.
   When a scenario needs a related identifier the fixtures do not model, add a typed fixture at the
@@ -143,7 +144,7 @@ format transition or recovery mechanism for data explicitly declared disposable 
   transformation, upgrade and downgrade outcome, ordering, transaction boundaries, retry behavior, and
   failure behavior stay unchanged. A behavior-preserving refactor may edit its implementation only when
   focused migration tests prove those outcomes equivalent. A correction or intended behavior change is
-  a **new** migration on top. Auto-generated migrations from the GitHub workflow follow the same rule.
+  a **new** migration on top. Revisions the project's generation tooling writes follow the same rule.
 - **A revision no environment has applied yet is not history — edit it in place.** There is no replay
   to preserve, so correct the revision itself rather than layering a second one on top to undo it.
   This holds whatever the mistake is: a destructive body, a wrong constraint name, a missing index. Say
@@ -222,34 +223,34 @@ format transition or recovery mechanism for data explicitly declared disposable 
   or verify hook that exists to exercise a single migration dies the moment that revision is
   rebaselined away, so it lives under the project's revision-specific fixture package in a topic module that can be
   deleted whole, not in the module holding the registries.
-- `revisions/` sits at the migration-test root rather than inside `survivorship/`, because the chain
-  tests under `api/` and the shared `conftest.py` read from it too. A package only one suite may
-  import belongs inside that suite; this one never was.
+- The revision-specific fixture package sits at the migration-test root, beside every suite and
+  shared fixture module that reads it, rather than inside any one suite's package. A package only
+  one suite may import belongs inside that suite.
 - The project's survivorship policy registry holds only the registries mapping a revision to its
   expectations. Anything it points at that is specific to one revision — a row-transform verifier, a
   population value factory, a fixture arranging the rows a migration will rewrite — is imported from
-  `revisions/`, never defined inline.
+  the revision-specific fixture package, never defined inline.
 - A rebaseline that drops the migration history is an ordinary possibility here rather than a remote
   one. Keeping the disposable half separable is what makes that a deletion instead of an audit.
 - **The project's durable migration-test helper package is for helpers that outlive every revision, and the test is whether a
   helper names a table.** A helper spelling out columns in raw SQL is pinned to the schema as it stood
   at one revision: the next rename falsifies it and a rebaseline deletes the migration it was written
-  for, so it belongs in `revisions/` however many modules import it. A helper that only drives the
+  for, so it belongs in the revision-specific fixture package however many modules import it. A helper that only drives the
   database engine — suspending foreign-key enforcement, reading a session setting — knows no schema
   and stays.
 - **A module under the project's shared migration runtime package is tested at the migration-test
   root**, following the project's declared test layout and package boundaries; the tests keep no
   package that mirrors the runtime package.
-- Reach for `utils/` because a helper is schema-independent, never because a second test wanted it.
-  Two revisions needing the same seeding is ordinary, and it makes that seeder shared, not durable;
-  promoting it on import count is what leaves the tests' `utils/` package holding the very rows a
-  rebaseline is supposed to take with it.
+- Reach for the durable helper package because a helper is schema-independent, never because a
+  second test wanted it. Two revisions needing the same seeding is ordinary, and it makes that seeder
+  shared, not durable; promoting it on import count is what leaves the durable package holding the
+  very rows a rebaseline is supposed to take with it.
 
 ### Temporary Backfill Tables
 
 - Put a temporary, migration-owned table that must remain visible to ORM metadata under the owning
   application's declared temporary backfill table package.
-- The `tables/backfills/__init__.py` module exports one metadata registry. The normal table package
+- That package's `__init__` module exports one metadata registry. The normal table package
   imports that registry so drift detection sees every temporary table, but it must not export the
   individual table models as application tables.
 - Application services, routes, and libraries must not import or query backfill table models. If a
@@ -279,27 +280,27 @@ or
 
 1. Your branch is created when the latest migration is revision `X`.
 2. You add a migration with `down_revision = "X"`.
-3. Meanwhile, another migration `Y` (also with `down_revision = "X"`) is merged to main.
+3. Meanwhile, another migration `Y` (also with `down_revision = "X"`) is merged to the default branch.
 4. Now two revisions share the same parent — a fork.
 
 ### How to fix it
 
-1. Identify the actual latest revision on main:
+1. Identify the actual latest revision on the default branch:
    Inspect the project's revision directory.
    Find which file has no other file pointing to it as `down_revision` — that is the current head.
 
 2. Update your revision's `down_revision` to that head. For a locked revision this is a revision
    change, pushed only once the owner unlocks, as **Applied Is What Makes History** says:
    ```python
-   down_revision: Union[str, None] = "<actual-head-on-main>"
+   down_revision: str | None = "<actual-head-on-default-branch>"
    ```
 
 3. Also update the `Revises:` comment in the docstring to match.
 
 ### How to prevent it
 
-- **Before opening a PR**, check whether any new migrations have landed on main in the same environment/service since your branch point.
-- **After rebasing or merging main**, re-check `down_revision` in every migration file on your branch.
+- **Before opening a PR**, check whether any new migrations have landed on the default branch in the same environment/service since your branch point.
+- **After rebasing onto or merging the default branch**, re-check `down_revision` in every migration file on your branch.
 - When multiple PRs touch migrations simultaneously, coordinate to ensure only one is open at a
   time per service, or chain them explicitly.
 
@@ -311,8 +312,8 @@ or
 - [ ] Every deployment domain consumes the same canonical revision file
 - [ ] Shared and operation-specific helpers use their correct package
 - [ ] Migration-only provider and database adapters live in the project's revision-owned backfill package
-- [ ] Temporary support tables live under `tables/backfills/`, appear in its metadata registry, and
-      have no application consumers
+- [ ] Temporary support tables live in the temporary backfill table package, appear in its metadata
+      registry, and have no application consumers
 - [ ] A temporary table's cleanup migration removes its ORM metadata registration in the same change
 - [ ] `downgrade()` reverses every `upgrade()` step in the correct order (indexes before columns)
 - [ ] Corrections to auto-generated revisions follow **Applied Is What Makes History**
@@ -327,15 +328,16 @@ or
 
 ## Debugging CI Failures
 
-| CI check name | Likely cause |
+| CI check | Likely cause |
 |---|---|
-| `test-suites (migrations)` (Run Tests) | Branched graph, a runtime error in an `upgrade()` body, or model changes without a matching migration — the failure output names the service chain and shows the missing operations |
-| `Migrations: Generate` | A generated revision is invalid or the chain is no longer linear |
-| `Submit Release (<domain>)` | The release deployment could not be created for that domain |
+| The migration replay test job | Branched graph, a runtime error in an `upgrade()` body, or model changes without a matching migration — the failure output names the service chain and shows the missing operations |
+| The revision-generation workflow | A generated revision is invalid or the chain is no longer linear |
+| The release-submission job for a deployment domain | The release deployment could not be created for that domain |
 | A release deployment stuck at `queued` | No runner is polling that domain, or an earlier release is still migrating |
 | A release deployment reporting `failure` | A pending chain is invalid, two revisions share the same `down_revision`, or the guard refused the activation |
 
-Run the suite locally with the project's full migration validation command; it replays every chain against the local
-Postgres services, so failures reproduce without touching staging.
+Read each job's name from the project's CI workflows. Run the suite locally with the project's full
+migration validation command; it replays every chain against the local database services the
+project's stack runs, so failures reproduce without touching staging.
 
 When a branched-graph error appears ("Expected exactly one head revision"), follow the **How to fix it** steps above.

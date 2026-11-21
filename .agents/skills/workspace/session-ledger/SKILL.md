@@ -10,17 +10,13 @@ Keep one structured ledger in a private task file outside repository checkouts. 
 source of truth; chat context and native task state carry its exact absolute locator and task
 identity, never a second authoritative copy of its records.
 
-## Dependencies
-- `agent-lock`
-
 ## Storage
 
 - Resolve the locator from the active task's metadata before every retrieval or update. For a new
-  task with no prior ledger, choose a task-specific file in the harness's private task-state
-  directory; when none is provided, use `agent-ledgers/` in the user's private state directory
-  (`$XDG_STATE_HOME`, by default `~/.local/state`), where the turn-end hook under **Backup** finds
-  it. Record the absolute locator and stable task identity in task context before using it. Keep
-  the directory private to its owner and the file owner-readable and writable only.
+  task with no prior ledger, create `<task>.yaml` in `agent-ledgers/` under the user's private
+  state directory (`$XDG_STATE_HOME`, by default `~/.local/state`): the turn-end hook under
+  **Backup** checks only files there whose names end in `.yaml` or `.yml`. Record the
+  absolute locator and stable task identity in task context before using it. Keep the directory private to its owner and the file owner-readable and writable only.
 - An established task's missing locator, absent file, unreadable file, or invalid content is a
   recovery condition, not an empty ledger. Reconcile available canonical artifact receipts,
   continuation records, worker returns and the backup comments **Backup** keeps on this task's
@@ -194,11 +190,8 @@ This skill authorizes those comments and their edits under the GitHub rule's **C
   one owes a backup or cannot be read, the hook lists each entry and what it lacks. In Claude Code
   and Codex it refuses to end the turn; in Cursor it submits the list as the next message. It
   holds a turn back at most once in a row, so post or edit the comment and record its URL, or
-  repair the ledger, in the turn it reopens. It runs only where `python3` is Python 3.11 or newer.
-
-## Snapshot Evidence
-
-A local review snapshot is task-private evidence. Its identity is route, repository, merge base, candidate head/tree or explicit absence, target-patch digest, intended-selection digest, layered-entry-manifest digest, and artifact digest; two snapshots are equivalent only when every field matches. Its owner resolves intended partitions and stops for user resolution when scope is ambiguous, including a selected hunk that shares an index or worktree cell with unrelated content; unrelated dirty content is excluded. It uses `agent-lock` around capture, excludes an unneeded secret-bearing cell, and holds when selected secret content requires an authorized secret-safe review input instead of silently dropping it, serializes layered HEAD/index/worktree cells with digests, atomically promotes and readbacks the artifact, materializes it only in a pristine task-owned checkout, and verifies ownership before retaining or dispatching it. Every failure or cancellation checks ownership first; a valid owned lock is released with `--resource-idle`, while a failed check performs no checkout action or release. Workflows record the artifact locator, identity, inputs, and receipts in the ledger and reference this protocol instead of copying it.
+  repair the ledger, in the turn it reopens. It runs only where `python3` is Python 3.11 or newer
+  with PyYAML installed; without PyYAML it reports every turn that the backups were not checked.
 
 ## Output
 
@@ -226,7 +219,7 @@ new top-level collections or an envelope per kind.
 
 ## Guardrails
 
-- Do not commit a ledger file or its private evidence, or parse a transcript. Never record
+- Do not commit a ledger file or its private evidence, or infer a record from a transcript. Never record
   credentials, tokens, request bodies, other secrets, or unrelated session details. Remove task
   ledger files, retained evidence and transfer copies after the task ends and no receiver or active
   worker still needs them; a handoff continues the task and is not its end.

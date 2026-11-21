@@ -318,8 +318,9 @@ delete the comment and let the code or a better name carry it, cut a docstring t
 language rules require and delete it only where they require none, cut a quirk comment to the
 external behavior in one or two lines, rename to the word that says the subject — every name built
 on a banned term for that meaning, as `banned-terminology` renames them — and split the function at
-its phases. A comment stating a behavior the code must keep is replaced by a test that fails when
-that behavior regresses, never deleted on its own. Each lint rule that reported is proposed as the
+its phases. A comment stating a behavior the code must keep is replaced, in a repository that
+keeps tests, by a test that fails when that behavior regresses, and otherwise stays; it is never
+deleted on its own. Each lint rule that reported is proposed as the
 guard `doctor-protocol`'s **Guard Recurrences** asks for. Left alone: a nested loop over small
 fixed sets; a comment of one or two lines recording behavior outside the repository — a third-party
 or protocol quirk — that the code cannot show; an existing to-do note; a log line reporting an outcome, status, progress or
