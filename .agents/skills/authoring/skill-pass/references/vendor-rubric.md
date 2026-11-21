@@ -272,6 +272,9 @@ its reason, and the workflow applying the pass runs the trial where it has the m
   guidance the run loads, and judged against the outcome the passage itself states.
 - **Repeated.** The task runs twice without the passage and a third time when the two disagree. A
   cut is recommended only when the runs agree that the outcome holds without the passage.
+- **At the standard capability level**, never cheap: the question is whether a current model of the
+  strength that reads the guidance still needs the passage, and a cheaper model does worse than
+  that reader, so it keeps text the reader no longer needs.
 - **Bounded.** At most five passages are tried in one audit or delivery, those in files loaded in
   every session first, and the rest are reported as untried candidates and stay as written or are
   reworded.

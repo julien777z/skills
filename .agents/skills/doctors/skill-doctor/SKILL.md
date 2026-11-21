@@ -416,7 +416,7 @@ reads the whole **Lenses** section; the grouping says who reports which checks.
   things, each named in the report: the files that name it; the usage measurement over a stated window, or unmeasured with
   the reason; the sentences that survive the Restates and Redundant lenses, which are what it
   uniquely says; and, when any survive, the result of a bounded task run at `subagent-matrix`'s
-  cheap capability level without the file, judged against the file's own stated outcomes. **A
+  standard capability level without the file, judged against the file's own stated outcomes. **A
   cut is made only on a repeatable result**: the task runs twice without the file, a third time
   when the two disagree, and a single run that did well without it recommends nothing. At most five
   files are tried in a run, the ones with the fewest surviving sentences first, and the rest are
@@ -424,8 +424,8 @@ reads the whole **Lenses** section; the grouping says who reports which checks.
   with no usage is the ground to fix the trigger first. Age, size, and a
   reference count on their own never cut a file.
 - **A passage is cut for restating the model only on a repeatable result**, as `skill-pass`'s
-  **Cutting A Passage** sets out. The trial runs at `subagent-matrix`'s cheap capability level with
-  the bound the whole-file trial has: twice with the passage removed, a third time when the two disagree, and at
+  **Cutting A Passage** sets out. The trial runs at `subagent-matrix`'s standard capability level,
+  as that section says, with the bound the whole-file trial has: twice with the passage removed, a third time when the two disagree, and at
   most five passages in a run. An untried candidate is reported and stays as written or is
   reworded.
 - **A rewording is ordinary work however many files it reaches.** Because a rewording across the
