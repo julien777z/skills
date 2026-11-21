@@ -86,10 +86,9 @@ Validate skill dependencies and their actual call and policy-read paths as `skil
   any, quoted as `pre-production`'s **Examples And Paths** says, the evidence of the gap, and for a
   process its verified run, a reproduction scenario, the Scope Statement **Behavior** step 2 writes,
   whose From now on line is the entry's intended behavior, the canonical files it will change, and
-  `pending` as its `status`. Steps 1–4 of **Behavior** run at once, while the evidence is fresh, and
-  their result fills the entry; the edit itself (steps 5, 6 and **Branch and commit**) is written as
-  the bullet on writing the edit below says, and delivery from **Run `validate_sources.py check`**
-  onward waits.
+  `pending` as its `status`. Steps 1–4 of **Behavior** run at once, while the evidence is fresh, to
+  fill the entry; the edit itself (steps 5, 6 and **Branch and commit**) is written as the bullet
+  below on writing it says, and delivery from **Run `validate_sources.py check`** onward waits.
 - **A recorded correction governs the rest of the session at once**, ahead of the installed text it
   amends. Before a decision a pending entry's subject covers, read the ledger's pending entries and
   follow their intended behavior. Putting a question or a recommendation to someone is such a
@@ -237,15 +236,16 @@ small it looks.** Each route below is the gate set its batch passes on the head 
      the observable outcome the user rejected and the invariant a correction must preserve, without
      using the named component, format, file or tool as the boundary. Identify at least two ways the
      same outcome can arise, including a workaround that obeys the proposed wording but violates
-     that invariant, and a different kind of decision, such as a sentence, quantity or choice, rather
-     than only more examples of the same format. Test the proposed scope against those routes before
-     stating the change anywhere — a report or question to the user, a queued list, a worker brief, a
-     remedy or a ledger line — or writing it: if any still allows the rejected outcome, widen the
-     owning decision to that class, and no further, and remove conflicting permissions first. Every
-     such statement scopes the rule to the class, naming the instance at most as one example unless
-     it is the root cause; waiting to write never waits to classify. Keep the incident and these
-     cases in the verification record; shared guidance states the invariant, not their identities.
-     This check precedes choosing the owner, as a component-specific owner can hide a broader failure.
+     that invariant, and a different kind of decision, such as a sentence, quantity or choice, not
+     only more examples of one format. Test the proposed scope against those routes before stating
+     the change anywhere — a report or question to the user, a queued list, a worker brief, a remedy
+     or a ledger line — or writing it: if any still allows the rejected outcome, widen the owning
+     decision to that class, and no further, and remove conflicting permissions first. Every such
+     statement scopes the rule to the class, naming the instance at most as one example, unless the
+     instance is the root cause, which the rule then names and stays scoped to; waiting to write
+     never waits to classify. The verification record keeps the incident and these cases, the
+     guidance only the invariant. Classify before choosing the owner, since a component's owner can
+     hide a broader failure.
    - Supported types: every kind the description names. Use the type the user states; otherwise
      the owner search below decides it, never a question to the user.
    - A file or skill the request names is a candidate, not proof of ownership. Compare it with its
