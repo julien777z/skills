@@ -190,8 +190,8 @@ EOF
   Interim captures while the work is in flight may come from dev servers. Snapshot after every
   navigation; refs do not survive it.
 - **Operate the control the change touched, not the page that holds it**, with real input events on
-  every screen that mounts it, or on the page it builds for a change **Principles** confines to a
-  component, then read the state it was meant to leave — where the element landed,
+  every screen that mounts it, or on the page the agent builds for a change **Principles** confines
+  to a component, then read the state it was meant to leave — where the element landed,
   what the field holds, whether the list closed up — and reload where it persists something. A drag
   is several moves, not one jump:
 
