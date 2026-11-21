@@ -495,13 +495,11 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   content starts, at the bottom-left, with the primary action last. In a modal, a dialog or a
   confirmation, the row sits at the bottom-right, the primary action rightmost and cancel
   immediately to its left, where readers of modals look for them. A dialog that only points the
-  reader to one next step, such as a prompt to complete a requirement before an action, shows that
-  action alone: its "×" already closes it, and a cancel beside the step the product wants taken
-  invites the reader away from it. A dialog that collects input, takes a purchase or confirms an
-  action keeps its cancel. Actions are centered only under content that is itself centered, such as
-  an empty state. A multi-step flow's footer is the one
-  exception, as the next bullet says; a control beside a heading, in a toolbar, at the end of a
-  table row or in a floating save panel follows that surface's own layout.
+  reader to one next step shows that action alone. Its "×" already closes it, and a cancel beside
+  the step the product wants taken invites the reader away from it. A dialog that collects input,
+  takes a purchase or confirms an action keeps its cancel. Center actions only under centered
+  content, such as an empty state. The next bullet governs multi-step footers. A control beside a
+  heading, in a toolbar, at a table row's end or in a floating save panel follows that layout.
 - **A multi-step flow's footer puts "Back", on every step that has one, at its start and the
   forward action at its end, apart; a footer holding only the forward action places it at the start,
   as no control sits alone at the far edge of an empty footer. It labels them by position, never by
@@ -581,6 +579,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   action, including one refused because of the account's or record's state or one taken from a
   status or error notice, reports its human-readable reason through the shared notification owner. Never add a page or dialog error
   banner or an error modal for a user-action failure, or create another notification stack.
+  Locally known prerequisites checked before an action starts follow **Forms** below.
   Classify the operation by its intent, not its status code, HTTP method or whether a button started
   it: loading or retrying the data a surface needs follows the resource-load rule below. Preserve
   entered values, the original notice and its state and remedy, and independent resource errors;
@@ -650,18 +649,17 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   that selects one value from a defined list uses the shared dropdown or combobox, never a free-text
   input. Reuse the existing domain control and its complete option source wherever that field
   appears; country and state fields do not become text inputs in a generic field renderer.
-- **Disable an action while locally known prerequisites are unmet.** Missing selections or incomplete
-  required fields are normal editing state, not an error banner. Show errors for failures after a
-  valid action or for failed data requests.
-- **An action the reader cannot take is left out while another action beside it is available.**
-  Canceling a subscription that does not exist, "Mark all read" while nothing is unread, moving an
-  item that has nowhere to go: shown disabled among working controls, each offers a press with no
-  effect. An action with nothing to act on shows disabled only when no other action in its menu,
-  toolbar or group is available, or when it is a paid control the plan bullet in **Layout And
-  Spacing** locks to show what upgrading adds. An action whose prerequisite the reader can still
-  meet stays, disabled, beside available actions, as the bullets here say: a form's submit while
-  required fields are incomplete, Next until its step is complete, Save until something has changed,
-  and an action while it is already running.
+- **Check locally known prerequisites before opening a dialog.** An unmet prerequisite keeps the
+  dialog closed unless the dialog is a necessary entry point. When the dialog stays closed,
+  disable the entry action if the reason is visible. Otherwise, keep it clickable and show the
+  actionable reason in the page's shared error banner on click. A necessary dialog opens and
+  shows the reason in its shared banner with its final action disabled until the prerequisite is
+  met. Ordinary incomplete fields and selections keep the action disabled without an error banner.
+- **Leave an unavailable action out when another action beside it is available.** An action with
+  nothing to act on shows disabled only when no other action in its menu, toolbar or group is
+  available, or when the plan bullet in **Layout And Spacing** locks a paid control. Except for the
+  entry action above, keep an action disabled beside available actions while its prerequisite can
+  still be met: incomplete forms or steps, unchanged values, and actions already running.
 - **A form the product would refuse in full is never shown.** When every choice it offers would be
   refused, because the feature is off or nothing asked for is allowed, the page shows in its place
   why, and the way forward for this reader, with one action to leave. The server refuses that
