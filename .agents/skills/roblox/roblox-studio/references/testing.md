@@ -347,8 +347,9 @@ swapping pages the VM's memory out, and the VM then stalls whatever its own free
 SSH takes tens of seconds, the load average climbs past the VM's cores, editors stop answering
 Studio MCP and Play sessions drop. Create a VM only while the host's free disk exceeds its disk size
 plus 20 GB. macOS runs at most two macOS VMs at once, whatever the host's size. When the host cannot
-back a VM and another session's VM is up with no lock held on it or its editors, shut that idle VM
-down first, as [End of session for a retained VM](#end-of-session-for-a-retained-vm) says; propose a
+back a VM and another session's VM is up and idle, shut that idle VM down first, as
+[End of session for a retained VM](#end-of-session-for-a-retained-vm) says of when a VM counts as
+idle and how to shut it down; propose a
 size change only when the host is still short.
 
 **A VM's size is a setting the user approves, never a wall.** When the measured need differs from the
@@ -850,8 +851,11 @@ done, save the authorized project artifacts and close what the session itself op
 down in two cases only:
 
 - the user asks for it;
-- the host needs memory, and another session has a VM up that it is not actively using, shown by no
-  lock held on that VM or its editors. That idle VM is the one shut down.
+- the host needs memory, and another session has a VM up that it has left idle: no lock on that VM
+  or any of its editors is held now or has been acquired or released in the last 30 minutes. That
+  idle VM is the one shut down. A free lock alone does not show idleness, because a session keeps
+  its game's warm editors open and unlocked between the steps of its work, and a shutdown then
+  closes the editors it is about to reuse.
 
 A stop that starts the VM again in the same step, under the VM's own lock, is the VM's own
 maintenance and not a shutdown: an approved resize, a runner repair and a configuration check that
