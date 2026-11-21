@@ -113,7 +113,11 @@ Run the detector the repository's tooling already configures for its language.
 
 **Every pair it reports is a finding, whether or not this run introduced it.** Nothing else in the
 audit reports these, so the pairs that predate the run are precisely what the lens exists to catch,
-and a count of what the branch added is not the measure: the measure is zero.
+and a count of what the branch added is not the measure: the measure is zero, less the pairs a
+reviewer dismisses. A reviewer reading a pair may dismiss it with a recorded reason when the
+matched lines are not one test or one piece of setup, such as two parametrize tables whose rows
+look alike but cover different behaviors, so a run is never held open by text that only resembles
+itself; the report lists each dismissed pair with its reason.
 
 Name the owner each block moves to before editing: repeated setup goes to the fixture package of the
 suite that reads it, a repeated call to that suite's utility package, repeated model construction to
@@ -127,10 +131,12 @@ pairs it exists to catch are the ones nobody suspects, which is why nothing else
 them. Where the detector cannot be run at all, say that and say why, rather than presenting an
 inspection as its result.
 
-Re-run the detector after each cluster and keep going until it reports none. A pair that survives
+Re-run the detector after each cluster and keep going until it reports no pair that has not been
+dismissed. A pair that survives
 because the lines it matched are still identical says the owner was wrong or the call site still
-spells the call over four lines; shorten the call or move the boundary, and never settle it by
-widening the tool's threshold or disabling the check.
+spells the call over four lines; shorten the call or move the boundary. The threshold stays at the
+tool's default and the check stays on, because a widened threshold hides every pair below it, real
+copies included, where a dismissal names the one pair and why it is not a copy.
 
 ## Name Cases As Labels
 
