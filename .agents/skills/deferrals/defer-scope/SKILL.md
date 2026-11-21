@@ -118,9 +118,10 @@ write:
    request. Only when the session has no open source pull request there does the record go on a
    pull request holding only deferral records, the session's open one or a new draft from the
    default branch, which later records join. Once its records are pushed, put its complete diff to
-   `acceptance-gate`'s final-acceptance question, then invoke `merge-gate` under the GitHub rule's
-   deferral-record permission with the accepted head, no local test coverage, and the rule that a
-   fix it makes goes back to final acceptance over that fix's delta. It is never left open, and no
+   `acceptance-gate`'s final-acceptance question, one gate per such pull request, then invoke
+   `merge-gate` under the GitHub rule's deferral-record permission with the accepted head, no local
+   test coverage, and the rule that a fix it makes goes back to final acceptance over that fix's
+   delta, one more gate per fix, capped by the global rules' review-round limit. It is never left open, and no
    report or next action leaves its merge to the user.
 
 Never mix Linear and repository records for one deferral. Existing repository records remain in

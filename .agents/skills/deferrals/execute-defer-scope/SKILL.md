@@ -135,8 +135,9 @@ The user's completion condition is a ready validated pull request, not its merge
 resolution pull request carrying any other change without separate authorization. One confined to
 deferral records, such as legacy declined moves and retired records, merges under the GitHub rule's
 deferral-record permission: put its complete diff to `acceptance-gate`'s final-acceptance question,
-then invoke `merge-gate` with that accepted head, no local test coverage, and the rule that a fix
-it makes goes back to final acceptance over its delta.
+one gate per such pull request, then invoke `merge-gate` with that accepted head, no local test
+coverage, and the rule that a fix it makes goes back to final acceptance over its delta, one more
+gate per fix, capped by the global rules' review-round limit.
 
 When inventorying, reconcile completed issues whose resolution pull request later closed without
 merging. Record that evidence and return them to the appropriate active state so ordinary `all`
