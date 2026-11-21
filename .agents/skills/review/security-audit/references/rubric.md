@@ -161,8 +161,12 @@ smallest-fix order above, applied before there is anything to fix.
 - **Keep data and code apart.** Parameterized queries and the query builder's binding for every
   value; an allow-list for every identifier, path segment, command, URL host and deserialized type
   built from input; no `eval`, shell string, or unsafe deserializer fed from outside.
-- **Authorize the object, not only the route.** Every read or write of a record checks the caller may
-  act on that record, scoped by the owner the store already holds.
+- **Enforce caller policy at the trust boundary.** Trace every path to the control that establishes
+  the caller's authority. Internal calls within that boundary use the authority established there.
+  A genuinely distinct caller restriction belongs in the shared authorization policy and its
+  common enforcement, such as middleware or a decorator, instead of identity branches in
+  individual handlers. Keep resource scoping on every read and write using the owner already in
+  the store.
 - **Keep secrets where they belong.** No secret, token or credential in source, fixtures, logs, error
   messages or client bundles; each comes from the configuration owner the repository already uses.
 - **Add no surface the request does not need.** No debug route, permissive fallback, wildcard
