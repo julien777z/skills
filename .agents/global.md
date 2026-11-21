@@ -756,6 +756,11 @@ return normalized
   nothing: a second comment, a docstring, or a comment in another file. A comment above a timeout
   saying a library sets none, and another at the override that applies it, are one comment too many.
 
+- **A partial update expresses intent through its existing field presence or field mask.** Apply
+  the fields that mechanism selects and leave every other field alone. Use the contract's own
+  representation for an explicit clear. A separate control earns a place only when it expresses
+  a distinct operation the update fields cannot represent.
+
 - When a request replaces a route, API contract, or behavior, remove the prior alias or fallback. Retain legacy compatibility only when the user explicitly authorizes it in the current request; if retention is unclear, ask before adding it.
 
 ## Reported Outcomes
