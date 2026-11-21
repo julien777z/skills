@@ -234,11 +234,13 @@ alwaysApply: true
   instruction, a skill they invoke for it, such as `finish-pr`, or guidance that grants it; naming
   what remains for the user and that skill, in a report or a plan's closing line, is how it is left
   to them, not an offer.
-- **A merge leaves no deploy work.** Once a pull request's merge is verified, never check by any
-  route whether the change is live, such as a provider's deployment status, a release run or the
-  site itself; never walk or test the site the merge deployed; never schedule a re-check, wait for
-  a deploy, or assume one is coming. Nothing waits on a deploy: the remaining work proceeds, and a
-  report names no deploy step as remaining. Other authorized work after a merge is unaffected, such
+- **A merge leaves no verification or deploy work.** Whatever a change needs verified — tests, a
+  playtest, a walkthrough, an audit, a fresh-eye review — runs before its merge. Once the merge is
+  verified nothing runs again to check it: no check by any route that it is live, such as a deploy
+  status, a release run or the site itself, and no test, walk or audit of what it deployed or of
+  the merged default branch. A verification step still open at the merge closes with it, and
+  nothing waits on such a run or on a deploy: no plan step, ledger or guidance hold, worker brief
+  or report's next action. Other authorized work after a merge is unaffected, such
   as a run's next batch, a consumer repointed once its dependency merged, or the refresh the GitHub
   rules' **After Agent Sync** section requires. A task whose own outcome the user stated as a
   deployment, publication or release, or as restoring a broken deployed operation, follows that

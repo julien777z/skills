@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Before proposing or editing guidance, derive the observable failure and test the proposed scope against alternative implementations of it. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. A correction that encodes a new process waits until that process has worked on the work in hand; every other correction is recorded and written at once, whatever happens to the current work's repair. While another task is active, every correction, a direct request to edit guidance included, is pushed to a draft guidance pull request and recorded, with a generic backup comment there, and the rest of its delivery runs in bulk when that task completes; one arriving while a guidance batch is in flight joins that batch's pull request, which reruns only the checks the new edit invalidates. Use it too when carrying a guidance batch through delivery to its merge or hold. Deliver every behavior-changing guidance edit through `review-pass`, the acceptance gate, and `test-skill` before its pull request merges.
+description: Add or edit a skill, rule, or agent file under `.agents`, including when the user points out a mistake in how an agent followed or wrote guidance or questions where guidance was placed. Before proposing or editing guidance, derive the observable failure and test the proposed scope against alternative implementations of it. Write each change for the whole class of failure the request is one instance of, which is the same mistake in every kind of document, file, tool, or step it can occur in, not only the one the request names, the section it says to put the fix in, or the one path that let this instance through. Diagnose and fix the underlying issue and the guidance path that allowed it, even without an explicit request to edit a skill. A correction that encodes a new process waits until that process has worked on the work in hand, which a merged change that carried it has; every other correction is recorded and written at once, whatever happens to the current work's repair. While another task is active, every correction, a direct request to edit guidance included, is pushed to a draft guidance pull request and recorded, with a generic backup comment there, and the rest of its delivery runs in bulk when that task completes; one arriving while a guidance batch is in flight joins that batch's pull request, which reruns only the checks the new edit invalidates. Use it too when carrying a guidance batch through delivery to its merge or hold. Deliver every behavior-changing guidance edit through `review-pass`, the acceptance gate, and `test-skill` before its pull request merges.
 short_description: 'Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.'
 ---
 
@@ -14,13 +14,14 @@ doing other work. An edit that skipped this is unverified, and the report says s
 new process into guidance — a workflow, a procedure, a tool or route, a way of building or
 delivering something — is first carried out on the work in hand and verified to work; the guidance
 is then written from that run: the steps and commands it used, what had to differ from the source
-that described the process, and what failed along the way. Documentation, a plan, a worker's
-proposal or the request's own description of the process is the source to try, never the text to
-encode. Every other correction — a gap a guidance failure exposed, a rule the user states — depends
-on nothing the current work does: record it and write its edit at once under **Recording During A
-Task**, which sets when it is delivered, while the current work is corrected beside it. A problem
-the current work meets while it is being corrected is that work's own issue, never a reason to hold
-or drop a correction that does not depend on it.
+that described it, and what failed along the way. A merged change that carried the process is that
+run, so its guidance is written from the merged work, never held for a fresh run after the merge.
+Documentation, a plan, a worker's proposal or the request's own description of the process is the
+source to try, never the text to encode. Every other correction — a gap a guidance failure exposed,
+a rule the user states — depends on nothing the current work does: record it and write its edit at
+once under **Recording During A Task**, which sets when it is delivered, while the current work is
+corrected beside it. A problem the current work meets is its own issue, never a reason to hold or
+drop a correction that does not depend on it.
 
 An open `.agents` pull request is not a delivery result. Processing continues through its source
 check, required review steps, merge or hold, Agent Sync result, and verification of generated root
@@ -82,9 +83,8 @@ Honor the selected workflow's verification sequence and any delivery or installa
 recording or delivering a batch.
 Validate skill dependencies and their actual call and policy-read paths under the shared agent-guidance rule’s **Dependencies** and **Validation** sections.
 
-- A correction that encodes a new process waits for that process's verified run, as **A process is
-  encoded only once it has worked** says; a method or lesson the work has not yet tried is not a
-  correction until then. Every other correction is recorded as soon as its gap is diagnosed.
+- A correction that encodes a new process waits for its verified run or merge, as **A process is
+  encoded only once it has worked** says; every other correction is recorded once diagnosed.
 - A direct request to change guidance, such as "use edit-skill to reflect that", is recorded the
   same way. While another task runs, the requested action is the behavior it describes, applied to
   the current work, and the guidance edit is its record. While a guidance batch is in flight, its
