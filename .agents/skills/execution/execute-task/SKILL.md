@@ -301,8 +301,8 @@ after its gating check has been read, outside the command, chain or batch that r
 
 ### Product Constraints
 
-`pre-production` is active in every change task. Read it completely, explicitly invoke it, and
-announce the invocation before the first edit. Listing it as a dependency is not an invocation.
+`pre-production` is active in every change task. Read it completely and explicitly invoke it
+before the first edit. Listing it as a dependency is not an invocation.
 Read the repository's product state from its project guidance before choosing how to change a
 contract or stored value.
 
