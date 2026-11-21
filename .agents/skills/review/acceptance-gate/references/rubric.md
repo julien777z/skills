@@ -72,9 +72,12 @@ module named for the one language, package or suite the repository holds now, wh
 purpose says it holds or will hold several, as in a shared library repository that names its test
 job for one of its two languages. The repository's existing instances of each kind of code the diff
 adds, renames or reshapes are what the borrowed code-simplify rubric's second-shape question is
-judged against. Flag a shape that departs from the convention the owner's other repositories use for
-the same kind of artifact, such as a job naming or matrix scheme those repositories share, unless
-the intent states why this repository differs. The remedy names the convention and the
+judged against. The owner's repositories are meant to read as one body of work: someone who knows
+one finds the same CI job names, scripts, layouts and configuration keys in the next, and can move
+between them without relearning. So flag a shape that departs from the convention the owner's other
+repositories use for the same kind of artifact, such as a job naming or matrix scheme those
+repositories share, unless the intent states why this repository differs. Judge the survey by that
+goal: an artifact kind the other repositories do not hold sets no convention to follow. The remedy names the convention and the
 repository-wide name. A missing purpose, existing-instance inventory or sibling convention for code
 or a convention-bearing artifact the diff adds, renames or reshapes holds a clean verdict, as a
 missing input.
