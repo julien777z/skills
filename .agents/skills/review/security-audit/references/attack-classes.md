@@ -1,5 +1,9 @@
 # Attack Classes
 
+Contents: Injection, Access control, Resource and file handling, Cryptography and secrets, Business
+logic, Feature abuse and data leakage, Chained attacks and trust boundaries, Wildcard, Obvious
+things.
+
 #### Attack classes — choose and split based on Phase 1
 
 Select attack classes relevant to the application type. Not every class applies to every codebase. The list below is a starting point — add application-specific ones based on Phase 1. For large codebases, split classes per subsystem.

@@ -3,6 +3,10 @@
 Criteria this skill's **Behavior** steps apply while diagnosing a failure, placing an edit, writing
 it and checking it. `SKILL.md` names the section each step reads; the order and gates stay there.
 
+Contents: **Causal Diagnosis**, **Scope Statement**, **Shared Targets**, **Changed Output
+Examples**, **Moved Text**, **Tools And Dependency References**, **Source Check Routes**, **Already
+Reviewed Batches**, **Relocations**.
+
 ## Causal Diagnosis
 
 Read at **Behavior** step 2.
@@ -135,9 +139,9 @@ Read at **Behavior** step 5.
   use a standard-library or already-provided equivalent when it fully serves the task; remove any
   existing repository dependency, bootstrap installation, and repository references it displaces,
   rather than leaving obsolete tooling behind. Do not add a dependency for an incidental harness.
-  When the tool is essential, install it through the repository's shared `bootstrap/install.sh`:
-  create that entry point when it is absent, or extend it when it exists, and verify a fresh
-  bootstrap provides the tool. Keep that bootstrap repository-neutral — it serves every developer
+  When the tool is essential, install it through the repository's bootstrap entry point, found from
+  its README and tooling: extend it where it exists, create one only where none does, and verify a
+  fresh bootstrap provides the tool. Keep that bootstrap repository-neutral — it serves every developer
   and agent, so its name, behavior, and messages must not be Claude- or Codex-branded.
 - Follow the user's explicit consumer-reference choice; otherwise, after a dependency receives a
   separately authorized release, replace its branch reference with a maintained version tag. Use

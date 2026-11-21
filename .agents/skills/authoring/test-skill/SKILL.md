@@ -15,6 +15,7 @@ confuse those conclusions.
 - `subagent-matrix`
 - `code-simplify`
 - `session-ledger`
+- `council`
 
 ## When It Runs
 
@@ -62,7 +63,7 @@ confuse those conclusions.
   - by content digest, each guidance file on its reading list, or, for a file every reader loads
     whole, such as the global rules, the sections its criteria cite; its fixture; its criteria;
   - the model and reasoning effort **Reviewer selection** resolves for a rerun now, such as the
-    standard tier's current identifier, never one the catalog merely still lists; the harness and
+    standard capability level's current identifier, never one the catalog merely still lists; the harness and
     the guidance it loads; the tools and fixture interface the scenario uses.
 
   Any difference reruns that scenario, never a judgment that the change does not touch what it
@@ -169,8 +170,10 @@ Run after `code-simplify` completes its pass.
    recommends which changes should merge and decides no merge itself. A passing skill test alone
    never decides that a pull request should merge.
 7. **Repair and rerun until verified**, within the limit of 3 review rounds per
-   change: after the third failing round over the same edit, a decision between a simpler approach,
-   reverting the edit and accepting it with the remaining findings recorded replaces another repair. Diagnose each reported issue at its owner. Fix guidance that permits the wrong behavior;
+   change: after the third failing round over the same edit, put the edit, each round's findings and
+   remedies, and the choice between a simpler approach, reverting the edit and accepting it with the
+   remaining findings recorded to `council` in **Ask** mode; its majority ruling replaces another
+   repair, and never accepts a failing required check. Diagnose each reported issue at its owner. Fix guidance that permits the wrong behavior;
    fix an invalid fixture, unavailable simulated operation, wrong reading list, ambiguous criterion
    or broken runner before judging guidance. Retain the diagnosis and earlier results. Recover
    missing evidence from the actual run or rerun the affected task; never reconstruct a result from
@@ -189,7 +192,7 @@ Run after `code-simplify` completes its pass.
 ## Reviewer selection
 
 Invoke `subagent-matrix` and request **standard** by default. Only after a host receipt explicitly
-rejects the standard tier's exact identifier as unsupported, select the next permitted lower mapped capability,
+rejects the standard capability level's exact identifier as unsupported, select the next permitted lower mapped capability,
 resolve its exact identifier, and launch the actual reader assignment. Advance again only after that candidate
 receives its own explicit unsupported receipt; never move upward or inherit the orchestrator's model. This
 fallback applies to this skill's default, never against the user's explicit model or capability constraint. A
@@ -199,8 +202,8 @@ fallback for its assignment.
 
 Classify a rejected reader dispatch from the host receipt. Only a receipt establishing that the
 requested capability or model is unsupported makes it unavailable for that attempt and permits the
-lower-tier fallback. Retry a transient, concurrency, timeout, or unknown rejection once with the
-same resolved selection; do not lower the comparison tier. When no required reader launched, retry
+fallback to a lower capability level. Retry a transient, concurrency, timeout, or unknown rejection once with the
+same resolved selection; do not lower the comparison's capability level. When no required reader launched, retry
 the required reader set. When one required reader launched, wait for its terminal report and retry
 only the rejected or unattempted required counterpart, never a duplicate of the accepted reader.
 When that retry cannot complete the required set, record its receipts and apply `subagent-matrix`'s
@@ -220,7 +223,7 @@ and the assigned worker accepts it, then it is `accepted`; a missing identifier 
 fallback and is not an unsupported-model receipt. Selector resolution retains an explicit unsupported request,
 the exact fallback capability and dispatch identifier when one is permitted, why that fallback was selected,
 and any explicit user override. Record the runtime-identity and runtime-label evidence as
-`subagent-matrix`'s Workflow step 3 defines. Follow the selector's dispatch instructions.
+`subagent-matrix`'s **Workflow** defines. Follow the selector's dispatch instructions.
 
 ## Output
 
@@ -323,6 +326,6 @@ in the same evidence file; per-scenario conclusions do not replace that decision
 - Follow the shared capability selection. Run or omit a control only as **When It Runs** says.
 - Never edit any file under test between launching its required readers and grading them.
 - Keep the scenario and raw evidence while the branch is open; reuse valid inputs in later rounds.
-- Never merge with a failing run or stand with a miss: diagnose it, change what caused it, and
-  rerun. The decisions are the tester's and are never put to the user; asking holds every later
+- Never merge with a failing run or stand with a miss, short of the `council` ruling **Repair and
+  rerun until verified** sets at the round limit: diagnose it, change what caused it, and rerun. The decisions are the tester's and are never put to the user; asking holds every later
   session on the text the edit replaces.

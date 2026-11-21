@@ -3,6 +3,9 @@
 The criteria the `code-simplify` pass applies. The skill's `SKILL.md` says how the pass runs; other
 skills that borrow the rubric read this file.
 
+Contents: **Scope**, **Severity**, **Reuse And Removal**, **Standards**, **Five Greps**, **Trace
+Changed Flows**, **Remedies**, **Guidance Prose**.
+
 ## Scope
 
 - **Judge the change and the code it must touch**: the diff, the consumers it has to update, and the
@@ -143,19 +146,33 @@ verdict, before deciding. Each field asks only for the facts the change has:
 
 ## Five Greps
 
-Run these over the diff's added lines before reading for anything else and list every hit. Each hit
-takes its severity from **Severity**, so most are `nit`.
+Run these over the diff's added lines before reading for anything else and list every hit, since a
+fix written after review takes these shapes most easily. Each hit takes its severity from
+**Severity**, so most are `nit`. A report with no hit for any of the five says so in those words.
 
-1. A subscript keyed by a model, class or `type(...)`, such as `LABELS[type(record)]`: the fact
-   belongs on the key as an attribute or property, and the table goes.
-2. A repository-wide fact — a contact address, legal or product name — as a loose string in one
-   consumer: it moves to one typed model every consumer reads.
-3. A router constructor with one handler registered on it: the handler moves to the router that
-   owns its resource.
-4. A data-holding class (`BaseModel`, dataclass, named tuple) declared outside a model-owned file or
-   package. Only a settings class belongs in configuration.
-5. A dict literal annotated with a `TypedDict`, or a bare dict passed where a signature names one:
-   build it with the constructor.
+1. **A reader reaching through a table keyed by a model, class or type for a fact about the key** —
+   the pattern `[A-Z_]+\[` followed by a model, record, class, `type(` or `cls` expression, such as
+   `LABELS[type(record)]` or `FORM_TYPES[model].label`. Each hit counts whether or not the diff added
+   the table: the value belongs on the key as a class attribute or property, every reader moves onto
+   it, and the table goes.
+2. **A repository-wide fact held as a loose string** — an email or street address, a legal entity
+   or product name in a string literal outside one typed model in the package every consumer reads:
+   it moves onto that model.
+3. **A container declared for one member** — a router constructor, such as `APIRouter(`, in an
+   added line, with a count of the handlers registered on that router in the resulting tree. One
+   handler is a hit whether or not the diff added the router: the handler moves onto the router that
+   already owns its resource, at a path under that resource, and the router and its module go. A
+   prefix ending in a verb or an operation is the same hit read from the URL.
+4. **A data-holding class declared outside model ownership** — every added `BaseModel`, dataclass,
+   named tuple or equivalent record declared outside a `models.py` file or `models/` package. It
+   moves to a concept-specific model module. Only a settings class, such as a Pydantic
+   `BaseSettings`, is configuration and belongs in `config.py` or `config/`; registries, manifests,
+   policies, provider payloads and response schemas remain models. A model never moves into
+   operational code merely to remove a one-symbol declarative module.
+5. **A typed parameter built as a dict** — an annotation on a dict literal, such as
+   `name: SomeTypedDict = {` or `params: sdk.params.X = {`, or a bare dict passed where an SDK or
+   repository signature names a `TypedDict`, at any nesting level. Each hit is rewritten as the
+   constructor call, such as `sdk.params.X(...)`, with tests asserting the same way.
 
 ## Trace Changed Flows
 

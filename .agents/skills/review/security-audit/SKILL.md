@@ -78,9 +78,9 @@ supplied by the invocation or its calling workflow needs no question.
 
 At `low` every phase, including supplemental research, runs in process with no agents. From
 `medium` upward, launch the agents each phase names in parallel; capacity limits force batching, never omission and never an undeclared local skim. For each named
-agent, invoke `subagent-matrix` at its specialist capability level with the Claude fallback tier set to `advanced` for authorized defensive work, launch the exact resolved identifier, and
+agent, invoke `subagent-matrix` at its specialist capability level with `advanced` as its fallback capability level for authorized defensive work, launch the exact resolved identifier, and
 retain catalog state, identifier, assignment state and host receipt in the audit evidence; a research sub-agent a
-hunter starts launches the same way. Include in each hunter brief the explicit specialist selection and `advanced` Claude fallback tier
+hunter starts launches the same way. Include in each hunter brief the explicit specialist selection and `advanced` fallback capability level
 for any research child it starts, and instruct the hunter to resolve the child's identifier and
 launch it through `subagent-matrix`. Each agent a level names is launched as
 `subagent-matrix`'s **Dispatch** section directs.

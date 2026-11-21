@@ -1,5 +1,8 @@
 # Vulnerability Hunting
 
+Contents: **Phase 2: Hunt for vulnerabilities** (how hunters are launched and the surface split),
+**Hunting methodology** (the prompt every hunter gets, with its angles and validation rules).
+
 The effort level in `SKILL.md` sets this phase's cohort at every level; where the table gives it
 no agents, the phase runs in process against the same rubric.
 
@@ -82,10 +85,6 @@ Think about these angles:
     that reveal whether a record exists. Response size differences. HTTP headers that
     disclose versions. Debug endpoints that survived into production.
 
-AT MEDIUM OR HIGH, YOU CAN SPAWN SUB-AGENTS. If you need to understand a subsystem in depth to evaluate
-a potential finding — use the Task tool to launch a research agent. Don't try to hold
-everything in your own context. Go deep where it matters.
-
 11. What parameters override security-relevant defaults?
     Where a default is safe but a user-supplied parameter can change it. Look for
     every input that overrides a security-relevant default and check if the override
@@ -94,6 +93,11 @@ everything in your own context. Go deep where it matters.
 12. Where do unverified claims drive trust decisions?
     Anywhere self-declared identity, capability, or metadata influences an access
     or trust decision without independent verification.
+
+At medium or high effort, you may launch a research agent when evaluating a potential finding
+needs a subsystem understood in depth, so its reading stays out of your own context. Launch at
+most two over your whole hunt, each with one subsystem and one question; read a single file
+yourself instead.
 
 Your scope is your primary focus, not a boundary.
 If while investigating your assigned area you notice something wrong in a different

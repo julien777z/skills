@@ -225,8 +225,9 @@ These run in the order below, in process unless a pass says otherwise.
 One reviewer reads the change, the author answers each finding, and the next round checks only what
 changed. Make the smallest changes that answer real findings, and push back on the rest.
 
-- **Budget:** three rounds. Round 1 reviews the whole target; later rounds review the changed code
-  and the findings still open, whatever the delta touches. Stop early
+- **Budget:** three rounds. Round 1 reviews the pass's unreviewed delta, as **Range** sets it, with the
+  merge-base diff as context; later rounds review the changed code and the findings still open,
+  whatever the delta touches. Stop early
   when a round returns only nits; a declined nit or an edit that changes only wording or formatting
   needs no new round. These rounds count the pull request's review loop; one finding's fix still
   follows the limit of 3 review rounds per change, as `acceptance-gate`'s **Bounds** counts them.

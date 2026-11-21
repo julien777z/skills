@@ -11,7 +11,8 @@ Rules: <repository rule files whose patterns match the changed paths, or none>
 Whole: <each skill or rule the diff touches, with the skill-pass skill and its authoring reference to read, or none>
 Guidance intent: <base guidance, user's explicit requirements and corrections in their words, the editor's statement of scope, and acceptance-gate rubric's Guidance Intent section, or none>
 Reuse receipts: <the author's receipt line per addition, and for a shared design its Source, Smallest change and Proof fields with the sources they cite, or none written>
-See: git diff <base> [-- <paths>]; git status --short (read untracked files).
+Review: <the unreviewed delta: git range-diff <base>..<reviewed head> <base>..HEAD, or git diff <base> [-- <paths>] when the delta is the complete merge-base diff>
+Context: git diff <base> [-- <paths>]; git status --short (read untracked files). Judge the delta; read the rest only to understand it.
 Read surrounding code. Find bugs, broken callers, mismatch with intent, and unsafe
 handling of user input (paths, patterns, queries, markup).
 For every function, component, hook, type, constant set, fixture, configuration entry or block of
@@ -62,7 +63,7 @@ combination, each naming the pull requests it needs:
 - one concern solved twice, or two mechanisms for one thing, across the set;
 - behavior correct in each and wrong with both applied;
 - a trust boundary, permission or data exposure that opens only across the set, held to the
-  security-audit rubric's bar for an exploitable finding: <rubric path>;
+  bar for an exploitable finding in the `security-audit` skill's rubric reference;
 - guidance that describes behavior another pull request in the set changes;
 - a claim in one description that another contradicts.
 blocker, should and nit as in the round brief above.

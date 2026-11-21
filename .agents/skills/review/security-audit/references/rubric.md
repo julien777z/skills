@@ -65,8 +65,7 @@ achieves.
 - **MEDIUM** — a targeted exploit needing specific conditions, a forged state change, disclosure of
   secrets or credentials. Also a business-logic bypass with real but limited consequences: it needs
   authentication, or is confined to the attacker's own data, or requires uncommon conditions.
-- **LOW** — disclosure of non-secret data, denial of service requiring sustained effort, hardening
-  gaps.
+- **LOW** — disclosure of non-secret data, denial of service requiring sustained effort.
 
 The line between HIGH and MEDIUM for a logic finding is whether it **defeats an explicit security
 boundary**. A defeated boundary is HIGH. A data inconsistency, a finding needing privileged access,

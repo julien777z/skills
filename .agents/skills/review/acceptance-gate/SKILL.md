@@ -193,34 +193,11 @@ Meaning** criteria to their writers, transformations and consumers, including va
 not change. Include the authority, lifetime and purpose evidence in `Also read`, and semantic
 collisions in the flag bullets; missing evidence prevents a clean verdict.
 
-**Then run five greps.** Grep the diff's added lines for five shapes and list every hit as a finding
-ahead of all others, with the remedy the rubric names:
-
-1. **A reader reaching through a table keyed by a model, class or type for a fact about the key**
-   — the pattern `[A-Z_]+\[` followed by a model, record, class, `type(` or `cls` expression, as in
-   `FORM_TYPES[model].label` or `KINDS[type(record)]`. Each hit is a finding whether or not the diff
-   added the table: the value belongs on the key as a class attribute or property, every reader
-   moves onto it, and the table goes.
-2. **A repository-wide fact held as a loose string** — an email address, a street address, a legal
-   entity or product name in a string literal outside one typed model in the package every consumer reads. Each hit
-   moves onto that model, which every consumer reads.
-3. **A container declared for one member** — `APIRouter(` (or the framework's router constructor)
-   in an added line, followed by a count of the handlers registered on that router in the resulting
-   tree. One handler is a finding whether or not the diff added the router: the handler moves onto
-   the router that already owns its resource, at a path under that resource, and the router and its
-   module go. A prefix ending in a verb or an operation is the same finding read from the URL.
-4. **A data-holding class declared outside model ownership** — every added `BaseModel`, dataclass,
-   named tuple, or equivalent record declared outside a `models.py` file or `models/` package. Move
-   it to a concept-specific model module. Only a Pydantic `BaseSettings` class is configuration and
-   belongs in `config.py` or `config/`; registries, manifests, policies, provider payloads, and
-   response schemas remain models. Never move a model into operational code merely to eliminate a
-   one-symbol declarative module.
-5. **A typed parameter built as a dict** — an annotation on a dict literal, `name: SomeTypedDict = {`
-   or `params: sdk.params.X = {`, and a bare dict passed where an SDK or repository signature names a
-   `TypedDict`, at any nesting level. Each hit is rewritten as the constructor call
-   (`sdk.params.X(...)`, `sdk.RequestOptions(...)`), with tests asserting the same way.
-
-A report that lists no hit for any of the five greps says so in those words.
+**Then run the five greps** the `code-simplify` rubric's **Five Greps** defines over the diff's
+added lines, and list every hit as a flag ahead of all others, with the remedy that section names.
+Each hit is a `defect` flag here, whatever severity that pass gives it, because its remedy moves a
+value, a handler or a declaration rather than only the form of lines. A verdict with none says
+`no hit for any of the five greps` in those words.
 
 **Then it lists every guard, refusal, validation, or branch the diff adds with the writers of the
 value it tests and of what its path reads next**, by path and function, and flags each one the
@@ -274,8 +251,8 @@ question never lets an author judge their own work or collapse distinct verdicts
 ## Questions
 
 Exactly one per gate, each decided by the tests in `references/rubric.md`, with nothing appended.
-Whether an item is the change's doing or predates it is never asked, since no disposition turns on
-it. The question sets the gate's capability level, at `subagent-matrix`'s default effort: Proposal,
+Whether an item is the change's doing or predates it is never asked to soften a defect; it bears
+only on scope, as **The Intent Statement** says. The question sets the gate's capability level, at `subagent-matrix`'s default effort: Proposal,
 Diff and Final acceptance run at advanced, and Triage, Admission and Base incorporation, whose
 packets are small and whose answers accept no diff for merge, run at standard. A caller names the
 question and never a level of its own:
@@ -432,9 +409,13 @@ Verdict: accept | flag | fix | close | defer | do
   it is neither the removed shape nor a finding; one bullet per addition>
 - <for a triage disposition: the test that decided it and the fact it rests on>
 
+Greps: <the grep each hit flagged above came from, or `no hit for any of the five greps`>
+
 Writers read: <each guard the diff adds with the writers it read, or `no guard added`; owned-boundary input evidence>
 
 Product choices: <each product choice the diff makes with the user's words settling it, or `no product choice added`>
+
+Workarounds: <each workaround the diff makes with the user's words asking for it, or `no workaround added`>
 
 Also read: <the Independent Judgment comparison receipt, file groups and rules checked, plus additions of other kinds>
 ```
