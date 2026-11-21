@@ -168,7 +168,8 @@ world's data first and in captures second:
   part and pickup, and skips characters and creatures, actors staged to hover, worn items, and
   pieces their builder marks as hanging. For each piece it casts down from 2.5 studs above each
   foot, a plant's feet being its stem bottoms and any other piece's its lowest parts, then from its
-  middle, then a terrain-only cast from high above. Terrain, solid or visible structural parts, a
+  middle, then a terrain-only cast from high above; a flat-based piece, paving included, is also
+  cast at its corners and along its edges, so a side hanging over a slope reports its gap. Terrain, solid or visible structural parts, a
   solid resting piece, flat kit meshes at most 1 stud tall and floors count as support; plants,
   other box-collision kit meshes and invisible colliders do not. A piece floats when its base is
   more than 0.3 studs above its support, a pickup more than 1.2 and a water piece more than 0.25 off
@@ -176,7 +177,10 @@ world's data first and in captures second:
   blocking pass reports every floor-standing piece at least 2 studs tall whose collision reaches
   less than 70% of its height. A boundary pass walks, jumps and swims toward every map edge, drop
   and stretch of open water from each reachable side and height, and reports every spot where the
-  player gets past. Findings group by piece, area and problem, each with its count, the worst gap
+  player gets past. A surface pass reports overlapping faces within a small tolerance of one
+  plane, part against part and part against terrain, each step where walkable pieces meet, and each
+  edging strip off its edge by more than a set angle or gap or leaving a stretch of the edge bare.
+  Findings group by piece, area and problem, each with its count, the worst gap
   and three sample positions. Fix them in the builders and rerun until the audit reports none.
 - **The quest-gate audit `roblox-gameplay` requires runs in Play**, over the objects that exist for
   a quest as it defines them, never scenery or residents a step also references. Once it reports
