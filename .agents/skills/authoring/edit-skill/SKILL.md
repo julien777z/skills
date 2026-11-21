@@ -88,8 +88,8 @@ Validate skill dependencies and their actual call and policy-read paths under th
 - Record the correction as a `guidance_correction` entry with `session-ledger`: the user's words,
   where the user gave any, quoted as the global rules' example-value bullet says, the evidence of
   the gap, and for a process its verified run, a reproduction scenario, the intended behavior, the
-  canonical files it will change, and `pending` as its `status`. The result of **Behavior** steps 1–4,
-  run when the gap was noticed as step 2 says, goes into the entry; the edit itself (steps 5, 6 and
+  canonical files it will change, and `pending` as its `status`. Steps 1–4 of **Behavior** run at once,
+  while the evidence is fresh, and their result goes into the entry; the edit itself (steps 5, 6 and
   7.1) is written as the bullet on writing the edit below says, and step 7.2 onward waits.
 - **A recorded correction governs the rest of the session at once**, ahead of the installed text it
   amends. Before a decision a pending entry's subject covers, read the ledger's pending entries and
@@ -206,11 +206,11 @@ user's review of the source pull request overlaps it.
      against those routes before stating the change anywhere, a report or question to the user, a
      queued list, a worker brief, a proposed remedy or a ledger line included, or writing it: if any
      still allows the rejected outcome, broaden the owning decision and remove conflicting
-     permissions first. Every such statement is the class-level rule, naming the instance only where
-     it is itself the root cause; waiting to write the edit never waits to classify. Keep the
-     incident and these cases in the verification record; shared guidance states the invariant, not
-     their identities. This check precedes choosing the owner, because a component-specific owner
-     can conceal a broader failure.
+     permissions first. Every such statement scopes the rule to the class, naming the instance at
+     most as one example, unless the instance is the root cause, which the rule then names and stays
+     scoped to; waiting to write never waits to classify. Keep the incident and these cases in the
+     verification record; shared guidance states the invariant, not their identities. This check
+     precedes choosing the owner, because a component-specific owner can conceal a broader failure.
    - Supported types: `agent`, `skill`, `rule`.
    - If the user explicitly says the type, use it.
    - If type is not explicit, infer it only when confidence is high.
