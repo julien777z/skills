@@ -19,6 +19,7 @@ finds. This skill owns the run; each doctor owns only its domain.
 - `execute-task`
 - `edit-skill`
 - `session-ledger`
+- `council`
 
 ## Declare What The Doctor Owns
 
@@ -41,7 +42,7 @@ run `doctor-protocol`, and supplies:
 4. **measures** — one or more counts those commands produce, taken before the audit and after the
    fixes;
 5. **dispositions** in order, declaring the permitted changes and evidence required for exceptions,
-   and naming the user decisions the domain adds beyond those its dependencies already settle;
+   and the calls its domain raises, which the doctor decides as **Gate And Show The Plan** says;
 6. what its **cross-cutting reviewer compares** and what its **final reviewer challenges**;
 7. **domain dependencies** — the skills whose policy it applies and never restates;
 8. **report additions** — the rows it appends to the skeleton below.
@@ -131,7 +132,8 @@ stage.
   commits, since the digest its manifest row holds, and any partition marked unread. Records for
   another base describe a tree that is gone and are replaced.
 - **The ledger holds one entry per verified finding and per item retained with a reason**, in the
-  reference's shape, with its disposition: fix, keep with the reason, a user decision, declined by
+  reference's shape, with its disposition: fix, keep with the reason, a council ruling, a reserved
+  user decision, declined by
   an earlier record, deferred with its record, or unresolved with the missing evidence. Each
   partition's check results, an empty result included, stay in its receipt.
 - Do not infer an invariant from one observation: one passing run, one fixture, one file that
@@ -223,8 +225,9 @@ of this section is the whole route.
 
 ## State The Intent
 
-Build the intent statement from the lens catalog, the plan as shown and the user's answers to its
-decisions, following `acceptance-gate`'s **The Intent Statement**. Preserve the plan's dispositions
+Build the intent statement from the lens catalog, the plan as shown, the decisions the run made with
+any council ruling, and the user's answer to any reserved decision, following `acceptance-gate`'s
+**The Intent Statement**. Preserve the plan's dispositions
 through implementation and check their completion against the change history and final diff.
 
 ## Gate And Show The Plan
@@ -241,15 +244,22 @@ Otherwise write a decision-complete remediation plan from the ledger.
   follows **Defer Leftovers**; a shown plan cannot supply that evidence.
 - **The plan takes one gate.** When every entry's fix is the remedy its lens states, put the plan
   to `acceptance-gate`'s Proposal question directly, and no attacker starts. When some entries
-  carry a remedy the run designed, or alternatives for a user decision, invoke `review-proposal`
+  carry a remedy the run designed, or alternatives the run chose between, invoke `review-proposal`
   with those entries as the proposal and the rest of the plan as its evidence; its Proposal
   verdict is the plan's one gate. On the small route the plan always goes to the Proposal question
   directly. Preserve objections and their dispositions through either route.
-- **A decision that is the user's is asked first, on its own.** That is an entry whose fix removes
-  a feature or makes a product, scope, security, disclosure or authorization choice, as
-  `pre-production`'s **Product Choices** defines one, and each user decision the doctor names. Ask
-  them together through the global rules' **Asking the user** procedure, each as options with
-  each consequence and a recommendation. Only the entries that depend on an answer wait for it.
+- **The doctor decides, and every decision is in the report.** The owner invokes a doctor to have
+  its class corrected, and a run that stops for approvals returns a plan where a fix was wanted. So
+  the run decides and makes every change its findings call for, including removing a feature, a
+  product or scope choice a remedy makes, a rewording of correct text and a rewording across the
+  tree; a call its own checks cannot settle goes to `council` in **Ask** mode, and the ruling is
+  followed. Each decision goes in the plan file and the report with its reason.
+  - **Reserved to the user's own words**: a merge, deployment, publication or release, and a
+    security, disclosure or authorization choice, such as who may see a record. Fixing a
+    vulnerability so the product enforces the access it already intends is not one, and the run
+    makes that fix. Ask the reserved entries together through the global rules' question
+    procedure, each as options with each consequence and a recommendation; only the entries that
+    depend on an answer wait for it.
 - **The gated plan is shown, and its work starts in the same turn.** The user reads one line per
   area with its entry counts, the order, what waits on a decision and any path no reviewer read;
   the entries themselves go in the plan file sent with it, as the reference says. The message
@@ -312,8 +322,8 @@ resource.
   after the entries it waits on are pushed. Its reviewers count toward the run's cap, and its
   findings join the same ledger and plan under the same gate, shown as an amendment.
 
-A newly discovered decision that changes the shown outcome and is the user's goes to the user; do
-not silently narrow the correction.
+A decision discovered during implementation is settled as **Gate And Show The Plan** settles one and
+added to the plan as an amendment; do not silently narrow the correction.
 
 The plan is implemented to its last entry in one continuous run, into the branch in flight.
 A finished wave is not a finished plan, and neither is a pushed commit or a green suite; start the
@@ -333,7 +343,7 @@ configured rather than inventing one.
 
 Then take every measure again and rerun the mechanical pre-pass. Each instance a measure still
 counts is matched to a ledger entry that retains it: kept with a reason, declined, deferred or
-waiting on a user decision. An instance with no such entry is a missed fix and goes back out as a
+waiting on a reserved user decision. An instance with no such entry is a missed fix and goes back out as a
 fix step.
 
 ## Review The Result
@@ -397,9 +407,10 @@ Nothing the run leaves unfixed lives only in chat, the plan or the report.
 
 ## Deliver
 
-Keep each repository's run on its draft pull request for the user's review. Standing merge
-exceptions and the shown plan do not authorize merge or auto-merge; a later explicit
-user instruction naming the target may authorize merge. A run that changes both agent configuration and source carries each on its own pull
+Keep each repository's run on its draft pull request for the user's review: no doctor pull request
+is merged or set to auto-merge by the run, whatever standing merge exception would otherwise cover
+it, because the merge is where the owner reads the decisions the run made on its own. A later
+explicit user instruction naming the target may authorize merge. A run that changes both agent configuration and source carries each on its own pull
 request, except guidance the GitHub rule puts on the source pull request it depends on, and each
 kind stays on one pull request however many fixes the run makes. Complete
 every planned entry continuously; checkpoints sequence work on those drafts and never wait for a
@@ -427,7 +438,9 @@ The final report names:
 - the launches the run made against the counts in **Launches**, final-review results, and every
   gate verdict with what it named;
 - the baseline and final check results and any category not configured;
-- remaining external blockers or user decisions.
+- every decision the run made, each council ruling, and each reserved decision with the user's
+  answer or as still open;
+- remaining external blockers.
 
 Per-entry detail, each applied correction with its evidence and commit, goes in a file sent with
 the report once the run holds more than five entries. Each doctor appends its own rows.

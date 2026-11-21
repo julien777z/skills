@@ -13,6 +13,7 @@ else.
 - `doctor-protocol`
 - `pre-production`
 - `get-doctors`
+- `council`
 
 ## Inventory
 
@@ -185,8 +186,10 @@ Apply `pre-production` to the target contract documented.
 
 - This doctor changes documentation, docstrings and descriptions. A document that is right about
   what the code should do is evidence of a code defect, fixed at its owner.
-- A documented command that ought to exist but does not is a finding about the manifest, presented
-  as a user decision: declare the command or delete the sentence.
+- A documented command that ought to exist but does not is a finding about the manifest, which the
+  run settles itself: it declares the command where the code shows what it runs, deletes the
+  sentence otherwise, puts it to `council` when the code shows neither, and names the outcome in
+  the report.
 - A finding another doctor owns is not fixed here; the report names it with that doctor, found
   through `get-doctors`.
 

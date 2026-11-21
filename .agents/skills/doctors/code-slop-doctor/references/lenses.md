@@ -124,16 +124,16 @@ site; every caller moved, and each operation left with no caller deleted with it
 or merged operation authorizes each item and each returned field as the operations it replaces did;
 where it cannot, those operations stay separate, as Left alone says. The use case is timed before
 and after on the same stack, and a merge that makes it wait longer for its first useful content is
-not the remedy. Two cases go to the user for approval, never merged or left alone silently: an
+not the remedy. Two cases are decided case by case, never merged or left alone silently: an
 operation another use case also calls on its own, where the use case may gain a merged operation
 while the other keeps its own; and a read only some runs of the use case need, which a merged
-operation may still carry. Each request lets the user decide without opening the code: the
-operations it would combine, by method and path or RPC name; the proposed operation's method, path,
+operation may still carry. The run decides each, and its record lets a reader check the decision
+without opening the code: the operations it would combine, by method and path or RPC name; the proposed operation's method, path,
 parameters and response fields; every other caller of each of those operations, found in the code
 by page, job or service, with what it reads and whether it already shares the use case's read; what
 would become of each existing operation, kept for which caller or deleted; the current counts and
-timings, and the call count the proposed operation would leave; and the run's recommendation. The
-timings after are measured once the merge is approved and made. Left alone: a call a later
+timings, and the call count the proposed operation would leave; and the decision with its reason.
+The timings after are measured once the merge is made. Left alone: a call a later
 interaction makes — a tab opened, a page turned, a row expanded; reads under different
 authorization or caching that one response cannot carry, and any set of items one operation cannot
 authorize as the per-item calls did; a slow section kept apart so it does not hold a fast one, with
@@ -165,7 +165,8 @@ The remedy is one structure per kind: the shared shape lives in the shared packa
 supplies only what differs, its name, port, servicers or routes. The slot's best existing
 implementation becomes the shared one under `code-simplify`'s rubric **Standards**; the minority
 instance of a kind takes the shape the majority already has, and a shape better than every existing
-one goes to the user as `pre-production`'s **The repository does one thing one way** says.
+one is adopted on every instance of the kind in this run, never on some of them, because a doctor
+run sets its own scope and a kind left in two shapes is the finding itself.
 Left alone: a slot or instance whose difference a contract requires, with the contract named.
 
 ## Scattered Structure
@@ -283,8 +284,10 @@ names neither and is no finding. A package is also read whole, since a reviewer 
 its shape before opening any file, and each such finding states its measure: the file count against
 the responsibilities held, the exported names against the names consumed, the depth of a component
 chain. A shape another lens owns is fixed under that lens. **A shape a rule or a declared
-dependency prescribes or exempts is kept**: where the reviewer still judges it slop, the report
-proposes the rule change to the user and the code stays as the rule has it.
+dependency prescribes or exempts is kept**: where the reviewer still judges it slop, the run makes
+the rule change on its agent-configuration pull request and the code stays as the rule has it
+until that change merges, since code that departs from a rule still in force reads as a defect to
+the next run.
 
 - **Tangled control flow** — the pre-pass's complexity findings: nesting deeper than the
   repository's lint configuration allows, three levels by default; nested loops that a lookup map,

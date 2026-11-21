@@ -18,6 +18,7 @@ does nothing or makes a reader wince, and takes it out.
 - `banned-terminology`
 - `defer-scope`
 - `get-doctors`
+- `council`
 
 ## Areas
 
@@ -265,9 +266,9 @@ confirms it reads zero, and re-runs each rewrite's covering check.
 - Data a removal leaves in the old shape — a flag whose retirement backfill has not run, a chain to
   collapse — follows `pre-production`'s **Product State** and **Target Contract** and the
   repository's database-migration skill, never a question.
-- The user decides what `pre-production`'s **Product Choices** reserves
-  for them. A contract a consumer outside the user's control speaks stays as it is and is reported,
-  under its **Target Contract**.
+- A product or scope choice a remedy makes is this run's, decided as `doctor-protocol`'s **Gate And
+  Show The Plan** says. A contract a consumer outside the user's control speaks stays as it is and
+  is reported, under `pre-production`'s **Target Contract**.
 - Fix the reader or the writer, never both. A tolerance that hides a wiring defect is a confirmed
   defect and is fixed. An unsupported historical record is never a finding and never receives a
   fallback.
@@ -276,8 +277,9 @@ confirms it reads zero, and re-runs each rewrite's covering check.
   report.
 - A configuration default its reader refuses is declared nowhere until the disagreement is settled:
   the reader is wrong when nothing that ships can use the value, the declaration and deployment are
-  wrong when something can, and where the target contract does not show which, both fixes go to the
-  user. A field nothing deployed sets takes one of three outcomes the plan names: a deployment
+  wrong when something can, and where the target contract does not show which, the run puts the
+  two fixes to `council` and makes the one it rules for. A field nothing deployed sets takes one
+  of three outcomes the plan names: a deployment
   should carry it, it is a local-development tool retained with the tool and the branch named in the
   ledger, or it is deleted with the branch its value selects.
 - An even split between two sibling structures equally fit for the kind goes to the one leaving the
@@ -296,10 +298,10 @@ confirms it reads zero, and re-runs each rewrite's covering check.
 - each module merged, moved, renamed, collapsed or split, with its importers moved;
 - each layer, abstraction and alias removed, with its callers;
 - the use-case table's candidate rows before and after: calls and wait per use case, each operation
-  merged, batched, bounded or deleted with its callers moved, and each merge put to the user with
-  its recommendation and their answer;
+  merged, batched, bounded or deleted with its callers moved, and each merge decided with its
+  reason;
 - each duplicate and its surviving owner; each kind brought to one shape, and each better shape
-  proposed to the user;
+  adopted with the instances it converted;
 - each flag gating a former behavior, its readers and retiring backfill; each suppression and
   escape hatch removed and the rule code proposed as its guard; each check whose verdict gates
   again; each warning cleared and each deprecated usage replaced;

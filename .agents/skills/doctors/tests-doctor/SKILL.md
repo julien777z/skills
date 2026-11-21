@@ -102,8 +102,8 @@ until it is under, by the dispositions below — the run is not finished while o
 breach, recording it, or carrying it into the plan as an observation is the failure this paragraph
 exists to prevent: the measurement was taken on day one and the number was already known, so a run
 that delivers with the same number has spent the measurement on nothing. Where the work genuinely
-cannot land in this run, that is the user's call to make in the current request, with the number
-and the cause in front of them; it is never the run's to assume.
+cannot land in this run, the run puts that to `council` in **Ask** mode with the number and the
+cause, follows its ruling and names it in the report; it is never assumed without that ruling.
 
 **Read setup against assertion before reading any single case.** Where existing reporting supplies
 per-test call durations, compare their sum with suite wall time. A large difference identifies cost

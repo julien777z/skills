@@ -16,6 +16,7 @@ rendered pages for the second, and corrects what serves the reader badly.
 - `run-site`
 - `share-media`
 - `get-doctors`
+- `council`
 
 ## Inventory
 
@@ -214,30 +215,29 @@ Apply `pre-production` to every correction.
    content and its space. Squeezing, truncating, shrinking and narrowing are never the remedy.
 5. **A routine presentation detail is decided and stated in the report**, as **Product Choices**
    says of one, and a detail the user already decided on a page is followed.
-6. **These are the user's decisions**, each asked as `doctor-protocol`'s **Gate And Show The Plan**
-   asks a decision, before any entry that depends on it starts:
+6. **These calls are the run's too**, decided as `doctor-protocol`'s **Gate And Show The Plan**
+   decides one, by what serves the reader, through `council` where the run's checks cannot settle
+   it, and made in this run:
    - **Removing or hiding content.** Where content cannot get the room its values need at some
-     width, which column, field or item goes or is hidden there. Until the answer, the content
-     keeps its room.
+     width, which column, field or item goes or is hidden there.
    - **A remedy the run designed whose visible effect is large**: one no rule states, that changes
-     the layout, controls or flow on many pages or that a returning reader would notice. The
-     question lists every page it would change.
-   - **Rewording text that is correct but could read better.** The text keeps its words; the
-     suggested wording goes to the user.
+     the layout, controls or flow on many pages or that a returning reader would notice. The report
+     lists every page it changed.
+   - **Rewording text that is correct but could read better.**
    - **Which of two names, or of two drawings of one shape, wins** where neither is established,
      most used or the one a rule states.
-   - **More than two legitimate non-error banners on one surface**, which the React layout rule's
-     **Layout And Spacing** sends to the user, and **product state no one has confirmed**, where
-     copy says a feature is unavailable or coming.
-   - **A departure from a rule that would serve the reader better**: the entry keeps the product as
-     it is, and the departure and the rule change are proposed, as `pre-production`'s **Trade-Offs
-     Are Surfaced, Never Enforced** says of a rule about how the product looks or reads.
-7. **How a decision is shown.** A question about layout, controls or hidden content comes right
-   after before-and-after captures of a few representative pages where the change shows, never every
-   page: the before from the first walk, each option built by the parent as an uncommitted preview
-   and captured at the widths where the options differ, sent as `share-media`'s **Previews for a
-   choice** says. A question about wording shows the current and suggested text as text, beside one
-   capture of where it sits.
+   - **More than two legitimate non-error banners on one surface**, and **product state no one has
+     confirmed**, where copy says a feature is unavailable or coming: the run settles which banners
+     stay and what the copy says from what the code and product show.
+   - **A departure from a rule that would serve the reader better**: the run makes the departure
+     with the rule change on its agent-configuration pull request, as `pre-production`'s
+     **Trade-Offs Are Surfaced, Never Enforced** asks of a rule about how the product looks or
+     reads, and the product keeps the rule's form until that change merges.
+7. **How a decision is shown.** A decision about layout, controls or hidden content is reported
+   with before-and-after captures of a few representative pages where the change shows, never every
+   page, the before from the first walk, at the widths where they differ, sent as `share-media`
+   says. A wording decision shows the old and new text as text, beside one capture of where it
+   sits.
 8. **A defect the walk meets that no lens names** — a failed request, an error boundary, a value
    shown wrong — is fixed in this run, as `doctor-protocol`'s **Resolve The Scope** says.
 9. **A recurring shape's guard** is the shared component made unable to take it — a description
@@ -258,6 +258,6 @@ Apply `pre-production` to every correction.
 - each text changed, with its old and new wording and its slot, in the detail file;
 - each shape moved onto a shared component, with the pages moved and the variant or prop added;
 - each routine presentation detail decided, with its reason;
-- each decision put to the user, with the pages listed, the captures shown and the answer;
-- each rule departure proposed;
+- each decision the run made, with the pages it changed, the captures shown and any council ruling;
+- each rule departure made, with its rule change;
 - each finding another doctor owns, named with that doctor.

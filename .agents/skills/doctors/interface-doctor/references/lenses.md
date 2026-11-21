@@ -190,7 +190,7 @@ component both names resolve to.
 Remedy: the name the product, its navigation and most rows already use wins, and every other row
 moves to it in the same change, the fixture text that restates it included; a status maps to each
 audience's label in one place. Where neither name is established, or two features need new names,
-the choice between names is the user's decision, as `SKILL.md`'s **Dispositions** says. Left alone:
+the choice between names is the run's decision, as `SKILL.md`'s **Dispositions** says. Left alone:
 a proper noun's own capitals; an audience's own label for a status; and a variable or file name,
 which is not interface text.
 
@@ -264,7 +264,7 @@ and the source line that sets the width, clamp or breakpoint.
 Remedy: a remedy that keeps every value readable, of the kinds **Product Choices** lists, made in
 the component that owns the layout and at the width the defect shows; chrome that covers content
 gets its own row; the scroll container is styled once in its shared component. Which content to
-remove or hide where it cannot get its room is the user's decision, as `SKILL.md`'s
+remove or hide where it cannot get its room is the run's decision, as `SKILL.md`'s
 **Dispositions** says. Left alone: content the user decided to hide at a width; an element hidden
 because another element shows the same value at that width, such as a navigation bar folded into
 its menu at phone and tablet widths; and a title too long for its place, which **Headings And
@@ -377,7 +377,7 @@ the request or condition that triggers it.
 
 Remedy: the presentation the rule gives that condition, through the shared owner of banners,
 failures and notifications; a page that should not exist becomes the redirect and is deleted with
-whatever stored its state. More than two legitimate non-error banners is the user's decision, as
+whatever stored its state. More than two legitimate non-error banners is the run's decision, as
 `SKILL.md`'s **Dispositions** says. Left alone: the page for an address that does not exist, which
 keeps its full-page message; a return page a flow outside the product lands on; an error banner
 beside a status banner; and the behavior behind a state — refetching, caching, redirect logic —
@@ -414,7 +414,7 @@ primitive; every page that draws its own moves onto it in the same change and it
 each difference a page still needs becoming a documented variant. A move that gives a page the look
 the rest of the product already has is a fix, as `pre-production`'s **Scope Follows The Defect, Not
 The Request** says; where the two drawings are evenly used and neither is the rule's, which one
-wins is the user's decision, as `SKILL.md`'s **Dispositions** says. Left alone: a difference the
+wins is the run's decision, as `SKILL.md`'s **Dispositions** says. Left alone: a difference the
 content each audience needs explains; a page whose look the task record shows the user decided; a
 variant the shared component documents; and the wrapper components and class strings that build a
 drawing, which the doctor `get-doctors` lists for code slop owns.

@@ -278,5 +278,6 @@ its reason, and the workflow applying the pass runs the trial where it has the m
 - **What needs no trial.** A restatement of another owner is settled by reading both passages,
   and a merge or a rewording keeps the substance. Only removing substance on the ground that the
   model already has it needs the trial.
-- **What the trial cannot settle.** A firm rule the owner stated is cut only on the owner's word,
-  whatever the runs show; the trial's result is what they are shown.
+- **What the trial cannot settle alone.** A firm rule the owner stated records the owner's own
+  judgment, so the runs alone never cut it: it is cut on the owner's word, or by a workflow the
+  owner has authorized to decide such cuts, which records the runs beside the cut.

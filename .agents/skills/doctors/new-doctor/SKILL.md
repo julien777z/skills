@@ -41,11 +41,12 @@ does not start a doctor audit.
    - `## Reviewers`: one sentence citing the cap `doctor-protocol`'s **Launches** sets, a lower cap
      only where the domain needs one, what dictates the partition cut, what the cross-cutting
      reviewer compares and what the final reviewer challenges.
-   - `## Dispositions`, in order, naming the user decisions this domain adds.
+   - `## Dispositions`, in order, naming the calls this domain raises, each decided by the run as
+     `doctor-protocol`'s **Gate And Show The Plan** says.
    - `## Report Additions`.
 
    A decision a dependency already settles — breaking an owned contract, what stored data owes,
-   which product changes are the user's — is cited by its section in Dispositions, never restated
+   what stays reserved to the user — is cited by its section in Dispositions, never restated
    or reclassified. Nothing that restates a protocol section takes a heading or a paragraph,
    launch counts included. Declare no delivery cadence: the protocol's **Deliver** leaves the run's
    pull requests draft for the user.
