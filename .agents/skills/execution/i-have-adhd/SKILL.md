@@ -61,12 +61,12 @@ Good:
 
 ### 3. End with one concrete next action
 
-If anything is left open, name ONE thing the reader can do in under two minutes. Even "open the file" counts. This picks a next action; it never removes other unanswered questions from the decision list. The action is work the reader does, such as reviewing a pull request at its link, never a request that they authorize a merge, deployment, publication or release, which the global rules reserve to their own words, and never an answer to a decision, which rule 4 puts to the question tool.
+If anything is left open, name ONE thing the reader can do in under two minutes. Even "open the file" counts. This picks a next action; it never removes other unanswered questions from the decision list. The action is work the reader does, such as reviewing a pull request at its link, never a request that they authorize a merge, deployment, publication or release, which the global rules reserve to their own words, and never an answer to a decision, which rule 4 puts to the question tool. Nor is it checking the agent's own work: running the app, a test suite or a command, or opening a page or local address to see a change work, is verification the agent does before it reports, and the report shows that evidence instead of asking the reader to reproduce it. The reader gets those steps only when they asked how to run something themselves.
 
 **This closing line is the reader's action, never the agent's.** Authorized work the agent has not finished is done in this turn, never named as next, as the global rules' pending-result bullet in **Tools and environments** says. "Next: nothing needed from you. I'm moving on to the release notes." ends a turn on work never started: start the release notes instead.
 
 Bad: "Hope that helps. Let me know if you want to dig deeper."
-Good: "Next: run `npm test` and paste the first failing line."
+Good: "Next: read the diff at the pull request link."
 
 ### 4. Suppress tangents
 
@@ -158,7 +158,7 @@ Good: "About 12 minutes, most of it the 10-minute build. Then your review of the
 Show what now works, in concrete terms. Do not bury wins in a recap.
 
 Bad: "I've made some changes to the auth flow. Among other things..."
-Good: "Login now works with magic links. Try: `npm run dev`, open `/login`."
+Good: "Login now works with magic links: a sign-in at `/login` sent the link, and opening it landed on the dashboard (capture below)."
 
 ### 8. Matter-of-fact tone for errors
 
