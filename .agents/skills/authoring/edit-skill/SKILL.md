@@ -153,24 +153,9 @@ small it looks.** Each route below is the gate set its batch passes on the head 
 - A batch that changes no instruction a reader follows, as `test-skill`'s **When It Runs**
   recognizes one, has the source check as its only gate.
 
-1. Read every entry in the frozen batch and resume at its recorded first
-   nonterminal stage, rebuilding a lost or truncated entry from its backup
-   comment as `session-ledger` accepts it; the comment's existence records that the correction was admitted under **Recording During A Task**, its Intended behavior stands as the recovered intent for step 3 beside the user's words, taken from the conversation where they survive and otherwise named as missing in that intent, never replaced by that paraphrase, and **Run one `test-skill` round**
-   rebuilds the reproduction scenario from its failure class and invariant, with anything else
-   unrecoverable handled as `session-ledger` incomplete retrieval. An entry with no recorded commit
-   applies its edits under **Behavior** steps 5 and 6, on the branch **Branch and commit** selects; one with a
-   pushed commit resumes from that head, taking the pull request's current state, tip and diff
-   against the base from the host, which override the entry's and the comment's recorded commits
-   and delivery stage; a merged or closed pull request resumes at verifying the merged text, never
-   at review. An edit **Branch and commit** puts on a source pull request this session drives is pushed there and
-   passes **Run `validate_sources.py check`**'s source check on the head carrying it before that pull request's source stream
-   proceeds, and **Run one `test-skill` round**'s skill-test round on the head that pull request's review pass accepted, before the source review and delivery. It carries **Check prose duplication**'s checks into that
-   pull request's simplification pass and **Brief `review-pass`'s final acceptance**'s incident vocabulary into its final acceptance. An edit **Branch and commit** selects on
-   another session's source pull request runs **Run `validate_sources.py check`** through **Run one `test-skill` round** here on the head it pushed, and the
-   delivery report says the push moved that pull request's head past its owner's acceptance. An
-   edit on either source pull request is recorded as held for that pull request's merge once its
-   source check and skill-test round pass, so its batch can be done. The steps below cover the
-   agent-configuration pull request.
+1. Read every entry in the frozen batch and resume at its recorded first nonterminal stage, as the
+   [edit criteria](references/edit-criteria.md)'s **Resuming A Batch** says, including an entry
+   rebuilt from its backup comment and an edit that rides a source pull request.
 2. Run **Run `validate_sources.py check`**'s source check.
 3. Run `review-pass` once over the batch, naming every head it carries. Give it each entry's Scope
    Statement, with the user's words and evidence, as the intent statement, the brief **Brief
@@ -243,9 +228,9 @@ small it looks.** Each route below is the gate set its batch passes on the head 
      decision to that class, and no further, and remove conflicting permissions first. Every such
      statement scopes the rule to the class, naming the instance at most as one example, unless the
      instance is the root cause, which the rule then names and stays scoped to; waiting to write
-     never waits to classify. The verification record keeps the incident and these cases, the
-     guidance only the invariant. Classify before choosing the owner, since a component's owner can
-     hide a broader failure.
+     never waits to classify. Keep the incident and these cases in the verification record; shared
+     guidance states the invariant, not their identities. Classify before choosing the owner, since
+     a component's owner can hide a broader failure.
    - Supported types: every kind the description names. Use the type the user states; otherwise
      the owner search below decides it, never a question to the user.
    - A file or skill the request names is a candidate, not proof of ownership. Compare it with its

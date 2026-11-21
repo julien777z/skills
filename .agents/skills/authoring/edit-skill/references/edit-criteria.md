@@ -5,7 +5,7 @@ it and checking it. `SKILL.md` names the section each step reads; the order and 
 
 Contents: **Causal Diagnosis**, **Scope Statement**, **Shared Targets**, **Changed Output
 Examples**, **Moved Text**, **Tools And Dependency References**, **Source Check Routes**, **Already
-Reviewed Batches**, **Relocations**.
+Reviewed Batches**, **Relocations**, **Resuming A Batch**.
 
 ## Causal Diagnosis
 
@@ -206,3 +206,26 @@ may be picked for both. Carry the shared guidance and hand the contested questio
 repository, checking that each one already states its answer where the skill now sends its
 reader; a repository that does not is the flag, because the merge silently gave it the other
 one's answer.
+
+## Resuming A Batch
+
+Read at **Guidance Delivery** step 1.
+
+Read every entry in the frozen batch and resume at its recorded first
+nonterminal stage, rebuilding a lost or truncated entry from its backup
+comment as `session-ledger` accepts it; the comment's existence records that the correction was admitted under **Recording During A Task**, its Intended behavior stands as the recovered intent for step 3 beside the user's words, taken from the conversation where they survive and otherwise named as missing in that intent, never replaced by that paraphrase, and **Run one `test-skill` round**
+rebuilds the reproduction scenario from its failure class and invariant, with anything else
+unrecoverable handled as `session-ledger` incomplete retrieval. An entry with no recorded commit
+applies its edits under **Behavior** steps 5 and 6, on the branch **Branch and commit** selects; one with a
+pushed commit resumes from that head, taking the pull request's current state, tip and diff
+against the base from the host, which override the entry's and the comment's recorded commits
+and delivery stage; a merged or closed pull request resumes at verifying the merged text, never
+at review. An edit **Branch and commit** puts on a source pull request this session drives is pushed there and
+passes **Run `validate_sources.py check`**'s source check on the head carrying it before that pull request's source stream
+proceeds, and **Run one `test-skill` round**'s skill-test round on the head that pull request's review pass accepted, before the source review and delivery. It carries **Check prose duplication**'s checks into that
+pull request's simplification pass and **Brief `review-pass`'s final acceptance**'s incident vocabulary into its final acceptance. An edit **Branch and commit** selects on
+another session's source pull request runs **Run `validate_sources.py check`** through **Run one `test-skill` round** here on the head it pushed, and the
+delivery report says the push moved that pull request's head past its owner's acceptance. An
+edit on either source pull request is recorded as held for that pull request's merge once its
+source check and skill-test round pass, so its batch can be done. The steps below cover the
+agent-configuration pull request.
