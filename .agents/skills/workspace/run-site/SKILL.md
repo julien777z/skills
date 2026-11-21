@@ -114,9 +114,10 @@ preserve configured ports.
 After selecting browser verification under **Principles**, perform the following walkthrough
 where it applies. Passing tests, type checks, and a clean build show the code runs, never what the
 reader meets, and do not replace it. A change that can alter what the app does — new or reordered
-UI, layout or spacing, a component's props or state, a hook, a route, a redirect, middleware, an auth round trip, or the shape of a request — is walked
-end to end before it is reported done, however few lines it took, apart from a change confined to a
-component's own behavior that **Principles** lets the agent check on a page it builds; the
+UI, layout or spacing, a component's props or state, a hook, a route, a redirect, middleware, an
+auth round trip, or the shape of a request — is walked end to end before it is reported done,
+however few lines it took, apart from a change confined to a component's own behavior that
+**Principles** lets the agent check on a page it builds; the
 walkthrough follows the push rather than holding it, as the GitHub rule’s **Pre-Push Gate** says. An
 edit that provably cannot reach behavior — rewording text already rendered in its existing slot, a
 comment, prose in Markdown — is verified by reading it and by finding the new text in the build
@@ -186,8 +187,8 @@ EOF
   dev server and never the deployed domain: prefetching, caching, and middleware behave differently
   under a dev server, and a deployed site proves nothing about this checkout. The component page
   **Principles** allows renders the shipped package's build output, served however that page needs.
-  Interim captures while the work is in flight may come from dev servers. Snapshot after every navigation; refs do not
-  survive it.
+  Interim captures while the work is in flight may come from dev servers. Snapshot after every
+  navigation; refs do not survive it.
 - **Operate the control the change touched, not the page that holds it**, with real input events on
   every screen that mounts it, then read the state it was meant to leave — where the element landed,
   what the field holds, whether the list closed up — and reload where it persists something. A drag
