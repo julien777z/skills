@@ -73,7 +73,8 @@ proposed mechanism.
   decision.
 - Fix a `nit` only when it is a one-line change in a line the change already touches; otherwise
   list it as declined.
-- Outside the change, fix every bug, whatever its size. Non-bug cleanup outside the change
+- Outside the change, fix every bug, on the change or its own pull request as
+  `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places it by size. Non-bug cleanup outside the change
   follows `pre-production`'s size budget; return what is past it to the caller to record as deferred
   work.
 - Check each remedy against the language and layout rules for its file before applying it.

@@ -232,13 +232,13 @@ The criteria are `security-audit`'s `references/rubric.md`, and they cut in both
   path; a layer that covers some paths, such as one kind of handler, leaves a finding on the rest.
 - **When it arrived does not matter.** An exploitable finding on a surface the diff touches or
   reads, whether the change introduced it, inherited it or sits beside it, is a flag whose remedy
-  goes into the change in flight. "Not new in this round" never demotes it to a note.
+  goes where `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places it. "Not new in this round" never demotes it to a note.
 - **Severity is likelihood and impact together, and it orders the flags.** A targeted exploit with
   real consequence, a state change an attacker can force, a disclosure of secrets or credentials, a
   business-logic bypass whose blast radius is real: each is a flag of medium severity or above. A
   finding that defeats an explicit security boundary — an action the system gates behind a role,
   performed without it — is a flag with the boundary named. An exploitable finding below medium is
-  still a flag, and its fix goes into the change in flight, ordered by severity; only the
+  still a flag, and its fix goes where `pre-production`'s noticed-defect bullet places it, ordered by severity; only the
   defense-in-depth gap the bullet above defines is a hardening note. If the concrete damage cannot
   be described, the severity is lower than it looks.
 - **The remedy is found in `security-audit`'s order, not written for the sink.** A guarantee the code
@@ -296,10 +296,11 @@ ends the question.
    The Request** defines one. Measured evidence from a
    live run — a rate, a duration, a memory trail, a kill — is evidence of a defect the way a
    confirmed review finding is: the gate takes it as given and never re-derives the defect from the
-   tree, because a tree read alone cannot see a rate. A defect is fixed in the change in flight, or
-   on a branch off the default when nothing is in flight, whatever shape its fix takes, whether the
-   change introduced it, the task asked for it, or the work only ran into it; a defect is never
-   deferred for its size. A migration is how a fix is written, never a reason to record it instead. A check that
+   tree, because a tree read alone cannot see a rate. A defect is fixed whatever shape its fix takes, whether the
+   change introduced it, the task asked for it, or the work only ran into it, on the change or its
+   own pull request as `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places it
+   by size, or on a branch off the default when nothing is in flight; a defect is never deferred
+   for its size. A migration is how a fix is written, never a reason to record it instead. A check that
    would rediscover the defect does not soften this: rediscovery excuses the record, never the fix.
    Product state never softens it either: broken is broken for one admin as for a thousand users.
    A missing safeguard that definition leaves out goes on to the tests below, its exploitability
@@ -348,11 +349,12 @@ ends the question.
    treatment of a measured rate, which is taken as given precisely because reading the tree cannot
    produce one — size is exactly what reading the tree can.
 4. **do** — none of the above: the item is worth doing and its cleanest fix is within reach, so it is
-   done in the change in flight, or on a branch off the default when nothing is in flight.
+   done where `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places a fix of its size, or on a branch off the default when nothing is in
+   flight.
 
 **Admission — may this work be deferred?** The triage question asked of a proposed record. The
 answer is accept when triage's disposition is defer, and otherwise a refusal naming the disposition
-that applies: fix and do send the work into the change in flight, and close records the decision as a
+that applies: fix and do send the work where the fix test places it, and close records the decision as a
 canceled record with its reason and reconsideration criterion. An explicit user instruction to
 defer settles the defer test's justification; the gate still answers the fix test, confirms the problem
 is real from the current tree or measured evidence, and checks that the criteria describe an end

@@ -36,8 +36,8 @@ a pre-existing finding it meets on that path is still reported as a finding.
 
 It runs every phase at the effort stated, over the changed lines and what they reach. A finding in
 lines the running task wrote is fixed in that task's change; any other finding is reported to the
-caller, who fixes it in the change in flight, as `pre-production` says of a vulnerability the work
-finds.
+caller, who fixes it on the change or its own pull request as `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect
+places it by size, which `pre-production` applies to a vulnerability the work finds.
 
 ## Effort
 
