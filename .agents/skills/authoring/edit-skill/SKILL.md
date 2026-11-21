@@ -21,8 +21,7 @@ Documentation, a plan, a worker's proposal or the request's own description of t
 source to try, never the text to encode. Every other correction — a gap a guidance failure exposed,
 a rule the user states — depends on nothing the current work does: record it and write its edit at
 once under **Recording During A Task**, which sets when it is delivered, while the current work is
-corrected beside it. A problem the current work meets is its own issue, never a reason to hold or
-drop a correction that does not depend on it.
+corrected beside it; a problem the current work meets never holds or drops such a correction.
 
 **A gap you notice yourself starts this skill, exactly as a request does.** Guidance that let a miss
 through, a skill whose trigger did not fire when it should have, one that says nothing about the case
@@ -40,11 +39,9 @@ should have done X", "don't do Y again": each calls for correcting the thing in 
 checking whether guidance allowed the miss. Record the owning file's correction in the same turn,
 beside correcting the work, so the next session does not repeat it.
 
-A correct instruction does not close a reported failure to follow it. Step 2 traces and repairs the
-application step that admitted the rejected decision, then verifies that repair against the miss.
-Keep an unknown historical cause unproven; do not replace that repair with a noncompliance report or
-another copy of the substantive rule. Where no guidance governs the subject, step 2 creates its
-new owner under **Guidance Changes Proceed Automatically**.
+A correct instruction does not close a reported failure to follow it: step 2 traces, repairs and
+verifies the application step that admitted the rejected decision, and where no guidance governs
+the subject, creates its new owner under **Guidance Changes Proceed Automatically**.
 
 ## Guidance Changes Proceed Automatically
 
@@ -79,21 +76,20 @@ Honor the selected workflow's verification sequence and any delivery or installa
 recording or delivering a batch.
 Validate skill dependencies and their actual call and policy-read paths as `skill-pass`'s **Dependency Audit** says.
 
-- A correction that encodes a new process waits for its verified run or merge to be written, as
-  **A process is encoded only once it has worked** says, never to be classified; every other
-  correction is recorded once diagnosed.
+- A process correction waits for its verified run or merge to be written, as **A process is encoded
+  only once it has worked** says, never to be classified; any other is recorded once diagnosed.
 - A direct request to change guidance, such as "use edit-skill to reflect that", is recorded the
   same way. While another task runs, the requested action is the behavior it describes, applied to
   the current work, and the guidance edit is its record. While a guidance batch is in flight, its
   delivery is that action and the user's words are its evidence.
-- Record the correction as a `guidance_correction` entry with `session-ledger`: the user's words,
-  where the user gave any, quoted as `pre-production`'s **Examples And Paths** says, the evidence of
-  the gap, and for a process its verified run, a reproduction scenario, the Scope Statement
-  **Behavior** step 2 writes, whose From now on line is the entry's intended behavior, the
-  canonical files it will change, and `pending` as its `status`. Steps 1–4 of **Behavior** run at once,
-  while the evidence is fresh, and their result goes into the entry; the edit itself (steps 5 and 6 and
-  **Branch and commit**) is written as the bullet on writing the edit below says, and delivery from
-  **Run `validate_sources.py check`** onward waits.
+- Record the correction as a `guidance_correction` entry with `session-ledger`: the user's words, if
+  any, quoted as `pre-production`'s **Examples And Paths** says, the evidence of the gap, and for a
+  process its verified run, a reproduction scenario, the Scope Statement **Behavior** step 2 writes,
+  whose From now on line is the entry's intended behavior, the canonical files it will change, and
+  `pending` as its `status`. Steps 1–4 of **Behavior** run at once, while the evidence is fresh, and
+  their result fills the entry; the edit itself (steps 5, 6 and **Branch and commit**) is written as
+  the bullet on writing the edit below says, and delivery from **Run `validate_sources.py check`**
+  onward waits.
 - **A recorded correction governs the rest of the session at once**, ahead of the installed text it
   amends. Before a decision a pending entry's subject covers, read the ledger's pending entries and
   follow their intended behavior. Putting a question or a recommendation to someone is such a
@@ -239,18 +235,17 @@ small it looks.** Each route below is the gate set its batch passes on the head 
 2. Identify the failure class, then its target type and name.
    - **Classify the moment the gap is noticed, before the change is first worded anywhere.** State
      the observable outcome the user rejected and the invariant a correction must preserve, without
-     using the named component, format, file or tool as the boundary. Identify at least two
-     different ways the same outcome can arise, including a workaround that obeys the proposed
-     wording but violates that invariant. Include a different kind of decision, such as a sentence,
-     quantity or choice, rather than only more examples of the same format. Test the proposed scope
-     against those routes before stating the change anywhere, a report or question to the user, a
-     queued list, a worker brief, a proposed remedy or a ledger line included, or writing it: if any
-     still allows the rejected outcome, widen the owning decision to that class, and no further, and
-     remove conflicting permissions first. Every such statement scopes the rule to the class, naming
-     the instance at most as one example, unless the instance is the root cause, which the rule then
-     names and stays scoped to; waiting to write never waits to classify. Keep the incident and these cases in the
-     verification record; shared guidance states the invariant, not their identities. This check
-     precedes choosing the owner, because a component-specific owner can conceal a broader failure.
+     using the named component, format, file or tool as the boundary. Identify at least two ways the
+     same outcome can arise, including a workaround that obeys the proposed wording but violates
+     that invariant, and a different kind of decision, such as a sentence, quantity or choice, rather
+     than only more examples of the same format. Test the proposed scope against those routes before
+     stating the change anywhere — a report or question to the user, a queued list, a worker brief, a
+     remedy or a ledger line — or writing it: if any still allows the rejected outcome, widen the
+     owning decision to that class, and no further, and remove conflicting permissions first. Every
+     such statement scopes the rule to the class, naming the instance at most as one example unless
+     it is the root cause; waiting to write never waits to classify. Keep the incident and these
+     cases in the verification record; shared guidance states the invariant, not their identities.
+     This check precedes choosing the owner, as a component-specific owner can hide a broader failure.
    - Supported types: every kind the description names. Use the type the user states; otherwise
      the owner search below decides it, never a question to the user.
    - A file or skill the request names is a candidate, not proof of ownership. Compare it with its
