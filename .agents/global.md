@@ -705,6 +705,8 @@ return normalized
   invented, plainly synthetic value that keeps only the trait the case turns on, such as a hyphen, a
   long value or an accented letter: a reported plant code `FERN-EXAMPLE-0042` becomes
   `PLANT-SAMPLE-0001`, and a reported total of `$9,876.54` becomes `$1,000.50`.
+  Outside the bullets below, it is swapped at the **first retelling** later work copies from: the
+  plan, ledger entry or brief. A value derived from it, such as its digits reordered, is the user's.
   - A quote of the user's words that holds such a value — an intent statement, a recorded answer, a
     handoff, a dashboard — keeps the rest of their words exactly and names the value by its kind in
     brackets, such as `[the reported plant code]`.
@@ -713,11 +715,9 @@ return normalized
     or configuration that matches it — and tests, comments, descriptions and other committed,
     posted or published text use an invented one.
   - Two kinds of value are not examples and keep their exact text: fixed text the product shows
-    every reader that the user asks to add or reword, such as a label or a message, never a value
-    the product shows from a record; and a literal a protocol or provider defines for every caller,
-    such as a status value a provider sends.
-  - Every other sample value is plainly synthetic too, never shaped like a real identifier from
-    another system's domain.
+    every reader that the user asks to add or reword, such as a label, never a value shown from a
+    record; and a literal a protocol or provider defines for every caller, such as a status value.
+  - Every other sample value is synthetic too, never shaped like another system's real identifier.
 - **Nothing committed to a repository or posted to its host holds a path that only one machine
   has.** Source, configuration, guidance, documentation, fixtures, captured tool output, commit
   messages, pull-request text and comments never name a home directory, a temporary or scratch

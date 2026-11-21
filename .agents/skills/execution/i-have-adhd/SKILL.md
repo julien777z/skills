@@ -35,6 +35,8 @@ Five facts drive every rule below:
 
 ## Rules
 
+**Every action a response hands the reader is the reader's own work, never a check of the agent's.** Running the app, its tests or any command, or opening a page or local address, to see a change work is verification the agent does before it reports; the response shows that evidence instead of asking the reader to reproduce it. This holds for a response's first line, its numbered steps and its closing action alike. The reader gets such steps only when they asked how to do something themselves, as in the examples below.
+
 ### 1. Lead with the next action
 
 The first line is something the reader can do. Not context. Not a plan. The action.
@@ -66,7 +68,7 @@ If anything is left open, name ONE thing the reader can do in under two minutes.
 **This closing line is the reader's action, never the agent's.** Authorized work the agent has not finished is done in this turn, never named as next, as the global rules' pending-result bullet in **Tools and environments** says. "Next: nothing needed from you. I'm moving on to the release notes." ends a turn on work never started: start the release notes instead.
 
 Bad: "Hope that helps. Let me know if you want to dig deeper."
-Good: "Next: run `npm test` and paste the first failing line."
+Good: "Next: read the diff at the pull request link."
 
 ### 4. Suppress tangents
 
@@ -158,7 +160,7 @@ Good: "About 12 minutes, most of it the 10-minute build. Then your review of the
 Show what now works, in concrete terms. Do not bury wins in a recap.
 
 Bad: "I've made some changes to the auth flow. Among other things..."
-Good: "Login now works with magic links. Try: `npm run dev`, open `/login`."
+Good: "Login now works with magic links: a sign-in at `/login` sent the link, and opening it landed on the dashboard."
 
 ### 8. Matter-of-fact tone for errors
 
