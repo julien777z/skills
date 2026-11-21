@@ -128,15 +128,17 @@ Apply dispositions as follows:
 - **Blocked** — record the blocker and required decision or external change; keep the issue active.
 
 As soon as a validated resolution pull request is ready **and `acceptance-gate` accepted both the
-proposal and the diff**, update every
-included Linear issue's `Resolution PR` metadata and move implemented or simplified issues to a
-completed-category state. A flagged resolution moves nothing: the issue stays active.
-The user's completion condition is a ready validated pull request, not its merge. Do not merge the
-resolution pull request without separate authorization.
+proposal and the diff**, record it in every included Linear issue's `Resolution PR` metadata and
+leave the issue in its started-category state. Move an implemented or simplified issue to a
+completed-category state only once its resolution pull request has merged, because the work is
+delivered only when the default branch holds it, and a completed issue whose pull request never
+lands drops out of ordinary `all` selection. A flagged resolution records nothing: the issue stays
+active. Merging the resolution pull request needs its own authorization.
 
-When inventorying, reconcile completed issues whose resolution pull request later closed without
-merging. Record that evidence and return them to the appropriate active state so ordinary `all`
-selection cannot hide work that never reached the default branch.
+When inventorying, read each active issue's recorded `Resolution PR`: one that has merged moves the
+issue to a completed-category state with that evidence, and one that closed without merging is
+recorded on the issue, which stays active. A completed issue whose resolution pull request closed
+without merging gets the same evidence and returns to the appropriate active state.
 
 ## Resolve Repository-Ledger Records
 
