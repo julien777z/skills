@@ -143,7 +143,7 @@ dispositions, the **Mirror Source Ownership** test-module check, the **Naming Ch
 keeper, and delete one that proves nothing once the rubric's deletion evidence is recorded. A
 repaired or strengthened guarantee follows the existing-check validation procedure above. A fix that repairs a defect —
 a test that cannot fail, guards the wrong behavior or breaks in a fresh checkout — is always made,
-whatever its size, apart from a test already failing on the default branch, which the rubric
+on a pull request of its own when `pre-production` places it there, apart from a test already failing on the default branch, which the rubric
 records and leaves; other cleanup the sweep finds counts toward `pre-production`'s size budget like
 any other incidental change, and past it, what is left returns to the caller as deferred work. Apply the cost-reporting procedure above to the run that verified the
 change. A disproportionate test, parametrized family or module in scope is made cheap or removed

@@ -169,7 +169,7 @@ with an obsolete owned contract or revision.
   security finding, because what the system does includes what an attacker can make it do.
 - **Deprecated usage and printed warnings are defects.** An API, setting, default, input or
   dependency its owner has deprecated, and any warning a test run, build, install or CI log prints,
-  is fixed in the change in flight: move to the supported replacement, or turn on the default the
+  is fixed where the next bullet places a noticed defect's fix: move to the supported replacement, or turn on the default the
   owner says is coming; a dependency that itself calls deprecated code is upgraded or replaced,
   apart from a narrow ignore for a defect inside a third-party package that nothing the
   repository controls resolves. A check a library warns it will start
@@ -179,21 +179,31 @@ with an obsolete owned contract or revision.
   released users move as **Product State**'s migration bullet says. Only a step the move needs that
   the user alone can take, such as supplying an identifier the session cannot read, goes to them,
   as that step.
-- **A defect the work notices is always fixed, wherever it lives.** It is fixed in the change in
-  flight, outside both the hop limit and the size budget below, however many files its fix takes.
-  Sitting in a shared
-  component, an owned library or another owned repository the pull request does not otherwise touch
-  is no reason to leave it: the fix goes to that repository's pull request for this work. It is
-  never deferred or offered to the user as a question.
+- **A defect the work notices is always fixed, and a large fix gets a pull request of its own.**
+  The hop limit below does not bound it, and neither does its home: a shared component, an owned
+  library or another owned repository. Its size decides where the fix goes, so the requested change
+  stays reviewable as itself:
+  - **A small fix rides with the change**: one within the widened budget's reach below, about five
+    files, in the repositories the change already edits.
+  - **A larger fix goes on its own pull request**: one reaching more files or another repository,
+    such as a dependency or runtime upgrade a warning leads to, or a fix inside an owned library. It
+    is opened from each affected repository's freshly fetched default branch and carried through
+    its own checks now. The change in flight neither carries it nor consumes its branch, and a
+    merge authorized for the change does not reach it.
+  - **A defect the change itself introduced, or one the requested behavior cannot work without,
+    stays the change's** whatever its size, and a dependency it needs is consumed as the GitHub
+    rule's **Pre-Push Gate** says.
+
+  It is never deferred, left as a note, or offered to the user as a question.
 - **A security vulnerability the work finds is such a defect, whoever finds it and whenever it
   arrived.** One a gate, reviewer or audit reports in code the change never touched, one that
   predates the change, and one another layer is said to stop before that layer is traced on every
-  path the attack takes are all fixed in the change in flight, with a test that reproduces the
-  attack first where one can exist. A shape that may be exploitable is traced to an attacker or
-  ruled out in the same run. It is always closed in the change with the fix that enforces the access
+  path the attack takes are all fixed now, in the change in flight or on a pull request of its own
+  as the bullet above places it, with a test that reproduces the attack first where one can exist. A shape that may be exploitable is traced to an attacker or
+  ruled out in the same run. It is always closed with the fix that enforces the access
   the product already intends; only a change that widens access or changes who the feature serves
   goes to the user, as **Product Choices** says. Every mitigation
-  within reach is carried in the change, and a remaining step only another party can take, such as
+  within reach is carried in that fix, and a remaining step only another party can take, such as
   rotating a credential they hold, is reported as a gate with its owner and saved next action. It is never put to the user as something to
   consider or an option, recorded as deferred, left as a hardening note, or answered with a
   recommendation to run an audit of any kind later.

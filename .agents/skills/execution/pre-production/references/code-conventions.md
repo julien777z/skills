@@ -144,11 +144,14 @@ return normalized
   the exact resolved commit for reproducibility and provenance.
 
 - **Every project the owner runs or consumes runs the newest stable language runtime, base image
-  and dependency releases it works with.** A change that touches a project's runtime, manifests or
-  lockfile moves what the project actually runs onto them — its version file, container images, CI
-  and lockfile — with whatever code changes the new releases need, including in an owned package
-  that only widened its range to let a consumer move. Neither of these is that move: a CI leg kept on the
-  old release beside the new one, or a dependency held below its newest release. Hold one back only
+  and dependency releases it works with.** A change made for that move — one the user asks for, or
+  the upgrade pull request a warning leads to, as `pre-production`'s **Scope Follows The Defect,
+  Not The Request** places it — moves what the project actually runs onto them: its version file,
+  container images, CI and lockfile, with whatever code changes the new releases need, including in
+  an owned package that only widened its range to let a consumer move. Neither of these is that
+  move: a CI leg kept on the old release beside the new one, or a dependency held below its newest
+  release. A change that touches a manifest or lockfile for another purpose, such as adding one
+  dependency, takes that dependency's newest stable release and moves nothing else. Hold one back only
   where an install or test shows the newer release failing on the project's runtime, such as
   another dependency pinning it, and name that failure in a comment beside the constraint; a
   migration the newer release needs is part of the move, not a reason to hold. Widening a

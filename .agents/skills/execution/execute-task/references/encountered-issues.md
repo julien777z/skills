@@ -4,8 +4,9 @@ How `SKILL.md`'s **Encountered Issues** handles what the work runs into.
 
 ## Disposition
 
-- **A finding against the task's changed design, and every defect the work runs into, is fixed in
-  the change in flight, whatever its size; cleanup that fixes no defect is recorded with
+- **A finding against the task's changed design, and every defect the work runs into, is fixed**:
+  in the change in flight, or on a pull request of its own where `pre-production`'s **Scope Follows
+  The Defect, Not The Request** places a large fix; cleanup that fixes no defect is recorded with
   `defer-scope` once it passes `pre-production`'s size budget.** The fix takes a shape the standing guidance allows, as the next bullet says, and offering it
   to the user is not a disposition: "Want this handled, or shall I leave it?" spends a turn to obtain
   permission the guidance already settled. The question that is genuinely the user's is a product

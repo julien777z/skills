@@ -18,7 +18,7 @@ specific set.
 - **The invocation authorizes the squash merge of every selected target** at the head its
   `review-pass` accepted, unless the user explicitly withholds merge, in which case each unit ends at
   that head with its pull request left draft. When merge is authorized, nothing reopens it: not the
-  diff's size or reach, not that review widened it, and not this run's own unease about how much it
+  diff's size, and not this run's own unease about how much it
   changes.
 - **So never ask the user for permission to merge, and never end a run by offering the merge as the
   remaining step.** The answer was given when the skill was invoked. When the gates are green and the
@@ -33,6 +33,7 @@ specific set.
 
 ## Dependencies
 - `list-prs`
+- `pre-production`
 - `review-pass`
 - `merge-gate`
 - `session-ledger`
@@ -59,6 +60,12 @@ specific set.
 - Verify each target's branch, head and state on the host. A target stays draft through its work
   and review: `merge-gate` marks it ready, as the last step before the merge, once `review-pass`
   has accepted its head.
+- **Each target merges as the change it was opened for.** A fix its review, checks or gates find
+  stays on it only where `pre-production`'s **Scope Follows The Defect, Not The Request** keeps a
+  fix with the change; a larger one, or one in another repository, goes on a pull request of its
+  own, which this run does not merge and the target does not consume. A fix past that reach an
+  earlier pass already put on the target moves to its own pull request the same way before the
+  target's review, leaving the target its requested change.
 - **Open recorded work `review-pass` returns is built on the target before its review starts**;
   review, merge and a dependency-held repoint keep their own order under **Workflow** and
   **Dependent Pull Requests**.
