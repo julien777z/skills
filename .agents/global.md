@@ -757,7 +757,7 @@ return normalized
   saying a library sets none, and another at the override that applies it, are one comment too many.
 
 - **A partial update expresses intent through its existing field presence or field mask.** Apply
-  the fields the request includes and leave omitted fields alone. Use the contract's own
+  the fields that mechanism selects and leave every other field alone. Use the contract's own
   representation for an explicit clear. A separate control earns a place only when it expresses
   a distinct operation the update fields cannot represent.
 

@@ -165,8 +165,8 @@ smallest-fix order above, applied before there is anything to fix.
   the caller's authority. Internal calls within that boundary use the authority established there.
   A genuinely distinct caller restriction belongs in the shared authorization policy and its
   common enforcement, such as middleware or a decorator, instead of identity branches in
-  individual handlers. Keep resource scoping on every read and write using the owner already in
-  the store.
+  individual handlers. Authorize reads and writes against the resource owner the store already
+  holds, and keep every access scoped to that owner.
 - **Keep secrets where they belong.** No secret, token or credential in source, fixtures, logs, error
   messages or client bundles; each comes from the configuration owner the repository already uses.
 - **Add no surface the request does not need.** No debug route, permissive fallback, wildcard
