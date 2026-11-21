@@ -15,6 +15,7 @@ at their owners.
 - `session-ledger`
 - `edit-skill`
 - `test-skill`
+- `merge-gate`
 
 ## Batches
 
@@ -48,7 +49,10 @@ Apply `session-ledger`'s **Guidance Batches** boundary.
 
 1. Resolve and read the active task's ledger through `session-ledger`. Honor active recovery priority before permanent guidance delivery; retain its saved next action. Before freezing or prioritizing a batch, reconcile every recorded hold
    with its current owner and authoritative dependency evidence. Discharge a completed dependency,
-   retain a genuine authorization or dependency hold with its saved next action, and resume any
+   and a hold waiting to verify work already merged, which the merge discharged, as `merge-gate`'s
+   **No Verification Or Deploy Work** says; a correction so held is
+   written from the merged work. Retain a genuine authorization or dependency hold with its saved
+   next action, and resume any
    nonterminal delivery stage without repeating a verified receipt. Verify each entry's evidence
    before acting; a missing, invalid, or incomplete ledger is a recovery condition, not an empty
    result.

@@ -26,7 +26,7 @@ specific set.
 - The same invocation authorizes `review-pass` and `merge-gate` for every selected pull request.
   It does not authorize separately dispatching a release workflow, creating a deployment, or an
   unrelated provider mutation: `merge-gate`'s **Authorization** says what authorizes those, its
-  **No Deploy Work** what follows each merge, and its **Pull Request Activity** when a pull request
+  **No Verification Or Deploy Work** what follows each merge, and its **Pull Request Activity** when a pull request
   is polled.
 - Once started, the run keeps its authorization, targets and merge authority through ordinary user
   interruptions, status requests and separately requested work. Only an explicit pause, stop, handoff, replacement, or terminal result ends it.
@@ -41,8 +41,10 @@ specific set.
 
 ## Targets
 
-- An explicit pull-request URL or recognized identifier in the user's own message is the sole set:
-  verify and resolve it directly. A pull request the message does not name is never added: not one
+- An explicit pull-request URL or recognized identifier in the user's own message is the sole set,
+  verified and resolved directly, apart from the task's open pull requests confined to deferral
+  records, which join every run's set since the GitHub rule's **Merge Authorization** already grants
+  their merge. Any other pull request the message does not name is never added: not one
   mentioned earlier as awaiting merge, not the dependency a held unit waits on, and not one a bare
   "yes" beside the request might answer. Such a dependency stays a gate under **Dependent Pull
   Requests**.
@@ -163,8 +165,9 @@ of agent configuration, run here after every verified merge.
   and was not subsequently reverted. Compare staged and unstaged changes, including file mode and binary
   changes, before restoring anything. For a file with mixed or uncertain changes, preserve the
   entire file unless the landed and local-only changes can be verified independently.
-- A copy a file-sync service or the operating system left behind is not local work: delete it as
-  `execute-task`'s **Copies A Sync Service Left Behind** says, never save it.
+- A copy a file-sync service or the operating system made is not local work, whatever it holds:
+  delete it as `execute-task`'s **Copies A Sync Service Left Behind** says, never compare, stash or
+  keep it on a preservation branch.
 - Stage the remaining local-only edits by path, including untracked files that belong to the work.
   When a path has different staged and working-tree edits, keep its index entry intact. Save the
   index, working tree, and untracked files in a named local stash and verify the saved versions

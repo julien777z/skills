@@ -128,6 +128,12 @@ alwaysApply: true
     together with everything in its batch, and a workflow, installer or repository tooling outside
     a skill's folder is source work when its execution changes, even under `.agents`;
   - the focused revert of a pull request an agent merged by mistake, which may auto-merge.
+- **A pull request confined to deferral records, active or declined, merges without a separate
+  request as soon as its records are written**, through `merge-gate` with its required checks, once
+  its complete diff is confirmed to hold only deferral records: a record left on an open branch is
+  lost to every later session. It is never left open, held for a later finishing run, or reported
+  as waiting on the user. A record that rides a source pull request merges with that pull request
+  under that pull request's own authority.
 - **An agent-configuration pull request whose guidance depends on a still-open source pull request
   is held until that merge**, whatever its other gates say, unless the guidance rides that pull
   request under **Branches and Pull Requests**; guidance true on the default branch as it stands

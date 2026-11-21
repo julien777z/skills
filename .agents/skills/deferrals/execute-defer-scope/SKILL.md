@@ -14,6 +14,7 @@ Resolve recorded deferrals instead of treating their proposed work as automatica
 - `pre-production`
 - `code-simplify`
 - `acceptance-gate`
+- `merge-gate`
 - `session-ledger`
 
 ## Select The Records
@@ -133,7 +134,12 @@ leave the issue in its started-category state. Move an implemented or simplified
 completed-category state only once its resolution pull request has merged, because the work is
 delivered only when the default branch holds it, and a completed issue whose pull request never
 lands drops out of ordinary `all` selection. A flagged resolution records nothing: the issue stays
-active. Merging the resolution pull request needs its own authorization.
+active. Merging a resolution pull request carrying any other change needs its own authorization. One
+confined to deferral records, such as legacy declined moves and retired records, merges under the
+GitHub rule's deferral-record permission: put its complete diff to `acceptance-gate`'s
+final-acceptance question, one gate per such pull request, then invoke `merge-gate` with that
+accepted head, no local test coverage, and the rule that a fix it makes goes back to final
+acceptance over its delta, one more gate per fix, within the limit of 3 review rounds per change.
 
 When inventorying, read each active issue's recorded `Resolution PR`: one that has merged moves the
 issue to a completed-category state with that evidence, and one that closed without merging is

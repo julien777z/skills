@@ -21,18 +21,14 @@ and `captures/`; a worker reads its brief there by its absolute path.
 
 ## Copies A Sync Service Left Behind
 
-**A copy a file-sync service or the operating system left behind is deleted, never kept, left as
-outside the task or put to the user.** Its name is the original's plus a copy suffix, such as
-`budget 2.csv` or `HEAD 2`. On meeting one, list all with a name search of the whole tree and its
-Git directories, such as `find` on the root, `git rev-parse --git-dir` and `--git-common-dir`,
-never `git status` or `ls`, which miss ignored and hidden ones. A copy with content of its own
-stays as an ordinary file. Before anything stages, stashes or snapshots the tree, delete each other
-copy once no process, worktree or session uses it, naming each in the report:
-
-- a file identical to its original or to any version of it Git holds;
-- an entry in a Git directory outside `worktrees` and `modules`, once a branch holds each commit
-  only it names;
-- a folder or clone whose files, commits and stashes its original holds, removed as a plain folder.
+**A copy a file-sync service or the operating system made is deleted once no process, worktree or
+session uses it, whatever it holds.** Its name is the original's plus a copy suffix, such as
+`budget 2.csv` or `HEAD 2`. Find every one with a name search of the whole tree and its Git
+directories (`git rev-parse --git-dir` and `--git-common-dir`), never `git status` or `ls`, which
+miss ignored and hidden ones, and delete each before anything stages, stashes or snapshots the tree.
+A file, folder, clone or Git entry goes even when it differs from its original or names a commit or
+branch the original lacks: nothing is compared, backed up or kept on a branch, since what a session
+keeps lives in the original and on the remote. The report names each one deleted.
 
 ## Browser Access
 

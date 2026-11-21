@@ -94,11 +94,10 @@ and lock ownership throughout.
    shared skills repository and its README identifies `bootstrap/install.sh`.
 2. Delete every copy a file-sync service or the operating system made in the checkout, its Git
    directory, each `skills-overlay/` worktree and every user-level agent root: find them by a
-   name search of each tree and its Git directories, and delete each that holds nothing its
-   original or Git lacks once no process, worktree or session uses it. A copy deleted this way is
-   neither an uncommitted edit nor damaged Git state: it takes no backup, and step 4.3's snapshot
-   leaves out one still waiting to be deleted. A copy with content of its own is an ordinary
-   uncommitted edit. Then record the checkout's current commit, branch, working-tree
+   name search of each tree and its Git directories, never `git status` or `ls`, and delete each,
+   whatever it holds, once no process, worktree or session uses it. A copy is neither an uncommitted edit that takes effect nor damaged Git state: it takes no
+   backup, and step 4.3's snapshot leaves out one still waiting to be deleted. Then record the
+   checkout's current commit, branch, working-tree
    status, installed source, and each `skills-overlay/` worktree with the built head its marker
    stores. Fetch the remote default branch and the branch of every pull request in effect.
 3. **With no pull request in effect, the checkout on the default branch, and no caller about to

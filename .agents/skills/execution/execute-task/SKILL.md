@@ -116,9 +116,10 @@ without a plan of their own; only an edit that adds nothing skips it.
   wall-clock estimate, as `i-have-adhd` numbers steps, then the total and what the user does
   afterwards. Keep it short enough to read at a glance.
 - **A plan's last step for repository changes is the merge**, or the reviewable pull request when
-  no merge is authorized. Its verification runs before that; no
-  step, verification or user action after it walks the deployed site, checks a rollout or waits for
-  a deploy, apart from the tasks `merge-gate`'s **No Deploy Work** excepts.
+  no merge is authorized. Every verification it needs runs before that; no step, verification, hold
+  or user action after it re-verifies the merged change, walks the deployed site, checks a rollout
+  or waits for a deploy, apart from the tasks `merge-gate`'s **No Verification Or Deploy Work**
+  excepts.
 - **An estimate is the executing agent's own wall-clock, never the effort the same work would
   take a person.** Build each step's from [plan estimates](references/plan-estimates.md), and list
   what the plan needs from the user — a review, a merge, a manual action — separately and

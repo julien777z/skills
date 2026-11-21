@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit anything under `.agents` — a skill, rule, agent definition, hook, setting, reference or project guidance — including when the user points out a mistake in how an agent followed or wrote guidance, or questions where guidance was placed, even with no request to edit a skill, and when carrying a guidance batch through delivery to its merge or hold. Fix the underlying issue and the guidance path that allowed it, writing the change for the class of failure the user plainly meant, no narrower and no broader, shown to them as a Scope Statement first. A correction that encodes a new process waits until that process has worked on the work in hand; every other correction is recorded and written at once. While another task is active, every correction, a direct request included, is pushed to a draft guidance pull request and recorded, and its delivery runs in bulk when that task completes; one arriving while a batch is in flight joins it. A behavior-changing edit passes its route's gates before it merges.
+description: Add or edit anything under `.agents` — a skill, rule, agent definition, hook, setting, reference or project guidance — including when the user points out a mistake in how an agent followed or wrote guidance, or questions where guidance was placed, even with no request to edit a skill, and when carrying a guidance batch through delivery to its merge or hold. Fix the underlying issue and the guidance path that allowed it, writing the change for the class of failure the user plainly meant, no narrower and no broader, classified before the change is first described, proposed or edited anywhere and shown to them as a Scope Statement first. A correction that encodes a new process waits until that process has worked on the work in hand, which a merged change that carried it has; every other correction is recorded and written at once. While another task is active, every correction, a direct request included, is pushed to a draft guidance pull request and recorded, and its delivery runs in bulk when that task completes; one arriving while a batch is in flight joins it. A behavior-changing edit passes its route's gates before it merges.
 short_description: 'Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.'
 ---
 
@@ -15,13 +15,14 @@ report says so.
 new process into guidance — a workflow, a procedure, a tool or route, a way of building or
 delivering something — is first carried out on the work in hand and verified to work; the guidance
 is then written from that run: the steps and commands it used, what had to differ from the source
-that described the process, and what failed along the way. Documentation, a plan, a worker's
-proposal or the request's own description of the process is the source to try, never the text to
-encode. Every other correction — a gap a guidance failure exposed, a rule the user states — depends
-on nothing the current work does: record it and write its edit at once under **Recording During A
-Task**, which sets when it is delivered, while the current work is corrected beside it. A problem
-the current work meets while it is being corrected is that work's own issue, never a reason to hold
-or drop a correction that does not depend on it.
+that described it, and what failed along the way. A merged change that carried the process is that
+run, so its guidance is written from the merged work, never held for a fresh run after the merge.
+Documentation, a plan, a worker's proposal or the request's own description of the process is the
+source to try, never the text to encode. Every other correction — a gap a guidance failure exposed,
+a rule the user states — depends on nothing the current work does: record it and write its edit at
+once under **Recording During A Task**, which sets when it is delivered, while the current work is
+corrected beside it. A problem the current work meets is its own issue, never a reason to hold or
+drop a correction that does not depend on it.
 
 **A gap you notice yourself starts this skill, exactly as a request does.** Guidance that let a miss
 through, a skill whose trigger did not fire when it should have, one that says nothing about the case
@@ -78,9 +79,9 @@ Honor the selected workflow's verification sequence and any delivery or installa
 recording or delivering a batch.
 Validate skill dependencies and their actual call and policy-read paths as `skill-pass`'s **Dependency Audit** says.
 
-- A correction that encodes a new process waits for that process's verified run, as **A process is
-  encoded only once it has worked** says; a method or lesson the work has not yet tried is not a
-  correction until then. Every other correction is recorded as soon as its gap is diagnosed.
+- A correction that encodes a new process waits for its verified run or merge to be written, as
+  **A process is encoded only once it has worked** says, never to be classified; every other
+  correction is recorded once diagnosed.
 - A direct request to change guidance, such as "use edit-skill to reflect that", is recorded the
   same way. While another task runs, the requested action is the behavior it describes, applied to
   the current work, and the guidance edit is its record. While a guidance batch is in flight, its
@@ -89,7 +90,7 @@ Validate skill dependencies and their actual call and policy-read paths as `skil
   where the user gave any, quoted as `pre-production`'s **Examples And Paths** says, the evidence of
   the gap, and for a process its verified run, a reproduction scenario, the Scope Statement
   **Behavior** step 2 writes, whose From now on line is the entry's intended behavior, the
-  canonical files it will change, and `pending` as its `status`. Steps 1–4 of **Behavior** run now,
+  canonical files it will change, and `pending` as its `status`. Steps 1–4 of **Behavior** run at once,
   while the evidence is fresh, and their result goes into the entry; the edit itself (steps 5 and 6 and
   **Branch and commit**) is written as the bullet on writing the edit below says, and delivery from
   **Run `validate_sources.py check`** onward waits.
@@ -236,14 +237,18 @@ small it looks.** Each route below is the gate set its batch passes on the head 
      step 2's causal diagnosis still repairs.
 
 2. Identify the failure class, then its target type and name.
-   - **Classify before proposing a remedy or editing guidance.** State the observable outcome the
-     user rejected and the invariant a correction must preserve, without using the named component,
-     format, file or tool as the boundary. Identify at least two different ways the same outcome can
-     arise, including a workaround that obeys the proposed wording but violates that invariant.
-     Include a different kind of decision, such as a sentence, quantity or choice, rather than only
-     more examples of the same format. Test the proposed scope against those routes before presenting
-     it to the user or writing it: if any still allows the rejected outcome, widen the owning
-     decision to that class, and no further, and remove conflicting permissions first. Keep the incident and these cases in the
+   - **Classify the moment the gap is noticed, before the change is first worded anywhere.** State
+     the observable outcome the user rejected and the invariant a correction must preserve, without
+     using the named component, format, file or tool as the boundary. Identify at least two
+     different ways the same outcome can arise, including a workaround that obeys the proposed
+     wording but violates that invariant. Include a different kind of decision, such as a sentence,
+     quantity or choice, rather than only more examples of the same format. Test the proposed scope
+     against those routes before stating the change anywhere, a report or question to the user, a
+     queued list, a worker brief, a proposed remedy or a ledger line included, or writing it: if any
+     still allows the rejected outcome, widen the owning decision to that class, and no further, and
+     remove conflicting permissions first. Every such statement scopes the rule to the class, naming
+     the instance at most as one example, unless the instance is the root cause, which the rule then
+     names and stays scoped to; waiting to write never waits to classify. Keep the incident and these cases in the
      verification record; shared guidance states the invariant, not their identities. This check
      precedes choosing the owner, because a component-specific owner can conceal a broader failure.
    - Supported types: every kind the description names. Use the type the user states; otherwise

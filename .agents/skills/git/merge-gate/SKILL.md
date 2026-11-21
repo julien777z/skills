@@ -275,7 +275,7 @@ provider already rejected. Follow its matching replacement or retry under **Chec
 the required context and attempt the merge once GitHub reports it passing. For other exclusions, or if hosted
 recovery is unavailable, report the actual rejection and its provider evidence. Never bypass protection.
 
-Once the merge is verified, **No Deploy Work** governs what follows it, and **After Agent Sync** a
+Once the merge is verified, **No Verification Or Deploy Work** governs what follows it, and **After Agent Sync** a
 merge whose diff changes agent configuration.
 
 ## After Agent Sync
@@ -302,21 +302,25 @@ from its log and reported.
   refresh, return the Agent Sync result and any shared installation result so the caller can
   complete and verify it.
 
-## No Deploy Work
+## No Verification Or Deploy Work
 
-**A merge leaves no deploy work.** Once a pull request's merge is verified:
+**A merge leaves no verification or deploy work.** Whatever a change needs verified — tests, a
+playtest, a walkthrough, an audit, a fresh-eye review — runs before its merge. Once the merge is
+verified, nothing runs again to check it:
 
 - never check by any route whether the change is live, such as a provider's deployment status, a
   release run or the site itself, and never inspect or follow merge-triggered release, publication,
   artifact or deployment workflows;
-- never walk or test the site the merge deployed;
+- never test, walk or audit what the merge deployed or the merged default branch;
 - never schedule a re-check, wait for a deploy, or assume one is coming.
 
-Nothing waits on a deploy: the remaining work proceeds, and a report names no deploy step as
-remaining. Other authorized work after a merge is unaffected, such as a run's next batch, a
-consumer repointed once its dependency merged, or the refresh **After Agent Sync** requires. A
-task whose own outcome the user stated as a deployment, publication or
-release, or as restoring a broken deployed operation, follows that outcome past the merge.
+A verification step still open at the merge closes with it, and nothing waits on such a run or on a
+deploy: no plan step, ledger or guidance hold, worker brief or report's next action. Other
+authorized work after a merge is unaffected, such as a run's next batch, a consumer repointed once
+its dependency merged, or the refresh **After Agent Sync** requires. A task whose own outcome the
+user stated as a deployment, publication or release, or as restoring a broken deployed operation,
+follows that outcome past the merge, and a workflow the user invokes to merge before its review
+keeps that review.
 
 ## Pull Request Activity
 

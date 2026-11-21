@@ -105,7 +105,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   to merge", the `diagram` "Merge and deploy order", then the `outline` sections "Between merges",
   "Deploy" and "Once live", each only when it has something in it. Its `status` is "<n> need you"
   (`warning`) while anything on it waits on the user — a pull request held on their review or
-  answer, or an action under Between merges, Deploy or Once live that only they can take — and is
+  answer, or an action under Between merges or Deploy that only they can take — and is
   left out once nothing does.
 - **`table` "Plans"**: one row per plan that is not withdrawn, with the columns Plan, Steps done
   ("<done> of <n>"), Running, Waiting on you and Time left, the summary of what the board shows step
@@ -173,10 +173,11 @@ and deliver the same dashboard again on every request so the user keeps one page
   what deploying sets off, such as a migration running.
 - **`outline` "Once live"**: per environment, what the user can check after it deploys to know the
   change works there, such as a page to open, a job to watch or a log line to look for, each with a
-  link where one exists; the agent checks none of it and waits on none of it, as `merge-gate`'s
-  **No Deploy Work** says: these outlines tell the user what their own deploy needs and are the one
-  place a deploy step is named. In these three outlines, `tone` is `critical` when skipping the item
-  breaks the next step and `warning` otherwise.
+  link where one exists; the agent checks none of it and nothing waits on it, as `merge-gate`'s
+  **No Verification Or Deploy Work** says, so its items carry no `tone`: these outlines tell the
+  user what their own deploy needs and are the one place a deploy step is named. In Between merges
+  and Deploy, `tone` is `critical` when skipping the item breaks the next step and `warning`
+  otherwise.
 - **`links` "Pull requests"**: each open and draft pull request, leaving out merged and closed
   ones, which need nothing more from the reader, with `group_label` "Repository". `label` its
   `<repository>#<number>`, `url`, `group` "<owner>/<repo>", `detail` its short title, then the
