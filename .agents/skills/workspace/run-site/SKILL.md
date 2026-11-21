@@ -1,13 +1,14 @@
 ---
 name: run-site
-description: Bring an application stack up and repair startup blockers. Guidance-required browser walkthroughs apply only in cloud execution environments; explicit user requests for browser work apply in either environment. Use before planning, recommending, delegating or performing browser walkthroughs or rendered UI inspections, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works.
+description: Bring an application stack up and repair startup blockers. A change a reader sees rendered is inspected rendered before it is reported, in every execution environment, in a browser the agent runs itself when local; the full recorded walkthrough applies in cloud execution environments and whenever the user asks for browser work. Use before planning, recommending, delegating or performing browser walkthroughs or rendered UI inspections, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works.
 short_description: 'Start an application stack and perform browser verification where applicable.'
 ---
 
 # Run Site
 
-Start and verify the stack within the requested scope. When browser verification applies under
-**Principles**, its deliverable includes screenshots and a recording showing signed-in functionality.
+Start and verify the stack within the requested scope. The cloud walkthrough under **Principles**
+delivers screenshots and a recording showing signed-in functionality; a local inspection delivers
+its captures.
 
 ## Dependencies
 - `pre-production`
@@ -21,16 +22,23 @@ Start and verify the stack within the requested scope. When browser verification
 
 Use `use-browser` for browser control through its supported route. Apply `test-fixture` to any tests the scenario adds or updates.
 
-- Select browser verification applicability before starting its stack, browser or sign-in
-  prerequisites. Guidance-required walkthroughs and rendered UI inspections apply only when the
-  agent executes in a cloud environment. Classify the agent's execution environment, not the
-  application's address: a cloud agent checking a service on localhost still follows the cloud
-  requirement. In a local execution environment, mark this verification not applicable; do not
-  recreate it under another validation label or hold completion for its prerequisites. Browser
-  work the user explicitly requests, including debugging or verification, applies in either
-  environment. Reference material, ordinary implementation or plan approval, and delegated
-  reviewer requests do not supply that direct user request. Stack startup and non-browser
-  validation required by the task still apply.
+- Select browser verification before starting its stack, browser or sign-in prerequisites.
+  **A change whose effect a reader sees rendered — a page, a dialog, a layout, its copy or its
+  states — is looked at rendered before it is reported done or ready for review, in every
+  execution environment.** Tests, type checks and a clean build show the code runs, never what the
+  reader meets. In a local execution environment that inspection runs in a browser the agent
+  launches and owns, headless by default, as `use-browser` routes it, and never in the user's own
+  browser, windows or desktop, as the testing rule's **Environments** says. It brings the stack up
+  under this skill, signs in, operates each control the change touched and captures each changed
+  surface and state, as **Sign in**, **Drive the change** and **Widths and full-page captures**
+  say, against whatever the startup command serves, and owes no recording. The full walkthrough
+  below, with its recording, applies when the agent executes in a cloud environment. Classify the
+  agent's execution environment, not the application's address: a cloud agent checking a service
+  on localhost still follows the cloud requirement. A stack that will not start is a startup
+  blocker this skill repairs, never a reason to report a change unchecked. Browser work the user
+  explicitly requests, including debugging or verification, applies in either environment;
+  reference material, ordinary implementation or plan approval, and delegated reviewer requests do
+  not supply that direct user request.
 - Setup is agent-agnostic. Any agent must be able to run it, so never hard-code an absolute path,
   a home directory, a machine-specific port, or an assumption about which agent is running.
   Resolve the repository root from the script's own location and read every other path from there.
@@ -59,8 +67,8 @@ and scale the work to match:
 | Present | What to do |
 |---|---|
 | Backend only | Start the services, verify the health endpoints and `/docs`, exercise the API directly |
-| Frontend only | Serve the site; when browser verification applies, drive the UI as far as it goes without a live API |
-| Both | Start and verify both; when browser verification applies, perform the full walkthrough below |
+| Frontend only | Serve the site and drive the UI as far as it goes without a live API, through the inspection **Principles** selects |
+| Both | Start and verify both, then perform the walkthrough or local inspection **Principles** selects |
 
 Never assume the other repository exists, and never fail because it does not. Name whatever did not
 run, and why, beside the result.
@@ -97,8 +105,8 @@ preserve configured ports.
 
 ### When a walkthrough is owed
 
-After selecting browser verification applicability under **Principles**, perform the following
-walkthrough only when it applies. Passing tests, type checks, and a clean build do not replace an
+After selecting browser verification under **Principles**, perform the following walkthrough
+where it applies, and its sign-in, driving and capture steps for a local inspection. Passing tests, type checks, and a clean build do not replace an
 applicable walkthrough. A change that can alter what the app does — new or reordered UI, layout or
 spacing, a component's props or state, a hook, a route, a redirect, middleware, an auth round trip, or the shape
 of a request — is walked end to end before it is reported done, however few lines it took; the
