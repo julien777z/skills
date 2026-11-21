@@ -20,8 +20,8 @@ or the whole canonical tree — and the pass runs over that.
 ## The Pass
 
 Run the steps in order over what the invocation names. The
-[authoring reference](references/authoring.md) holds the criteria for **Writing**, **Placement**,
-**Description as the index**, **Budgets and flows** and **Dependencies**, the
+[authoring reference](references/authoring.md) holds the criteria steps 2 and 5 to 8 apply, each
+step naming the section it reads, the
 [vendor rubric](references/vendor-rubric.md) holds the **Vendor rubric** step's, and the
 [conflict criteria](references/conflicting-instructions.md) hold the **Conflicts** step's.
 

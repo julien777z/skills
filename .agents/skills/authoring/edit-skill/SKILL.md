@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit anything under `.agents` — a skill, rule, agent definition, hook, setting, reference or project guidance — including when the user points out a mistake in how an agent followed or wrote guidance, or questions where guidance was placed, even with no explicit request to edit a skill. Diagnose the observable failure and the guidance path that allowed it, fix the underlying issue, and write the change for the class of failure the user plainly meant, no narrower than that class and no broader, stating the intended change back to them as a Scope Statement before writing it. A correction that encodes a new process waits until that process has worked on the work in hand; every other correction is recorded and written at once. While another task is active, every correction, a direct request to edit guidance included, is pushed to a draft guidance pull request and recorded, and the rest of its delivery runs in bulk when that task completes; one arriving while a guidance batch is in flight joins that batch. Use it too when carrying a guidance batch through delivery to its merge or hold, on a short route for an edit of one requirement that changes no flow and the full route for any other. Every behavior-changing guidance edit passes the acceptance gate and `test-skill` before its pull request merges, and `review-pass` as well on the full route, unless the workflow that made the edits already reviewed and accepted that head.
+description: Add or edit anything under `.agents` — a skill, rule, agent definition, hook, setting, reference or project guidance — including when the user points out a mistake in how an agent followed or wrote guidance, or questions where guidance was placed, even with no request to edit a skill, and when carrying a guidance batch through delivery to its merge or hold. Fix the underlying issue and the guidance path that allowed it, writing the change for the class of failure the user plainly meant, no narrower and no broader, shown to them as a Scope Statement first. A correction that encodes a new process waits until that process has worked on the work in hand; every other correction is recorded and written at once. While another task is active, every correction, a direct request included, is pushed to a draft guidance pull request and recorded, and its delivery runs in bulk when that task completes; one arriving while a batch is in flight joins it. A behavior-changing edit passes its route's gates before it merges.
 short_description: 'Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.'
 ---
 
@@ -246,8 +246,8 @@ small it looks.** Each route below is the gate set its batch passes on the head 
      decision to that class, and no further, and remove conflicting permissions first. Keep the incident and these cases in the
      verification record; shared guidance states the invariant, not their identities. This check
      precedes choosing the owner, because a component-specific owner can conceal a broader failure.
-   - Supported types: `agent`, `skill`, `rule`. Use the type the user states; otherwise infer it only
-     when confidence is high, and when it is not, ask: **"Should this be an agent, skill, or rule?"**
+   - Supported types: every kind the description names. Use the type the user states; otherwise
+     the owner search below decides it, never a question to the user.
    - A file or skill the request names is a candidate, not proof of ownership. Compare it with its
      callers and dependencies before choosing the target. A condition governing a specific action
      belongs to that action's skill, even when a broader caller sequences the surrounding task.
@@ -352,7 +352,7 @@ small it looks.** Each route below is the gate set its batch passes on the head 
      type is singular, map each distinct item of the request to the existing file of that type
      that fits it, and create a new file only when none governs the item's subject, under
      **Guidance Changes Proceed Automatically**.
-   - If scope is ambiguous, ask a short follow-up before editing.
+   - Ambiguous scope is settled by step 2's Scope Statement, shown and never asked.
 
 7. **Guidance Delivery** delivers the batch in this order, on the full route with `review-pass`
    carrying **Check prose duplication** and **Brief `review-pass`'s final acceptance**. Ordinary
@@ -430,7 +430,7 @@ small it looks.** Each route below is the gate set its batch passes on the head 
       checkout: a session working on another branch still carries the old skill in its tree, and a
       skill invoked from there runs the text the change just replaced. After the merge, fetch the
       default branch and read every skill or rule the change touched from it — `git show
-      origin/<default>:.agents/skills/<name>/SKILL.md`, and the references beside it — and run
+      origin/<default>:<the skill's SKILL.md path there>`, and the references beside it — and run
       from that text for the rest of the session. A skill invoked while its change is still open
       is read the same way from the branch that carries it, never from a checkout that predates
       it.
