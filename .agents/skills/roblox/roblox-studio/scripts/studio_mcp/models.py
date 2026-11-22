@@ -137,7 +137,8 @@ class StudioEntry(TypedDict):
 
     id: str
     name: NotRequired[str]
-    mode: StudioMode
+    # Studio MCP leaves the mode out of some entries, such as windows a Play session opens.
+    mode: NotRequired[StudioMode]
 
 
 class StudioButton(TypedDict):
