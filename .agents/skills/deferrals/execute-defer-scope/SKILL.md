@@ -135,7 +135,7 @@ completed-category state only once its resolution pull request has merged, becau
 delivered only when the default branch holds it, and a completed issue whose pull request never
 lands drops out of ordinary `all` selection. A flagged resolution records nothing: the issue stays
 active. Merging a resolution pull request carrying any other change needs its own authorization. One
-confined to deferral records, such as legacy declined moves and retired records, merges under the
+confined to deferral records, such as declined repository-ledger moves and retired records, merges under the
 GitHub rule's deferral-record permission: put its complete diff to `acceptance-gate`'s
 final-acceptance question, one gate per such pull request, then invoke `merge-gate` with that
 accepted head, no local test coverage, and the rule that a fix it makes goes back to final

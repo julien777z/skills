@@ -22,7 +22,6 @@ is two invocations, and the user asks for both.
 - `subagent-matrix`
 - `session-ledger`
 - `defer-scope`
-- `execute-task`
 
 ## The decision
 
