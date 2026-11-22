@@ -1,6 +1,16 @@
 {
   "version": 1,
   "hooks": {
+    "sessionStart": [
+      {
+        "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/session-skills/main.py\" i-have-adhd",
+        "timeout": 10
+      },
+      {
+        "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/session-skills/main.py\" user-facing-output",
+        "timeout": 10
+      }
+    ],
     "stop": [
       {
         "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/ledger/main.py\"",

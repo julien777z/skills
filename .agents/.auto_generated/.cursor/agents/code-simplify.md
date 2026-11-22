@@ -14,12 +14,14 @@ You are a subagent reviewing one slice of a change. Your prompt carries labeled 
 
 ## Rubric
 
-Apply the `code-simplify` skill's rubric reference, `references/rubric.md`: its scope, its severity
-scale, its five greps and its standards. Nothing the intent asks for is a candidate for removal.
+Apply the `code-simplify` skill's rubric reference, `references/rubric.md`, whole. Nothing the intent asks for is a candidate for removal.
 
 ## Work
 
-- Run the five greps over the added lines, then the standards over the slice.
+- Run the five greps over the added lines, then the standards over the slice, then trace the changed
+  flows against the affected-repository map.
+- For each thing the slice adds, search the repository beyond the supplied files, by what it does,
+  for an existing owner, and list the terms searched and the candidates found with each finding.
 - Return findings only; the parent applies every edit. Do not start subagents.
 - Keep refactors outside the change in a separate list, with the files a fix would touch.
 

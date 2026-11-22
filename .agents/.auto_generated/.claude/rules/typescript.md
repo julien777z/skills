@@ -1,4 +1,5 @@
 ---
+description: Apply when editing TypeScript types, modules, imports, functions, or external-data boundaries.
 alwaysApply: false
 paths:
 - '**/*.ts'
@@ -45,9 +46,9 @@ type Status = (typeof Status)[keyof typeof Status];
 
 - A TS/TSX module must own a broad domain, not a single feature, action, watcher, or one-shot helper. Name modules after the domain (`payments.ts`), not the feature (`refundPayment.ts`).
   **A component module is the exception, here and in the subfolder and fewer-files bullets below**:
-  it exports exactly one component, as the React rules state, and its domain becomes the folder
+  it exports exactly one component, as the general React rule states, and its domain becomes the folder
   those files share, however few lines each holds. The exception covers a component that earns its
-  place under the React rules' **Components and Props**; a module whose component that rule calls
+  place under the general React rule's **Components and Props**; a module whose component that rule calls
   another's variant or a hook's wrapper merges like any other fragment.
 - Avoid role-suffixed file names like `*Action.ts`, `*Lookup.ts`, `*Watcher.ts`, `*Extractor.ts`, `*Url.ts`, or `*Collections.ts`; the folder already conveys the role.
 - Cross-domain helpers belong in a generic `utils` or `lib` module, not in a module named after a single feature.
@@ -61,28 +62,19 @@ type Status = (typeof Status)[keyof typeof Status];
 - A function with one caller belongs in that caller unless it is genuinely reused, genuinely
   recursive, or long enough that inlining would bury the caller's own shape.
 - **A module that only forwards is not a layer.** When every function in it is one call to the module
-  beneath with the same arguments, delete it and let consumers reach that module. An area's index is
-  not this: it re-exports rather than wraps, and adds no call.
+  beneath with the same arguments, delete it and let consumers reach that module.
 - Never alias a project import to a second name. A collision between two modules' exports is a naming
   defect in one of them; rename it rather than aliasing at the import site.
 
-## Area Imports
+## Imports
 
-- **An area publishes what it offers, and a consumer reaches it in one line.** A directory several
-  modules import from — the controls, the hooks, the helpers, the shared screens — carries an index
-  that re-exports its modules, and a consumer imports the names it needs from that directory rather
-  than from each file inside it. A file wanting four controls and a hook then opens with two import
-  lines instead of five, and moving a module within an area rewrites nothing outside it.
-- **That index is the area's surface, not a shim.** It re-exports every module the area holds and
-  grows as modules are added. The re-export the rule above forbids is the one left behind at a
-  module's old path after a rename, which exists only so stale importers keep resolving; update
-  those importers and delete it.
-- Modules inside an area import their siblings by relative path, never through their own index, so
-  an area never depends on itself. An area whose index would have to re-export another area's
-  modules is two areas rather than one, and an index that would import from a module that imports it
-  back names the cycle rather than creating it.
-- Two names that collide across an area's modules cannot both be published from one index. Rename
-  one for what it is; an index that silently drops the duplicate is a name nobody can import.
+- **Import each name from the module that defines it**, and keep no index file that re-exports a
+  folder's modules (a barrel). Importing through a barrel makes the bundler, the dev server and the
+  test runner load every module it re-exports, which slows builds, cold starts and tests and pulls
+  unused code into a bundle, and it gives every symbol a second path to reach it by. An editor's
+  auto-import and a rename both work on the defining path, so a direct import costs no upkeep.
+- A package published to consumers outside the repository keeps the one entry point its manifest
+  declares as its public surface; nothing inside the repository imports through it.
 
 ## Functions
 
@@ -121,8 +113,9 @@ type Status = (typeof Status)[keyof typeof Status];
   side, the value stays where its owner put it.
 - Read environment variables only in the owning typed configuration module. Import validated values
   elsewhere, and keep server secrets out of modules that browser code can import.
-- That module validates every value the global rules' **Configuration** section makes required
-  when it loads, through the repository's schema validator where it has one, refusing an empty
+- That module validates every required configuration value when it loads, a value being required
+  unless it has a default a production deployment can run on with full behavior or its owner
+  documents a supported absence, through the repository's schema validator where it has one, refusing an empty
   string as it refuses an absent one, such as `z.string().min(1)`, and throws naming the missing
   value. A read that lets an unset value through, such as `process.env.NAME || null` or
   `?? ''`, followed by code that skips its work on the empty value, is the defect that section names.
@@ -164,9 +157,6 @@ type Status = (typeof Status)[keyof typeof Status];
   or filtered once by the repository's lint gate, with its reason beside it, for every package and
   every file, never for one named package — the one configuration entry this section admits. A category turned off for dependencies is off for our own code too; the
   checks that stay on keep our own errors reported.
-- The Comments section's exception admits a tooling directive as something other than prose, so a
-  sweep that strips comments leaves it alone. That is about not deleting one that already exists; it
-  is not license to add one.
 
 ## Comments
 
@@ -175,8 +165,9 @@ type Status = (typeof Status)[keyof typeof Status];
   from the code the way the sentence does. Where a line needs prose to be understood, rename it,
   split it, or give the value a type that states what it is. That includes JSDoc on a prop, field,
   type or component: a prop's name and type carry what the block would say.
-- The exception is a directive the tooling reads — a linter suppression, a type-checker instruction
-  — which is not prose and stays.
+- The exception is a directive the compiler or a build tool reads, such as a triple-slash
+  reference, which is not prose and stays. A suppression a sweep finds is not deleted as a comment:
+  **Suppressions** governs it, and none is added.
 - **The other exception is behavior somebody else owns, which no amount of renaming can make the
   code show.** A framework that consumes its own headers before your code runs, a browser that sends
   a request for a document when nobody navigated, a library whose call means something other than it
