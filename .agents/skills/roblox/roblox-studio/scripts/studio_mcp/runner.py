@@ -48,8 +48,6 @@ LOCK_RENEWAL_INTERVAL: Final[timedelta] = timedelta(minutes=1)
 # The receipts this process holds, each with the acquisition it belongs to, which a background thread renews until
 # each is released or lost.
 RENEWED_RECEIPTS: Final[dict[Path, int]] = {}
-# The receipts whose lock a renewal found lost, with the key each held, or None when its receipt was unreadable, kept
-# until the receipt is released or acquired again.
 LOST_RECEIPTS: Final[dict[Path, str | None]] = {}
 RENEWED_RECEIPTS_GUARD: Final[threading.Lock] = threading.Lock()
 ACQUISITIONS: Final[itertools.count[int]] = itertools.count()
@@ -132,14 +130,11 @@ def assert_receipts_kept(lock_receipts: Sequence[Path]) -> None:
     if lost:
         receipt, key = lost[0]
 
-        raise LockOwnershipLost(f"Receipt {receipt} lost its {key or 'unknown'} lock; stop acting on it")
+        raise LockOwnershipLost(f"Receipt {receipt} lost its {key or 'unknown'} lock")
 
 
 def assert_runner_locks_kept(config: RunnerConfig) -> None:
-    """Raise when a renewal found lost a lock this process held on the runner's VM, one of its editors or its focus.
-
-    A receipt whose key could not be read counts against every runner.
-    """
+    """Raise when a renewal found lost a lock this process held on the runner's VM, its editors or its focus."""
 
     vm = config["ROBLOX_STUDIO_VM"]
 
@@ -185,8 +180,7 @@ def lock_renewal_thread() -> threading.Thread:
 
 
 def keep_acquired_lock_renewed(lock_receipt: Path) -> None:
-    """Renew a newly acquired receipt's lock in the background until it is released, clearing any loss recorded for
-    an earlier acquisition under the same receipt."""
+    """Renew a newly acquired receipt's lock in the background until it is released."""
 
     with RENEWED_RECEIPTS_GUARD:
         RENEWED_RECEIPTS[lock_receipt] = next(ACQUISITIONS)
@@ -377,10 +371,7 @@ def release_runner_lock(lock_receipt: Path) -> None:
 
 def runner_lease(lock_receipt: Path) -> RunnerLease:
     """Renew the receipt's lock, with each editor lock a whole-VM receipt holds beside it, keep them renewed while this
-    process runs, and return the game's runner and the editor the receipt holds.
-
-    Raises LockOwnershipLost when a renewal already found the receipt's lock, or one beside it, lost.
-    """
+    process runs, and return the game's runner and the editor the receipt holds."""
 
     config = runner_config()
     vm = config["ROBLOX_STUDIO_VM"]
@@ -439,8 +430,7 @@ def run_in_runner(command: str, lock_receipt: Path, timeout: timedelta, data: by
 
 
 def run_guest_command(command: str, config: RunnerConfig, timeout: timedelta, data: bytes | None = None) -> bytes:
-    """Run a shell command in the guest of a runner whose lease the caller has already checked, unless a renewal has
-    since found a lock on it lost."""
+    """Run a shell command in the guest of a runner whose lease the caller has already checked."""
 
     assert_runner_locks_kept(config)
 

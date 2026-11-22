@@ -25,25 +25,26 @@ only a subject no skill runs for.
 
 ## Skills that always run
 
-- `i-have-adhd` and `user-facing-output` apply from the first response a user reads in the session,
-  whether or not the user invoked them or the running skill names them; a session that did not
-  start with them loaded reads each one's installed `SKILL.md` before that response. They shape every
+- The skill whose description says it applies before the first user-facing response, and the
+  output skill it builds on, apply from the first response a user reads in the session, whether or
+  not the user invoked them or the running skill names them; a session that did not start with them
+  loaded reads each one's installed `SKILL.md` before that response. They shape every
   response a user reads — an answer, a plan shown to them, a report, a summary, a question —
   from the first until the reader's stop phrase.
 - An authorized task stays active until its outcome is verified complete or the user explicitly
   stops or hands it off. A follow-up, retry, recovery, context compaction, guidance correction,
   completed milestone, pending decision or reported gate does not close it, nor does a report
   deferring work — "I'll do X next" — whose named work is tracked until done. For every task
-  authorized to change files, start `execute-task` before recommending an implementation,
-  delegating edits, or editing: discover and read its complete entry point rather than waiting for
+  authorized to change files, start the skill that runs task execution before recommending an
+  implementation, delegating edits, or editing: discover and read its complete entry point rather than waiting for
   an edit to load it. Keep its run active and apply its **Work You Have Already Named** procedure
   before handling the interruption and before any final response.
 - Run a user-triggered action skill only after the user directly invokes it — by its command or by
   asking for it in words — in the current request. Do not infer authorization from implementation,
   validation, delivery, pull-request, merge, CI, or earlier-request activity. Guidance maintenance
-  is the exception: `edit-skill` runs when the user reports a guidance failure or canonical guidance
-  is being changed, so the failure and its owning instruction are repaired together, on the timing
-  `edit-skill`'s **Recording During A Task** sets. Determine a user-only restriction from the
+  needs no invocation: the skill whose description covers a guidance failure runs when the user
+  reports one or canonical guidance is being changed, so the failure and its owning instruction are
+  repaired together, on the timing that skill sets. Determine a user-only restriction from the
   skill's entry point, not from the fact that it performs work. Required checks and independent
   gates declared by an authorized workflow run as dependencies without a separate invocation; an
   omitted review request is not a waiver.
@@ -109,7 +110,7 @@ only a subject no skill runs for.
   following every recommendation, or listed as a multi-select question's checkboxes. When the
   decisions outnumber what one request holds, send one full request and the next only once the
   user has submitted it, and open each question with its place in the whole sequence and the
-  sequence's total, such as "48/52", so the reader always sees how many remain; a decision added
+  sequence's total, such as "Q48/52", so the reader always sees how many remain; a decision added
   partway raises the total. A question names its subject in plain words, never by an internal label
   such as a finding's ID. The question's own text and option descriptions therefore carry what the
   decision needs: what happens today, stated as fact and where; what each option changes; the recommendation

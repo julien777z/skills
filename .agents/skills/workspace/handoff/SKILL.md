@@ -68,14 +68,16 @@ skill ends with.
 5. **Secure every branch.** Every commit the session or a worker made reaches the pull request the
    work continues: a worktree's commits are pushed to that pull request's branch, merged in first
    when the branch has moved, and a branch outside it that holds work for it is merged into it when
-   the merge is clean or named in the queue with the exact merge still to do. Commit uncommitted
+   the merge is clean or named in the queue with the exact merge still to do, apart from the local
+   branch `lock-revision`'s hold keeps, which waits for the lock question below. Commit uncommitted
    changes with a message that says what state they are in, using a `wip:` prefix when they are
    incomplete. Then run the pre-push checks
    the GitHub rule's **Pre-Push Gate** defines, report-only: every failing check is pushed unfixed and
    goes first in the queue — the one push that does not wait on its checks, because unpushed work
    is lost with the session. Apply and commit any stash. Never rewrite history or force-push.
-   **Commits `lock-revision`'s hold keeps local are pushed too, so ask the user first whether the
-   lock should be unlocked.** On yes, push them and record the unlock as that skill says. On no,
+   **The local branch `lock-revision`'s hold keeps is integrated too, so ask the user first whether
+   the lock should be unlocked.** On yes, integrate and push it and record the unlock as that skill
+   says. On no,
    ask what should happen to those commits, since a hand-off leaves none unpushed, and wait for the
    answer before the steps below.
 6. **Close the pull requests this session made stale.** One whose commits now live on the pull

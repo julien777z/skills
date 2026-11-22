@@ -220,12 +220,7 @@ def is_installer_value(entry: dict[str, object], value: object) -> bool:
 def merged_settings(
     target: dict[str, object], source: dict[str, object], record: dict[str, dict[str, object]]
 ) -> tuple[dict[str, object], dict[str, dict[str, object]], dict[str, dict[str, object]]]:
-    """Return the target with the source's settings applied, the record of what was written, and
-    the record to hold while the target is replaced.
-
-    The held record recognizes the installer's values in both the current target and the new one,
-    so a run interrupted between the two writes recovers every replaced value when it is rerun.
-    """
+    """Return the merged target, the record of what was written, and the record held during the write."""
 
     settings = {key: value for key, value in source.items() if key not in UNMERGED_KEYS}
     result = dict(target)
