@@ -1,9 +1,13 @@
 from argparse import ArgumentParser, Namespace
+from collections.abc import Mapping, Sequence
 from datetime import UTC, datetime, timedelta
 from json import dumps
-from os import environ
+from os import environ, killpg
 from pathlib import Path
+from signal import SIGINT, SIGKILL, SIGTERM, signal
+from subprocess import Popen, TimeoutExpired
 from sys import argv, stderr
+from types import FrameType
 
 from locks import (
     RENEWAL_INTERVAL,
@@ -19,7 +23,7 @@ from locks import (
     resource_path,
 )
 from models.ownership import Acquisition, CommandResult, LockResult, Outcome, Receipt
-from utils import exclusive_file, positive_seconds, run_command
+from utils import exclusive_file, positive_seconds
 
 
 def create_parser() -> ArgumentParser:
@@ -55,15 +59,63 @@ def create_parser() -> ArgumentParser:
     return parser
 
 
-def renewed(receipt: Receipt) -> bool:
-    """Renew a receipt's ownership, reporting whether it still owns the resource."""
+def run_command(
+    command: Sequence[str],
+    environment: Mapping[str, str],
+    receipt: Receipt,
+) -> CommandResult:
+    """Run a foreground process group to completion, renewing the receipt's lock on each interval.
+
+    The command runs as long as it needs; it is stopped only on an interrupt or when a renewal finds the lock lost.
+    """
+
+    def _interrupt(signum: int, _frame: FrameType | None) -> None:
+        """Interrupt the supervisor's blocking wait."""
+
+        raise InterruptedError(signum)
+
+    previous_handlers = {signum: signal(signum, _interrupt) for signum in (SIGINT, SIGTERM)}
 
     try:
-        renew_ownership(receipt)
-    except ValueError:
-        return False
+        try:
+            renew_ownership(receipt)
+        except ValueError:
+            return CommandResult(status=Outcome.EXPIRED, command_exit_code=124, interrupted_by=None)
 
-    return True
+        outcome = Outcome.COMPLETED
+        interrupted_by: int | None = None
+
+        with Popen(command, env=environment, stdout=stderr, start_new_session=True) as child:
+            try:
+                while True:
+                    try:
+                        child.wait(timeout=RENEWAL_INTERVAL.total_seconds())
+                    except TimeoutExpired:
+                        renew_ownership(receipt)
+                        continue
+
+                    break
+            except ValueError:
+                outcome = Outcome.EXPIRED
+            except InterruptedError as error:
+                outcome = Outcome.INTERRUPTED
+                interrupted_by = int(error.args[0])
+            finally:
+                try:
+                    killpg(child.pid, SIGKILL)
+                except ProcessLookupError:
+                    pass
+
+                child.wait()
+
+            return CommandResult(
+                status=outcome,
+                command_exit_code=child.returncode,
+                interrupted_by=interrupted_by,
+            )
+    finally:
+        for signum, handler in previous_handlers.items():
+            signal(signum, handler)
 
 
 def consume(
@@ -82,8 +134,7 @@ def consume(
         result = run_command(
             child_command,
             {**environ, "AGENT_LOCK_RECEIPT": str(request["receipt_path"])},
-            lambda: renewed(receipt),
-            RENEWAL_INTERVAL.total_seconds(),
+            receipt,
         )
     finally:
         release_ownership(receipt)
