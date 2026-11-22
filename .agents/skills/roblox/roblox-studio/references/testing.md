@@ -264,8 +264,7 @@ from the installed `roblox-studio` skill's `scripts` folder, put on `sys.path`, 
 `__init__.py` exports (`from studio_mcp import Studio, open_place, ...`); no game keeps its own MCP client or copies
 one of these mechanisms. Each `Studio` holds its own MCP session through `runner_ssh.sh`, and the module has no shell
 command line. Every call that reaches the VM first confirms, once, through `agent-lock` that the caller's receipt
-owns the game's VM or one of its editors, renewing it, and the process keeps that receipt's locks renewed while it runs,
-so a call takes as long as its own timeouts allow. Project and place file names use only letters, digits, `.`, `_` and `-`,
+owns the game's VM or one of its editors, renewing it, so a call takes as long as its own timeouts allow. Project and place file names use only letters, digits, `.`, `_` and `-`,
 starting with a letter or digit.
 
 | Call                                                                                          | What it does                                                                                                                                                                                                                 |
