@@ -23,6 +23,9 @@ doubles and its name.
 
 ## Module Conventions
 
+For Python tests; a suite in another language follows its native runner and the conventions its
+repository already uses.
+
 - Use pytest async tests (`async def test_...`).
 - Group tests in classes named `TestXxx`.
 - Use fixtures for setup (defined in `conftest.py` or fixture modules).
@@ -32,6 +35,8 @@ doubles and its name.
 - Keep all imports at the top of test files. Never import inside test functions or methods.
 
 ## Test Configuration
+
+For Python suites; another language keeps test configuration where its runner reads it.
 
 - Define test configuration values (hostnames, database URLs, API keys, repository identities, workflow references, etc.) in `pyproject.toml` under `[tool.pytest.ini_options]` in the `env` section. Values tied to a repository, workflow, deployment target, or provider resource are configuration even when a test currently has only one expected value; renames and target changes must require one configuration update rather than edits across test modules.
 - Keep non-secret test environment values in that pytest-env configuration, not in workflow YAML. Workflows provide only secrets, provider credentials, and service-container configuration that pytest-env cannot supply.

@@ -176,9 +176,13 @@ format transition or recovery mechanism for data explicitly declared disposable 
 
   A lock the owner places is a push hold and nothing more. Until the owner unlocks, no change to a
   locked revision is pushed, no new revision is pushed, and no source change that depends on either
-  is pushed. That work is committed locally and pushed once the owner unlocks; work that touches no
-  revision pushes as usual. A locked revision's parent and body stay as locked; every database
-  change goes into the one new revision on top, which work that needs it adds without asking.
+  is pushed. That work is committed on a local branch off the pushed head and never pushed, so no
+  push of the pull request's branch carries it, while work that touches no revision keeps pushing
+  from that branch as usual; the hold's record names the local branch and its head. Once the owner
+  unlocks, that branch is rebased onto the pull request's branch, validated as this skill says, and
+  pushed. A locked revision keeps its identity, its parent and its database behavior, so only a
+  refactor **Applied Is What Makes History** allows touches it; every database change goes into the
+  one new revision on top, which work that needs it adds without asking.
   Unlocking ends the hold and leaves the marker, and later database changes keep going into that
   new revision.
 - For a revision the pull request did not add, establish "not applied yet" from the real

@@ -27,9 +27,11 @@ never reported for a later decision.
 ## 1. Scope
 
 A security review of a branch, a pull request or pending changes reviews the change, because the
-change is what its caller can still alter before it merges.
+change is what its caller can still alter before it merges. This skill's scope is always a change:
+a request to audit a whole codebase, with no change in question, is not run here, and goes to the
+codebase security audit the skill listing describes.
 
-1. Take the scope the caller names. Otherwise use the merge-base diff against the repository's
+1. Take the change the caller names. Otherwise use the merge-base diff against the repository's
    remote default branch plus the untracked files the branch adds.
 2. Read every changed line with the callers, sinks and trust boundaries it reaches, so a trace can
    run past the hunk: the entry points that reach it, the authentication and authorization on that

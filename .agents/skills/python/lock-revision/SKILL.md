@@ -39,12 +39,13 @@ locked.
    deploy, and **state that revision changes stay local until the user unlocks**: one pushed before
    that deploy runs would ride into it. That line is a notice, never a question: put it in the
    report, not to a question tool, and record no pending question. Record the lock with
-   `session-ledger`, so it survives compaction.
+   `session-ledger`, so it survives compaction; once a held local branch exists, the record names
+   that branch and its head.
 
 ## After Locking
 
 `database-migrations`' lock-marker rule is the whole of what a lock means, its push hold included.
 This hold is the exception the GitHub rule's **Pre-Push Gate** allows an invoked skill to state.
 
-Only the user's own words unlock. Once they do, push the held commits and record the unlock with
-`session-ledger`.
+Only the user's own words unlock. Once they do, integrate and push the held local branch as that rule
+says, and record the unlock with `session-ledger`.
