@@ -235,7 +235,7 @@ This example applies only when the host configures the shared values in `~/.conf
 | --- | --- |
 | `<vm>/editor-<n>`, one per editor | One check in that editor: its Play sessions, its captures, its guest folder and its code sync. A check takes whichever editor comes free first with `acquire_editor_lock` |
 | `<vm>` | Work on the whole VM: starting, stopping, restarting or resizing it, updating Studio, signing in, renaming. `acquire_runner_lock` takes it and then every editor's key, so the work starts once no check holds an editor; the key alone holds off no check and launches no editor |
-| `<vm>/focus` | A step that reaches only the guest's frontmost window, held through `focused_input` for that step alone: an editor launch until the editor registers, and a click or capture another editor's window would take; and each burst of a published-player session, as [playing a published experience](#play-a-published-experience) describes |
+| `<vm>/focus` | A step that reaches only the guest's frontmost window, held through `focused_input` for that step alone: an editor launch until the editor registers, and a click or capture another editor's window would take; a published-player session, which holds no editor or VM lease, takes it through `agent-lock` for each burst instead, as [playing a published experience](#play-a-published-experience) describes |
 
 A rename holds the locks on both the old and the new name, in the order `agent-lock` sets for several keys, through `tart rename`, the settings-file update and moving the host-key pin to the new name, confirmed by a `runner_ssh.sh hostname` that answers; never rename another session's VM while it is in use.
 
@@ -486,7 +486,9 @@ process restarts at once and is out of any experience.
 
 A session that plays a published experience in the guest, rather than checking an editor, holds no
 editor or VM lease, so it takes `<vm>/focus` through `agent-lock` directly, since `focused_input`
-needs one of those leases:
+needs one of those leases. It plays in the VM of the game whose repository it runs in; from a
+checkout with no configured game it sets `ROBLOX_STUDIO_GAME` to a game whose VM is configured,
+and never adds a VM for the experience it plays.
 
 - **Before the first launch, and again at each new worker session**, read the guest's free disk and
   swap as the Resources bullet of [leaving the shared runner as you found it](#leave-the-shared-runner-as-you-found-it)
@@ -494,17 +496,18 @@ needs one of those leases:
 - **Launch from the guest** as step 4 above does, or follow a player into the server they are in
   with `open "roblox://experiences/start?userId=<user id>"`.
 - **Each burst of input and capture holds the focus key for less than the 50 seconds** another
-  session's editor launch waits for it, and takes it again for the next burst. A burst starts by
-  bringing the player to the front and confirming it there from a capture, so no input lands in an
-  editor, and ends by releasing every held key before the lock.
-- **Captures** are written under a guest folder named for the task and copied to the host.
+  session's editor launch waits for it, on a lease (`--ttl-seconds`) no longer than that, so a
+  worker that dies mid-burst frees it in time, and takes it again for the next burst. A burst
+  starts by bringing the player to the front and confirming it there from a capture, so no input
+  lands in an editor, and ends by releasing every held key before the lock.
 - **The player's log** records each join and teleport with its place and server ID, so it shows
   which server the client is in and why that changed: the newest `*Player*.log` in the guest
   account's Roblox logs folder.
 - Whole-VM work under the `<vm>` key does not wait for a player session; launch again once the VM
   is back.
-- **End play** by stopping the player as the paragraph above says and removing the task's guest
-  capture folder.
+- **End play** by stopping the player as [adding the published Roblox player](#add-the-published-roblox-player)
+  says, leaving the VM running, and clearing the task's guest files, captures included, as the
+  Files bullet of [leaving the shared runner as you found it](#leave-the-shared-runner-as-you-found-it) says.
 
 #### Cap Studio's geometry buffers in a Tart guest
 
