@@ -11,6 +11,7 @@ short_description: 'Research Roblox charts for the requested audience and region
 - `subagent-matrix`
 - `agent-lock`
 - `roblox-studio`
+- `game-protocol`
 - `edit-skill`
 - `skill-pass`
 - `roblox-gameplay`
@@ -89,7 +90,7 @@ Each researcher studies its games' experience pages and popular gameplay videos 
 
 ## Play mode
 
-Use this only when the user explicitly chooses play mode. Video evidence comes first, and real play only fills the one gap footage leaves: a new player's first minutes. After the video pass, list the games whose `onboarding_video_coverage` is `not_covered` and put that list to the user through the question tool before playing any of them, then assign each approved game as a play turn. Play each approved game from join until its onboarding ends, **for at most five minutes of active play**, and record the actual elapsed time and what ended play. Start from the available account state and disclose whether it is a fresh or returning profile. Use ordinary controls and the game's intended onboarding; do not alter rewards, use exploits, or reset account progress. The invocation does not authorize purchases, chat messages, invitations, or account changes. When the runner's published player needs a Roblox sign-in, sign it in by QR code as `roblox-studio`'s testing reference says under adding the published Roblox player. Play runs in the VM of the game `research-games`: set `ROBLOX_STUDIO_GAME=research-games`, and its VM is created as any game's is when it has none. Run each turn as the [play mode reference](references/play-mode.md) says.
+Use this only when the user explicitly chooses play mode. Video evidence comes first, and real play only fills the one gap footage leaves: a new player's first minutes. After the video pass, list the games whose `onboarding_video_coverage` is `not_covered` and put that list to the user through the question tool before playing any of them, then assign each approved game as a play turn. Play each approved game under `game-protocol`, supplying the game, an objective of completing its onboarding as a new player would, and a stopping rule of onboarding's end or **at most five minutes of active play**, whichever comes first; this skill keeps its own play-turn delegation, and each turn records in its game record rather than a playbook. Record the actual elapsed time and what ended play. Start from the available account state and disclose whether it is a fresh or returning profile. Play runs in the VM of the game `research-games`: set `ROBLOX_STUDIO_GAME=research-games`, and its VM is created as any game's is when it has none. Run each turn as the [play mode reference](references/play-mode.md) says.
 
 ## Main-agent synthesis
 

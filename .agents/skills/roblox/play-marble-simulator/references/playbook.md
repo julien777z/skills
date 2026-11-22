@@ -1,7 +1,7 @@
 # Marble Elimination Ultimate playbook
 
 The `play-marble-simulator` skill's record of how the game works and how to win it. Every session
-adds what it verifies, as that skill's **Recording What A Session Learns** says. Entries marked
+adds what it verifies, as `game-protocol`'s **Record What A Session Learns** says. Entries marked
 *unconfirmed* were seen once and need a deliberate test.
 
 ## Servers And Joining
