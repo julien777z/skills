@@ -96,4 +96,3 @@ def positive_seconds(value: str) -> float:
         raise ValueError("Duration must be positive and finite")
 
     return seconds
-
