@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import shlex
 import subprocess
@@ -49,6 +50,8 @@ RENEWED_RECEIPTS_GUARD: Final[threading.Lock] = threading.Lock()
 # agent-lock's exit status for a lock that stayed held through the wait.
 AGENT_LOCK_BUSY: Final[int] = 2
 
+logger = logging.getLogger(__name__)
+
 
 @cache
 def agent_lock_script() -> Path:
@@ -85,7 +88,11 @@ def renewed_lock(lock_receipt: Path) -> AgentLockCheckReport:
 
 
 def renew_held_locks() -> None:
-    """Renew every receipt this process holds once per interval, dropping a receipt whose lock is gone."""
+    """Renew every receipt this process holds once per interval, dropping a receipt whose lock is gone.
+
+    A timeout, an OS error or an unreadable report leaves the receipt in place for the next interval, so one failed
+    renewal never stops the thread.
+    """
 
     while True:
         time.sleep(LOCK_RENEWAL_INTERVAL.total_seconds())
@@ -96,8 +103,11 @@ def renew_held_locks() -> None:
         for receipt in receipts:
             try:
                 renewed_lock(receipt)
-            except (RuntimeError, OSError, subprocess.TimeoutExpired):
+            except RuntimeError:
                 stop_renewing_lock(receipt)
+            except (OSError, ValueError, subprocess.TimeoutExpired):
+                logger.warning("Renewing the lock of receipt %s failed; retrying at the next interval", receipt,
+                               exc_info=True)
 
 
 @cache
