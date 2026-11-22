@@ -869,10 +869,10 @@ done, save the authorized project artifacts and close what the session itself op
 down in two cases only:
 
 - the user asks for it;
-- the host needs memory, and another session has a VM up that it has left idle: no lock on that VM
-  or any of its editors is held now or shows a `last_activity_at`, in `agent-lock`'s `status` for
-  that key, within the last 30 minutes. That
-  idle VM is the one shut down. A free lock alone does not show idleness, because a session keeps
+- the host needs memory, and another session has a VM up that it has left idle: no lock on that
+  VM, any of its editors or its `<vm>/focus` key is held now or shows a `last_activity_at`, in
+  `agent-lock`'s `status` for that key, within the last 30 minutes, checked again for every one of
+  those keys just before the shutdown. That idle VM is the one shut down. A free lock alone does not show idleness, because a session keeps
   its game's warm editors open and unlocked between the steps of its work, and a shutdown then
   closes the editors it is about to reuse.
 
