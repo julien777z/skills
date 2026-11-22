@@ -94,8 +94,9 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
 - **Delegated edits** take `subagent-matrix`'s worker brief, which carries this cadence, the exact
   files to change and the branch the worker pushes to, with the worker's head read under
   [reported outcomes](outcomes.md) before any dependent work starts.
-- **The holds the rule excepts** are `lock-revision`'s **After Locking** and a `review-pass` the
-  user asked for without a push.
+- **The holds the rule excepts** are commits an invoked skill holds local until the user releases
+  them, such as locked database revisions, and the fixes of a review the user asked for without a
+  push, which stay local until they ask.
 - **A simplification pass and a gate** run when `SKILL.md`'s **Ongoing Simplification** and
   **Completion** say, never per push, with a gate's flag closed by the fresh gate
   `acceptance-gate`'s **Bounds** requires.

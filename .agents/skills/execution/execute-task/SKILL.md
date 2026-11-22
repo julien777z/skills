@@ -37,7 +37,6 @@ is a proposed flow.
 - `share-media`
 - `use-browser`
 - `test-fixture`
-- `lock-revision`
 
 ## One Run Per Task
 
