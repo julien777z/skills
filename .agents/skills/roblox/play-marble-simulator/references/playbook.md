@@ -59,7 +59,6 @@ adds what it verifies, as that skill's **Recording What A Session Learns** says.
 
 ## Strategy
 
-- Hold W through the whole drop and tap Space; W alone was not enough to stay in the front group.
 - A marble pinned against a side wall, or caught in a peg cluster near the top, falls to the back;
   levels with a side wall near the drop point are where the run is lost.
 - **Funnel levels with a narrow exit** eliminate a marble left high in the funnel while the field
@@ -74,8 +73,8 @@ adds what it verifies, as that skill's **Recording What A Session Learns** says.
 
 ## Pitfalls
 
-- **The yellow button at the top right is a paid Donate button** that opens a Robux purchase
-  prompt. Cancel the prompt; never confirm it.
+- **The yellow button at the top right is the paid Donate button**; it opens a Robux purchase
+  prompt.
 - The green "+" button only opens Invite Friends.
 - A macOS "Software Update Available" banner in a runner guest covers the top-right corner of
   captures; it does not affect play.
