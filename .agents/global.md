@@ -107,7 +107,9 @@ only a subject no skill runs for.
   text before a tool call, may never reach them. Ask directly in chat only when the harness has no
   question tool. **One question holds one decision**, with options that answer it alone: several
   decisions are never folded into one question, offered as one choice that settles them all, such as
-  following every recommendation, or listed as a multi-select question's checkboxes. When the
+  following every recommendation, or listed as a multi-select question's checkboxes; an option that
+  would leave a further choice open, such as "change it" with the new value still to name, is
+  replaced by that choice's values, each an option of its own. When the
   decisions outnumber what one request holds, send one full request and the next only once the
   user has submitted it, and open each question with its place in the whole sequence and the
   sequence's total, such as "Q48/52", so the reader always sees how many remain; a decision added
