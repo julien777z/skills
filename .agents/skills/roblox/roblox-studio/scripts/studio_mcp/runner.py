@@ -46,6 +46,9 @@ LOCK_WAIT: Final[timedelta] = timedelta(seconds=50)
 LOCK_RENEWAL_INTERVAL: Final[timedelta] = timedelta(minutes=1)
 # The receipts this process holds, which a background thread renews until each is released or lost.
 RENEWED_RECEIPTS: Final[set[Path]] = set()
+# The receipts whose lock a renewal found lost, with the key each held, or None when its receipt was unreadable, kept
+# until the receipt is released or acquired again.
+LOST_RECEIPTS: Final[dict[Path, str | None]] = {}
 RENEWED_RECEIPTS_GUARD: Final[threading.Lock] = threading.Lock()
 # agent-lock's exit status for a lock that stayed held through the wait.
 AGENT_LOCK_BUSY: Final[int] = 2
@@ -87,8 +90,62 @@ def renewed_lock(lock_receipt: Path) -> AgentLockCheckReport:
     return json.loads(result.stdout)
 
 
+class LockOwnershipLost(RuntimeError):
+    """A lock this process held that a renewal found lost, so nothing may act on its resource any more."""
+
+
+def lost_lock_key(lock_receipt: Path) -> str | None:
+    """Return the key a lost receipt held, or None when its receipt can no longer be read."""
+
+    try:
+        receipt: AgentLockReceipt = json.loads(lock_receipt.read_text())
+    except (OSError, ValueError):
+        return None
+
+    return receipt["key"]
+
+
+def record_lost_lock(lock_receipt: Path) -> None:
+    """Stop renewing a receipt whose lock is gone and record the loss, so operations on its resource stop."""
+
+    key = lost_lock_key(lock_receipt)
+
+    with RENEWED_RECEIPTS_GUARD:
+        RENEWED_RECEIPTS.discard(lock_receipt)
+        LOST_RECEIPTS[lock_receipt] = key
+
+    logger.error("Receipt %s lost its %s lock; operations on that resource stop", lock_receipt, key or "unknown")
+
+
+def assert_receipts_kept(lock_receipts: Sequence[Path]) -> None:
+    """Raise when a renewal found the lock of any of the receipts lost."""
+
+    with RENEWED_RECEIPTS_GUARD:
+        lost = [(receipt, LOST_RECEIPTS[receipt]) for receipt in lock_receipts if receipt in LOST_RECEIPTS]
+
+    if lost:
+        receipt, key = lost[0]
+
+        raise LockOwnershipLost(f"Receipt {receipt} lost its {key or 'unknown'} lock; stop acting on it")
+
+
+def assert_runner_locks_kept(config: RunnerConfig) -> None:
+    """Raise when a renewal found lost a lock this process held on the runner's VM, one of its editors or its focus.
+
+    A receipt whose key could not be read counts against every runner.
+    """
+
+    vm = config["ROBLOX_STUDIO_VM"]
+
+    with RENEWED_RECEIPTS_GUARD:
+        lost = [receipt for receipt, key in LOST_RECEIPTS.items()
+                if key is None or key == vm or key.startswith(f"{vm}/")]
+
+    assert_receipts_kept(lost)
+
+
 def renew_held_locks() -> None:
-    """Renew every receipt this process holds once per interval, dropping a receipt whose lock is gone.
+    """Renew every receipt this process holds once per interval, recording a receipt whose lock is gone as lost.
 
     A timeout, an OS error or an unreadable report leaves the receipt in place for the next interval, so one failed
     renewal never stops the thread.
@@ -104,7 +161,7 @@ def renew_held_locks() -> None:
             try:
                 renewed_lock(receipt)
             except RuntimeError:
-                stop_renewing_lock(receipt)
+                record_lost_lock(receipt)
             except (OSError, ValueError, subprocess.TimeoutExpired):
                 logger.warning("Renewing the lock of receipt %s failed; retrying at the next interval", receipt,
                                exc_info=True)
@@ -122,19 +179,22 @@ def lock_renewal_thread() -> threading.Thread:
 
 
 def keep_lock_renewed(lock_receipt: Path) -> None:
-    """Renew a receipt's lock in the background for as long as this process runs or until it is released."""
+    """Renew a receipt's lock in the background for as long as this process runs or until it is released, clearing
+    any loss recorded for an earlier lock under the same receipt."""
 
     with RENEWED_RECEIPTS_GUARD:
         RENEWED_RECEIPTS.add(lock_receipt)
+        LOST_RECEIPTS.pop(lock_receipt, None)
 
     lock_renewal_thread()
 
 
 def stop_renewing_lock(lock_receipt: Path) -> None:
-    """Stop the background renewal of a receipt's lock."""
+    """Stop the background renewal of a receipt's lock, and forget any loss recorded for it."""
 
     with RENEWED_RECEIPTS_GUARD:
         RENEWED_RECEIPTS.discard(lock_receipt)
+        LOST_RECEIPTS.pop(lock_receipt, None)
 
 
 class RunnerLockBusy(RuntimeError):
@@ -301,10 +361,15 @@ def release_runner_lock(lock_receipt: Path) -> None:
 
 def runner_lease(lock_receipt: Path) -> RunnerLease:
     """Renew the receipt's lock, with each editor lock a whole-VM receipt holds beside it, keep them renewed while this
-    process runs, and return the game's runner and the editor the receipt holds."""
+    process runs, and return the game's runner and the editor the receipt holds.
+
+    Raises LockOwnershipLost when a renewal already found the receipt's lock, or one beside it, lost.
+    """
 
     config = runner_config()
     vm = config["ROBLOX_STUDIO_VM"]
+
+    assert_receipts_kept([lock_receipt, *(member_receipt(lock_receipt, slot) for slot in editor_slots(config))])
 
     report = renewed_lock(lock_receipt)
     key = report["ownership"]["key"]
@@ -358,7 +423,10 @@ def run_in_runner(command: str, lock_receipt: Path, timeout: timedelta, data: by
 
 
 def run_guest_command(command: str, config: RunnerConfig, timeout: timedelta, data: bytes | None = None) -> bytes:
-    """Run a shell command in the guest of a runner whose lease the caller has already checked."""
+    """Run a shell command in the guest of a runner whose lease the caller has already checked, unless a renewal has
+    since found a lock on it lost."""
+
+    assert_runner_locks_kept(config)
 
     # The guest's login shell may be zsh, which splits words differently, so commands always run under sh.
     result = subprocess.run([str(RUNNER_SSH), f"/bin/sh -c {shlex.quote(command)}"], input=data,

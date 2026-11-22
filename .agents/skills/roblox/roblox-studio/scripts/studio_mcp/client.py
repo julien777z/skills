@@ -18,8 +18,9 @@ from typing import IO, Final, cast
 
 from studio_mcp.models import (CameraView, JsonRpcMessage, JsonValue, McpContent, PlaceIds, RunnerConfig,
                                RunnerOperation, StudioButton, StudioEntry, ToolArguments)
-from studio_mcp.runner import (OPERATION_TIMEOUTS, RUNNER_SSH, SCRIPTS, assert_editor_launch_allowed,
-                               assert_runner_lock_held, focused_input, run_guest_command, runner_environment)
+from studio_mcp.runner import (OPERATION_TIMEOUTS, RUNNER_SSH, SCRIPTS, LockOwnershipLost,
+                               assert_editor_launch_allowed, assert_runner_lock_held, assert_runner_locks_kept,
+                               focused_input, run_guest_command, runner_environment)
 
 logger = logging.getLogger(__name__)
 
@@ -172,7 +173,9 @@ class StudioMcpConnection:
 
     def request(self, method: str, params: Mapping[str, JsonValue], timeout: timedelta,
                 config: RunnerConfig) -> JsonRpcMessage:
-        """Send a request over the session to the configured runner."""
+        """Send a request over the session to the configured runner, unless a renewal has found a lock on it lost."""
+
+        assert_runner_locks_kept(config)
 
         if self.session is None:
             self.session = StudioMcpSession(config)
@@ -736,13 +739,22 @@ def launch_editor(launch: str, data: bytes | None, editor_name: str | None, expe
             failure = (f"never reported place {expected['place_id']} of universe {expected['universe_id']}; "
                        f"the new editors: {answers}")
 
-        saved_guest_screen(failure_screen, config)
+        try:
+            saved_guest_screen(failure_screen, config)
+        except LockOwnershipLost as lost:
+            raise LockOwnershipLost(f"{lost}; the editor {failure}") from lost
 
         raise RuntimeError(f"The editor {failure}; screen saved to {failure_screen}")
     finally:
         if not opened:
             connection.close()
-            close(config)
+
+            try:
+                assert_runner_locks_kept(config)
+            except LockOwnershipLost:
+                logger.warning("The failed launch's editor stays open, since its runner lock was lost", exc_info=True)
+            else:
+                close(config)
 
 
 def open_place(project: str, place: Path, out_dir: Path, lock_receipt: Path,
