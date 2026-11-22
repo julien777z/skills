@@ -21,6 +21,7 @@ UNMERGED_KEYS: Final[frozenset[str]] = frozenset({"$comment", "hooks"})
 RECORD_KEYS: Final[str] = "keys"
 RECORD_WRITTEN: Final[str] = "written"
 RECORD_PREVIOUS: Final[str] = "previous"
+RECORD_EARLIER: Final[str] = "earlier"
 
 
 class RegistrationCommand(StrEnum):
@@ -208,18 +209,34 @@ def read_settings_record(path: Path) -> dict[str, dict[str, object]]:
     return entries
 
 
+def is_installer_value(entry: dict[str, object], value: object) -> bool:
+    """Tell whether a value is one the installer wrote for a recorded key."""
+
+    return value == entry[RECORD_WRITTEN] or (
+        RECORD_EARLIER in entry and value == entry[RECORD_EARLIER]
+    )
+
+
 def merged_settings(
     target: dict[str, object], source: dict[str, object], record: dict[str, dict[str, object]]
-) -> tuple[dict[str, object], dict[str, dict[str, object]]]:
-    """Return the target with the source's settings applied, and the record of what was written."""
+) -> tuple[dict[str, object], dict[str, dict[str, object]], dict[str, dict[str, object]]]:
+    """Return the target with the source's settings applied, the record of what was written, and
+    the record to hold while the target is replaced.
+
+    The held record recognizes the installer's values in both the current target and the new one,
+    so a run interrupted between the two writes recovers every replaced value when it is rerun.
+    """
 
     settings = {key: value for key, value in source.items() if key not in UNMERGED_KEYS}
     result = dict(target)
     written: dict[str, dict[str, object]] = {}
+    pending: dict[str, dict[str, object]] = {}
 
     for key, entry in record.items():
-        if key in settings or key not in result or result[key] != entry[RECORD_WRITTEN]:
+        if key in settings or key not in result or not is_installer_value(entry, result[key]):
             continue
+
+        pending[key] = entry
 
         if RECORD_PREVIOUS in entry:
             result[key] = entry[RECORD_PREVIOUS]
@@ -228,18 +245,22 @@ def merged_settings(
 
     for key, value in settings.items():
         entry = record.get(key)
+        current = result.get(key)
+        is_installed = entry is not None and key in result and is_installer_value(entry, current)
 
-        if entry is not None and result.get(key) == entry[RECORD_WRITTEN]:
+        if entry is not None and is_installed:
             replaced = {RECORD_PREVIOUS: entry[RECORD_PREVIOUS]} if RECORD_PREVIOUS in entry else {}
         elif key in result:
-            replaced = {RECORD_PREVIOUS: result[key]}
+            replaced = {RECORD_PREVIOUS: current}
         else:
             replaced = {}
 
         result[key] = value
         written[key] = {RECORD_WRITTEN: value, **replaced}
+        earlier = {RECORD_EARLIER: current} if is_installed and current != value else {}
+        pending[key] = {**written[key], **earlier}
 
-    return result, written
+    return result, written, pending
 
 
 def write_json_object(path: Path, content: dict[str, object]) -> None:
@@ -313,6 +334,7 @@ def main() -> int:
     record_path: Path | None = arguments.settings_record
     record: dict[str, dict[str, object]] = {}
     written: dict[str, dict[str, object]] = {}
+    pending: dict[str, dict[str, object]] = {}
 
     try:
         target = read_json_object(target_path)
@@ -327,7 +349,7 @@ def main() -> int:
 
         if record_path is not None:
             record = read_settings_record(record_path)
-            content, written = merged_settings(content, source, record)
+            content, written, pending = merged_settings(content, source, record)
     except SettingsConflict as error:
         print(f"conflict: {error}", file=sys.stderr)
 
@@ -336,13 +358,16 @@ def main() -> int:
     if command is not RegistrationCommand.INSTALL:
         return 0
 
-    if record_path is not None and written != record:
-        write_json_object(record_path, {RECORD_KEYS: written})
+    if record_path is not None and pending != record:
+        write_json_object(record_path, {RECORD_KEYS: pending})
 
     if content != target:
         write_json_object(target_path, content)
 
         print(f"{target_path}: hooks and settings updated")
+
+    if record_path is not None and written != pending:
+        write_json_object(record_path, {RECORD_KEYS: written})
 
     return 0
 
