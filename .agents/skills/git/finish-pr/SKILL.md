@@ -109,23 +109,21 @@ dependent unit. Its dependency gates its merge, never its review:
 
 Process each eligible unit through these steps, preserving their order within that unit. A held unit
 does not delay starting another independent unit whose current work and dependencies permit it;
-hold only the unit that needs the unresolved result, recording its gate and saved next action; step
-2 alone waits, and only for step 1 of the units in its set.
+hold only the unit that needs the unresolved result, recording its gate and saved next action;
+**Review the combined set** alone waits, and only for the whole-pull-request review of the units
+in its set.
 Follow the active task's recorded priorities when choosing the next eligible unit.
 
-1. Invoke `review-pass` on the pull request with its intent statement, asking for the whole pull
-   request: its complete merge-base diff, the full contents of every touched file, related code and
+1. **Review the whole pull request.** Invoke `review-pass` on the pull request with its intent
+   statement, asking for the whole pull request: its complete merge-base diff, the full contents of every touched file, related code and
    sibling modules. Its **Range** decides what an earlier pass already covers: a pull request whose
    recorded `whole` head has not moved keeps that verdict and is reviewed again by no one, and one
    that moved since gets only its delta from that head. It returns the accepted head.
-2. When the selected units hold more than one member of the set `review-pass`'s **Combined
-   Review** defines, invoke it over those members once step 1 has returned for each and before the
-   first of them merges, a unit whose merge is withheld or held for a dependency included. A
-   member goes on only at a head that round accepted, and a later change to a head it read, a
-   repoint included, returns to it as that section says. A unit outside the set, such as an
-   agent-configuration pull request whose guidance holds on the default branch as it stands, goes
-   to step 3 from its own step 1.
-3. When merge is withheld, the unit ends at that head, its pull request left draft. A dependent unit
+2. **Review the combined set.** When the selected units hold more than one member of the set
+   `review-pass`'s **Set and timing** defines, invoke its **Combined Review** over those members
+   once **Review the whole pull request** has returned for each. A member goes on only at a head
+   that round accepted; a unit outside the set goes on from its own review.
+3. **Gate and merge.** When merge is withheld, the unit ends at that head, its pull request left draft. A dependent unit
    holds at that head until its dependency merges and then repoints, as **Dependent Pull Requests**
    says. Otherwise invoke `merge-gate` with:
    - the pull request and the head `review-pass` accepted, or a dependent unit's repointed head;
@@ -136,7 +134,7 @@ Follow the active task's recorded priorities when choosing the next eligible uni
      someone else pushed: `review-pass` runs again over that fix's delta, and the fix is pushed through
      the GitHub rule's **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
      passed.
-4. After a verified merge, run **Local Checkout**. Record the merge and checkout outcome, or the
+4. **Refresh the checkout.** After a verified merge, run **Local Checkout**. Record the merge and checkout outcome, or the
    gate that holds the merge, with `session-ledger`, and continue to the next unit.
 
 Before concluding, require discovery to be complete and reconcile the recorded target inventory

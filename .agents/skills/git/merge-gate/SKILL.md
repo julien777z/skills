@@ -120,8 +120,9 @@ test jobs run once, on the head about to merge.
 - The caller's review has accepted the head in **Inputs** before this skill is invoked. No caller
   runs this step on its own, ahead of that acceptance, to start tests, or to hand the pull request
   to the user.
-- **Check Gate** step 3 marks the open pull request ready, after steps 1 and 2 have bound the
-  accepted head and admitted its delivery dependencies, and verifies the state through
+- **Check Gate**'s **Mark the pull request ready** marks the open pull request ready, after
+  **Bind the accepted head** and **Verify delivery dependencies** have bound the accepted head and
+  admitted its delivery dependencies, and verifies the state through
   **Transport**. A dependency that blocks the merge leaves the pull request draft.
 - Once ready, the pull request stays ready while a check, a conflict or a fix made here holds the
   merge; a fix pushed in that state starts test jobs, and the gate repeats on its head.
@@ -155,7 +156,7 @@ test jobs run once, on the head about to merge.
    behavior coverage are evidenced equivalent. A test job `skipped` because the pull request was
    draft is no result. If readiness makes a previously skipped job applicable or changes any of
    those inputs, obtain its fresh terminal result. Otherwise, do not wait for or rerun an equivalent
-   duplicate job that remains pending; classify every unsuccessful terminal duplicate under step 8.
+   duplicate job that remains pending; classify every unsuccessful terminal duplicate under **Classify every unsuccessful check**.
 4. **Classify the complete pull-request diff.** A non-runtime diff — one that changes no executable
    source, package or dependency definition, test, runtime configuration, CI workflow, generated
    runtime artifact, or other executed-behavior contract — is validated only by the checks its
@@ -170,10 +171,10 @@ test jobs run once, on the head about to merge.
    duplicate attempt, and each caller-supplied exclusion with its evidence. A completed successful
    representative supplies coverage for an equivalent duplicate that remains pending; a changed
    trigger, condition, execution input, or affected behavior does not. Every unsuccessful terminal
-   duplicate remains subject to step 8. Read each test job's suite wall time against the budget
+   duplicate remains subject to **Classify every unsuccessful check**. Read each test job's suite wall time against the budget
    `test-fixture`'s **Time Budgets** sets, and for a suite past it, against the same job's latest
    run on the base branch. The merge is held only for slowness this pull request caused, so a
-   suite it made slower than that base run is an unsuccessful result for step 8 even when its job
+   suite it made slower than that base run is an unsuccessful result for **Classify every unsuccessful check** even when its job
    passed. A suite already past its budget that this pull request did not slow does not hold the
    merge: it is a defect the work noticed, and its fix is placed as `pre-production`'s **Scope
    Follows The Defect, Not The Request** says.
@@ -183,14 +184,14 @@ test jobs run once, on the head about to merge.
    Before using a local receipt, compare its source head and resolved dependency, configuration,
    toolchain and runner inputs with the proposed execution; a branch label alone is insufficient.
    Reuse it only for unchanged inputs or evidenced equivalence, and revalidate the affected coverage
-   on drift. That receipt may support an exclusion under step 8; it never omits the hosted inventory.
+   on drift. That receipt may support an exclusion under **Classify every unsuccessful check**; it never omits the hosted inventory.
 6. **Drive the complete inventory to terminal results.** Re-query the exact head on a bounded
    interval matched to job duration — roughly every 30 to 60 seconds — until every applicable,
-   non-excluded logical job has terminal coverage. Apply step 8 as unsuccessful attempts become
+   non-excluded logical job has terminal coverage. Apply **Classify every unsuccessful check** as unsuccessful attempts become
    terminal so an interrupted job can recover while other jobs run. A successful representative
    means a pending equivalent duplicate does not hold the gate. Local coverage, a green selected
    job or a branch-protection summary does not permit omitting another job. Classify failures under
-   step 8 and account for missing or skipped required validation before clearing the gate. A new
+   **Classify every unsuccessful check** and account for missing or skipped required validation before clearing the gate. A new
    head rebuilds the inventory. When the base moves, compare its changes with every execution input
    before reusing evidence; retain a result only with evidence that those inputs are equivalent.
    Otherwise incorporate the base through `merge-conflict`, run the caller's rule over the resolved
@@ -211,7 +212,7 @@ test jobs run once, on the head about to merge.
    **Validation Exclusions**' interrupted-check exclusion automatically: record a qualified check as skipped
    and do not rerun or wait for a green hosted result. For a canceled or otherwise interrupted
    attempt with no recorded validation failure and no exclusion, use an equivalent successful
-   hosted attempt or follow a pending replacement through step 6. If neither exists, obtain
+   hosted attempt or follow a pending replacement through **Drive the complete inventory to terminal results**. If neither exists, obtain
    equivalent local validation when it can qualify for the exclusion, or retry the hosted check
    on the same head using `POST /repos/{owner}/{repo}/actions/jobs/{job_id}/rerun`. Verify the
    retried job's head and required context before using its result. Missing logs or an unknown cancellation cause cannot justify local substitution;
@@ -229,18 +230,18 @@ test jobs run once, on the head about to merge.
    never rerun a failing validation to get a green result, or skip, disable, or quarantine a test
    or confine its job to drafts to get past it. Report a blocker only when relevant missing
    coverage needs user input or unavailable credentials, with the check, evidence and remediation attempted.
-9. Never stop, restart, reconfigure or claim a local service the calling workflow did not start:
+9. **Leave services this workflow did not start alone.** Never stop, restart, reconfigure or claim a local service the calling workflow did not start:
    another agent or person may be using it. When relevant validation needs local services and one it
    did not start is running, use the matching hosted check as the fallback rather than running a
    competing service-managed test.
-10. Every fix made here goes through the caller's fix rule from **Inputs**, and the gate repeats on
-   the head that review accepts.
+10. **Send every fix through the caller's rule.** Every fix made here goes through the caller's
+   fix rule from **Inputs**, and the gate repeats on the head that review accepts.
 
 ## Merge Conflicts
 
 When GitHub reports a conflict, or the merge is rejected for one:
 
-- Incorporate the base through `merge-conflict`; the resolution is a fix under **Check Gate** step 10.
+- Incorporate the base through `merge-conflict`; the resolution is a fix under **Check Gate**'s **Send every fix through the caller's rule**.
 - Report a blocker only when a safe resolution needs an unauthorized product decision, or a change
   to a contract a consumer outside the user's control speaks.
 
@@ -249,7 +250,7 @@ When GitHub reports a conflict, or the merge is rejected for one:
 Recheck delivery dependency state, resolved revisions and the recorded default-branch comparison,
 then re-read the pull request after the check gate and require its head to equal the head that passed
 acceptance. On a head mismatch, put the added commits through the caller's rule and repeat the check
-gate. On a base mismatch, apply step 5's execution-input comparison and, when equivalence is not
+gate. On a base mismatch, apply the execution-input comparison of **For a runtime diff, inventory every check** and, when equivalence is not
 evidenced, incorporate it through `merge-conflict`, run the caller's rule, and repeat the gate. Then
 squash-merge
 with the accepted head SHA in the request —
@@ -270,7 +271,7 @@ the merged branch never waits on this, so a consumer left pinned stops installin
 
 An excluded check does not prevent the ordinary authorized merge attempt. If branch protection
 rejects it because it requires an interrupted hosted check, record the required context and head
-in the inventory. For that context, step 8 cannot apply local substitution or reuse a result the
+in the inventory. For that context, **Classify every unsuccessful check** cannot apply local substitution or reuse a result the
 provider already rejected. Follow its matching replacement or retry under **Check Gate**. Re-read
 the required context and attempt the merge once GitHub reports it passing. For other exclusions, or if hosted
 recovery is unavailable, report the actual rejection and its provider evidence. Never bypass protection.
@@ -281,7 +282,8 @@ merge whose diff changes agent configuration.
 ## After Agent Sync
 
 When the merged diff changes agent configuration, poll the default-branch Agent Sync run the merge
-started as **Check Gate** steps 6–7 poll a check. A run ending in anything but success is diagnosed
+started as **Check Gate**'s **Drive the complete inventory to terminal results** and **A
+pending status is a cache** poll a check. A run ending in anything but success is diagnosed
 from its log and reported.
 
 - **Refresh immediately after the run succeeds.** The refresh is part of the merge's delivery,

@@ -43,10 +43,10 @@ merged without an earlier `review-pass`.
 ## Merge
 
 Targets with no dependency on one another proceed concurrently; a consumer waits for the target it
-depends on to merge. When the set `review-pass`'s **Combined Review** defines holds more than one of
+depends on to merge. When the set `review-pass`'s **Set and timing** defines holds more than one of
 the task's open pull requests, an agent-configuration one in that set that **Targets** leaves out
-included, no target in the set passes step 2 until step 1 has accepted every target in it and that
-round has accepted its head. A target outside the set waits on no other.
+included, no target in the set reaches **Check gate** until **Acceptance** has accepted every target
+in it and that section's round has accepted its head.
 
 1. **Acceptance.** Reuse `acceptance-gate`'s final-acceptance verdict when the head it accepted is
    the current head, or a rewrite whose tree is identical to it. Otherwise put the head to the
@@ -69,7 +69,7 @@ round has accepted its head. A target outside the set waits on no other.
    there.
 2. Confirmed findings go into one draft fix pull request per repository, cut from the freshly
    fetched default branch. Record each fix pull request and its outcome with `session-ledger`. The original merge is never amended or reopened.
-3. Each fix pull request takes **Merge** steps 1–3. It gets no further review round beyond the fix rule's review of a
+3. Each fix pull request takes every step of **Merge**. It gets no further review round beyond the fix rule's review of a
    `merge-gate` fix.
 
 ## Report

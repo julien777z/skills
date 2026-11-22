@@ -153,19 +153,19 @@ validation exclusion is recorded with its evidence and not repaired, rerun or wa
 
 ## Workflow
 
-1. Resolve the target. Before the first round, read the task's ledger through
+1. **Resolve the target.** Before the first round, read the task's ledger through
    `session-ledger` for each decision and answered question whose work is open, and each plan step
    that builds or changes something, whose work goes on this pull request under the GitHub rule's
    **Branches and Pull Requests** and is due before review; work its plan orders after this review,
    such as a repoint that waits on a dependency's merge, is not. While any is open, review nothing
    and return the **Output**'s required-work shape. With a working pull request, run **Description Refresh** and **Review Threads**.
-2. Run **Base**, resolve the review range against the resulting head and governing guidance, then
+2. **Resolve the range.** Run **Base**, resolve the review range against the resulting head and governing guidance, then
    run **Checks**.
-3. Run **Local Passes** over the delta and push their fixes.
-4. Check the delta's added and changed lines against the patterns below. A match decides, never a
+3. **Run the local passes.** Run **Local Passes** over the delta and push their fixes.
+4. **Diff Review.** Check the delta's added and changed lines against the patterns below. A match decides, never a
    judgment that the change is safe: on any match, run `security-audit` over the delta, with the
    merge-base diff as context, and fix what it confirms. Its
-   agents and step 5's round 1 only read this head and need nothing from each other, so start them
+   agents and **Review the delta**'s round 1 only read this head and need nothing from each other, so start them
    together and answer both sets of findings in one fix batch.
    - an authentication, authorization, permission or ownership check, or a route, handler or job
      added without one;
@@ -179,24 +179,24 @@ validation exclusion is recorded with its evidence and not repaired, rerun or wa
    - an outbound request whose host, URL or headers come from input, or a redirect target;
    - cryptography, hashing or randomness used for security, or security configuration such as
      cross-origin or content-security settings.
-5. Run **Review Loop** once over the delta, with the intent statement, the merge-base diff and the
+5. **Review the delta.** Run **Review Loop** once over the delta, with the intent statement, the merge-base diff and the
    full touched files as context. Push each fix as its own commit once the checks the
    GitHub rule's **Pre-Push Gate** defines pass. A finding that is the user's decision holds the pass: put it to the user
    with both sides, and continue independent work.
-6. When the base moved again, run **Base** and recompute **Range**. If the incorporation introduced
-   a delta or changed governing guidance, return to step 2 for the affected review and checks.
-7. With a working pull request, run **Description Refresh** once more, and complete **Checks**'
+6. **Recheck the base.** When the base moved again, run **Base** and recompute **Range**. If the incorporation introduced
+   a delta or changed governing guidance, return to **Resolve the range** for the affected review and checks.
+7. **Accept the result.** With a working pull request, run **Description Refresh** once more, and complete **Checks**'
    full batch on this head. Put the complete target diff, the merge-base diff or the merged range,
    and any refreshed prose to `acceptance-gate`'s **Final acceptance** question once, with the
    intent statement, the reviewed delta marked, the reuse receipts with the reviewer's reuse
-   search, and step 4's Diff Review result when it ran. Repair and answer every flag the verdict
+   search, and the **Diff Review** result when it ran. Repair and answer every flag the verdict
    raises together, as one increment under `acceptance-gate`'s **Bounds**, whose one fresh gate's
    acceptance makes that increment's head the accepted head.
-8. Re-read the head, base and merge base where they live: the pull request's remote, or the local
+8. **Confirm the inputs.** Re-read the head, base and merge base where they live: the pull request's remote, or the local
    checkout for a local target; a merged range does not move. Confirm the current requirements and
    governing guidance still match the intent the reviewers and gate received. If they changed, return
-   to step 1 to review and gate the affected work under the current intent. A moved base returns the
-   pass to step 6, and new commits return it to step 1. When all inputs match, record the accepted
+   to **Resolve the target** to review and gate the affected work under the current intent. A moved base returns the
+   pass to **Recheck the base**, and new commits return it to **Resolve the target**. When all inputs match, record the accepted
    head under **Range** and return its **Output**.
 
 A finding outside the change follows **Answer each finding**. A recorded deferral is discharged,
@@ -250,7 +250,7 @@ changed. Make the smallest changes that answer real findings, and push back on t
   or concurrency, round 1 goes to `council` in **Ask** mode with the round's brief, in place of the
   single reviewer, and its findings become the ledger. When round 1 is also split, the risky area
   group goes to `council` and the other groups share the remaining two of the five reviewers.
-  **Workflow** step 4's Diff Review is a separate check that neither replaces the panel nor is
+  **Workflow**'s **Diff Review** is a separate check that neither replaces the panel nor is
   replaced by it: it runs beside round 1, whoever reads that round, on a line-pattern match.
 - **Brief:** send [the reviewer brief](references/reviewer-brief.md), this skill's reference holding
   the round text and severity scale, with the repository, base, intent, out-of-scope note, check
@@ -305,17 +305,8 @@ review.
   request's checkout, base, accepted head, intent statement and description. The reviewer reads
   every complete merge-base diff together; a stacked pull request's diff is its own patch against
   the branch it builds on.
-- **What it looks for**, each a flaw of the combination:
-  - an interface, contract, schema, configuration name or generated type one pull request provides
-    and another consumes that does not match;
-  - a merge or deploy order under which an intermediate state breaks, named with the safe order or
-    the missing guard;
-  - one concern solved twice, or two mechanisms for one thing, across the set;
-  - behavior correct in each pull request and wrong with both applied;
-  - a trust boundary, permission or data exposure that opens only across the set, judged against
-    `security-audit`'s rubric;
-  - guidance that describes behavior another pull request in the set changes;
-  - a claim in one pull request's description that another contradicts.
+- **What it looks for:** the flaws of the combination the **Combined review** form of the
+  reviewer brief lists.
 - **Findings:** check each against the code as **Answer each finding** says. A confirmed finding
   goes to the pull request that owns the fix, or to both when both must change. It is repaired
   there and reviewed as that pull request's new delta under **Workflow**, and it counts within that
