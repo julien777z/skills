@@ -2,6 +2,16 @@
 
 Choose coverage for the affected behavior, qualify the available runner, then verify real input and the delivered result. Keep setup procedures conditional on the installed tools and the user's chosen environment.
 
+Contents: **Coverage and verification**, **Choose coverage for the change**, **Evidence types, not
+sequential delivery gates**, **Studio test orchestration**, **Keep the game's test helpers in its
+repository**, **Input coordinates: the phone notch matters**, **Coverage and visual inspection**,
+**Placement and before-and-after verification**, **Report honestly**, **Persistence fixtures and
+place arrival**, **Choose and qualify a runner**, **Tart VM capabilities**, **Direct VM control**,
+**Authentication and user handoff**, **Keep the game's editors warm**, **Leave the shared runner as
+you found it**, **End of session for a retained VM**, **Studio MCP connection and input**, **Connect
+to the intended editor**, **Qualify input and capture**, **Pending and partial test startup**,
+**Engine test suites through an existing editor**, **Optional VM desktop viewer**.
+
 ## Coverage and verification
 
 UI coverage follows the interface dependency declared in the entry point. Scale the tests to the actual task. A small UI edit needs focused visual/input verification; a complete game chapter needs a complete journey and relevant systems coverage.
