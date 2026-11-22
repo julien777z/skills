@@ -6,6 +6,8 @@ from typing import Literal, NotRequired, TypedDict
 type JsonValue = str | int | float | bool | None | Sequence[JsonValue] | Mapping[str, JsonValue]
 type ToolArguments = Mapping[str, JsonValue]
 type Position = tuple[float, float, float]
+# Edit while an editor edits its place, Play during a Play session, and Unavailable while it cannot take calls.
+type StudioMode = Literal["Edit", "Play", "Unavailable"]
 
 
 class RunnerOperation(Enum):
@@ -135,6 +137,7 @@ class StudioEntry(TypedDict):
 
     id: str
     name: NotRequired[str]
+    mode: StudioMode
 
 
 class StudioButton(TypedDict):
