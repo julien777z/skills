@@ -24,13 +24,8 @@ hook, type, constant set, fixture, configuration entry or block of inline logic.
 every path — a planned design, a small follow-up, a bug fix, a delegated worker's task — and only
 an edit that adds nothing, such as a typo fix or a rename, skips it.
 
-- Search the repository and its shared packages by what the addition does and by its key
-  operation, never by the name it would be given or by filename; a read of the sibling modules
-  alone cannot find the owner another package holds.
-- Write the [Reuse and removal](references/rubric.md#reuse-and-removal) receipt, one line per
-  addition, in the task record before the edit: what was searched for, what was found, and the
-  decision to reuse, extend with a parameter, or write new with the reason.
-- That section names the designs that also write its three fields.
+Make the search and write its receipt in the task record before the edit, as the rubric's
+[Reuse and removal](references/rubric.md#reuse-and-removal) says.
 
 In planning, read and report evidence only. Apply the check again when a follow-up changes the
 proposed mechanism.

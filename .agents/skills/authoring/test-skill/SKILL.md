@@ -169,11 +169,8 @@ Run after `code-simplify` completes its pass.
    where authorized; keep coupled instructions and their required repairs together. This assessment
    recommends which changes should merge and decides no merge itself. A passing skill test alone
    never decides that a pull request should merge.
-7. **Repair and rerun until verified**, within the limit of 3 review rounds per
-   change: after the third failing round over the same edit, put the edit, each round's findings and
-   remedies, and the choice between a simpler approach, reverting the edit and accepting it with the
-   remaining findings recorded to `council` in **Ask** mode; its majority ruling replaces another
-   repair, and never accepts a failing required check. Diagnose each reported issue at its owner. Fix guidance that permits the wrong behavior;
+7. **Repair and rerun until verified**, within the global rules' limit of 3 review rounds per
+   change, whose disposition goes to `council` in **Ask** mode. Diagnose each reported issue at its owner. Fix guidance that permits the wrong behavior;
    fix an invalid fixture, unavailable simulated operation, wrong reading list, ambiguous criterion
    or broken runner before judging guidance. Retain the diagnosis and earlier results. Recover
    missing evidence from the actual run or rerun the affected task; never reconstruct a result from

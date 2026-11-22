@@ -230,7 +230,7 @@ restriction. Gate a single user-only workflow inside an otherwise usable skill i
 
 ### Dependencies
 
-- **Refer to a skill, and to anything inside it, by the skill's name, never by path.** `the `code-simplify` skill's rubric reference` is right; a relative path into another skill's directory is wrong, because the directories move between repositories and user-level roots and the name is the only stable handle.
+- **Refer to a skill, and to anything inside it, by the skill's name, never by path.** the `code-simplify` skill's rubric reference is right; a relative path into another skill's directory is wrong, because the directories move between repositories and user-level roots and the name is the only stable handle.
 - Declare every invoked skill by canonical skill name in a near-top `## Dependencies` section of
   the owning `SKILL.md`. Each entry is only `- ` followed by the backtick-quoted skill name: no
   description, role, arguments, or surrounding workflow prose. That section lists skills only,

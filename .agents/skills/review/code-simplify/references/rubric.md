@@ -61,6 +61,9 @@ review against an independent search:
 <what it does> · searched: <terms, by effect and key operation> · found: <owner and path, or none> · <reuse | extend: <the parameter or condition added> | new: <why no owner fits>>
 ```
 
+- **Search** the repository and its shared packages by what the addition does and by its key
+  operation, never by the name it would be given or by filename; a read of the sibling modules
+  alone cannot find the owner another package holds.
 - **Reuse** calls the owner as it stands.
 - **Extend** adds the one parameter, condition or case an owner lacks to do the job; a second
   helper beside that owner is standard 4's finding.

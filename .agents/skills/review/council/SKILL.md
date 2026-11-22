@@ -35,8 +35,8 @@ parallel, read-only, each starting no subagents of its own.
   that skill's fallback order down to the `standard` capability level and no lower, because a
   member below it adds a vote without adding a strong independent read. When no candidate at
   `standard` or above launches, the council runs with the two members it has, and the result names
-  the empty seat and says the ruling came from two members. With two members a ruling needs both;
-  a split takes the option the asker lists first, as a three-way split does. A named member who is
+  the empty seat and says the ruling came from two members. Two members who agree decide; a
+  split takes the option the asker lists first, as a three-way split does. A named member who is
   unavailable is reported, never replaced silently.
 - **Brief:** a brief the invocation supplies is sent as it stands to every member. Otherwise give
   each the question or request, the intent, the material (a diff, files, a plan), and any check
