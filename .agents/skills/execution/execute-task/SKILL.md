@@ -31,6 +31,7 @@ skill change the user asks for, whose plan is a proposed flow.
 - `skill-flow`
 - `test-skill`
 - `i-have-adhd`
+- `use-browser`
 
 ## One Run Per Task
 
@@ -360,11 +361,11 @@ heredoc or temporary script is not a helper, though a skill's execution checks s
 ### Browser Access
 
 - Use the user's `@Chrome` browser for browser work unless the user names another browser.
-  Apply the global rules' **Tools and environments** browser selection and stable-tab binding
-  procedure before any page read or action, including when attaching a CLI to an existing browser.
+  Apply `use-browser`'s **Choosing A Tab** selection and stable-tab binding procedure before any
+  page read or action, including when attaching a CLI to an existing browser.
   A named CLI session alone does not establish control of the selected tab.
 - For the default Chrome route, if connected tab control is unavailable, use regular Chrome with
-  the same global selection procedure. It may come to the foreground. Continue through an
+  the same selection procedure. It may come to the foreground. Continue through an
   appropriate API or CLI when that is more direct. Report a browser-specific blocker only when the
   authorized browser's normal recovery paths cannot complete the required interaction.
 

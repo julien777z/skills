@@ -904,7 +904,7 @@ complete viewer/guest login yourself and sign in to Roblox as that section says.
 Use `list_roblox_studios`, verify the target file/place, and pass its explicit `studio_id` to every
 operation. Keep unrelated projects untouched. Use the installed Studio version's documented launch
 arguments and verify the resulting editor inventory, not merely process creation. Record the
-version in test evidence because it updates independently.
+version, read from the installed app's bundle, in test evidence because it updates independently.
 
 For a cloud-backed editor when isolated save/rejoin tests are required, the documented
 [Studio command-line interface](https://create.roblox.com/docs/studio/command-line-interface)
