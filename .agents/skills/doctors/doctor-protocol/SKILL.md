@@ -264,7 +264,8 @@ Otherwise write a decision-complete remediation plan from the ledger.
     prescribes or exempts worse than the departure, as `pre-production`'s **Trade-Offs Are
     Surfaced, Never Enforced** asks of a rule, the rule change goes on the run's
     agent-configuration pull request, and the code keeps the rule's form until that change merges,
-    since code that departs from a rule still in force reads as a defect to the next run.
+    since code that departs from a rule still in force reads as a defect to the next run. The
+    dependent source entry is recorded as held on that pull request's merge, which is the user's.
 - **The gated plan is shown, and its work starts in the same turn.** The user reads one line per
   area with its entry counts, the order, what waits on a decision and any path no reviewer read;
   the entries themselves go in the plan file sent with it, as the reference says. The message
@@ -346,10 +347,12 @@ repository-native check applicable to the changed files and their consumers: for
 analysis, tests, builds, code generation, and contract checks. Report a check category that is not
 configured rather than inventing one.
 
-Then take every measure again and rerun the mechanical pre-pass. Each instance a measure still
-counts is matched to a ledger entry that retains it: kept with a reason, declined, deferred or
-waiting on a reserved user decision. An instance with no such entry is a missed fix and goes back out as a
-fix step.
+Then take every measure again and rerun the mechanical pre-pass. Each instance a measure of defect
+candidates still counts is matched to a ledger entry that retains it: kept with a reason, declined, deferred or
+waiting on a reserved user decision or held on a rule change's merge. An instance with no such
+entry is a missed fix and goes back out as a fix step. Inventory totals, such as files, symbols,
+dependencies, documents and strings, and performance measures are compared before and after, never
+reconciled item by item.
 
 ## Review The Result
 
@@ -419,8 +422,9 @@ explicit user instruction naming the target may authorize merge. A run that chan
 request, except guidance the GitHub rule puts on the source pull request it depends on, and each
 kind stays on one pull request however many fixes the run makes. Complete
 every planned entry continuously; checkpoints sequence work on those drafts and never wait for a
-merge. Run **Run Repository-Native Checks**, **Review The Result**, and **Accept The Complete Diff**
-over the completed work before reporting it for the user's review. Confirm that every planned
+merge. The one exception is a source entry held on a rule change's merge under **Gate And Show The
+Plan**: the run completes its independent work and reports that entry as held. Run **Run
+Repository-Native Checks**, **Review The Result**, and **Accept The Complete Diff** over the completed work before reporting it for the user's review. Confirm that every planned
 disposition landed.
 
 **A run's guidance fixes are reviewed once.** Where the run changed agent configuration, **Review
@@ -445,6 +449,7 @@ The final report names:
 - the baseline and final check results and any category not configured;
 - every decision the run made, each council ruling, and each reserved decision with the user's
   answer or as still open;
+- each source entry held on a rule change's merge, with that pull request;
 - remaining external blockers.
 
 Per-entry detail, each applied correction with its evidence and commit, goes in a file sent with
