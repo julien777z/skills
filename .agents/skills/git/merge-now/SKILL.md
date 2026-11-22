@@ -43,10 +43,14 @@ merged without an earlier `review-pass`.
 ## Merge
 
 Targets with no dependency on one another proceed concurrently; a consumer waits for the target it
-depends on to merge. When the set `review-pass`'s **Set and timing** defines holds more than one of
-the task's open pull requests, an agent-configuration one in that set that **Targets** leaves out
-included, no target in the set reaches **Check gate** until **Acceptance** has accepted every target
-in it and that section's round has accepted its head.
+depends on to merge. This workflow merges first and reviews afterwards, so each target's own
+`review-pass` stays deferred to **Review What Merged**. When the set `review-pass`'s **Set and
+timing** defines holds more than one of the task's open pull requests, an agent-configuration one in
+that set that **Targets** leaves out included, the combined read runs before any of them merges,
+over the heads this run can supply in place of the individual reviews that timing waits for: each
+target's head **Acceptance** accepted, and an agent-configuration member's head its own delivery
+accepted. Invoke `review-pass` in its **Combined** mode with those heads and intent statements; no
+target in the set reaches **Check gate** until that round has accepted its head.
 
 1. **Acceptance.** Reuse `acceptance-gate`'s final-acceptance verdict when the head it accepted is
    the current head, or a rewrite whose tree is identical to it. Otherwise put the head to the
