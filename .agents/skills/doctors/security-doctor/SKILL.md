@@ -6,8 +6,9 @@ short_description: 'Find and fix the exploitable vulnerabilities in a codebase, 
 
 # Security Doctor
 
-Every finding names an attacker, what they send and what they get, and every fix is the smallest
-one that makes that attack fail and a test that proves it does.
+Every vulnerability names an attacker, what they send and what they get, and every fix is the
+smallest one that makes that attack fail and a test that proves it does; a construction a rule
+names is proven by the rule and the source that holds it.
 
 ## Dependencies
 - `doctor-protocol`
@@ -248,8 +249,9 @@ hunt followed by **Validation**. Reconnaissance runs once, before the first.
    the product already intends, as `pre-production`'s security bullet says. A change that
    widens access or changes who may see a record is a reserved decision, asked as
    `doctor-protocol`'s **Gate And Show The Plan** says.
-3. **Each fix carries a regression test** that performs the attack and fails without the fix and
-   passes with it, built under `test-fixture`.
+3. **Each fix carries a regression test**, built under `test-fixture`, that fails without the fix
+   and passes with it: for a vulnerability it performs the attack, and for a construction a rule
+   names it fails while the construction stands.
 4. **A hardening note is reported, never changed** in this run, apart from one a rule file names
    as a defect, which **Unsafe Construction A Rule Names** fixes.
 5. **A package advisory is a candidate, never a finding on its own**, as the rubric's

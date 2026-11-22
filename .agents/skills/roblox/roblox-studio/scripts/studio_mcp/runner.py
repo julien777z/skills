@@ -1,3 +1,4 @@
+import itertools
 import json
 import logging
 import os
@@ -44,12 +45,14 @@ OPERATION_TIMEOUTS: Final[Mapping[RunnerOperation, timedelta]] = MappingProxyTyp
 LOCK_WAIT: Final[timedelta] = timedelta(seconds=50)
 # agent-lock expires a lock its holder leaves unrenewed for five minutes and asks for a renewal about every minute.
 LOCK_RENEWAL_INTERVAL: Final[timedelta] = timedelta(minutes=1)
-# The receipts this process holds, which a background thread renews until each is released or lost.
-RENEWED_RECEIPTS: Final[set[Path]] = set()
+# The receipts this process holds, each with the acquisition it belongs to, which a background thread renews until
+# each is released or lost.
+RENEWED_RECEIPTS: Final[dict[Path, int]] = {}
 # The receipts whose lock a renewal found lost, with the key each held, or None when its receipt was unreadable, kept
 # until the receipt is released or acquired again.
 LOST_RECEIPTS: Final[dict[Path, str | None]] = {}
 RENEWED_RECEIPTS_GUARD: Final[threading.Lock] = threading.Lock()
+ACQUISITIONS: Final[itertools.count[int]] = itertools.count()
 # agent-lock's exit status for a lock that stayed held through the wait.
 AGENT_LOCK_BUSY: Final[int] = 2
 
@@ -105,13 +108,16 @@ def lost_lock_key(lock_receipt: Path) -> str | None:
     return receipt["key"]
 
 
-def record_lost_lock(lock_receipt: Path) -> None:
-    """Stop renewing a receipt whose lock is gone and record the loss, so operations on its resource stop."""
+def record_lost_lock(lock_receipt: Path, acquisition: int) -> None:
+    """Record a receipt's lock as lost, so operations on its resource stop, while that acquisition is still held."""
 
     key = lost_lock_key(lock_receipt)
 
     with RENEWED_RECEIPTS_GUARD:
-        RENEWED_RECEIPTS.discard(lock_receipt)
+        if RENEWED_RECEIPTS.get(lock_receipt) != acquisition:
+            return
+
+        del RENEWED_RECEIPTS[lock_receipt]
         LOST_RECEIPTS[lock_receipt] = key
 
     logger.error("Receipt %s lost its %s lock; operations on that resource stop", lock_receipt, key or "unknown")
@@ -155,13 +161,13 @@ def renew_held_locks() -> None:
         time.sleep(LOCK_RENEWAL_INTERVAL.total_seconds())
 
         with RENEWED_RECEIPTS_GUARD:
-            receipts = sorted(RENEWED_RECEIPTS)
+            receipts = sorted(RENEWED_RECEIPTS.items())
 
-        for receipt in receipts:
+        for receipt, acquisition in receipts:
             try:
                 renewed_lock(receipt)
             except RuntimeError:
-                record_lost_lock(receipt)
+                record_lost_lock(receipt, acquisition)
             except (OSError, ValueError, subprocess.TimeoutExpired):
                 logger.warning("Renewing the lock of receipt %s failed; retrying at the next interval", receipt,
                                exc_info=True)
@@ -183,7 +189,7 @@ def keep_lock_renewed(lock_receipt: Path) -> None:
     any loss recorded for an earlier lock under the same receipt."""
 
     with RENEWED_RECEIPTS_GUARD:
-        RENEWED_RECEIPTS.add(lock_receipt)
+        RENEWED_RECEIPTS[lock_receipt] = next(ACQUISITIONS)
         LOST_RECEIPTS.pop(lock_receipt, None)
 
     lock_renewal_thread()
@@ -193,7 +199,7 @@ def stop_renewing_lock(lock_receipt: Path) -> None:
     """Stop the background renewal of a receipt's lock, and forget any loss recorded for it."""
 
     with RENEWED_RECEIPTS_GUARD:
-        RENEWED_RECEIPTS.discard(lock_receipt)
+        RENEWED_RECEIPTS.pop(lock_receipt, None)
         LOST_RECEIPTS.pop(lock_receipt, None)
 
 
