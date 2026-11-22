@@ -499,7 +499,8 @@ and never adds a VM for the experience it plays.
   session's editor launch waits for it, on a lease (`--ttl-seconds`) shorter than that, so a
   worker that dies mid-burst frees it in time, and takes it again for the next burst. A burst
   starts by bringing the player to the front and confirming it there from a capture, so no input
-  lands in an editor, and ends by releasing every held key before the lock.
+  lands in an editor, and ends by releasing every held keyboard key before releasing the focus
+  lock.
 - **The player's log** records each join and teleport with its place and server ID, so it shows
   which server the client is in and why that changed: the newest `*Player*.log` in the guest
   account's Roblox logs folder.
