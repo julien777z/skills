@@ -152,7 +152,9 @@ small it looks.** Each route below is the gate set its batch passes on the head 
   below. One whose head its invoking workflow already reviewed and accepted skips **Review the
   batch**'s `review-pass`, as the [edit criteria](references/edit-criteria.md)'s **Already Reviewed Batches** says.
 - A batch that changes no instruction a reader follows, as `test-skill`'s **When It Runs**
-  recognizes one, has the source check as its only gate.
+  recognizes one, skips the skill test. It still passes the source check and one independent
+  `acceptance-gate` read of its delta, briefed as **Brief `review-pass`'s final acceptance** says,
+  and that gate's acceptance gives the head `merge-gate` receives.
 
 1. **Resume the batch** as the [edit criteria](references/edit-criteria.md)'s **Resuming A
    Batch** says, including an entry rebuilt from its backup comment and an edit that rides a
