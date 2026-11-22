@@ -17,7 +17,7 @@ description: Play the public Roblox marble game Marble Elimination Ultimate (a m
 1. **Find the game and the player.** Look the game up by name through Roblox's search, since the
    user may misspell it, and resolve a named player to a user ID through Roblox's users API. Read
    the player's presence: it names the place and server they are in right now.
-2. **Play in the isolated runner, never the user's desktop**: in a game VM's guest, as
+2. **Play in the isolated runner, never the user's desktop**: in a game's VM, as
    `roblox-studio`'s testing reference's **Play a published experience** section describes,
    adding the player app there as that reference says when it is missing. Check the signed-in
    account from a capture after launch; a sign-in page goes to the user as `roblox-studio`'s

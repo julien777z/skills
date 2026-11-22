@@ -1,7 +1,7 @@
 # Product constraints
 
-What `SKILL.md`'s **Product Constraints** applies before an implementation is recommended,
-delegated or edited.
+What `SKILL.md`'s **Product Constraints** applies before a plan is drafted or targets are selected,
+and again before an implementation is recommended, delegated or edited.
 
 ## Scope Of Broad Words
 

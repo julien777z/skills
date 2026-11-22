@@ -61,11 +61,12 @@ the task. Where it owns a stage, return its result to this run rather than start
 ## Plan
 
 Every task that changes files starts here, and so does every follow-up that arrives while one runs.
+Before drafting a plan or selecting targets, apply **Product Constraints** and **Task Authorization**.
 
 Before choosing a design, and before the first edit on a path that takes no plan, apply
 `code-simplify`'s **Before Choosing A Design** check to everything the change will add and write
-its receipt in the task record. A small follow-up, a bug fix and a worker's task each write it
-without a plan of their own; only an edit that adds nothing skips it.
+its receipt in the task record, even for a small follow-up, a bug fix or a worker's task with no
+plan of its own; only an edit that adds nothing skips it.
 
 ### When A Plan Is Needed
 
@@ -305,14 +306,13 @@ after its gating check has been read, outside the command, chain or batch that r
 `pre-production` is active in every change task: read it whole and invoke it before the first
 edit. Read the product state from project guidance before changing a contract or stored value.
 
-Before drafting a plan or selecting targets, and again before recommending an implementation,
-asking a question that presupposes one, or delegating its edits, apply [product
+Before drafting a plan or selecting targets, as **Plan** says, and again before recommending an
+implementation, asking a question that presupposes one, or delegating its edits, apply [product
 constraints](references/product-constraints.md) and **Task Authorization**: resolve the request's
-targets in the context of the outcome the user named, trace the requested behavior through its
-runtime path into the target receipt, and read the rules and analogous files governing every
-surface an edit reaches. A proposal that fails a settled requirement is repaired before
-implementation; for an ownership or scope change, `acceptance-gate`'s owned-boundary receipt is
-built before the implementation is selected.
+targets in the named outcome's context, trace the requested behavior through its runtime path into
+the target receipt, and read the rules and analogous files governing every surface an edit reaches.
+A proposal failing a settled requirement is repaired before implementation; an ownership or scope
+change builds `acceptance-gate`'s owned-boundary receipt before the implementation is selected.
 
 Before an edit that crosses a trust boundary `security-audit` names, invoke it and apply its
 **While Writing Code**.
