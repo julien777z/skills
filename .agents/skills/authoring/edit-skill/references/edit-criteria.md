@@ -9,12 +9,9 @@ Reviewed Batches**, **Relocations**, **Resuming A Batch**.
 
 ## Causal Diagnosis
 
-Read at **Behavior** step 2.
-
-- Before editing, trace the actual path from the request
-  to the missed behavior: whether the instruction was absent, its skill loaded, its trigger or
-  sequence kept it from the decision, a conflicting instruction overrode it, or the agent failed
-  to apply guidance it had. Read exceptions and
+- Trace the actual path from the request to the missed behavior: whether the instruction was
+  absent, its skill loaded, its trigger or sequence kept it from the decision, a conflicting
+  instruction overrode it, or the agent failed to apply guidance it had. Read exceptions and
   stopping clauses with its callers. When the substantive rule is already correct, inspect the
   step that produced the rejected recommendation, triage, brief or action: what instruction and
   review evidence it used, what next action those required, and how its chosen action differed.
@@ -35,7 +32,7 @@ Read at **Behavior** step 2.
 
 ## Scope Statement
 
-Read at **Behavior** step 2. The statement is written before the edit, in the shape `SKILL.md`'s
+The statement is written before the edit, in the shape `SKILL.md`'s
 **Output** gives, and revised when the written text turns out to change more or less than it says.
 
 - **Each line says one thing the user can check against what they meant.**
@@ -78,8 +75,6 @@ Read at **Behavior** step 2. The statement is written before the edit, in the sh
 
 ## Shared Targets
 
-Read at **Behavior** step 4.
-
 - A shared target is edited in the skills repository's checkout — the one the user-level link
   resolves to, or the main checkout behind it when the link resolves into `update-skills`'
   overlay worktree, or, when the session has no editing checkout, a writable checkout attached to
@@ -98,8 +93,6 @@ Read at **Behavior** step 4.
   automatically installs its skill.
 
 ## Changed Output Examples
-
-Read at **Behavior** step 5.
 
 - The changes that take a concrete example are any new or changed user-facing output shape — a
   table, a report layout, a sent file, a message template, a listing — in a skill whose response
@@ -121,8 +114,6 @@ Read at **Behavior** step 5.
 
 ## Moved Text
 
-Read at **Behavior** step 5.
-
 Guidance moved between files — a skill relocated, bullets gathered into a new rule or out of one —
 that lands beside a statement of the same requirement is merged with it into one in the same
 change, keeping every distinct criterion and exception, and any other defect a standing rule names
@@ -132,8 +123,6 @@ and size. Moving text unchanged proves it survived; it is never a reason to repo
 left for the user.
 
 ## Tools And Dependency References
-
-Read at **Behavior** step 5.
 
 - Treat a missing tool required to run, build, test, or review a repository as source work. First
   use a standard-library or already-provided equivalent when it fully serves the task; remove any
@@ -151,8 +140,6 @@ Read at **Behavior** step 5.
 
 ## Source Check Routes
 
-Read at **Behavior**'s **Run `validate_sources.py check`**.
-
 When the sync tool cannot reach an imported skill's source repository, that is an environment
 refusal, not a blocker: attach or clone the repository, and when the tool
 fetches through a path the environment refuses, fix the tool to use one it serves.
@@ -168,8 +155,6 @@ Dependency References**. No merge here authorizes a release.
 
 ## Already Reviewed Batches
 
-Read at **Guidance Delivery**'s choice of route.
-
 A workflow that fixes guidance under its own review, such as a doctor run, hands the route a head
 it has already reviewed and accepted. The route takes that review and acceptance as its own when
 the invocation supplies all of these for the batch's complete `.agents` diff at its current head:
@@ -182,15 +167,13 @@ the invocation supplies all of these for the batch's complete `.agents` diff at 
 The route then runs **Run `validate_sources.py check`** and
 **Run one `test-skill` round** for the guidance the diff changed, started on that head, and no
 `review-pass`. A repair the skill-test round makes goes through `review-pass` over its delta, as
-**Guidance Delivery** step 4 says, and a head that moved since the acceptance for any other reason
+**Guidance Delivery**'s **Conclude the skill test** says, and a head that moved since the acceptance for any other reason
 is a batch like any other. The pull request then merges or holds as the handing workflow's
 delivery rule and the GitHub rule's **Merge Authorization** say.
 
 Every other batch takes the short or the full route, whatever started it.
 
 ## Relocations
-
-Read at **Behavior**'s **Run one `test-skill` round**.
 
 Moving a skill between repositories, or generalizing local copies into one every repository can adopt, produces a new
 file and no new guidance, and a skill-test run against a miss nobody had proves nothing. What makes
@@ -209,14 +192,12 @@ one's answer.
 
 ## Resuming A Batch
 
-Read at **Guidance Delivery** step 1.
-
 Read every entry in the frozen batch and resume at its recorded first
 nonterminal stage, rebuilding a lost or truncated entry from its backup
-comment as `session-ledger` accepts it; the comment's existence records that the correction was admitted under **Recording During A Task**, its Intended behavior stands as the recovered intent for **Guidance Delivery** step 3 beside the user's words, taken from the conversation where they survive and otherwise named as missing in that intent, never replaced by that paraphrase, and **Run one `test-skill` round**
+comment as `session-ledger` accepts it; the comment's existence records that the correction was admitted under **Recording During A Task**, its Intended behavior stands as the recovered intent for **Guidance Delivery**'s **Review the batch** beside the user's words, taken from the conversation where they survive and otherwise named as missing in that intent, never replaced by that paraphrase, and **Run one `test-skill` round**
 rebuilds the reproduction scenario from its failure class and invariant, with anything else
 unrecoverable handled as `session-ledger` incomplete retrieval. An entry with no recorded commit
-applies its edits under **Behavior** steps 5 and 6, on the branch **Branch and commit** selects; one with a
+applies its edits under **Write the edit** and **Split a multi-item request**, on the branch **Branch and commit** selects; one with a
 pushed commit resumes from that head, taking the pull request's current state, tip and diff
 against the base from the host, which override the entry's and the comment's recorded commits
 and delivery stage; a merged or closed pull request resumes at verifying the merged text, never

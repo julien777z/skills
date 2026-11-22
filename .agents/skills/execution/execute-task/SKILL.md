@@ -434,44 +434,44 @@ a small review and a large one a full review of the new work.
 Follow the selected workflow’s declared verification and delivery sequence and any hold it places on delivery.
 
 Two streams run side by side from here: the guidance stream and the source stream. When the set
-`review-pass`'s **Combined Review** defines holds more than one pull request, invoke it once each has
-its accepted head and before any of them merges; a pull request outside that set waits on none.
+`review-pass`'s **Set and timing** defines holds more than one pull request, invoke its **Combined
+Review** once each has its accepted head.
 
 - **Guidance stream.** Invoke `process-ledger` for the task's private ledger. It sends the
   `guidance_correction` batch it freezes to `edit-skill`'s **Guidance Delivery** route, which the
-  primary agent coordinates so its review and checks never wait on the source stream. Before a source pull request's source-stream step 1,
+  primary agent coordinates so its review and checks never wait on the source stream. Before a source pull request's **Review the pull request**,
   every pending `guidance_correction` entry the GitHub rule's **Branches and Pull Requests** puts
   on it, in the batch in flight or the one after it, is pushed to it and passes its source check,
-  as **Guidance Delivery** step 1 says, so its review pass, history and ready message cover them. An entry recorded after the batch in flight merged is delivered in the batch frozen
+  as **Guidance Delivery**'s **Resume the batch** says, so its review pass, history and ready message cover them. An entry recorded after the batch in flight merged is delivered in the batch frozen
   once that one is done, so the source stream then waits for that delivery too, and for nothing
-  else before step 1. Each such entry's skill-test round runs on the head step 1's review pass accepted, before
-  step 2, and a repair it makes returns to review as **Guidance Delivery** step 4 says. A task with none has no guidance stream.
+  else before **Review the pull request**. Each such entry's skill-test round runs on the head **Review the pull request** accepted, before
+  **Shape the history**, and a repair it makes returns to review as **Guidance Delivery**'s **Conclude the skill test** says. A task with none has no guidance stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
   request belongs to the guidance stream:
 
-1. Invoke `review-pass` on the pull request with the
+1. **Review the pull request.** Invoke `review-pass` on the pull request with the
    intent statement. It runs its review loop and one final `acceptance-gate` over the changes no
    earlier pass reviewed, brings in a moved base, and returns the head its final acceptance passed.
-2. Shape the history with `rewrite-git-history`. The first time a pull request is sent for review,
+2. **Shape the history** with `rewrite-git-history`. The first time a pull request is sent for review,
    rebuild it into one commit per material change. Each later **Completion** of the same pull
    request, after a follow-up, folds every change into the commit it amends through that skill's
    fixup route, or adds a new commit for a new material change, and never rebuilds it again, so the
    commits the user already reviewed keep their shape. A rewrite whose tree proof shows an identical
    tree keeps the acceptance verdict and moves `review-pass`'s reviewed head to the rewritten head.
-3. Reconcile the result with **Product Constraints**' target receipt, updating its sources when
+3. **Reconcile the result** with **Product Constraints**' target receipt, updating its sources when
    accepted requirements changed. Verify every requested outcome and every incidental fix, confirm tests and relevant validation
    cover each of them and every simplification, confirm intentional contract changes are reflected
    in the expected behavior, and confirm multi-repository delivery artifacts describe only their
    owning repository. Then build this pull request's ready-for-review message, in the shape below,
    from `list-prs`, what the run did and `review-pass`'s **Output**.
-4. When **Task Authorization** finds the merge authorized, send step 3's message together with the
+4. **Merge when authorized.** When **Task Authorization** finds the merge authorized, send **Reconcile the result**'s message together with the
    invocation of `merge-gate`, passing the accepted head, `review-pass`'s **Checks** results with their
    commands and head as the behaviors local tests already cover, every exclusion it returned with
    its evidence, and, as its fix rule, `review-pass` over each fix's delta since the accepted head and the
    GitHub rule's **Pre-Push Gate**, with each fix folded into its commit through `rewrite-git-history`'s
    fixup route. It inventories exact-head hosted coverage, obtains fresh results only where no
    equivalent terminal coverage exists, fixes what relevant checks report and merges; when it returns, send one line with the
-   result it read: the merge, or the gate that holds it. Otherwise send step 3's message; the pull
+   result it read: the merge, or the gate that holds it. Otherwise send **Reconcile the result**'s message; the pull
    request stays draft.
 
 The ready-for-review message takes exactly this shape, one message per pull request, leaving out
@@ -495,5 +495,5 @@ The run stays open until both streams finish: the source stream when its message
 `merge-gate` returns from an authorized merge; the guidance stream when `process-ledger` reports no
 remaining entries other than kept `review` records, or a concrete retained hold.
 
-A workflow that already runs `review-pass` runs step 1 as its own; one that already invokes
-`merge-gate` runs step 4 as its own.
+A workflow that already runs `review-pass` runs **Review the pull request** as its own; one that already invokes
+`merge-gate` runs **Merge when authorized** as its own.
