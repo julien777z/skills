@@ -10,8 +10,8 @@ Invoking this skill means the user is about to deploy the branch's current chang
 environment, so its revisions may be applied there. The lock is a push hold and nothing more, as
 **After Locking** says.
 
-The user is waiting to deploy, so this run is the next work in the session, ahead of every
-queued item, and it does only the steps below. Those numbered steps
+The user is waiting to deploy, so this run is the next work in the session, ahead of all work
+that ranks below a waiting deploy, and it does only the steps below. Those numbered steps
 are the plan the user approved by invoking it. It never asks whether a revision was applied: the
 lock marker and a deploy the user reported are the only record, and a revision with neither is
 locked.
@@ -43,9 +43,7 @@ locked.
 
 ## After Locking
 
-`database-migrations`' lock-marker rule is the whole of what a lock means. Until the user unlocks,
-none of these is pushed: a change to a locked revision, a new revision, or a source change that
-depends on either. Commit that work locally; work that touches no revision keeps pushing as usual.
+`database-migrations`' lock-marker rule is the whole of what a lock means, its push hold included.
 This hold is the exception the GitHub rule's **Pre-Push Gate** allows an invoked skill to state.
 
 Only the user's own words unlock. Once they do, push the held commits and record the unlock with
