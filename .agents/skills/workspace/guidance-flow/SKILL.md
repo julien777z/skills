@@ -406,8 +406,8 @@ step exists to catch.
    the conversation is.
 5. **Ask one question at a time, in the order the run reaches them** — skill by skill, and within
    a skill from its first step to its last — through the question tool, and wait for its answer
-   before asking the next. The question leaves out its number and where it sits on the dashboard,
-   since the page's highlighted node shows that. Each says when
+   before asking the next. Each question opens with its place and the sequence's total, such as
+   "Q10/25", beside the page's highlighted node. Each says when
    the flow runs — what starts it and how often in a task, such as "once per pull request, when its
    task finishes, and again for each follow-up" — then what the step does in a sentence: the skill
    and step, how many subagents, what they read and for how many rounds. How often the step runs
