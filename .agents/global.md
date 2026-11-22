@@ -287,9 +287,11 @@ alwaysApply: true
   reader and the flow. Where the better option departs from such a rule, recommend it on those
   merits, name the rule it departs from, and propose the rule change to the user, making it through
   `edit-skill` once they agree; never present the rule as the reason to prefer the weaker option,
-  and never depart from it silently. A brief, correction, review finding, gate's fix step or
-  continuation note never outranks the guidance governing its subject or the scope the user last
-  set: an item outside that scope is answered as out of scope, never relayed as a fix, unless the
+  and never depart from it silently. A carried instruction — a brief, correction, review finding,
+  gate's bar or fix step, plan step, record's criteria or continuation note — never outranks the
+  guidance governing its subject or the scope the user last set, and binds only what its problem
+  needs: an item outside that scope, ruled out by that guidance or testing what the problem does
+  not touch is answered as such, never carried out, relayed as a fix or put to the user, unless the
   change itself introduced a defect, which remains a required fix, or the item is a game's design the
   user's words did not cut. **Nor does a label make an item the user's:** before a question goes to
   the user, whether it is theirs is read from the game-design bullet and the product-choice bullet

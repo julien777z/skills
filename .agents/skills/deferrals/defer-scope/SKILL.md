@@ -95,7 +95,8 @@ the canonical repository identity and the current change's pull-request number w
 5. Create one issue when no match exists. State what is deferred, why it remains open, the scope of
    picking it up, supporting evidence by durable link or concise excerpt, and concrete resolution
    criteria. Use the metadata contract from `linear` with `Source: defer-scope` and the stable key. Write
-   the resolution criteria as the end state the codebase reaches, and name the intent a fix has to
+   the resolution criteria as the end state the codebase reaches, naming checks only of what the
+   problem affects, each within the guidance that governs it, and name the intent a fix has to
    preserve when the record comes out of a change that is removing a shape. A criterion phrased as
    a mechanical condition — a symbol gone, a file absent — can be satisfied by putting that shape
    back somewhere else, and the record then closes on a regression. Write the admission verdict in
