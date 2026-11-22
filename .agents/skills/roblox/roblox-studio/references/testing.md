@@ -45,7 +45,9 @@ Use ordinary Studio profiles that cannot overwrite live player progress. When pe
 ## Keep the game's test helpers in its repository
 
 Every step a check repeats has one tested helper, committed in the game repository's test tooling
-area and built on the [studio_mcp](../scripts/studio_mcp/__init__.py) package for the transport:
+area and built on the [studio_mcp](../scripts/studio_mcp/__init__.py) package for the transport. The
+helpers load the package only when an agent runs them; their tests build the values it returns and
+double it where a helper calls it, so the game's CI runs them with no skills present. Helpers cover:
 
 - putting a disposable profile into a given state;
 - walking the character to an NPC, prompt or place through real movement around the collision

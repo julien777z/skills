@@ -21,6 +21,16 @@ paths:
   through `edit-skill` into the skill, rule, project guidance or reference that owns it, so every
   harness and session reads the same copy. A harness's memory, such as an auto-memory file, holds
   none of it. A memory found holding guidance is moved to its owner and deleted.
+- **Agent configuration is read only by agents.** Skills, rules, agent definitions and the scripts
+  they hold reach an agent session through its user-level install, or through a checkout that the
+  local setup places for agent sessions. A repository's CI, build, tests, dependency manifests,
+  lockfiles and product code never clone, install, copy, vendor or import any of it; the only
+  automation that reads it is the workflow that syncs or validates the agent configuration itself,
+  such as Agent Sync. A repository tool that agents run, such as a check helper built on a skill's
+  client, loads that script only inside the agent's run. Its tests build the values the script
+  would return and double it at the tool's own binding, so they pass in a checkout that holds no
+  skills. Code that both agents and the repository's own automation need is a package of its own,
+  never a skill.
 - `.agents/global.md` states guidance that holds in every repository and that no rule's subject
   covers, and every `.agents/rules/*.md` file guidance that holds in any repository using its
   technology. Keep their examples generic —

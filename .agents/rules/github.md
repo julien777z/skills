@@ -51,7 +51,9 @@ alwaysApply: true
   when credentials are absent, or a second path for CI: one layout every job shares costs less than
   a matrix of variants, so a job that does not need the package still gets it. A `use-<capability>`
   toggle is for a capability that genuinely varies between jobs, never for the repository's own
-  dependencies.
+  dependencies. Agent configuration is never such a package: no job, build step or manifest
+  places, installs or imports a skill, rule or agent definition, as the shared `agent-guidance.md`
+  rule's **Where Guidance Lives** says.
 - Do not add glue steps that only read versions or forward setup data. Pass repository-owned version files and inputs directly to the action that uses them whenever supported.
 - Keep workflow files concise: merge related setup and dependency commands into one clearly named generic step when their execution order and conditions allow it. Do not split tool or package installation into separate steps merely by dependency.
 - Keep each workflow job's `name` plain static text. Do not interpolate matrix or other GitHub expressions into a job name: skipped matrix jobs display the source expression instead of a resolved label. Keep matrix values in the strategy and use a concise generic job name that remains readable in every job state.
