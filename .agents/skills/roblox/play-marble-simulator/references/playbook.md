@@ -13,7 +13,7 @@ adds what it verifies, as that skill's **Recording What A Session Learns** says.
 
 - **Joining the main place** lands in a random lobby, which moves you into a match within
   seconds. It reaches the named player only by chance.
-- **Following the player works, even into a match in progress**: in the player app run
+- **Following the player works, even into a match in progress**: in the runner's guest, run
   `open "roblox://experiences/start?userId=<their user ID>"`. Joining mid-match counts the marble
   as eliminated ("Eliminated! Waiting for party."), so it watches until the match ends and then
   goes to the same lobby and the next match with the player.
@@ -68,7 +68,6 @@ adds what it verifies, as that skill's **Recording What A Session Learns** says.
 - **Spiky mine levels** place black spiked mines along the ramps; whether touching one costs the
   marble anything is not yet recorded.
 - The pinball-table level is mostly luck: finishes there ranged from second to near last.
-- Opening any menu during a level cost the marble its place and, once, the match.
 - The power-up row level is high risk: a marble that survived on luck there finished last.
 
 ## Pitfalls
