@@ -496,7 +496,7 @@ and never adds a VM for the experience it plays.
 - **Launch from the guest** as step 4 above does, or follow a player into the server they are in
   with `open "roblox://experiences/start?userId=<user id>"`.
 - **Each burst of input and capture holds the focus key for less than the 50 seconds** another
-  session's editor launch waits for it, on a lease (`--ttl-seconds`) no longer than that, so a
+  session's editor launch waits for it, on a lease (`--ttl-seconds`) shorter than that, so a
   worker that dies mid-burst frees it in time, and takes it again for the next burst. A burst
   starts by bringing the player to the front and confirming it there from a capture, so no input
   lands in an editor, and ends by releasing every held key before the lock.
