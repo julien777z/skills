@@ -143,18 +143,18 @@ paths:
   that selects one value from a defined list uses the shared dropdown or combobox, never a free-text
   input. Reuse the existing domain control and its complete option source wherever that field
   appears; country and state fields do not become text inputs in a generic field renderer.
-- **Disable an action while locally known prerequisites are unmet.** Missing selections or incomplete
-  required fields are normal editing state, not an error banner. Show errors for failures after a
-  valid action or for failed data requests.
-- **An action the reader cannot take is left out while another action beside it is available.**
-  Canceling a subscription that does not exist, "Mark all read" while nothing is unread, moving an
-  item that has nowhere to go: shown disabled among working controls, each offers a press with no
-  effect. An action with nothing to act on shows disabled only when no other action in its menu,
-  toolbar or group is available, or when it is a paid control the plan bullet in the React layout rule's
-  **Layout And Spacing** locks to show what upgrading adds. An action whose prerequisite the reader can still
-  meet stays, disabled, beside available actions, as the bullets here say: a form's submit while
-  required fields are incomplete, Next until its step is complete, Save until something has changed,
-  and an action while it is already running.
+- **Check locally known prerequisites before opening a dialog.** An unmet prerequisite keeps the
+  dialog closed unless the dialog is a necessary entry point. When the dialog stays closed,
+  disable the entry action if the reason is visible. Otherwise, keep it clickable and show the
+  actionable reason in the page's shared error banner on click. A necessary dialog opens and
+  shows the reason in its shared banner with its final action disabled until the prerequisite is
+  met. Ordinary incomplete fields and selections keep the action disabled without an error banner.
+- **Leave an unavailable action out when another action beside it is available.** An action with
+  nothing to act on shows disabled only when no other action in its menu, toolbar or group is
+  available, or when the plan bullet in the React layout rule's **Layout And Spacing** locks a paid
+  control. Except for the entry action above, keep an action disabled beside available actions
+  while its prerequisite can still be met: incomplete forms or steps, unchanged values, and actions
+  already running.
 - **A form the product would refuse in full is never shown.** When every choice it offers would be
   refused, because the feature is off or nothing asked for is allowed, the page shows in its place
   why, and the way forward for this reader, with one action to leave. The server refuses that

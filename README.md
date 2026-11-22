@@ -155,6 +155,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`merge-gate`](.agents/skills/git/merge-gate/SKILL.md) — Take a reviewed pull request out of draft, gate its exact head, and merge it.
 - [`modernize-pr`](.agents/skills/git/modernize-pr/SKILL.md) — Bring an old pull request up to date with its base, or decide it should not be.
 - [`no-text-ai-slop`](.agents/skills/review/no-text-ai-slop/SKILL.md) — Edit drafts into sharper, more human writing while preserving the writer's personal voice, or detect AI-slop patterns without rewriting.
+- [`play-marble-simulator`](.agents/skills/roblox/play-marble-simulator/SKILL.md) — Play the public Roblox marble game Marble Elimination Ultimate (a marble race where the last marbles each level are eliminated) in the isolated Roblox runner, alone or in the same server as a Roblox player the user names, playing to win and sending screenshots as play goes on.
 - [`pre-production`](.agents/skills/execution/pre-production/SKILL.md) — Apply target-contract constraints to implementation and review tasks.
 - [`prisma-client-api`](.agents/skills/web/prisma-client-api/SKILL.md) — Prisma Client API reference covering model queries, filters, operators, and client methods.
 - [`process-ledger`](.agents/skills/execution/process-ledger/SKILL.md) — Process verified private-ledger records into durable outcomes.

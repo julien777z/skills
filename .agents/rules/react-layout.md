@@ -270,13 +270,11 @@ paths:
   content starts, at the bottom-left, with the primary action last. In a modal, a dialog or a
   confirmation, the row sits at the bottom-right, the primary action rightmost and cancel
   immediately to its left, where readers of modals look for them. A dialog that only points the
-  reader to one next step, such as a prompt to complete a requirement before an action, shows that
-  action alone: its "×" already closes it, and a cancel beside the step the product wants taken
-  invites the reader away from it. A dialog that collects input, takes a purchase or confirms an
-  action keeps its cancel. Actions are centered only under content that is itself centered, such as
-  an empty state. A multi-step flow's footer is the one
-  exception, as the next bullet says; a control beside a heading, in a toolbar, at the end of a
-  table row or in a floating save panel follows that surface's own layout.
+  reader to one next step shows that action alone. Its "×" already closes it, and a cancel beside
+  the step the product wants taken invites the reader away from it. A dialog that collects input,
+  takes a purchase or confirms an action keeps its cancel. Center actions only under centered
+  content, such as an empty state. The next bullet governs multi-step footers. A control beside a
+  heading, in a toolbar, at a table row's end or in a floating save panel follows that layout.
 - **A multi-step flow's footer puts "Back", on every step that has one, at its start and the
   forward action at its end, apart; a footer holding only the forward action places it at the start,
   as no control sits alone at the far edge of an empty footer. It labels them by position, never by
@@ -356,6 +354,8 @@ paths:
   action, including one refused because of the account's or record's state or one taken from a
   status or error notice, reports its human-readable reason through the shared notification owner. Never add a page or dialog error
   banner or an error modal for a user-action failure, or create another notification stack.
+  Locally known prerequisites checked before an action starts follow the React copy and forms
+  rule's **Forms**.
   Classify the operation by its intent, not its status code, HTTP method or whether a button started
   it: loading or retrying the data a surface needs follows the resource-load rule below. Preserve
   entered values, the original notice and its state and remedy, and independent resource errors;

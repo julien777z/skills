@@ -5,14 +5,19 @@ delegated or edited.
 
 ## Scope Of Broad Words
 
-Resolve broad words in the context of the outcome the user named before selecting or inventorying
-implementation targets. For a contextual follow-up, derive the operational category from the purpose
-of the work being changed, not the implementation mechanism shared by candidates. State that purpose,
-then check each candidate's actual role against it. A shared filename, label, directory or provider does not make
-unrelated automation part of that scope. Broad words such as "every" or "anywhere" quantify that
-category; they do not add unrelated categories. Expand only for a required dependency or a user
-instruction naming an additional operational category or outcome, never for a broad quantifier
-alone or everything a text search happens to return.
+Resolve broad words in the named outcome's context before drafting a plan or selecting targets.
+For a follow-up, state the work's purpose and check each candidate's actual role; a shared
+mechanism, filename, label, directory or provider does not include unrelated automation. Words such
+as "every" quantify that category; neither they nor text-search matches expand it. Expand only for
+a required dependency or another named category or outcome.
+
+Separate selected outcome and verification targets from the existing path and its ordinary
+ancillary effects. An omitted target alone does not prohibit those effects; reuse the path when it
+serves the request within explicit constraints and authority, without inferring authorization for
+additional actions or outcomes. Honor explicit prohibitions. If the request and observed path leave
+a material ambiguity about a different target, outcome, mechanism or effect to avoid, ask a focused
+clarification before drafting; a clear instruction or routine implementation choice needs no
+question.
 
 ## Target Receipt
 

@@ -302,18 +302,17 @@ after its gating check has been read, outside the command, chain or batch that r
 
 ### Product Constraints
 
-`pre-production` is active in every change task. Read it completely and explicitly invoke it
-before the first edit. Listing it as a dependency is not an invocation.
-Read the repository's product state from its project guidance before choosing how to change a
-contract or stored value.
+`pre-production` is active in every change task: read it whole and invoke it before the first
+edit. Read the product state from project guidance before changing a contract or stored value.
 
-Before recommending an implementation, asking a question that presupposes one, or delegating its
-edits, apply [product constraints](references/product-constraints.md): resolve broad words in the
-context of the outcome the user named, trace the requested behavior through its runtime path into
-the target receipt, and read the rules and analogous files governing every surface an edit
-reaches. A proposal that fails a settled requirement is repaired before implementation, and for an
-ownership or scope change `acceptance-gate`'s owned-boundary receipt is built before the
-implementation is selected.
+Before drafting a plan or selecting targets, and again before recommending an implementation,
+asking a question that presupposes one, or delegating its edits, apply [product
+constraints](references/product-constraints.md) and **Task Authorization**: resolve the request's
+targets in the context of the outcome the user named, trace the requested behavior through its
+runtime path into the target receipt, and read the rules and analogous files governing every
+surface an edit reaches. A proposal that fails a settled requirement is repaired before
+implementation; for an ownership or scope change, `acceptance-gate`'s owned-boundary receipt is
+built before the implementation is selected.
 
 Before an edit that crosses a trust boundary `security-audit` names, invoke it and apply its
 **While Writing Code**.

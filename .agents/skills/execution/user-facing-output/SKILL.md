@@ -66,6 +66,12 @@ output.
 
 ## Reporting Work
 
+- **Every action a response hands the reader is the reader's own work, never a check of the
+  agent's.** Running the app, its tests or any command, or opening a page or local address, to see
+  a change work is verification the agent does before it reports; the response shows that evidence
+  instead of asking the reader to reproduce it, in its first line, its numbered steps and its
+  closing action alike, over any `i-have-adhd` example that hands the reader such a step. The
+  reader gets such steps only when they asked how to do something themselves.
 - **An issue the work met is fixed and named once as fixed**, as `pre-production`'s **Encountered
   Issues** says, never offered as a follow-up: "Also fixed on the way: the stale dependency the
   build pulled in", never "there is also a stale dependency. Want me to handle that next?".

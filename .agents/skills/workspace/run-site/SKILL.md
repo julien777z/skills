@@ -1,15 +1,15 @@
 ---
 name: run-site
-description: Bring an application stack up and repair startup blockers. Guidance-required browser walkthroughs apply only in cloud execution environments; explicit user requests for browser work apply in either environment. Use before planning, recommending, delegating or performing browser walkthroughs or rendered UI inspections, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works. Use before starting container-backed work, to select the local container runtime.
+description: Bring an application stack up and repair startup blockers. A change a reader sees rendered is inspected rendered before it is reported, in every execution environment, in a browser the agent runs itself when local; the full recorded walkthrough applies in cloud execution environments and whenever the user asks for browser work. Use before planning, recommending, delegating or performing browser walkthroughs or rendered UI inspections, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works. Use before starting container-backed work, to select the local container runtime.
 short_description: 'Start an application stack and perform browser verification where applicable.'
 ---
 
 # Run Site
 
-Start and verify the stack within the requested scope. When browser verification applies under
-**Principles**, its deliverable includes screenshots and a recording showing signed-in functionality
-wherever the change is visible on a page; a change no page shows is verified by request checks,
-with no capture.
+Start and verify the stack within the requested scope. Wherever the change is visible on a page,
+the cloud walkthrough under **Principles** delivers screenshots and a recording showing signed-in
+functionality, and a local inspection delivers its captures; a change no page shows is verified by
+request checks, with no capture.
 
 ## Dependencies
 - `pre-production`
@@ -23,16 +23,29 @@ with no capture.
 
 Use `use-browser` for browser control through its supported route. Apply `test-fixture` to any tests the scenario adds or updates.
 
-- Select browser verification applicability before starting its stack, browser or sign-in
-  prerequisites. Guidance-required walkthroughs and rendered UI inspections apply only when the
-  agent executes in a cloud environment. Classify the agent's execution environment, not the
-  application's address: a cloud agent checking a service on localhost still follows the cloud
-  requirement. In a local execution environment, mark this verification not applicable; do not
-  recreate it under another validation label or hold completion for its prerequisites. Browser
-  work the user explicitly requests, including debugging or verification, applies in either
-  environment. Reference material, ordinary implementation or plan approval, and delegated
-  reviewer requests do not supply that direct user request. Stack startup and non-browser
-  validation required by the task still apply.
+- Select browser verification before starting its stack, browser or sign-in prerequisites.
+  **A change whose effect a reader sees rendered — a page, a panel, a layout, its copy or its
+  states — is looked at rendered before it is reported done or ready for review, in every
+  execution environment.**
+- **In a local execution environment that inspection runs in a browser session the agent launches
+  and owns**, headless by default, as `use-browser` routes it, never in the user's own browser,
+  tabs, windows or desktop. It is the walkthrough
+  below without its recording.
+- **The inspection covers what the change can affect, and its route follows from that.** A change
+  confined to a component's own presentation or interaction — its markup, styles, input handling —
+  whose behavior does not depend on the page's data, sign-in, routing or server is inspected by
+  rendering the shipped component, from the real package with its real styles, on a page the agent
+  builds, when the startup command has run, its repairable blockers are fixed, and the stack still
+  cannot start or sign in only for credentials or services the session lacks. That page is the
+  inspection, not a workaround: report it as checked, and ask the user for no credential or service
+  it would not use. A change that reaches the page's data, sign-in, routing, server or its layout
+  around the component needs the real screen.
+- The full walkthrough below, with its recording, applies when the agent executes in a cloud
+  environment. Classify the agent's execution environment, not the application's address: a cloud
+  agent checking a service on localhost still follows the cloud requirement. Browser work the user
+  explicitly requests, including debugging or verification, applies in either environment;
+  reference material, ordinary implementation or plan approval, and delegated reviewer requests do
+  not supply that direct user request.
 - Setup is agent-agnostic. Any agent must be able to run it, so never hard-code an absolute path,
   a home directory, a machine-specific port, or an assumption about which agent is running.
   Resolve the repository root from the script's own location and read every other path from there.
@@ -60,8 +73,8 @@ and scale the work to match:
 | Present | What to do |
 |---|---|
 | Backend only | Start the services, verify the health and API documentation endpoints its tooling names, exercise the API directly |
-| Frontend only | Serve the site; when browser verification applies, drive the UI as far as it goes without a live API |
-| Both | Start and verify both; when browser verification applies, perform the full walkthrough below |
+| Frontend only | Serve the site and drive the UI as far as it goes without a live API, through the inspection **Principles** selects |
+| Both | Start and verify both, then perform the walkthrough or local inspection **Principles** selects |
 
 Never assume the other repository exists, and never fail because it does not. Name whatever did not
 run, and why, beside the result.
@@ -106,16 +119,17 @@ preserve configured ports.
 
 ### When a walkthrough is owed
 
-After selecting browser verification applicability under **Principles**, perform the following
-walkthrough only when it applies. Passing tests, type checks, and a clean build do not replace an
-applicable walkthrough. A change that can alter what a page shows — new or reordered UI, layout or
-spacing, a component's props or state, a hook, a redirect or an auth round trip the reader sees — is
-walked end to end before it is reported done, however few lines it took; the
-walkthrough follows the push rather than holding it. **A change no page shows is verified by request
-checks, with no capture or recording**: for a route, middleware or the shape of a request, make the
-requests the change affects against the running stack, allowed and refused cases alike, and read
-each status, header, redirect target and body against the intended behavior; the report states
-those requests and results in words. It is captured only when the user asks. An
+After selecting browser verification under **Principles**, perform the following walkthrough
+where it applies. Passing tests, type checks, and a clean build show the code runs, never what the
+reader meets, and do not replace it. A change that can alter what a page shows — new or reordered
+UI, layout or spacing, a component's props or state, a hook, a redirect or an auth round trip the
+reader sees — is walked end to end before it is reported done, however few lines it took, apart
+from a change confined to a component's own behavior that **Principles** lets the agent check on a
+page it builds; the walkthrough follows the push rather than holding it. **A change no page shows
+is verified by request checks, with no capture or recording**: for a route, middleware or the shape
+of a request, make the requests the change affects against the running stack, allowed and refused
+cases alike, and read each status, header, redirect target and body against the intended behavior;
+the report states those requests and results in words. It is captured only when the user asks. An
 edit that provably cannot reach behavior — rewording text already rendered in its existing slot, a
 comment, prose in Markdown — is verified by reading it and by finding the new text in the build
 output and the old text nowhere in the tree. Judge by what the edit touches, not how small it looks:
@@ -146,11 +160,15 @@ pages it reaches**, signing in with the identity its seed configuration or READM
 walkthrough says nothing about what another sees. Where the repository provides a one-time sign-in
 link or token, sign in with it and leave the identity's password alone. Use those facts exactly and
 reuse what exists: never invent a test identity or turn a provider fixture into a generic workflow.
-**Never work around the sign-in wall**: a preview route, a stubbed page, a component mounted where
-it does not ship, or a widened public-route matcher proves the component renders and nothing about
-the screen a user reaches. If sign-in genuinely cannot complete, report the walkthrough as not done.
+**Never work around the sign-in wall for a change that reaches the screen behind it**: a preview
+route, a stubbed page, a component mounted where it does not ship, or a widened public-route matcher
+proves the component renders and nothing about the screen a user reaches. A change confined to a
+component's own behavior is the exception **Principles** names: its rendered page is the check. If
+sign-in genuinely cannot complete for a change that needs the real screen, report the walkthrough as
+not done.
 Drive browser automation through the tab selected as `use-browser`'s **Selecting And Binding A Tab**
-says; never read the user's saved passwords, cookies, local storage, or session files.
+says, which for a local inspection is the agent-owned session **Principles** names; never read the
+user's saved passwords, cookies, local storage, or session files.
 
 Keep a password or one-time sign-in token out of argv and the transcript: put it in an environment
 variable for the one command that fills the field or opens the link, build that script, and pipe it
@@ -178,11 +196,13 @@ EOF
 
 - The final walkthrough drives the **local** production build the startup command serves, never a
   dev server and never the deployed domain: prefetching, caching, and middleware behave differently
-  under a dev server, and a deployed site proves nothing about this checkout. Interim captures while
-  the work is in flight may come from dev servers. Snapshot after every navigation; refs do not
-  survive it.
+  under a dev server, and a deployed site proves nothing about this checkout. The component page
+  **Principles** allows renders the shipped package's build output, served however that page needs.
+  Interim captures while the work is in flight may come from dev servers. Snapshot after every
+  navigation; refs do not survive it.
 - **Operate the control the change touched, not the page that holds it**, with real input events on
-  every screen that mounts it, then read the state it was meant to leave — where the element landed,
+  every screen that mounts it, or on the page the agent builds for a change **Principles** confines
+  to a component, then read the state it was meant to leave — where the element landed,
   what the field holds, whether the list closed up — and reload where it persists something. A drag
   is several moves, not one jump:
 
@@ -265,10 +285,12 @@ run above; say which kind each capture shows, since the two look identical.
 ### Evidence
 
 Record and capture only a change that is visible on a page; a change verified by request checks, as
-**When a walkthrough is owed** says, sends none. Record the flow until the feature is exercised to its end — the form submitted and its result read
-back, the item seen in its list, the setting confirmed after a reload. Record through the selected
-tab's existing browser context, preserving its authenticated state; start before sign-in only when
-sign-in is part of the flow being exercised.
+**When a walkthrough is owed** says, sends none. A local inspection sends its stills as the last
+paragraph below says and skips the recording; the cloud walkthrough and one the user asks for
+record as follows. Record the flow until the feature is exercised to its end — the form submitted
+and its result read back, the item seen in its list, the setting confirmed after a reload. Record
+through the selected tab's existing browser context, preserving its authenticated state; start
+before sign-in only when sign-in is part of the flow being exercised.
 The recorder writes WebM, which some viewers cannot play; send the MP4:
 
 ```bash
@@ -277,8 +299,8 @@ agent-browser --session <name> record stop
 ffmpeg -y -i <path>.webm -c:v libx264 -pix_fmt yuv420p -movflags +faststart -an <path>.mp4
 ```
 
-Send the recording and a still of the view the change touched, unasked, plus a still per width
-walked, the page with its requests failing, and each defect with the fix that resolved it — as the
-run produces them, as `share-media` requires and through it. Captures left
-on disk are a walkthrough the reader never saw. The report names the widths checked, whether the run without the API changes was done,
-and what the screens were read against.
+Send the recording, where one is owed, and a still of the view the change touched, unasked, plus a
+still per width walked, the page with its requests failing, and each defect with the fix that
+resolved it — as the run produces them, as `share-media` requires and through it. Captures left on
+disk are a walkthrough the reader never saw. The report names the widths checked, whether the run
+without the API changes was done, and what the screens were read against.
