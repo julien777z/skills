@@ -495,12 +495,12 @@ and never adds a VM for the experience it plays.
   says: a client running through a long session loads the guest as Play does.
 - **Launch from the guest** as step 4 above does, or follow a player into the server they are in
   with `open "roblox://experiences/start?userId=<user id>"`.
-- **Each burst of input and capture holds the focus key for less than the 50 seconds** another
-  session's editor launch waits for it, on a lease (`--ttl-seconds`) shorter than that, so a
-  worker that dies mid-burst frees it in time, and takes it again for the next burst. A burst
-  starts by bringing the player to the front and confirming it there from a capture, so no input
-  lands in an editor, and ends by releasing every held keyboard key before releasing the focus
-  lock.
+- **The session holds the focus key for each burst of input and capture for less than the 50
+  seconds** another session's editor launch waits for it, on a lease (`--ttl-seconds`) shorter
+  than that so a worker that dies mid-burst frees it in time, and takes it again for the next
+  burst. A burst starts by bringing the player to the front and confirming it there from a
+  capture, so no input lands in an editor, and ends by releasing every held keyboard key, then
+  the focus key.
 - **The player's log** records each join and teleport with its place and server ID, so it shows
   which server the client is in and why that changed: the newest `*Player*.log` in the guest
   account's Roblox logs folder.
