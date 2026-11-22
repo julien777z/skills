@@ -2,31 +2,15 @@
 
 Choose coverage for the affected behavior, qualify the available runner, then verify real input and the delivered result. Keep setup procedures conditional on the installed tools and the user's chosen environment.
 
-Contents:
-
-- [Coverage and verification](#coverage-and-verification)
-- [Choose coverage for the change](#choose-coverage-for-the-change)
-- [Evidence types, not sequential delivery gates](#evidence-types-not-sequential-delivery-gates)
-- [Studio test orchestration](#studio-test-orchestration)
-- [Keep the game's test helpers in its repository](#keep-the-games-test-helpers-in-its-repository)
-- [Input coordinates: the phone notch matters](#input-coordinates-the-phone-notch-matters)
-- [Coverage and visual inspection](#coverage-and-visual-inspection)
-- [Placement and before-and-after verification](#placement-and-before-and-after-verification)
-- [Report honestly](#report-honestly)
-- [Persistence fixtures and place arrival](#persistence-fixtures-and-place-arrival)
-- [Choose and qualify a runner](#choose-and-qualify-a-runner)
-- [Tart VM capabilities](#tart-vm-capabilities)
-- [Direct VM control](#direct-vm-control)
-- [Authentication and user handoff](#authentication-and-user-handoff)
-- [Keep the game's editors warm](#keep-the-games-editors-warm)
-- [Leave the shared runner as you found it](#leave-the-shared-runner-as-you-found-it)
-- [End of session for a retained VM](#end-of-session-for-a-retained-vm)
-- [Studio MCP connection and input](#studio-mcp-connection-and-input)
-- [Connect to the intended editor](#connect-to-the-intended-editor)
-- [Qualify input and capture](#qualify-input-and-capture)
-- [Pending and partial test startup](#pending-and-partial-test-startup)
-- [Engine test suites through an existing editor](#engine-test-suites-through-an-existing-editor)
-- [Optional VM desktop viewer](#optional-vm-desktop-viewer)
+Contents: **Coverage and verification**, **Choose coverage for the change**, **Evidence types, not
+sequential delivery gates**, **Studio test orchestration**, **Keep the game's test helpers in its
+repository**, **Input coordinates: the phone notch matters**, **Coverage and visual inspection**,
+**Placement and before-and-after verification**, **Report honestly**, **Persistence fixtures and
+place arrival**, **Choose and qualify a runner**, **Tart VM capabilities**, **Direct VM control**,
+**Authentication and user handoff**, **Keep the game's editors warm**, **Leave the shared runner as
+you found it**, **End of session for a retained VM**, **Studio MCP connection and input**, **Connect
+to the intended editor**, **Qualify input and capture**, **Pending and partial test startup**,
+**Engine test suites through an existing editor**, **Optional VM desktop viewer**.
 
 ## Coverage and verification
 
