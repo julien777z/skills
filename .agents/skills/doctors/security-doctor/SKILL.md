@@ -69,6 +69,10 @@ pip-audit
 npm audit --omit=dev
 ```
 
+The pre-pass output saved in the run records keeps each hit's file, line and kind, with any matched
+value redacted to its first four characters and its length. A value is read in place, where the
+source holds it, to validate it, and never written into the run records.
+
 ### Measures
 
 The counts `doctor-protocol` takes before the audit and again after the fixes: secret-scan hits, in
@@ -85,7 +89,9 @@ and line, the remedy is its smallest-fix order, and what a lens leaves alone is 
 
 Every finding is recorded in `doctor-protocol`'s finding shape: its evidence is the attack, who
 sends what and what they get, with the rubric's severity rating; its fix is the smallest one that makes
-the attack fail; and its proving check is the regression test that performs the attack.
+the attack fail; and its proving check is the regression test that performs the attack. A finding
+of **Unsafe Construction A Rule Names** carries the rule it cites and the source lines instead of
+an attack, and its proving check fails while the construction stands.
 
 ### Injection
 
@@ -201,6 +207,10 @@ it before it enters the ledger, using the prompts in `security-audit`'s validati
 2. **Verify independently.** Each confirmed finding gets one fresh read-only verifier, who did not
    write it, checking every factual claim against the source; its corrections are applied and
    named in the report, and a rejected finding is dropped or reported as investigated.
+
+Exploit validation, with its attacker and attack test, applies to vulnerabilities only. A candidate
+of **Unsafe Construction A Rule Names** is refuted and verified against the rule it cites and its
+source evidence: whether that rule names the construction and the source holds it.
 
 Each step starts at most ten agents a round, launched through `subagent-matrix` like the reviewers; past ten
 candidates or findings, each agent takes those of one subsystem. On the small route both steps run
