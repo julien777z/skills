@@ -145,8 +145,8 @@ return normalized
 
 - **Every project the owner runs or consumes runs the newest stable language runtime, base image
   and dependency releases it works with.** A change made for that move — one the user asks for, or
-  the upgrade pull request a warning leads to, as `pre-production`'s **Scope Follows The Defect,
-  Not The Request** places it — moves what the project actually runs onto them: its version file,
+  the upgrade pull request a warning leads to, as this skill's **Scope Follows The Defect, Not The
+  Request** places it — moves what the project actually runs onto them: its version file,
   container images, CI and lockfile, with whatever code changes the new releases need, including in
   an owned package that only widened its range to let a consumer move. Neither of these is that
   move: a CI leg kept on the old release beside the new one, or a dependency held below its newest

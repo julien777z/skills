@@ -56,7 +56,7 @@ package, release, or architecture contract. Also keep observable call ordering a
 a credible failure mode. Source inspection can be the cheapest independent guard when it fails as
 the user-facing key, byte, or path changes and survives an identifier-only refactor. Static is not
 a deletion reason, and neither is ordinary slowness; a disproportionate cost under question 5 is,
-as **Test Cost** sets out and `pre-production` decides. A test already failing on the default branch is a baseline failure:
+as **Test Cost** sets out. A test already failing on the default branch is a baseline failure:
 record it as `pre-production`'s **Encountered Issues** says and move on, without reproducing,
 investigating or repairing it, and never delete its test for failing.
 
@@ -447,14 +447,13 @@ storage holds, in a test about storage, is named for that and keeps the word.
 ```python
 async def create_entity(
     client: httpx.AsyncClient, tenant_id: str, payload: CreateEntityPayload
-):
+) -> CreateEntityResponse:
     """Create an entity."""
 
-    response_data = parse_response(
+    return parse_response(
         await client.post(...),
         CreateEntityResponse,
     )
-    return response_data
 ```
 
 Prefer a ready, function-scoped fixture named for a domain role or state — the concrete thing it

@@ -1,6 +1,6 @@
 ---
 name: pre-production
-description: Apply target-contract and product-state constraints to implementation, review, and operational data tasks, including maintenance, cleanup, tooling, and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update its owned consumers and migrate retained data instead. Apply to relevant CI failures after validation classification, and whenever a lint, formatting or other non-essential check is red on code the change did not write. Use before deciding whether a change is a product choice the user decides or a routine presentation detail the agent decides. Use when placing code in a file or laying it out, declaring a configuration value, logging, naming anything or choosing American English spelling, choosing a version or dependency release, or writing documentation, comments, commit messages, pull-request text, example values or paths. Use when writing product copy or a form. Use before repairing or resetting a local stack or development data, running an experiment against shared state, rebuilding a built artifact, or mutating a live deployment.
+description: Apply target-contract and product-state constraints to implementation, review, and operational data tasks, including maintenance, cleanup, tooling, and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update its owned consumers and migrate retained data instead. Apply to relevant CI failures after validation classification, and whenever a lint, formatting or other non-essential check is red on code the change did not write. Also use when telling a product choice from a routine detail, placing or laying out code, declaring configuration, logging, naming or choosing American English, choosing versions or dependency releases, writing documentation, comments, commit or pull-request text, example values or paths, writing product copy or forms, repairing a local stack or development data, experimenting against shared state, rebuilding an artifact, or mutating a live deployment.
 short_description: 'Apply target-contract constraints to implementation and review tasks.'
 ---
 
@@ -107,12 +107,6 @@ with an obsolete owned contract or revision.
   passes only on a second try: it is classified as the first bullet above says, and re-running the
   job is never its fix.
 
-- **A test that costs far more than it covers is removed.** When one test, parametrized family or
-  module costs far more to run than the failure it could catch warrants and its own setup cannot
-  make it cheap, record the evidence its deletion requires before deleting it.
-  Keep or extend a cheaper test of the same classification where the contract needs one. Never keep it
-  by absorbing its cost, such as a skip, a job of its own or a run pull requests deselect.
-
 ## Scope Follows The Defect, Not The Request
 
 - **The scope of a change is the whole shape of the problem, not the files the request happened to
@@ -180,7 +174,7 @@ with an obsolete owned contract or revision.
   the user alone can take, such as supplying an identifier the session cannot read, goes to them,
   as that step.
 - **A defect the work notices is always fixed, and a large fix gets a pull request of its own.**
-  The hop limit below does not bound it, and neither does its home: a shared component, an owned
+  The hop limit above does not bound it, and neither does its home: a shared component, an owned
   library or another owned repository. Its size decides where the fix goes, so the requested change
   stays reviewable as itself:
   - **A small fix rides with the change**: one within the widened budget's reach below, about five

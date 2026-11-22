@@ -146,7 +146,7 @@ on a pull request of its own when `pre-production` places it there, apart from a
 records and leaves; other cleanup the sweep finds counts toward `pre-production`'s size budget like
 any other incidental change, and past it, what is left returns to the caller as deferred work. Apply the cost-reporting procedure above to the run that verified the
 change. A disproportionate test, parametrized family or module in scope is made cheap or removed
-as `pre-production` decides.
+as the rubric's **Test Cost** decides.
 
 Report each test in scope with its disposition, and for each deletion the evidence the rubric asks
 for.
