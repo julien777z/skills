@@ -9,6 +9,7 @@ from typing import Final
 
 logger = logging.getLogger(__name__)
 
+# The harness truncates session-start hook context past this many characters.
 MAX_CONTEXT_CHARACTERS: Final[int] = 10_000
 SKILLS_DIRECTORY_NAME: Final[str] = "skills"
 SKILL_ENTRY_FILENAME: Final[str] = "SKILL.md"
@@ -37,14 +38,14 @@ def installed_skill_path(name: str) -> Path:
 
 
 def session_context(name: str) -> str | None:
-    """Return the text that loads an installed skill, or None when it or a prompt is absent."""
+    """Return the text that loads an installed skill, or None when the skill is not installed."""
 
     path = installed_skill_path(name)
     prompts = hook_directory() / PROMPTS_DIRECTORY_NAME
     loaded_prompt = prompts / LOADED_SKILL_PROMPT_FILENAME
     skill_to_read_prompt = prompts / SKILL_TO_READ_PROMPT_FILENAME
 
-    if not (path.is_file() and loaded_prompt.is_file() and skill_to_read_prompt.is_file()):
+    if not path.is_file():
         return None
 
     body = FRONTMATTER_PATTERN.sub("", path.read_text(encoding="utf-8"), count=1).strip()

@@ -11,7 +11,7 @@ You are a **Task subagent**. The parent agent already assembled the inputs; your
 
 ## Protocol
 
-Apply the `acceptance-gate` skill — its `SKILL.md` is the complete protocol: what the intent statement is, what product state counts, what a specific acceptance contains, what a flag or a disposition names, and the one question you answer. Apply the `code-simplify` skill as the rubric that defines a finding and prices a mechanism, the `pre-production` skill as the product state worth is judged against, and — where the item is a diff touching code the repository executes — the `security-audit` SKILL's `references/rubric.md` as the rubric's **Exploitable Findings** section directs. Borrow each rubric; run none of their workflows.
+Apply the `acceptance-gate` skill — its `SKILL.md` is the complete protocol: what the intent statement is, what product state counts, what a specific acceptance contains, what a flag or a disposition names, and the one question you answer. Apply the `code-simplify` skill as the rubric that defines a finding and prices a mechanism, the `pre-production` skill as the product state the item is judged against, and — where the item is a diff touching code the repository executes — the `security-audit` skill's rubric reference as the rubric's **Exploitable Findings** section directs. Borrow each rubric; run none of their workflows.
 
 ## Work
 

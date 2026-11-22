@@ -102,7 +102,10 @@ def render_links(skills: list[tuple[Path, dict[str, str]]]) -> str:
 
 
 def is_user_invoked(front_matter: dict[str, str]) -> bool:
-    """Report whether the skill's description restricts it to the user's request."""
+    """Report whether the skill runs only at the user's request, by its description or its frontmatter flag."""
+
+    if front_matter.get("disable-model-invocation") == "true":
+        return True
 
     return front_matter["description"].rstrip().endswith(USER_ONLY_SENTENCE)
 
@@ -154,7 +157,7 @@ def commit_listing(branch: str) -> None:
     subprocess.run(["git", "add", "--", str(README_PATH)], check=True)
     subprocess.run(["git", "commit", "-m", COMMIT_MESSAGE], check=True)
 
-    if subprocess.run(["git", "push", "origin", f"HEAD:{branch}"]).returncode == 0:
+    if subprocess.run(["git", "push", "origin", f"HEAD:{branch}"], check=False).returncode == 0:
         return
 
     # Another workflow committed to the branch first; rebase onto it and push once more.

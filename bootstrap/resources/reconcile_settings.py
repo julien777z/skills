@@ -336,13 +336,13 @@ def main() -> int:
     if command is not RegistrationCommand.INSTALL:
         return 0
 
+    if record_path is not None and written != record:
+        write_json_object(record_path, {RECORD_KEYS: written})
+
     if content != target:
         write_json_object(target_path, content)
 
         print(f"{target_path}: hooks and settings updated")
-
-    if record_path is not None and written != record:
-        write_json_object(record_path, {RECORD_KEYS: written})
 
     return 0
 

@@ -25,8 +25,9 @@ only a subject no skill runs for.
 
 ## Skills that always run
 
-- Invoke `i-have-adhd` and `user-facing-output` before the first response a user reads in the
-  session, whether or not the user invoked them or the running skill names them. They shape every
+- `i-have-adhd` and `user-facing-output` apply from the first response a user reads in the session,
+  whether or not the user invoked them or the running skill names them; a session that did not
+  start with them loaded reads each one's installed `SKILL.md` before that response. They shape every
   response a user reads — an answer, a plan shown to them, a report, a summary, a question —
   from the first until the reader's stop phrase.
 - An authorized task stays active until its outcome is verified complete or the user explicitly
