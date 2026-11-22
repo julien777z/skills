@@ -20,15 +20,18 @@ description: Play the public Roblox marble game Marble Elimination Ultimate (a m
    the player's presence: it names the place and server they are in right now.
 2. **Use the isolated runner, never the user's desktop.** Run the published Roblox player in the
    guest of the game VM `roblox-studio` resolves for the repository the session runs in, sending
-   every command, launch link and input to the guest over its SSH route, and add the player app
-   there as its testing reference describes when it is missing. Check the signed-in account from a
-   capture after launch; a sign-in page goes to the user as `roblox-studio`'s authentication
-   section says.
+   every command, launch link and input to the guest through its `runner_ssh.sh`, and add the
+   player app there as its testing reference describes when it is missing. Check the signed-in
+   account from a capture after launch; a sign-in page goes to the user as `roblox-studio`'s
+   authentication section says.
 3. **Hold the VM's focus lock (`<vm>/focus`) for every burst of input and capture**, through
-   `agent-lock`, in leases of at most 10 minutes that the playing worker takes itself, released
-   between bursts so other sessions' editor launches and front-window steps run. Start each burst
-   by bringing the player to the front and confirming it there from a capture, so no input lands
-   in a Studio editor; never touch the runner's Studio editors.
+   `agent-lock`, the playing worker taking it itself for at most the 2-minute focus lease the
+   testing reference's `focused_input` sets, such as one level's drop, since another session's
+   editor launch waits less than a minute for it. Start each burst by bringing the player to the
+   front and confirming it there from a capture, so no input lands in a Studio editor, and end it
+   by releasing every held key before the lock; never touch the runner's Studio editors.
+   Captures are written in the guest under a folder named for the task and copied to the task's
+   captures folder on the host.
 4. **Delegate play to one worker** chosen under `subagent-matrix`, briefed with this skill, the
    player to join, the capture folder and the lock key. The delegating agent forwards each capture
    as it lands, after reading it, as `share-media` says, and relays the worker's findings.
@@ -56,9 +59,9 @@ unconfirmed with a capture before and after.
   prompt that appears. Coins the game awards are free to spend in-game.
 - Keep playing match after match until the user says to stop, starting a new worker session when
   one ends and leaving the player in the game between them.
-- **When the user says stop**, end the player as `roblox-studio`'s testing reference does
-  (`pkill -KILL -x RobloxPlayer`, then a guest capture showing no game on screen), remove the
-  captures the task left in the guest, and release the lock.
+- **When the user says stop**, take the focus lock, end the player as `roblox-studio`'s testing
+  reference does (`pkill -KILL -x RobloxPlayer`, then a guest capture showing no game on screen),
+  remove the task's capture folder in the guest, and release the lock.
 
 ## Captures
 
@@ -70,10 +73,11 @@ before keeping it, and drop blank or duplicate frames.
 ## Recording What A Session Learns
 
 **Every verified learning goes into the playbook through `edit-skill` during the session that
-found it**, the playing worker reporting each one and the delegating agent recording it: a new control or a ruled-out one, a level's hazard and the line that beats it, a
-power-up's effect, a change in how the game moves players between servers, a pitfall. Write it as
-the general fact, mark anything seen once as unconfirmed, and replace an entry a later session
-disproves rather than adding a second one beside it.
+found it**, the playing worker reporting each one and the delegating agent recording it: a new
+control or a ruled-out one, a level's hazard and the line that beats it, a power-up's effect, a
+change in how the game moves players between servers, a pitfall. Write it as the general fact, mark
+anything seen once as unconfirmed, and replace an entry a later session disproves rather than
+adding a second one beside it.
 
 ## Output
 
