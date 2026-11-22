@@ -37,6 +37,18 @@ decision waiting on evidence is reported, and how an action the reader owns is h
 
 ## Reader-owned actions
 
+- **Timing.** Preparation is only work that changes what the reader will do; other queued work, a
+  guidance edit included, waits behind the question, which goes out in the turn the need is
+  established. Chat text never announces the step ahead of that question.
+- **Content.** Its text names the whole step, including any command, and offers a confirmation
+  option such as "Done" beside one for doing it later. An address it gives is one the governing
+  guidance or the product itself states, or one the agent opened and saw serve that step; never one
+  assembled from the product's name.
+- **Surface.** Where the step happens on a surface the agent can open — a viewer, a settings page,
+  a sign-in page — the agent opens it at the exact place and verifies it shows before asking, so
+  the reader's part is the action alone.
+- **Result.** A confirmation is the reader's word, not the outcome: check the result at its source
+  before building on it.
 - Raise an action the reader owns again only when it blocks the next step or the reader asks what
   they owe. Once they say they will do it later, it is settled and stays out of every later
   message.

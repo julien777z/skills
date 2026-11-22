@@ -71,31 +71,17 @@ step is a new approval boundary, and how a step or choice reaches the user.
   parallel copies — which `pre-production` and `code-simplify` settle; and what configuration exists
   or how it is scoped, which is read where it lives. A permission denial leaves the decision where
   it was, as [working environment](environment.md)'s **Environment Refusals** says.
-- **An encountered issue's remedy passes `pre-production`'s **Product Choices** before it is
-  chosen**, including one proposed by a worker or reviewer. An ambiguous instruction has no
-  approved interpretation: name both concrete outcomes and build on the user's answer, quoting
-  their words in a delegated brief. This decision wait holds only the dependent remedy, never the
+- **An encountered issue's remedy passes the product-choice test before it is chosen**, as
+  `pre-production`'s **Product Choices** sets, including one proposed by a worker or reviewer. An
+  ambiguous instruction has no approved interpretation: name both concrete outcomes and build on
+  the user's answer, quoting their words in a delegated brief. This decision wait holds only the dependent remedy, never the
   remaining authorized work.
 
 ## Steps Only The User Can Take
 
-**A step only the user can take, which the work waits on, is asked through the question tool the
-global rules' **Asking the user** names, never left in chat.** Granting a permission, signing in, approving on another
-device, or running a command that needs their password each goes out as a question once everything
-the agent can prepare is ready.
+A step only the user can take, which the work waits on, goes to the user as a reader-owned action,
+asked as `user-facing-output` says. Before it does, settle that it is theirs:
 
-- **Timing.** Preparation is only work that changes what the user will do; other queued work, a
-  guidance edit included, waits behind the question, which goes out in the turn the need is
-  established. Chat text never announces the step ahead of that question.
-- **Content.** Its text names the whole step, including any command, and offers a confirmation
-  option such as "Done" beside one for doing it later. An address it gives is one the governing
-  guidance or the product itself states, or one the agent opened and saw serve that step; never one
-  assembled from the product's name.
-- **Surface.** Where the step happens on a surface the agent can open — a viewer, a settings page,
-  a sign-in page — the agent opens it at the exact place and verifies it shows before asking, so
-  the user's part is the action alone.
-- **Result.** A confirmation is the user's word, not the outcome: check the result at its source
-  before building on it.
 - **Whether a step is only the user's is settled before asking.** A step the agent's tools can
   reach by any route — inside a machine or VM it controls, through a viewer or settings page it can
   open, or briefly through the user's own desktop input where the task's authorization and tool
