@@ -105,7 +105,6 @@ These run only when you ask for them by name, such as `/code-slop-doctor`.
 - [`execute-defer-scope`](.agents/skills/deferrals/execute-defer-scope/SKILL.md) — Review and resolve recorded deferred work for a chosen issue, path, or pull request.
 - [`finish-pr`](.agents/skills/git/finish-pr/SKILL.md) — Review and fix the whole pull request, then merge it.
 - [`handoff`](.agents/skills/workspace/handoff/SKILL.md) — Move the current session's work to another session with nothing lost and nothing left for the user to do.
-- [`i-have-adhd`](.agents/skills/execution/i-have-adhd/SKILL.md) — Shape output for a reader with ADHD: lead with the next action, number multi-step work, restate state across turns, suppress tangents, give specific time estimates, make wins visible.
 - [`interface-doctor`](.agents/skills/doctors/interface-doctor/SKILL.md) — Find and fix interface copy, form and layout defects across a product, and pages that draw one thing two ways.
 - [`lock-revision`](.agents/skills/python/lock-revision/SKILL.md) — Lock the current migration revisions before a test deploy; revision changes are held unpushed until the user unlocks.
 - [`merge-now`](.agents/skills/git/merge-now/SKILL.md) — Merge finished pull requests now, then review what merged unreviewed.
@@ -143,6 +142,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`frontend-design`](.agents/skills/web/frontend-design/SKILL.md) — Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one.
 - [`get-doctors`](.agents/skills/doctors/get-doctors/SKILL.md) — List every doctor skill with what it audits, and the order to run several in a row.
 - [`guidance-flow`](.agents/skills/workspace/guidance-flow/SKILL.md) — Show how the skills and rules run, or interrogate a flow to tune it.
+- [`i-have-adhd`](.agents/skills/execution/i-have-adhd/SKILL.md) — Shape output for a reader with ADHD: lead with the next action, number multi-step work, restate state across turns, suppress tangents, give specific time estimates, make wins visible.
 - [`image-to-code`](.agents/skills/web/image-to-code/SKILL.md) — Elite website image-to-code skill for Codex.
 - [`impeccable`](.agents/skills/web/impeccable/SKILL.md) — Use when the user wants to design, redesign, shape, critique, audit, polish, simplify, harden, animate, or otherwise improve a frontend interface: websites, landing pages, dashboards, product UI, components, forms, settings, onboarding, empty states, and native iOS or Android screens.
 - [`interactive-skill`](.agents/skills/workspace/interactive-skill/SKILL.md) — Offer a skill’s choices as a menu, skipped when the request already says.

@@ -102,10 +102,7 @@ def render_links(skills: list[tuple[Path, dict[str, str]]]) -> str:
 
 
 def is_user_invoked(front_matter: dict[str, str]) -> bool:
-    """Report whether the skill runs only at the user's request, by its description or its frontmatter flag."""
-
-    if front_matter.get("disable-model-invocation") == "true":
-        return True
+    """Report whether the skill's description restricts it to the user's request."""
 
     return front_matter["description"].rstrip().endswith(USER_ONLY_SENTENCE)
 

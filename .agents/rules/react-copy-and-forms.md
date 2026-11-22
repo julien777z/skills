@@ -60,8 +60,8 @@ paths:
   where an automatic update would move content under the reader — and the message states only the
   condition, such as "This playlist was deleted."
 - **Every section, every step of a flow and every dialog carries a one-sentence description under
-  its own heading, inside its surface** — two on a flow's first step, as **A flow starts at its
-  first question** below allows — saying what the reader does there, what the section holds, or why
+  its own heading, inside its surface** — two on a flow's first step, as the React layout rule's
+  **Layout And Spacing** allows for a flow's first question — saying what the reader does there, what the section holds, or why
   the dialog appeared, in terms of what the reader is trying to do: "Choose how you hear about new
   activity", "The people who can see and edit this project", "Sharing an album requires a verified
   email address first." It never narrates the surface's own controls, such as "Pressing Next opens…"
