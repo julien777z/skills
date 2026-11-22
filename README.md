@@ -135,6 +135,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`new-doctor`](.agents/skills/doctors/new-doctor/SKILL.md) — Create a doctor skill on the shared doctor-protocol for one class of repository hygiene.
 - [`no-text-ai-slop`](.agents/skills/review/no-text-ai-slop/SKILL.md) — Edit drafts into sharper, more human writing while preserving the writer's personal voice, or detect AI-slop patterns without rewriting.
 - [`placeholder-data`](.agents/skills/workspace/placeholder-data/SKILL.md) — Turn a pasted API payload into the same shape with obviously fake values.
+- [`play-marble-simulator`](.agents/skills/roblox/play-marble-simulator/SKILL.md) — Play the public Roblox marble game Marble Elimination Ultimate (a marble race where the last marbles each level are eliminated) in the isolated Roblox runner, alone or in the same server as a Roblox player the user names, playing to win and sending screenshots as play goes on.
 - [`pre-production`](.agents/skills/execution/pre-production/SKILL.md) — Apply target-contract constraints to implementation and review tasks.
 - [`prisma-client-api`](.agents/skills/web/prisma-client-api/SKILL.md) — Prisma Client API reference covering model queries, filters, operators, and client methods.
 - [`process-ledger`](.agents/skills/execution/process-ledger/SKILL.md) — Process verified private-ledger records into durable outcomes.
