@@ -10,6 +10,7 @@ import select
 import shlex
 import subprocess
 import tempfile
+import threading
 import time
 from collections.abc import Callable, Collection, Mapping, Sequence
 from datetime import timedelta
@@ -172,12 +173,30 @@ class StudioMcpConnection:
         """Create the connection."""
 
         self.session: StudioMcpSession | None = None
+        # The session reads every reply from one pipe and drops a reply meant for another request, so the threads
+        # sharing this connection send one request at a time.
+        self.turn = threading.Lock()
 
         atexit.register(self.close)
 
     def request(self, method: str, params: Mapping[str, JsonValue], timeout: timedelta,
                 config: RunnerConfig) -> JsonRpcMessage:
-        """Send a request over the session to the configured runner."""
+        """Send a request over the session to the configured runner, waiting for its turn within the timeout."""
+
+        started = time.monotonic()
+
+        if not self.turn.acquire(timeout=timeout.total_seconds()):
+            raise TimeoutError(f"Studio MCP timed out waiting for another request on the connection: {method}")
+
+        try:
+            return self.session_request(method, params, timeout - timedelta(seconds=time.monotonic() - started),
+                                        config)
+        finally:
+            self.turn.release()
+
+    def session_request(self, method: str, params: Mapping[str, JsonValue], timeout: timedelta,
+                        config: RunnerConfig) -> JsonRpcMessage:
+        """Send a request over the session to the configured runner while holding the connection's turn."""
 
         if self.session is None:
             self.session = StudioMcpSession(config)
