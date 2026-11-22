@@ -8,7 +8,6 @@ description: Play the public Roblox marble game Marble Elimination Ultimate (a m
 ## Dependencies
 
 - `roblox-studio`
-- `agent-lock`
 - `share-media`
 - `subagent-matrix`
 - `edit-skill`
@@ -18,24 +17,15 @@ description: Play the public Roblox marble game Marble Elimination Ultimate (a m
 1. **Find the game and the player.** Look the game up by name through Roblox's search, since the
    user may misspell it, and resolve a named player to a user ID through Roblox's users API. Read
    the player's presence: it names the place and server they are in right now.
-2. **Use the isolated runner, never the user's desktop.** Run the published Roblox player in the
-   guest of the game VM `roblox-studio` resolves for the repository the session runs in, sending
-   every command, launch link and input to the guest through its `runner_ssh.sh`, and add the
-   player app there as its testing reference describes when it is missing. Check the signed-in
-   account from a capture after launch; a sign-in page goes to the user as `roblox-studio`'s
-   authentication section says.
-3. **Hold the VM's focus lock (`<vm>/focus`) for every burst of input and capture**, through
-   `agent-lock` directly, since `focused_input` needs an editor's or the VM's lease the player does
-   not hold. The playing worker takes it itself for bursts shorter than the 50 seconds another
-   session's editor launch waits for it, taking it again for the next, so a long level is played
-   in several bursts. Start each burst by bringing the player to the front and confirming it there
-   from a capture, so no input lands in a Studio editor, and end it by releasing every held key
-   before the lock; never touch the runner's Studio editors.
-   Captures are written in the guest under a folder named for the task and copied to the task's
-   captures folder on the host.
-4. **Delegate play to one worker** chosen under `subagent-matrix`, briefed with this skill, the
-   player to join, the capture folder and the lock key. The delegating agent forwards each capture
-   as it lands, after reading it, as `share-media` says, and relays the worker's findings.
+2. **Play in the isolated runner, never the user's desktop**: in the guest of the game VM
+   `roblox-studio` resolves for the repository the session runs in, as its testing reference's
+   **Play a published experience** section describes, adding the player app there as that
+   reference says when it is missing. Check the signed-in account from a capture after launch; a
+   sign-in page goes to the user as `roblox-studio`'s authentication section says. Never touch
+   the runner's Studio editors.
+3. **Delegate play to one worker** chosen under `subagent-matrix`, briefed with this skill, the
+   player to join and the capture folder. The delegating agent forwards each capture as it lands,
+   after reading it, as `share-media` says, and relays the worker's findings.
 
 ## Joining A Player
 
@@ -48,7 +38,7 @@ player, and the playbook says how the game moves players between servers.
 - A follow the game refuses is reported to the user with its capture, never replaced by joining a
   random server.
 - Check the People list only between levels or while eliminated, never mid-drop: an open menu
-  costs the marble its place, and once cost it the match.
+  costs the marble its place.
 
 ## Playing
 
@@ -60,9 +50,8 @@ unconfirmed with a capture before and after.
   prompt that appears. Coins the game awards are free to spend in-game.
 - Keep playing match after match until the user says to stop, starting a new worker session when
   one ends and leaving the player in the game between them.
-- **When the user says stop**, take the focus lock, end the player as `roblox-studio`'s testing
-  reference does (`pkill -KILL -x RobloxPlayer`, then a guest capture showing no game on screen),
-  remove the task's capture folder in the guest, and release the lock.
+- **When the user says stop**, end play as `roblox-studio`'s **Play a published experience**
+  section says.
 
 ## Captures
 

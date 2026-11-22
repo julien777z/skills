@@ -13,8 +13,8 @@ adds what it verifies, as that skill's **Recording What A Session Learns** says.
 
 - **Joining the main place** lands in a random lobby, which moves you into a match within
   seconds. It reaches the named player only by chance.
-- **Following the player works, even into a match in progress**: in the runner's guest, run
-  `open "roblox://experiences/start?userId=<their user ID>"`. Joining mid-match counts the marble
+- **Following the player works, even into a match in progress**, with the follow link
+  `roblox-studio`'s **Play a published experience** section gives. Joining mid-match counts the marble
   as eliminated ("Eliminated! Waiting for party."), so it watches until the match ends and then
   goes to the same lobby and the next match with the player.
 - **Elimination moves you on unless you are in the player's party.** Eliminated alone, the game
@@ -22,9 +22,6 @@ adds what it verifies, as that skill's **Recording What A Session Learns** says.
   the player's match, every elimination showed "Waiting for party" and kept it there, and when the
   match ended the game moved both into the same lobby and then the same new match, with no
   further follow needed.
-- **The player log in the runner records every move**: each join and teleport names its place and
-  server ID, so it shows which server the marble is in and why it changed. On macOS it is the
-  newest `*Player*.log` in the account's Roblox logs folder.
 - Presence (`presence.roblox.com/v1/presence/users`) shows the player's current place and server
   ID; while they are in a match, the server ID is the match's.
 
@@ -75,5 +72,3 @@ adds what it verifies, as that skill's **Recording What A Session Learns** says.
 - **The yellow button at the top right is the paid Donate button**; it opens a Robux purchase
   prompt.
 - The green "+" button only opens Invite Friends.
-- A macOS "Software Update Available" banner in a runner guest covers the top-right corner of
-  captures; it does not affect play.
