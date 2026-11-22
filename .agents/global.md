@@ -31,14 +31,14 @@ only a subject no skill runs for.
   loaded reads each one's installed `SKILL.md` before that response. They shape every
   response a user reads — an answer, a plan shown to them, a report, a summary, a question —
   from the first until the reader's stop phrase.
-- An authorized task stays active until its outcome is verified complete or the user explicitly
-  stops or hands it off. A follow-up, retry, recovery, context compaction, guidance correction,
-  completed milestone, pending decision or reported gate does not close it, nor does a report
-  deferring work — "I'll do X next" — whose named work is tracked until done. For every task
-  authorized to change files, start the skill that runs task execution before recommending an
-  implementation, delegating edits, or editing: discover and read its complete entry point rather
-  than waiting for an edit to load it. Keep its run active and apply its **Work You Have Already Named** procedure
-  before handling the interruption and before any final response.
+- An authorized task stays active until its outcome is verified complete or the user explicitly stops
+  or hands it off. A follow-up, retry, recovery, context compaction, guidance correction, completed
+  milestone, pending decision or reported gate does not close it, nor does a report deferring work —
+  "I'll do X next" — whose named work is tracked until done. For every task authorized to change
+  files, start the skill that runs task execution before recommending an implementation, delegating
+  edits, or editing: discover and read its complete entry point rather than waiting for an edit to
+  load it. Keep its run active and apply its **Work You Have Already Named** procedure before
+  handling the interruption and before any final response.
 - Run a user-triggered action skill only after the user directly invokes it — by its command or by
   asking for it in words — in the current request. Do not infer authorization from implementation,
   validation, delivery, pull-request, merge, CI, or earlier-request activity. Guidance maintenance

@@ -83,7 +83,7 @@ def renewed_lock(lock_receipt: Path) -> AgentLockCheckReport:
     """Renew the lock a receipt owns through agent-lock's check, raising when the receipt no longer owns it."""
 
     result = subprocess.run([sys.executable, str(agent_lock_script()), "check", "--receipt", str(lock_receipt)],
-                            capture_output=True, text=True,
+                            capture_output=True, text=True, check=False,
                             timeout=OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK].total_seconds())
 
     if result.returncode != 0:
@@ -211,7 +211,7 @@ class RunnerLockBusy(RuntimeError):
 def runner_config() -> RunnerConfig:
     """Return the game's runner configuration as its settings files name it now."""
 
-    result = subprocess.run([str(RUNNER_SSH), "--describe"], capture_output=True, text=True,
+    result = subprocess.run([str(RUNNER_SSH), "--describe"], capture_output=True, text=True, check=False,
                             timeout=OPERATION_TIMEOUTS[RunnerOperation.DESCRIBE].total_seconds())
 
     if result.returncode != 0:
@@ -286,7 +286,7 @@ def acquire_lock(keys: Sequence[str], lock_receipt: Path, owner: str, activity: 
     result = subprocess.run([sys.executable, str(agent_lock_script()), "acquire", *keys, *choice, *ordering,
                              "--owner", owner, "--activity", activity, "--receipt", str(lock_receipt),
                              "--wait-seconds", str(wait.total_seconds())],
-                            capture_output=True, text=True,
+                            capture_output=True, text=True, check=False,
                             timeout=(wait + OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK]).total_seconds())
 
     if result.returncode == AGENT_LOCK_BUSY and agent_lock_status(result.stdout) == "busy":
@@ -307,7 +307,7 @@ def release_lock(lock_receipt: Path) -> None:
     stop_renewing_lock(lock_receipt)
 
     result = subprocess.run([sys.executable, str(agent_lock_script()), "release", "--receipt", str(lock_receipt),
-                             "--resource-idle"], capture_output=True, text=True,
+                             "--resource-idle"], capture_output=True, text=True, check=False,
                             timeout=OPERATION_TIMEOUTS[RunnerOperation.LOCK_CHECK].total_seconds())
 
     if result.returncode != 0:
@@ -432,7 +432,8 @@ def run_guest_command(command: str, config: RunnerConfig, timeout: timedelta, da
 
     # The guest's login shell may be zsh, which splits words differently, so commands always run under sh.
     result = subprocess.run([str(RUNNER_SSH), f"/bin/sh -c {shlex.quote(command)}"], input=data,
-                            capture_output=True, timeout=timeout.total_seconds(), env=runner_environment(config))
+                            capture_output=True, check=False, timeout=timeout.total_seconds(),
+                            env=runner_environment(config))
 
     if result.returncode != 0:
         raise RuntimeError(f"Runner command failed ({result.returncode}): {command}\n{result.stderr.decode()}")

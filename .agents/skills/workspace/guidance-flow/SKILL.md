@@ -404,22 +404,23 @@ step exists to catch.
    user's words and what changes). Publish the page before each question, with that question's
    node `warning`, and again after its answer, with the node `done`, so the page always shows where
    the conversation is.
-5. **Ask one question at a time, in the order the run reaches them** — skill by skill, and within
-   a skill from its first step to its last — through the question tool, and wait for its answer
-   before asking the next. Each question opens with its place and the sequence's total, such as
-   "Q7/19", beside the page's highlighted node. Each says when the flow runs — what starts it and how often in a task, such as "once per pull request, when its
-   task finishes, and again for each follow-up" — then what the step does in a sentence: the skill
-   and step, how many subagents, what they read and for how many rounds. How often the step runs
-   decides the recommendation, never whether it is asked: for a step on every task, pull request or
-   round, a change that saves a modest number of subagents can be the recommended choice; for one
-   that fires rarely, such as a security review of trust-boundary code or the review of a plan,
-   keeping it is recommended unless the change only removes reads that add no coverage. Every fact
-   it states is read from the lines that state it before it is asked, so a question never rests on a
-   repeat or a gap the sources do not have. A question about a step that reads a rule names the
-   rule and what its cited section requires of the step. Its choices are keeping it as it is and one or two
-   concrete changes, such as fewer subagents, a narrower scope, a condition on the launch, fewer
-   rounds, or later rounds that rerun only the reviewers a repair affects. The recommended choice
-   comes first, with its reason in what it saves and what it could miss.
+5. **Ask one question at a time, in the order the run reaches them** — skill by skill, and within a
+   skill from its first step to its last — through the question tool, and wait for its answer before
+   asking the next. Each question opens with its place and the sequence's total, such as "Q7/19",
+   beside the page's highlighted node. Each says when the flow runs — what starts it and how often
+   in a task, such as "once per pull request, when its task finishes, and again for each follow-up"
+   — then what the step does in a sentence: the skill and step, how many subagents, what they read
+   and for how many rounds. How often the step runs decides the recommendation, never whether it is
+   asked: for a step on every task, pull request or round, a change that saves a modest number of
+   subagents can be the recommended choice; for one that fires rarely, such as a security review of
+   trust-boundary code or the review of a plan, keeping it is recommended unless the change only
+   removes reads that add no coverage. Every fact it states is read from the lines that state it
+   before it is asked, so a question never rests on a repeat or a gap the sources do not have. A
+   question about a step that reads a rule names the rule and what its cited section requires of the
+   step. Its choices are keeping it as it is and one or two concrete changes, such as fewer
+   subagents, a narrower scope, a condition on the launch, fewer rounds, or later rounds that rerun
+   only the reviewers a repair affects. The recommended choice comes first, with its reason in what
+   it saves and what it could miss.
 6. **Record every question** with `session-ledger` as a `question` entry when it is asked, with
    its options and recommendation, and mark it answered with the user's words.
 7. **Make each agreed change as soon as it is answered** through `edit-skill`, on one draft pull
