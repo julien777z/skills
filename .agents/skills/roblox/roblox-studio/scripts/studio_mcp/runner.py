@@ -184,13 +184,23 @@ def lock_renewal_thread() -> threading.Thread:
     return thread
 
 
-def keep_lock_renewed(lock_receipt: Path) -> None:
-    """Renew a receipt's lock in the background for as long as this process runs or until it is released, clearing
-    any loss recorded for an earlier lock under the same receipt."""
+def keep_acquired_lock_renewed(lock_receipt: Path) -> None:
+    """Renew a newly acquired receipt's lock in the background until it is released, clearing any loss recorded for
+    an earlier acquisition under the same receipt."""
 
     with RENEWED_RECEIPTS_GUARD:
         RENEWED_RECEIPTS[lock_receipt] = next(ACQUISITIONS)
         LOST_RECEIPTS.pop(lock_receipt, None)
+
+    lock_renewal_thread()
+
+
+def keep_held_lock_renewed(lock_receipt: Path) -> None:
+    """Renew a receipt's lock in the background under its current acquisition, never reviving one found lost."""
+
+    with RENEWED_RECEIPTS_GUARD:
+        if lock_receipt not in LOST_RECEIPTS and lock_receipt not in RENEWED_RECEIPTS:
+            RENEWED_RECEIPTS[lock_receipt] = next(ACQUISITIONS)
 
     lock_renewal_thread()
 
@@ -296,7 +306,7 @@ def acquire_lock(keys: Sequence[str], lock_receipt: Path, owner: str, activity: 
         raise RuntimeError(f"The {' or '.join(keys)} lock was not acquired ({result.returncode}):\n"
                            f"{result.stdout}{result.stderr}")
 
-    keep_lock_renewed(lock_receipt)
+    keep_acquired_lock_renewed(lock_receipt)
 
     return json.loads(result.stdout)
 
@@ -385,7 +395,7 @@ def runner_lease(lock_receipt: Path) -> RunnerLease:
     if editor is None and key != vm:
         raise RuntimeError(f"Receipt {lock_receipt} owns {key}, not {vm} or one of its editors")
 
-    keep_lock_renewed(lock_receipt)
+    keep_held_lock_renewed(lock_receipt)
 
     if editor is None:
         for slot in slots:
@@ -394,7 +404,7 @@ def runner_lease(lock_receipt: Path) -> RunnerLease:
             if receipt.is_file():
                 renewed_lock(receipt)
 
-                keep_lock_renewed(receipt)
+                keep_held_lock_renewed(receipt)
 
     return RunnerLease(config=config, editor=editor)
 
