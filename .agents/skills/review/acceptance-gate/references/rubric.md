@@ -407,6 +407,9 @@ sibling paths lack. An added check is never accepted as a security gain on its f
    tree. **Flag a resolution that states no comparison, and one whose only stated reason is that the
    incoming shape is one the change removes** — that reason is available in every collision and always
    points the same way, so it records no judgment. Arrival order is not evidence in either direction.
+- **Intent.** Flag a collision where the result drops or reverses a behavior either side's change
+   exists to produce, or a decision the user made, and no answer from the user settled it, one kept
+   and listed in a report included: such a conflict is the user's to decide.
 
 **Final acceptance — may this merge?** The item is the complete pull-request diff against the intent
 statement and the rubric, read once after review is clean and before any check gate.

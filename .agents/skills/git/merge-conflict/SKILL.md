@@ -36,6 +36,21 @@ answers to one question may now sit in one tree.
   side moved, renamed or removed, and a rule one side restates that the other changed at its owner
   are each resolved as a conflict here, and the repository's guidance source check runs on the
   result before it is pushed.
+- **Each side is read for what it was for, and a conflict of intent goes to the user.** Read the
+  intent of each incoming change from its commits and pull-request text, and the branch's from its
+  intent statement and the user's recorded decisions. An incoming change was written against the
+  text before the branch's edits and may carry the intent the branch replaced, so carrying it into
+  the branch's text is checked against the branch's intent, never applied as written; a branch edit
+  is checked the same way against what the incoming change exists to do. The conflict is material
+  when keeping either side drops or reverses a behavior the other side's change exists to produce,
+  or a decision the user made, such as one side keeping a form's entered values after a failed save
+  and the other clearing the form on every failure. Neither side is kept, blended into a compromise,
+  or kept and listed in a report, and a brief telling a worker to keep one side settles nothing:
+  ask the user through the global rules' **Asking the user**, stating each side's behavior, the
+  change that made it and the recommended resolution, and hold the resolved result, its push or
+  its install, until they answer, while work that does not depend on it continues. Two shapes for
+  one behavior, a wording, a placement or a moved citation is not such a conflict: the comparison
+  below settles it.
 
 ## Procedure
 
@@ -67,8 +82,9 @@ source checkout, remote branches and unrelated edits throughout.
 5. **Preserve behavior required by the target contract.** Migrate affected consumers and retained
    data before removing an obsolete shape. A resolution that drops required behavior is a defect;
    preserving a legacy runtime path is not a way to avoid the migration. Where a close choice changes
-   an interface others build on, put it to `council` in **Ask** mode and follow its ruling. Block only when a safe resolution needs an
-   unauthorized product decision or a change to a contract a consumer outside the user's control speaks.
+   an interface others build on, put it to `council` in **Ask** mode and follow its ruling; a conflict of intent goes to the user instead, as
+   **Neither Side Is Authoritative** says. Block only when a safe resolution needs an unauthorized
+   product decision or a change to a contract a consumer outside the user's control speaks.
 6. Remove every conflict marker and run `git diff --check`. Read the changed-file list against the
    target before proceeding. For a local overlay, preserve paths unrelated to the input and inspect
    their siblings. For a source branch, compare against the base and restore paths the branch never
