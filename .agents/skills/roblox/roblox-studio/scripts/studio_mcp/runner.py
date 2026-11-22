@@ -42,6 +42,7 @@ OPERATION_TIMEOUTS: Final[Mapping[RunnerOperation, timedelta]] = MappingProxyTyp
     RunnerOperation.PLUGIN_ALERT: timedelta(seconds=90),
     RunnerOperation.DIAGNOSIS: timedelta(seconds=15),
 })
+
 LOCK_WAIT: Final[timedelta] = timedelta(seconds=50)
 # agent-lock expires a lock its holder leaves unrenewed for five minutes and asks for a renewal about every minute.
 LOCK_RENEWAL_INTERVAL: Final[timedelta] = timedelta(minutes=1)
@@ -146,11 +147,7 @@ def assert_runner_locks_kept(config: RunnerConfig) -> None:
 
 
 def renew_held_locks() -> None:
-    """Renew every receipt this process holds once per interval, recording a receipt whose lock is gone as lost.
-
-    A timeout, an OS error or an unreadable report leaves the receipt in place for the next interval, so one failed
-    renewal never stops the thread.
-    """
+    """Renew every receipt this process holds once per interval."""
 
     while True:
         time.sleep(LOCK_RENEWAL_INTERVAL.total_seconds())
@@ -279,8 +276,7 @@ def agent_lock_status(output: str) -> str | None:
 
 def acquire_lock(keys: Sequence[str], lock_receipt: Path, owner: str, activity: str, wait: timedelta,
                  priority: bool = False) -> AgentLockAcquireReport:
-    """Take one of the keys through agent-lock, writing its receipt to lock_receipt and renewing it while this process
-    runs, or raise when they stay busy."""
+    """Acquire one of the keys through agent-lock and keep it renewed."""
 
     lock_receipt.parent.mkdir(parents=True, exist_ok=True)
 
@@ -335,6 +331,7 @@ def acquire_runner_lock(lock_receipt: Path, owner: str, activity: str, wait: tim
     vm = config["ROBLOX_STUDIO_VM"]
     receipts = {vm: lock_receipt, **{slot["lock_key"]: member_receipt(lock_receipt, slot)
                                      for slot in editor_slots(config)}}
+
     reports: dict[str, AgentLockAcquireReport] = {}
     taken: list[Path] = []
     acquired = False
@@ -370,8 +367,7 @@ def release_runner_lock(lock_receipt: Path) -> None:
 
 
 def runner_lease(lock_receipt: Path) -> RunnerLease:
-    """Renew the receipt's lock, with each editor lock a whole-VM receipt holds beside it, keep them renewed while this
-    process runs, and return the game's runner and the editor the receipt holds."""
+    """Renew a receipt's locks and return the runner and the editor it holds."""
 
     config = runner_config()
     vm = config["ROBLOX_STUDIO_VM"]
@@ -445,8 +441,7 @@ def run_guest_command(command: str, config: RunnerConfig, timeout: timedelta, da
 
 
 def held_editor_slots(lock_receipt: Path, config: RunnerConfig) -> tuple[list[EditorSlot], bool]:
-    """Return the editors of the pool a receipt holds, read from the receipt its caller has checked, and whether it
-    holds the whole VM with every editor."""
+    """Return the editors a checked receipt holds and whether it holds the whole VM."""
 
     receipt: AgentLockReceipt = json.loads(lock_receipt.read_text())
     slots = editor_slots(config)
@@ -462,11 +457,7 @@ def held_editor_slots(lock_receipt: Path, config: RunnerConfig) -> tuple[list[Ed
 
 def editor_launch_refusal(project: str | None, held: Sequence[EditorSlot], whole_vm: bool, pool_size: int,
                           running: int) -> str | None:
-    """Return why a lease may not launch another editor, or None when it may.
-
-    An editor launches under one editor's lock, in that editor's project folder, or under the whole VM, and never past
-    the pool's size. A project of None is a published place, which has no project folder.
-    """
+    """Return why a lease may not launch another editor, or None when it may."""
 
     if not whole_vm and len(held) != 1:
         return (f"The lease holds only the VM's own lock, not one of its {pool_size} editors; an editor launches only "

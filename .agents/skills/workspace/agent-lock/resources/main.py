@@ -32,6 +32,7 @@ def create_parser() -> ArgumentParser:
     parser = ArgumentParser(
         description="Exclusive resource ownership that lasts while its holder keeps renewing it"
     )
+
     commands = parser.add_subparsers(dest="command", required=True)
 
     for command in ("acquire", "consume"):
@@ -64,10 +65,7 @@ def run_command(
     environment: Mapping[str, str],
     receipt: Receipt,
 ) -> CommandResult:
-    """Run a foreground process group to completion, renewing the receipt's lock on each interval.
-
-    The command runs as long as it needs; it is stopped only on an interrupt or when a renewal finds the lock lost.
-    """
+    """Run a foreground process group to completion while renewing the receipt's lock."""
 
     def _interrupt(signum: int, _frame: FrameType | None) -> None:
         """Interrupt the supervisor's blocking wait."""
@@ -147,6 +145,7 @@ def consume(
         case _:
             code = result["command_exit_code"]
             exit_code = 128 - code if code < 0 else code
+
     return result, exit_code
 
 
@@ -166,6 +165,7 @@ def execute(options: Namespace, child_command: list[str]) -> tuple[LockResult | 
                 wait=timedelta(seconds=options.wait_seconds),
                 priority=options.priority,
             )
+
             result = acquire_resource(request)
 
             if result["status"] == Outcome.BUSY:

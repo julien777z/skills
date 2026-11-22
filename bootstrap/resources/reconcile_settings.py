@@ -13,6 +13,7 @@ NEW_SETTINGS_MODE: Final[int] = 0o600
 SOURCE_COMMAND_PATTERN: Final[re.Pattern[str]] = re.compile(
     r'python3 "\$\(git rev-parse --show-toplevel\)/\.agents/hooks/([\w-]+)/main\.py"((?: [\w-]+)*)'
 )
+
 HOOK_NAME_PATTERN: Final[re.Pattern[str]] = re.compile(r"[\w-]+")
 HOOK_ENTRY_POINT: Final[str] = "main.py"
 CONFLICT_EXIT: Final[int] = 1
@@ -303,6 +304,7 @@ def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Reconcile the generated hooks and settings into a user-level settings file."
     )
+
     commands = parser.add_subparsers(dest="command", required=True)
 
     commands.add_parser(
@@ -310,6 +312,7 @@ def parse_arguments() -> argparse.Namespace:
         parents=[files],
         help="Report a settings file the installer cannot reconcile.",
     )
+
     commands.add_parser(
         RegistrationCommand.INSTALL,
         parents=[files],
