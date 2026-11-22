@@ -154,9 +154,13 @@ format transition or recovery mechanism for data explicitly declared disposable 
   with its backfill steps inside it in dependency order and its survivorship and
   destructive-operation entries merged into that revision's own. A pull request found carrying
   several unlocked revisions on one chain folds them into one before anything else. A base update
-  that adds revisions to a chain re-parents the branch's revisions onto the new head, so the chain
-  stays linear. A revision the pull request adds is unapplied unless it carries the lock marker or
-  the owner reports a deploy of a commit that contains it. A reported deploy makes the revision
+  that adds revisions to a chain re-parents the branch's unlocked revisions onto the new head, so
+  the chain stays linear. A locked revision is never re-parented, since an environment that applied
+  it already records it in `alembic_version` and would never run the revisions inserted below it:
+  the new revision on top is an Alembic merge revision whose down revisions are the locked head and
+  the base's head, so every environment reaches the base's revisions. A revision the pull request
+  adds is unapplied unless it carries the lock marker or the owner reports a deploy of a commit
+  that contains it. A reported deploy makes the revision
   applied as it stood at that commit: it gets the lock marker before any other work on the branch,
   later changes go into a new revision, and no push hold starts, since the deploy has already run.
 - **A locked revision is one whose first line is the lock marker.** The owner locks a branch's
@@ -173,10 +177,10 @@ format transition or recovery mechanism for data explicitly declared disposable 
   A lock the owner places is a push hold and nothing more. Until the owner unlocks, no change to a
   locked revision is pushed, no new revision is pushed, and no source change that depends on either
   is pushed. That work is committed locally and pushed once the owner unlocks; work that touches no
-  revision pushes as usual. While the hold lasts, the only change a locked revision takes is
-  re-parenting onto a moved base; every other database change goes into the one new revision on
-  top, which work that needs it adds without asking. Unlocking ends the hold and leaves the marker,
-  and later database changes keep going into that new revision.
+  revision pushes as usual. A locked revision's parent and body stay as locked; every database
+  change goes into the one new revision on top, which work that needs it adds without asking.
+  Unlocking ends the hold and leaves the marker, and later database changes keep going into that
+  new revision.
 - For a revision the pull request did not add, establish "not applied yet" from the real
   `alembic_version` row in every existing environment that may have applied it; the lock marker or
   the owner's report of a deploy settles it for the pull request's own. An explicit user statement
@@ -268,7 +272,8 @@ format transition or recovery mechanism for data explicitly declared disposable 
 ### What it is
 
 Each service's canonical migration chain must be **strictly linear** — one head, one tail, no
-forks. Migration-chain validation fails with:
+forks — apart from the merge revision that joins a locked revision to a moved base, as **Applied Is
+What Makes History** says. Migration-chain validation fails with:
 
 > `Expected exactly one head revision, found 2: [...]`
 
@@ -289,11 +294,12 @@ or
    Inspect the project's revision directory.
    Find which file has no other file pointing to it as `down_revision` — that is the current head.
 
-2. Update your revision's `down_revision` to that head. For a locked revision this is a revision
-   change, pushed only once the owner unlocks, as **Applied Is What Makes History** says:
+2. Update your unlocked revision's `down_revision` to that head:
    ```python
    down_revision: str | None = "<actual-head-on-default-branch>"
    ```
+   A locked revision keeps its parent; the new revision on top joins the two heads as **Applied Is
+   What Makes History** says.
 
 3. Also update the `Revises:` comment in the docstring to match.
 
