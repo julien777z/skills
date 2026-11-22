@@ -72,8 +72,7 @@ The unresolved counts read zero when the run is finished.
 
 ## Lenses
 
-A partition lens is judged inside one document tree; a whole-repository lens needs every document
-at once, so the cross-cutting reviewer owns it. Every finding is recorded in `doctor-protocol`'s
+Every finding is recorded in `doctor-protocol`'s
 finding shape: its fix is the corrected reference or the sentence to delete, and its proving check
 is the pre-pass step that listed it returning nothing for that row.
 
@@ -88,7 +87,7 @@ manifest, or the runner does not have. Reach: partition.
 - every fenced command whose program resolves but whose subcommand, script or flag does not.
 
 Remedy: the reference is corrected to what exists; where the thing is gone, the sentence goes with
-it, apart from a command that ought to exist, which **Dispositions** sends to the owner. Left alone: a placeholder written as one, such as a name in angle brackets; a URL outside the
+it, apart from a command that ought to exist, which **Dispositions** settles. Left alone: a placeholder written as one, such as a name in angle brackets; a URL outside the
 repository, which is checked only when the run has network access and is reported unchecked
 otherwise; and a reference inside generated documentation, fixed at its generator.
 
@@ -194,7 +193,6 @@ Apply `pre-production` to the target contract documented.
   through `get-doctors`.
 
 ## Report Additions
-
 
 - per document: references checked, fixed, and deleted, by kind;
 - structural changes made, and each explanation collapsed with its home;

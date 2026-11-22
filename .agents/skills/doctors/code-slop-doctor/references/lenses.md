@@ -285,10 +285,8 @@ names neither and is no finding. A package is also read whole, since a reviewer 
 its shape before opening any file, and each such finding states its measure: the file count against
 the responsibilities held, the exported names against the names consumed, the depth of a component
 chain. A shape another lens owns is fixed under that lens. **A shape a rule or a declared
-dependency prescribes or exempts is kept**: where the reviewer still judges it slop, the run makes
-the rule change on its agent-configuration pull request and the code stays as the rule has it
-until that change merges, since code that departs from a rule still in force reads as a defect to
-the next run.
+dependency prescribes or exempts is kept**: where the reviewer still judges it slop, the run proposes
+the departure as the rule change, as `doctor-protocol`'s **Gate And Show The Plan** says.
 
 - **Tangled control flow** — the pre-pass's complexity findings: nesting deeper than the
   repository's lint configuration allows, three levels by default; nested loops that a lookup map,
@@ -328,7 +326,7 @@ external behavior in one or two lines, rename to the word that says the subject 
 on a banned term for that meaning, as `banned-terminology` renames them — and split the function at
 its phases. A comment stating a behavior the code must keep is replaced, in a repository that
 keeps tests, by a test that fails when that behavior regresses, and otherwise stays; it is never
-deleted on its own. Each lint rule that reported is proposed as the
+deleted on its own. Each lint rule that reported is added as the
 guard `doctor-protocol`'s **Guard Recurrences** asks for. Left alone: a nested loop over small
 fixed sets; a comment of one or two lines recording behavior outside the repository — a third-party
 or protocol quirk — that the code cannot show; an existing to-do note; a log line reporting an outcome, status, progress or
@@ -514,7 +512,7 @@ the capability that the processes without it never load, and a subclass that del
 the shared declaration saying so on the field rather than restating it; a weakened value declared
 required, its absence branch deleted, and a synthetic value set in the test and example locations
 that had none; a bypassed read routed through the typed model; and, where the repository can derive
-an example file or test block from the models, that derivation proposed as the guard. Left alone: a
+an example file or test block from the models, that derivation added as the guard. Left alone: a
 default that is safe; an absence the value's owner documents as supported, with that contract named
 in the ledger; and a control that skips itself when its setting is unset where an attacker gains by
 it, which is a vulnerability fixed in this run as `doctor-protocol`'s **Resolve The Scope** says.

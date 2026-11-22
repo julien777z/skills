@@ -38,9 +38,9 @@ does not start a doctor audit.
      establishes it; the remedy; the checks that find every instance, never only the first one
      noticed; what is left alone, so a reviewer does not go hunting; and whether the lens is
      whole-repository, judged only across partitions, or judged within one file or area.
-   - `## Reviewers`: one sentence citing the cap `doctor-protocol`'s **Launches** sets, a lower cap
-     only where the domain needs one, what dictates the partition cut, what the cross-cutting
-     reviewer compares and what the final reviewer challenges.
+   - `## Reviewers`: one opening sentence citing the cap `doctor-protocol`'s **Launches** sets, a
+     lower cap only where the domain needs one, and what dictates the partition cut, then what the
+     cross-cutting reviewer compares and what the final reviewer challenges.
    - `## Dispositions`, in order, naming the calls this domain raises, each decided by the run as
      `doctor-protocol`'s **Gate And Show The Plan** says.
    - `## Report Additions`.

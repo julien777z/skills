@@ -116,8 +116,7 @@ Report available totals and mark missing attribution unmeasured under `test-fixt
 Read [the lens criteria](references/lenses.md) before building the inventory: each lens named here
 and in this skill's other sections is a section of that reference, stating what the lens flags, the
 checks that find every instance, what is left alone, and its remedy where **Findings** below does
-not already give it. A partition lens is judged inside one suite family; a whole-repository lens
-needs every suite at once, so the cross-cutting reviewer owns it.
+not already give it.
 
 | Lens | Flags | Reach |
 | --- | --- | --- |

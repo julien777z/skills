@@ -260,6 +260,11 @@ Otherwise write a decision-complete remediation plan from the ledger.
     makes that fix. Ask the reserved entries together through the global rules' question
     procedure, each as options with each consequence and a recommendation; only the entries that
     depend on an answer wait for it.
+  - **A departure from a rule rides the rule change.** Where the run judges a shape a rule
+    prescribes or exempts worse than the departure, as `pre-production`'s **Trade-Offs Are
+    Surfaced, Never Enforced** asks of a rule, the rule change goes on the run's
+    agent-configuration pull request, and the code keeps the rule's form until that change merges,
+    since code that departs from a rule still in force reads as a defect to the next run.
 - **The gated plan is shown, and its work starts in the same turn.** The user reads one line per
   area with its entry counts, the order, what waits on a decision and any path no reviewer read;
   the entries themselves go in the plan file sent with it, as the reference says. The message

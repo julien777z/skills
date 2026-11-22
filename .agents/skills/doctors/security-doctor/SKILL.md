@@ -81,8 +81,7 @@ the run is finished.
 Each lens runs the checks its section of `security-audit`'s attack-class catalog lists, check by
 check. Evidence is the rubric's **What A Surviving Finding Has Been Put Through**, traced as file
 and line, the remedy is its smallest-fix order, and what a lens leaves alone is what the rubric's
-**Precedents** reject. A partition lens is hunted inside one subsystem; a whole-repository lens
-needs every subsystem at once, so the cross-cutting reviewer owns it.
+**Precedents** reject.
 
 Every finding is recorded in `doctor-protocol`'s finding shape: its evidence is the attack, who
 sends what and what they get, with the rubric's severity rating; its fix is the smallest one that makes
@@ -181,7 +180,7 @@ prompt includes — the architecture summary verbatim, its attack classes and sc
 paths, the hunting methodology and the validation rules — beside the protocol's partition inputs.
 A reviewer may start at most two research agents over its hunt, as that reference allows, each
 launched like the reviewer through `subagent-matrix` at specialist capability with `advanced` as
-its fallback. This doctor adds one cross-cutting reviewer and no other audit reviewer.
+its fallback.
 
 The cross-cutting reviewer owns the whole-repository lenses, working from the reconnaissance map,
 the pre-pass output and every candidate. It compares every access path to the same
@@ -236,9 +235,9 @@ hunt followed by **Validation**. Reconnaissance runs once, before the first.
    defect the run notices that is no vulnerability is fixed in this run too, as `doctor-protocol`'s
    **Resolve The Scope** says.
 2. **Every confirmed finding is closed in this run** with the smallest fix that enforces the access
-   the product already intends, as `pre-production`'s security bullet says. Only a change that
-   widens access or changes who the feature serves, such as dropping a feature, goes to the user,
-   offered beside the shipped fix and never in its place.
+   the product already intends, as `pre-production`'s security bullet says. A change that
+   widens access or changes who may see a record is a reserved decision, asked as
+   `doctor-protocol`'s **Gate And Show The Plan** says.
 3. **Each fix carries a regression test** that performs the attack and fails without the fix and
    passes with it, built under `test-fixture`.
 4. **A hardening note is reported, never changed** in this run, apart from one a rule file names
@@ -254,21 +253,18 @@ hunt followed by **Validation**. Reconnaissance runs once, before the first.
 ## Report Additions
 
 Ahead of the protocol's skeleton, a summary line: the scope and audit coverage, the baseline
-comparable the severities were calibrated against, findings fixed, product changes offered beside a
-shipped fix, hardening notes, and the pull request. Keep the report short: one longer than the
+comparable the severities were calibrated against, findings fixed, reserved decisions asked, with each
+answer or still open, hardening notes, and the pull request. Keep the report short: one longer than the
 codebase deserves is padding. Then:
 
-- a findings table — id, severity, the attack in one line, the fix shipped, and the simpler option
-  offered or `none`; a product change offered beside the fix shows its options and the recommended
-  one in that last cell;
+- a findings table — id, severity, the attack in one line, the fix shipped, and the reserved decision
+  asked, with its answer or still open, or `none`;
 - hardening notes by id, each with why it is not exploitable;
 - candidates rejected by a precedent, counted by precedent;
-
 - package advisories: each one traced and upgraded, and each one listed for the dependency owner;
 - each construction a rule names that the run corrected;
 - guards added, each with the shape it holds;
 - what the codebase does well;
 - coverage: partitions or classes not reached, the statement that no run shows the code is clean,
   since each run explores different paths and the best single run finds roughly half of what
-  several surface, and the next run recommended;
-- **Next:** the one decision or review the user owes.
+  several surface, and the next run recommended.

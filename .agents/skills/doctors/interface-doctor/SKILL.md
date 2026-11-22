@@ -53,10 +53,8 @@ the file inventory, symbol table and import table. It writes the copy table, the
 ### Pre-Pass
 
 These are the mechanical steps `doctor-protocol` runs once before any reviewer reads. A hit is a
-candidate a reviewer confirms or rejects, never a finding. Use the tool the repository already
-configures for a job; where it configures none, a tool the machine already has is run read-only
-with nothing committed, and one neither has is recorded as not run, as `doctor-protocol`'s
-**Measure Before Fan-Out** says, and is never installed into the project unasked.
+candidate a reviewer confirms or rejects, never a finding. A tool the repository does not configure
+is handled as `doctor-protocol`'s **Measure Before Fan-Out** says.
 
 - **Copy table** — a syntax-tree script kept in the run's working files lists every string an
   interface shows: element text, the string props of shared components (a title, label,
@@ -146,8 +144,7 @@ instances a ledger entry retains.
 Read [the lens criteria](references/lenses.md) before building the inventory: each lens named here
 is a section of that reference, stating the defect shape, the evidence that establishes it, the
 checks that find every instance, the remedy, and what is left alone so a reviewer does not go
-hunting. A partition lens is judged inside one partition. A whole-repository lens needs every page
-at once, so the cross-cutting reviewer owns it and partition reviewers return only candidates.
+hunting.
 
 | Lens | Flags | Read from | Reach |
 | --- | --- | --- | --- |
@@ -175,12 +172,12 @@ reading clean on the second walk, which the parent takes because it needs the ru
 ## Reviewers
 
 Reviewers are capped as `doctor-protocol`'s **Launches** sets; this doctor sets no lower cap, and
-the walkthrough and the owner-decision previews under **Dispositions** are the parent's work. The page dictates the partition cut. A partition is one app area: its page files, the components
+the walkthrough and the decision captures under **Dispositions** are the parent's work. The page dictates the partition cut. A partition is one app area: its page files, the components
 only those pages render, and their captures. A shared UI package is a partition of its own, audited
 with the component-use table rather than captures. Beside the protocol's size bound a partition
 holds at most fifteen walked rows, since its reviewer reads every one of their captures.
 
-The cross-cutting reviewer owns **Two Names** and **Drawn Two Ways** and the cross-repository half
+The cross-cutting reviewer owns **Two Names** and **Drawn Two Ways** and the whole-repository half
 of **Uneven Surfaces**, working from the copy table, the component-use table and every measurement
 row, and opens a capture or source only to confirm a candidate. It compares the names one thing
 carries across apps, roles and messages; one slot's capitalization across the product; one message
@@ -229,10 +226,8 @@ Apply `pre-production` to every correction.
    - **More than two legitimate non-error banners on one surface**, and **product state no one has
      confirmed**, where copy says a feature is unavailable or coming: the run settles which banners
      stay and what the copy says from what the code and product show.
-   - **A departure from a rule that would serve the reader better**: the run makes the departure
-     with the rule change on its agent-configuration pull request, as `pre-production`'s
-     **Trade-Offs Are Surfaced, Never Enforced** asks of a rule about how the product looks or
-     reads, and the product keeps the rule's form until that change merges.
+   - **A departure from a rule that would serve the reader better**: the run proposes the departure
+     as the rule change, as `doctor-protocol`'s **Gate And Show The Plan** says.
 7. **How a decision is shown.** A decision about layout, controls or hidden content is reported
    with before-and-after captures of a few representative pages where the change shows, never every
    page, the before from the first walk, at the widths where they differ, sent as `share-media`

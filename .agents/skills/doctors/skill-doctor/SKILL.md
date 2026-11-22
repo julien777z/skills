@@ -28,11 +28,8 @@ authoring reference whole, and a lens below cites the section it applies rather 
 Apply `banned-terminology` to wording findings and deliver remediation through `edit-skill`, leaving
 its pull request open for the user.
 
-**The run's fixes are reviewed once and tested once.** The protocol's final review and final
-acceptance are their delivery review, as `doctor-protocol`'s **Deliver** says, so `edit-skill`'s
-**Guidance Delivery** adds only the source check and one skill-test round, for the guidance the
-fixes change. The doctor runs no skill-test round across the guidance it audits, and a run that
-changes nothing runs none.
+The doctor runs no skill-test round across the guidance it audits, and a run that changes nothing
+runs none.
 
 Also read the host's skill-authoring skill and skill diagnostics when the host has them, found by
 their descriptions: a description optimizer, a trigger evaluation, a report of listing cost and
@@ -194,8 +191,8 @@ example a co-loaded file forbids; a description that disagrees with a frontmatte
 whose exception is stated only elsewhere. A disagreement between path-scoped rules with disjoint
 globs is a finding only for a host that loads both, and its remedy there is scoping. Evidence: the
 decision, both passages, the case that reaches both, and which hosts co-load them. Remedy: one
-coherent decision at its owner and a citation where the copy stood; unclear intent is a user
-decision naming both readings.
+coherent decision at its owner and a citation where the copy stood; where intent is unclear, `council` picks the reading and the
+report names both.
 
 ### Stale
 

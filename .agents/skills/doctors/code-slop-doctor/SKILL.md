@@ -173,7 +173,6 @@ npx madge --circular --json <source root>
 rg -c 'type: ignore|pyright: ignore|noqa|pylint: disable|@ts-ignore|@ts-expect-error|biome-ignore|eslint-disable|\bAny\b|cast\('
 rg -n 'os\.environ|os\.getenv|process\.env|import\.meta\.env'
 rg -n '/home/|/Users/|/tmp/|[A-Za-z]:\\'
-python -W error -m <the runner>
 ```
 
 ### Measures
@@ -195,10 +194,6 @@ hunting. Its **Behavior Kept** section binds every lens that removes or rewrites
 Every lens applies in every area, read in that area's language; **Hand-Written Styling** belongs to
 the frontend area, **Migration Chain** to the migrations area, **Build And Root**, **Configuration
 Drift** and **Dependency Drift** to the build area, and **Test Slop** to the tests area.
-
-A partition lens is judged inside one partition. A whole-repository lens needs every partition at
-once, so the cross-cutting reviewer owns it and partition reviewers report only what its checks
-show inside their own files.
 
 | Lens | Flags | Reach |
 | --- | --- | --- |
@@ -291,7 +286,6 @@ confirms it reads zero, and re-runs each rewrite's covering check.
 
 ## Report Additions
 
-
 - per area and lens: findings and dispositions by package and language;
 - each pre-pass command with the tool that ran it;
 - each kind's slot table before and after;
@@ -303,7 +297,7 @@ confirms it reads zero, and re-runs each rewrite's covering check.
 - each duplicate and its surviving owner; each kind brought to one shape, and each better shape
   adopted with the instances it converted;
 - each flag gating a former behavior, its readers and retiring backfill; each suppression and
-  escape hatch removed and the rule code proposed as its guard; each check whose verdict gates
+  escape hatch removed and the rule code added as its guard; each check whose verdict gates
   again; each warning cleared and each deprecated usage replaced;
 - per migration chain: heads, revisions checked by lens, corrections, policy coverage before and
   after, and the evidence for applied state;
@@ -317,8 +311,8 @@ confirms it reads zero, and re-runs each rewrite's covering check.
   removed; each package held back with the failure that holds it;
 - each app's hand-written styling count before and after, and each variant or prop added to a shared
   component in its place;
-- each shape **Reads As Slop** rewrote, by check, each rule change it proposed for a shape a rule
-  keeps, and the test that carries each deleted comment's behavioral guarantee;
+- each shape **Reads As Slop** rewrote, by check, each rule change it made on its agent-configuration pull request for a
+  shape a rule keeps, and the test that carries each deleted comment's behavioral guarantee;
 - each rewrite's covering check with its result before and after, and each test written first
   because none reached the code;
 - each test removed or repaired with the layer it exercised;

@@ -30,7 +30,8 @@ A **live consumer** is anything that reads the value, whatever language it is wr
 site, another live symbol, a serializer or read mask that names the field, a wire contract, a stored
 column, a first-party front end, in this repository or another the user owns, that deserializes it, or a third-party library
 reading an environment variable a settings field populates. Absence from call sites in one language
-is evidence about that language, not about consumers.
+is evidence about that language, not about consumers. Only state that never leaves the interface is
+outside the default field inventory.
 
 Two shapes hide a reader routinely, and the trace reaches past both. A read mask or serializer built
 from a model's whole field set carries every field across the boundary while no line names any one of
@@ -60,9 +61,7 @@ they are never live consumers or authoritative evidence for requiredness, nullab
 retention, duplication, or ownership. A test cannot prevent a field merge, removal, rename, or move;
 update it after deciding the contract from authoritative sources and runtime behavior.
 
-A first-party front end, in this repository or another the user owns, that deserializes a selected
-boundary contract **is** a live consumer, and the trace reaches it. Only state that never leaves the interface is outside the
-default field inventory. Read generated output and vendored definitions when they are evidence, but
+Read generated output and vendored definitions when they are evidence, but
 edit their canonical source or regenerate them through their owner.
 
 ### Ledgers
@@ -137,8 +136,7 @@ indexes, unused indexes and foreign keys with no supporting index.
 
 ## Lenses
 
-A partition lens is judged inside one schema, service or contract owner; a whole-repository lens
-needs every model at once, so the cross-cutting reviewer owns it. Every finding is recorded in
+Every finding is recorded in
 `doctor-protocol`'s finding shape: its fix names the declaration that changes and every producer,
 consumer, migration and generated output that changes with it, and its proving check is the
 repository's contract, generation and migration checks over that cascade.
@@ -196,8 +194,7 @@ version or contract surface that makes the evidence applicable.
 
 If provider documentation and the integrated SDK disagree, determine whether they describe different
 versions or operations. Do not choose whichever source supports a desired conclusion. If the
-guarantee remains uncertain, mark that external edge unresolved and make no change that depends on
-it. Continue auditing and correcting independently provable internal edges in the same domain.
+guarantee remains uncertain, the external edge lacks the evidence **Dispositions** asks for. Continue auditing and correcting independently provable internal edges in the same domain.
 
 A local provider-shaped model must represent what the provider can actually send. A narrower
 repository model may require a provider field only after an owned validation or selection boundary
@@ -237,9 +234,9 @@ Report each of these, with the pair and the fields:
   for one shared base both derive from.
 - **Divergent types** — one field name declared by two models with different annotations. Count a
   normalizer, validator, constraint, or permission annotation present on one and absent on the other
-  as a divergence, not just a different base type. Resolve the annotation through the shared
-  metadata helpers rather than a `get_args()` walk, which reports pydantic's own hoisting as a
-  finding.
+  as a divergence, not just a different base type. Resolve each annotation through the validation
+  library's own metadata, never by unwrapping the type by hand, which reports the library's own
+  normalization as a divergence.
 - **Divergent names** — one concept spelled two ways across models that otherwise overlap, such as
   an identifier named `id` on one and `<noun>_id` on another, or a composed name spelled `name` on
   one and `full_name` on another.
@@ -291,8 +288,8 @@ persistence, and wire distinctions the live system actually needs.
 
 Retain separate fields or models when their apparent duplication encodes a real semantic, lifecycle,
 authorization, disclosure, persistence, or wire distinction. Record that distinction so a
-recommendation does not erase domain meaning merely to reduce the declaration count. Mark uncertain
-equivalence or ownership unresolved and make no simplification that depends on it.
+recommendation does not erase domain meaning merely to reduce the declaration count. Equivalence or
+ownership lacks evidence while such a distinction cannot be ruled out.
 
 A provider difference is not one of those distinctions, because the two sides of that boundary are
 not equally fixed. **A contract the user owns can change; a third-party provider's cannot.**
@@ -350,7 +347,7 @@ constraint, or foreign key creates every index needed by related reads or refere
   schema does not establish the production access pattern or selectivity.
 
 Add, reshape, or remove an index only when its live operations and database semantics justify the
-change. Mark workload-dependent decisions unresolved when the required plans or statistics are
+change. A workload-dependent decision lacks evidence while the required plans or statistics are
 unavailable; continue correcting structurally provable gaps such as a referential action that must
 scan an unbounded referencing table. Apply each change through the canonical schema and
 the repository's migration skill, including its data safety, lock-risk, reversibility, and
@@ -411,8 +408,8 @@ completion check confirms every planned field and model cascade reached each liv
 - Every schema change lands through the canonical schema and the repository's migration skill. For
   index changes, also run the repository's database-specific schema checks and representative
   read-only query-plan validation when configured.
-- An equivalence, ownership or workload question the evidence does not settle is recorded
-  unresolved, and no change that depends on it is made.
+- An external, equivalence, ownership or workload question the evidence does not settle is
+  recorded unresolved, and no change that depends on it is made.
 
 ## Requested Maps
 

@@ -15,7 +15,7 @@ is written from the repository root.
   receipts/<partition>.yaml what one reviewer read
   findings/<partition>.yaml one reviewer's findings; `cross-cutting.yaml` for that reviewer
   ledger.yaml               every entry and its status
-  plan.md                   the plan: groups, order, entries and the decisions asked
+  plan.md                   the plan: groups, order, entries and every decision
 ```
 
 `<scope key>` is `whole` for the whole repository, otherwise a short slug of the selection.
@@ -129,10 +129,12 @@ not hold, is dropped at verification and counted.
 entry:
   id: "<finding id, or `kept-<n>` for an item retained without a finding>"
   finding: "<the finding, as above>"
-  disposition: "<fix | keep | owner decision | declined | deferred | unresolved>"
+  disposition: "<fix | keep | council ruling | reserved user decision | declined | deferred |
+    unresolved>"
   reason: "<for keep: the distinction that retains it; for unresolved: the missing evidence;
-    for declined or deferred: the record; for owner decision: the options, each consequence, the
-    recommendation and the answer once given>"
+    for declined or deferred: the record; for council ruling: the question, the options and the
+    ruling; for reserved user decision: the options, each consequence, the recommendation and the
+    answer once given>"
   group: "<the worker group that owns its files>"
   status: "<open | waiting on decision | assigned | fixed | recorded>"
   commit: "<the commit that fixed it>"
@@ -144,10 +146,10 @@ location.
 
 ## Plan
 
-`plan.md` holds, in this order: the intent statement; the decisions asked of the owner and each
-answer; the groups in the order they run, each with its area, its files, its entry ids, what it
+`plan.md` holds, in this order: the intent statement; each decision the run made with its reason,
+any council ruling, and each reserved decision with its answer; the groups in the order they run, each with its area, its files, its entry ids, what it
 waits on and the wave it runs in; the paths no reviewer read; and the measures before the fixes.
 
-The message the owner reads lists one line per area — the area, its entry count by lens, and what
+The message the user reads lists one line per area — the area, its entry count by lens, and what
 it waits on — followed by the totals, and sends `plan.md` with it once the plan holds more than
 five entries.
