@@ -25,11 +25,12 @@ description: Play the public Roblox marble game Marble Elimination Ultimate (a m
    account from a capture after launch; a sign-in page goes to the user as `roblox-studio`'s
    authentication section says.
 3. **Hold the VM's focus lock (`<vm>/focus`) for every burst of input and capture**, through
-   `agent-lock`, the playing worker taking it itself for at most the 2-minute focus lease the
-   testing reference's `focused_input` sets, such as one level's drop, since another session's
-   editor launch waits less than a minute for it. Start each burst by bringing the player to the
-   front and confirming it there from a capture, so no input lands in a Studio editor, and end it
-   by releasing every held key before the lock; never touch the runner's Studio editors.
+   `agent-lock` directly, since `focused_input` needs an editor's or the VM's lease the player does
+   not hold. The playing worker takes it itself for bursts shorter than the 50 seconds another
+   session's editor launch waits for it, taking it again for the next, so a long level is played
+   in several bursts. Start each burst by bringing the player to the front and confirming it there
+   from a capture, so no input lands in a Studio editor, and end it by releasing every held key
+   before the lock; never touch the runner's Studio editors.
    Captures are written in the guest under a folder named for the task and copied to the task's
    captures folder on the host.
 4. **Delegate play to one worker** chosen under `subagent-matrix`, briefed with this skill, the
