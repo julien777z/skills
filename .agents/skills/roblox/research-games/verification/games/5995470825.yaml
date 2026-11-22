@@ -56,7 +56,7 @@ context:
     play_style: "First-person arena shooter (games API: Shooter > Deathmatch Shooter)"
     camera_perspective: "First person, mouse-locked"
     device_and_input: "Desktop keyboard and mouse (VM-injected key holds, clicks and relative mouse moves); HUD shows keyboard hints Q/E/X abilities, B Emote, K Settings, C Slide, V Inspect, Tab Scoreboard, F Quick Melee, 1-3 weapon slots"
-    observation_environment: "macOS guest VM, published Roblox player 0.746.0 at 1920x1200 points, public server (ping 92-198 ms, HK region label)"
+    observation_environment: "macOS VM, published Roblox player 0.746.0 at 1920x1200 points, public server (ping 92-198 ms, HK region label)"
     visible_server_population: "Roughly 13 players listed on the CTF results board; team score strip showed 10 per-team avatars; API maxPlayers 17, 20,559 playing at retrieval"
     solo_or_group: "Solo in public team match (blue team)"
     game_version_if_known: null

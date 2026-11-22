@@ -9,6 +9,11 @@ short_description: 'Manage T3 Code configuration and provider environment variab
 Configure the selected T3 execution environment through its native interfaces. Discover actual
 provider instance IDs; a display name, model name, or local checkout does not identify the target.
 
+## Dependencies
+- `tailscale-config`
+- `security-audit`
+- `proton-pass`
+
 ## Environment variables
 
 Use `scripts/env.mjs` from this skill's resolved directory with Node.js 22 or newer. The helper
@@ -40,11 +45,6 @@ cat ./provider.env | node "$T3_ENV_SCRIPT" merge --ssh user@node.example --expec
 `--ssh` uses the existing SSH configuration and authentication. `--identity` and `--known-hosts`
 select existing SSH files when needed. Omit `--ssh` to manage the local T3 environment. `--base-dir`
 selects a non-default T3 data directory, and `--t3` selects its installed CLI executable.
-
-## Dependencies
-- `tailscale-config`
-- `security-audit`
-- `proton-pass`
 
 ## Configuration workflow
 

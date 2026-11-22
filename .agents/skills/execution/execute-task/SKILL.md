@@ -1,15 +1,16 @@
 ---
 name: execute-task
-description: "Always run this. Invoke once at the start of every task authorized to change files — including one whose edits sub-agents make or that starts because work turned up a defect — before recommending, delegating or making edits, and keep it active until verified completion or the user stops or hands it off. Never invoke it from inside a skill it runs."
-short_description: 'Plan source and product changes for approval; validate canonical guidance changes through their delivery gates.'
+description: "Always run this. Invoke once at the start of every task authorized to change files — including one whose edits sub-agents make or that starts because work turned up a defect — before recommending, delegating or making edits, and keep it active until verified completion or the user stops or hands it off. Never invoke it from inside a skill it runs. Its references also govern, in any task whether or not it changes files, what an invocation or authorization covers, approval boundaries, steps only the user can take, steps that cannot be taken back, reading state after a push or merge, checking a worker's claim and tracing a cause before reporting it, where working files go, waits and awaited results, and verification cadence and suite choice."
+short_description: 'Plan source and product changes and show the plan; validate canonical guidance changes through their delivery gates.'
 ---
 
 # Execute Task
 
-Plan source and product changes, get them approved, then run them the same way every time.
-**Plan** decides what will be built; canonical guidance changes enter **Execution** directly and
-are validated by their evidence, skill-test, review, and acceptance gates, except a substantial
-skill change the user asks for, whose plan is a proposed flow.
+Plan source and product changes, show the plan, then run it the same way every time. **Plan**
+decides what will be built; canonical guidance changes enter **Execution** directly and are
+validated by the gate set `edit-skill`'s **Guidance Delivery** selects for an
+agent-configuration pull request, except a substantial skill change the user asks for, whose plan
+is a proposed flow.
 
 ## Dependencies
 - `review-proposal`
@@ -28,16 +29,19 @@ skill change the user asks for, whose plan is a proposed flow.
 - `list-prs`
 - `session-ledger`
 - `edit-skill`
-- `skill-flow`
+- `guidance-flow`
 - `test-skill`
 - `i-have-adhd`
+- `user-facing-output`
+- `council`
+- `share-media`
+- `use-browser`
+- `test-fixture`
 
 ## One Run Per Task
 
 Follow the explicitly selected workflow’s own declared sequence, checks and delivery holds throughout
 the task. Where it owns a stage, return its result to this run rather than starting a parallel stage.
-
-Invoke `merge-conflict` when a push read-back shows a conflicting base.
 
 - Invoke this skill once when a task is authorized to change files, before its implementation
   recommendation, delegated edits, or first edit. A run stays active until
@@ -46,33 +50,26 @@ Invoke `merge-conflict` when a push read-back shows a conflicting base.
   interruptions. Nothing in the task re-enters the skill; the run simply has not ended.
 - The session agent selects independently applicable specialized skills from their descriptions once.
   They return outcomes, pending decisions and required coordinator work to the caller.
-- A selected workflow presents its own plan through its declared approval route.
+- A selected workflow presents its own plan through the route it declares, an approval it requires included.
 - A read-only task — a question answered from the code, a listing, a report with no edit — does
-  not run this skill; a task whose edits sub-agents make is not read-only for the agent that
-  delegated them. A read-only turn does not close an open run either: a run still holding named
+  not run this skill, though it still reads the reference of this skill that governs a subject it
+  meets, as the description lists them; a task whose edits sub-agents make is not read-only for the
+  agent that delegated them. A read-only turn does not close an open run either: a run still holding named
   work stays active through such a turn, and that turn moves its items.
 
 ## Plan
 
 Every task that changes files starts here, and so does every follow-up that arrives while one runs.
+Before drafting a plan or selecting targets, apply **Product Constraints** and **Task Authorization**.
 
-Before drafting a plan or selecting targets, apply **Product Constraints**' path trace and **Task Authorization**. Resolve broad words in the named outcome's context: for a follow-up, state the work's purpose and check each candidate's
-actual role; a shared mechanism, filename, label, directory or provider does not include unrelated automation.
-Words such as "every" quantify that category; neither they nor text-search matches expand it. Expand only for a required dependency or another named category or outcome.
-Separate selected outcome and verification targets from the existing path and its ordinary ancillary effects. An omitted
-target alone does not prohibit those effects; reuse the path when it serves the request within explicit constraints and
-authority, without inferring authorization for additional actions or outcomes. Honor explicit prohibitions. If the request
-and observed path leave a material ambiguity about a different target, outcome, mechanism or effect to avoid, ask a focused
-clarification before drafting; a clear instruction or routine implementation choice needs no question.
-
-Before choosing a design that adds an operation, helper, or guard or changes a shared operation,
-contract, subsystem, runtime boundary, or independent consumer, apply `code-simplify`'s
-**Before Choosing A Design** check and add the complete record to the task before deciding.
-Follow-ups that skip plan approval still write this record without a new approval step.
+Before choosing a design, and before the first edit on a path that takes no plan, apply
+`code-simplify`'s **Before Choosing A Design** check to everything the change will add and write
+its receipt in the task record, even for a small follow-up, a bug fix or a worker's task with no
+plan of its own; only an edit that adds nothing skips it.
 
 ### When A Plan Is Needed
 
-- **Every source or product change gets a plan put to the user before its first edit, except a
+- **Every source or product change gets a plan shown to the user before its first edit, except a
   trivial change or a small, clearly specified follow-up to active work.** A trivial change has no
   design choice in it: a typo, a one-line fix, a rename the user named. A small follow-up directly
   extends the active task using an established behavior or component, with the user naming the
@@ -81,20 +78,20 @@ Follow-ups that skip plan approval still write this record without a new approva
   verification, even when more than one file or an internal dependency must change. Record the
   added work and state the next action; do not turn its implementation outline into another
   approval question. Ask only about a concrete unresolved choice and continue independent work.
-  Completing that choice does not require approval of a separate plan. Canonical guidance changes
-  under `.agents`, apart from the skill changes the next bullet plans, do not wait for a plan or an output-format approval: their request or an encountered guidance gap starts
-  the guidance-correction workflow, and their evidence, skill-test, review, and acceptance gates
-  verify it, on the timing `edit-skill`'s **Recording During A Task** sets for an active task,
+  Completing that choice takes no separate plan. Canonical guidance changes
+  under `.agents`, apart from the substantial skill change the next bullet holds, do not wait for a plan or an output-format approval: their request or an encountered guidance gap starts
+  the guidance-correction workflow, and the gate set `edit-skill`'s **Guidance Delivery**
+  selects verifies it, on the timing `edit-skill`'s **Recording During A Task** sets for an active task,
   whether the user asked for the correction directly or the run noticed it.
-- **A skill change the user asks for gets a plan when a source change of its size would, and that
-  plan is a proposed flow.** A trivial skill change, or a small, clearly specified follow-up, is
-  delivered as the bullet above says. Any other change to how skills run goes on the draft guidance
-  pull request and is shown to the user as
-  `skill-flow`'s proposed-flow comparison of that branch against the default branch, in place of a
-  written plan, so they see what the change does to how the skills run. Until the user approves it
-  in their own words, that pull request gets no `test-skill` round, no merge and no auto-merge;
-  each edit they ask for lands on the same branch and the comparison is rendered again in place.
-- Work the approved plan already covers takes no new plan: an encountered issue, a gate's or a
+- **A guidance change whose flow is affected is shown as a proposed flow.** Whenever a change's
+  statement of scope records `flow affected`, as `edit-skill`'s **Scope Statement** defines it,
+  whatever kind of guidance change it is, build `guidance-flow`'s proposed-flow comparison of its
+  pushed branch against the default branch and show it to the user; delivery proceeds unless that
+  statement lists something waiting for them. **A substantial skill change the user asks for is
+  held on it**, in place of a written plan, where a source change of its size would get one: until
+  the user approves it in their own words, that pull request gets no `test-skill` round, no merge
+  and no auto-merge; each edit they ask for lands on that branch and it is rendered again in place.
+- Work a plan in execution already covers takes no new plan: an encountered issue, a gate's or a
   review's flag, a failing check, or a guidance correction discovered during the run. `edit-skill`
   records verified guidance corrections and `process-ledger` processes them at **Completion**.
 
@@ -103,10 +100,12 @@ Follow-ups that skip plan approval still write this record without a new approva
 - For a bug, establish the intended behavior and apply `pre-production`'s **Trade-Offs Are
   Surfaced, Never Enforced** before choosing the remedy or presenting an alternative. Use the
   same check when a worker, reviewer, or failed approach changes the proposed remedy.
-- Select verification before recommending it, putting it in a plan, or delegating it. Read the
-  shared testing rule's **Environments** section and invoke `run-site` to apply its **Principles**
-  before selecting browser walkthroughs or rendered UI inspections, including when later review
-  or **Completion** proposes additional verification.
+- Select verification before recommending it, putting it in a plan, or delegating it. Read
+  [verification](references/verification.md): its **Verification Cadence** sets when tests, builds,
+  walkthroughs and reviews run, its **Suites And Failures** which suites a run covers and how a
+  failure is read, and its **Environments** where each runs. Invoke `run-site` to apply its
+  **Principles** before selecting browser walkthroughs or rendered UI inspections, including when
+  later review or **Completion** proposes additional verification.
 - **A plan is written twice: in detail for the run, and short for the user.** The detailed plan —
   the request restated, verified facts, evidence, each step's files and checks — is what
   `review-proposal` reviews and what workers and gates receive; it never goes to the user. While a
@@ -115,27 +114,16 @@ Follow-ups that skip plan approval still write this record without a new approva
   conditional on one. The plan the user reads summarizes the detailed plan, adding no step or scope
   it lacks: at most five numbered steps, each one plain line naming one bounded action with its
   wall-clock estimate, as `i-have-adhd` numbers steps, then the total and what the user does
-  afterwards. Keep it under 200 words while `i-have-adhd` is active.
+  afterwards. Keep it short enough to read at a glance.
 - **A plan's last step for repository changes is the merge**, or the reviewable pull request when
   no merge is authorized. Every verification it needs runs before that; no step, verification, hold
   or user action after it re-verifies the merged change, walks the deployed site, checks a rollout
-  or waits for a deploy, apart from the tasks the global rules' **A merge leaves no verification or
-  deploy work** bullet excepts.
+  or waits for a deploy, apart from the tasks `merge-gate`'s **No Verification Or Deploy Work**
+  excepts.
 - **An estimate is the executing agent's own wall-clock, never the effort the same work would
-  take a person.** Build it from what the run does and waits on, never from how big the change
-  feels, round each step to the nearest whole minute, never below 1, and list what the plan needs
-  from the user — an approval, a merge, a manual action — separately and outside the total, with
-  no time, since the agent cannot know how long the user takes:
-  - an edit step — read, edit, commit, push — is 2–3 minutes whatever the file count;
-  - each run of a local check, test suite or build is its observed duration, counted once per run
-    the plan makes;
-  - an independent gate or review dispatch is 2–4 minutes, and each repair round after it about 3
-    more, counted once for each step later steps build on and once for the pull request's
-    `review-pass` at **Completion**;
-  - a round of parallel readers or reviewers is about a minute, and a round of auditing reviewers
-    over a tree is 5–10 minutes;
-  - CI, a merge's check gate, or a deployment the user's request names is the observed duration of
-    that job.
+  take a person.** Build each step's from [plan estimates](references/plan-estimates.md), and list
+  what the plan needs from the user — a review, a merge, a manual action — separately and
+  outside the total, with no time, since the agent cannot know how long the user takes.
 - Schedule steps by `subagent-matrix`'s **Dispatch**: coupled work stays sequential, and
   independent scopes with separate owners, files and resources overlap once their inputs are
   settled. Estimate the elapsed time with that overlap, totaled as `session-ledger` totals a plan.
@@ -146,9 +134,9 @@ Follow-ups that skip plan approval still write this record without a new approva
   identifier, assignment state and host receipt with the plan evidence. The plan states where common
   behavior will live and which policy or wiring stays consumer-specific; it never starts from a parallel
   structure and leaves ownership for implementation.
-- Ask through the global question-tool procedure, sending each message as the global rules'
-  **User-Facing Output** requires: any open decisions first, on their own; then, once they are
-  answered and folded into both plans, the user's plan and its approval:
+- Send each message as `user-facing-output` and `share-media` require: any open decisions first,
+  on their own, through the global rules' **Asking the user** procedure; then, once they are
+  answered and folded into both plans, or when there were none, the user's plan as a message:
 
 ```markdown
 **Decision needed:**
@@ -156,39 +144,41 @@ Follow-ups that skip plan approval still write this record without a new approva
 ```
 
 ```markdown
-**Proposed plan**
+**Plan, starting now**
 
 1. <step> (~<n> min)
 2. <step> (~<n> min)
 
-**Total: ~<n> min.** Then <what the user does next, such as review or merge; never a deploy the request does not name>.
+**Total: ~<n> min.** Then <what the user does next, such as review or merge; never a deploy the request does not name>. Interrupt to change any of it.
 ```
 
-### Approval
+### Showing The Plan
 
-- **The user sees a plan once `review-proposal` has accepted it, and never before.** A plan still
-  being drafted or reviewed stays with the run: nothing the user reads — a report, a summary, a
-  status line, a task list, a dashboard or a question — shows its steps, estimates or an outline
-  of them, and a draft is never offered as a preview pending approval. While it is in review, a
-  report says only that a plan is being prepared, and the user's next sight of it is the accepted
-  plan put for approval. This holds back the plan, not its open decisions, which go first as
-  **What The Plan Holds** says.
-- Before recommending an approval-requiring plan, invoke `review-proposal` on the detailed plan once
-  the user's answers to its decisions are folded in, with its intent and verified ownership
-  evidence; the user's short plan consumes that receipt while it adds nothing the detailed plan
-  lacks. The global approval procedure consumes its ready receipt before presenting the decision.
-  Reuse verified factual inventories; keep **When A Plan Is Needed**'s exceptions rather than
-  creating another approval requirement.
-
-- Only an explicit user response approves a plan. A timeout, inactivity, a missing response, a tool
-  result, a mode change or a system notice never does. Surface approval through the global rules'
-  **Task execution and authorization** question-tool procedure, including its timeout retries. Keep
-  the plan pending and begin no work that needs its approval; independent authorized work continues.
-- An interruption continues the same plan. Never replace or silently revise an unapproved plan;
-  fold the user's amendments into the detailed plan, take it through `review-proposal` again, and
-  present the complete revised plan.
-- Approval authorizes ordinary implementation and verification, never a merge, deployment,
-  publication or release the plan happens to list; **Task Authorization** says what does.
+- **The user sees a plan once `review-proposal` has accepted it, or, where the running workflow
+  states a plan route straight to the Proposal gate, once that gate has, and never before.** A plan
+  still being drafted or reviewed stays with the run: nothing the user reads — a report, a summary,
+  a status line, a task list, a dashboard or a question — shows its steps, estimates or an outline
+  of them, and a draft is never offered as a preview; a report says only that a plan is being
+  prepared. This holds back the plan, never its open decisions, which go first.
+- Off that route, before showing a plan, invoke `review-proposal` on the detailed plan once the
+  user's answers to its decisions are folded in, with its intent and verified ownership evidence;
+  the user's short plan consumes that receipt while it adds nothing the detailed plan lacks.
+  [Authorization](references/authorization.md)'s **Approval Boundaries** consumes the receipt, and
+  its **Choices Between Versions Of A Page** applies to a decision between versions of a page.
+- **A plan with no open decision is shown, and its work starts in the same turn.** An open decision
+  is a product, scope, security, disclosure or authorization choice that is the user's and that
+  they have not answered. A plan holding one sends those decisions first and starts only
+  independent authorized work until they are answered. Once they are, or when the plan never held
+  one, the accepted plan goes to the user as a message with no approval question, **Execution**
+  starts without waiting for a reply, and the user can interrupt at any point.
+- **A plan shown this way is never called approved**: every record, report,
+  dashboard and brief says it was shown with no open decision, and when.
+- Showing a plan starts ordinary implementation and verification under the task's authorization.
+  A merge, deployment, publication or release it lists still waits for what **Task Authorization**
+  names, and a substantial skill change the user asked for stays held on its proposed flow.
+- An interruption continues the same plan. Never replace or silently revise a plan the user has
+  seen: pause the work an amendment affects, fold it into the detailed plan, ask any decision it
+  opens, take the plan through `review-proposal` again, and show the complete revised plan.
 - **Offering the next step as a choice is a stop wearing a question mark.** "Say the word and I will
   start the next group" hands back an instruction the user gave once. Ask only for a decision that
   is genuinely the user's, and put it in the question rather than in the plan's continuation.
@@ -199,68 +189,38 @@ Record each active task's priority, status and saved next action through `sessio
 follow-up joins that record; arrival order does not give it priority. Keep the active higher-priority
 work in hand unless the user explicitly reprioritizes it, evidence establishes greater urgency, or
 that work completes. State and record the reason before switching, preserving the displaced step.
+[Priority](references/priority.md) sets the order and what each rank pauses:
 
-Pending source work — application or library code, as opposed to tests — ranks above test-only
-work, whichever was requested or queued first. Test-only work is test cleanup, test refactors, suite
-runtime or coverage work and a sweep's test fixes. Start or delegate it only while no source change
-the task owes, in any repository, can proceed, and order the plan's steps and every worker's brief
-the same way. Test updates a source change needs travel with that change, and running tests to
-verify it is verification, not test work. A test-only item in flight when a source change can
-proceed pauses at its next safe boundary.
+- pending source work ranks above test-only work, whichever was requested or queued first;
+- source work a deploy the user is waiting on needs ranks above simplification, review gates, test
+  work, guidance delivery and cleanup;
+- restoring an authorized broken deployed operation ranks above ordinary tests, review gates,
+  guidance delivery and cleanup, and ends with the deployment back on its own sources.
 
-Source work a deploy the user is waiting on needs ranks above simplification, review gates, test
-work, guidance delivery and cleanup, whichever started or was queued first. A database revision to
-restore or split so the branch deploys safely onto an environment that already ran an earlier
-version is the common case. Start it as soon as the need is known; workers on the lower-ranked
-activities pause at their next safe boundary with their work pushed and their next action saved, and
-resume once the deploy-safety change is pushed and validated. Those later passes may still change
-that code, provided what the deploy depends on stays the same and its owning tests prove it — for a
-revision, its database outcome.
-
-Restoring an authorized broken deployed operation takes priority over ordinary tests, review gates,
-guidance delivery and cleanup. Pause those activities until the actual failed operation succeeds on
-the fix branch in every affected environment; use only the reproduction, diagnosis and repairs
-needed for that checkpoint, respecting any narrower user restriction. This pause includes ordinary
-checks and task-owned workers already running, even on separate files or resources. Pause them at
-the runner's next safe boundary, honoring its interruption and cleanup contract; preserve completed
-evidence, frozen inputs and the saved next action. An already-started independent cohort is not an
-exception permitting continued ordinary work. Deploy through the authorized branch route, then
-resume required delivery checks after that live proof. A successful child task, health response or
-merge does not establish it. After an authorized merge, repeat the operation from the default-source
-deployment; if it fails, resume recovery and pause ordinary delivery work again. This order grants
-no deployment or merge authority: **Task Authorization** still governs both.
-
-Recovery ends with the deployment back on its own sources. Record each component's deployment
-branch and every setting changed for the fix before changing it. Once the fix is on the default
-branch, point each component back at its recorded branch, or the default branch when that branch
-is gone, deploy image-backed components from that source rather than restoring an image that holds
-the fault, undo each temporary setting, and run the failed operation again. Logging added to find
-the cause either stays as instrumentation the service keeps, with a test, or comes out before the
-pull request carrying it is reported done. While the merge is withheld, the verified fix branch stays
-deployed and the report names the pending restoration.
+This order grants no deployment or merge authority: **Task Authorization** still governs both.
 
 ### Follow-Ups
 
-Classify each source or product follow-up under **When A Plan Is Needed** before preparing a plan. A small, clearly specified follow-up executes on the user's request; only a follow-up outside that exception needs its own plan. A canonical guidance correction follows **When A Plan Is Needed** and does not wait for approval; while a guidance batch is in flight it joins that batch, as `edit-skill`'s **Recording During A Task** says. **Priority** decides when other follow-ups run and whether affected work pauses now; none of the routes below makes arrival order a reason to preempt active recovery.
+Classify each source or product follow-up under **When A Plan Is Needed** before preparing a plan. A small, clearly specified follow-up executes on the user's request; only a follow-up outside that exception needs its own plan. A canonical guidance correction follows **When A Plan Is Needed** and waits for no plan; while a guidance batch is in flight it joins that batch, as `edit-skill`'s **Recording During A Task** says. **Priority** decides when other follow-ups run and whether affected work pauses now; none of the routes below makes arrival order a reason to preempt active recovery.
 
 - **One that touches nothing in flight** — other files, another outcome — leaves the running work
   going. It gets a plan only when **When A Plan Is Needed** calls for one, and runs beside that work
-  once any required approval is present and **Priority** permits, under `subagent-matrix`'s
+  once any decision it opens is answered and **Priority** permits, under `subagent-matrix`'s
   **Dispatch**. Send this template only for a follow-up that needs a plan:
 
 ```markdown
 **Running work keeps going:** <step in flight> doesn't touch <what the follow-up changes>.
 
-<**Decision needed:** …, asked on its own first | **Proposed plan for the follow-up**, once no decision is open>
+<**Decision needed:** …, asked on its own first | **Plan for the follow-up, starting now**, once no decision is open>
 1. <step> (~<n> min)
 ```
 
 - **One that changes what is being built** — a source or product follow-up — records the affected
   work and its saved next step under **Work You Have Already Named**, then updates the active
-  plan record. Present an amended plan for approval only when **When A Plan Is Needed** requires
-  one; a small, clearly specified follow-up starts without another approval request.
+  plan record. Show an amended plan, as **Showing The Plan** says, only when **When A Plan Is
+  Needed** requires one; a small, clearly specified follow-up starts without one.
   Pause affected work when **Priority** brings the amendment into execution; otherwise retain it
-  for after the active work. Resume once any required approval is present and its priority permits. Unaffected work keeps
+  for after the active work. Resume once any decision it opens is answered and its priority permits. Unaffected work keeps
   running while the user decides.
 - **One that narrows scope reaches the work already in flight, at once.** Message every running
   worker to stop the work the cut removes and has not yet done, keeping what it already finished,
@@ -268,23 +228,22 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
   the cut work, a defect included, is answered as out of scope rather than fixed, unless this
   change introduced it.
 - A follow-up on a pull request already sent for review pushes to the same draft, and its
-  **Completion** folds each change into the history under `rewrite-git-history` rather than
-  rebuilding it.
+  **Completion** folds each change into the history under `rewrite-git-history`, never rebuilding it.
 
 ### Progress Record
 
 - **The ledger holds the plan's current state, so nothing about progress depends on what the chat
   still remembers.** When an accepted plan goes to the user, record it with `session-ledger` as a
-  `plan` entry holding the fields `session-ledger` names for one, filled from the planning work even
-  where the plan shown to the user leaves them out. Work the user adds to an active task, with or
-  without a plan of its own, becomes a step on that plan or a plan entry of its own, with the user's
-  words and its approval time, or the time the user added it when it has no plan, before the first
+  `plan` entry holding the fields `session-ledger` names for one, its status `shown` with that time,
+  filled from the planning work even where the plan shown to the user leaves them out. Work the user
+  adds to an active task, with or without a plan of its own, becomes a step on that plan or a plan
+  entry of its own, with the user's words and the time they added it, before the first
   edit or dispatch it authorizes; a harness task list, the chat or a summary is never where it first
   lives. A step the agent adds, or widens past what the user asked, is recorded as agent-originated,
-  proceeds under the task's authorization like the work **When A Plan Is Needed** says an approved
-  plan covers, and is never shown as user-approved; one that is a product choice goes to the user
-  before it is built, as the global rules' product-choice bullet says. Update it when the state
-  changes, not when a report is due: approval, a step starting, finishing, blocking or being
+  proceeds under the task's authorization like the work **When A Plan Is Needed** says a plan in
+  execution covers, and is never shown as user-approved; one that is a product choice goes to the user
+  before it is built, as `pre-production`'s **Product Choices** says. Update it when the state
+  changes, not when a report is due: the plan being shown, a step starting, finishing, blocking or being
   skipped, a follow-up's plan.
 - **A step that waits on other work records what it waits for**: the gate, merge or result whose
   outcome lets it start. Every relayed result is checked against those records, and a result that
@@ -293,22 +252,21 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
 - **A step estimated over 30 minutes is recorded with its parts**: bounded pieces of that step's
   work, each with its own estimate in whole minutes, at least 1, together adding up to the step's.
   Mark each part done as it finishes, so recorded progress moves while a long step runs. The plan
-  the user approves keeps its numbered steps; the parts live in the record.
+  the user reads keeps its numbered steps; the parts live in the record.
 
 ## Execution
 
-Execution starts once a required plan is approved, or immediately when **When A Plan Is Needed** requires no plan. Canonical guidance corrections follow `edit-skill`'s **Recording During A Task** timing.
+Execution starts once a required plan has been shown, or immediately when **When A Plan Is Needed** requires no plan. Canonical guidance corrections follow `edit-skill`'s **Recording During A Task** timing.
 
 ### Assigning Work
 
-Before implementation and whenever new work is admitted, delegate each coherent nontrivial execution
-task under `subagent-matrix`'s **Dispatch**; a task waiting on a worker never holds another
+Before implementation and whenever new work is admitted, delegate the work `subagent-matrix`'s
+**When To Delegate** gives to a subagent, launched under its **Dispatch**; a task waiting on a worker never holds another
 independent one. Reassess ownership after each finding or follow-up. Each editing worker gets a
-worktree of its own, and each brief states the problem, the invariant the fix keeps and the
-requirement to find and reuse how the repository already solves it, never a mechanism its author
-invents; where the worker finds none, it proposes one with what its search found. The files a brief
-names bound the scope, not the design. Before writing a script or doing a check by hand, the agent
-and every worker look in the repository's `.agents/tools/`, and every brief points there. In a
+worktree of its own and `subagent-matrix`'s worker brief, filled with the plan's reuse receipts. Its
+report carries a receipt for each thing it added; one without them goes back to the worker before
+its head is built on. Before writing a script or doing a check by hand, the agent
+and every worker look in the repository's `.agents/tools/`. In a
 repository the owner runs, an operation the task will run more than once, or is about to run again,
 is first written as a helper there, created with its folder if missing, committed as source work on
 the pull request the GitHub rule selects for it, and run from there each time; a shell function,
@@ -316,234 +274,63 @@ heredoc or temporary script is not a helper, though a skill's execution checks s
 
 ### Task Authorization
 
-- Carry the user's authorization for the task through its ordinary implementation, verification,
-  scoped external changes, retries, recovery, and cleanup. A follow-up, interruption, failed attempt,
-  or context reset does not require the user to approve those sub-steps again.
-- Treat merge, deployment, publication, and release as separate outcomes outside the ordinary
-  scoped external changes above. "Implement this plan" is not an explicit instruction for any of
-  those outcomes, even when the plan names the action and target. Before acting, identify the
-  user's separate explicit instruction for that action and target or applicable guidance or an
-  invoked skill that expressly authorizes it; otherwise complete the reviewable work and stop
-  there. An unauthorized merge leaves the pull request draft for the user; a deployment,
-  publication or release the request does not name is no part of the task, and nothing waits on it.
-- Once the merge is authorized and the pull request is verified, invoke `merge-gate`'s
-  **Readiness**. The full merge gate follows the source stream's checks.
-- Ask only for a decision that materially changes the authorized target, recipient, or outcome, or
-  for an action-time confirmation a platform actually requires. Make that question specific to the
-  new decision or action; never ask the user to reconfirm the task or say "continue" to resume it.
-- **A question the guidance already answers is not the user's to answer.** Before a question goes
-  out, and again each time one carried from an earlier turn, a note or a summary would be put
-  again, read the rules and the repository's project guidance governing its subject; where they
-  decide it, act and report what was done. The class: whether to delete, reset or recreate a local
-  resource, such as a cache volume filling the disk or a database stuck on a migration the branch
-  has since regenerated, and whether to reset or reopen local records to reach a state, such as a
-  test account back at its first sign-in, both of which the global rules give the agent; what a
-  data change owes records already stored, which project guidance says; which of two
-  implementation details to use where a rule picks one; how to remove duplication the guidance
-  treats as a defect — which repository or package owns shared behavior and which mechanism replaces
-  parallel copies — which `pre-production` and `code-simplify` settle; and what configuration exists
-  or how it is scoped, which is read where it lives. A permission denial leaves the decision where
-  it was, as **Environment Refusals** says.
-- Apply the global rules' **Task execution and authorization** decision boundary before choosing
-  an encountered issue's remedy, including one proposed by a worker or reviewer. An ambiguous
-  instruction has no approved interpretation: name both concrete outcomes and build on the
-  user's answer, quoting their words in a delegated brief. This decision wait holds only the
-  dependent remedy, never the remaining authorized work.
-- An implementation constraint is not a new approval boundary. Exhaust authorized ways to
-  complete a sub-step yourself. Do not mistake an action-time confirmation for a mandatory user
-  hand-off: after the user confirms the specific pending action, perform it yourself. Hand off only
-  when the platform requires the user's own interaction. Never request a secret through chat.
-- After a required confirmation, continue the remaining authorized work without another general
-  approval request. A refused or unanswered confirmation blocks only the action it governs, as
-  **Work You Have Already Named** says of every wait.
+Apply [authorization](references/authorization.md) throughout the run: what the task's
+authorization covers, when an intermediate step is a new approval boundary, how a step only the
+user can take and a choice between versions of a page are put to them, and which questions the
+guidance already answers.
 
-### Browser Access
+- Carry the user's authorization for the task through its ordinary work, and ask only where its
+  **What An Authorization Covers** says a new authorization is needed.
+- Merge, deployment, publication and release are separate outcomes, authorized as `merge-gate`'s
+  **Authorization** says. Without it, the task is complete at the reviewable draft pull request whose
+  local checks and **Completion** review have passed; hosted test jobs are required only at the merge.
+- With the merge authorized, the pull request stays draft through the source stream's review;
+  `merge-gate` marks it ready, as the last step before the merge, once `review-pass` has accepted
+  its head.
+- A change that has failed 3 review rounds is not repaired again: put its disposition to `council`
+  in **Ask** mode as [review rounds](references/review-rounds.md) says, and follow its ruling.
 
-- Use the user's `@Chrome` browser for browser work unless the user names another browser.
-  Apply the global rules' **Tools and environments** browser selection and stable-tab binding
-  procedure before any page read or action, including when attaching a CLI to an existing browser.
-  A named CLI session alone does not establish control of the selected tab.
-- For the default Chrome route, if connected tab control is unavailable, use regular Chrome with
-  the same global selection procedure. It may come to the foreground. Continue through an
-  appropriate API or CLI when that is more direct. Report a browser-specific blocker only when the
-  authorized browser's normal recovery paths cannot complete the required interaction.
+### Working Environment
 
-### Environment Refusals
-
-- **An environment refusal is a route to find, not a blocker to report.** A repository missing from
-  the session is attached or cloned as a writable checkout; a host the environment refuses is reached
-  through a path it does serve, and a tool that took the refused path is fixed to take the served
-  one. Failed routes alone do not establish an external blocker: diagnose the refused contract
-  at its owner and check whether owned code, configuration, credentials or lifecycle can satisfy
-  it through the supported route. Report an external gate only with the concrete unavailable
-  capability, evidence that supported recovery and authorized owned repairs are exhausted, and
-  the saved next action when it returns. Repeating the same rejection is not that evidence.
-  A command a permission check refuses falls under the next bullet instead, even when it targets
-  a host; never bypass that boundary as recovery.
-- When recovery installs a required dependency or changes a setting on a machine this task
-  provisions, repair the canonical provisioning source as well as the running machine. A one-off
-  host change does not fix fresh instances. Verify the corrected setup in a clean applicable
-  environment before calling the repair complete. A dependency used only by a disposable test
-  belongs in that test's setup rather than the provisioned machine's runtime requirements.
-- **A permission check is not a route to find: what it refuses is not attempted again, and the
-  decision never becomes the user's.** Use the owner's own routine tool from the start — a package
-  manager's cache-clean rather than a raw delete of its cache directory — because that is the
-  ordinary way to do the job, not a workaround. Once a permission boundary refuses an action,
-  whether a rule the user set or an automated safety check, that outcome is not attempted again by
-  any other command, tool or wording, and every other piece of work carries on. Report the refusal
-  once, plainly, as a permission the user can grant: what was refused, and that it runs once
-  allowed — "The permission check blocked `<command>`; it runs once you allow it, and everything
-  else is done." Whether the action is wanted was settled by the guidance before the check ran, so
-  the report never asks it or offers options: "Delete X? Yes or no" is the defect.
+Apply [working environment](references/environment.md): its **Working Files** puts everything
+the run writes for itself or its workers in `.agent_sources/` at the worktree's root; its **Copies A
+Sync Service Left Behind** deletes each such copy before anything stages, stashes or snapshots the
+tree; its **Browser Access** selects the browser; its **Environment Refusals** treats an
+environment refusal as a route to find, and what a permission check refuses as not attempted again;
+and its **Steps That Cannot Be Taken Back** runs a deletion, overwrite, push, merge or post only
+after its gating check has been read, outside the command, chain or batch that runs the check.
 
 ### Product Constraints
 
-`pre-production` is active in every change task. Read it completely, explicitly invoke it, and
-announce the invocation before the first edit. Listing it as a dependency is not an invocation.
-Read the repository's product state from its project guidance before choosing how to change a
-contract or stored value.
+`pre-production` is active in every change task: read it whole and invoke it before the first
+edit. Read the product state from project guidance before changing a contract or stored value.
 
-Before recommending an implementation, asking a question that presupposes one, or delegating its
-edits, trace the requested behavior through the caller, transport, configured destination and
-execution owner, including the entrypoint that launches or deploys it. Establish where it runs and
-which existing capabilities and stored data it can use from configuration and, when available, the
-running artifact; a client request alone establishes neither a remote dependency nor missing local
-behavior. An independent inventory receives the request, observed evidence and unresolved facts,
-not a proposed topology to assume. Its result must reconcile that runtime path before it supports
-a new mechanism or a product question. Reconcile the complete
-accepted target with the user's instructions, approved plan, repository guidance and observed
-mechanism; record each settled outcome or constraint with its source and the evidence the proposed
-implementation will need to satisfy it. Identify unresolved facts rather than silently replacing
-them with an assumption. Compare the proposal against every part of this receipt before selecting
-it: resolving the reported symptom or passing a component check cannot excuse violating another
-settled requirement. A proposal that fails one is repaired before implementation; a genuinely
-unresolved user decision follows **Task Authorization**. Apply the guidance and analogous
-implementations below to that choice, not only to the later edit.
-
-For an ownership or scope change, build `acceptance-gate`'s owned-boundary receipt before selecting
-the implementation. Follow the runtime binding as well as the source owner: who executes the
-operation, which resources it may reach, and which destinations must not receive its components,
-data or authority. Carry this receipt into review and deployment verification; a component check
-or an internally consistent configuration does not replace it.
+Before drafting a plan or selecting targets, as **Plan** says, and again before recommending an
+implementation, asking a question that presupposes one, or delegating its edits, apply [product
+constraints](references/product-constraints.md) and **Task Authorization**: resolve the request's
+targets in the named outcome's context, trace the requested behavior through its runtime path into
+the target receipt, and read the rules and analogous files governing every surface an edit reaches.
+A proposal failing a settled requirement is repaired before implementation; an ownership or scope
+change builds `acceptance-gate`'s owned-boundary receipt before the implementation is selected.
 
 Before an edit that crosses a trust boundary `security-audit` names, invoke it and apply its
 **While Writing Code**.
 
-Before each edit, read the shared and repository rules governing every surface it reaches — its
-language, framework and package, and the kind of thing it changes, such as a form, a query, a test
-or interface copy — and nearby analogous files. Where those files disagree, the one departing from
-the rest, or from the mechanism that owns the concern, is an encountered issue to fix, never the
-pattern to copy. That holds at every point new instructions arrive, not only at the task's start:
-a correction, a fix step or a resumed brief that sends the work to a surface whose rules the run has
-not read has them read before it is acted on, and having worked in the same language or package
-earlier in the run is not having read them. Match the analogous files' code grouping and spacing in
-every new or substantially edited file; inspect the complete result beside those siblings before
-delivery. A formatter passing is not a substitute for that comparison.
-
 ### Encountered Issues
 
-Apply `pre-production`'s encountered-issues policy while making the change. The rules below govern
-how those issues are handled.
+Apply `pre-production`'s encountered-issues policy while making the change, handled as
+[encountered issues](references/encountered-issues.md) says:
 
-- **A finding against the task's changed design, and every defect the work runs into, is fixed in
-  the change in flight, whatever its size; cleanup that fixes no defect is recorded with
-  `defer-scope` once it passes `pre-production`'s size budget.** The fix takes a shape the standing guidance allows, as the next bullet says, and offering it
-  to the user is not a disposition: "Want this handled, or shall I leave it?" spends a turn to obtain
-  permission the guidance already settled. The question that is genuinely the user's is about a
-  **product change** — what a feature does or what information it presents, the steps of a
-  workflow or a quantity the reader meets, a workaround for a constraint the user set, what a record keeps, who a surface serves, a
-  contract a consumer outside the user's control speaks — never whether an encountered issue gets fixed.
-- **An instruction one agent passes another — a brief, a correction, a review finding, a gate's fix
-  step, a note or summary an earlier turn left for a later one — is checked against the standing
-  guidance before it is sent and again before it is acted on**, because it never outranks that
-  guidance, as the global rules' **Task execution and authorization** says. Each side reads every
-  item against the rules and skills governing the surface it changes — the language, framework,
-  copy and testing rules, and the skills the worker runs — opening them at that moment where it has
-  not read them yet — and against the user's recorded decisions on that surface. An item calling a
-  detail decided names who decided it and where; one the agent decided itself says so. Every brief
-  for work that can change a surface the user has decided on, a simplification or review pass
-  included, carries those decisions in the user's words, so the worker keeps them rather than
-  undoing them; an item that would undo one goes to the user. The class is any item asking for
-  what a rule rules out: a review finding asking for the catch-all exception handler the language
-  rule bans, a brief telling a worker to skip a check a skill requires before a push, a correction
-  asking for copy the copy rules forbid, one asking for a boat-rental waiver to arrive filled in
-  from the renter's last booking when the forms rule says a form someone attests to starts empty. It
-  also takes in an item adding a stop, a question or an approval the guidance does not call for,
-  such as a brief telling a worker to stop and ask before adding the schema revision a migration
-  skill puts its change in: the guidance settled that step, and the added gate hands the user a
-  question with one answer.
-  - **The agent writing it** rewrites an item a rule forbids into a shape the rule allows, or drops
-    it where none exists. One the user asked for in their own words goes out with those words quoted
-    and the rule they set aside named; a rule the agent thinks is wrong is put to the user, never
-    overridden by an instruction.
-  - **The agent receiving it** carries out every other item. For the forbidden one, it fixes the
-    defect the item names in a shape the rule allows, where one exists, and leaves only the
-    forbidden shape undone; for an added gate, it does the work the gate held. It names that item
-    and the rule it breaks to the sender, through the next hand-up or report, and neither
-    implements nor drops it silently. Only the user's own words, quoted, with the rule they set
-    aside named, override it.
-- When local validation fails before exercising the changed behavior, trace the failing setup
-  operation under `code-simplify`'s **Trace Changed Flows** before choosing a remedy or reporting
-  a limitation. Include that inherited operation in the affected-repository map, compare its
-  prerequisites with applicable parallel implementations, and repair its repository-owned inputs
-  at their owner. A caller-supplied workaround is not verification of the repaired native route;
-  rerun that route before completion. Preserve a required prerequisite whose concrete contract
-  differs, and apply **Environment Refusals** and **Task Authorization** to an actual external or
-  permission boundary.
-- An encountered defect's origin changes neither its disposition nor its priority. Read history when
-  it helps write the fix, rather than asking the user whether it predates the change. Say what was
-  fixed or deferred and why it was in the path of the work.
-- What puts a **new** issue in that path is an act the work performed: a file it opened, a command
-  it ran, a check it read, a review it received, and anything it looked at — a screenshot or
-  recording, its own or a worker's, a walk through the product, a log, a report. A defect seen there
-  is found exactly as a failing test is. How far the fix then reaches is a different question, and
-  `pre-production`'s **Scope Follows The Defect, Not The Request** answers it.
-- Never reject a fix solely because it is described as high risk. Assess its expected net effect,
-  concrete failure modes, and available validation instead of treating the label as a stop rule.
-- Apply `pre-production`'s scope decision before treating a review observation as mandatory work.
-  A review naming a non-defect improvement does not turn independent cleanup into a defect or
-  authorize recursive expansion; past the size budget it is recorded with `defer-scope`.
-- Delete the dead code the change itself leaves, and other confirmed dead code it meets within
-  `pre-production`'s size budget. Confirm that no live application or library consumer, public
-  export, or external contract still depends on it, judged where the change will land as
-  `code-simplify`'s rubric says; remove tests that exist only to exercise the dead code; and
-  validate the affected behavior.
-- Use the repository's relevant tests as the regression guardrail; do not preserve a defect solely
-  because an existing test asserts the old behavior. When coverage is absent or insufficient, use
-  the strongest available validation and account explicitly for the uncovered behavior.
-- Apply an owned API, protobuf, schema, payload, or stored-shape change selected by `pre-production`
-  without a second approval, once its **Target Contract** admits it without a proposal; update every
-  consumer the user controls, in whichever repository it lives, plus every generated artifact and
-  required migration for the target contract.
-- Apply **Task Authorization** to encountered corrections. Ask only when the correction is a product
-  change as the first bullet defines it, changes security or disclosure posture (closing a
-  vulnerability is a fix, never a question), reaches a
-  repository, environment, or external recipient the task did not authorize, or a platform requires
-  action-time confirmation. Another file, component, or package in the same repository is never a
-  new target, and neither is a repository the user owns that consumes a contract the change breaks:
-  it is delivered under **Multi-Repository Delivery**. The obligation to fix a bug or returned
-  finding remains; apply **Task Authorization** to its remedy rather than treating the finding
-  as permission for an unsettled product choice. Continue independent authorized work while that
-  choice waits, and never ask whether the defect should be ignored.
-- When asking, state the trigger, impact, expected work, recommendation, and concrete choices.
-
-### CI Gates And Deliberate Breaks
-
-Some required checks exist to detect deliberate changes: contract compatibility, schema
-compatibility, generated-output drift.
-
-- Such a gate going red is an accepted, reported outcome of an intentional break, never a reason
-  to reshape the change.
-- Never weaken the gate to recover green: no ignore lists, no exception entries, no reserved
-  placeholders faking compatibility.
-- Report it instead. State in the pull request that the break is deliberate and list exactly what
-  the gate reported, so a reviewer can confirm nothing unintended is in the diff.
-- Do not let a green run drive design. Choosing a wider or additive shape so that a gate stays
-  green is the same defect as suppressing the gate.
+- Its **Disposition** says what is fixed in the change in flight and what is recorded with
+  `defer-scope`, how an instruction one agent passes another is checked against the standing
+  guidance before it is sent and before it is acted on, and when a correction is asked about.
+  Offering a fix to the user is not a disposition.
+- Its **CI Gates And Deliberate Breaks** says how a required check that exists to detect deliberate
+  changes, going red on an intentional break, is reported and never suppressed or designed around.
 
 ### Ongoing Simplification
 
-A finished plan step or worker task gets its local checks under the **Pre-Push Gate**. When a later
+A finished plan step or worker task gets its local checks under the GitHub rule's **Pre-Push Gate**. When a later
 step builds on it — reads its schema, calls its interface, extends its code — it also gets one
 `acceptance-gate` Diff question over its diff, with the intent statement, before that later step
 starts, so a wrong foundation is caught before more is built on it. A step nothing later depends
@@ -552,40 +339,17 @@ on gets no gate, and no simplification pass or review runs per step, per worker 
 reviewed at **Completion**. Before any gate over Python files, mid-task or final, its caller runs
 `acceptance-gate`'s pre-gate check, `scripts/python_rule_findings.py`, on them.
 
-Own each coherent feature through integration: the primary agent settles dependencies, product
-decisions and the combined result. Simplify a feature as it is built. Assign a worker an
-independently owned scope with a concrete boundary and return condition, not an arbitrary slice of
-the primary agent's feature. Keep admitted cleanup with its feature; an independently selected
-cleanup follows its own stated scope and ownership. When cleanup crosses an interface or repository,
-bring its producer and consumers to a coordinated checkpoint, verify compatibility at both ends, and
-keep the cleanup named until that check passes. Neither a slower dependency nor unrelated work drops
-an encountered issue from the task.
-
-- Simplifying as the work is built covers three things, never the diff hunks alone: the
-  **changes** themselves, the **similar code** they resemble, and the **sibling modules** around them.
-  - **Changes**: the full contents of every file the task has touched so far, not only the lines
-    edited in the current batch.
-  - **Similar code**: every other place in the repository already expressing the same concept,
-    shape, or operation as the changed code — a near-duplicate helper, a parallel implementation,
-    a second representation of one value. Search by concept and by key operation, not by filename;
-    a sibling-only read cannot find the canonical implementation another package owns. A copy of
-    the change's own mechanism is the change's scope under `pre-production`'s **Scope Follows The
-    Defect**: give the mechanism one owner, move every consumer onto it and delete the copies.
-    Other code the change resembles and should be one thing with is made one thing within
-    `pre-production`'s size budget and recorded with `defer-scope` past it.
-  - **Sibling modules**: the other modules in each changed file's package, which is where a
-    misplaced piece of logic and its rightful home become visible together.
-- When a repair changes another file, inspect its complete contents and relevant owners to verify
-  that repair and its necessary consumer updates. This expands validation, not permission for a
-  new cleanup frontier; use `pre-production`'s scope decision before adding another correction.
-- Check the combined scope against the requested outcome, including all incidental changes;
-  individually useful edits can add up to a disproportionate change. Ask only about a genuine
-  decision **Encountered Issues** reserves for the user.
+Simplify a feature as it is built, owning it through integration:
+[simplification scope](references/simplification-scope.md) says who owns what and that the pass
+covers the changes, the similar code they resemble and the sibling modules around them.
 
 ### Pre-Push Gate And Reported Outcomes
 
-Apply the GitHub rule’s **Pre-Push Gate** to each push, and the global rules’ **Reported Outcomes**
-before reporting or building on a result.
+Apply the GitHub rule's **Pre-Push Gate** to each push, read with
+[verification](references/verification.md)'s **Pre-Push Checks**, which names what this skill
+supplies for it, and [reported outcomes](references/outcomes.md) before reporting or building on a result: read the
+state an action left, at its source, and do whatever that read shows wrong next, invoking
+`merge-conflict` when a push read-back shows a conflicting base.
 
 ### Pull Requests
 
@@ -601,146 +365,46 @@ required check or the host prevents delivery, keep the push and pull request as 
 
 **A pull request's title and description are brought up to date at every milestone, not at every
 push.** A milestone is a finished plan step or worker task whose checks pass, and a guidance correction pushed onto the pull request carrying it. After it, add
-what the milestone changed and rewrite whatever no longer holds, as the GitHub rule's description
-bullets say, before the milestone is reported. A push inside a step, such as a repair or a rebase,
+what the milestone changed and rewrite whatever no longer holds, as `pre-production`'s **Repository
+Text** says, before the milestone is reported. A push inside a step, such as a repair or a rebase,
 leaves the description for that step's milestone. `review-pass`'s **Description Refresh** still
 checks it before review.
 
 ### Multi-Repository Delivery
 
 When one change spans multiple repositories, treat each repository as an independent delivery
-context, with **Pull Requests** applying inside each of them.
-
-- Write every branch name, commit message, pull-request title, pull-request description, review
-  comment, code comment, and repository-local report solely from that repository's perspective.
-- Apply the GitHub rule's independent publishing context to those artifacts, including dependency
-  and hand-off notes; foreign references and coordination belong in user chat.
-- Keep cross-repository coordination and combined status reporting in user chat.
-
-### Each Repository Speaks Only Its Own Vocabulary
-
-The delivery rule above governs the artifacts around a change. This one governs what goes **inside**
-it, and it binds in every repository the run touches whether or not that repository's own rules say
-so — a repository with no independence rule of its own is the one most likely to be given another's
-words.
-
-**Never write another repository's nouns into this one.** Its product name, its services, its
-skills, its tables and columns, its record types, its routes, its identifiers, the words its
-business speaks: all of them stay where they are. That holds in source, tests, fixtures, sample
-data, error messages, comments, and documentation alike, and it holds hardest in a library or a
-tool, where every reader is a different consumer who has never heard of the repository the author
-happened to come from.
-
-**An example is where this fails, because an example needs a name and the author has one to hand.**
-Documenting a folder layout, a config key, a path shape, or a call, the concrete thing the author
-just saw is the nearest name and the worst one: it reads as this tool's own vocabulary to everyone
-after them, and it goes stale the moment that other repository renames it. Invent the name instead.
-An example naming a real artifact of another repository is the defect, however accurate it is.
-
-Name things for the shape being demonstrated, never for whichever caller prompted the work. A
-consumer's needs are a legitimate reason to build something and never a reason to name it after
-them. Describe the target repository's own contract and behavior to reviewers; keep
-consumer-specific coordination in user chat, following the Multi-Repository Delivery rule above.
-
-Where this run touched more than one repository, sweep for it before delivering: search each
-repository for the distinctive nouns of the others it was worked on beside, and read what comes
-back. A borrowed name is invisible to the author precisely because it was familiar.
+context, with **Pull Requests** applying inside each of them. Write each repository's artifacts and
+contents solely from its own perspective and in its own vocabulary, as
+[multi-repository delivery](references/multi-repository.md) says, and where the run touched more
+than one repository, run its sweep for borrowed names before delivering.
 
 ### Work You Have Already Named
 
-**Priority** decides which named work runs now; lower-priority work retains its saved step and
-paused status until that boundary permits it. Recording a commitment never advances it ahead of
-active recovery.
+**Priority** decides which named work runs now; lower-priority work retains its saved step and paused
+status until that boundary permits it. Recording a commitment never advances it ahead of active recovery.
 
 **Naming work as next is a commitment, and it stays this run's obligation across every later turn**
 — including a turn whose own request changes no files, which would otherwise not run this skill at
 all. The run that named the work owns it until it is done, and naming it is what keeps the run open
 under **One Run Per Task**.
 
-**A new request, an interruption, or a context summary cancels none of it**, and the work each one
-displaces is named work whether or not a report named it: an approved plan short of its last entry,
-commits a remote lacks, a checkout left mid-edit. The turn that serves the new request also moves
-it — the user asking about something else is not the user withdrawing what they asked for before.
+Apply [named work](references/named-work.md):
 
-- **Write it down before anything else starts.** The displaced work is recorded as **Progress
-  Record** says, with its next step, before the first step of whatever displaced it.
-- **An interruption pauses the step in flight; it never ends the run.** After a follow-up finishes,
-  mark the displaced work active again in the ledger and execute its saved next step without waiting
-  for "continue". A promise to resume is not that step, and neither is a report that ends by naming
-  what comes next: a turn that relays a worker's result, finishes a unit or answers a question
-  starts the next named step before it ends, and every step that result unblocks, as **Progress
-  Record** records them. A defect a turn finds while answering is handled in that turn as
-  **Encountered Issues** says, one its own change made always fixed, and the answer reports it fixed
-  or recorded; it never goes out as work the agent will do. Completing its own delivery — including
-  a guidance merge and refresh, a diagnostic answer, or a local environment repair — does not
-  complete the surrounding task. Report that intermediate result while continuing. A held item keeps
-  its saved next action; repair, resolution and waiting follow the global rules' **Tools and
-  environments** boundary. End only when the task is verified complete or the user explicitly stops
-  or hands it off. "Continue", or anything meaning it, resumes exactly the paused step and is never
-  answered with nothing.
-- **A context summary's pending list is this run's named work**, not background, **and its state is
-  read from the record, never from the summary.** After a compaction or handoff, and before
-  starting, delegating or reporting any plan work, read each step's state, and each decision or
-  answered question whose work is open, from `session-ledger` and from the repository — merged
-  commits, pushed heads — and let them overrule the summary: an item the record shows done is not
-  started again, and one the summary left out is still owed. The first turn then moves the oldest item still open as
-  well as whatever the summary's next step names. A constraint it carries, such as "ask before X", is an earlier turn's instruction,
-  checked under **Encountered Issues** before it is obeyed.
-- **Commits a remote lacks are undelivered work**; their next step is the pre-push checks and the
-  push. A hook or status line counting unpushed commits whose checks pass reports a push owed now,
-  not something to explain, apart from the commits the **Pre-Push Gate**'s one exception holds.
-
-**The failure is a report, not a refusal.** It reads as diligence: the item appears under "still to
-do", the turn ends, the next message arrives, and the item appears again, unchanged, in the next
-report. Nothing was declined and nothing was done, and each repetition makes the next one easier,
-because the item now looks like a standing note rather than work somebody is waiting for.
-
-So the test is the item's own line. Before a report goes out, compare each outstanding item against
-the line the last report carried for it. A line that has not changed means the item is finished in
-this turn, before the report is sent, when **Priority** permits it; otherwise record the active
-higher-priority task that holds it and its saved next action. Moving it a little or dropping it
-from the list does not satisfy that obligation.
-
-Each item's line records its current disposition:
-
-- it is done;
-- a named gate holds its dependent action — including an unanswered question or missing
-  authorization — with its evidence, saved next action and live repair, resolution or wait route;
-- it is no longer work, because the user withdrew it or a later request superseded it, said with
-  that reason.
-
-A held item remains outstanding; naming its gate or reporting it does not end the run. Withdrawal
-or supersession removes only the work the user's instruction actually cancels.
-
-**At the review-round limit, record the disposition under the global rule.** If the approved
-outcome still needs work, update the active plan and start the replacement's first Priority-permitted
-step under the existing authorization, without another plan approval.
-
-**A wait blocks only the work that depends on what is awaited.** While one item waits on something
-outside the run's hands — a background agent, CI, a review, a build, a shared machine, device or lock another
-session holds, the user's answer to one question or confirmation — start the authorized, already-named work that **Priority** permits and that neither needs the
-awaited result nor touches the files or resources the awaited work is changing. Each item held for the wait
-names what it uses that only the awaited result will supply; absent that dependency or a hold under
-**Priority**, it starts now: coming later in the plan, belonging to the same feature, or consuming a shape already agreed
-with the awaited work, such as a planned contract, is not such a thing, so build against that shape.
-**Every wait applies this test to the whole plan record** before the turn's report: to each step and part
-not yet started, in every later step as well as the current one, starting or delegating each that passes it.
-When the awaited work is a building worker, another edit starts only in an independently owned
-scope with separate files and resources, under `subagent-matrix`'s **Dispatch**; otherwise do
-read-only verification, review or question preparation while it runs.
-A status report is not a stopping point. When every remaining item depends on an awaited result,
-apply the global rules' **Tools and environments** pending-result boundary: keep the available
-wait or event route active and resume the saved next action when it resolves. An unresolved user
-choice holds its dependent remedy; it does not close the run or cancel independent work. A guidance
-correction is recorded and the run carries on; it is processed at **Completion**, never a reason to
-end or pause the surrounding task. Report a blocker only on that boundary's concrete evidence.
+- A new request, an interruption or a context summary cancels none of it. Record displaced work
+  with its next step before whatever displaced it starts, and resume it without waiting for
+  "continue".
+- After a compaction or handoff, read each step's state from `session-ledger` and the repository,
+  never from the summary.
+- Before a report goes out, compare each outstanding item against the line the last report carried
+  for it; an unchanged line means the item is finished in this turn when **Priority** permits it.
+- A wait blocks only the work that depends on what is awaited. Every wait applies that test to the
+  whole plan record, and an awaited result is pending, never a blocker, until it is terminal.
 
 ### Completion
 
 When **Priority**'s broken-deployed-operation recovery applies, first reconcile it against the
 actual deployed operation. Its unmet branch checkpoint or failed default-source retry keeps this
-checkpoint paused; a completed diagnostic or implementation
-substep does not start either delivery stream.
+checkpoint paused; a completed diagnostic or implementation substep does not start either stream.
 
 When an operational, external, or other non-source outcome reaches its authoritative terminal state,
 re-enter this checkpoint before any final report. Reconcile the saved work and pending guidance
@@ -755,25 +419,12 @@ can verify the change or restore service while its pull request is in flight. A 
 setup operation remains work under **Encountered Issues**. The independent gate receives the
 affected-repository map and comparison evidence along with the diff.
 
-Before the final delivery steps below, select the applicable verification route under the shared
-testing rule's **Environments** section, then verify the requested behavior on the change's branch
-within the authorized scope, including reachable dependency branches. When a requested flow failed,
-repair and push the fix, exercise that branch through the applicable route, and repeat the complete
-failed flow until its requested outcome is verified. A narrower health check or passing component
-test cannot replace that flow. When a deployment entrypoint consumes configuration, its verification
-also proves that entrypoint receives the required settings and reads values in the deployed
-representation; a local fixture using different settings or a different representation does not
-establish the deployed route.
-Trace the verification route to the code it actually loads before treating its result as proof or
-proposing a merge: record the exact pull-request head, changed entrypoint and relevant event-specific
-paths. Selecting an application's branch does not prove that the workflow, publisher or other
-changed command ran from that branch. Use the authorized selected-branch route and verify that its
-workflow identity and executed code agree; never assume a trusted workflow must execute default-
-branch code. Where an actual security contract prevents live branch execution, first exercise an
-equivalent native isolated branch route preserving authentication, permissions and input contracts,
-and state precisely which live behavior remains unverified. Do not add a temporary workflow bypass.
-Missing merge approval holds merging, never available branch verification. Merge is delivery after
-verification, never a substitute for an available branch test.
+Before the final delivery steps below, select the applicable verification route under
+[verification](references/verification.md)'s **Environments**, then verify the requested behavior
+on the change's branch within the authorized scope, including reachable dependency branches, as
+[branch verification](references/branch-verification.md) says. Missing merge approval holds
+merging, never available branch verification. Merge is delivery after verification, never a
+substitute for an available branch test.
 
 Then finish each pull request the task changed, once, with its work finished. A follow-up arriving
 after the streams ran is built, then reaches this checkpoint again when it is finished;
@@ -782,42 +433,45 @@ a small review and a large one a full review of the new work.
 
 Follow the selected workflow’s declared verification and delivery sequence and any hold it places on delivery.
 
-Two streams run side by side from here: the guidance stream and the source stream.
+Two streams run side by side from here: the guidance stream and the source stream. When the set
+`review-pass`'s **Set and timing** defines holds more than one pull request, invoke its **Combined
+Review** once each has its accepted head.
 
 - **Guidance stream.** Invoke `process-ledger` for the task's private ledger. It sends the
-  `guidance_correction` batch it freezes to `edit-skill`'s **Guidance Delivery** route, delegated
-  so it never waits on the source stream. Before a source pull request's source-stream step 1,
+  `guidance_correction` batch it freezes to `edit-skill`'s **Guidance Delivery** route, which the
+  primary agent coordinates so its review and checks never wait on the source stream. Before a source pull request's **Review the pull request**,
   every pending `guidance_correction` entry the GitHub rule's **Branches and Pull Requests** puts
   on it, in the batch in flight or the one after it, is pushed to it and passes its source check,
-  as **Guidance Delivery** step 1 says, so its review pass, history and ready message cover them. An entry recorded after the batch in flight merged is delivered in the batch frozen
+  as **Guidance Delivery**'s **Resume the batch** says, so its review pass, history and ready message cover them. An entry recorded after the batch in flight merged is delivered in the batch frozen
   once that one is done, so the source stream then waits for that delivery too, and for nothing
-  else before step 1. Each such entry's skill-test round runs on the head step 1's review pass accepted, before
-  step 2, and a repair it makes returns to review as **Guidance Delivery** step 4 says. A task with none has no guidance stream.
+  else before **Review the pull request**. Each such entry's skill-test round runs on the head **Review the pull request** accepted, before
+  **Shape the history**, and a repair it makes returns to review as **Guidance Delivery**'s **Conclude the skill test** says. A task with none has no guidance stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
   request belongs to the guidance stream:
 
-1. Invoke `review-pass` on the pull request with the
+1. **Review the pull request.** Invoke `review-pass` on the pull request with the
    intent statement. It runs its review loop and one final `acceptance-gate` over the changes no
    earlier pass reviewed, brings in a moved base, and returns the head its final acceptance passed.
-2. Shape the history with `rewrite-git-history`. The first time a pull request is sent for review,
+2. **Shape the history** with `rewrite-git-history`. The first time a pull request is sent for review,
    rebuild it into one commit per material change. Each later **Completion** of the same pull
    request, after a follow-up, folds every change into the commit it amends through that skill's
    fixup route, or adds a new commit for a new material change, and never rebuilds it again, so the
    commits the user already reviewed keep their shape. A rewrite whose tree proof shows an identical
    tree keeps the acceptance verdict and moves `review-pass`'s reviewed head to the rewritten head.
-3. Reconcile the result with **Product Constraints**' target receipt, updating its sources when
+3. **Reconcile the result** with **Product Constraints**' target receipt, updating its sources when
    accepted requirements changed. Verify every requested outcome and every incidental fix, confirm tests and relevant validation
    cover each of them and every simplification, confirm intentional contract changes are reflected
    in the expected behavior, and confirm multi-repository delivery artifacts describe only their
    owning repository. Then build this pull request's ready-for-review message, in the shape below,
    from `list-prs`, what the run did and `review-pass`'s **Output**.
-4. When **Task Authorization** finds the merge authorized, send step 3's message together with the
+4. **Merge when authorized.** When **Task Authorization** finds the merge authorized, send **Reconcile the result**'s message together with the
    invocation of `merge-gate`, passing the accepted head, `review-pass`'s **Checks** results with their
    commands and head as the behaviors local tests already cover, every exclusion it returned with
-   its evidence, and, as its fix rule, the **Pre-Push Gate** with each fix folded into its commit
-   through `rewrite-git-history`'s fixup route. It inventories exact-head hosted coverage, obtains fresh results only where no
+   its evidence, and, as its fix rule, `review-pass` over each fix's delta since the accepted head and the
+   GitHub rule's **Pre-Push Gate**, with each fix folded into its commit through `rewrite-git-history`'s
+   fixup route. It inventories exact-head hosted coverage, obtains fresh results only where no
    equivalent terminal coverage exists, fixes what relevant checks report and merges; when it returns, send one line with the
-   result it read: the merge, or the gate that holds it. Otherwise send step 3's message; the pull
+   result it read: the merge, or the gate that holds it. Otherwise send **Reconcile the result**'s message; the pull
    request stays draft.
 
 The ready-for-review message takes exactly this shape, one message per pull request, leaving out
@@ -827,19 +481,19 @@ The ready-for-review message takes exactly this shape, one message per pull requ
 **Ready for review:** <pull request URL>
 
 - **What landed:** <each requested outcome, one clause each>
-- **Review:** <full | delta `<reviewed head>..<head>` | trivial delta `<reviewed head>..<head>` | nothing new> · review loop <n> round(s), <n> finding(s) fixed · acceptance passed on `<head>` — leave out each count `review-pass` did not run
+- **Review:** <full | delta `<reviewed head>..<head>` | nothing new> · review loop <n> round(s), <n> finding(s) fixed · acceptance passed on `<head>` — leave out each count `review-pass` did not run
 - **History:** <n> commits (<subject> · <subject> · …)
 - **Fixed on the way:** <each incidental fix, or none>
 - **Deferred** (over the size budget):
   1. <item> — <record link>
 - **Still running:** <the authorized merge through `merge-gate` (CI ~<n> min) | the guidance fixes from this task that have their own pull request (<n> correction(s)) | nothing>
 
-**Next:** <review the pull request; send follow-ups here, `/finish-pr` to review the whole pull request and merge, or `/merge-now` to merge first and review after | review the pull request; it merges once its checks pass>
+**Next:** <review the pull request; send follow-ups here, `/finish-pr` to review what this pass has not and merge, or `/merge-now` to merge first and review after | review the pull request; it merges once its checks pass>
 ```
 
 The run stays open until both streams finish: the source stream when its message is sent, or when
 `merge-gate` returns from an authorized merge; the guidance stream when `process-ledger` reports no
 remaining entries other than kept `review` records, or a concrete retained hold.
 
-A workflow that already runs `review-pass` runs step 1 as its own; one that already invokes
-`merge-gate` runs step 4 as its own.
+A workflow that already runs `review-pass` runs **Review the pull request** as its own; one that already invokes
+`merge-gate` runs **Merge when authorized** as its own.

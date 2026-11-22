@@ -1,6 +1,6 @@
 ---
 name: merge-conflict
-description: Incorporate the base branch into a branch — a merge, a rebase, a pull, a branch update, or a conflict Git or the hosting service reports — by comparing what each side did and keeping the better answer, with the resolved result put to `acceptance-gate`'s base-incorporation question. Use whenever the base is brought into a branch, whether or not Git reports a conflict, whenever a pull request is un-mergeable, when a finished change's base has moved before its final acceptance, or when an already applied local overlay input needs conflict resolution.
+description: Incorporate the base branch into a branch — a merge, a rebase, a pull, a branch update, or a conflict Git or the hosting service reports — by comparing what each side did and keeping the better answer, with the resolved result put to `acceptance-gate`'s base-incorporation question when that procedure calls for a gate. Use whenever the base is brought into a branch, whether or not Git reports a conflict, whenever a pull request is un-mergeable, when a finished change's base has moved before its final acceptance, or when an already applied local overlay input needs conflict resolution.
 short_description: 'Bring the base branch into a work branch, resolve conflicts, and validate the result.'
 ---
 
@@ -28,6 +28,14 @@ answers to one question may now sit in one tree.
 - **A rule that favors your own side is not the judgment.** Once the comparison below has named a
   winner, code that takes the losing shape is refactored onto the winner in the same change, and
   which branch it came from is never a reason to leave it there.
+
+- **A clean merge is not a consistent one, in guidance most of all.** Git reports a collision only
+  where both sides touched the same lines. Where either side changed agent guidance — a skill, a
+  rule, an agent definition — read what the two sides changed together even when nothing conflicted:
+  one case given two answers by edits to different files, a citation of a section or skill the other
+  side moved, renamed or removed, and a rule one side restates that the other changed at its owner
+  are each resolved as a conflict here, and the repository's guidance source check runs on the
+  result before it is pushed.
 
 ## Procedure
 
@@ -70,9 +78,11 @@ source checkout, remote branches and unrelated edits throughout.
    comparison.
 8. For a source branch, regenerate lockfiles, generated contracts and provider mirrors from the
    resolved sources with the repository's tooling, never by hand. Run `git diff --check` and the
-   GitHub rule's **Pre-Push Gate** checks, push the resolved result, then re-query mergeability.
-   Run `acceptance-gate`'s **Base incorporation** procedure with the previous base, incorporated
-   base, originating change and intent, and resolved result.
+   checks the GitHub rule's **Pre-Push Gate** defines, push the resolved result, then re-query mergeability.
+   Follow `acceptance-gate`'s **Base incorporation** procedure with the previous base, incorporated
+   base, originating change and intent, and resolved result. Its gate runs when that procedure
+   calls for one; a clean incorporation disjoint from the change takes none, and the report line
+   says so.
 
 ## Output
 
@@ -81,5 +91,5 @@ branch, the delivery owes this report line:
 
 ```markdown
 Base incorporated: <previous base>..<incorporated base> into <branch>; <n> collisions —
-<n> branch shape kept, <n> base shape taken, <n> merged; gate: accepted | flagged and corrected.
+<n> branch shape kept, <n> base shape taken, <n> merged; gate: accepted | flagged and corrected | not required, clean and disjoint.
 ```

@@ -33,8 +33,8 @@ makes it.
    registry so the two services stop keeping their own copies", not a list of files or symbols. A
    deliberate break of a route, payload, or stored shape is named as a break.
 5. **Give each change one link: the commit that makes it.** A reader clicks it and sees how the
-   change is made, so the link is one, not a list. The GitHub rules say a commit carries one material
-   change, so on a branch that keeps them the bullets and the commits correspond one to one.
+   change is made, so the link is one, not a list. On a branch kept to one commit per material
+   change, the bullets and the commits correspond one to one.
    - **Read `git log --oneline <base>..HEAD` before linking anything.** When every commit carries
      one material change, link them as they stand and rebuild nothing. When some commit mixes
      changes and the branch is yours, run `rewrite-git-history` first, then link the commits. The

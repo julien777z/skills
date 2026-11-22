@@ -1,6 +1,6 @@
 ---
 name: test-fixture
-description: Must be used before creating, moving, renaming, editing, reviewing, or generating any test, fixture, factory, test data, test support, or test configuration in any language, and before executing tests after such a change. Rejects hard-coded domain test data when a canonical fixture or factory owns it, and enforces existing-coverage reuse before new tests, one class per file with small cases folded into existing owning classes, concise parametrized cases, honest doubles, and regression validation through existing tools. Its rubric owns what makes a test worth keeping, changing or removing, and its Sweep applies that to a finished change's tests and their neighbors.
+description: Must be used before creating, moving, renaming, editing, reviewing, or generating any test, fixture, factory, test data, test support, or test configuration in any language, and before executing tests after such a change. Rejects hard-coded domain test data when a canonical fixture or factory owns it, and enforces existing-coverage reuse before new tests, one class per file with small cases folded into existing owning classes, concise parametrized cases, honest doubles, and regression validation through existing tools. Use before choosing or adding a test suite or classification, setting a test time budget, or weighing a test's cost or the evidence for deleting one. Its rubric owns what makes a test worth keeping, changing or removing, and its Sweep applies that to a finished change's tests and their neighbors.
 short_description: 'Check test data and fixtures before changing tests or running tests after a fixture change.'
 ---
 
@@ -12,7 +12,6 @@ exercise, and prove that each test protects behavior or an independent contract.
 ## Dependencies
 - `session-ledger`
 - `pre-production`
-- `council`
 
 ## Workflow
 
@@ -25,7 +24,9 @@ Apply `pre-production` to the scope of issues encountered while tracing a test s
    files or test infrastructure. Where tests are allowed, compare existing patterns with the
    applicable guidance; do not adopt a conflicting pattern merely because it already exists or
    matches the source language. The runtime under test and the assertion framework are separate
-   choices. Read the complete [rubric](references/rubric.md) before inspecting, reviewing, changing,
+   choices. Read the complete [rubric](references/rubric.md) and the
+   [suites reference](references/suites.md), which holds suite, module, configuration and
+   time-budget conventions, before inspecting, reviewing, changing,
    or executing any covered test surface. Discover the repository's test roots, distribution and build
    roots, artifact boundaries, fixture packages, factory owner, shared test utilities, runner
    targets, and analogous sibling tests. For a test of shell, process, container, browser, network,
@@ -43,7 +44,7 @@ Apply `pre-production` to the scope of issues encountered while tracing a test s
    After a test-only change, run the relevant test target; do not repeat source, manual, or external
    validation unless the test exposes a source defect that changes the implementation. Existing tests
    may still be run to diagnose development failures.
-4. Identify the source file and its test module, the one named for that file under the rubric's **Mirror Source Ownership**, beneath the corresponding suite and classification. Extend that module before creating another; where it is absent, create it at that path and handle sibling tests as that section says; apply the rubric's class/file boundary test before splitting or relocating a suite. When the rubric leaves equally valid layouts, put the choice to `council` in **Ask** mode and follow its ruling.
+4. Identify the source file and its test module, the one named for that file under the rubric's **Mirror Source Ownership**, beneath the corresponding suite and classification. Extend that module before creating another; where it is absent, create it at that path and handle sibling tests as that section says; apply that section's behavior-folder condition before splitting or relocating a suite. When the rubric leaves equally valid layouts, pick one and state it with the rubric criterion that left the tie, because an equal choice needs no outside ruling, only one location consistently used.
    Extend an existing module only when its organization and framework comply with the applicable
    guidance. When it conflicts, write the coverage in the required framework and organization;
    an existing test or missing runner does not make the conflicting pattern canonical. Trace reused
@@ -103,7 +104,7 @@ When a focused experiment is useful and supported by the existing route:
 1. Select the nearest editable canonical first-party implementation. Never mutate generated or
    vendored output, run generation for proof, or mutate the test itself. Mutate test support only
    when that support is genuinely the subject under test.
-2. Apply the global rules' **Tools and environments** experimental-isolation boundary before
+2. Apply `pre-production`'s **Verification And Experiments** experimental-isolation boundary before
    selecting the mutation route. Record the canonical target's content hash, staged and unstaged
    state, and the candidate's baseline. In a private candidate, verify the actual loaded source and
    dependency paths, and preserve the native runner's partitions, environment and lifecycle. An
@@ -141,10 +142,11 @@ dispositions, the **Mirror Source Ownership** test-module check, the **Naming Ch
 keeper, and delete one that proves nothing once the rubric's deletion evidence is recorded. A
 repaired or strengthened guarantee follows the existing-check validation procedure above. A fix that repairs a defect —
 a test that cannot fail, guards the wrong behavior or breaks in a fresh checkout — is always made,
-whatever its size; other cleanup the sweep finds counts toward `pre-production`'s size budget like
+on a pull request of its own when `pre-production` places it there, apart from a test already failing on the default branch, which the rubric
+records and leaves; other cleanup the sweep finds counts toward `pre-production`'s size budget like
 any other incidental change, and past it, what is left returns to the caller as deferred work. Apply the cost-reporting procedure above to the run that verified the
 change. A disproportionate test, parametrized family or module in scope is made cheap or removed
-as `pre-production` decides.
+as the rubric's **Test Cost** decides.
 
 Report each test in scope with its disposition, and for each deletion the evidence the rubric asks
 for.
@@ -155,8 +157,8 @@ Fix concrete violations encountered in the relevant tests, sibling tests, fixtur
 shared utilities at the breadth `pre-production` sets. Do not turn a focused change
 into an unrelated repository-wide audit.
 
-Run the locally available targets reached by the final diff. Run the full suite only when every test
-is relevant or the user explicitly requests it.
+Run the locally available targets the final diff reaches. That is this skill's own check of the
+tests it changed; it never narrows which suites verify a change as a whole.
 
 Report source-to-test placement, sibling conventions checked, fixture and factory owners reused or
 extended, parametrized cases reused, encountered corrections, literal-sweep corrections, any mutation

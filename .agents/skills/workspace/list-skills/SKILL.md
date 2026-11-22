@@ -40,8 +40,7 @@ catalog, or memory. Plugin and built-in harness skills are outside both sources.
 ## Output
 
 Reply in chat with exactly this shape. The listing is the answer the user reads in the
-conversation, so it is the exception to the global rules' **User-Facing Output** file rule for
-long item lists and is never sent as a file:
+conversation, the listing itself and not per-item detail behind a report, so it stays in chat however many items it holds and is never sent as a file:
 
 ```markdown
 ## This repository (`<owner>/<repo>`)

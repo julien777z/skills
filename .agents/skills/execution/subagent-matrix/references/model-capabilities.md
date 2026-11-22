@@ -8,8 +8,8 @@ separate tier.
 | Capability | Codex family | Claude family | Selection | Fallback |
 | ---------- | ------------ | ------------- | --------- | -------- |
 | `cheap` | Luna | Haiku | Lower-cost, bounded tasks and cheaper-model checks | Caller-authorized ordinary ladder |
-| `standard` | Terra | Sonnet | Balanced reviews, analysis, and substantive tasks | Caller-authorized ordinary ladder |
-| `advanced` | Sol | Opus | Difficult tasks requiring stronger reasoning | Caller-authorized ordinary ladder |
+| `standard` | Terra | Sonnet | Balanced reviews, analysis, and substantive tasks, and a narrow independent judgment: a small packet whose answer accepts no diff for merge | Caller-authorized ordinary ladder |
+| `advanced` | Sol | Opus | Difficult tasks requiring stronger reasoning, and an independent judgment that accepts a diff for merge or a plan before it is built | Caller-authorized ordinary ladder |
 | `frontier` | Astra | Fable | The most demanding ordinary assignments | Caller-authorized ordinary ladder |
 | `specialist` | Astra | Mythos | Only a calling skill explicitly selecting specialist | Claude: `frontier` by default, or caller-selected tier; Codex Astra holds |
 

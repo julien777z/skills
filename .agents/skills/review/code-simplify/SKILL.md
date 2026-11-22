@@ -19,9 +19,16 @@ it whole before the pass.
 
 ## Before Choosing A Design
 
-Write the [Reuse and removal](references/rubric.md#reuse-and-removal) record for candidate
-designs and review deltas. In planning, read and report evidence only. Apply it again when a
-follow-up changes the proposed mechanism.
+**Search for an existing owner before writing anything a change adds**: a function, component,
+hook, type, constant set, fixture, configuration entry or block of inline logic. This holds on
+every path — a planned design, a small follow-up, a bug fix, a delegated worker's task — and only
+an edit that adds nothing, such as a typo fix or a rename, skips it.
+
+Make the search and write its receipt in the task record before the edit, as the rubric's
+[Reuse and removal](references/rubric.md#reuse-and-removal) says.
+
+In planning, read and report evidence only. Apply the check again when a follow-up changes the
+proposed mechanism.
 
 ## 1. Scope
 
@@ -50,7 +57,9 @@ follow-up changes the proposed mechanism.
 - **Subagents review; the parent applies.** Each returns findings anchored to path and line with
   severity and remedy, and edits nothing. The parent drops duplicates and findings another subsumes,
   and checks each remaining finding against the code before acting on it.
-- Run the rubric's five greps first, then its standards, then trace changed flows.
+- Run the rubric's five greps first, then its standards, then trace changed flows. For each thing
+  the scope adds, make **Before Choosing A Design**'s search yourself, whether or not a receipt was
+  written, and check a written receipt against what the search finds.
 
 ## 3. Fix
 
@@ -59,7 +68,8 @@ follow-up changes the proposed mechanism.
   decision.
 - Fix a `nit` only when it is a one-line change in a line the change already touches; otherwise
   list it as declined.
-- Outside the change, fix every bug, whatever its size. Non-bug cleanup outside the change
+- Outside the change, fix every bug, on the change or its own pull request as
+  `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places it by size. Non-bug cleanup outside the change
   follows `pre-production`'s size budget; return what is past it to the caller to record as deferred
   work.
 - Check each remedy against the language and layout rules for its file before applying it.

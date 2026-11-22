@@ -52,7 +52,7 @@ context:
   play_style: 'Anime-themed gacha tower defense (Roblox genre: Strategy > Tower Defense)'
   camera_perspective: Third-person lobby; match camera not reached
   device_and_input: Desktop keyboard and mouse (VM-injected clicks); HUD shows keyboard hints K (Units) and F (Store)
-  observation_environment: macOS guest VM running the published Roblox player at 1920x1200 points, client 0.746.0, public server
+  observation_environment: macOS VM running the published Roblox player at 1920x1200 points, client 0.746.0, public server
   visible_server_population: Roughly 20+ names in the Roblox player list (scrolling); API maxPlayers 30; 88,385 playing at retrieval
   solo_or_group: Solo in a shared public lobby
   game_version_if_known: UPD 21 (title); in-game update log 'Summer 2026 + Return'

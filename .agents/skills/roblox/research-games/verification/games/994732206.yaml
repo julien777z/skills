@@ -54,7 +54,7 @@ play_coordination:
 context:
     play_style: "RPG > Action RPG (API); Adventure gear genre"
     camera_perspective: "Third person, zoomable toward first person (O/I keys)"
-    device_and_input: "macOS VM guest, keyboard and mouse via injected events"
+    device_and_input: "macOS VM, keyboard and mouse via injected events"
     observation_environment: "Published Roblox player 0.746 in a macOS VM with a paravirtual GPU; world geometry was badly garbled (see technical_quality)"
     visible_server_population: "Server player list showed about a dozen entries; max 12 per server (API); 224,813 playing (API)"
     solo_or_group: "Solo play on a public server"

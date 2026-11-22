@@ -109,9 +109,10 @@ the cost the wrong disposition imposes on everyone who reads it later.
 - **Cancel** work that is genuinely a thing to do and is being declined, deprioritized, or left for
   another time. A canceled issue keeps its reason and its reconsideration criterion, because someone
   may well pick it up.
-- **Delete** a record that describes nothing: one opened by mistake, a duplicate, a finding that
-  turned out to be wrong, or work already done or made irrelevant by a change that has since
-  landed. There is no reason to preserve it and nothing to reconsider.
+- **Delete** a record that never described work: one opened by mistake, a duplicate, or a finding
+  that turned out to be wrong. There is no reason to preserve it and nothing to reconsider. Work
+  already done, or made irrelevant by a change that has since landed, is moved to a
+  completed-category state with its evidence, so its history stays.
 
 Judge by whether the issue still describes real work, never by how it feels to remove one. An
 accidental record left canceled is not tidier than a deleted one — it is a claim that somebody

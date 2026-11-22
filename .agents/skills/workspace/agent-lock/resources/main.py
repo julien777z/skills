@@ -1,44 +1,38 @@
-from argparse import ArgumentParser, ArgumentTypeError, Namespace
+from argparse import ArgumentParser, Namespace
+from collections.abc import Mapping, Sequence
 from datetime import UTC, datetime, timedelta
 from json import dumps
-from os import environ
+from os import environ, killpg
 from pathlib import Path
+from signal import SIGINT, SIGKILL, SIGTERM, signal
+from subprocess import Popen, TimeoutExpired
 from sys import argv, stderr
+from types import FrameType
 
 from locks import (
-    DEFAULT_TTL,
-    MAX_TTL,
+    RENEWAL_INTERVAL,
     acquire_resource,
-    check_ownership,
+    last_activity,
     ownership_status,
     queued_waiters,
     read_ownership,
     read_queue,
     read_receipt,
     release_ownership,
+    renew_ownership,
     resource_path,
 )
-from models.ownership import Acquisition, CommandResult, LockResult, Outcome
-from utils import exclusive_file, positive_seconds, run_command
-
-
-def parse_ttl(value: str) -> float:
-    """Validate the CLI duration without allocating an excessive timedelta."""
-
-    seconds = positive_seconds(value)
-
-    if seconds > MAX_TTL.total_seconds():
-        raise ArgumentTypeError(f"must be at most {MAX_TTL.total_seconds():.0f} seconds")
-
-    return seconds
+from models.ownership import Acquisition, CommandResult, LockResult, Outcome, Receipt
+from utils import exclusive_file, positive_seconds
 
 
 def create_parser() -> ArgumentParser:
     """Describe resource ownership commands."""
 
     parser = ArgumentParser(
-        description="Exclusive resource ownership with automatic expiry and no heartbeats"
+        description="Exclusive resource ownership that lasts while its holder keeps renewing it"
     )
+
     commands = parser.add_subparsers(dest="command", required=True)
 
     for command in ("acquire", "consume"):
@@ -50,7 +44,6 @@ def create_parser() -> ArgumentParser:
         acquire_parser.add_argument("--activity", required=True)
         acquire_parser.add_argument("--receipt", type=Path, required=True)
         acquire_parser.add_argument("--wait-seconds", type=positive_seconds, default=50)
-        acquire_parser.add_argument("--ttl-seconds", type=parse_ttl, default=DEFAULT_TTL.total_seconds())
         acquire_parser.add_argument("--priority", action="store_true")
 
     status_parser = commands.add_parser("status")
@@ -67,10 +60,66 @@ def create_parser() -> ArgumentParser:
     return parser
 
 
+def run_command(
+    command: Sequence[str],
+    environment: Mapping[str, str],
+    receipt: Receipt,
+) -> CommandResult:
+    """Run a foreground process group to completion while renewing the receipt's lock."""
+
+    def _interrupt(signum: int, _frame: FrameType | None) -> None:
+        """Interrupt the supervisor's blocking wait."""
+
+        raise InterruptedError(signum)
+
+    previous_handlers = {signum: signal(signum, _interrupt) for signum in (SIGINT, SIGTERM)}
+
+    try:
+        try:
+            renew_ownership(receipt)
+        except ValueError:
+            return CommandResult(status=Outcome.EXPIRED, command_exit_code=124, interrupted_by=None)
+
+        outcome = Outcome.COMPLETED
+        interrupted_by: int | None = None
+
+        with Popen(command, env=environment, stdout=stderr, start_new_session=True) as child:
+            try:
+                while True:
+                    try:
+                        child.wait(timeout=RENEWAL_INTERVAL.total_seconds())
+                    except TimeoutExpired:
+                        renew_ownership(receipt)
+                        continue
+
+                    break
+            except ValueError:
+                outcome = Outcome.EXPIRED
+            except InterruptedError as error:
+                outcome = Outcome.INTERRUPTED
+                interrupted_by = int(error.args[0])
+            finally:
+                try:
+                    killpg(child.pid, SIGKILL)
+                except ProcessLookupError:
+                    pass
+
+                child.wait()
+
+            return CommandResult(
+                status=outcome,
+                command_exit_code=child.returncode,
+                interrupted_by=interrupted_by,
+            )
+    finally:
+        for signum, handler in previous_handlers.items():
+            signal(signum, handler)
+
+
 def consume(
     request: Acquisition, acquired: LockResult, child_command: list[str]
 ) -> tuple[CommandResult, int]:
-    """Run a protected command and release ownership."""
+    """Run a protected command, renewing ownership while it runs, and release ownership."""
 
     ownership = acquired.get("ownership")
 
@@ -83,7 +132,7 @@ def consume(
         result = run_command(
             child_command,
             {**environ, "AGENT_LOCK_RECEIPT": str(request["receipt_path"])},
-            ownership["expires_at"],
+            receipt,
         )
     finally:
         release_ownership(receipt)
@@ -96,6 +145,7 @@ def consume(
         case _:
             code = result["command_exit_code"]
             exit_code = 128 - code if code < 0 else code
+
     return result, exit_code
 
 
@@ -113,9 +163,9 @@ def execute(options: Namespace, child_command: list[str]) -> tuple[LockResult | 
                 activity=options.activity,
                 receipt_path=options.receipt.expanduser().resolve(),
                 wait=timedelta(seconds=options.wait_seconds),
-                ttl=timedelta(seconds=options.ttl_seconds),
                 priority=options.priority,
             )
+
             result = acquire_resource(request)
 
             if result["status"] == Outcome.BUSY:
@@ -127,7 +177,7 @@ def execute(options: Namespace, child_command: list[str]) -> tuple[LockResult | 
             receipt = read_receipt(options.receipt)
 
             if options.command == "check":
-                result = check_ownership(receipt)
+                result = renew_ownership(receipt)
             else:
                 if not release_ownership(receipt):
                     raise ValueError("This receipt no longer owns the resource. Stop acting on it.")
@@ -140,6 +190,7 @@ def execute(options: Namespace, child_command: list[str]) -> tuple[LockResult | 
             with exclusive_file(path):
                 result = ownership_status(read_ownership(path))
                 result["waiters"] = queued_waiters(read_queue(path), datetime.now(UTC))
+                result["last_activity_at"] = last_activity(path)
 
         case _:
             raise ValueError("Unknown lock command")

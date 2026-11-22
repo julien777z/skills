@@ -50,7 +50,7 @@ play_coordination:
 context:
     play_style: "Sports (basketball); API genre Sports & Racing / Sports"
     camera_perspective: "Third-person over-the-shoulder; L cycles camera modes (a 'WIRE' label appeared after pressing L)"
-    device_and_input: "Keyboard and mouse on a macOS guest VM at 1920x1200 points; keyboard keys driven by script, mouse clicks for UI"
+    device_and_input: "Keyboard and mouse on a macOS VM at 1920x1200 points; keyboard keys driven by script, mouse clicks for UI"
     video_device_and_input: "Videos show mobile touch play (yt_onboarding_1), PC with keyboard and mouse then controller (yt_session_1), and controller play on PC (yt_skilled_1)."
     observation_environment: "Isolated macOS VM runner, Roblox player 0.746, window filled the display (resize call refused, not needed)"
     visible_server_population: "Tutorial place showed only the player and two AI characters; API reported 88,992 playing at research time"
@@ -404,7 +404,7 @@ technical_quality:
     recovery_behavior: "Teleport between tutorial and menu places completed in about 20 s."
     measurements:
         - "Launch to control about 31 s on the VM."
-    measurement_method_and_limits: "Wall-clock capture times on a virtual M2 Pro guest; not representative of native devices."
+    measurement_method_and_limits: "Wall-clock capture times on a virtual M2 Pro VM; not representative of native devices."
     evidence: [play_1]
 transferable_ideas:
     - "Announce the tutorial's length up front ('about 1 minute') and show 'Step N of 3' so a new player knows the cost."

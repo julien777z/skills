@@ -1,4 +1,4 @@
-# Purchase integrity for future authorized monetization
+# Purchase integrity
 
 Add this system only when requested, checking Roblox's current receipt APIs first.
 

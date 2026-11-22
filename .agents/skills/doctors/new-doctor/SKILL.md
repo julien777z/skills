@@ -12,9 +12,9 @@ does not start a doctor audit.
 
 ## Dependencies
 - `doctor-protocol`
-- `subagent-matrix`
 - `get-doctors`
 - `edit-skill`
+- `execute-task`
 
 ## Workflow
 
@@ -24,18 +24,32 @@ does not start a doctor audit.
    and is mechanical enough to check on every run. A class a linter, type checker, or test already
    enforces gets no doctor; a lens over such a class verifies the enforcement still runs rather
    than re-implementing it.
-3. **Write the five things** the protocol says a doctor owns, in this order after the title and a
-   one-sentence lead: `## Dependencies` (`doctor-protocol` first, then the generic skills whose
-   policy it applies, then any repository-specific skill referred to by role); `## Inventory`,
-   naming any measurement the protocol takes once before fan-out; `## Lenses`, one `###` per lens
-   stating the defect shape, the evidence that establishes it, and the remedy; `## Dispositions`,
-   in order, naming the user decisions this domain adds, what the cross-cutting reviewer compares
-   and what the final reviewer challenges; `## Report Additions`. A decision a dependency already
-   settles — breaking an owned contract, what stored data owes, which product changes are the
-   user's — is cited by its section in Dispositions, never restated or reclassified. A reviewer
-   partition the domain dictates may take its own heading; nothing that restates a protocol
-   section may. Declare no delivery cadence: the protocol leaves the run's pull requests draft for
-   the user under the doctor's review-only delivery contract.
+3. **Write what the protocol says a doctor owns**, in this order after the title and a
+   one-sentence lead:
+   - `## Dependencies`: `doctor-protocol` first, then the generic skills whose policy it applies,
+     then any repository-specific skill referred to by role.
+   - `## Inventory`, opening with the instruction to run `doctor-protocol`. It names what is
+     enumerated and what is excluded; the mechanical commands whose output lists candidates, by
+     kind and found in the repository's configuration at runtime; and the before-and-after
+     measures, each a count one of those commands produces. A **Shared index.** paragraph names
+     what the doctor reads from the index `doctor-protocol`'s **Share The Index** keeps and the
+     tables it writes there, in one or two sentences.
+   - `## Lenses`, one `###` per lens, each stating six things: the defect shape; the evidence that
+     establishes it; the remedy; the checks that find every instance, never only the first one
+     noticed; what is left alone, so a reviewer does not go hunting; and whether the lens is
+     whole-repository, judged only across partitions, or judged within one file or area.
+   - `## Reviewers`: one opening sentence citing the cap `doctor-protocol`'s **Launches** sets, a
+     lower cap only where the domain needs one, and what dictates the partition cut, then what the
+     cross-cutting reviewer compares and what the final reviewer challenges.
+   - `## Dispositions`, in order, naming the calls this domain raises, each decided by the run as
+     `doctor-protocol`'s **Gate And Show The Plan** says.
+   - `## Report Additions`.
+
+   A decision a dependency already settles — breaking an owned contract, what stored data owes,
+   what stays reserved to the user — is cited by its section in Dispositions, never restated
+   or reclassified. Nothing that restates a protocol section takes a heading or a paragraph,
+   launch counts included. Declare no delivery cadence: the protocol's **Deliver** leaves the run's
+   pull requests draft for the user.
 4. **Keep it generic.** Discover layouts, tools, frameworks, and budgets at runtime. Never name the
    current repository's paths, packages, products, commands, or thresholds. State a default
    threshold as one the repository's configuration overrides. Refer to a repository-specific skill
@@ -47,40 +61,44 @@ does not start a doctor audit.
    existing skill; check the entrypoint against `doctor-protocol`'s **Declare What The Doctor Owns**;
    confirm no heading restates a protocol section; run `get-doctors` and see the new doctor listed
    with the intended summary.
-7. **Skill-test it** as the section below states, and rewrite any lens a reviewer missed.
-8. **Deliver** through `edit-skill`, whose step 7.7 holds a pull request adding a doctor for the
-   user's review; the report hands the user its link.
+7. **Prepare its skill test** as the section below states.
+8. **Deliver** through `edit-skill`, whose one skill-test round is the doctor's test, and rewrite
+   any lens a reader missed. The GitHub rule's **Merge Authorization** holds a pull request that
+   adds a doctor for the user's review; the report hands the user its link.
 
 ## Skill Test The Doctor
 
-A lens is only as good as what a reviewer reading it finds. Before delivery, prove each lens
-against a violation a reviewer has not been told about.
+A lens is only as good as what a reviewer reading it finds, so each lens is proved against a
+violation its reader has not been told about. The doctor is tested once: this section says what
+the skill-test round of `edit-skill`'s **Guidance Delivery** is given, and starts no round of its
+own.
 
-- **Who reviews.** Invoke `subagent-matrix` and use its **standard** tier for read-only
-  reviewers, following its dispatch and unavailable-model policy. Record each reviewer's catalog
-  state, exact dispatch identifier, assignment state and receipt; record runtime identity only when
-  the host exposes it.
-- **What each reviewer gets.** The doctor's `SKILL.md`, the skills it depends on, one target tree,
-  and the instruction to run the audit phase only: inventory the target, apply every lens, and
-  return findings anchored to file and line, each naming the lens and the remedy. No plan, no
-  gate, no edits, and never the expected findings.
-- **Who writes and judges.** A fresh agent launched through `subagent-matrix` that did not write
-  the doctor picks or builds the targets and writes the sealed expectations below, and another judges each
-  reviewer's findings against them; the doctor's author does neither.
+- **Scenarios.** One per lens, and one for the clean control tree. Each reader gets the doctor's
+  `SKILL.md`, the skills it depends on, one target tree, and the instruction to run the audit
+  phase only: inventory the target, apply every lens, and return findings anchored to file and
+  line, each naming the lens and the remedy. No plan, no gate, no edits, and never the expected
+  findings.
+- **Who writes and judges.** The round's scenario writer, never the doctor's author, picks or
+  builds the targets and writes the sealed expectations below, and the round's grader judges each
+  reader's findings against them.
 - **Targets.** For each lens, first a real example: a place in the current repository where the
-  shape exists today, handed to the reviewer as a bounded scope. Where the
+  shape exists today, handed to the reader as a bounded scope. Where the
   repository has no live example, or the class is one the user described that has not happened
   yet, write a scratch tree outside the repository that plants exactly one violation per uncovered
-  lens, beside one clean control tree that follows every convention and at least one near miss —
+  lens. The clean control tree follows every convention and holds at least one near miss —
   a legitimate pattern that resembles a violation, such as a class-scoped fixture or a trivial
   predicate helper. Scratch trees are never committed.
-- **Sealed expectations.** Before launching, write the expected findings for every target — lens,
-  location, remedy — and keep them from the reviewers.
+- **Sealed expectations.** Before the readers start, the expected findings for every target —
+  lens, location, remedy — are written and kept from them.
 - **Pass.** Every planted or real violation is reported under the right lens with the remedy the
   doctor's dispositions state; the control produces no finding; the near miss is not flagged.
-- **A miss or a false positive is a defect in the lens text, never in the reviewer.** Rewrite the
-  lens's defect shape, evidence, or remedy, then re-run that target on a fresh reviewer; repeat
-  until it passes. Never fix a miss by hinting the reviewer, and never narrow the target to what
-  the reviewer already found.
+- **A miss or a false positive is a defect in the lens text, never in the reader.** Rewrite the
+  lens's defect shape, evidence, checks, or remedy, and the round reruns that scenario on a fresh
+  reader, within the limit of 3 review rounds per change that `execute-task`'s review-rounds
+  reference sets; a lens that fails its third round gets that reference's disposition. Never fix
+  a miss by hinting the reader, and never narrow the target to what the reader already found.
+- **Launches.** The round's own: its scenario writer, one reader per scenario, the control
+  readers it requires for a new skill, and its grader, so the count grows only with the lenses.
 - **Report** per doctor: the lenses exercised, real and invented targets, the model used, each miss
-  and the rewrite it produced, and each false positive. A later edit to a lens re-runs its target.
+  and the rewrite it produced, and each false positive. A later edit to a lens re-runs its
+  scenario.

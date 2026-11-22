@@ -1,19 +1,12 @@
-from collections.abc import Generator, Mapping, Sequence
+from collections.abc import Generator, Mapping
 from contextlib import contextmanager
-from datetime import UTC, datetime
 from fcntl import LOCK_EX, LOCK_UN, flock
 from json import loads
 from math import isfinite
-from os import fdopen, fsync, kill, killpg, replace
+from os import fdopen, fsync, kill, replace
 from pathlib import Path
-from signal import SIGINT, SIGKILL, SIGTERM, signal
-from subprocess import Popen, TimeoutExpired
-from sys import stderr
 from tempfile import mkstemp
-from types import FrameType
 from typing import cast
-
-from models.ownership import CommandResult, Outcome
 
 type JsonValue = str | int | float | bool | None | list[JsonValue] | dict[str, JsonValue]
 
@@ -103,47 +96,3 @@ def positive_seconds(value: str) -> float:
         raise ValueError("Duration must be positive and finite")
 
     return seconds
-
-
-def run_command(
-    command: Sequence[str], environment: Mapping[str, str], expires_at: datetime
-) -> CommandResult:
-    """Run a foreground process group until completion or the deadline."""
-
-    def _interrupt(signum: int, _frame: FrameType | None) -> None:
-        """Interrupt the supervisor's blocking wait."""
-
-        raise InterruptedError(signum)
-
-    previous_handlers = {signum: signal(signum, _interrupt) for signum in (SIGINT, SIGTERM)}
-
-    try:
-        remaining = (expires_at - datetime.now(UTC)).total_seconds()
-
-        if remaining <= 0:
-            return CommandResult(status=Outcome.EXPIRED, command_exit_code=124, interrupted_by=None)
-
-        outcome = Outcome.COMPLETED
-        interrupted_by: int | None = None
-        with Popen(command, env=environment, stdout=stderr, start_new_session=True) as child:
-            try:
-                child.wait(timeout=max(0, (expires_at - datetime.now(UTC)).total_seconds()))
-            except TimeoutExpired:
-                outcome = Outcome.EXPIRED
-            except InterruptedError as error:
-                outcome = Outcome.INTERRUPTED
-                interrupted_by = int(error.args[0])
-            finally:
-                try:
-                    killpg(child.pid, SIGKILL)
-                except ProcessLookupError:
-                    pass
-                child.wait()
-            return CommandResult(
-                status=outcome,
-                command_exit_code=child.returncode,
-                interrupted_by=interrupted_by,
-            )
-    finally:
-        for signum, handler in previous_handlers.items():
-            signal(signum, handler)

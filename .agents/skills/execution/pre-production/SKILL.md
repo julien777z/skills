@@ -1,12 +1,27 @@
 ---
 name: pre-production
-description: Apply target-contract and product-state constraints to implementation, review, and operational data tasks, including maintenance, cleanup, tooling, and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update its owned consumers and migrate retained data instead. Apply to relevant CI failures after validation classification, and whenever a lint, formatting or other non-essential check is red on code the change did not write.
+description: Apply target-contract and product-state constraints to implementation, review, and operational data tasks, including maintenance, cleanup, tooling, and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update its owned consumers and migrate retained data instead. Apply to relevant CI failures after validation classification, and whenever a lint, formatting or other non-essential check is red on code the change did not write. Also use when telling a product choice from a routine detail, placing or laying out code, declaring configuration, logging, naming or choosing American English, choosing versions or dependency releases, writing documentation, comments, commit or pull-request text, example values or paths, writing product copy or forms, repairing a local stack or development data, experimenting against shared state, rebuilding an artifact, or mutating a live deployment.
 short_description: 'Apply target-contract constraints to implementation and review tasks.'
 ---
 
 # Pre-Production
 
 Build the clean target contract instead of preserving transitional behavior.
+
+## Writing A Change
+
+Read each reference at the point a change reaches its subject, and apply it to every line the
+change writes:
+
+- [The code-conventions reference](references/code-conventions.md), before writing or editing
+  code, configuration, a manifest, documentation, a comment, a commit message or pull-request text:
+  whose standards apply, code layout, configuration values, logging, versions, naming and language,
+  example values and paths, documentation, and repository text.
+- [The product-copy reference](references/product-copy.md), before writing or changing text or a
+  form a product's reader meets.
+- [The environments reference](references/environments.md), before repairing or resetting a local
+  stack or its records, combining or reordering verification, running an experimental fault,
+  rebuilding a validated artifact, or sending a write to a live deployment.
 
 ## Product State
 
@@ -35,15 +50,15 @@ Build the clean target contract instead of preserving transitional behavior.
   same check, hosted or local, and reproduce there only when no such run exists. When that evidence
   establishes the same failure under comparable inputs, and the change neither introduces nor
   worsens it, record the check and that evidence as a baseline failure in the task's record, which
-  every later gate receives. Continue the requested work
+  every later gate receives. A test already
+  failing on the default branch is recorded this way and left. Continue the requested work
   and its relevant validation; do not repair, rerun, investigate further, ask a product question, or
   record a deferral for that failure merely because validation encountered it. **Nothing the user
   reads names a baseline failure or says one was left out**: no report, summary, status list, open
   item or question, apart from a merge that branch protection rejects for it, whose rejection is
   reported with its provider evidence. No report claims the excluded check passed either; it
   covers the checks the change answers for. This exclusion does not cover a defect the user assigned, a suite past its
-  runtime budget, as the testing rule's **Every suite finishes within five minutes of wall time**
-  bullet says, deprecated usage or a printed warning, as the
+  runtime budget, deprecated usage or a printed warning, as the
   deprecated-usage bullet below says, a failure of the behavior the task must establish,
   a non-essential check's finding the next bullet has the change fix,
   or a confirmed finding independently established by a review or source inspection apart from
@@ -65,9 +80,10 @@ Build the clean target contract instead of preserving transitional behavior.
   change writes, and the other findings in a file the requested work itself edits, the callers and
   consumers it must update included, while they fit the size budget in force below, measured as it
   measures cleanup. Leave the rest for later work on that code: it is not deferred work, so it is
-  neither recorded nor reported. Never fix past that to turn the check green, never loosen, disable,
-  rescope or ignore the check, and never report the red check to the user or ask about it, apart
-  from a merge branch protection rejects for it, reported as the bullet above says. A finding that
+  neither recorded nor reported. Never fix past that to turn the check green, and never loosen, disable,
+  rescope or ignore the check. A status report covers only the checks the change answers for, so it
+  neither names this red check nor asks about it, apart from a merge branch protection rejects for
+  it, reported as the bullet above says. A finding that
   shows a defect, such as deprecated usage or a vulnerability, stays one, fixed as the bullets below
   say. A finding the change's own code or contract change causes is the change's wherever it points:
   a changed signature whose untouched callers no longer type-check is fixed in those callers, as
@@ -81,19 +97,15 @@ areas the evidence never reaches, and the section below governs how far it reach
 The repair must satisfy **Target Contract**; an encountered failure never authorizes compatibility
 with an obsolete owned contract or revision.
 
-- **A relevant red CI job is an encountered issue.** A package index serving no candidates,
-  a registry or network timeout, a runner fault, a test that passes on a second try: each is the
-  pipeline depending on something it does not control, and that dependency is a defect in the
-  repository. Fix the input that exposes it — restore resolved dependencies from a cache keyed on the
-  lockfile, replace a live service with a fake, make the test deterministic — and push that.
-  Re-running the job is never the fix: a green re-run proves the outage ended, not that the pipeline
-  survives the next one.
-
-- **A test that costs far more than it covers is removed.** When one test, parametrized family or
-  module is disproportionate under the testing rule's **Test Cost** criteria and cannot be made cheap as those
-  criteria allow, apply that rule's **Test Deletion Evidence** requirements before deleting it.
-  Keep or extend a cheaper test of the same classification where the contract needs one. Never keep it
-  in any of the ways the testing rules list for absorbing a slow test.
+- **A hosted check a runner or provider interrupted is an excluded attempt, never a pipeline
+  defect to fix.** A package index serving no candidates, a registry or network timeout, a runner
+  fault: where the logs establish the interruption without a validation failure, the attempt
+  supplies no validation result and is excluded as the GitHub rule's validation-exclusion bullet
+  says, with the run, the interruption evidence and the matching local commands and results
+  recorded. The pipeline is not changed to survive it, and the job is not rerun or waited on merely
+  to get a green hosted result. A recorded validation failure stays a failure, such as a test that
+  passes only on a second try: it is classified as the first bullet above says, and re-running the
+  job is never its fix.
 
 ## Scope Follows The Defect, Not The Request
 
@@ -105,8 +117,8 @@ with an obsolete owned contract or revision.
   and splitting it leaves the half that stays behind as the version the next person extends. The
   repair itself, the defect no longer showing anywhere, is always in scope. A repair whose visible
   effect beyond that reaches surfaces the user did not name, such as a shared component's new
-  layout reaching every page that uses it, is a proposal for those surfaces, put to the user as the
-  global rules' product-choice bullet says, unless a standing rule names that shape a defect.
+  layout reaching every page that uses it, is a proposal for those surfaces, put to the user as
+  **Product Choices** says, unless a standing rule names that shape a defect.
 - **A parallel copy is reconciled by giving the mechanism one owner, never by keeping the copies in
   step.** Making copies identical, a test that they match, or a note to update both leaves the
   second mechanism in place. Pick the owner by the fewest-mechanisms test, across repositories as
@@ -136,9 +148,11 @@ with an obsolete owned contract or revision.
 - **A defect is anything the system does or shows that a reader would call broken**, and the system
   includes the repository's tooling: its tests, fixtures, build, setup and CI. An image that never
   loads, a wrong value, a state shown in the wrong place, a control that does nothing, a lost write
-  or notification, a crash, an exhausted budget, a test suite that fails in a fresh checkout, a
+  or notification, a crash, an exhausted budget, a test suite the change leaves failing in a fresh checkout, a
   fixture that builds data the code would never hold, and a setup step or documented command that
-  errors are its familiar shapes, not its boundary.
+  errors are its familiar shapes, not its boundary. A test already failing on the default branch is
+  a baseline failure, recorded and left as **Encountered Issues** says, never a defect to
+  investigate or repair.
 - **Slow, unbounded or fragile work is a defect too.** Work the system cannot finish in useful time,
   a resource that grows with the data with nothing to bound it, a stored value nothing limits, work
   a restart throws away where a sibling phase keeps its place, and a job that only advances because
@@ -149,32 +163,42 @@ with an obsolete owned contract or revision.
   security finding, because what the system does includes what an attacker can make it do.
 - **Deprecated usage and printed warnings are defects.** An API, setting, default, input or
   dependency its owner has deprecated, and any warning a test run, build, install or CI log prints,
-  is fixed in the change in flight: move to the supported replacement, or turn on the default the
+  is fixed where the next bullet places a noticed defect's fix: move to the supported replacement, or turn on the default the
   owner says is coming; a dependency that itself calls deprecated code is upgraded or replaced,
-  apart from the testing rule's narrow third-party ignore. A check a library warns it will start
+  apart from a narrow ignore for a defect inside a third-party package that nothing the
+  repository controls resolves. A check a library warns it will start
   enforcing is deprecated usage when left off, never a missing safeguard. The replacement changing
   behavior, such as a stricter check, a refused token or a different sign-in, is part of the fix,
   never a reason to keep the deprecated form, call it pre-existing, or put the move to the user;
   released users move as **Product State**'s migration bullet says. Only a step the move needs that
   the user alone can take, such as supplying an identifier the session cannot read, goes to them,
   as that step.
-- **A defect the work notices is always fixed, wherever it lives.** It is fixed in the change in
-  flight, outside both the hop limit and the size budget below, however many files its fix takes.
-  Sitting in a shared
-  component, an owned library or another owned repository the pull request does not otherwise touch
-  is no reason to leave it: the fix goes to that repository's pull request for this work. It is
-  never deferred or offered to the user as a question.
+- **A defect the work notices is always fixed, and a large fix gets a pull request of its own.**
+  The hop limit above does not bound it, and neither does its home: a shared component, an owned
+  library or another owned repository. Its size decides where the fix goes, so the requested change
+  stays reviewable as itself:
+  - **A small fix rides with the change**: one within the widened budget's reach below, about five
+    files, in the repositories the change already edits.
+  - **A larger fix goes on its own pull request**: one reaching more files or another repository,
+    such as a dependency or runtime upgrade a warning leads to, or a fix inside an owned library. It
+    is opened from each affected repository's freshly fetched default branch and carried through
+    its own checks now. The change in flight neither carries it nor consumes its branch, and a
+    merge authorized for the change does not reach it.
+  - **A defect the change itself introduced, or one the requested behavior cannot work without,
+    stays the change's** whatever its size, and a dependency it needs is consumed as the GitHub
+    rule's **Pre-Push Gate** says.
+
+  It is never deferred, left as a note, or offered to the user as a question.
 - **A security vulnerability the work finds is such a defect, whoever finds it and whenever it
   arrived.** One a gate, reviewer or audit reports in code the change never touched, one that
   predates the change, and one another layer is said to stop before that layer is traced on every
-  path the attack takes are all fixed in the change in flight, with a test that reproduces the
-  attack first where one can exist. A shape that may be exploitable is traced to an attacker or
-  ruled out in the same run. It is always closed in the change with the fix that enforces the access
+  path the attack takes are all fixed now, in the change in flight or on a pull request of its own
+  as the bullet above places it, with a test that reproduces the attack first where one can exist. A shape that may be exploitable is traced to an attacker or
+  ruled out in the same run. It is always closed with the fix that enforces the access
   the product already intends; only a change that widens access or changes who the feature serves
-  goes to the user, as the global rules' **Task execution and authorization** says. Every mitigation
-  within reach is carried in the change, and a remaining step only another party can take, such as
-  rotating a credential they hold, is reported as a gate with its owner and saved next action, as
-  the global rules' **Tools and environments** says. It is never put to the user as something to
+  goes to the user, as **Product Choices** says. Every mitigation
+  within reach is carried in that fix, and a remaining step only another party can take, such as
+  rotating a credential they hold, is reported as a gate with its owner and saved next action. It is never put to the user as something to
   consider or an option, recorded as deferred, left as a hardening note, or answered with a
   recommendation to run an audit of any kind later.
 - **Incidental cleanup has a size budget.** Incidental cleanup is everything the request did not
@@ -246,6 +270,70 @@ with an obsolete owned contract or revision.
   the contract the released product needs. It removes exactly one argument from the discussion — that
   the current deployment is small — and settles nothing else about how much scale the work warrants.
 
+## Product Choices
+
+**Fixing an issue does not authorize choosing a new product experience.** Before making a product
+choice, identify the user's instruction or standing guidance that settles it. If neither does,
+explain the concrete issue, show the concrete alternatives with a recommendation, and ask before
+building one; a required outcome does not approve an unnamed layout, control, scope or timing chosen
+to achieve it. Do not silently reclassify a condition, reinterpret a rule, or conceal a conflict to
+make the implementation fit. Keep the valid issue open while its decision waits, with independent
+authorized work continuing as **Trade-Offs Are Surfaced, Never Enforced** says; never ask whether
+the issue should be ignored.
+
+- **What a product choice is.** It changes what the product does or offers: what a feature does or
+  what information it shows, who a surface serves, the steps of a workflow or a quantity the reader
+  meets, a new layout, control or surface, scope, a workaround for a constraint the user set, and
+  anything touching security, disclosure or authorization.
+- **Fixes that are not one.** Closing a security vulnerability, so the product enforces the access
+  it already intends, is a fix and never waits on this question, and so is moving off a deprecated
+  API or setting onto its supported replacement, even when the replacement tightens access, as the
+  deprecated-usage bullet in **Scope Follows The Defect, Not The Request** says. A game's design is
+  never a product choice, as the global rules' game-design bullet says.
+- **A fix's remedy meets the same test, judged by its visible reach.** A remedy whose visible
+  effect is large — one that changes the layout, controls or flow a reader meets on many pages or
+  across several products, or that a returning user would notice, such as every photo gallery
+  turning into a carousel once it holds more than a few photos, or a form splitting into steps
+  everywhere past some number of fields — is a product choice, and so is new visible behavior a
+  remedy carries past the surface the user named to others like it; the defect no longer showing
+  there is not. Each is proposed before it is built, whether it arrives as a fix, a later fix round
+  adjusts it, or a gate accepted it: the proposal lists every page it would change and carries
+  before-and-after captures of a few representative pages where the change shows, never every page,
+  so the user decides where it applies. The user's word on how something looks under one condition,
+  such as at one width, decides nothing about when it appears under another.
+- **A routine presentation or interaction detail is not a product choice, and is not put to the
+  user.** An alignment, a spacing, a size or tone on the product's existing scale, the placement of
+  a message or control among the product's established positions, the wording of a message the
+  change adds, a small layout adjustment confined to the surface in hand that leaves every value as
+  easy to read: decide it by what serves the reader and stays consistent with the product, and
+  state the choice and its reason in the report. Ask only where the user has said such a detail is
+  theirs. A detail the user has already decided on that surface is not the agent's: before deciding
+  one, look for their earlier word on it in the task's record and the conversation, and follow it;
+  changing it goes to the user.
+- **Making content fit its space is the agent's work; only what to remove or hide goes to the
+  user.**
+  - A remedy that keeps every value readable — a strip that scrolls with its scrollbar shown, a
+    long value broken at its natural boundaries, items stacked, a control moved to one of the
+    product's established positions — is a routine detail as above, decided and fixed at whatever
+    width the defect shows, and so is a defect a capture shows that predates the change.
+  - Squeezing columns until cells wrap onto several lines, truncating values, shrinking type, or
+    narrowing cards, form fields or toolbar controls until their labels break word by word keeps
+    everything visible by making rows and items tall and hard to scan, and is never the remedy.
+  - Removing a column, field or item, or hiding it below a width, changes what information the
+    product shows, so ask which content can go or be hidden at that size, with captures of the
+    options, before changing the layout; until the user answers, the content keeps the room its
+    values need.
+- **Text already in the product keeps its words unless it is wrong or the user named it.**
+  - Text that is plainly wrong or inconsistent, such as a label stating something untrue, one thing
+    called by two names, or a message that does not match what happens, is corrected or left by
+    judgment, and the report says which.
+  - Text a standing rule names as a defect counts as wrong, and is fixed on every page it appears
+    on, as the bullets in **Scope Follows The Defect, Not The Request** say.
+  - A request to reword one text rewords that text alone; any other existing title, label,
+    description or message that is correct but could read better keeps its words, beside it or
+    elsewhere, even when the new wording suggests changing it, and the suggested rewording goes to
+    the user for approval.
+
 ## Trade-Offs Are Surfaced, Never Enforced
 
 - **A bug fix restores the intended behavior where it fails.** Identify that behavior from the
@@ -256,9 +344,9 @@ with an obsolete owned contract or revision.
   approach fails. Offer a different outcome only when a verified constraint rules out restoring
   the intended behavior within that scope, or the user explicitly requests alternatives. If a
   constraint can be removed only by expanding scope or authority, explain the constraint and ask
-  about that expansion under the global rules.
+  about that expansion as the global rules' **Asking the user** says.
 - **Keep independent work moving while a product choice waits.** If a remedy changes the intended
-  behavior and the global rules reserve that decision for the user, state the choice plainly and
+  behavior and **Product Choices** reserves that decision for the user, state the choice plainly and
   carry on with work that does not depend on the answer.
   A shape change to an owned contract that **Target Contract** admits without a proposal is not one
   of those: it is made, with every consumer, and stated in the pull request.
@@ -267,19 +355,25 @@ with an obsolete owned contract or revision.
   reads as "there was no decision to make".
 - When a genuine fork appears, present it as options, state each consequence concretely, and **say
   which one removes the most duplication and leaves the fewest mechanisms behind**. Recommend that one.
-  A fork only in how the code is built — where shared behavior lives, which mechanism replaces
-  parallel copies — is decided by that same test and stated in the pull request, never put to the
-  user. Converting existing instances that are not defective to a different shape is not such a
-  fork: it is proposed to the user, as the global rules' **A better shape is proposed, never swept
-  in** says.
-  A fork between designs of what the reader sees is ranked by what serves the reader and the flow
-  instead, as the global rules' standing-guidance bullet says of design rules.
   The user may take the trade-off or refuse it; they cannot weigh what they were not told.
+  - A fork only in how the code is built — where shared behavior lives, which mechanism replaces
+    parallel copies — is decided by that same test and stated in the pull request, never put to the
+    user.
+  - Converting existing instances that are not defective to a different shape is not such a fork:
+    it is proposed to the user, as the code-conventions reference's **A better shape is proposed,
+    never swept in** says.
+  - A fork between designs of what the reader sees is ranked by what serves the reader and the flow
+    instead. **A rule about how the product looks or reads is a default that records earlier design
+    judgment, never the argument for a design.** Where the better option departs from such a rule,
+    recommend it on those merits, name the rule it departs from, and propose the rule change to the
+    user, changing the rule once they agree; never present the rule as the reason to prefer the
+    weaker option, and never depart from it silently.
 - Reserve a blocking question for a decision that is genuinely theirs — a security posture, a product
-  behavior, a disclosure boundary — under the global rules' **Task execution and authorization**.
+  behavior, a disclosure boundary — as **Product Choices** reserves it, asked as the global rules'
+  **Asking the user** says.
   A change to the product experience is not exempt because its consequence seems small or its
   remedy obvious, but a routine presentation or interaction detail is not such a change: it is
-  decided and reported as that section says. Routine internal changes within the settled
+  decided and reported as **Product Choices** says. Routine internal changes within the settled
   experience proceed and are stated in the pull request.
 - Say what changed for whom. "This is a change, not a refactor" belongs at the top of the description,
   not buried among the mechanics.
@@ -291,10 +385,17 @@ with an obsolete owned contract or revision.
 
 - Implement the contract the released product should have. Never add or retain support for an
   obsolete owned contract or revision by any mechanism without explicit user approval for that
-  retention before implementation. This governs code, configuration, tooling, CI, data handling,
+  retention before implementation. When a request replaces a route, API contract or behavior,
+  remove the prior alias or fallback; legacy compatibility stays only when the user explicitly
+  authorizes it in the current request, and unclear retention is asked about before it is added.
+  This governs code, configuration, tooling, CI, data handling,
   documentation, and instructions as well as runtime paths. An old owned consumer failing against
   the current contract is a reason to update it, not an exception; update affected owned consumers
   and migrate retained data onto the target contract instead.
+- **A partial update expresses intent through its existing field presence or field mask.** Apply
+  the fields that mechanism selects and leave every other field alone. Use the contract's own
+  representation for an explicit clear. A separate control earns a place only when it expresses
+  a distinct operation the update fields cannot represent.
 - Treat configuration inputs as owned contracts. Replace a stale deployed value at the existing
   setting and its deployment owner; do not add another file, environment key, or fallback path to
   override it.
@@ -318,10 +419,10 @@ with an obsolete owned contract or revision.
   the old shape; update every consumer and generated contract in the same change. A break the
   requested work or a defect requires is made without a question. One chosen only because another
   shape would serve better, on a contract the work does not otherwise alter, is proposed to the user
-  first, as the global rules' **A better shape is proposed, never swept in** says.
+  first, as the code-conventions reference's **A better shape is proposed, never swept in** says.
 - **An owned contract stays owned across repositories.** A consumer in a sibling repository the
   user owns makes the break multi-repository work, never somebody else's decision; only a consumer
-  outside the user's control freezes a shape. **Scope Follows The Defect** holds for a break as for
+  outside the user's control freezes a shape. **Scope Follows The Defect, Not The Request** holds for a break as for
   a bug: the new shape reaches every site answering the same question, never only the one the work
   started from.
 - Do not weaken a compatibility gate to hide an intentional break. Report the exact failure and the

@@ -10,17 +10,13 @@ Keep one structured ledger in a private task file outside repository checkouts. 
 source of truth; chat context and native task state carry its exact absolute locator and task
 identity, never a second authoritative copy of its records.
 
-## Dependencies
-- `agent-lock`
-
 ## Storage
 
 - Resolve the locator from the active task's metadata before every retrieval or update. For a new
-  task with no prior ledger, choose a task-specific file in the harness's private task-state
-  directory; when none is provided, use `agent-ledgers/` in the user's private state directory
-  (`$XDG_STATE_HOME`, by default `~/.local/state`), where the turn-end hook under **Backup** finds
-  it. Record the absolute locator and stable task identity in task context before using it. Keep
-  the directory private to its owner and the file owner-readable and writable only.
+  task with no prior ledger, create `<task>.yaml` in `agent-ledgers/` under the user's private
+  state directory (`$XDG_STATE_HOME`, by default `~/.local/state`): the turn-end hook under
+  **Backup** checks only files there whose names end in `.yaml` or `.yml`. Record the
+  absolute locator and stable task identity in task context before using it. Keep the directory private to its owner and the file owner-readable and writable only.
 - An established task's missing locator, absent file, unreadable file, or invalid content is a
   recovery condition, not an empty ledger. Reconcile available canonical artifact receipts,
   continuation records, worker returns and the backup comments **Backup** keeps on this task's
@@ -50,8 +46,11 @@ identity, never a second authoritative copy of its records.
   the receiving owner has read the current file. Overlapping owners must settle that transfer
   before either writes.
 - Write the complete validated document to a private temporary file beside the ledger, then
-  atomically replace the ledger and read it back before reporting persistence or continuing.
-  Preserve the previous valid file when validation or writing fails; a failed write remains owed.
+  atomically replace the ledger. Read it back only where a later step depends on the write:
+  before reporting persistence, before a handoff, an ownership transfer or a worker receiving the
+  locator, and after a write that failed or was interrupted. The next update's reread covers every
+  other write. Preserve the previous valid file when validation or writing fails; a failed write
+  remains owed.
 
 ## Workflow
 
@@ -69,22 +68,25 @@ identity, never a second authoritative copy of its records.
      or observing an automated output establishes only a reference, never task work. Acting on a
      pre-existing artifact never makes it session-created.
    - For a correction, keep the observed issue, evidence or user instruction, reproduction scenario,
-     intended behavior, canonical files, local branch, checkpoint and delivery `status` (`pending`,
+     intended behavior, the statement of scope its editor wrote, canonical files, local branch, checkpoint and delivery `status` (`pending`,
      `complete` or `withdrawn`). Keep other
      context needed to resume: decisions and constraints, affected callers, dependencies, check
      results and their validity conditions, open questions and next actions. Choose useful `data`
      fields for the record; local work is never an externally verified artifact claim.
-   - For a plan put to the user, record a `plan` entry: its title, goal, the context it starts from,
-     status (`proposed`, `approved`, `complete` or `withdrawn`) with the user's words approving it,
-     the message they came in and its time, which steps overlap, the decisions it settled with their
+   - For a plan shown or put to the user, record a `plan` entry: its title, goal, the context it
+     starts from, status (`proposed` while a decision or a required approval is open, `shown` for
+     one shown with no open decision, with that time, `approved` only with the user's words
+     approving it, the message they came in and its time, `complete` or `withdrawn`), which steps
+     overlap, the decisions it settled with their
      reasons, how its result will be verified, what it needs from the user, and its ordered steps,
      each with a title, what the step changes and how, origin (`user` for a step the user saw in
      that form, `agent` for one the agent added or widened past what the user asked), status
      (`next`, `active`, `done`, `blocked` or `skipped`), wall-clock estimate, the observed start and
      finish times once known, and any parts, each with a title, a status from that same set and an
      estimate. A plan's total is the sum of its step estimates, with steps the plan records as
-     overlapping counted once, at the longest of them. An `agent` step proceeds under the task's
-     authorization unless it is a product choice, and is never recorded or shown as user-approved.
+     overlapping counted once, at the longest of them. A `shown` plan and an `agent` step proceed
+     under the task's authorization, the step unless it is a product choice, and neither is ever
+     recorded or shown as user-approved.
      Change a step's status when the work changes it, with an observation for the transition; a
      follow-up plan is an entry of its own.
    - For a question put to the user, record a `question` entry: the question, its options, the
@@ -105,7 +107,8 @@ identity, never a second authoritative copy of its records.
      came in, and records approval or an answer only from those words. Agent-written sources — a
      harness task list, worker reports, a summary after compaction, a brief, a gate verdict — show
      what was done, never what the user approved or decided: a step or decision found only there is
-     recorded with origin `agent` and unapproved, never folded into an approved plan.
+     recorded with origin `agent` and unapproved, never folded into an approved plan, and a plan
+     found only there is `shown` at most.
    - For active work, record its owner, priority, status, next action, dependencies and concrete
      blockers so a handoff can resume it without reconstructing the task. Record a priority change
      with its user instruction or urgency evidence and preserve the displaced step. Follow-ups keep
@@ -166,9 +169,12 @@ This skill authorizes those comments and their edits under the GitHub rule's **C
   `awaiting_pull_request` for that part, and opening the pull request posts its backup and puts
   the comment's URL in that item's place.
 - **Posting and recording are one step.** Add the comment's URL to the entry's `recovery_comment`
-  list in the ledger update that follows the post, before any other work. When an entry a comment
-  holds changes — a new commit, a stage result, a step's status, a later answer — edit that comment
-  in place rather than posting another.
+  list in the ledger update that follows the post, before any other work.
+- **A comment is edited at stage boundaries, never at every state change.** Edit it in place,
+  rather than posting another, when its entry is first recorded, when its work is first pushed,
+  accepted, merged or held, and when a later answer replaces the one it holds. A change between
+  those boundaries, such as a step starting, a part finishing or an interim check result, updates
+  the ledger alone, and the comment's status line carries it at the next boundary.
 - The comment shapes and what they may say are in [references/backup.md](references/backup.md).
 - **The backup check reads three `data` fields.** `status` is a plan's or question's status from
   **Workflow**, or a `guidance_correction`'s delivery status: `pending`, `complete` or `withdrawn`;
@@ -184,11 +190,8 @@ This skill authorizes those comments and their edits under the GitHub rule's **C
   one owes a backup or cannot be read, the hook lists each entry and what it lacks. In Claude Code
   and Codex it refuses to end the turn; in Cursor it submits the list as the next message. It
   holds a turn back at most once in a row, so post or edit the comment and record its URL, or
-  repair the ledger, in the turn it reopens. It runs only where `python3` is Python 3.11 or newer.
-
-## Snapshot Evidence
-
-A local review snapshot is task-private evidence. Its identity is route, repository, merge base, candidate head/tree or explicit absence, target-patch digest, intended-selection digest, layered-entry-manifest digest, and artifact digest; two snapshots are equivalent only when every field matches. Its owner resolves intended partitions and stops for user resolution when scope is ambiguous, including a selected hunk that shares an index or worktree cell with unrelated content; unrelated dirty content is excluded. It uses `agent-lock` around capture, excludes an unneeded secret-bearing cell, and holds when selected secret content requires an authorized secret-safe review input instead of silently dropping it, serializes layered HEAD/index/worktree cells with digests, atomically promotes and readbacks the artifact, materializes it only in a pristine task-owned checkout, and verifies ownership before retaining or dispatching it. Every failure or cancellation checks ownership first; a valid owned lock is released with `--resource-idle`, while a failed check performs no checkout action or release. Workflows record the artifact locator, identity, inputs, and receipts in the ledger and reference this protocol instead of copying it.
+  repair the ledger, in the turn it reopens. It runs only where `python3` is Python 3.11 or newer
+  with PyYAML installed; without PyYAML it reports every turn that the backups were not checked.
 
 ## Output
 
@@ -216,7 +219,7 @@ new top-level collections or an envelope per kind.
 
 ## Guardrails
 
-- Do not commit a ledger file or its private evidence, or parse a transcript. Never record
+- Do not commit a ledger file or its private evidence, or infer a record from a transcript. Never record
   credentials, tokens, request bodies, other secrets, or unrelated session details. Remove task
   ledger files, retained evidence and transfer copies after the task ends and no receiver or active
   worker still needs them; a handoff continues the task and is not its end.

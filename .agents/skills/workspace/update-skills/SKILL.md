@@ -1,13 +1,13 @@
 ---
 name: update-skills
-description: Refresh the installed shared skills and rules to the latest default branch while keeping pending skill pull requests, the checked-out skills branch and uncommitted skill edits in effect. Use when the GitHub rules' After Agent Sync section calls for it, or when the user asks to bring local agent guidance up to date.
+description: Refresh the installed shared skills and rules to the latest default branch while keeping pending skill pull requests, the checked-out skills branch and uncommitted skill edits in effect. Use after a pull request that changes agent configuration merges and its Agent Sync run succeeds, or when the user asks to bring local agent guidance up to date.
 short_description: 'Refresh installed skills to the latest default branch, keeping pending skill changes in effect.'
 ---
 
 # Update Skills
 
 Refresh the user-level agent roots from the shared skills repository. An agent runs this skill
-when the GitHub rules' **After Agent Sync** section calls for it; cloud setup also runs the
+after a merge of agent configuration whose Agent Sync run succeeded; cloud setup also runs the
 installer when a session starts.
 This skill never copies provider mirrors by hand.
 
@@ -53,20 +53,16 @@ an untrusted one is left out and reported.
 
 ## Refresh
 
-Hold `agent-lock` on the key `skills-install`, acquired with `--ttl-seconds 900`, from step 2 until
-step 6 finishes, so two sessions never build or remove overlays at once. Run its `check` before
-every write to shared state: step 2's deletions, step 3's stash, fast-forward and marker deletion,
-step 4.4's marker, step 5, each removal in step 6, and each repair of damaged Git state. A check
-that passes with under 300 seconds left ends that lease at this boundary: release it with
-`--resource-idle` and acquire a fresh one before the write, so a refresh longer than one lease goes
-on; a fresh acquisition that finds another holder is a lost lease. On a failed check or a lost
-lease, stop writes immediately, reacquire the lock, restore any stash this run pushed and verify its
-paths, then restart at step 2. Keep step 2's first record whole and the head each abandoned build
+Hold `agent-lock` on the key `skills-install` from step 2 until step 6 finishes, so two sessions
+never build or remove overlays at once. Its `check` renews the lock, so run it about every minute
+while the refresh runs and before every write to shared state: step 2's deletions, step 3's stash,
+fast-forward and marker deletion, step 4.4's marker, step 5, each removal in step 6, and each
+repair of damaged Git state. A failed check is a lost lease: stop writes immediately, reacquire the
+lock, restore any stash this run pushed and verify its paths, then restart at step 2. Keep step 2's first record whole and the head each abandoned build
 reached; the restarted step 2 adds only overlays that record lacks. Repeat recovery after each lost
 lease until verification succeeds. After safe cleanup, release the lock with `--resource-idle` once
-step 6 finishes. A release the tool refuses means a successor took the lock after its deadline:
-release nothing, and report that the lock expired and which overlays were removed after its
-deadline.
+step 6 finishes. A release the tool refuses means a successor took the lock after it went unrenewed:
+release nothing, and report that the lock expired and which overlays were removed after it did.
 
 **Local Git damage in the skills checkout never holds a refresh and is never put to the user; it is
 backed up and repaired, whoever's branch it is.** Damage is local Git state that makes a read, fetch
@@ -97,11 +93,11 @@ and lock ownership throughout.
    overlay worktree, use the main checkout it is a linked worktree of. Confirm the checkout is the
    shared skills repository and its README identifies `bootstrap/install.sh`.
 2. Delete every copy a file-sync service or the operating system made in the checkout, its Git
-   directory, each `skills-overlay/` worktree and every user-level agent root, finding and
-   deleting each as the global rules' **Tools and environments** says. A copy, whatever it holds, is
-   neither an uncommitted edit that takes effect nor damaged Git state: it takes no backup, and step
-   4.3's snapshot leaves out one still waiting to be deleted. Then record the checkout's current
-   commit, branch, working-tree
+   directory, each `skills-overlay/` worktree and every user-level agent root: find them by a
+   name search of each tree and its Git directories, never `git status` or `ls`, and delete each,
+   whatever it holds, once no process, worktree or session uses it. A copy is neither an uncommitted edit that takes effect nor damaged Git state: it takes no
+   backup, and step 4.3's snapshot leaves out one still waiting to be deleted. Then record the
+   checkout's current commit, branch, working-tree
    status, installed source, and each `skills-overlay/` worktree with the built head its marker
    stores. Fetch the remote default branch and the branch of every pull request in effect.
 3. **With no pull request in effect, the checkout on the default branch, and no caller about to
@@ -143,8 +139,9 @@ and lock ownership throughout.
    points into the installed source. Confirm each hook registration the installer wrote — in
    Claude's `settings.json` and Codex's and Cursor's `hooks.json` — runs a `main.py` that resolves
    through a hook link in that root, unless the installer warned that it registered none. Check Codex's global `AGENTS.md` link when Codex is installed. Preserve
-   provider-owned hidden packages and Claude account-synced skills. The installer reconciles other
-   user skill entries to the selected catalog, replacing foreign links and real entries. Real
+   provider-owned hidden packages, Claude account-synced skills and the `session-start-hook` skill
+   a Claude cloud session supplies. The installer reconciles other user skill entries to the
+   selected catalog, replacing foreign links and real entries. Real
    files and foreign links for other artifact types remain protected by conflict preflight.
 6. Once the links point into the installed source, remove every other `skills-overlay/` worktree of
    the checkout, complete or not; this step alone removes overlays. First compare each with the

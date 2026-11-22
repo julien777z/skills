@@ -52,7 +52,7 @@ context:
   play_style: Simulation / Tycoon (idle egg farm with merge)
   camera_perspective: third-person, default follow camera
   device_and_input: macOS Roblox player in a VM, keyboard (W/A/S plus arrow-key camera) and mouse clicks
-  observation_environment: Isolated macOS guest VM over SSH, 1920x1200 points, captures downscaled to 1200 px
+  observation_environment: Isolated macOS VM over SSH, 1920x1200 points, captures downscaled to 1200 px
   visible_server_population: 6-player server (API maxPlayers 6); other players' bases visible (e.g. other base nameplates)
   solo_or_group: solo play on a shared server; each player has their own base plot
   game_version_if_known: Update 11 (Halloween event) per description; place updated 2026-11-08T19:52Z

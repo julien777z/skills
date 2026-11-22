@@ -3,6 +3,9 @@
 The criteria the `code-simplify` pass applies. The skill's `SKILL.md` says how the pass runs; other
 skills that borrow the rubric read this file.
 
+Contents: **Scope**, **Severity**, **Reuse And Removal**, **Standards**, **Five Greps**, **Trace
+Changed Flows**, **Remedies**, **Guidance Prose**.
+
 ## Scope
 
 - **Judge the change and the code it must touch**: the diff, the consumers it has to update, and the
@@ -11,7 +14,8 @@ skills that borrow the rubric read this file.
 - **The intent wins.** Never recommend removing, narrowing or reshaping something the change's
   stated intent asks for, such as a cache, a retry or a guard the request names. Where it looks
   wrong, say so as a question beside the finding, never as the fix.
-- **Outside the change:** a bug it meets is always fixed. Non-bug cleanup outside the change follows
+- **Outside the change:** a bug it meets is always fixed, where
+  `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places it. Non-bug cleanup outside the change follows
   `pre-production`'s size budget and is deferred past it.
 - **Contracts.** Preserve what a consumer outside the user's control observes: public routes and
   their shapes, durable identifiers, persisted and wire formats. A contract whose every consumer the
@@ -35,8 +39,12 @@ Findings use this scale:
 A maintainability finding is never `blocker`. It is at most `should`, and only when it is one of:
 
 - a second copy of a helper or mechanism the repository already owns (standards 3 and 4);
+- new code beside an existing helper or mechanism that would have done the job with one more
+  parameter, condition or case (standard 4);
 - an abstraction, interface or factory the change adds with a single implementation or caller, or
   one whose job something already in the project does (standards 1, 4 and 5);
+- a parameter, option, prop, flag or branch the change adds for a condition no caller produces, or
+  that every caller sets the same way (standard 1);
 - a file the change pushes past 1000 lines (standard 6);
 - a lint or type suppression the change adds (standard 7).
 
@@ -46,20 +54,38 @@ that hides a real failure, keeps its bug severity.
 
 ## Reuse And Removal
 
-For an addition, workaround, or change to an existing shared design, search by effect for existing
-owners and primitives. Before deciding, write all three fields in the task record or verdict:
+Every addition gets one receipt line, written in the task record before the edit and checked at
+review against an independent search:
 
-- **Source.** For each call in the proposed composition, cite its implementation. Name the
-  accepted caller role or authorization guard and the object scope separately. If it selects
-  fields, list its exact field or mask entries and what omission does. State the actual effects
-  and the failure or commit boundary. If no candidate exists, name the search. Flag a material
-  missing fact and state the strongest supported design.
+```text
+<what it does> · searched: <terms, by effect and key operation> · found: <owner and path, or none> · <reuse | extend: <the parameter or condition added> | new: <why no owner fits>>
+```
+
+- **Search** the repository and its shared packages by what the addition does and by its key
+  operation, never by the name it would be given or by filename; a read of the sibling modules
+  alone cannot find the owner another package holds.
+- **Reuse** calls the owner as it stands.
+- **Extend** adds the one parameter, condition or case an owner lacks to do the job; a second
+  helper beside that owner is standard 4's finding.
+- **New** names what each candidate found cannot do; with none found, the search terms are the
+  evidence. A receipt that names no search is no receipt.
+
+A workaround, or a design that changes a shared operation, guard, contract, subsystem, runtime
+boundary or independent consumer, also writes all three fields below, in the task record or
+verdict, before deciding. Each field asks only for the facts the change has:
+
+- **Source.** For each existing piece the design calls or composes, cite its implementation and
+  state what it does and where it fails. Where it checks a caller, name the accepted caller role or
+  authorization guard and the object scope separately; where it selects fields, list its exact
+  field or mask entries and what omission does; where it writes, state the commit boundary. If no
+  candidate exists, name the search. Flag a material missing fact and state the strongest
+  supported design.
 - **Smallest change.** Name the concrete sequence or composition using existing primitives and
   what code goes away. If a new mechanism is required, name the invariant the smaller design
   breaks. For a guard around broad work, compare narrowing the callee with guarding it.
-- **Proof.** Name an observable case for the intended result and an unchanged resource where
-  collateral work matters. Seed the prior state, check dependent results, and cover commit
-  and rollback when the effect depends on a transaction.
+- **Proof.** Name an observable case for the intended result, and an unchanged resource where
+  collateral work matters. Where the effect depends on stored state or a transaction, seed the
+  prior state, check dependent results, and cover commit and rollback.
 
 ## Standards
 
@@ -75,6 +101,10 @@ owners and primitives. Before deciding, write all three fields in the task recor
      that window.
    - Where a writer can produce the state, the check is real and belongs on every sibling path that
      answers the same question.
+   - **A parameter, option, prop, flag or branch for a condition nothing uses is dead code too.**
+     Read every caller of what the change adds or widens. One that no caller sets, or that every
+     caller sets the same way, is deleted with its branch and its one value inlined; "a later
+     caller may need it" keeps nothing.
    - **Reachability is judged where the change will land**: the branch it merges into and the open
      branches it ships with, in every repository the user controls. "Set outside this repository"
      leaves the question open until those are read.
@@ -89,7 +119,8 @@ owners and primitives. Before deciding, write all three fields in the task recor
 4. **One mechanism, one implementation.** Before accepting a new helper, client or utility, search
    the whole repository for the same operation by what it does, not by its name. Two live
    implementations of one guard, check or transform is the defect, whichever came first; a different
-   error type or input shape is drift, not a reason to keep both. Variants become parameters. A
+   error type or input shape is drift, not a reason to keep both. Variants become parameters: new
+   code beside an owner that needed one more condition or parameter is folded into that owner. A
    generic helper the change adds with one caller is either used at the other sites doing that job or
    folded back into its caller.
 5. **No forwarding layers.** A function whose body is one call to another owned function, an
@@ -113,25 +144,39 @@ owners and primitives. Before deciding, write all three fields in the task recor
 10. **Configuration is required unless it has a safe default or its owner documents an absence.** A
    settings field, environment variable, secret, config key or workflow input the change adds or
    reads as optional, with a default that is not safe or a branch that skips or weakens its work
-   when it is unset, is a `should` finding under the global rules' **Configuration** section: a
+   when it is unset, is a `should` finding under `pre-production`'s **Configuration** convention: a
    deployment that misses it runs without what it provides. Local runs or tests lacking the value
    are not such a documented absence. The remedy makes it required and deletes the absence branch.
 
 ## Five Greps
 
-Run these over the diff's added lines before reading for anything else and list every hit. Each hit
-takes its severity from **Severity**, so most are `nit`.
+Run these over the diff's added lines before reading for anything else and list every hit, since a
+fix written after review takes these shapes most easily. Each hit takes its severity from
+**Severity**, so most are `nit`. A report with no hit for any of the five says so in those words.
 
-1. A subscript keyed by a model, class or `type(...)`, such as `LABELS[type(record)]`: the fact
-   belongs on the key as an attribute or property, and the table goes.
-2. A repository-wide fact — a contact address, legal or product name — as a loose string in one
-   consumer: it moves to one typed model every consumer reads.
-3. A router constructor with one handler registered on it: the handler moves to the router that
-   owns its resource.
-4. A data-holding class (`BaseModel`, dataclass, named tuple) declared outside a model-owned file or
-   package. Only a settings class belongs in configuration.
-5. A dict literal annotated with a `TypedDict`, or a bare dict passed where a signature names one:
-   build it with the constructor.
+1. **A reader reaching through a table keyed by a model, class or type for a fact about the key** —
+   the pattern `[A-Z_]+\[` followed by a model, record, class, `type(` or `cls` expression, such as
+   `LABELS[type(record)]` or `FORM_TYPES[model].label`. Each hit counts whether or not the diff added
+   the table: the value belongs on the key as a class attribute or property, every reader moves onto
+   it, and the table goes.
+2. **A repository-wide fact held as a loose string** — an email or street address, a legal entity
+   or product name in a string literal outside one typed model in the package every consumer reads:
+   it moves onto that model.
+3. **A container declared for one member** — a router constructor, such as `APIRouter(`, in an
+   added line, with a count of the handlers registered on that router in the resulting tree. One
+   handler is a hit whether or not the diff added the router: the handler moves onto the router that
+   already owns its resource, at a path under that resource, and the router and its module go. A
+   prefix ending in a verb or an operation is the same hit read from the URL.
+4. **A data-holding class declared outside model ownership** — every added `BaseModel`, dataclass,
+   named tuple or equivalent record declared outside a `models.py` file or `models/` package. It
+   moves to a concept-specific model module. Only a settings class, such as a Pydantic
+   `BaseSettings`, is configuration and belongs in `config.py` or `config/`; registries, manifests,
+   policies, provider payloads and response schemas remain models. A model never moves into
+   operational code merely to remove a one-symbol declarative module.
+5. **A typed parameter built as a dict** — an annotation on a dict literal, such as
+   `name: SomeTypedDict = {` or `params: sdk.params.X = {`, or a bare dict passed where an SDK or
+   repository signature names a `TypedDict`, at any nesting level. Each hit is rewritten as the
+   constructor call, such as `sdk.params.X(...)`, with tests asserting the same way.
 
 ## Trace Changed Flows
 

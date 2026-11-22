@@ -20,7 +20,7 @@ Ground intent in the user's accepted requirements, the change's history, and the
 The statement names:
 
 - the user's request in their own words, quoted, with each example value it holds named by its kind
-  in brackets as the global rules' **Repository guidance** says, and with every later word of theirs
+  in brackets as `pre-production`'s **Examples And Paths** says, and with every later word of theirs
   that widened or narrowed it. Those words bound the change's scope: a restatement in the agent's
   words, a plan step it wrote or a brief never widens it, and a remedy whose product effect — what a feature does or
   shows, or a visible change on surfaces the user did not name — reaches past them is flagged as a
@@ -72,9 +72,12 @@ module named for the one language, package or suite the repository holds now, wh
 purpose says it holds or will hold several, as in a shared library repository that names its test
 job for one of its two languages. The repository's existing instances of each kind of code the diff
 adds, renames or reshapes are what the borrowed code-simplify rubric's second-shape question is
-judged against. Flag a shape that departs from the convention the owner's other repositories use for
-the same kind of artifact, such as a job naming or matrix scheme those repositories share, unless
-the intent states why this repository differs. The remedy names the convention and the
+judged against. The owner's repositories are meant to read as one body of work: someone who knows
+one finds the same CI job names, scripts, layouts and configuration keys in the next, and can move
+between them without relearning. So flag a shape that departs from the convention the owner's other
+repositories use for the same kind of artifact, such as a job naming or matrix scheme those
+repositories share, unless the intent states why this repository differs. Judge the survey by that
+goal: an artifact kind the other repositories do not hold sets no convention to follow. The remedy names the convention and the
 repository-wide name. A missing purpose, existing-instance inventory or sibling convention for code
 or a convention-bearing artifact the diff adds, renames or reshapes holds a clean verdict, as a
 missing input.
@@ -126,6 +129,10 @@ the forbidden behavior would otherwise be useful. Flag any path that still permi
 if its values are valid in another context or it passes the mechanical checks. A remedy must
 also satisfy the same requirements. For example, if model IDs must be discovered at runtime,
 a valid provider ID built into a fallback is a violation.
+
+Where the item carries the statement of scope its editor recorded, read the resulting package
+against it as `skill-pass`'s **Reviewer Brief** says: a behavior change the statement does not
+list is a flag as much as text narrower than what it says changes.
 
 Record the controlling intent and the decisive path and evidence in the verdict. A contradiction
 or a missing source needed to establish conformance prevents acceptance.
@@ -228,13 +235,13 @@ The criteria are `security-audit`'s `references/rubric.md`, and they cut in both
   path; a layer that covers some paths, such as one kind of handler, leaves a finding on the rest.
 - **When it arrived does not matter.** An exploitable finding on a surface the diff touches or
   reads, whether the change introduced it, inherited it or sits beside it, is a flag whose remedy
-  goes into the change in flight. "Not new in this round" never demotes it to a note.
+  goes where `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places it. "Not new in this round" never demotes it to a note.
 - **Severity is likelihood and impact together, and it orders the flags.** A targeted exploit with
   real consequence, a state change an attacker can force, a disclosure of secrets or credentials, a
   business-logic bypass whose blast radius is real: each is a flag of medium severity or above. A
   finding that defeats an explicit security boundary — an action the system gates behind a role,
   performed without it — is a flag with the boundary named. An exploitable finding below medium is
-  still a flag, and its fix goes into the change in flight, ordered by severity; only the
+  still a flag, and its fix goes where `pre-production`'s noticed-defect bullet places it, ordered by severity; only the
   defense-in-depth gap the bullet above defines is a hardening note. If the concrete damage cannot
   be described, the severity is lower than it looks.
 - **The remedy is found in `security-audit`'s order, not written for the sink.** A guarantee the code
@@ -252,8 +259,7 @@ having no users of its own does not mean it has no attackers.
 **A clean read here is not an audit, and never reports as one.** The gate reads a diff with three
 read-only tools and answers one question; it cannot fan out, follow a data flow across a codebase, or
 try to disprove its own finding. A verdict that raises nothing says the diff's added lines carried no
-exploitable finding the gate could see. Only a `security-audit` run at a level that fans out says
-anything about the codebase.
+exploitable finding the gate could see, and says nothing about the codebase beyond it.
 
 So a shape the gate can see but cannot chase to an attacker is not dropped: it is a flag whose
 remedy is the author tracing it to an attacker or ruling it out, and fixing it in the change when it
@@ -263,7 +269,7 @@ run an audit of any kind later never stands in for it.
 ## The Tests Behind Each Question
 
 **An example the user gave is never reproduced.** On every question, each hit in the intent
-statement's example search outside the uses the global rules' **Repository guidance** permits
+statement's example search outside the uses `pre-production`'s **Examples And Paths** permits
 is a flag, and so is any literal in the searched places that looks lifted from real data rather than
 invented. The remedy is an invented value keeping only the trait the case turns on. A missing
 example search, or a bracketed kind in the quoted request the search does not list, holds a clean
@@ -292,10 +298,11 @@ ends the question.
    The Request** defines one. Measured evidence from a
    live run — a rate, a duration, a memory trail, a kill — is evidence of a defect the way a
    confirmed review finding is: the gate takes it as given and never re-derives the defect from the
-   tree, because a tree read alone cannot see a rate. A defect is fixed in the change in flight, or
-   on a branch off the default when nothing is in flight, whatever shape its fix takes, whether the
-   change introduced it, the task asked for it, or the work only ran into it; a defect is never
-   deferred for its size. A migration is how a fix is written, never a reason to record it instead. A check that
+   tree, because a tree read alone cannot see a rate. A defect is fixed whatever shape its fix takes, whether the
+   change introduced it, the task asked for it, or the work only ran into it, on the change or its
+   own pull request as `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places it
+   by size, or on a branch off the default when nothing is in flight; a defect is never deferred
+   for its size. A migration is how a fix is written, never a reason to record it instead. A check that
    would rediscover the defect does not soften this: rediscovery excuses the record, never the fix.
    Product state never softens it either: broken is broken for one admin as for a thousand users.
    A missing safeguard that definition leaves out goes on to the tests below, its exploitability
@@ -323,8 +330,8 @@ ends the question.
    repository the dependency is, never from where it sits or from a record calling it out of scope.
    That the code under change is deployed or running somewhere, a backfill in flight on live data
    included, is the order the fix rolls out in, stated in the pull request; it is never a blocker.
-   The gate never routes work to a decision on its own: where a fix's remedy is a product choice the
-   global rules reserve to the user, the fork is put to the user now, before that remedy is built,
+   The gate never routes work to a decision on its own: where a fix's remedy is a product choice
+   `pre-production`'s **Product Choices** reserves to the user, the fork is put to the user now, before that remedy is built,
    never filed as theirs unasked; a trade-off inside a choice the user's words already settled takes
    the cleanest fix and states it in the pull request. A defer also requires that the record's
    resolution criteria describe an end state and name the intent a fix has to preserve, never a
@@ -344,11 +351,12 @@ ends the question.
    treatment of a measured rate, which is taken as given precisely because reading the tree cannot
    produce one — size is exactly what reading the tree can.
 4. **do** — none of the above: the item is worth doing and its cleanest fix is within reach, so it is
-   done in the change in flight, or on a branch off the default when nothing is in flight.
+   done where `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places a fix of its size, or on a branch off the default when nothing is in
+   flight.
 
 **Admission — may this work be deferred?** The triage question asked of a proposed record. The
 answer is accept when triage's disposition is defer, and otherwise a refusal naming the disposition
-that applies: fix and do send the work into the change in flight, and close records the decision as a
+that applies: fix and do send the work where the fix test places it, and close records the decision as a
 canceled record with its reason and reconsideration criterion. An explicit user instruction to
 defer settles the defer test's justification; the gate still answers the fix test, confirms the problem
 is real from the current tree or measured evidence, and checks that the criteria describe an end
@@ -369,21 +377,9 @@ synthetic diff or accept that absence for a diff-based question.
 **Diff — should this stand?** Does the finished diff do what the accepted proposal said, and nothing
 in the removed shape?
 
-Five shapes the diff question reads for on every change, because a fix written after review takes
-them most easily: a reader that reaches through a lookup table keyed by a model for a fact the model
-could declare on itself — `TABLE[model].label` in an added line is the finding even when the table
-predates the diff — a repository-wide fact kept as loose strings inside one consumer instead of a
-typed owner in the shared package, a container declared for one member — a router carrying one
-handler, whose handler belongs on the router that owns its resource — a data-holding class declared
-outside a model-owned module, and a typed parameter built as a dict literal instead of its
-`TypedDict` constructor. Only a Pydantic `BaseSettings` class belongs in configuration; registries,
-manifests, policies, provider payloads, and response schemas remain models. All five are the greps
-code-simplify opens with; the gate runs them over the diff's added lines and lists their hits before
-anything else.
-
 **A test is priced by what it costs to run.** Flag a test the diff adds or changes, or the module
 holding it, that `test-fixture`'s cost question calls disproportionate, and any change that absorbs
-a slow test in a way the testing rules list; the remedy is making it cheap or removing it, as that
+a slow test in a way `test-fixture`'s **Test Cost** lists; the remedy is making it cheap or removing it, as that
 rubric and `pre-production` decide. For existing-reporting evidence, missing
 available evidence holds a clean verdict; attribution the native route cannot provide is recorded
 unmeasured and does not hold an otherwise validated repair.
@@ -392,8 +388,8 @@ unmeasured and does not hold an otherwise validated repair.
 is that scenario, in the same change.
 
 **An added guard is priced like a missing one.** For every guard, refusal, validation, or branch a
-diff adds, the gate opens the writers `code-simplify`'s standard 1 says to read and names them in the
-verdict. A guard that standard calls dead withholds nothing from anyone under **Product State**'s
+diff adds, the gate opens the writers `code-simplify`'s **Should this exist at all?** standard says
+to read and names them in the verdict. A guard that standard calls dead withholds nothing from anyone under **Product State**'s
 safeguard test and is flagged with that standard's remedy, and so is a reachable-state guard its
 sibling paths lack. An added check is never accepted as a security gain on its face.
 

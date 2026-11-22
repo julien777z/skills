@@ -4,6 +4,7 @@ import { RichText, SourceLinks, StatusBadge } from '@/components';
 import { CHANGES } from '@/lib/tone';
 import type { ChangesSection as ChangesSectionSpec } from '@/spec';
 import { ListSection } from './list-section';
+import { ComparedLines } from './text-list';
 
 export function ChangesSection({ section }: { section: ChangesSectionSpec }): ReactNode {
   return (
@@ -18,7 +19,12 @@ export function ChangesSection({ section }: { section: ChangesSectionSpec }): Re
         title: <RichText text={item.name} />,
         detail: item.detail && <RichText text={item.detail} />,
         aside: <StatusBadge label={CHANGES[item.change].label} tone={CHANGES[item.change].tone} />,
-        body: item.links && <SourceLinks links={item.links} />,
+        body: (
+          <>
+            <ComparedLines current={item.current} proposed={item.proposed} />
+            {item.links && <SourceLinks links={item.links} />}
+          </>
+        ),
       })}
     />
   );

@@ -1,4 +1,5 @@
 ---
+description: Apply when defining Pydantic models and settings or changing validation and serialization.
 alwaysApply: false
 paths:
 - '**/*.py'

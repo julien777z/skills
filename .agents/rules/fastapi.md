@@ -1,5 +1,5 @@
 ---
-description: Use APIRouter-based route organization, validate in models, and keep response handling consistent.
+description: Apply when changing Python routes, dependencies, request handling, or responses.
 alwaysApply: false
 paths:
 - '**/*.py'
@@ -63,7 +63,7 @@ async def get_report_summary(
 - **One router per file.** A module declaring two or more `APIRouter(...)` objects is two or more surfaces sharing a namespace, and its handlers no longer read in one sequence — every reader has to track which router each decorator names. Give the surface a package instead, with one module per router named for that router's topic, and let the package `__init__.py` import each router by name and declare them in `__all__`.
 - **One handler does not earn a router, and a router does not earn a module for one handler.** The
   rule above caps a module at one surface; it never promises that every handler is a surface. A
-  router declared to carry a single operation is the module-per-function shape the Python rules ban,
+  router declared to carry a single operation is the module-per-function shape the general Python rule bans,
   wearing a decorator: the reader looking for that operation searches the resource it acts on, and
   finds a file named after the operation instead.
 - Put the handler on the router that already owns its resource, and give it a path **under** that
@@ -150,7 +150,7 @@ class InvitePayload(BaseModel):
 - Do not pass `name`, `summary`, or `description` to route decorators; FastAPI uses the handler docstring.
 
 ```python
-@router.post("/verify")
+@resources_router.post("/verify")
 async def verify_resource(payload: VerifyPayload) -> ApiEnvelope[VerifyResponse]:
     """Verify a resource and return status."""
 ```
@@ -264,7 +264,7 @@ raise bad_request("Invalid payload")
 try:
     response = await client.get_resource(...)
 except third_party_client.ApiException as exc:
-    logger.error("Resource fetch failed: %s", exc)
+    logger.exception("Resource fetch failed")
 
     raise ApiError(
         status_code=HTTPStatus.INTERNAL_SERVER_ERROR,

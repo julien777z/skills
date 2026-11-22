@@ -74,8 +74,8 @@ of a process, carries no count. Section types:
 | `links` | `title`, `items`, `page_size?`, `group_label?` | `label`, `url`, `detail?`, `status?`, `tone?`, `state?`, `group?`: `state` is a pull request's `open`, `draft`, `merged` or `closed`, drawn with the pull-request pill's icon and color for it in place of the arrow; an item with a `state` is labeled with the pull request's `repository#number` alone, such as `garden-api#42`, what it does in a few words in `detail` |
 | `table` | `title`, `columns`, `rows`, `details?` | each row a list of strings, one per column; `details`, one section per row, makes each row open a dialog holding that section, with its title and description as the dialog's |
 | `notes` | `title`, `items` | each item a string |
-| `changes` | `title`, `items`, `page_size?`, `group_label?` | `name`, `change` (`added`, `changed`, `removed`), `detail?`, `links?`, `group?`: a named part with its change as a colored badge |
-| `outline` | `title`, `groups: [{title, items}]`, `expanded?` (every item starts open when true), `stacked?` (groups run in one column, each across the full width, for groups read in order), `collapsible?` (false shows every item in full with no toggle, its `title` as a muted label beside its `detail`, for a short write-up of facts read top to bottom) | `title`, `detail`, `tone?`, `tag?`, `meta?`, `links?`, `points?`: a headline that opens to its detail, with `points` as a bulleted list under it, with `tag` as a badge in the item's tone (neutral without one) and `meta` as small text; without `expanded`, a group of one or two items shows them open |
+| `changes` | `title`, `items`, `page_size?`, `group_label?` | `name`, `change` (`added`, `changed`, `removed`), `detail?`, `current?`, `proposed?`, `links?`, `group?`: a named part with its change as a colored badge; `current` and `proposed` say what the part does on each side of the change, each on its own line under the name behind a bold Current or Proposed label, the proposed line after the current one and after `detail`, which holds anything else; an added part sets only `proposed` and a removed part only `current` |
+| `outline` | `title`, `groups: [{title, items}]`, `expanded?` (every item starts open when true), `stacked?` (groups run in one column, each across the full width, for groups read in order), `collapsible?` (false shows every item in full with no toggle, its `title` as a muted label beside its `detail`, for a short write-up of facts read top to bottom) | `title`, `detail?`, `current?`, `proposed?`, `tone?`, `tag?`, `meta?`, `links?`, `points?`, with at least one of `detail`, `current` and `proposed`: a headline that opens to its detail, then `current` and `proposed` as a `changes` item shows them, with `points` as a bulleted list under them, with `tag` as a badge in the item's tone (neutral without one) and `meta` as small text; without `expanded`, a group of one or two items shows them open |
 | `tree` | `title`, `items`, `open_depth?` (levels open on load, 1 by default) | `label`, `detail?`, `tag?`, `figure?`, `status?`, `meta?`, `tone?`, `children?`, `details?`: nested entries, each with children opening and closing from a chevron, `tag` a short label that tells otherwise alike entries apart, such as the warehouse each parcel left from, in a neutral pill beside its label, `figure` a short quantity, such as a count or a duration, in a neutral badge after that, `status` (`{label, tone?}`) the entry's state as a pill in its tone after the figure, its tone also coloring the entry's dot when the entry sets no `tone`, `meta` beside them, and `details`, one section, opening in a dialog from the entry's label, which then shows as a link with an open icon; for a whole made of parts made of parts |
 | `tabs` | `title`, `tabs: [{label, sections}]` | each tab a `label` and the `sections` it shows: a bar of tab labels, read with the arrow keys as well as the pointer, over the selected tab's sections, which render inside this card in order; a tab whose `sections` is `[]` is left off the bar, and with one tab left no bar shows, only its sections; for one subject split into kinds the reader looks at one at a time |
 | `figures` | `title`, `items`, `stacked?` (one figure per row, each followed by its caption, for pictures read in order) | `image`, `alt`, `caption?`: `image` a base64 data URI of an SVG, PNG, JPEG, WebP or GIF image, a single figure taking the card's width and several two side by side on a wide page, or one per row at a readable width with `stacked`, with `alt` read out in its place and `caption` under it; for what the reader needs to see rather than read, such as a map, a mock-up or a screenshot |
@@ -272,8 +272,8 @@ data exists, or a change to the app — runs on one made-up scenario, never on r
 
 ## Render
 
-1. Write the spec and the page to the task's working-files folder, as the global rules' **Tools and
-   environments** section places it. A dashboard of a subject that outlives the session keeps its
+1. Write the spec and the page to the task's working-files folder, `.agent_sources/` at the
+   root of the task's worktree. A dashboard of a subject that outlives the session keeps its
    spec, its page and anything a later render reuses in a folder of its own under the user's state
    directory (`$XDG_STATE_HOME`, by default `~/.local/state`) instead. Copy the page to the host's
    scratch directory only when the delivery route reads from there alone.
@@ -301,14 +301,19 @@ to write those types and type-check and lint the app.
 ## Delivery
 
 A dashboard is rendered and delivered only when the user asks for it, by invoking the skill that
-builds it or in words, or on an update schedule that skill states itself. Finished work, a merge, a
-changed record or an earlier one-time request to update it never re-renders one on its own.
+builds it or in words, on an update schedule that skill states itself, or when a workflow the task
+runs states a step that shows one. Finished work, a merge, a changed record or an earlier one-time
+request to update it never re-renders one on its own.
 
 Every render the user is shown goes out through this section, including a preview, a sample, or a
 test of a change to the page: a screenshot of a render is a capture of the page, never its delivery.
-Deliver through the routes the **Harness Router** below selects, in their order, and through the
-same route for every update of one dashboard. A local file or a screenshot does not replace a
-publishing route the harness's file names.
+Deliver through the routes the **Harness Router** below selects for the harness this session runs
+in, in their order, and through the same route for every update of one dashboard within that
+harness. A local file or a screenshot does not replace a publishing route the harness's file names.
+A dashboard an earlier session delivered through a route this harness does not offer, such as a
+published link a session in another harness made, is delivered here through this harness's route,
+never held for that route or put to the user as a step; the report says in one line that the earlier
+link stays at its last version.
 
 - **One published page per dashboard.** Before publishing, look for the link already published for
   this dashboard's purpose, and publish the update to it when there is one. A dashboard that changes

@@ -51,7 +51,7 @@ context:
   play_style: "Roleplay & Avatar Sim / Life (API genre Town and City): open-world life roleplay sandbox"
   camera_perspective: "third-person follow camera"
   device_and_input: "macOS Roblox player 0.746.0 in a VM; mouse clicks on HUD, W/A/S keys, arrow-key camera"
-  observation_environment: "Isolated macOS guest VM over SSH, 1920x1200 points, captures downscaled to 1200 px; paravirtual GPU garbled most world geometry"
+  observation_environment: "Isolated macOS VM over SSH, 1920x1200 points, captures downscaled to 1200 px; paravirtual GPU garbled most world geometry"
   visible_server_population: "API at 00:57Z: 377,372 playing, maxPlayers 30 per server; other players' avatars and an owned neighboring plot were visible"
   solo_or_group: "Solo play on a shared public server"
   game_version_if_known: "Place updated 2026-11-06T21:04Z; in-game Updates panel lists New Houses, New Props, Coach outfit"

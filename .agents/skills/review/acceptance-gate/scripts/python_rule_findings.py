@@ -265,7 +265,7 @@ def layout_findings(path: Path, module: Module, lines: list[str]) -> list[str]:
 
 
 def long_test_name_findings(path: Path, module: Module) -> list[str]:
-    """Find test function names longer than the testing rule allows."""
+    """Find test function names longer than `test-fixture`'s naming checks allow."""
 
     findings: list[str] = []
 

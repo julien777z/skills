@@ -1,6 +1,6 @@
 ---
 name: execute-defer-scope
-description: Evaluate and resolve recorded deferrals from Linear and the legacy repository ledger, using the current session or an explicit issue, key, path, pull request, or aggregate scope. Use to execute, resolve, reconsider, or act on recorded deferrals. Run only when the user asks for it.
+description: Evaluate and resolve recorded deferrals from Linear and the repository ledger, using the current session or an explicit issue, key, path, pull request, or aggregate scope. Use to execute, resolve, reconsider, or act on recorded deferrals. Run only when the user asks for it.
 short_description: 'Review and resolve recorded deferred work for a chosen issue, path, or pull request.'
 ---
 
@@ -21,7 +21,7 @@ Resolve recorded deferrals instead of treating their proposed work as automatica
 
 With no explicit scope, retrieve session-created pull requests from `session-ledger`. Query Linear
 issues carrying the deferral label the repository's project guidance names using the repository and origin or resolution PR metadata
-written by `defer-scope`. Include legacy records and pull requests carrying records created in the session.
+written by `defer-scope`. Include repository-ledger records and pull requests carrying records created in the session.
 Never infer an issue, stable key, path, or pull-request number.
 
 An explicit scope replaces that default:
@@ -29,25 +29,25 @@ An explicit scope replaces that default:
 - A Linear issue identifier or URL, stable key, or repository path selects its exact confident
   match. A pull request selects every record whose exact origin or resolution metadata names it;
   ambiguous fuzzy references select nothing until the user resolves them.
-- `all` selects every active Linear deferral issue for the repository plus active legacy records
+- `all` selects every active Linear deferral issue for the repository plus active repository-ledger records
   on the fetched remote default branch and in open pull requests.
 - `all including declined` also selects canceled or archived Linear issues and records under
   `deferrals/declined/`.
-- An exact canceled issue or declined legacy path selects it without the broader phrase.
+- An exact canceled issue or declined repository-ledger path selects it without the broader phrase.
 
 Fetch the remote default branch and current pull-request state before inventorying. Include
 completed, canceled, and archived Linear results during deduplication even when they are not part of
 the selected active scope. Deduplicate only on strong repository, stable-key, pull-request, affected
 surface, and problem evidence. If the selection is empty, report it and mutate nothing.
 
-If Linear preflight is unavailable, continue any selected legacy records, report that Linear records
+If Linear preflight is unavailable, continue any selected repository-ledger records, report that Linear records
 could not be inventoried, and do not claim an aggregate or session scope is complete.
 
 ## Assess Every Record
 
 Apply `pre-production` to decide which problems and target contracts belong in the release.
 
-Read the complete Linear issue with comments or the complete legacy record with supporting files and
+Read the complete Linear issue with comments or the complete repository-ledger record with supporting files and
 the pull request carrying it. Read the current implementation and history of the code it names. Confirm that
 the problem still exists before considering its proposed solution.
 
@@ -117,33 +117,36 @@ Apply dispositions as follows:
 
 - **Implement** or **Simplify and incorporate** — make the complete correction and update every
   affected test, contract, migration, generated artifact, and consumer.
-- **Already resolved** — add the evidence and move the issue to a completed-category state.
+- **Already resolved** — the default branch did the work or a landed change made it irrelevant: add
+  the evidence and move the issue to a completed-category state.
 - **Decline** — add the reason and the concrete fact that would justify reconsideration, then move
   the issue to a canceled-category state. The work is real and someone may pick it up, so the
   record stays.
-- **Void** — the record describes nothing to do: opened by mistake, a duplicate, a finding that
-  proved wrong, or work a landed change already made irrelevant. Delete it rather than canceling
+- **Void** — the record never described work: opened by mistake, a duplicate, or a finding that
+  proved wrong. Delete it rather than canceling
   it, following the cancel-or-delete rule in `linear`, which also covers what to do when the
   integration exposes no delete operation.
 - **Blocked** — record the blocker and required decision or external change; keep the issue active.
 
 As soon as a validated resolution pull request is ready **and `acceptance-gate` accepted both the
-proposal and the diff**, update every
-included Linear issue's `Resolution PR` metadata and move implemented or simplified issues to a
-completed-category state. A flagged resolution moves nothing: the issue stays active.
-The user's completion condition is a ready validated pull request, not its merge. Do not merge a
-resolution pull request carrying any other change without separate authorization. One confined to
-deferral records, such as legacy declined moves and retired records, merges under the GitHub rule's
-deferral-record permission: put its complete diff to `acceptance-gate`'s final-acceptance question,
-one gate per such pull request, then invoke `merge-gate` with that accepted head, no local test
-coverage, and the rule that a fix it makes goes back to final acceptance over its delta, one more
-gate per fix, capped by the global rules' review-round limit.
+proposal and the diff**, record it in every included Linear issue's `Resolution PR` metadata and
+leave the issue in its started-category state. Move an implemented or simplified issue to a
+completed-category state only once its resolution pull request has merged, because the work is
+delivered only when the default branch holds it, and a completed issue whose pull request never
+lands drops out of ordinary `all` selection. A flagged resolution records nothing: the issue stays
+active. Merging a resolution pull request carrying any other change needs its own authorization. One
+confined to deferral records, such as declined repository-ledger moves and retired records, merges under the
+GitHub rule's deferral-record permission: put its complete diff to `acceptance-gate`'s
+final-acceptance question, one gate per such pull request, then invoke `merge-gate` with that
+accepted head, no local test coverage, and the rule that a fix it makes goes back to final
+acceptance over its delta, one more gate per fix, within the limit of 3 review rounds per change.
 
-When inventorying, reconcile completed issues whose resolution pull request later closed without
-merging. Record that evidence and return them to the appropriate active state so ordinary `all`
-selection cannot hide work that never reached the default branch.
+When inventorying, read each active issue's recorded `Resolution PR`: one that has merged moves the
+issue to a completed-category state with that evidence, and one that closed without merging is
+recorded on the issue, which stays active. A completed issue whose resolution pull request closed
+without merging gets the same evidence and returns to the appropriate active state.
 
-## Resolve Legacy Records
+## Resolve Repository-Ledger Records
 
 Do not migrate existing repository records to Linear in this run. Preserve their current lifecycle:
 
@@ -152,18 +155,25 @@ Do not migrate existing repository records to Linear in this run. Preserve their
   reconsideration criterion;
 - blocked records remain unchanged, wherever they ride.
 
-Once the validated
-resolution pull request is ready, comment on and close each superseded open pull request that
-carries nothing but records included in that replacement, with the replacement and disposition. A
-superseded record riding a pull request that carries other work is removed from it when this
-session owns that pull request; on any other, report the record and its pull request and let the
-resolution pull request carry the disposition.
+**A superseded pull request closes only once its replacement has merged**, because until the
+default branch holds the replacement, the superseded pull request is still a route by which its
+records can land, and closing it early leaves them on a branch nothing tracks. So:
+
+- Once the validated resolution pull request is ready, report each open pull request that carries
+  nothing but records included in it, with a link to the replacement and each record's
+  disposition, and leave it open.
+- When a run finds that replacement merged, comment on each such pull request with the
+  replacement's link and the dispositions, then close it, whichever session opened it. This
+  skill's invocation is the authorization for that comment and that close.
+- A superseded record riding a pull request that carries other work is removed from it when this
+  session owns that pull request; on any other, report the record and its pull request and let the
+  resolution pull request carry the disposition.
 
 ## Validate And Report
 
 Run `code-simplify` across the implementation, complete changed files, analogous code, and sibling
 modules. Run the repository's required validation for every behavioral change and every specialized
-migration or contract check. A legacy disposition-only documentation diff gets artifact validation
+migration or contract check. A repository-ledger disposition-only documentation diff gets artifact validation
 and `git diff --check`, not application tests.
 
 Report every selected record, source, disposition, both gate outcomes, Linear state change,

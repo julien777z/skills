@@ -1,5 +1,5 @@
 ---
-description: Use SQLAlchemy ORM/core query builders and shared table helpers instead of manual SQL strings.
+description: Apply when defining tables or relationships, writing queries, or handling sessions.
 alwaysApply: false
 paths:
 - '**/*.py'
@@ -23,10 +23,10 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from myapp.core.config import CONFIG
 
-from . import Base
+from myapp.models.base import Base
 
 if TYPE_CHECKING:
-    from .authors import Author
+    from myapp.models.authors import Author
 
 
 class Post(Base):
