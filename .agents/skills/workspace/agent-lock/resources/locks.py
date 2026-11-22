@@ -257,10 +257,13 @@ def leave_queue(path: Path, receipt: str) -> None:
             write_queue(path, tickets)
 
 
-def claim_or_queue(key: str, path: Path, request: Acquisition, expired: bool) -> LockResult | None:
+def claim_or_queue(
+    key: str, path: Path, request: Acquisition, expired: bool
+) -> LockResult | tuple[int, LockResult] | None:
     """Claim one key for the request when its ticket leads a free lock; otherwise keep its place in the queue.
 
-    Returns the acquisition, the contention evidence once the wait has expired, or `None` while waiting goes on.
+    Returns the acquisition, the queue position with its contention evidence once the wait has expired, or `None`
+    while waiting goes on.
     """
 
     with exclusive_file(path):
@@ -305,13 +308,12 @@ def claim_or_queue(key: str, path: Path, request: Acquisition, expired: bool) ->
 
         write_queue(path, tickets)
 
+        position = next(position for position, queued in enumerate(tickets, start=1) if queued is ticket)
         result = ownership_status(current)
         result["status"] = Outcome.BUSY
-        result["queue_position"] = next(
-            position for position, queued in enumerate(tickets, start=1) if queued is ticket
-        )
+        result["queue_position"] = position
 
-        return result
+        return position, result
 
 
 def acquire_resource(request: Acquisition) -> LockResult:
@@ -330,23 +332,24 @@ def acquire_resource(request: Acquisition) -> LockResult:
 
     while True:
         expired = monotonic() >= deadline
-        contention: list[LockResult] = []
+        contention: list[tuple[int, LockResult]] = []
 
         for key, path in paths:
-            result = claim_or_queue(key, path, request, expired)
+            claim = claim_or_queue(key, path, request, expired)
 
-            if result is not None and result["status"] == Outcome.ACQUIRED:
+            if isinstance(claim, tuple):
+                contention.append(claim)
+            elif claim is not None:
                 for other_key, other_path in paths:
                     if other_key != key:
                         leave_queue(other_path, str(receipt_path))
 
-                return result
-
-            if result is not None:
-                contention.append(result)
+                return claim
 
         if expired:
-            return min(contention, key=lambda result: result.get("queue_position", 0))
+            _, busy = min(contention, key=lambda queued: queued[0])
+
+            return busy
 
         sleep(min(POLL_SECONDS, max(0, deadline - monotonic())))
 
