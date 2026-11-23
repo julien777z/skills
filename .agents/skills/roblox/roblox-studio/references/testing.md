@@ -497,8 +497,10 @@ and never adds a VM for the experience it plays.
   with `open "roblox://experiences/start?userId=<user id>"`.
 - **The session holds the focus key for each burst of input and capture for less than the 50
   seconds** another session's editor launch waits for it, and runs each burst as one command under
-  `agent-lock consume`, which frees the key the moment that command ends or fails, so a session
-  that dies mid-burst never holds it into a launch's wait; the next burst takes it again. The command
+  `agent-lock consume`, which frees the key the moment that command ends, fails or is interrupted,
+  so a session that dies mid-burst does not hold it into a launch's wait; only a lock helper killed
+  outright leaves it to expire five minutes after its last renewal, which a launch waiting in that
+  window reports as the focus key busy. The next burst takes it again. The command
   brings the player to the front and reads the guest's frontmost process (System Events'
   `frontmost` over `runner_ssh.sh`), exiting before any input unless it is the player, so no input
   lands in an editor, and ends by releasing every held keyboard key; the agent reads the burst's

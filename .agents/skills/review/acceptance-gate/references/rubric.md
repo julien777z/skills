@@ -343,7 +343,8 @@ ends the question.
    alone, naming the fork — the shape, every instance it would convert, the size of that change and
    the recommendation — which the caller puts to the user now; it is built only at the scope the
    user approves, never returned as do. Incidental cleanup past `pre-production`'s size budget is
-   defer without the arguability test, and incidental cleanup inside it is do. Nor are the size
+   defer without the arguability test, apart from a widened budget's larger cleanup, which that
+   budget sends to its own pull request, and incidental cleanup inside it is do. Nor are the size
    and shape of the work inputs the gate may take on trust: "large", "not mechanical", "each site
    needs its own judgment" and "it spans suites the change does not touch" are the asker's
    characterization of the asker's own record. Check the count against the tree and open enough of

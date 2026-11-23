@@ -16,7 +16,8 @@ Changed Flows**, **Remedies**, **Guidance Prose**.
   wrong, say so as a question beside the finding, never as the fix.
 - **Outside the change:** a bug it meets is always fixed, where
   `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places it. Non-bug cleanup outside the change follows
-  `pre-production`'s size budget and is deferred past it.
+  `pre-production`'s size budget: past it, a widened budget's larger cleanup goes on its own pull
+  request as that budget says, and the rest is deferred.
 - **Contracts.** Preserve what a consumer outside the user's control observes: public routes and
   their shapes, durable identifiers, persisted and wire formats. A contract whose every consumer the
   user controls may change, with every consumer updated in the same change, in any repository, never
