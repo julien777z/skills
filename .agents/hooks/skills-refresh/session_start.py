@@ -103,7 +103,7 @@ def refresh(source: Path, fetch: bool = False) -> RefreshOutcome:
                 "--owner", f"skills-startup/{getpid()}",
                 "--activity", "Check and repair installed shared skills",
                 "--receipt", str(Path(temporary) / "lock.json"),
-                "--wait-seconds", "5", "--ttl-seconds", "150", "--",
+                "--wait-seconds", "5", "--",
                 executable, str(Path(__file__).resolve()), "--repair", str(source), str(outcome),
                 *(["--fetch"] if fetch else []),
             ], capture_output=True, text=True, timeout=160)
