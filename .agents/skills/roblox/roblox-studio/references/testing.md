@@ -496,10 +496,13 @@ and never adds a VM for the experience it plays.
 - **Launch from the VM** as step 4 above does, or follow a player into the server they are in
   with `open "roblox://experiences/start?userId=<user id>"`.
 - **The session holds the focus key for each burst of input and capture for less than the 50
-  seconds** another session's editor launch waits for it, releasing it at the burst's end and
-  taking it again for the next burst. A burst starts by bringing the player to the front and confirming it there from a
-  capture, so no input lands in an editor, and ends by releasing every held keyboard key, then
-  the focus key.
+  seconds** another session's editor launch waits for it, and runs each burst as one command under
+  `agent-lock consume`, which frees the key the moment that command ends or fails, so a session
+  that dies mid-burst never holds it into a launch's wait; the next burst takes it again. The command
+  brings the player to the front and reads the guest's frontmost process (System Events'
+  `frontmost` over `runner_ssh.sh`), exiting before any input unless it is the player, so no input
+  lands in an editor, and ends by releasing every held keyboard key; the agent reads the burst's
+  captures once it returns.
 - **The player's log** records each join and teleport with its place and server ID, so it shows
   which server the client is in and why that changed: the newest `*Player*.log` in the VM
   account's Roblox logs folder.
