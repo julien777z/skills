@@ -10,6 +10,22 @@ The story web includes causal, relationship, knowledge, location, prerequisite, 
 
 An opening fails when the player cannot explain the immediate stakes or when its actions have no visible consequence. Review onboarding placement, purposeful geography, first-use vocabulary, and concrete character visuals alongside the later plot. Functional quest progression alone does not establish an interesting story.
 
+## Room to continue
+
+A game's story is built to continue, because a game that ships more content needs somewhere for it
+to go. Each arc, whether a world, a chapter or a season, resolves its own dramatic question. A frame
+that outlives every arc holds them together: why the player keeps going, who and what carries from
+one arc to the next, and a larger question each arc moves forward without closing. No arc's ending
+closes that frame, unless the user says the game is finished. Endings that close it include:
+
+- defeating the only source of conflict for good;
+- finishing the player's role or sending them home for good;
+- shutting the way onward;
+- answering the larger question.
+
+A hook left as an optional extra is not a frame. A proposal shows the frame holds by outlining the
+next two arcs in it, each with its own question, place and reason the player goes there.
+
 ## Dialogue
 
 Dialogue carries character and stakes; the interface carries instructions. A line that tells the
@@ -108,4 +124,4 @@ story revisions preserve both the introduction and subsequent appearances.
 
 ## Proposal evaluation
 
-Score each candidate from 1 (absent/contradictory) to 5 (specific and convincing) on coherence, character agency, playable variety, emotional payoff, onboarding clarity, and feasibility. A candidate with an unresolved central ending, contradictory mandatory dependencies, or a passive player climax fails regardless of total score. Scores compare design judgment; they are not measured retention predictions.
+Score each candidate from 1 (absent/contradictory) to 5 (specific and convincing) on coherence, character agency, playable variety, emotional payoff, onboarding clarity, and feasibility. A candidate with an unresolved central ending, an ending that closes the frame under **Room to continue**, contradictory mandatory dependencies, or a passive player climax fails regardless of total score. Scores compare design judgment; they are not measured retention predictions.

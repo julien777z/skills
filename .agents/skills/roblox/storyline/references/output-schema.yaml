@@ -1,4 +1,4 @@
-schema_version: 2
+schema_version: 3
 mode: audit # create | audit | extend
 premise: ""
 player_role: ""
@@ -11,7 +11,12 @@ learned_concepts: [] # {id, plain_explanation, first_use_beat, later_uses}
 characters: [] # {id, name, role, appearance: {silhouette, scale, face, clothing, palette, materials, props, movement, emotional_impression, recognition_cues, shared_base, required_variants, implementation_owner, after_reversal, retained_canon, proposed_additions}, voice, want, need, fear, secret, limitation, arc, relationships: [{character_id, relationship, change}]}
 character_staging: [] # {id, character_ids, beat_ids, world_id, location, reason_present, presence_conditions, entrance_or_reveal, activity_before_engagement, player_approach, first_cue, interaction_conditions, encounter_behavior, departure_or_aftermath, return_conditions, interruption_resume, shared_progress_behavior, implementation_owner}
 worlds: [] # {id, name, purpose, geography, local_question, arrival, activities, resolution, revisit_state, required_map_changes}
-arcs: [] # {id, title, dramatic_question, setup, escalation, reversal, climax, ending, aftermath, future_hook}
+frame:
+    reason_to_continue: "" # why the player keeps going after every arc
+    carries_between_arcs: [] # characters, companions, places and threads that move from one arc to the next
+    larger_question: "" # what each arc moves forward and none answers
+    next_arcs: [] # {id, title, dramatic_question, place, reason_player_goes}; at least two beyond the arcs proposed
+arcs: [] # {id, title, dramatic_question, setup, escalation, reversal, climax, ending, aftermath, frame_advance, next_arc_opening}
 beats: [] # {id, arc_id, world_id, characters, prerequisites, player_goal, player_action, revelation, consequence, dialogue_sample, completion, optional}
 story_web:
     edges: [] # {from, to, kind, reason}; kind: causes | requires | reveals | located_in | relationship | sets_up | pays_off
@@ -21,7 +26,7 @@ ending:
     character_outcomes: []
     visible_world_changes: []
     player_achievement: ""
-    unresolved_threads: [] # deliberate optional future hooks only
+    unresolved_threads: [] # the frame's open threads and any deliberate optional hooks; never the arc's own question
 extension:
     preserved_victories: []
     connective_coda: ""
