@@ -80,14 +80,15 @@ When the user names a player:
   test what it marks unconfirmed with a capture before and after.
 - **Learn what the playbook does not cover from the screen**: a tutorial, signs, the HUD, other
   players' play. Try each plausible control and keep what moves the objective; a move that trades
-  the objective for a reward, such as leaving the line for a pickup off it, is not a control to try
-  during a round.
+  the objective for a reward, such as leaving the line for a pickup that costs ground, is not a
+  control to try during a round.
 - **Pursue the secondary goals beside it.** In the first minutes, find every currency and reward
   the game shows: HUD counters, coins and pickups in the world, experience bars, quests, daily or
   first-join rewards and free claim buttons. Collect what lies on the objective's route, claim every
   free reward the game offers, and take a detour for one only where it costs the objective nothing,
-  such as in a lobby, between rounds or while out of a round; while a round runs, a pickup off the
-  objective's line is passed by, however close. Read each currency total from the screen at the
+  such as in a lobby, between rounds or while out of a round; while a round runs, a pickup that would
+  cost the objective any ground is passed by, whatever it is worth, and one reachable at no cost,
+  or one that helps the objective, such as a speed boost, is taken. Read each currency total from the screen at the
   session's start, and again as the last step before play ends, after any final purchase; the
   report gives those read values.
 - **Spend what the game awards** on what advances the objective or the next secondary goal, such
