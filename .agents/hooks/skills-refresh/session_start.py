@@ -2,7 +2,7 @@ from json import JSONDecodeError, dumps, load, loads
 from logging import Logger, getLogger
 from os import environ, getpid
 from pathlib import Path
-from subprocess import CalledProcessError, TimeoutExpired, run
+from subprocess import PIPE, CalledProcessError, Popen, TimeoutExpired, run
 from sys import argv, executable, stderr, stdin
 from tempfile import TemporaryDirectory
 
@@ -97,35 +97,45 @@ def refresh(source: Path, fetch: bool = False) -> RefreshOutcome:
     with TemporaryDirectory(prefix="skills-startup-") as temporary:
         outcome = Path(temporary) / "outcome"
 
-        try:
-            result = run([
-                executable, str(lock), "consume", "skills-install",
-                "--owner", f"skills-startup/{getpid()}",
-                "--activity", "Check and repair installed shared skills",
-                "--receipt", str(Path(temporary) / "lock.json"),
-                "--wait-seconds", "5", "--ttl-seconds", "150", "--",
-                executable, str(Path(__file__).resolve()), "--repair", str(source), str(outcome),
-                *(["--fetch"] if fetch else []),
-            ], capture_output=True, text=True, timeout=160)
-        except TimeoutExpired:
-            logger.exception("Shared skills startup lock supervisor timed out")
+        command = [
+            executable, str(lock), "consume", "skills-install",
+            "--owner", f"skills-startup/{getpid()}",
+            "--activity", "Check and repair installed shared skills",
+            "--receipt", str(Path(temporary) / "lock.json"),
+            "--wait-seconds", "5", "--",
+            executable, str(Path(__file__).resolve()), "--repair", str(source), str(outcome),
+            *(["--fetch"] if fetch else []),
+        ]
 
-            return RefreshOutcome.FAILED
-
-        if result.stderr:
-            print(result.stderr, file=stderr, end="")
-
-        if result.returncode == 2:
+        with Popen(command, stdout=PIPE, stderr=PIPE, text=True) as supervisor:
             try:
-                lock_result = loads(result.stdout)
+                stdout, diagnostics = supervisor.communicate(timeout=160)
+            except TimeoutExpired:
+                supervisor.terminate()
+
+                try:
+                    supervisor.communicate(timeout=5)
+                except TimeoutExpired:
+                    supervisor.kill()
+
+                logger.exception("Shared skills startup lock supervisor timed out")
+
+                return RefreshOutcome.FAILED
+
+        if diagnostics:
+            print(diagnostics, file=stderr, end="")
+
+        if supervisor.returncode == 2:
+            try:
+                lock_result = loads(stdout)
             except JSONDecodeError:
                 lock_result = None
 
             if isinstance(lock_result, dict) and lock_result.get("status") == RefreshOutcome.BUSY:
                 return RefreshOutcome.BUSY
 
-        if result.returncode != 0:
-            logger.error("Shared skills startup did not finish:\n%s", result.stdout)
+        if supervisor.returncode != 0:
+            logger.error("Shared skills startup did not finish:\n%s", stdout)
 
             return RefreshOutcome.FAILED
 
