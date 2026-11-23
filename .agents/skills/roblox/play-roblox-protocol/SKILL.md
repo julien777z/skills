@@ -62,9 +62,9 @@ delegation when it runs one.
 
 When the user names a player:
 
-- **Follow the player** with the follow link `roblox-studio`'s **Play a published experience**
-  section gives; a link to a server the game reserves for
-  a round fails, and the game skill says which servers those are.
+- **Follow the player** with the follow link `roblox-studio`'s testing reference's **Play a
+  published experience** section gives; a link to a server the game reserves for a round fails,
+  and the game skill says which servers those are.
 - **Staying with the named player outranks finishing a round.** When the player list shows them
   missing, leave and follow them again at once; a round they are not in is not played.
 - Open the player list only where the game skill says it costs nothing, such as between rounds or
