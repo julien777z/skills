@@ -39,9 +39,10 @@ delegation when it runs one.
 
 ## Run The Session
 
-1. **Find the game and the player.** Look the game up by name through Roblox's search, since the
-   user may misspell it, and resolve a named player to a user ID through Roblox's users API. Their
-   presence names the place and server they are in right now.
+1. **Find the game, and the player when the user names one.** Look the game up by name through
+   Roblox's search, since the user may misspell it, and resolve a named player to a user ID through
+   Roblox's users API. Their presence names the place and server they are in right now. With no
+   player named, launch the game's root place.
 2. **Play in the isolated runner, never the user's desktop**, as `roblox-studio`'s testing
    reference's **Play a published experience** section says, adding the player app as that
    reference says when it is missing. Check the signed-in account from a capture after launch, and
@@ -49,13 +50,15 @@ delegation when it runs one.
    player say.
    Never touch the runner's Studio editors.
 3. **Delegate play to one worker** chosen under `subagent-matrix`, briefed with this skill, the
-   game skill, the player to join and the capture folder. The delegating agent forwards each
+   game skill, the player to join, if any, and the capture folder. The delegating agent forwards each
    capture as it lands, after reading it, as `share-media` says, and relays the worker's findings.
 4. **Keep playing round after round** until the user says to stop or the game skill's stopping rule
    ends play, starting a new worker session when one ends and leaving the player in the game
    between them. When play ends, end it as **Play a published experience** says.
 
 ## Join A Named Player
+
+When the user names a player:
 
 - **Follow the player** with that section's follow link; a link to a server the game reserves for
   a round fails, and the game skill says which servers those are.
@@ -96,7 +99,8 @@ delegation when it runs one.
 
 ## Captures
 
-Capture each notable moment: the join with the player list showing the named player, each round's
+Capture each notable moment: the join, with the player list showing the named player when there
+is one, each round's
 result, each currency or reward gained, each loss, and the moments the game skill adds. Name
 captures in order with a short description, read each one before keeping it, and drop blank or
 duplicate frames.
@@ -115,8 +119,9 @@ this protocol, or to `roblox-studio` when it is about the runner or the player a
 
 Report as the session runs and at its end, adding the game skill's rows:
 
-- whether the agent is in the named player's server, with the player-list capture;
-- each round's result against the objective and the named player, with its capture;
+- with a named player, whether the agent is in their server, with the player-list capture;
+- each round's result against the objective, and against the named player when there is one, with
+  its capture;
 - each secondary goal: the currency totals at start and end, what earned them, and what was spent
   on what;
 - the controls and strategy used, and what the session added to the playbook;
