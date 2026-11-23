@@ -76,7 +76,10 @@ alwaysApply: true
   run on drafts, add this once, as a permanent workflow change in that repository's source pull
   request; never add it and revert it within a session. Cheaper non-test checks, such as lint, may
   keep running on drafts. This bounds what drafts cost and is never a way past a failing test: no
-  test is skipped, disabled, or quarantined to reach green.
+  test is skipped, disabled, or quarantined to reach green. A check that does run on a draft is
+  read whenever the pull request's state is reported, its own or a worker's push alike, and one
+  that fails is fixed in that pull request at once like any defect, a failure in setup the change
+  did not write included, never set aside because the draft's tests run only at the merge.
 
 ## Branches and Pull Requests
 
@@ -439,7 +442,11 @@ bug or a passing formatter does not satisfy this spacing check.
   ask for the dependency's merge or report the consumer blocked on it. Which branch it consumes,
   and a red check that dependency explains, are
   surfaced in user chat under the GitHub rule's independent publishing context rather than waited on; adopting
-  its maintained delivery target is named work for when the dependency merges.
+  its maintained delivery target is named work for when the dependency merges. That route is for
+  something the change uses that the dependency adds. A defect that breaks the pull request's own
+  checks or delivery, such as a CI setup step or a deploy workflow, is repaired in that pull
+  request itself, even when a sibling pull request already carries a repair, never by consuming,
+  stacking on or waiting for that sibling or the default branch.
 - **No edit sits uncommitted through a long wait outside the checks.** Before the slow verification
   below, a background worker, CI on the pushed head, or a question to the user, bring the work to a
   coherent step, commit it, and push it; the checks' own runs are part of the push, not such a wait.
