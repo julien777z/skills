@@ -76,10 +76,7 @@ alwaysApply: true
   run on drafts, add this once, as a permanent workflow change in that repository's source pull
   request; never add it and revert it within a session. Cheaper non-test checks, such as lint, may
   keep running on drafts. This bounds what drafts cost and is never a way past a failing test: no
-  test is skipped, disabled, or quarantined to reach green. A check that does run on a draft is
-  read whenever the pull request's state is reported, its own or a worker's push alike, and one
-  that fails is fixed in that pull request at once like any defect, a failure in setup the change
-  did not write included, never set aside because the draft's tests run only at the merge.
+  test is skipped, disabled, or quarantined to reach green.
 
 ## Branches and Pull Requests
 
@@ -87,7 +84,10 @@ alwaysApply: true
 - Record every pull request with `session-ledger` immediately after the hosting service returns its canonical URL. A task-scoped pull-request lookup reconciles verified task records through that ledger and verifies each selected URL remotely; never infer task membership from the current checkout, a branch name, a transcript, or a broad hosting-service search.
 
 - **Open each pull request as a draft.** Once its merge is authorized, use `merge-gate`'s
-  **Readiness** to mark it ready.
+  **Readiness** to mark it ready. A check that does run on a draft is read whenever the pull
+  request's state is reported, its own or a worker's push alike, and one that fails is fixed in
+  that pull request at once like any defect, a failure in setup the change did not write included,
+  never set aside because the draft's tests run only at the merge.
 - Keep pull requests focused and give them descriptive titles and descriptions: a title stays short,
   and a body may run long with bullets and validation notes. Request appropriate reviewers when the
   repository workflow requires them.
