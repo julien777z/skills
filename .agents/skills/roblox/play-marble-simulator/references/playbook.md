@@ -14,9 +14,9 @@ adds what it verifies, as `play-roblox-protocol`'s **Record What A Session Learn
 - **Joining the main place** lands in a random lobby, which moves you into a match within
   seconds. It reaches the named player only by chance.
 - **Following the player works, even into a match in progress**, with the follow link
-  `roblox-studio`'s **Play a published experience** section gives. Joining mid-match counts the marble
-  as eliminated ("Eliminated! Waiting for party."), so it watches until the match ends and then
-  goes to the same lobby and the next match with the player.
+  `roblox-studio`'s testing reference's **Play a published experience** section gives. Joining
+  mid-match counts the marble as eliminated ("Eliminated! Waiting for party."), so it watches until
+  the match ends and then goes to the same lobby and the next match with the player.
 - **Elimination moves you on unless you are in the player's party.** Eliminated alone, the game
   sent the marble to a new lobby and into a new match without the player. Once the marble was in
   the player's match, every elimination showed "Waiting for party" and kept it there, and when the
