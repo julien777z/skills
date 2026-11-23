@@ -86,9 +86,10 @@ source checkout, remote branches and unrelated edits throughout.
 5. **Preserve behavior required by the target contract.** Migrate affected consumers and retained
    data before removing an obsolete shape. A resolution that drops required behavior is a defect;
    preserving a legacy runtime path is not a way to avoid the migration. Where a close choice changes
-   an interface others build on, put it to `council` in **Ask** mode and follow its ruling; a conflict of intent the evidence does not settle
-   goes to the user instead, as **Neither Side Is Authoritative** says. Block only when a safe resolution needs an unauthorized
-   product decision or a change to a contract a consumer outside the user's control speaks.
+   an interface others build on, put it to `council` in **Ask** mode and follow its ruling; a
+   conflict of intent the evidence does not settle goes to the user instead, as **Neither Side Is
+   Authoritative** says. Block only when a safe resolution needs an unauthorized product decision
+   or a change to a contract a consumer outside the user's control speaks.
 6. Remove every conflict marker and run `git diff --check`. Read the changed-file list against the
    target before proceeding. For a local overlay, preserve paths unrelated to the input and inspect
    their siblings. For a source branch, compare against the base and restore paths the branch never
