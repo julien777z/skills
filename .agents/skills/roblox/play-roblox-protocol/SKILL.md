@@ -86,11 +86,11 @@ When the user names a player:
   the game shows: HUD counters, coins and pickups in the world, experience bars, quests, daily or
   first-join rewards and free claim buttons. Collect what lies on the objective's route, claim every
   free reward the game offers, and take a detour for one only where it costs the objective nothing,
-  such as in a lobby, between rounds or while out of a round; while a round runs, a pickup that would
-  cost the objective any ground is passed by, whatever it is worth, and one reachable at no cost,
-  or one that helps the objective, such as a speed boost, is taken. Read each currency total from the screen at the
-  session's start, and again as the last step before play ends, after any final purchase; the
-  report gives those read values.
+  such as in a lobby, between rounds or while out of a round. While a round runs, a pickup that
+  would cost the objective any ground is passed by, whatever it is worth, and one reachable at no
+  cost, or one that helps the objective, such as a speed boost, is taken. Read each currency total
+  from the screen at the session's start, and again as the last step before play ends, after any
+  final purchase; the report gives those read values.
 - **Spend what the game awards** on what advances the objective or the next secondary goal, such
   as an upgrade that makes the player faster, choosing the one with the most lasting effect.
 
