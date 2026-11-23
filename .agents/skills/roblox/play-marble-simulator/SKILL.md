@@ -7,10 +7,10 @@ description: Play the public Roblox marble game Marble Elimination Ultimate (a m
 
 ## Dependencies
 
-- `game-protocol`
+- `play-roblox-protocol`
 - `roblox-studio`
 
-Run `game-protocol` for every session; this skill supplies its game.
+Run `play-roblox-protocol` for every session; this skill supplies its game.
 
 ## The Game
 

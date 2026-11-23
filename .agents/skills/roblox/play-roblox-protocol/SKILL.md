@@ -1,10 +1,10 @@
 ---
-name: game-protocol
-description: The protocol every skill that plays a published Roblox game runs on — finding the game and a named player, joining and staying in that player's server, playing in the isolated runner, playing to achieve the game's objective while pursuing its secondary goals such as currency, collectibles, experience and free rewards, what the agent may and may not do in a game, delegating play to a worker, captures, recording what a session learns, and the report skeleton. Read from a skill that declares it, such as a play skill for one game or a research study's play turns; never invoked on its own.
+name: play-roblox-protocol
+description: The protocol every skill that plays a published Roblox game runs on, for playing games only and never for building or editing one — finding the game and a named player, joining and staying in that player's server, playing in the isolated runner, playing to achieve the game's objective while pursuing its secondary goals such as currency, collectibles, experience and free rewards, what the agent may and may not do in a game, delegating play to a worker, captures, recording what a session learns, and the report skeleton. Read from a skill that declares it, such as a play skill for one game or a research study's play turns; never invoked on its own.
 short_description: 'Set how an agent joins, plays and reports a published Roblox game.'
 ---
 
-# Game Protocol
+# Play Roblox Protocol
 
 An agent plays a published Roblox game to do well at it: to achieve what the game asks of a player,
 and to come away with what the game rewards along the way. This skill owns the session; each skill
@@ -20,7 +20,7 @@ that plays a game owns only that game.
 ## Declare What The Game Skill Owns
 
 A skill that plays a game declares this skill as a dependency, starts each session in its body
-with the instruction to run `game-protocol`, and supplies:
+with the instruction to run `play-roblox-protocol`, and supplies:
 
 1. **the game** — its name, its root place, any sub-places, and how it moves players between
    servers;
@@ -31,7 +31,9 @@ with the instruction to run `game-protocol`, and supplies:
 4. **a playbook** — a reference of the game's controls, strategy, hazards and pitfalls, which
    **Record What A Session Learns** grows;
 5. **capture and report additions** — the moments and rows its game adds to the lists below;
-6. **a stopping rule**, when play ends other than at the user's word.
+6. **a stopping rule**, when play ends other than at the user's word;
+7. **narrower limits**, where its purpose allows less than this skill does, such as spending no
+   currency; each one replaces the line here it narrows.
 
 A skill that plays games for another purpose, such as a study, supplies the same items for each
 game it plays, records what it learns in its own records rather than a playbook, and keeps its own
@@ -100,8 +102,8 @@ When the user names a player:
 ## Captures
 
 Capture each notable moment: the join, with the player list showing the named player when there
-is one, each round's
-result, each currency or reward gained, each loss, and the moments the game skill adds. Name
+is one, each round's result, the currency totals at the start and end, each reward claimed and
+each purchase made with earned currency, each loss, and the moments the game skill adds. Name
 captures in order with a short description, read each one before keeping it, and drop blank or
 duplicate frames.
 
