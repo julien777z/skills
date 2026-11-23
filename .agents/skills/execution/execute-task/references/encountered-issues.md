@@ -6,8 +6,9 @@ How `SKILL.md`'s **Encountered Issues** handles what the work runs into.
 
 - **A finding against the task's changed design, and every defect the work runs into, is fixed**:
   in the change in flight, or on a pull request of its own where `pre-production`'s **Scope Follows
-  The Defect, Not The Request** places a large fix; cleanup that fixes no defect is recorded with
-  `defer-scope` once it passes `pre-production`'s size budget. The fix takes a shape the standing
+  The Defect, Not The Request** places a large fix; cleanup that fixes no defect and passes
+  `pre-production`'s size budget goes where that budget sends it, its own pull request or a record
+  with `defer-scope`. The fix takes a shape the standing
   guidance allows, as the next bullet says, and offering it to the user is not a disposition: "Want this handled, or shall I leave it?" spends a turn to obtain
   permission the guidance already settled. The question that is genuinely the user's is a product
   choice, as `pre-production`'s **Product Choices** defines one, never whether an encountered issue
@@ -62,7 +63,8 @@ How `SKILL.md`'s **Encountered Issues** handles what the work runs into.
   concrete failure modes, and available validation instead of treating the label as a stop rule.
 - Apply `pre-production`'s scope decision before treating a review observation as mandatory work.
   A review naming a non-defect improvement does not turn independent cleanup into a defect or
-  authorize recursive expansion; past the size budget it is recorded with `defer-scope`.
+  authorize recursive expansion; past the size budget it goes where that budget sends it, its own
+  pull request or a record with `defer-scope`.
 - Delete the dead code the change itself leaves, and other confirmed dead code it meets within
   `pre-production`'s size budget. Confirm that no live application or library consumer, public
   export, or external contract still depends on it, judged where the change will land as

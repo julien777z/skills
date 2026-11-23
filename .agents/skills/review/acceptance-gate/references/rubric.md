@@ -343,7 +343,8 @@ ends the question.
    alone, naming the fork — the shape, every instance it would convert, the size of that change and
    the recommendation — which the caller puts to the user now; it is built only at the scope the
    user approves, never returned as do. Incidental cleanup past `pre-production`'s size budget is
-   defer without the arguability test, and incidental cleanup inside it is do. Nor are the size
+   defer without the arguability test, apart from a widened budget's larger cleanup, which that
+   budget sends to its own pull request, and incidental cleanup inside it is do. Nor are the size
    and shape of the work inputs the gate may take on trust: "large", "not mechanical", "each site
    needs its own judgment" and "it spans suites the change does not touch" are the asker's
    characterization of the asker's own record. Check the count against the tree and open enough of
@@ -407,6 +408,10 @@ sibling paths lack. An added check is never accepted as a security gain on its f
    tree. **Flag a resolution that states no comparison, and one whose only stated reason is that the
    incoming shape is one the change removes** — that reason is available in every collision and always
    points the same way, so it records no judgment. Arrival order is not evidence in either direction.
+- **Intent.** Flag a collision where the result drops or reverses a behavior either side's change
+   exists to produce, or a decision the user made, with neither a recorded reason from the evidence
+   that this intent should hold nor the user's answer, one kept and merely listed in a report
+   included.
 
 **Final acceptance — may this merge?** The item is the complete pull-request diff against the intent
 statement and the rubric, read once after review is clean and before any check gate.

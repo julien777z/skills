@@ -246,8 +246,8 @@ that file gets a file of its own instead of joining the others. Check it mechani
 test module in scope and compare its name, without the test-file marker, with the source file at the mirrored
 path. A test module named for a function or class inside a source file is a finding; its tests fold
 into that source file's test module, organized as this section's class rule and **Prefer
-Parametrized Cases** say, within `pre-production`'s size budget, the rest recorded as deferred
-work.
+Parametrized Cases** say, within `pre-production`'s size budget, the rest going where that budget
+sends it.
 
 Before placing or moving a test, compare analogous sibling service tests and their corresponding
 source owners. Apply explicit repository guidance first. Otherwise prefer the layout that most

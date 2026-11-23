@@ -33,7 +33,8 @@ built on.
 - **What a worker reports leaving alone is classified before it reaches the user.** Read each item
   against `pre-production`'s **Scope Follows The Defect, Not The Request** bullets: a defect, a
   parallel copy of the change's own mechanism or a shape a standing rule names goes back to the
-  worker or is fixed here; an item over the size budget is recorded with `defer-scope`, and only it
+  worker or is fixed here; an item over the size budget goes where that budget sends it, its own
+  pull request or a record with `defer-scope`, and only a recorded one
   and an item those bullets leave to the user are reported, as what it is and never as a question
   whether to fix it.
 - **A cause stated to the user is traced first, whether or not they asked for it**: a root cause,

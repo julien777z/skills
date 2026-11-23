@@ -70,7 +70,8 @@ proposed mechanism.
   list it as declined.
 - Outside the change, fix every bug, on the change or its own pull request as
   `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places it by size. Non-bug cleanup outside the change
-  follows `pre-production`'s size budget; return what is past it to the caller to record as deferred
+  follows `pre-production`'s size budget; past it, a widened budget's larger cleanup goes on its
+  own pull request as that budget says, and the rest returns to the caller to record as deferred
   work.
 - Check each remedy against the language and layout rules for its file before applying it.
 - After fixing, rescan only when the fixes added, moved, merged or deleted a module or changed an

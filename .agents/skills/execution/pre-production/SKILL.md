@@ -216,10 +216,13 @@ with an obsolete owned contract or revision.
     session widens it, until they withdraw it: such cleanup fits when its fix touches about five
     files or fewer, needs no design decision from the user, does not change what the product does
     and needs no plan of its own. Each such fix gets its own commit, named for what it repairs.
-  - Cleanup past the budget in force is deferred work: returned to the caller to record, listed in
-    the change's report one line each with its record, and never fixed in the change or put to the
-    user as a question. A defect, a security vulnerability included, is never past it. An explicitly
-    requested broad refactor sets its own scope and carries no budget.
+    A cleanup that would reach more files or a repository the change does not already edit goes
+    on its own pull request, as a larger fix does above, so the requested change stays reviewable
+    as itself.
+  - Other cleanup past the budget in force is deferred work: returned to the caller to record,
+    listed in the change's report one line each with its record, and never fixed in the change or
+    put to the user as a question. A defect, a security vulnerability included, is never past it.
+    An explicitly requested broad refactor sets its own scope and carries no budget.
 - **A correction to how one screen looks or reads reaches every page when the user makes it a
   rule, and that screen alone when they do not.** A correction the user asks to have codified, or
   gives a reason for that holds wherever the shape appears, such as "labels sit above their fields

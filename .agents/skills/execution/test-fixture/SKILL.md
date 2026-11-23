@@ -144,7 +144,7 @@ repaired or strengthened guarantee follows the existing-check validation procedu
 a test that cannot fail, guards the wrong behavior or breaks in a fresh checkout — is always made,
 on a pull request of its own when `pre-production` places it there, apart from a test already failing on the default branch, which the rubric
 records and leaves; other cleanup the sweep finds counts toward `pre-production`'s size budget like
-any other incidental change, and past it, what is left returns to the caller as deferred work. Apply the cost-reporting procedure above to the run that verified the
+any other incidental change, and past it goes where that budget sends it: its own pull request, or back to the caller as deferred work. Apply the cost-reporting procedure above to the run that verified the
 change. A disproportionate test, parametrized family or module in scope is made cheap or removed
 as the rubric's **Test Cost** decides.
 

@@ -26,7 +26,8 @@ an encountered issue from the task.
     the change's own mechanism is the change's scope under `pre-production`'s **Scope Follows The
     Defect, Not The Request**: give the mechanism one owner, move every consumer onto it and delete the copies.
     Other code the change resembles and should be one thing with is made one thing within
-    `pre-production`'s size budget and recorded with `defer-scope` past it.
+    `pre-production`'s size budget, and past it goes where that budget sends it: its own pull
+    request when it is a widened budget's larger cleanup, otherwise a record with `defer-scope`.
   - **Sibling modules**: the other modules in each changed file's package, which is where a
     misplaced piece of logic and its rightful home become visible together.
 - When a repair changes another file, inspect its complete contents and relevant owners to verify
