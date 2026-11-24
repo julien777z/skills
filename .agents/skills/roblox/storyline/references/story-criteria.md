@@ -1,5 +1,15 @@
 # Story quality criteria
 
+## Concrete adventure
+
+The first quality bar, ahead of everything below. The core of a story is an adventure a child can retell: a named antagonist with a concrete goal, such as to attack, conquer, destroy or steal, against a place and people the player cares about. The stakes are plain, as in "if nobody stops him, the harbor falls". The player fights the antagonist's forces and finally the antagonist. Once it falls, a new or bigger threat carries on into the next worlds, which is how the story keeps going under **Room to continue**. A theme or a mystery may sit underneath the adventure and is never the premise: a premise that is an abstract or lyrical idea, such as a fading, a stillness or a riddle about the world, with no one to fight and nothing concrete at risk, fails this bar. Take the shape of a well-loved adventure and never its story, names or characters.
+
+## Direction pitch
+
+A direction is proposed as a short pitch, not a full story: its hook, the idea in a sentence or two, what the player does, the first world in a few lines, what keeps it going and the next worlds, why it is engaging, and its biggest risk. It meets the bar above, with the antagonist named and the stakes stated in the pitch. Beats, dialogue, art, consistency checks, critic rounds, dashboards and implementation come only after the user approves a direction.
+
+## Story structure
+
 A strong story has a clear initial desire, a disruption the player understands, escalating consequences, a midpoint that changes interpretation, a costly or revealing choice, and a resolved climax followed by a visible aftermath. The player causes the decisive outcome through the game's verbs. Character motives exist before the player arrives and change under pressure.
 
 Characters have distinct voices, wants, needs, fears, limitations, secrets, relationships, and reasons to help or oppose one another. Opposition has understandable motives without requiring moral equivalence. Reveals have observable setup and later payoff; a twist must explain prior evidence rather than contradict it. NPCs contribute actions and consequences, not only exposition. Dialogue is concise enough to play, with deeper optional material where appropriate.
@@ -57,7 +67,8 @@ are reachable by a player who does only the required beats.
 Run these against a selected story before implementing it:
 
 - **Skipping reader.** Read only each conversation's first line and the objective text: can the
-  player say what to do next and why it matters at every beat?
+  player say what to do next and why it matters at every beat, and can a ten-year-old say who the
+  bad guy is and what happens if nobody stops them?
 - **Knowledge timeline.** For each character and the player, list what they know and can name at
   each beat; a character who uses a name, place or fact before it could be known, or a reveal stated
   before its beat, or hinted so plainly that the player can no longer doubt it, is a defect; so is a
@@ -123,5 +134,7 @@ gameplay cameras. Record staging and its observed status in durable canon so fut
 story revisions preserve both the introduction and subsequent appearances.
 
 ## Proposal evaluation
+
+Pitches are judged before this scoring, for engagement and the main idea only. A pitch or candidate without a named antagonist and concrete stakes fails the **Concrete adventure** bar regardless of any score below.
 
 Score each candidate from 1 (absent/contradictory) to 5 (specific and convincing) on coherence, character agency, playable variety, emotional payoff, onboarding clarity, and fit with the game's loop, which asks whether the story plays through the game's own verbs. How much a candidate takes to build is never scored or held against it; that is the user's call. A candidate with an unresolved central ending, an ending that closes the frame under **Room to continue**, contradictory mandatory dependencies, or a passive player climax fails regardless of total score. Scores compare design judgment; they are not measured retention predictions.

@@ -1,5 +1,9 @@
 # Mode criteria
 
+## Direction first
+
+Every mode starts a new or changed direction as pitches, as the story criteria's **Direction pitch** says, and develops one only after the user approves it. An audit's findings stand on their own; a rewrite it proposes is put as a pitch first.
+
 ## Create
 
 A complete new arc has original characters, a dramatic premise, the player's role, a sequence of meaningful developments, a final confrontation or decision, and an aftermath, and sits inside a frame that keeps the story open for the arcs after it, as the story criteria's **Room to continue** says. Existing mechanics constrain how it becomes playable. Unknown audience or production budgets are stated assumptions.
