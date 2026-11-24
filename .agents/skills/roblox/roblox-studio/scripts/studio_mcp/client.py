@@ -179,21 +179,29 @@ class StudioMcpConnection:
                 config: RunnerConfig) -> JsonRpcMessage:
         """Send a request over the session to the configured runner, waiting for its turn within the timeout."""
 
-        started = time.monotonic()
-        waiting_message = f"Studio MCP timed out waiting for another request on the connection: {method}"
-
-        if not self.turn.acquire(timeout=max(timeout.total_seconds(), 0)):
-            raise TimeoutError(waiting_message)
+        remaining = self.take_turn(timeout, method)
 
         try:
-            remaining = timeout - timedelta(seconds=time.monotonic() - started)
-
-            if remaining <= timedelta():
-                raise TimeoutError(waiting_message)
-
             return self.session_request(method, params, remaining, config)
         finally:
             self.turn.release()
+
+    def take_turn(self, timeout: timedelta, operation: str) -> timedelta:
+        """Wait for this connection's turn within the timeout and return the time left, holding the turn."""
+
+        started = time.monotonic()
+
+        if not self.turn.acquire(timeout=max(timeout.total_seconds(), 0)):
+            raise TimeoutError(f"Studio MCP timed out waiting for another request on the connection: {operation}")
+
+        remaining = timeout - timedelta(seconds=time.monotonic() - started)
+
+        if remaining <= timedelta():
+            self.turn.release()
+
+            raise TimeoutError(f"Studio MCP timed out waiting for another request on the connection: {operation}")
+
+        return remaining
 
     def session_request(self, method: str, params: Mapping[str, JsonValue], timeout: timedelta,
                         config: RunnerConfig) -> JsonRpcMessage:
@@ -228,6 +236,7 @@ class StudioMcpConnection:
         with self.turn:
             if self.session is not None:
                 self.session.close()
+
                 self.session = None
 
 
@@ -406,18 +415,17 @@ class Studio:
 
         arguments = {**arguments, "studio_id": self.studio_id}
 
-        if not self.connection.turn.acquire(timeout=max(timeout.total_seconds(), 0)):
-            raise TimeoutError(f"Studio MCP timed out waiting for another request on the connection: {name}")
+        remaining = self.connection.take_turn(timeout, name)
 
         try:
             if self.connection.session is not None:
-                return call_studio_tool(self.connection, name, arguments, self.lock_receipt, timeout)
+                return call_studio_tool(self.connection, name, arguments, self.lock_receipt, remaining)
 
             config = assert_runner_lock_held(self.lock_receipt)
 
             self.await_listing(config)
 
-            return studio_tool_reply(self.connection, name, arguments, config, timeout)
+            return studio_tool_reply(self.connection, name, arguments, config, remaining)
         finally:
             self.connection.turn.release()
 
