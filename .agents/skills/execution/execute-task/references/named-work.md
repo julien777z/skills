@@ -89,14 +89,19 @@ nor touches the files or resources the awaited work is changing.
   recovery, a queued review or an unanswered request is pending until it has a terminal result;
   current unavailability, a quiet interval or a bounded wait yielding without a result is not
   failure, and for a worker the session started the check below reads that quiet interval.
-- **A running worker is never assumed healthy until it reports.** While any worker the session
-  started runs, a check every 30 minutes, set through the host's scheduler, such as a recurring
-  scheduled prompt, reads each worker's latest activity. One with no activity for 30 minutes and
-  no long command of its own in progress is cancelled and relaunched with its brief plus what
-  stalled it, such as a failed command it never recovered from, input it waits on that nobody
-  sees, or a provider error it never reported; one that finished without its completion arriving
-  has its result collected. The check is removed once no worker runs. This is the user's standing
-  instruction and holds over a harness default against polling a delegate.
+- **A running worker is never assumed healthy until it reports.** Each worker the session started
+  is checked on a schedule that backs off from its launch: 10 seconds, 30 seconds and 5 minutes
+  after it starts, then every 30 minutes while it runs, since most stalls happen right at the
+  start. A short background timer or the host's scheduler, such as a recurring scheduled prompt,
+  sets it, and each check reads the worker's latest activity. At an early check, one with no
+  activity at all since launch, or whose last step failed and nothing followed, is stalled; at a
+  later check, one with no activity for 30 minutes and no long command of its own in progress is.
+  A stalled worker is cancelled and relaunched with its brief plus what stalled it, such as a
+  failed command it never recovered from, input it waits on that nobody sees, or a provider
+  error it never reported; one that finished without its completion arriving has its result
+  collected. A worker's checks end when it finishes and the scheduled check is removed once no
+  worker runs. This is the user's standing instruction and holds over a harness default against
+  polling a delegate.
 - **A status report is not a stopping point.** A message sent while authorized work or a wait
   remains goes out together with the next wait or action, never as the turn's last output, and is
   never the task's report. When every remaining item depends on an awaited result, keep the
