@@ -271,7 +271,9 @@ changed. Make the smallest changes that answer real findings, and push back on t
     requires. Use its size budget and `defer-scope` for cleanup.
 - **Next round** only while budget remains and a blocker or should is open, or code or guidance
   behavior changed since the last approval. Run the checks covering the fix and `git diff --shortstat <base>` first; if
-  review grew the diff past what the intent needs, cut it first. Never agree just to end the loop.
+  an addition belongs to the pull request under the GitHub rule's **Branches and Pull Requests**,
+  refresh the intent before judging growth. Cut growth beyond the refreshed intent and honor the
+  user's explicit scope limits. Never agree just to end the loop.
 - **Stop** when the reviewer approves the current diff with no blocker or should open and no concern
   of your own. A spent budget is not approval.
 - **A finding still disputed after two replies** goes to the user when it is the user's decision,

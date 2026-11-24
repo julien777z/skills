@@ -350,8 +350,7 @@ ends the question.
    treatment of a measured rate, which is taken as given precisely because reading the tree cannot
    produce one — size is exactly what reading the tree can.
 4. **do** — none of the above: the item is worth doing and its cleanest fix is within reach, so it is
-   done where `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places a fix of its size, or on a branch off the default when nothing is in
-   flight.
+   done where `pre-production`'s **Scope Follows The Defect, Not The Request** places the work.
 
 **Admission — may this work be deferred?** The triage question asked of a proposed record. The
 answer is accept when triage's disposition is defer, and otherwise a refusal naming the disposition
