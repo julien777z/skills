@@ -28,7 +28,8 @@ experience's audience, settings or monetization, and no publish to any other exp
 - **A publish waits only on what players would run.** Its places must build and pass the build's
   integrity check; nothing else holds it. A lint, format, type or test result, a hosted check's
   status, a pending review or gate, and a failure in setup the game does not run, such as tooling
-  for agents, never delay a publish or become a reason to fix something first.
+  for agents, never delay a publish or become a reason to fix something first: the publish goes out, and a red
+  check is repaired in its own pull request beside it, never before it.
 - **When the user asks.** A request to publish runs now, to the experience it names or the staging
   default below.
 - **Production only on the user's own request.** A milestone never publishes to a production
