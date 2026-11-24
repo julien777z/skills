@@ -1,6 +1,6 @@
 ---
 name: merge-gate
-description: Merge a pull request its caller is authorized to merge, once its review has accepted a head — verify its delivery dependencies, take it out of draft as the last step before the merge, gate that exact head, resolve conflicts, squash-merge and verify the result. Use when an authorized merge is reached; a pull request leaves draft only here. Holds what authorizes a merge, deployment, publication or release, which failing checks a merge excludes, what follows a merge, the refresh after a merge of agent configuration, and when a pull request may be polled.
+description: Merge a pull request its caller is authorized to merge, once its review has accepted a head — verify its delivery dependencies, take it out of draft as the last step before the merge, gate that exact head, resolve conflicts, squash-merge, and include CI commits in the checkout refresh. Use when an authorized merge is reached; a pull request leaves draft only here. Holds what authorizes a merge, deployment, publication or release, which failing checks a merge excludes, what follows a merge, the refresh after a merge of agent configuration, and when a pull request may be polled.
 short_description: 'Take a reviewed pull request out of draft, gate its exact head, and merge it.'
 ---
 
@@ -276,15 +276,51 @@ provider already rejected. Follow its matching replacement or retry under **Chec
 the required context and attempt the merge once GitHub reports it passing. For other exclusions, or if hosted
 recovery is unavailable, report the actual rejection and its provider evidence. Never bypass protection.
 
-Once the merge is verified, **No Verification Or Deploy Work** governs what follows it, and **After Agent Sync** a
-merge whose diff changes agent configuration.
+Once the merge is verified, run **CI Commits To The Target Branch**. For agent configuration, complete
+**After Agent Sync** alongside it, reusing its Agent Sync result. Refresh the checkout once after
+those steps settle. **No Verification Or Deploy Work** governs release and deployment checks.
+
+## CI Commits To The Target Branch
+
+A checkout refresh includes commits that CI writes to the target branch because of the merge.
+Read the merged repository's workflow triggers, branch and path filters, and the relevant job
+conditions and scripts. Identify automatic jobs that can push generated files to the target branch,
+including jobs reached through another workflow. Match direct push runs by merge SHA and ref.
+For a downstream run, follow the triggering upstream run and event on that branch. Verify the
+downstream checkout contains the merged source if it uses the moving branch tip. A job that only
+uploads artifacts, creates a release, or deploys stays outside this step.
+
+Use **Check Gate**'s bounded polling until the branch-writing step has a verified terminal result.
+Use the job's terminal result when the step cannot be tracked separately. When a downstream
+trigger or required installation depends on the workflow conclusion, also verify that conclusion
+on the same run. Use the same polling for run discovery while an eligible writer is being scheduled, including
+downstream runs after their prerequisites finish. Follow prerequisites only to establish whether the
+writer can run. If a later run cancels or replaces it, follow that writer only after verifying that it covers the merged source and the same
+outputs on the same branch. Distinguish a job skipped by its selection filters from a selected writer blocked by a failed
+or canceled prerequisite. If a selected write remains unresolved because of a failure, missing run,
+or uncertain coverage, fetch and refresh all available commits and report the job and cause.
+
+Read the writer's final pushed revision from its result or logs, accounting for any rebase before
+the push, and fetch the target branch. Verify the
+branch tip contains the merge and its generated commits. A successful writer may emit a no-changes
+result during execution. Use the emitted result to settle the writer without requiring a new commit.
+A preview of the script containing the no-changes message supplies no evidence.
+For multiple writers, use the fetched tip after all applicable writes settle. Pass that tip and
+the job results to **Refresh The Primary Checkout**.
+
+## Refresh The Primary Checkout
+
+Follow the [checkout preservation and fast-forward procedure](references/checkout-refresh.md) for
+the merged target branch after the applicable writers and any Agent Sync installation settle.
+When the caller owns refresh, return the verified tip, writer results, and any installation result
+for the caller to apply the same procedure before reporting completion.
 
 ## After Agent Sync
 
-When the merged diff changes agent configuration, poll the default-branch Agent Sync run the merge
-started as **Check Gate**'s **Drive the complete inventory to terminal results** and **A
-pending status is a cache** poll a check. A run ending in anything but success is diagnosed
-from its log and reported.
+When the merged diff changes agent configuration, reuse the terminal Agent Sync workflow result
+from **CI Commits To The Target Branch**, including a replacement with verified coverage when
+applicable. Require workflow success before installation. Diagnose any unresolved synchronization
+failure from the relevant log.
 
 - **Refresh immediately after the run succeeds.** The refresh is part of the merge's delivery,
   including when the merge is the session's final work: complete it and verify the installed links
@@ -297,12 +333,8 @@ from its log and reported.
   checkout after installation, so the installed files stay available independently. For
   `update-skills`' own first merge, read it from the merged commit before invoking it. A session
   follows the copy it loaded until this refresh completes.
-- **Every merge of agent configuration then refreshes the repository's primary checkout**,
-  whichever workflow merged it: a local edit the merged default branch already holds is removed,
-  local-only work is saved in a named stash and kept, and the checkout ends clean on the default
-  branch's fetched tip, with the generated guidance verified there. When the caller owns that
-  refresh, return the Agent Sync result and any shared installation result so the caller can
-  complete and verify it.
+Finish with **Refresh The Primary Checkout**, which includes all installed guidance and any
+generated commits pushed by downstream workflows.
 
 ## No Verification Or Deploy Work
 
@@ -310,16 +342,17 @@ from its log and reported.
 playtest, a walkthrough, an audit, a fresh-eye review — runs before its merge. Once the merge is
 verified, nothing runs again to check it:
 
-- never check by any route whether the change is live, such as a provider's deployment status, a
-  release run or the site itself, and never inspect or follow merge-triggered release, publication,
-  artifact or deployment workflows;
+- never check whether the change is live or follow release, publication, artifact upload, or
+  deployment outcomes. **CI Commits To The Target Branch** covers only Git writes needed for the
+  checkout refresh, even when the same workflow also publishes or deploys;
 - never test, walk or audit what the merge deployed or the merged default branch;
 - never schedule a re-check, wait for a deploy, or assume one is coming.
 
 A verification step still open at the merge closes with it, and nothing waits on such a run or on a
 deploy: no plan step, ledger or guidance hold, worker brief or report's next action. Other
 authorized work after a merge is unaffected, such as a run's next batch, a consumer repointed once
-its dependency merged, or the refresh **After Agent Sync** requires. A task whose own outcome the
+its dependency merged, or the refresh **CI Commits To The Target Branch** and **After Agent Sync**
+require. A task whose own outcome the
 user stated as a deployment, publication or release, or as restoring a broken deployed operation,
 follows that outcome past the merge, and a workflow the user invokes to merge before its review
 keeps that review.
@@ -336,7 +369,7 @@ concurrency group, so the superseded head reaches no terminal state and emits no
 ## Report
 
 ```markdown
-Merged: [<owner>/<repo>#<number>](<url>) at <short sha> — checks: <local only | names of hosted checks and results> — consumers: <none pinned | repointed: <consumer PR> at <short sha> | owned elsewhere: <consumer PR> pins <reference>> — sync: <run result | not agent configuration>; refresh: <installed source and commit | blocked: exact reason | not agent configuration>
+Merged: [<owner>/<repo>#<number>](<url>) at <short sha> — checks: <local only | names of hosted checks and results> — consumers: <none pinned | repointed: <consumer PR> at <short sha> | owned elsewhere: <consumer PR> pins <reference>> — sync: <run result | not agent configuration>; refresh: <verified checkout tip and CI writer results, plus installed guidance source when applicable | blocked: exact reason>
 ```
 
 The checks field leaves out baseline failures and non-essential checks left red, as
