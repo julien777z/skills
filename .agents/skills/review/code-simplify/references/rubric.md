@@ -181,8 +181,7 @@ fix written after review takes these shapes most easily. Each hit takes its seve
 5. **A typed parameter built as a dict** — an annotation on a dict literal, such as
    `name: SomeTypedDict = {` or `params: sdk.params.X = {`, or a bare dict passed where an SDK or
    repository signature names a `TypedDict`, at any nesting level. Each hit is rewritten as the
-   constructor call, such as `sdk.params.X(...)`, with tests asserting the same way, except a
-   `TypedDict` the Python rule says the code may not import at runtime.
+   constructor call, such as `sdk.params.X(...)`, with tests asserting the same way.
 
 ## Trace Changed Flows
 
