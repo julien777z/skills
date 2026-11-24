@@ -52,8 +52,8 @@ every name built on that word for that meaning.
   kept out.
 - **Renaming without an entry** — a complaint about a name — "I don't like X", "X is a bad name", "X
   is not intuitive" — or "rename X everywhere" in one codebase renames every name in that codebase
-  built on the word for that meaning, to the word its readers would use, as the global rules' naming
-  bullet says. It runs steps 2–5 below and writes no entry.
+  built on the word for that meaning, to the word its readers would use, as `pre-production`'s **Naming
+  And Language** says. It runs steps 2–5 below and writes no entry.
 - **Updating** — the user rejects the replacement an entry recommends, or a better one is agreed.
   The entry changes, the old replacement moves to `rejected_replacements`, and every call site that
   took the old advice changes with it.

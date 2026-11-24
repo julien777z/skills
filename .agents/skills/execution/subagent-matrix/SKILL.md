@@ -1,6 +1,6 @@
 ---
 name: subagent-matrix
-description: Apply before every subagent launch, including a workflow coordinator or nested reviewer, when selecting a live skill-verification model, and when resuming workers stopped by a rate limit or quota. Default reasoning effort to medium unless the user or invoking skill explicitly specifies another effort. Resolve the assignment role and verify the actual model, reasoning and history arguments before dispatch, including a fresh independent or read-only gate, reviewer, validator, or skill-test reader. Resolve cheap, standard, advanced, frontier, and specialist capability levels from the host catalog and current official provider sources. Attempt the assigned work with a catalog-hidden candidate before reporting unavailability or proposing a substitution, select the model explicitly, route independent steps through a subagent of the running session, and give the user complete direct-dispatch diagnostics when the launch cannot start.
+description: Apply when deciding whether to delegate work to a subagent at all, and before every subagent launch, including a workflow coordinator or nested reviewer, when selecting a live skill-verification model, and when resuming workers stopped by a rate limit or quota. Default reasoning effort to medium unless the user or invoking skill explicitly specifies another effort. Resolve the assignment role and verify the actual model, reasoning and history arguments before dispatch, including a fresh independent or read-only gate, reviewer, validator, or skill-test reader. Resolve cheap, standard, advanced, frontier, and specialist capability levels from the host catalog and current official provider sources. Attempt the assigned work with a catalog-hidden candidate before reporting unavailability or proposing a substitution, select the model explicitly, route independent steps through a subagent of the running session, and give the user complete direct-dispatch diagnostics when the launch cannot start.
 short_description: 'Select a model capability level for live verification chats or subagent delegation.'
 ---
 
@@ -13,6 +13,7 @@ agent; the calling agent launches the actual assignment with the selected model.
 
 ## Dependencies
 
+- `pre-production`
 - `share-media`
 
 ## Workflow
@@ -49,17 +50,24 @@ agent; the calling agent launches the actual assignment with the selected model.
    repairing the agent's own client or runtime is that repair, never a repository or global settings change,
    which this step forbids below. Repair the component that actually holds the refused value, read from the
    running request path rather than from the refusal's own advice, such as a proxy between the agent and the
-   provider. Only when that component is out of reach, as the global rules' bullet on a step only the user can
-   take settles it, does its repair go to the user as such a step, with the exact command. Record the original
+   provider. Only when that component is out of reach — every route the agent's tools have to it has been tried,
+   and what remains needs the user's own identity, device, password or physical presence — does its
+   repair go to the user, as a question naming the whole step with the exact command. Record the original
    refusal, the repair attempted, and any relaunch receipt. If the failure remains operational or the repair
    cannot be made, use the launch fallback and retain that classification. Model substitution requires an
    explicit receipt that the exact model is unsupported or, where step 4 allows it, denied.
-   **A rate limit or quota refusal is temporary capacity, never unavailability**, even when it
-   names a long reset time: it permits no fallback, no other provider and no absorbing the work into the
-   coordinator's own process, and never a reason to hold work: a reset time the refusal names is a guess, not
-   a wait. Resume or relaunch the same worker on the same model as soon as the coordinator next answers, read
-   from the request path itself: the coordinator answering on that model, or the relaunch being accepted, shows
-   it has cleared, and only a refused relaunch shows it still holds. The accepted worker
+   **A rate limit or quota refusal moves the assignment to the other harness's matching model**: a
+   Codex model's refusal relaunches the same assignment, with the same brief and reasoning effort, on the
+   Claude family at the same capability level in **model capabilities**, and a Claude model's refusal on the
+   Codex family, because the refusal is one provider's capacity and the other's model at that level does the
+   same work without waiting out a reset time the refusal can only guess. It is not unavailability: it
+   permits none of step 4's unsupported-model fallbacks, no lower capability level and no absorbing the work
+   into the coordinator's own process, and it never holds work. Resolve the matching model through steps 2
+   and 3, and record the original refusal beside the relaunch. In a comparison pair, relaunch both sides on
+   the matching model so the pair keeps one model. When that model also refuses for capacity, or the host
+   cannot launch the other harness's models, or the user's explicit constraint names the refused model,
+   relaunch on whichever permitted model the request path shows cleared first: the coordinator answering on that model, or a relaunch being accepted, shows it has cleared, and
+   only a refused relaunch shows it still holds. The accepted worker
    performs the assignment; never launch a throwaway availability probe. Record the runtime identifier only
    when the host exposes its exact value. Generic provider or product
    branding, a worker-reported label, or no runtime identifier is neither confirmation nor a contradiction of
@@ -69,8 +77,8 @@ agent; the calling agent launches the actual assignment with the selected model.
    denied, launch the same assignment directly on the latest Claude family at the `frontier` tier, unless
    the calling skill explicitly selects a different ordinary fallback tier. Resolve its latest Claude family
    through steps 2 and 3 and apply that fallback only if it respects the user's
-   explicit model or capability constraint; otherwise hold the assignment. Do not try older Mythos
-   or another provider. Apply step 3's repair, retry, and capacity rules to every attempt,
+   explicit model or capability constraint; otherwise hold the assignment. Do not try older Mythos,
+   or another provider on an unsupported receipt. Apply step 3's repair, retry, and capacity rules to every attempt,
    including the selected fallback and Codex Astra. Hold when the selected fallback or specialist Codex Astra is confirmed
    unsupported or denied. Catalog omission, identifier-resolution failure, and operational or
    capacity failures do not establish Mythos unavailability or denial. No ordinary assignment may
@@ -122,6 +130,17 @@ agent; the calling agent launches the actual assignment with the selected model.
    not review evidence. Replace that reader with an explicitly selected reader before counting
    the required review or gate as complete.
 
+## When To Delegate
+
+Delegate execution to subagents where the work splits into independent parts, needs an independent
+reader, or would crowd the coordinator's own context; do small work directly; a coupled feature
+keeps one owner. Start independent tasks concurrently when their ownership, dependencies and
+resources permit.
+
+- A worker hands required independent reviews, gates and additional capacity needs up to its
+  delegating agent when it cannot launch them itself, as **Dispatch**'s launch fallback says.
+- Delegation does not extend the user's authorization or relax safety and sequencing requirements.
+
 ## Dispatch
 
 **Launch every available subagent a skill calls for through the running session's agent tool.** It matters most for an independent step, one whose value is a judgment the
@@ -138,7 +157,7 @@ context and returns its verdict into the step waiting on it; nothing else does b
   result-retention bullet below requires.
 - **Launch fallback: a worker that cannot launch a subagent its step needs hands the step up; never
   absorb it.** Attempt the native dispatch when available. This covers a host that gives the worker
-  no agent tool and a native dispatch that fails other than by a capacity refusal, which step 3 waits out and relaunches, for reviewers, lenses, validators, gates and
+  no agent tool and a native dispatch that fails other than by a capacity refusal, which step 3 relaunches on the other harness's matching model, for reviewers, lenses, validators, gates and
   further implementation workers alike. The worker writes the complete assignment — the inputs, the
   question, the reading list, the output shape, the originally requested tier, its fallback policy,
   and launch receipts — to a file, asks the agent that delegated to it to
@@ -202,31 +221,41 @@ context and returns its verdict into the step waiting on it; nothing else does b
   is paused, the unblocking work is launched in the freed slot, so the count never passes five, and
   the paused worker resumes once that work lands. Its brief has it take the shared resource with
   priority, through its lock's priority option where the resource has one.
-- **Assign one implementation owner per coherent scope, and a fresh worker for each delegated
-  task.** The primary agent retains integration, dependencies, product decisions and orchestration.
+- **Assign one implementation owner per coherent scope: one worker builds a coupled feature across
+  its plan steps, and each separate scope gets a fresh worker.** A scope is never a phase: it is a
+  plan step that stands alone, the plan steps of one coupled feature built in order by the same
+  worker, or one fix round. Steps are coupled when one reads another's schema, calls its interface
+  or extends its code; steps with separate owners, files and resources are separate scopes, so each
+  worker's context stays the size of what must be held together. File count alone does not make a
+  task trivial. The primary agent retains integration, dependencies, product decisions and
+  orchestration.
   Delegate work that produces an independent result, not a wrapper that only invokes another
   coordinator. Before launching, settle its checked prerequisites, immutable inputs, actual
   role-resolved launch arguments and required handoff; unresolved setup stays with the current
   owner rather than becoming a worker's discovery task. Delegate
-  independently owned scopes with explicit files, inputs, expected result and handoff; do not split
-  a coupled feature among workers merely to increase parallelism. Workers may build in parallel
+  independently owned scopes; do not split a coupled feature among workers, by plan step or
+  otherwise, merely to increase parallelism. Workers may build in parallel
   only when their edits and resources do not overlap and neither needs an unsettled output from the
-  other. A worker ends with its task; the next gets a fresh context. Read-only gates and reviews may
-  run alongside building at the cadence their owning skill sets.
+  other. A worker ends with its scope; the next scope gets a fresh context. A follow-up after a
+  worker's task ended — a gate's fix steps, a review's findings, a reviewer's question — is a new
+  task: assign nontrivial execution to a fresh worker with the brief's fix form. A finished worker
+  is never resumed for a follow-up, since resuming reloads its whole earlier context to make a small
+  change. Read-only gates and reviews may run alongside building at the cadence their owning skill
+  sets.
+- **Every implementation and fix worker gets the [worker brief](references/worker-brief.md) with
+  every field filled**: the intent, the scope and exact files, the reuse receipts from planning, the
+  checks to run, the push cadence and what to report. A skill that delegates edits fills that form
+  rather than writing its own.
+- **A running worker is told when guidance it works under changes**: which skill, rule or agent
+  definition changed, each section that changed, and what it says.
 - **An editing worker's own worktree** is the host's worktree isolation where it offers one,
   otherwise a worktree the brief names under the task's working-files folder, made from the branch
   the worker pushes to.
-- **A delegated task is one plan step or one fix round, never a phase**, so each worker's context
-  stays the size of its step. A follow-up after a worker's task ended — a gate's fix steps, a
-  review's findings, a reviewer's question — is a new task: assign nontrivial execution to a fresh
-  worker with the findings, the files they name, the branch and its head. File count alone does not
-  make a task trivial. A finished worker is never resumed for a follow-up, since
-  resuming reloads its whole earlier context to make a small change.
 
 ## Launch Failure Reporting
 
 When a required direct subagent dispatch cannot start, preserve its exact attempted dispatch,
-record it, and apply the launch fallback in **Dispatch**; a capacity refusal is recorded and relaunched as Workflow step 3 says, never sent to that fallback. Do not turn a tool inventory from a nested bridge or an unrelated agent tool
+record it, and apply the launch fallback in **Dispatch**; a capacity refusal is recorded and relaunched on the other harness's matching model as Workflow step 3 says, never sent to that fallback. Do not turn a tool inventory from a nested bridge or an unrelated agent tool
 into evidence about the native launcher's availability.
 
 - Attempt the selected native dispatch once whenever its direct tool is exposed. Never claim an

@@ -51,7 +51,7 @@ context:
     play_style: "Difficulty-chart obby (games API genre_l1 'Obby & Platformer')"
     camera_perspective: "Third person, default Roblox follow camera with zoom (I/O) to first person"
     device_and_input: "Mac keyboard (W/A/S/D, Space, arrow-key camera turns, I/O zoom, R reset) and mouse clicks, sent as timed key holds over SSH"
-    observation_environment: "macOS VM guest running the published Roblox player, full-screen, controlled over SSH; captures 1920x1200 scaled to 1200 wide"
+    observation_environment: "macOS VM running the published Roblox player, full-screen, controlled over SSH; captures 1920x1200 scaled to 1200 wide"
     visible_server_population: "About 10-12 players in the server (maxPlayers 10 per API plus joins seen in the player list); API: 16,077 playing at retrieval"
     solo_or_group: "Solo progression in a shared server; other players visible on the same course"
     game_version_if_known: "Universe updated 2026-11-07T15:07:50Z; description lists 142 stages"

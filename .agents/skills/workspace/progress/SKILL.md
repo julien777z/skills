@@ -14,15 +14,18 @@ and deliver the same dashboard again on every request so the user keeps one page
 - `list-prs`
 - `use-dashboard`
 - `pre-production`
+- `execute-task`
+- `merge-gate`
 
 ## Workflow
 
 1. **Read the ledger.** Resolve and read the task's ledger through `session-ledger`. A question the
    task has put to the user that the ledger lacks is reconstructed and recorded first, from verified
    task evidence, as that skill's recovery rules say, approved only where the user's own message
-   approved it; so is a plan the task put to them in the question carrying the "Approved" option.
+   approved it; so is a plan the task showed them, recorded as shown unless their own message
+   approved it.
    The dashboard never shows a step the ledger does not hold. The figures cover the whole task since
-   its first approved plan, so that check spans every plan it has had, finished ones included: a
+   its first plan was shown or approved, so that check spans every plan it has had, finished ones included: a
    plan another entry names, such as one a later plan continues or supersedes, and finished work the
    task's record shows that no recorded step holds, such as completed items on the harness task
    list, are each a plan the ledger lacks. A plan that continues or supersedes another replaces only
@@ -48,7 +51,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 6. **Report and return to the caller.** Through the selected route, send the link or file and one
    line: percent complete, time remaining, and how many questions wait on the user, each the figure
    the dashboard shows. When reporting interrupts unfinished authorized work, carry out the active
-   run's saved next action under the global rules' pending-work boundary. A report without
+   run's saved next action under `execute-task`'s **Waits And Awaited Results**. A report without
    that action does not complete this step; when an awaited result holds the action, retain that
    owner's wait and resume route.
 
@@ -73,7 +76,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   `session-ledger` totals a plan, prefixed `~` because it is an estimate, counting only the agent's
   work, with no `detail` for anything the user owes; **Waiting on you**, the count of open
   questions; **Pull requests**, the count of open and draft pull requests, with "<n> open · <n>
-  draft" in `detail`; **Elapsed**, measured from the first plan's recorded approval time.
+  draft" in `detail`; **Elapsed**, measured from the recorded time the first plan was shown or approved.
 - **Counts.** `counted` is set on the `links` "Pull requests", the `table`s "Plans" and "Ready to
   merge", the `changes` "Config changes" and "Migration changes", and the `notes` "Decisions and
   notes", whose length changes as the task does; no other section is counted.
@@ -92,8 +95,8 @@ and deliver the same dashboard again on every request so the user keeps one page
   - `Proposals`, `icon` `proposals`: the `questions` "Open" and "Answered"; it is `locked`, with
     `sections` `[]`, until the task has a question.
   - `Plan`, `icon` `checklist` and `layout` `rows`: the `tree` "Plan tree", then one plan write-up
-    per approved plan, in approval order; it is `locked`, with `sections` `[]`, until a plan is
-    approved.
+    per plan shown or approved, in that order; it is `locked`, with `sections` `[]`, until a plan is
+    shown or approved.
   - `Progress`, `icon` `board`: the board, the notes and any other table.
 
   Once step 3 gives the page a pull request to cover, `Architecture` follows, with `icon` `diagram` and `layout` `rows`: the diagram, then the `tree` "What each pull
@@ -108,8 +111,8 @@ and deliver the same dashboard again on every request so the user keeps one page
   ("<done> of <n>"), Running, Waiting on you and Time left, the summary of what the board shows step
   by step, and `details` holding each row's plan write-up, so a row opens the plan.
 - **`tree` "Plan tree"**, with `open_depth` 2: one entry per plan that is not withdrawn, in
-  approval order, `label` the plan's title, `figure` "<done> of <n> steps" and `meta` "~<n> min left", or
-  `status` "Proposed" for a plan not yet approved; under it one entry per step, in plan order, `label`
+  the order they were shown or approved, `label` the plan's title, `figure` "<done> of <n> steps" and `meta` "~<n> min left", or
+  `status` "Proposed" for a plan still waiting on a decision or an approval; under it one entry per step, in plan order, `label`
   "<n>. <step title>", `status` its status (Done, Running, Blocked, Next or Skipped) toned as its
   progress segment is, `meta` "~<n> min" while it is not done or its measured duration once it is,
   and `figure` "<done> of <n> parts" for a step with parts, counting parts not skipped; and under
@@ -117,7 +120,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   `accent` when active, `critical` when blocked and neutral otherwise.
 - **Plan write-up**: the plan as a reader who missed the conversation needs it, from the ledger's
   `plan` entry: an `outline` with `expanded` and `stacked` set, `title` the plan's title and `description` its
-  goal, then "Approved · ~<total> min", or "Proposed · ~<total> min" for a plan not yet approved. Its groups, each only when it has something in it:
+  goal, then "Shown · ~<total> min" for a plan shown with no open decision, "Approved · ~<total> min" only for one the user's words approved, or "Proposed · ~<total> min" for one still waiting on a decision or an approval. Its groups, each only when it has something in it:
   "Context", why the plan exists and what it starts from, one item per point; "Steps", one item per
   step titled "<n>. <step title>", `detail` what the step changes and how, `meta` "~<n> min" and
   `tag` its status (Done, Running, Blocked, Next or Skipped) toned as the progress segments are,
@@ -170,10 +173,11 @@ and deliver the same dashboard again on every request so the user keeps one page
   what deploying sets off, such as a migration running.
 - **`outline` "Once live"**: per environment, what the user can check after it deploys to know the
   change works there, such as a page to open, a job to watch or a log line to look for, each with a
-  link where one exists; the agent checks none of it and nothing waits on it, as the global rules'
-  **A merge leaves no verification or deploy work** bullet says, so its items carry no `tone`. In
-  Between merges and Deploy, `tone` is `critical` when skipping the item breaks the next step and
-  `warning` otherwise.
+  link where one exists; the agent checks none of it and nothing waits on it, as `merge-gate`'s
+  **No Verification Or Deploy Work** says, so its items carry no `tone`: these outlines tell the
+  user what their own deploy needs and are the one place a deploy step is named. In Between merges
+  and Deploy, `tone` is `critical` when skipping the item breaks the next step and `warning`
+  otherwise.
 - **`links` "Pull requests"**: each open and draft pull request, leaving out merged and closed
   ones, which need nothing more from the reader, with `group_label` "Repository". `label` its
   `<repository>#<number>`, `url`, `group` "<owner>/<repo>", `detail` its short title, then the

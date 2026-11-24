@@ -15,6 +15,7 @@ confuse those conclusions.
 - `subagent-matrix`
 - `code-simplify`
 - `session-ledger`
+- `council`
 
 ## When It Runs
 
@@ -36,22 +37,33 @@ confuse those conclusions.
   meaning or reachability changed.
 - **An invocation that names several heads is tested in one coordinated round.** Freeze the exact
   head and guidance package for every named pull request, and retain results per head. The round
-  runs when, and on the head the caller supplies.
+  runs when, and on the head the caller supplies. A caller may start it on a pushed head before
+  that head's review ends: the round concludes on the head the caller names as accepted, with
+  each result carried there or rerun as the carry-forward bullet below says.
 - **Each scenario gets its own reader for each variant it runs**, so its context holds that one
   task: one edited reader per scenario step 1 writes, plus its original control where the next
-  bullet requires one. Add readers only for a distinct named risk.
-- **An original control runs where an improvement claim or conflicting instruction needs
-  comparison**: in a scenario's first round, and in a later round only where the edited run missed
-  and the retained control cannot carry forward; a straightforward clarification may omit it only
-  with that justification recorded. The original control stays blind to the edited diff, criteria,
-  and reports.
+  bullet requires one. Add readers only for a distinct named risk. A round starts one scenario
+  writer, one reader per scenario, a second per scenario that runs a control, and one grader per
+  eight scenarios; the count grows only with the failure classes the batch holds.
+- **An original control runs only where the comparison has nothing else to stand on.** It is
+  required for a new skill, as the last bullet here says; where two instructions conflict and the
+  comparison decides between them; and for an edit with no observed miss under the original text
+  whose pull request is to claim improvement. It is not run where the caller's record holds the
+  miss observed under the original text on the real case: that observation is the control,
+  labeled observed in **Output** and never rerun. A required control runs in a scenario's first
+  round, and in a later round only where the edited run missed and the retained control cannot
+  carry forward. The original control stays blind to the edited diff, criteria, and reports.
+- **The single-scenario form** serves an invocation that names one changed requirement in one file
+  and asks for it: one scenario for that requirement, one edited reader and no control, with
+  step 1's writer and step 5's grader as in any round. Its comparison reports conformance, beside
+  the observed miss where the caller recorded one. Any other invocation runs the full round.
 - **A retained result carries to a new head only when everything its scenario depends on is
   unchanged there.** For each scenario, record each item's recorded value beside its current one,
   and carry it, with no rerun, when every pair matches:
   - by content digest, each guidance file on its reading list, or, for a file every reader loads
     whole, such as the global rules, the sections its criteria cite; its fixture; its criteria;
   - the model and reasoning effort **Reviewer selection** resolves for a rerun now, such as the
-    standard tier's current identifier, never one the catalog merely still lists; the harness and
+    standard capability level's current identifier, never one the catalog merely still lists; the harness and
     the guidance it loads; the tools and fixture interface the scenario uses.
 
   Any difference reruns that scenario, never a judgment that the change does not touch what it
@@ -72,7 +84,8 @@ Run after `code-simplify` completes its pass.
    scenario rather than one of its own, each mapped to the changed boundary with its observable
    pass criteria. A failure that came from real work is tested on a fixture built from
    that real case; a reproduction scenario the caller supplies is the writer's input, never a
-   scenario itself. Include relevant conflicting guidance in the edited reading list and, when a
+   scenario itself. Where the caller names the nearest case the edit must leave unchanged, each
+   scenario that case can arise in carries one criterion that behavior there is as before. Include relevant conflicting guidance in the edited reading list and, when a
    control is required, in its matching reading list.
 2. **Choose and verify the environment.** Use the smallest environment that exercises the actual
    decision or operation. A review can inspect a relevant live codebase read-only, a frozen diff,
@@ -94,7 +107,7 @@ Run after `code-simplify` completes its pass.
    A subagent of the running session stands in only when its loaded guidance lists no copy of a
    skill or rule under test, with the variant in its brief. Record the route, the command, the
    scratch root's file list with digests, and the harness's record of the guidance it loaded. With
-   neither route, the round is a concrete gate under the global rules' **Tools and environments**;
+   neither route, the round is a concrete gate, surfaced with its evidence and saved next action;
    it never passes with a reader that saw another variant.
    Before freezing the reader package, exercise its required fixture interfaces in a disposable
    copy: discovery must expose the identifiers the task needs, operations must be available, and
@@ -156,9 +169,8 @@ Run after `code-simplify` completes its pass.
    where authorized; keep coupled instructions and their required repairs together. This assessment
    recommends which changes should merge and decides no merge itself. A passing skill test alone
    never decides that a pull request should merge.
-7. **Repair and rerun until verified**, within the global rules' review-round limit of 3 rounds per
-   change: after the third failing round over the same edit, that bullet's decision replaces another
-   repair. Diagnose each reported issue at its owner. Fix guidance that permits the wrong behavior;
+7. **Repair and rerun until verified**, within the global rules' limit of 3 review rounds per
+   change, whose disposition goes to `council` in **Ask** mode. Diagnose each reported issue at its owner. Fix guidance that permits the wrong behavior;
    fix an invalid fixture, unavailable simulated operation, wrong reading list, ambiguous criterion
    or broken runner before judging guidance. Retain the diagnosis and earlier results. Recover
    missing evidence from the actual run or rerun the affected task; never reconstruct a result from
@@ -177,7 +189,7 @@ Run after `code-simplify` completes its pass.
 ## Reviewer selection
 
 Invoke `subagent-matrix` and request **standard** by default. Only after a host receipt explicitly
-rejects the standard tier's exact identifier as unsupported, select the next permitted lower mapped capability,
+rejects the standard capability level's exact identifier as unsupported, select the next permitted lower mapped capability,
 resolve its exact identifier, and launch the actual reader assignment. Advance again only after that candidate
 receives its own explicit unsupported receipt; never move upward or inherit the orchestrator's model. This
 fallback applies to this skill's default, never against the user's explicit model or capability constraint. A
@@ -187,8 +199,8 @@ fallback for its assignment.
 
 Classify a rejected reader dispatch from the host receipt. Only a receipt establishing that the
 requested capability or model is unsupported makes it unavailable for that attempt and permits the
-lower-tier fallback. Retry a transient, concurrency, timeout, or unknown rejection once with the
-same resolved selection; do not lower the comparison tier. When no required reader launched, retry
+fallback to a lower capability level. Retry a transient, concurrency, timeout, or unknown rejection once with the
+same resolved selection; do not lower the comparison's capability level. When no required reader launched, retry
 the required reader set. When one required reader launched, wait for its terminal report and retry
 only the rejected or unattempted required counterpart, never a duplicate of the accepted reader.
 When that retry cannot complete the required set, record its receipts and apply `subagent-matrix`'s
@@ -208,7 +220,7 @@ and the assigned worker accepts it, then it is `accepted`; a missing identifier 
 fallback and is not an unsupported-model receipt. Selector resolution retains an explicit unsupported request,
 the exact fallback capability and dispatch identifier when one is permitted, why that fallback was selected,
 and any explicit user override. Record the runtime-identity and runtime-label evidence as
-`subagent-matrix`'s Workflow step 3 defines. Follow the selector's dispatch instructions.
+`subagent-matrix`'s **Workflow** defines. Follow the selector's dispatch instructions.
 
 ## Output
 
@@ -231,7 +243,7 @@ Miss: <one sentence>
 
 A reads the edited text. B reads the original only when the recorded comparison requires a control.
 
-Comparison: improvement demonstrated | both meet the behavior; no improvement demonstrated | conformance only; control not run: <reason under When It Runs>
+Comparison: improvement demonstrated | both meet the behavior; no improvement demonstrated | conformance; miss observed under the original text on the real case, not rerun | conformance only; control not run: <reason under When It Runs>
 
 Disposition: retain | reshape | remove | separate independent changes — <value judgment and evidence>
 
@@ -311,6 +323,6 @@ in the same evidence file; per-scenario conclusions do not replace that decision
 - Follow the shared capability selection. Run or omit a control only as **When It Runs** says.
 - Never edit any file under test between launching its required readers and grading them.
 - Keep the scenario and raw evidence while the branch is open; reuse valid inputs in later rounds.
-- Never merge with a failing run or stand with a miss: diagnose it, change what caused it, and
-  rerun. The decisions are the tester's and are never put to the user; asking holds every later
+- Never merge with a failing run or stand with a miss, short of the `council` ruling **Repair and
+  rerun until verified** sets at the round limit: diagnose it, change what caused it, and rerun. The decisions are the tester's and are never put to the user; asking holds every later
   session on the text the edit replaces.

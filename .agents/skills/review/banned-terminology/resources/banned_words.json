@@ -23,12 +23,12 @@
         "currencies"
       ],
       "applies_to": "a database, schema, cache, or record being up to date — identifiers, docstrings, comments, and test names. Money keeps the word.",
-      "use_instead": "Say which side you mean. Something lacking what it should have is \"behind\": `database_is_behind`, `services_behind_this_code`, `ServicesBehindReport`. Something that has it is \"current\": `current_revision`, `is_current`.",
+      "use_instead": "Say which side you mean. Something lacking what it should have is \"behind\": `database_is_behind`, `replicas_behind_primary`, `BehindReplicasReport`. Something that has it is \"current\": `current_revision`, `is_current`.",
       "why": "A currency is money. Reusing it for freshness makes a payment field and a staleness check read as the same subject, so a reader has to reach the surrounding code before knowing which one a name means.",
       "rejected_replacements": [
         {
           "replacement": "Banning \"current\" along with it",
-          "why": "\"current\" is the adjective the misuse was built from, not a form of the banned noun. It is the right word for the revision a database is actually at, and `get_current_revision` is the migration runner's own vocabulary."
+          "why": "\"current\" is the adjective the misuse was built from, not a form of the banned noun. It is the right word for the revision a database is actually at, the word version tools themselves use for it, as in `current_revision`."
         }
       ]
     },
@@ -108,7 +108,7 @@
       "rejected_replacements": [
         {
           "replacement": "Renaming an error code's \"_REQUIRED\" suffix to \"_ASSERTED\"",
-          "why": "There the word is an adjective for an unmet precondition, not a guard. Name the state instead: `NOT_A_MEMBER`, `ORGANIZATION_CONTEXT_MISSING`."
+          "why": "There the word is an adjective for an unmet precondition, not a guard. Name the state instead: `NOT_A_MEMBER`, `ACCOUNT_MISSING`."
         }
       ]
     },
@@ -164,10 +164,13 @@
     {
       "term": "validate",
       "applies_to": "a permission, authorization, or access guard — never input validation",
-      "use_instead": "`assert_<condition>` for anything gating access: `assert_admin`, `assert_organization_admin`, `assert_revocable_key`. The call site then reads as the condition that must hold, and the weight of the word matches what refusal costs the caller.",
+      "use_instead": "`assert_<condition>` for anything gating access: `assert_admin`, `assert_team_owner`, `assert_key_is_active`. The call site then reads as the condition that must hold, and the weight of the word matches what refusal costs the caller.",
       "why": "Checking who may do something is not the same act as checking whether a value is well formed, and one word for both makes a permission gate read like a format check. \"validate\" stays correct for input: a pydantic validator, a bounds check on a request field, a payload parsed into a model.",
       "rejected_replacements": [
-        "Banning \"validate\" outright. It is the right word for input validation, and renaming every field and model validator to assert_ made guards of things that only clean a value."
+        {
+          "replacement": "Banning \"validate\" outright",
+          "why": "It is the right word for input validation, and renaming every field and model validator to assert_ makes guards of things that only clean a value."
+        }
       ]
     },
     {
@@ -178,7 +181,7 @@
       ],
       "applies_to": "any name a person reads or hears: product and player-facing text, an item, character, place or creature, an asset, a file, an identifier, or an object placed in a world",
       "use_instead": "another wood or tree of the same feel, such as alder, rowan, hazel or willow.",
-      "why": "Read aloud or misread by one letter it sounds like a curse, so players and readers hear the curse rather than the tree."
+      "why": "Spoken, it is heard as the curse, since the two differ by a sound few listeners catch, so players hear the curse rather than the tree."
     }
   ]
 }

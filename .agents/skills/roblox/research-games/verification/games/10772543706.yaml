@@ -50,7 +50,7 @@ play_coordination:
 context:
     play_style: "Incremental simulator (cleaning/sweeping); API genre Simulation / Incremental Simulator"
     camera_perspective: "Third-person in the lobby; first-person with a held tool once on the moon"
-    device_and_input: "Keyboard and mouse on a macOS guest VM at 1920x1200 points; scripted key holds and HID mouse events"
+    device_and_input: "Keyboard and mouse on a macOS VM at 1920x1200 points; scripted key holds and HID mouse events"
     observation_environment: "Isolated macOS VM runner, Roblox player 0.746"
     visible_server_population: "Lobby leaderboard listed about 15 players; API reported 31,057 playing at research time"
     solo_or_group: "Group: joined a public 2-player party on a lobby pad led by another player"
@@ -369,7 +369,7 @@ technical_quality:
     recovery_behavior: null
     measurements:
         - "Launch to lobby control about 17 s on the VM."
-    measurement_method_and_limits: "Wall-clock capture times on a virtual M2 Pro guest; not representative of native devices."
+    measurement_method_and_limits: "Wall-clock capture times on a virtual M2 Pro VM; not representative of native devices."
     evidence: [play_1]
 transferable_ideas:
     - "Absurdly weak starter tool (a toothbrush) as a visible promise of upgrades."

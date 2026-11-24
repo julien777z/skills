@@ -52,7 +52,7 @@ context:
   play_style: 'Wave survival / tower-defense hybrid with third-person brawler combat (Roblox genre: Action > Battlegrounds & Fighting)'
   camera_perspective: Third-person over-the-shoulder, player-controlled
   device_and_input: Desktop keyboard and mouse (VM-injected clicks and key holds); on-screen hints show M1, E (Drop Kick), Ctrl (Sprint)
-  observation_environment: 'macOS guest VM running the published Roblox player at 1920x1200 points; client 0.746.0; in-game build label Ver. 9.4.2; Region: United States'
+  observation_environment: 'macOS VM running the published Roblox player at 1920x1200 points; client 0.746.0; in-game build label Ver. 9.4.2; Region: United States'
   visible_server_population: About 9 players in the match player list; API maxPlayers is 1 for the lobby place, matches run in a separate teleported server
   solo_or_group: Group (public match joined in progress, cooperative)
   game_version_if_known: Ver. 9.4.2 (in-game label)

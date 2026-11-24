@@ -1,6 +1,6 @@
 ---
 name: merge-conflict
-description: Incorporate the base branch into a branch — a merge, a rebase, a pull, a branch update, or a conflict Git or the hosting service reports — by comparing what each side did and keeping the better answer, with the resolved result put to `acceptance-gate`'s base-incorporation question. Use whenever the base is brought into a branch, whether or not Git reports a conflict, whenever a pull request is un-mergeable, when a finished change's base has moved before its final acceptance, or when an already applied local overlay input needs conflict resolution.
+description: Incorporate the base branch into a branch — a merge, a rebase, a pull, a branch update, or a conflict Git or the hosting service reports — by comparing what each side did and keeping the better answer, with the resolved result put to `acceptance-gate`'s base-incorporation question when that procedure calls for a gate. Use whenever the base is brought into a branch, whether or not Git reports a conflict, whenever a pull request is un-mergeable, when a finished change's base has moved before its final acceptance, or when an already applied local overlay input needs conflict resolution.
 short_description: 'Bring the base branch into a work branch, resolve conflicts, and validate the result.'
 ---
 
@@ -28,6 +28,33 @@ answers to one question may now sit in one tree.
 - **A rule that favors your own side is not the judgment.** Once the comparison below has named a
   winner, code that takes the losing shape is refactored onto the winner in the same change, and
   which branch it came from is never a reason to leave it there.
+
+- **A clean merge is not a consistent one, in guidance most of all.** Git reports a collision only
+  where both sides touched the same lines. Where either side changed agent guidance — a skill, a
+  rule, an agent definition — read what the two sides changed together even when nothing conflicted:
+  one case given two answers by edits to different files, a citation of a section or skill the other
+  side moved, renamed or removed, and a rule one side restates that the other changed at its owner
+  are each resolved as a conflict here, and the repository's guidance source check runs on the
+  result before it is pushed.
+- **Each side is read for what it was for, and a conflict of intent is decided, not defaulted.**
+  Read the intent of each incoming change from its commits and pull-request text, and the branch's
+  from its intent statement and the user's recorded decisions. An incoming change was written
+  against the text before the branch's edits and may carry the intent the branch replaced, so
+  carrying it into the branch's text is checked against the branch's intent, never applied as
+  written; a branch edit is checked the same way against what the incoming change exists to do.
+  The conflict is material when keeping either side drops or reverses a behavior the other side's
+  change exists to produce, or a decision the user made, such as one side keeping a form's entered
+  values after a failed save and the other clearing the form on every failure.
+  - Where the evidence shows which intent should hold, such as one side carrying the user's later
+    decision or a guarantee the other never meant to remove, keep it, or a design that meets both,
+    and record the reason with the resolution. A brief telling a worker to keep one side is not
+    that reason.
+  - Where it does not, ask the user through the global rules' **Asking the user**, stating each
+    side's behavior, the change that made it and the recommended resolution, and hold the resolved
+    result, its push or its install, until they answer, while work that does not depend on it
+    continues.
+  - Two shapes for one behavior, a wording, a placement or a moved citation is not such a conflict:
+    the comparison below settles it.
 
 ## Procedure
 
@@ -59,8 +86,10 @@ source checkout, remote branches and unrelated edits throughout.
 5. **Preserve behavior required by the target contract.** Migrate affected consumers and retained
    data before removing an obsolete shape. A resolution that drops required behavior is a defect;
    preserving a legacy runtime path is not a way to avoid the migration. Where a close choice changes
-   an interface others build on, put it to `council` in **Ask** mode and follow its ruling. Block only when a safe resolution needs an
-   unauthorized product decision or a change to a contract a consumer outside the user's control speaks.
+   an interface others build on, put it to `council` in **Ask** mode and follow its ruling; a
+   conflict of intent the evidence does not settle goes to the user instead, as **Neither Side Is
+   Authoritative** says. Block only when a safe resolution needs an unauthorized product decision
+   or a change to a contract a consumer outside the user's control speaks.
 6. Remove every conflict marker and run `git diff --check`. Read the changed-file list against the
    target before proceeding. For a local overlay, preserve paths unrelated to the input and inspect
    their siblings. For a source branch, compare against the base and restore paths the branch never
@@ -70,9 +99,11 @@ source checkout, remote branches and unrelated edits throughout.
    comparison.
 8. For a source branch, regenerate lockfiles, generated contracts and provider mirrors from the
    resolved sources with the repository's tooling, never by hand. Run `git diff --check` and the
-   GitHub rule's **Pre-Push Gate** checks, push the resolved result, then re-query mergeability.
-   Run `acceptance-gate`'s **Base incorporation** procedure with the previous base, incorporated
-   base, originating change and intent, and resolved result.
+   checks the GitHub rule's **Pre-Push Gate** defines, push the resolved result, then re-query mergeability.
+   Follow `acceptance-gate`'s **Base incorporation** procedure with the previous base, incorporated
+   base, originating change and intent, and resolved result. Its gate runs when that procedure
+   calls for one; a clean incorporation disjoint from the change takes none, and the report line
+   says so.
 
 ## Output
 
@@ -81,5 +112,5 @@ branch, the delivery owes this report line:
 
 ```markdown
 Base incorporated: <previous base>..<incorporated base> into <branch>; <n> collisions —
-<n> branch shape kept, <n> base shape taken, <n> merged; gate: accepted | flagged and corrected.
+<n> branch shape kept, <n> base shape taken, <n> merged; gate: accepted | flagged and corrected | not required, clean and disjoint.
 ```

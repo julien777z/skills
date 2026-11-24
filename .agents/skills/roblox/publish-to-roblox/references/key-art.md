@@ -78,7 +78,7 @@ rebuild it from the frozen head with the build command and integrity check of th
 ## Check
 
 - Read each picture whole on its own at its full size, naming every picture in the set as it is
-  read, and look for clipping, a floating or hidden subject, stray text or names, grey
+  read, and look for clipping, a floating or hidden subject, stray text or names, gray
   placeholders, upscale blur, and a wordmark crowding the subject.
 - Lay the whole set out as one sheet with every picture shrunk to 150 px, beside the trending
   sheets, read it whole, and ask whether each picture still says what the game is.

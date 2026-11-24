@@ -58,7 +58,8 @@ report a missing or inaccessible integration precisely.
    a new name per shell starts an empty session and forces a fresh login each time:
 
    ```sh
-   export PROTON_PASS_SESSION_DIR="/tmp/pass-agent-<task-name>"
+   export PROTON_PASS_SESSION_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/pass-agent/<task-name>"
+   mkdir -p -m 700 "$PROTON_PASS_SESSION_DIR"
    export PROTON_PASS_KEY_PROVIDER=fs  # only where no system keyring is available
    ```
 

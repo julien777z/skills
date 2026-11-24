@@ -1,14 +1,15 @@
 ---
 name: run-site
-description: Bring an application stack up and repair startup blockers. A change a reader sees rendered is inspected rendered before it is reported, in every execution environment, in a browser the agent runs itself when local; the full recorded walkthrough applies in cloud execution environments and whenever the user asks for browser work. Use before planning, recommending, delegating or performing browser walkthroughs or rendered UI inspections, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works.
+description: Bring an application stack up and repair startup blockers. A change a reader sees rendered is inspected rendered before it is reported, in every execution environment, in a browser the agent runs itself when local; the full recorded walkthrough applies in cloud execution environments and whenever the user asks for browser work. Use before planning, recommending, delegating or performing browser walkthroughs or rendered UI inspections, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works. Use before starting container-backed work, to select the local container runtime.
 short_description: 'Start an application stack and perform browser verification where applicable.'
 ---
 
 # Run Site
 
-Start and verify the stack within the requested scope. The cloud walkthrough under **Principles**
-delivers screenshots and a recording showing signed-in functionality; a local inspection delivers
-its captures.
+Start and verify the stack within the requested scope. Wherever the change is visible on a page,
+the cloud walkthrough under **Principles** delivers screenshots and a recording showing signed-in
+functionality, and a local inspection delivers its captures; a change no page shows is verified by
+request checks, with no capture.
 
 ## Dependencies
 - `pre-production`
@@ -28,7 +29,7 @@ Use `use-browser` for browser control through its supported route. Apply `test-f
   execution environment.**
 - **In a local execution environment that inspection runs in a browser session the agent launches
   and owns**, headless by default, as `use-browser` routes it, never in the user's own browser,
-  tabs, windows or desktop, as the testing rule's **Environments** says. It is the walkthrough
+  tabs, windows or desktop. It is the walkthrough
   below without its recording.
 - **The inspection covers what the change can affect, and its route follows from that.** A change
   confined to a component's own presentation or interaction — its markup, styles, input handling —
@@ -66,13 +67,12 @@ Use `use-browser` for browser control through its supported route. Apply `test-f
 
 ## Work out which repositories are present
 
-The stack spans a backend and a frontend that live in separate repositories, and either may be
-absent. Detect what is checked out — from this repository's root and its sibling directories —
+A stack can span repositories, such as a backend and a frontend, and any may be absent. Detect what is checked out — from this repository's root and its sibling directories —
 and scale the work to match:
 
 | Present | What to do |
 |---|---|
-| Backend only | Start the services, verify the health endpoints and `/docs`, exercise the API directly |
+| Backend only | Start the services, verify the health and API documentation endpoints its tooling names, exercise the API directly |
 | Frontend only | Serve the site and drive the UI as far as it goes without a live API, through the inspection **Principles** selects |
 | Both | Start and verify both, then perform the walkthrough or local inspection **Principles** selects |
 
@@ -94,6 +94,14 @@ restored snapshot restores files, not a running daemon. Check ownership before t
 services; a running container does not prove another test is active. Keep secrets out of logs and
 preserve configured ports.
 
+- **Use OrbStack for local containers when it is installed.** Before starting container-backed
+  work for any application on macOS, check whether OrbStack is installed even if the current Docker
+  context points elsewhere. Start OrbStack if it is stopped, then verify that Docker can reach its
+  engine. Use the OrbStack context for Docker and Compose. Pass it through `DOCKER_CONTEXT` when an
+  application launcher invokes those commands, then verify the containers are running in OrbStack.
+  If its engine is unavailable, diagnose startup and context selection without falling back to
+  Docker Desktop. When OrbStack is absent, follow the host's configured container runtime.
+
 | Symptom | Likely cause | Fix at the owner |
 |---|---|---|
 | Every authenticated request returns 401 | A checked-in placeholder shadowed the real value from the session environment | Make the environment win over the dotenv layers; read the running process's environment to confirm |
@@ -113,12 +121,15 @@ preserve configured ports.
 
 After selecting browser verification under **Principles**, perform the following walkthrough
 where it applies. Passing tests, type checks, and a clean build show the code runs, never what the
-reader meets, and do not replace it. A change that can alter what the app does — new or reordered
-UI, layout or spacing, a component's props or state, a hook, a route, a redirect, middleware, an
-auth round trip, or the shape of a request — is walked end to end before it is reported done,
-however few lines it took, apart from a change confined to a component's own behavior that
-**Principles** lets the agent check on a page it builds; the
-walkthrough follows the push rather than holding it, as the GitHub rule’s **Pre-Push Gate** says. An
+reader meets, and do not replace it. A change that can alter what a page shows — new or reordered
+UI, layout or spacing, a component's props or state, a hook, a redirect or an auth round trip the
+reader sees — is walked end to end before it is reported done, however few lines it took, apart
+from a change confined to a component's own behavior that **Principles** lets the agent check on a
+page it builds; the walkthrough follows the push rather than holding it. **A change no page shows
+is verified by request checks, with no capture or recording**: for a route, middleware or the shape
+of a request, make the requests the change affects against the running stack, allowed and refused
+cases alike, and read each status, header, redirect target and body against the intended behavior;
+the report states those requests and results in words. It is captured only when the user asks. An
 edit that provably cannot reach behavior — rewording text already rendered in its existing slot, a
 comment, prose in Markdown — is verified by reading it and by finding the new text in the build
 output and the old text nowhere in the tree. Judge by what the edit touches, not how small it looks:
@@ -155,9 +166,9 @@ proves the component renders and nothing about the screen a user reaches. A chan
 component's own behavior is the exception **Principles** names: its rendered page is the check. If
 sign-in genuinely cannot complete for a change that needs the real screen, report the walkthrough as
 not done.
-Drive browser automation through the tab selected under the global browser procedure, which for a
-local inspection is the agent-owned session **Principles** names; never read the user's saved
-passwords, cookies, local storage, or session files.
+Drive browser automation through the tab selected as `use-browser`'s **Selecting And Binding A Tab**
+says, which for a local inspection is the agent-owned session **Principles** names; never read the
+user's saved passwords, cookies, local storage, or session files.
 
 Keep a password or one-time sign-in token out of argv and the transcript: put it in an environment
 variable for the one command that fills the field or opens the link, build that script, and pipe it
@@ -273,12 +284,13 @@ run above; say which kind each capture shows, since the two look identical.
 
 ### Evidence
 
-A local inspection sends its stills as the last paragraph below says and skips the recording; the
-cloud walkthrough and one the user asks for record as follows. Record the flow until the feature is
-exercised to its end — the form submitted and its result read back, the item seen in its list, the
-setting confirmed after a reload. Record through the selected tab's existing browser context,
-preserving its authenticated state; start before sign-in only when sign-in is part of the flow being
-exercised.
+Record and capture only a change that is visible on a page; a change verified by request checks, as
+**When a walkthrough is owed** says, sends none. A local inspection sends its stills as the last
+paragraph below says and skips the recording; the cloud walkthrough and one the user asks for
+record as follows. Record the flow until the feature is exercised to its end — the form submitted
+and its result read back, the item seen in its list, the setting confirmed after a reload. Record
+through the selected tab's existing browser context, preserving its authenticated state; start
+before sign-in only when sign-in is part of the flow being exercised.
 The recorder writes WebM, which some viewers cannot play; send the MP4:
 
 ```bash
@@ -289,7 +301,6 @@ ffmpeg -y -i <path>.webm -c:v libx264 -pix_fmt yuv420p -movflags +faststart -an 
 
 Send the recording, where one is owed, and a still of the view the change touched, unasked, plus a
 still per width walked, the page with its requests failing, and each defect with the fix that
-resolved it — as the run produces them, as the User-Facing Output rule requires, through
-`share-media`. Captures left on disk are a walkthrough the reader never saw. The report names the
-widths checked, whether the run without the API changes was done, and what the screens were read
-against.
+resolved it — as the run produces them, as `share-media` requires and through it. Captures left on
+disk are a walkthrough the reader never saw. The report names the widths checked, whether the run
+without the API changes was done, and what the screens were read against.

@@ -8,8 +8,13 @@ short_description: 'Publish the session’s game build to its Roblox staging exp
 
 Publish the build the session has produced to the project's own Roblox experience, verify what went
 live, and report how to play it. A run authorizes one publish to the experience and places it
-resolves below, with the pictures step 6 gives them; it authorizes no other change to the
+resolves below, with the pictures its **Workflow** gives them in its pictures step; it authorizes no other change to the
 experience's audience, settings or monetization, and no publish to any other experience.
+
+## Dependencies
+
+- `roblox-studio`
+- `agent-lock`
 
 ## When to publish
 
@@ -30,11 +35,6 @@ experience's audience, settings or monetization, and no publish to any other exp
 - **Production only on the user's own request.** A milestone never publishes to a production
   experience, and neither does any standing instruction; only a request in the user's words that
   names production publishes there, once.
-
-## Dependencies
-
-- `roblox-studio`
-- `agent-lock`
 
 ## Target
 
@@ -65,15 +65,16 @@ experience's audience, settings or monetization, and no publish to any other exp
    and the chosen environment as the Open Cloud route in `roblox-studio`'s source, editor, and
    publication reference describes. Follow the run to its end and confirm it ran on the frozen
    head. A project with no such workflow gets one set up as that reference says, in the two pull
-   requests the GitHub rules' **Workflows** section sets for a new workflow with a manual dispatch,
+   requests the `github-workflows` rule's **Branch Runs And Dispatch** sets for a new workflow with a
+   manual dispatch,
    so later publishes leave Studio out; until it is on the default branch, publish this run from
-   Studio as step 4 says.
+   Studio as **Publish from the isolated runner** says.
 4. **Publish from the isolated runner** only where no deploy workflow exists yet, as `roblox-studio`
-   sets up, holding its runner lock: open each built place in the runner's signed-in Studio and
+   sets up, holding one editor's lock: open each built place in the runner's signed-in Studio and
    publish it over its place in the chosen universe, maps before the start place. Read the place
    and universe IDs in that editor before and after each publish. Grant asset permissions the
    publish dialog asks for when they cover the project's own assets; leave the audience setting as
-   it is. Close the editors the publish opened and confirm the runner is idle, then release its
+   it is. Close the editors the publish opened, then release the
    lock; a failed publish ends the same way.
 5. **Verify** each place's new version or update time from Roblox, not from the run's or the
    dialog's success, and compare it with the times the workflow run's summary reports.

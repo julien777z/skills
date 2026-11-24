@@ -17,6 +17,8 @@ skill ends with.
 - `defer-scope`
 - `session-ledger`
 - `pre-production`
+- `lock-revision`
+- `execute-task`
 
 ## Scope
 
@@ -33,7 +35,7 @@ skill ends with.
   that needs the user is written in the hand-off comment as an instruction to the next agent to put
   that question to the user and wait, exactly as this session would have. A merge, deployment,
   publication or release the user has not authorized is written as an instruction to report it as
-  remaining for the user, never to ask for it, as the global rules' merge-authorization bullet says.
+  remaining for the user, never to ask for it, as the global rules' **Authorization** says.
 
 ## Workflow
 
@@ -49,13 +51,16 @@ skill ends with.
    last report and its worktree. Stop any background process a worker left running.
 3. **Sweep the session for loose ends** across the whole conversation, compacted summaries and the
    harness task list included: work stated as deferred, skipped, "later", or "follow-up"; a scope
-   queued to run after a merge; a plan presented and not explicitly approved, read from wherever the
-   host keeps the live plan, where a timeout or a mode exit counts as unapproved; questions put to
-   the user and still unanswered; decisions the user made and the words they made them in; standing
+   queued to run after a merge; a plan held for the user's decisions or approval and not yet
+   answered, read from wherever the host keeps the live plan, where a timeout or a mode exit counts
+   as unanswered, and a plan shown with no open decision, which is queued work described as shown; questions put to
+   the user and still unanswered; decisions the user made and the words they made them in; calls the
+   agent made itself, without putting them to the user, on something the user asked its view on,
+   directly or indirectly, with the answer it reached and why; standing
    constraints the user set for the work, such as accounts never to touch or actions that need their
    say-so; promises the agent made and did not complete; anything the session changed outside the
    repository that is still in a temporary state. Classify each as **queued work**, **a question for
-   the user**, **context**, or **deferred repository work**.
+   the user**, **an agent's call**, **context**, or **deferred repository work**.
 4. **Record deferred repository work through `defer-scope`**, one scope per item, in the repository
    that owns it, and link each resulting record or Linear issue from the hand-off comments in that
    repository alone. An item `defer-scope`
@@ -63,22 +68,29 @@ skill ends with.
 5. **Secure every branch.** Every commit the session or a worker made reaches the pull request the
    work continues: a worktree's commits are pushed to that pull request's branch, merged in first
    when the branch has moved, and a branch outside it that holds work for it is merged into it when
-   the merge is clean or named in the queue with the exact merge still to do. Commit uncommitted
+   the merge is clean or named in the queue with the exact merge still to do, apart from the local
+   branch `lock-revision`'s hold keeps, which waits for the lock question below. Commit uncommitted
    changes with a message that says what state they are in, using a `wip:` prefix when they are
    incomplete. Then run the pre-push checks
-   the GitHub rule’s **Pre-Push Gate** defines, report-only: every failing check is pushed unfixed and
+   the GitHub rule's **Pre-Push Gate** defines, report-only: every failing check is pushed unfixed and
    goes first in the queue — the one push that does not wait on its checks, because unpushed work
    is lost with the session. Apply and commit any stash. Never rewrite history or force-push.
+   **The local branch `lock-revision`'s hold keeps is integrated too, so ask the user first whether
+   the lock should be unlocked.** On yes, integrate and push it and record the unlock as that skill
+   says. On no,
+   ask what should happen to those commits, since a hand-off leaves none unpushed, and wait for the
+   answer before the steps below.
 6. **Close the pull requests this session made stale.** One whose commits now live on the pull
    request the work continues, or whose change is superseded, is closed with a comment naming where
    the work went, as the GitHub rule's **Branches and Pull Requests** says. A pull request the
    session did not open is never closed, retargeted or folded.
 7. **Bring each pull request body up to date**: read the complete existing body, then rewrite it
-   to describe everything the branch now changes, written the way the GitHub rule's description
-   bullets say — from the session's own record of the work, not a walk through its commits. Every open pull request in the ledger gets this, however long its body.
+   to describe everything the branch now changes, written the way `pre-production`'s **Repository Text**
+   says — from the session's own record of the work, not a walk through its commits. Every open pull request in the ledger gets this, however long its body.
 8. **Post the hand-off comment** on each pull request in the template below, written so an agent with
    no other context can continue: the queue in order with exact files, every question with the
-   options as they were put, and every decision and constraint that governs this repository's work.
+   options as they were put, every call the agent made itself with its answer and reason, and every
+   decision and constraint that governs this repository's work.
    It is published in this repository, so it follows the GitHub rule's independent publishing
    context exactly as `session-ledger`'s backup comments do: it states this repository's work in
    this repository's own terms and never names or links another repository, its pull requests or
@@ -114,13 +126,16 @@ Task: `<task token>`
 ### Ask the user before acting
 - <question, with the options as they were put and the recommendation> — <what waits on the answer>
 
+### Decided by the agent
+- <question the user asked the agent's view on> — <the agent's answer and why> — <what was built on it>
+
 ### Decisions and constraints
 - <decision or standing constraint governing this repository, in the user's words or paraphrased in this repository's terms>
 
 ### Depends on
 - <what this branch needs from, or offers to, other work, as this repository's own contract>
 
-### Plan presented, not approved
+### Plan waiting on the user
 <the plan verbatim, with references to other repositories replaced as step 8 says>
 
 ### Recorded elsewhere

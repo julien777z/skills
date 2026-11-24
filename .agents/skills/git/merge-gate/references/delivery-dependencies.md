@@ -11,7 +11,7 @@ a testing revision used to build, validate or package that delivery is.
 
 The consumer's proposed source and outputs built from that head are the review subject, not
 prerequisite provider inputs. This includes an earlier validated output of the same proposed change
-when equivalence to the accepted head is established under the standing artifact policy. Still
+when equivalence to the accepted head is established under `pre-production`'s **Built Artifacts And Live Deployments**. Still
 inventory independent inputs inside those outputs, including separate prerequisite changes in the
 same repository.
 
@@ -48,7 +48,7 @@ evidence in the private record and remove obsolete blocker wording from the cons
 
 The maintained target follows the user's explicit reference choice, then applicable repository
 guidance: a default branch, published release tag, or another permitted maintained reference.
-Recorded commits establish provenance; they do not override the standing version-reference policy.
+Recorded commits establish provenance; they do not override `pre-production`'s **Versions** convention.
 An explicitly permitted nonexempt immutable reference still needs merged or released provenance. A dependency
 merge does not authorize a release or make the consumer's old testing reference suitable for
 delivery. Before merging, verify all nonexempt consuming locations have moved, validate what they

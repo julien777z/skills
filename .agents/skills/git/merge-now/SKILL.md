@@ -1,20 +1,21 @@
 ---
 name: merge-now
-description: Merge the task's finished source pull requests now, each once acceptance and its check gate pass, then review what merged unreviewed and merge the fixes. Run only when the user asks for it.
+description: Merge the task's finished source pull requests now, each once acceptance, the combined review of the set and its check gate pass, then review what merged unreviewed and merge the fixes. Run only when the user asks for it.
 short_description: 'Merge finished pull requests now, then review what merged unreviewed.'
 ---
 
 # Merge Now
 
-Merge the work the user has reviewed without a review loop at merge time, apart from the review of
-any fix `merge-gate` makes, and review afterwards whatever merged without an earlier `review-pass`.
+Merge the work the user has reviewed without a review loop at merge time, apart from the combined
+review of the set and the review of any fix `merge-gate` makes, and review afterwards whatever
+merged without an earlier `review-pass`.
 
 ## Authorization
 
 - Only a direct user invocation starts this workflow. Creating or editing this skill, a plan step,
   an earlier run, or an automatic caller is never an invocation.
 - The invocation authorizes, for this run only: the squash merge of each target below;
-  `review-pass` over each merged range; the fix pull requests its findings need, one per
+  `review-pass`'s **Combined Review** before the first merge and `review-pass` over each merged range; the fix pull requests its findings need, one per
   repository; and their merges. It authorizes no deployment,
   release, or review of unrelated work.
 - Never ask to merge a target and never end by offering a merge; what stops one is a gate under
@@ -34,8 +35,7 @@ any fix `merge-gate` makes, and review afterwards whatever merged without an ear
 1. The pull requests the user names, or else every open pull request `list-prs` returns for the
    task. Freeze that set at invocation and verify each head and state on the host.
 2. Leave out a pull request confined to agent configuration.
-3. Run `merge-gate`'s **Readiness** for every remaining target.
-4. A pull request whose task has not supplied its reviewed result is finished first: carry its
+3. A pull request whose task has not supplied its reviewed result is finished first: carry its
    unfinished implementation and verification through `execute-task`, in the task's active run when
    there is one, and use the head that run's review accepts. If the user named the pull request,
    use it as it stands.
@@ -43,16 +43,24 @@ any fix `merge-gate` makes, and review afterwards whatever merged without an ear
 ## Merge
 
 Targets with no dependency on one another proceed concurrently; a consumer waits for the target it
-depends on to merge.
+depends on to merge. This workflow merges first and reviews afterwards, so each target's own
+`review-pass` stays deferred to **Review What Merged**. When the set `review-pass`'s **Set and
+timing** defines holds more than one of the task's open pull requests, an agent-configuration one in
+that set that **Targets** leaves out included, the combined read runs before any of them merges,
+over the heads this run can supply in place of the individual reviews that timing waits for: each
+target's head **Acceptance** accepted, and an agent-configuration member's head its own delivery
+accepted. Invoke `review-pass` in its **Combined** mode with those heads and intent statements; no
+target in the set reaches **Check gate** until that round has accepted its head.
 
 1. **Acceptance.** Reuse `acceptance-gate`'s final-acceptance verdict when the head it accepted is
    the current head, or a rewrite whose tree is identical to it. Otherwise put the head to the
    final-acceptance question. A flag is fixed and gated under that skill's **Bounds**; the
-   target waits while one stands.
-2. **Check gate.** Invoke `merge-gate` with the accepted head, validation receipts, established
+   target waits, still draft, while one stands.
+2. **Check gate.** Invoke `merge-gate`, which marks the target ready as the last step before the
+   merge, with the accepted head, validation receipts, established
    exclusions and the fix rule for every fix it makes — a check fix, a conflict resolution, a commit
    someone else pushed: `review-pass` runs again over that fix's delta, and the fix is pushed through
-   the GitHub rule’s **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
+   the GitHub rule's **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
    passed. `merge-gate`'s **Check Gate** owns complete-diff classification, check inventory, failure
    handling and the evidence required before merging.
 3. **Merge.** `merge-gate` squash-merges at the gated head and verifies it. Record the merge commit and its first parent with `session-ledger`.
@@ -65,7 +73,7 @@ depends on to merge.
    there.
 2. Confirmed findings go into one draft fix pull request per repository, cut from the freshly
    fetched default branch. Record each fix pull request and its outcome with `session-ledger`. The original merge is never amended or reopened.
-3. Each fix pull request takes **Merge** steps 1–3. It gets no further review round beyond the fix rule's review of a
+3. Each fix pull request takes every step of **Merge**. It gets no further review round beyond the fix rule's review of a
    `merge-gate` fix.
 
 ## Report
@@ -79,7 +87,7 @@ or says nothing is needed.
 
 | PR | Acceptance | Check gate | Merged at |
 | --- | --- | --- | --- |
-| [<owner>/<repo>#<number>](<url>) | <reused (head unchanged) | accepted on `<sha>`> | <passed | passed; verified exclusion: `<check>` — <gate evidence>, baseline failures left out> | `<sha>` |
+| [<owner>/<repo>#<number>](<url>) | <reused (head unchanged) | accepted on `<sha>`> | <passed | passed; verified exclusion: `<check>` — <gate evidence>> | `<sha>` |
 
 **Review of what merged**
 - <repo>: <nothing unreviewed | clean, no fix PR | <n> confirmed finding(s), <one-line summary>. Fixed in [<repo>#<number>](<url>), accepted, check gate passed, merged at `<sha>`.>
@@ -88,3 +96,6 @@ or says nothing is needed.
 
 **Next:** <one action, or nothing needed>
 ```
+
+The check-gate column leaves out baseline failures and non-essential checks left red, as
+`pre-production`'s **Encountered Issues** says.

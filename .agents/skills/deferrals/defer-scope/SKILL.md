@@ -1,6 +1,6 @@
 ---
 name: defer-scope
-description: Record deferred work in the repository it affects, using Linear or that repository's ledger as an availability fallback; with no scope, read its active records. Use when work is consciously left undone, when a change would take a recorded deferral out of the active set, or when asked what is deferred, outstanding, or still open.
+description: Record deferred work in the repository it affects, using Linear or that repository's ledger as an availability fallback; with no scope, read its active records, or for a caller's scope read every record that covers it, declined and canceled ones included. Use when work is consciously left undone, when a change would take a recorded deferral out of the active set, or when asked what is deferred, outstanding, or still open.
 short_description: 'Record unfinished work in the repository it affects, or read its active records.'
 ---
 
@@ -20,13 +20,17 @@ Keep a problem alive after the conversation ends without scheduling its implemen
 **Repository fallback** only when the session exposes no Linear integration or preflight reports it unavailable
 before any write.
 
-**Read** when no scope is given. Report the combined active set from Linear and the legacy
+**Read** when no scope is given. Report the combined active set from Linear and the
 repository ledger, and write nothing. A recorded item is resolved by the user running
 `/execute-defer-scope` on it.
 
+**Read a scope** when a caller that is not recording asks which records cover a scope it is about
+to audit or change. **Reading A Scope** returns them, declined and canceled ones included, and
+writes nothing.
+
 ## When Recording Runs
 
-Fix work rather than record it whenever one focused pass can finish it within `pre-production`'s size budget, measured against the scope the user set and the size of the change in flight, and a defect whatever its size, as below. A stale reference, rename, wrong path,
+Fix work instead of recording it whenever one focused pass can finish it within `pre-production`'s size budget, measured against the scope the user set and the size of the change in flight, and a defect whatever its size, as below. A stale reference, rename, wrong path,
 missing assertion, lint or type finding, or small extraction costs less to fix than to record.
 Attempt the fix before concluding that work is deferrable; `acceptance-gate`'s admission question
 lists the only justifications for a record, and a flagged attempt is one of them. Work in lines or
@@ -55,12 +59,15 @@ work that awaits a decision already put to its owner and still open, or one the 
 the current request; a question nobody has asked yet is asked, not recorded. **A defect is never
 recorded**, a defect as `pre-production`'s **Scope
 Follows The Defect, Not The Request** defines one, whether the change introduced it, the task asked
-to fix it or the work only ran into it: it is fixed in the change in flight, and a suspected one
-whose confirmation is in reach is investigated there, as that section says. Only cleanup that fixes
+to fix it or the work only ran into it: it is fixed now, in the change in flight or on the pull request of its own
+`pre-production` gives a large fix, and a suspected one whose confirmation is in reach is
+investigated there, as that section says. Only cleanup that fixes
 no defect follows `pre-production`'s size budget, and only what that budget defers is recorded here.
 Never offer the user the choice between fixing and recording. When part of a cleanup is small, fix
-that part and record only the remainder. Record at the moment work is consciously left undone; chat and pull-request
-prose are not durable records.
+that part and record only the remainder. Record consciously deferred work immediately, at the
+moment it is left undone, in the repository that owns it as **Ownership And Identity** resolves; no
+separate invitation is needed, and a chat note or pull-request prose is not a durable deferral
+record.
 
 ## Changing A Record
 
@@ -86,12 +93,12 @@ the canonical repository identity and the current change's pull-request number w
 1. Invoke `linear` and require the deferral label the repository's project guidance names to exist.
 2. Search every matching active, completed, canceled, and archived issue using the label,
    repository, stable key, pull-request metadata, affected surface, and root cause. Also inspect the
-   legacy repository ledger so a pre-transition record is not duplicated.
+   repository ledger so a record already kept there is not duplicated.
 3. Put the scope, the search results, the draft resolution criteria, and any attempted fix to
    `acceptance-gate`'s admission question. A refusal ends recording. Reusing an active match is
    admitted the same way as creating one; appending to a record is still deferring.
 4. Reuse and update a confident active Linear match. Do not reactivate a completed or canceled issue,
-   duplicate a legacy record, or choose among ambiguous matches without user direction.
+   duplicate a repository-ledger record, or choose among ambiguous matches without user direction.
 5. Create one issue when no match exists. State what is deferred, why it remains open, the scope of
    picking it up, supporting evidence by durable link or concise excerpt, and concrete resolution
    criteria. Use the metadata contract from `linear` with `Source: defer-scope` and the stable key. Write
@@ -101,7 +108,7 @@ the canonical repository identity and the current change's pull-request number w
    a mechanical condition — a symbol gone, a file absent — can be satisfied by putting that shape
    back somewhere else, and the record then closes on a regression. Write the admission verdict in
    the issue body below the description.
-6. Return the issue identifier and URL, or the matching legacy record. Recording does not create a
+6. Return the issue identifier and URL, or the matching repository-ledger record. Recording does not create a
    repository branch or pull request when Linear succeeds.
 
 If creation has an unknown outcome, follow `linear`'s bounded reconciliation search and do not retry
@@ -111,7 +118,7 @@ blocked update.
 
 ## Repository Fallback
 
-Use the pre-transition repository workflow only when Linear preflight is unavailable before any
+Use the repository ledger below only when Linear preflight is unavailable before any
 write:
 
 1. In the resolved affected repository, search `deferrals/<key>/`, `deferrals/declined/<key>/`, and
@@ -128,7 +135,7 @@ write:
    `acceptance-gate`'s final-acceptance question, one gate per such pull request, then invoke
    `merge-gate` under the GitHub rule's deferral-record permission with the accepted head, no local
    test coverage, and the rule that a fix it makes goes back to final acceptance over that fix's
-   delta, one more gate per fix, capped by the global rules' review-round limit. It is never left
+   delta, one more gate per fix, within the limit of 3 review rounds per change. It is never left
    open, and no report or next action leaves its merge to the user.
 
 Never mix Linear and repository records for one deferral. Existing repository records remain in
@@ -144,3 +151,20 @@ pull-request, and problem evidence.
 Report one concise entry per deferral with its title, why it remains open, source (`Linear` or
 `repository`), and durable link. If Linear is unavailable, report that limitation and return the
 repository set rather than claiming the combined ledger is empty.
+
+### Reading A Scope
+
+For a scope a caller names — a repository, or a domain, service or path inside it — return every
+record whose affected surface falls in that scope, whatever its state:
+
+- from Linear, the issues carrying the deferral label in every state, completed, canceled and
+  archived included;
+- from the repository ledger, every `deferrals/` child, `deferrals/declined/` included, on the
+  fetched remote default branch and in each open pull request's `deferrals/` diff.
+
+Report one entry per record: its stable key, title, affected surface, state (active, declined,
+canceled or resolved), source and durable link. A declined or canceled entry also carries the
+reason it was declined and its reconsideration criterion, which is what would reopen it, both
+quoted from the record; one that states neither is reported as missing them, never filled in.
+The caller decides what a returned record means for its own findings; this read changes no record
+and admits none.

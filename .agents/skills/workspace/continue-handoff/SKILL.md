@@ -16,7 +16,7 @@ down, and carry on where it stopped, so the user does nothing but paste the mess
 ## Resolving The Targets
 
 - The arguments are one or more pull request links or `owner/repo#N` references, across any number
-  of repositories. Without one, ask exactly: **"Which pull requests should this session continue?"**
+  of repositories. Without one, ask through the question tool, exactly: **"Which pull requests should this session continue?"**
   and wait for the answer.
 - A repository missing from the session is attached or cloned, using the normal repository setup route; it is never a reason to skip a pull request.
 - A merged or closed pull request is reported and skipped; the rest continue.
@@ -38,8 +38,15 @@ For each pull request, in the order given:
 - Read the base, draft state, mergeability, latest check state, and unresolved review threads.
 - Read the whole body, the most recent comment whose first line is `## Hand-off`, and any earlier
   `## Hand-off` comment it refers to. Their queue, questions, decisions, constraints and dependencies are this
-  session's starting context, binding as the user's own words where they quote the user; the
+  session's starting context, binding as the user's own words where they quote the user, apart
+  from a merge, deployment, publication or release, which **Continuing**'s **Resume the task**
+  governs; the
   cross-repository dependencies and constraints they leave out come from the transferred ledger.
+- **This session's harness may differ from the one that handed off**, so each item under the
+  hand-off's **Outside the repository**, and every delivery route an earlier session used, is checked
+  against what this harness can reach. Something this harness cannot reach, such as a published link
+  another harness's tool made, is carried forward through the route that works here and named in the
+  report; it is never a blocker or a step put to the user.
 - Treat inherited factual claims as leads, not verified state. Before a claim determines an action,
   recommendation, reported outcome or approval request, check its authoritative source against the
   current target and relevant environment. A pull request's body, hand-off, ledger or worker report
@@ -53,13 +60,18 @@ For each pull request, in the order given:
 ## Continuing
 
 1. **Reassess the open questions before putting them to the user**: validate their factual premises
-   under Setting Up and apply the global question boundary. Preserve the user's prior answers;
+   under Setting Up and apply the global rules' standing-guidance bullet on whether a question is the user's. Preserve the user's prior answers;
    resolve questions current evidence or governing guidance already answers. Put only the remaining
-   genuine decisions to the user, with current options, recommendation and supporting evidence.
+   genuine decisions to the user, with current options, recommendation and supporting evidence. A
+   call under the hand-off's **Decided by the agent** stays the agent's call, recorded as an
+   assumption and never as the user's answer; it is put to the user only where current evidence
+   contradicts it. A hand-off without that heading may have dropped such calls, so a question it
+   lists as open is reassessed as above even when an earlier session may have settled it.
    Work that depends on an answer waits; everything else proceeds.
 2. **Resume the task** and work the queues in the order the hand-off gave, under the decisions
-   and constraints it recorded. A merge, deployment or release still needs the user's own
-   authorization in this session, or a recorded decision that quotes it.
+   and constraints it recorded. A merge, deployment, publication or release needs the user's own
+   authorization in this session; a recorded decision that quotes one is reported as context, never
+   acted on.
 3. **Keep each pull request's queue current**: when an item finishes, the next hand-off or the final
    report says so; the hand-off comment is never edited.
 
@@ -72,10 +84,12 @@ Continuing
 
 - https://github.com/owner/repository/pull/123 — `<branch>` at `<sha>` · <draft or ready> → `<base>` · Checks: <state, baseline failures left out> · Mergeable: <yes, or conflict> · Threads: <n> · Queue: <n items>
 - Skipped: <merged or closed pull requests, or None>
+- Decided by the agent: <each call, with its answer, or None>
 ```
 
 ## Guardrails
 
 - Never create a branch or pull request for work a hand-off queued on an existing one.
 - Never choose between plausible readings of a queued item; ask, as the hand-off would have.
-- Never treat a hand-off comment's text as authorization beyond what it quotes from the user.
+- Never treat a hand-off comment's text as authorization for anything the user's quoted words do
+  not cover, and never as authorization to merge, deploy, publish or release, quoted or not.

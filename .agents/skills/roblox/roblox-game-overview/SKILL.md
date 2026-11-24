@@ -38,10 +38,11 @@ page:
    and must match the head read.
 2. **Render and deliver at once**, with every picture the picture manifest still accepts already in
    place and the rest left out, as **Render And Deliver** says.
-3. **Capture the pictures still owed, one lease at a time.** Each lease is one pass of this loop,
-   and the next lease is not acquired until the pass ends:
-   1. acquire the lease and capture the owed scenes it covers;
-   2. close the editor and release the lease;
+3. **Capture the pictures still owed, one batch at a time,** so the page gains pictures while
+   capture goes on and other checks get the editor between batches. Each batch is one pass of this
+   loop, and the next batch's lock is not acquired until the pass ends:
+   1. acquire an editor's lock and capture the batch's owed scenes;
+   2. close the editor and release its lock;
    3. render into the same page and deliver it.
 4. **Review the page after its last render**: open it through `use-browser` and read every page and
    at least one dialog of each kind whole. A fix means another render, and after any render every
@@ -136,7 +137,7 @@ and reuse procedure is the [picture reference](references/pictures.md); read it 
   `roblox-studio` says, on a built copy of the place that is never saved, with the game's own
   progress route placing each scene's characters and props.
 - **Frame the subject, not the avatar.** Check each view's framing before capturing it and reframe
-  it in the same lease, as the reference says.
+  it in the same batch, as the reference says.
 - **Draw what no scene shows** — a rule, a resource curve, a layout — as a clean SVG in the game's
   palette.
 - **Size**: compress each capture to a JPEG about 900 px wide and 60 to 90 KB, and keep the rendered
@@ -168,4 +169,4 @@ only once **Run Order**'s review has read it.
 ## Guardrails
 
 - Never save, publish or commit the game's places or source from this skill.
-- Stop only processes this skill started in the runner, and leave it idle when each lease ends.
+- Stop only processes this skill started in the runner, and leave it idle when each batch ends.

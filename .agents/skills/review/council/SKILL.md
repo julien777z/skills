@@ -16,10 +16,11 @@ short_description: 'Ask three strong models what they think, or review with them
   view, such as "what do you think of this approach? use council", and when an invocation hands
   the council a brief to answer: a review of a change, or a ruling on one disputed finding.
   Return each member's answer under **Output**; the asker decides what to do with it. A ruling is
-  the majority of the three unless the asker sets another threshold, and a question that is a product, scope, security, disclosure or authorization choice
+  the majority of the members, normally three, unless the asker sets another threshold, and a question that is a product, scope, security, disclosure or authorization choice
   is the user's: the council's answers go to them as advice. A ruling between more than two
   options, such as simplify, revert or accept, takes the option most members pick first; a
-  three-way split takes the option the asker lists first.
+  three-way split takes the option the asker lists first. A ruling never accepts a confirmed
+  defect, an exploitable vulnerability or a failing required check.
 - **Loop:** the user asks the council to review or give feedback on work, such as "council this
   pull request". Run **Rounds**, fixing between them.
 
@@ -30,8 +31,13 @@ skill's model capabilities reference lists under **Review panel**, each at its l
 the host and at high effort, and resolve each launch through that skill. Start the three in
 parallel, read-only, each starting no subagents of its own.
 
-- When a listed family is unavailable as `subagent-matrix` establishes it, fill its seat through that
-  skill's fallback order, with no lower limit, and say so in the result. A named member who is unavailable is reported, never replaced silently.
+- **A seat whose family is unavailable**, as `subagent-matrix` establishes it, is filled through
+  that skill's fallback order down to the `standard` capability level and no lower, because a
+  member below it adds a vote without adding a strong independent read. When no candidate at
+  `standard` or above launches, the council runs with the two members it has, and the result names
+  the empty seat and says the ruling came from two members. Two members who agree decide; a
+  split takes the option the asker lists first, as a three-way split does. A named member who is
+  unavailable is reported, never replaced silently.
 - **Brief:** a brief the invocation supplies is sent as it stands to every member. Otherwise give
   each the question or request, the intent, the material (a diff, files, a plan), and any check
   results. A review asks for findings, each with a file and line, rated `blocker` (the intended case
@@ -52,11 +58,13 @@ explore new ideas, skip fixes to code that is being replaced.
    disagree, and the next steps.
 2. Make the changes you agree with, and answer each finding: fixed, or declined with evidence. A
    defect outside the request is always fixed; cleanup outside it is fixed when it fits
-   `pre-production`'s size budget, and the rest is listed in the result as left for recording.
+   `pre-production`'s size budget, and the rest is listed in the result with where that budget
+   sends it: its own pull request, or left for recording.
 3. Send the next round to the same members, with those answers and the diff since the last round.
    Each full review pass is one round.
 4. Stop when every member is satisfied, or after three rounds. An open disagreement then is settled
-   by the members' majority and listed with its ruling; one that is a product, scope, security, disclosure or authorization choice goes
+   by the members' majority, within the limit **Ask** sets on what a ruling accepts, and listed
+   with its ruling; one that is a product, scope, security, disclosure or authorization choice goes
    to the user.
 
 ## Harness Compatibility
