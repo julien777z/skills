@@ -170,8 +170,8 @@ class StudioMcpConnection:
 
         self.session: StudioMcpSession | None = None
         # The session reads every reply from one pipe and drops a reply meant for another request, so the threads
-        # sharing this connection send one request at a time.
-        self.turn = threading.Lock()
+        # sharing this connection send one request at a time; the owner of the turn may take it again.
+        self.turn = threading.RLock()
 
         atexit.register(self.close)
 
@@ -225,9 +225,10 @@ class StudioMcpConnection:
     def close(self) -> None:
         """Close the open session."""
 
-        if self.session is not None:
-            self.session.close()
-            self.session = None
+        with self.turn:
+            if self.session is not None:
+                self.session.close()
+                self.session = None
 
 
 class StudioToolError(RuntimeError):
@@ -405,14 +406,15 @@ class Studio:
 
         arguments = {**arguments, "studio_id": self.studio_id}
 
-        if self.connection.session is not None:
-            return call_studio_tool(self.connection, name, arguments, self.lock_receipt, timeout)
+        with self.connection.turn:
+            if self.connection.session is not None:
+                return call_studio_tool(self.connection, name, arguments, self.lock_receipt, timeout)
 
-        config = assert_runner_lock_held(self.lock_receipt)
+            config = assert_runner_lock_held(self.lock_receipt)
 
-        self.await_listing(config)
+            self.await_listing(config)
 
-        return studio_tool_reply(self.connection, name, arguments, config, timeout)
+            return studio_tool_reply(self.connection, name, arguments, config, timeout)
 
     def execute(self, code: str, data_model: str = "Client",
                 timeout: timedelta = OPERATION_TIMEOUTS[RunnerOperation.TOOL_CALL]) -> str:

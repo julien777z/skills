@@ -307,7 +307,7 @@ ends the question.
    Product state never softens it either: broken is broken for one admin as for a thousand users.
    A missing safeguard that definition leaves out goes on to the tests below, its exploitability
    judged under **Exploitable Findings**. A suspected defect whose confirmation the caller can
-   reach with its own tools is fix as well, as `pre-production`'s noticed-defect bullet says: investigated in the change and fixed if it confirms, never defer.
+   reach with its own tools is fix as well, as `pre-production`'s noticed-defect bullet says: investigated in the change and fixed if it confirms, never defer; one that does not confirm is closed with what the investigation showed.
 2. **close** — the item is real but not worth doing. Either the product state leaves it protecting or
    serving nobody — an access control between the one admin and the data only that admin can see, a
    hardening against users the product does not have, neither of which retires a finding an attacker

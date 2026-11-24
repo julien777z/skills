@@ -222,7 +222,7 @@ with an obsolete owned contract or revision.
   - **The widened budget** holds instead under a broad scope, where the user named the whole
     product, the whole codebase or everything, and while a decision the user scoped to the whole
     session widens it, until they withdraw it: every cleanup the work meets is in scope and done,
-    whatever its file count, and the one-hop limit above does not bound it. Each such fix gets its
+    whatever its file count, bar the record grounds below, and the one-hop limit above does not bound it. Each such fix gets its
     own commit, named for what it repairs.
   - Under either budget a cleanup that would reach a repository the change does not already edit
     goes on that repository's own pull request, as a larger fix does above, so the requested
