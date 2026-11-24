@@ -173,27 +173,17 @@ with an obsolete owned contract or revision.
   released users move as **Product State**'s migration bullet says. Only a step the move needs that
   the user alone can take, such as supplying an identifier the session cannot read, goes to them,
   as that step.
-- **A defect the work notices is always fixed, and a large fix gets a pull request of its own.**
-  The hop limit above does not bound it, and neither does its home: a shared component, an owned
-  library or another owned repository. Its size decides where the fix goes, so the requested change
-  stays reviewable as itself:
-  - **A small fix rides with the change**: one within the widened budget's reach below, about five
-    files, in the repositories the change already edits.
-  - **A larger fix goes on its own pull request**: one reaching more files or another repository,
-    such as a dependency or runtime upgrade a warning leads to, or a fix inside an owned library. It
-    is opened from each affected repository's freshly fetched default branch and carried through
-    its own checks now. The change in flight neither carries it nor consumes its branch, and a
-    merge authorized for the change does not reach it.
-  - **A defect the change itself introduced, or one the requested behavior cannot work without,
-    stays the change's** whatever its size, and a dependency it needs is consumed as the GitHub
-    rule's **Pre-Push Gate** says.
-
-  It is never deferred, left as a note, or offered to the user as a question.
+- **A defect the work notices is always fixed.** The hop limit above does not bound it, and neither
+  does its home: a shared component, an owned library or another owned repository. Use the GitHub
+  rule's **Branches and Pull Requests** to place the fix in each affected repository. Keep distinct
+  concerns reviewable in separate commits. A defect the change introduced or the requested
+  behavior cannot work without stays part of the change at any size. Use the GitHub rule's
+  **Pre-Push Gate** for a dependency it needs. A defect is never deferred, left as a note or offered
+  to the user as a question.
 - **A security vulnerability the work finds is such a defect, whoever finds it and whenever it
   arrived.** One a gate, reviewer or audit reports in code the change never touched, one that
   predates the change, and one another layer is said to stop before that layer is traced on every
-  path the attack takes are all fixed now, in the change in flight or on a pull request of its own
-  as the bullet above places it, with a test that reproduces the attack first where one can exist. A shape that may be exploitable is traced to an attacker or
+  path the attack takes are all fixed now as the bullet above requires, with a test that reproduces the attack first where one can exist. A shape that may be exploitable is traced to an attacker or
   ruled out in the same run. It is always closed with the fix that enforces the access
   the product already intends; only a change that widens access or changes who the feature serves
   goes to the user, as **Product Choices** says. Every mitigation
@@ -216,9 +206,8 @@ with an obsolete owned contract or revision.
     session widens it, until they withdraw it: such cleanup fits when its fix touches about five
     files or fewer, needs no design decision from the user, does not change what the product does
     and needs no plan of its own. Each such fix gets its own commit, named for what it repairs.
-    A cleanup that would reach more files or a repository the change does not already edit goes
-    on its own pull request, as a larger fix does above, so the requested change stays reviewable
-    as itself.
+    When widened cleanup reaches more files or another repository, keep it in its own commit and
+    use the GitHub rule's **Branches and Pull Requests** in each affected repository.
   - Other cleanup past the budget in force is deferred work: returned to the caller to record,
     listed in the change's report one line each with its record, and never fixed in the change or
     put to the user as a question. A defect, a security vulnerability included, is never past it.
