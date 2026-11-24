@@ -23,13 +23,12 @@ experience's audience, settings or monetization, and no publish to any other exp
   so the user can play a recent build whenever they come back. A milestone is a finished unit
   the user would want to play: a feature, a world area or a set of rooms rebuilt, a large refactor,
   or a round of fixes the user asked for. It is never every change or every push. The milestone's
-  work is pushed and no defect the work found in what would ship is still open; one that is open
-  holds the publish until its fix is pushed.
+  work is pushed and no defect the work found in what would ship is still open, since a milestone with
+  one open is not reached until its fix is pushed.
 - **A publish waits only on what players would run.** Its places must build and pass the build's
-  integrity check; nothing else holds it but an open defect in what would ship, above. A lint, format, type or test result, a hosted check's
+  integrity check; nothing else holds it. A lint, format, type or test result, a hosted check's
   status, a pending review or gate, and a failure in setup the game does not run, such as tooling
-  for agents, never delay a publish or become a reason to fix something first; a result matters only where it
-  shows an open defect in what would ship.
+  for agents, never delay a publish or become a reason to fix something first.
 - **When the user asks.** A request to publish runs now, to the experience it names or the staging
   default below.
 - **Production only on the user's own request.** A milestone never publishes to a production

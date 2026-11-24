@@ -112,7 +112,7 @@ recording or delivering a batch.
   finished plan step or worker task whose checks pass, a round of fixes the user asked for, or a
   publish. It then runs as **Guidance Delivery** says, beside the ongoing work and without the user
   asking, however long the surrounding task goes on; a session whose requests keep arriving never
-  holds a recorded correction for the task's end. Until that milestone nothing else of delivery
+  holds a recorded correction for the task's end, and Completion delivers whatever is left. Until that milestone nothing else of delivery
   runs: no review, gate, skill-test round, merge or worker, except the checks a batch in flight
   reruns for an edit that joined it, as `session-ledger`'s **Guidance Batches** says. A standing
   instruction about how guidance pull requests are reviewed or merged governs that delivery when it

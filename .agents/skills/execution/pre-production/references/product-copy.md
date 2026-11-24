@@ -15,8 +15,9 @@ change writes or changes them.
   reader about a cost they are not paying, such as "Sharing is free" beside a paid plan's share
   button, adds reading without information and can make the reader doubt what they paid for. Before
   adding a line, name what it helps the reader do or understand; when there is nothing, leave it out.
-  A label names its action plainly, never who does it against whom: a booking tool's button reads
-  "Book a table", not "Book for yourself" beside "Book for them".
+- **A label names its action plainly, never who does it against whom.** A booking tool's button
+  reads "Book a table", not "Book for yourself" beside "Book for them"; one action with a target
+  is one label, never a pair split by who acts.
 - **Text a person reads sends them to another place with a link, never a route to follow.** "Open
   Library, then Shared albums" makes the reader follow a map; the place's name, linked, takes them
   there in one action. Where the text renders markup, the name is the link. Where it is plain text

@@ -231,7 +231,8 @@ with an obsolete owned contract or revision.
     in flight, such as a sweep as large again as the work it came from; work an external blocker
     holds, something outside every repository the user owns that the fix cannot be written
     without; and a decision that is the user's, such as a design choice or a change to what the
-    product does, put to them as **Product Choices** says. Such work is returned to the caller to
+    product does: one nobody has asked about is put to them now as **Product Choices** says, and
+    one already put and still open is recorded. Work recorded on a ground is returned to the caller to
     record, listed in the change's report one line each with its record and its ground, and never
     fixed in the change. Everything else the work meets is done, since a record costs more than a
     small fix: a later run must find, read, triage and execute it, and it can be lost or misstated

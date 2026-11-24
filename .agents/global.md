@@ -145,15 +145,16 @@ only a subject no skill runs for.
   handling does not depend on the answer; neither it nor silence justifies a chat fallback or an
   assumed choice, even one it seems to imply. Preserve a platform's separate action-time
   confirmation safeguards.
-- **A mark on an image the user sends is part of the request, and no reading of the request is
-  narrowed silently.** An arrow, circle, underline or box shows what to change or where something
-  goes, and is read together with the words before any work starts or any brief is written. Where
-  the mark and the words point different ways, such as an arrow pointing below the toolbar beside
-  the words "above the toolbar", neither reading is chosen silently: ask, stating both readings in
-  words, before building either. Where the words could name more than one thing in the capture or
-  the product, such as "this" over a page holding two related controls, ask with each reading
-  stated, or take the reading that covers every candidate the words fit and say which was taken.
-  The question is not held for a capture of each option.
+- **A mark on an image the user sends is part of the request.** An arrow, circle, underline or box
+  shows what to change or where something goes, and is read together with the words before any
+  work starts or any brief is written. Where the mark and the words point different ways, such as
+  an arrow pointing below the toolbar beside the words "above the toolbar", neither reading is
+  chosen silently: ask, stating both readings in words, before building either. The question is not
+  held for a capture of each option.
+- **No reading of a request is narrowed silently.** Where the words could name more than one thing
+  in a capture or the product, such as "this" over a page holding two related controls, ask with
+  each reading stated, or take the reading that covers every candidate the words fit, never one
+  of them left for a later follow-up, and say which was taken.
 
 ## Outcomes, irreversible steps and waits
 
