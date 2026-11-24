@@ -204,9 +204,9 @@ closes the flag, which the review's next round or a fresh gate does.
   or builds on a same-repository sibling's branch, and pushes; never ask for the dependency's merge
   or report the consumer blocked on it. That route is only for what the change uses that the
   dependency adds: a defect in the pull request's own checks or delivery, such as a CI setup step
-  the change did not write or a deploy workflow, is repaired in that pull request itself, even when a sibling pull
-  request already carries a repair, never by consuming, stacking on or waiting for that sibling or
-  the default branch.
+  the change did not write or a deploy workflow, is repaired in that pull request itself, even
+  when a sibling pull request already carries a repair, never by consuming, stacking on or
+  waiting for that sibling or the default branch.
 - **The order is change, checks, push, then the slow verification**: a browser walkthrough, a full
   or end-to-end suite, anything slow or needing a running stack, whose findings go out as fix
   pushes. **Pushed is not done**: a change is reported done only once that verification has passed.

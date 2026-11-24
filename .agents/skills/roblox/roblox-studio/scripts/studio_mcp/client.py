@@ -191,17 +191,15 @@ class StudioMcpConnection:
 
         started = time.monotonic()
 
-        if not self.turn.acquire(timeout=max(timeout.total_seconds(), 0)):
-            raise TimeoutError(f"Studio MCP timed out waiting for another request on the connection: {operation}")
+        if self.turn.acquire(timeout=max(timeout.total_seconds(), 0)):
+            remaining = timeout - timedelta(seconds=time.monotonic() - started)
 
-        remaining = timeout - timedelta(seconds=time.monotonic() - started)
+            if remaining > timedelta():
+                return remaining
 
-        if remaining <= timedelta():
             self.turn.release()
 
-            raise TimeoutError(f"Studio MCP timed out waiting for another request on the connection: {operation}")
-
-        return remaining
+        raise TimeoutError(f"Studio MCP timed out waiting for another request on the connection: {operation}")
 
     def session_request(self, method: str, params: Mapping[str, JsonValue], timeout: timedelta,
                         config: RunnerConfig) -> JsonRpcMessage:

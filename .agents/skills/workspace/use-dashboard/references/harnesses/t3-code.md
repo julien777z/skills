@@ -2,7 +2,7 @@
 
 Delivery when the user reads the session in T3 Code, whichever agent runtime, such as Claude Code or
 Codex, runs inside it: **in the conversation**, never beside another route; when that route is
-unavailable or refuses the page, the skill's last route applies.
+unavailable or refuses the session, the skill's last route applies.
 
 Run `html_preview` with the full page's absolute path and fix any console error or refusal it
 reports. Then run `html_render` with the same path, a `title` naming the dashboard, and `height` set
