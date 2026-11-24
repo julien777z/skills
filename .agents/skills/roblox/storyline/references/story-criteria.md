@@ -1,12 +1,12 @@
 # Story quality criteria
 
-## Concrete adventure
+## Concrete core
 
-The first quality bar, ahead of everything below. The core of a story is an adventure a child can retell: a named antagonist with a concrete goal, such as to attack, conquer, destroy or steal, against a place and people the player cares about. The stakes are plain, as in "if nobody stops him, the harbor falls". The player fights the antagonist's forces and finally the antagonist. Once it falls, a new or bigger threat carries on into the next worlds, which is how the story keeps going under **Room to continue**. A theme or a mystery may sit underneath the adventure and is never the premise: a premise that is an abstract or lyrical idea, such as a fading, a stillness or a riddle about the world, with no one to fight and nothing concrete at risk, fails this bar. Take the shape of a well-loved adventure and never its story, names or characters.
+The first quality bar, ahead of everything below. A story's core is concrete and active, never a mood, a metaphor or an abstract idea. There is someone or something the player can name and act against or toward — an antagonist, a rival, a disaster, a contest, a mystery with a culprit, whatever fits the game — with a clear goal, plain stakes a child can repeat ("if nobody does X, Y happens"), pressure that escalates, and the game's own verbs aimed at it. When one conflict resolves, the next arises, which is how the story keeps going under **Room to continue**. A theme or a deeper mystery may sit underneath and is never the premise. The gate is the retell test: a ten-year-old can say who or what it is, what it is doing, what happens if nobody acts, and what the player does about it. A pitch that fails the test fails regardless of any score. A villain threatening a city passes, and so do a rival, a flood or a tournament; no one shape is the template, and the game decides which fits. Never copy an existing game's story, names or characters.
 
 ## Direction pitch
 
-A direction is proposed as a short pitch, not a full story: its hook, the idea in a sentence or two, what the player does, the first world in a few lines, what keeps it going and the next worlds, why it is engaging, and its biggest risk. It meets the bar above, with the antagonist named and the stakes stated in the pitch. Beats, dialogue, art, consistency checks, critic rounds, dashboards and implementation come only after the user approves a direction.
+A direction is proposed as a short pitch, not a full story: its hook, the idea in a sentence or two, what the player does, the first world in a few lines, what keeps it going and the next worlds, why it is engaging, and its biggest risk. It meets the bar above, with who or what the player acts against or toward named and the stakes stated in the pitch. Beats, dialogue, art, consistency checks, critic rounds, dashboards and implementation come only after the user approves a direction.
 
 ## Story structure
 
@@ -67,8 +67,9 @@ are reachable by a player who does only the required beats.
 Run these against a selected story before implementing it:
 
 - **Skipping reader.** Read only each conversation's first line and the objective text: can the
-  player say what to do next and why it matters at every beat, and can a ten-year-old say who the
-  bad guy is and what happens if nobody stops them?
+  player say what to do next and why it matters at every beat, and does the story pass the retell
+  test of **Concrete core**: who or what it is, what it is doing, what happens if nobody acts and
+  what the player does about it?
 - **Knowledge timeline.** For each character and the player, list what they know and can name at
   each beat; a character who uses a name, place or fact before it could be known, or a reveal stated
   before its beat, or hinted so plainly that the player can no longer doubt it, is a defect; so is a
@@ -135,6 +136,6 @@ story revisions preserve both the introduction and subsequent appearances.
 
 ## Proposal evaluation
 
-Pitches are judged before this scoring, for engagement and the main idea only. A pitch or candidate without a named antagonist and concrete stakes fails the **Concrete adventure** bar regardless of any score below.
+Pitches are judged before this scoring, for engagement and the main idea only. A pitch or candidate that fails the retell test of **Concrete core** fails regardless of any score below.
 
 Score each candidate from 1 (absent/contradictory) to 5 (specific and convincing) on coherence, character agency, playable variety, emotional payoff, onboarding clarity, and fit with the game's loop, which asks whether the story plays through the game's own verbs. How much a candidate takes to build is never scored or held against it; that is the user's call. A candidate with an unresolved central ending, an ending that closes the frame under **Room to continue**, contradictory mandatory dependencies, or a passive player climax fails regardless of total score. Scores compare design judgment; they are not measured retention predictions.
