@@ -34,7 +34,7 @@ extension:
     proposed_retcons: []
 audit_findings: [] # {evidence, kind, flaw, player_impact, proposed_change, affected_content}
 scope:
-    essential: [] # {change, reason, dependencies, requires}; requires lists what must be built, as fact, never as an objection
+    essential: [] # {change, reason, dependencies, requires}; requires lists what must be built
     optional: []
     outside_authorization: []
 selection:

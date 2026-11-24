@@ -30,14 +30,13 @@ writes nothing.
 
 ## When Recording Runs
 
-Fix work instead of recording it whenever one focused pass can finish it within `pre-production`'s size budget, measured against the scope the user set and the size of the change in flight, and a defect whatever its size, as below. A stale reference, rename, wrong path,
+Fix work instead of recording it whenever one focused pass can finish it within `pre-production`'s size budget, and a defect whatever its size, as below. A stale reference, rename, wrong path,
 missing assertion, lint or type finding, or small extraction costs less to fix than to record.
 Attempt the fix before concluding that work is deferrable; `acceptance-gate`'s admission question
 lists the only justifications for a record, and a flagged attempt is one of them. Work in lines or
 files the change in flight wrote, as its pull request's diff against the merge base shows, is that
 change's own and is fixed there, never recorded; an admission that turns on where the work sits
-carries the gate that pull request's file list, each file marked added, modified or renamed, and the
-diff of the files the record concerns.
+carries the gate the file list and diff `acceptance-gate` requires for it.
 
 Nothing is written before `acceptance-gate` admits the record, and a refusal is carried out as its
 disposition says: fix and do send the work into the change in flight, and close is recorded as a
@@ -53,8 +52,9 @@ authorization boundary, rather than deferring the fact that the old mechanism di
 deferral requires genuinely unfinished work after this reconciliation, not merely a changed design.
 What counts as an external blocker is `acceptance-gate`'s defer test, owned libraries included.
 
-Record only work comparable in size to the change in flight whose need is arguable — a
-redesign, a broad sweep somebody could reasonably decline — work an external blocker holds, and
+Record only work comparable in size to the change in flight — a redesign or a broad sweep
+somebody could reasonably decline, its need arguable, unless it is incidental cleanup — work an
+external blocker holds, and
 work that awaits a decision already put to its owner and still open, or one the user declined in
 the current request; a question nobody has asked yet is asked, not recorded. **A defect is never
 recorded**, a defect as `pre-production`'s **Scope

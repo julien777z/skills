@@ -180,13 +180,18 @@ class StudioMcpConnection:
         """Send a request over the session to the configured runner, waiting for its turn within the timeout."""
 
         started = time.monotonic()
+        waiting_message = f"Studio MCP timed out waiting for another request on the connection: {method}"
 
         if not self.turn.acquire(timeout=timeout.total_seconds()):
-            raise TimeoutError(f"Studio MCP timed out waiting for another request on the connection: {method}")
+            raise TimeoutError(waiting_message)
 
         try:
-            return self.session_request(method, params, timeout - timedelta(seconds=time.monotonic() - started),
-                                        config)
+            remaining = timeout - timedelta(seconds=time.monotonic() - started)
+
+            if remaining <= timedelta():
+                raise TimeoutError(waiting_message)
+
+            return self.session_request(method, params, remaining, config)
         finally:
             self.turn.release()
 

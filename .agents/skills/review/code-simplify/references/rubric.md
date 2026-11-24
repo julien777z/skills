@@ -20,8 +20,8 @@ Changed Flows**, **Remedies**, **Guidance Prose**.
   finding's place against the pull request's file list, never the reviewed delta or a move's label.
 - **Outside the change:** a bug it meets is always fixed, where
   `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places it. Non-bug cleanup outside the change follows
-  `pre-production`'s size budget: past it, a widened budget's larger cleanup goes on its own pull
-  request as that budget says, and the rest is deferred.
+  `pre-production`'s size budget: what it places in the change is done there, what it sends to
+  another pull request goes there, and only what it reserves a record for is deferred.
 - **Contracts.** Preserve what a consumer outside the user's control observes: public routes and
   their shapes, durable identifiers, persisted and wire formats. A contract whose every consumer the
   user controls may change, with every consumer updated in the same change, in any repository, never
@@ -181,7 +181,8 @@ fix written after review takes these shapes most easily. Each hit takes its seve
 5. **A typed parameter built as a dict** — an annotation on a dict literal, such as
    `name: SomeTypedDict = {` or `params: sdk.params.X = {`, or a bare dict passed where an SDK or
    repository signature names a `TypedDict`, at any nesting level. Each hit is rewritten as the
-   constructor call, such as `sdk.params.X(...)`, with tests asserting the same way.
+   constructor call, such as `sdk.params.X(...)`, with tests asserting the same way, except a
+   `TypedDict` the Python rule says the code may not import at runtime.
 
 ## Trace Changed Flows
 

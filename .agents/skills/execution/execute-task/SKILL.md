@@ -1,6 +1,6 @@
 ---
 name: execute-task
-description: "Always run this. Invoke once at the start of every task authorized to change files — including one whose edits sub-agents make or that starts because work turned up a defect — before recommending, delegating or making edits, and keep it active until verified completion or the user stops or hands it off. Never invoke it from inside a skill it runs. Its references also govern, in any task whether or not it changes files, what an invocation or authorization covers, approval boundaries, steps only the user can take, steps that cannot be taken back, reading state after a push or merge, checking a worker's claim and tracing a cause before reporting it, where working files go, waits and awaited results, and verification cadence and suite choice."
+description: "Always run this. Invoke once at the start of every task authorized to change files — including one whose edits sub-agents make or that starts because work turned up a defect — before recommending, delegating or making edits, and keep it active until verified completion or the user stops or hands it off. Never invoke it from inside a skill it runs. Its references also govern, in any task whether or not it changes files, what an invocation or authorization covers, approval boundaries, steps only the user can take, steps that cannot be taken back, reading state after a push or merge, checking a worker's claim and tracing a cause before reporting it, where working files go, reading an installed app's version or metadata, waits and awaited results, and verification cadence and suite choice."
 short_description: 'Plan source and product changes and show the plan; validate canonical guidance changes through their delivery gates.'
 ---
 
@@ -93,9 +93,8 @@ plan of its own; only an edit that adds nothing skips it.
   and no auto-merge; each edit they ask for lands on that branch and it is rendered again in place.
 - Work a plan in execution already covers takes no new plan: an encountered issue, a gate's or a
   review's flag, a failing check, or a guidance correction discovered during the run. `edit-skill`
-  records verified guidance corrections, and `process-ledger` sends them to delivery at the next
-  milestone of the work, as `edit-skill`'s recording section says, and at **Completion** for any
-  still pending.
+  records verified guidance corrections and delivers them from the next milestone; `process-ledger`
+  processes any still pending at **Completion**.
 
 ### What The Plan Holds
 
@@ -268,16 +267,8 @@ independent one. Reassess ownership after each finding or follow-up. Each editin
 worktree of its own and `subagent-matrix`'s worker brief, filled with the plan's reuse receipts. Its
 report carries a receipt for each thing it added; one without them goes back to the worker before
 its head is built on. Before writing a script or doing a check by hand, the agent
-and every worker look in the repository's `.agents/tools/`. In a
-repository the owner runs, an operation the task will run more than once, or is about to run again,
-is first written as a helper there, created with its folder if missing, committed as source work on
-the pull request the GitHub rule selects for it, and run from there each time; a shell function,
-heredoc or temporary script is not a helper, though a skill's execution checks stay untracked.
-The helpers there are maintained as well as added, by the same authority: one that nearly fits is
-extended rather than copied, one that misbehaves is fixed where it is, and one that is stale,
-replaced by another or no longer saves work is deleted once a search of the repository, its
-workflows and its guidance finds what still calls it, each caller updated in the same change. Each
-is made in the work that meets it and reported as made, never asked about.
+and every worker look in the repository's `.agents/tools/` and write, run and maintain helpers
+there as [repository helpers](references/repository-helpers.md) says.
 
 ### Task Authorization
 
@@ -372,7 +363,7 @@ open question, a later step, or a batch still collecting changes holds none of i
 required check or the host prevents delivery, keep the push and pull request as pending work.
 
 **A pull request's title and description are brought up to date at every milestone, not at every
-push.** A milestone is a finished plan step or worker task whose checks pass, and a guidance correction pushed onto the pull request carrying it. After it, add
+push.** A milestone is a finished plan step or worker task whose checks pass, a round of fixes the user asked for, a publish, and a guidance correction pushed onto the pull request carrying it. After it, add
 what the milestone changed and rewrite whatever no longer holds, as `pre-production`'s **Repository
 Text** says, before the milestone is reported. A push inside a step, such as a repair or a rebase,
 leaves the description for that step's milestone. `review-pass`'s **Description Refresh** still
@@ -492,8 +483,8 @@ The ready-for-review message takes exactly this shape, one message per pull requ
 - **Review:** <full | delta `<reviewed head>..<head>` | nothing new> · review loop <n> round(s), <n> finding(s) fixed · acceptance passed on `<head>` — leave out each count `review-pass` did not run
 - **History:** <n> commits (<subject> · <subject> · …)
 - **Fixed on the way:** <each incidental fix, or none>
-- **Deferred** (over the size budget):
-  1. <item> — <record link>
+- **Deferred:**
+  1. <item> — <ground> — <record link>
 - **Still running:** <the authorized merge through `merge-gate` (CI ~<n> min) | the guidance fixes from this task that have their own pull request (<n> correction(s)) | nothing>
 
 **Next:** <review the pull request; send follow-ups here, `/finish-pr` to review what this pass has not and merge, or `/merge-now` to merge first and review after | review the pull request; it merges once its checks pass>

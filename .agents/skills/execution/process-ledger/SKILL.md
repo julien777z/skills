@@ -6,7 +6,8 @@ short_description: 'Process verified private-ledger records into durable outcome
 
 # Process Ledger
 
-Process the active task's private ledger as one completion workflow. Read and update the ledger only
+Process the active task's private ledger as one workflow: at completion for every entry, and at each
+milestone for the pending guidance batch alone, under **Batches**. Read and update the ledger only
 through `session-ledger`; it stays private task state, while permanent guidance and artifacts remain
 at their owners.
 

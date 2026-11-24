@@ -26,10 +26,10 @@ experience's audience, settings or monetization, and no publish to any other exp
   work is pushed and no defect the work found in what would ship is still open; one that is open
   holds the publish until its fix is pushed.
 - **A publish waits only on what players would run.** Its places must build and pass the build's
-  integrity check; nothing else holds it. A lint, format, type or test result, a hosted check's
+  integrity check; nothing else holds it but an open defect in what would ship, above. A lint, format, type or test result, a hosted check's
   status, a pending review or gate, and a failure in setup the game does not run, such as tooling
-  for agents, never delay a publish or become a reason to fix something first, and the deploy
-  workflow a publish runs gates it on nothing more.
+  for agents, never delay a publish or become a reason to fix something first; a result matters only where it
+  shows an open defect in what would ship.
 - **When the user asks.** A request to publish runs now, to the experience it names or the staging
   default below.
 - **Production only on the user's own request.** A milestone never publishes to a production

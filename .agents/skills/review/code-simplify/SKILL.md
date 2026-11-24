@@ -70,11 +70,10 @@ proposed mechanism.
   decision.
 - Fix a `nit` only when it is a one-line change in a line the change already touches; otherwise
   list it as declined.
-- Outside the change, as the rubric's **Scope** defines the change, fix every bug, on the change
-  or its own pull request as `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places it by size. Non-bug cleanup outside the change
-  follows `pre-production`'s size budget; past it, a widened budget's larger cleanup goes on its
-  own pull request as that budget says, and the rest returns to the caller to record as deferred
-  work.
+- Outside the change, as the rubric's **Scope** says: fix every bug where `pre-production`'s
+  **Scope Follows The Defect, Not The Request** bullet on a noticed defect places it by size, and
+  place non-bug cleanup as `pre-production`'s size budget does, returning to the caller to record
+  only what that budget reserves a record for.
 - Check each remedy against the language and layout rules for its file before applying it.
 - After fixing, rescan only when the fixes added, moved, merged or deleted a module or changed an
   interface other code reads: a fresh reviewer gets the earlier findings, the fix diff and the files

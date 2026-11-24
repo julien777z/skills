@@ -98,7 +98,8 @@ nor touches the files or resources the awaited work is changing.
   activity, never a background `sleep` or a timed check-in, apart from the polling it excepts.
 - An unresolved user choice holds its dependent work, not the whole run: it neither closes the run
   nor cancels independent work. A guidance correction is recorded and the run carries on; it is
-  processed at **Completion**, never a reason to end or pause the surrounding task.
+  delivered from the next milestone of the work as `edit-skill`'s recording section says, and
+  processed at **Completion** if still pending, never a reason to end or pause the surrounding task.
 - **Report a blocker only on concrete evidence**: a terminal failure, exhausted recovery or a
   missing host wait route is a concrete gate to surface for repair or resolution, with its evidence
   and saved next action, while the task stays active.

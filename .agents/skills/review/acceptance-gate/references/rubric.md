@@ -307,9 +307,7 @@ ends the question.
    Product state never softens it either: broken is broken for one admin as for a thousand users.
    A missing safeguard that definition leaves out goes on to the tests below, its exploitability
    judged under **Exploitable Findings**. A suspected defect whose confirmation the caller can
-   reach with its own tools — a run, a walk through the product, a measurement — is fix as well:
-   the investigation is owed in the change in flight, and the fix if it confirms. Being
-   unconfirmed, needing a walk or lying beyond the change is never a ground for defer.
+   reach with its own tools is fix as well, as `pre-production`'s noticed-defect bullet says.
 2. **close** — the item is real but not worth doing. Either the product state leaves it protecting or
    serving nobody — an access control between the one admin and the data only that admin can see, a
    hardening against users the product does not have, neither of which retires a finding an attacker
@@ -321,7 +319,7 @@ ends the question.
    check that owns it.
 3. **defer** — the item is worth doing, and one of these holds: the gain today does not carry the
    mechanisms the fix would add, priced by the rubric; the work is comparable in size to the change
-   in flight and its need is arguable — a redesign, a sweep somebody could reasonably decline; an external
+   in flight and, unless it is incidental cleanup, its need is arguable — a redesign, a sweep somebody could reasonably decline; an external
    blocker stands, which is something outside every repository the user owns that the fix cannot be
    written without — a credential nobody has issued, a vendor change, an answer only a third party
    can give; a decision that is somebody else's is already put to that person and still open, or the
@@ -346,13 +344,10 @@ ends the question.
    alone, naming the fork — the shape, every instance it would convert, the size of that change and
    the recommendation — which the caller puts to the user now; it is built only at the scope the
    user approves, never returned as do. Incidental cleanup past `pre-production`'s size budget is
-   defer without the arguability test, apart from a widened budget's larger cleanup, which that
-   budget sends to its own pull request, and incidental cleanup inside it is do. That budget is
-   measured against the scope the intent statement records and the size of the change in flight:
-   under a broad scope, or cleanup small beside the change, the item is do, whatever its file
-   count. A finding in lines or files the pull request wrote is the change's own and is do, never
-   defer, whatever review scope found it: code a reviewed delta, a slice or an earlier commit
-   carried, and code the pull request moved, copied or recreated at a new path, all count. Nor are
+   defer without the arguability test only where that budget reserves a record for it. Cleanup the
+   budget places in the change, or sends to another repository's pull request, is do, whatever its
+   file count, as the budget in force for the scope the intent statement records says. A finding
+   inside the change, as `code-simplify`'s rubric **Scope** defines it, is do, never defer. Nor are
    the size, shape and place of the work inputs the gate may take on trust: "large", "not
    mechanical", "each site needs its own judgment", "it spans suites the change does not touch" and
    "outside the change" are the asker's characterization of the asker's own record. Check the count

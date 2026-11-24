@@ -9,6 +9,5 @@ to the largest value the tool accepts; the frame fits the page's content up to t
 reader can switch pages and open entries inside it. Show every later render the same way, after its
 re-render, so the conversation holds the current page.
 
-The page is never also opened in the user's browser. The skill's browser route applies only when
-`html_render` is unavailable or refuses the page. A publishing tool the agent runtime brings into the
+A publishing tool the agent runtime brings into the
 session, such as Claude's Artifact tool, is used only when the user asks for a published link.

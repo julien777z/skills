@@ -270,9 +270,9 @@ changed. Make the smallest changes that answer real findings, and push back on t
   - nit: fix it when it is a one-line change in a line the change already touches, otherwise decline
     it in one line;
   - outside the change: fix every bug, on the change or its own pull request as
-    `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places it by size, and send cleanup past
-    `pre-production`'s size budget where that budget does: its own pull request, or a record with
-    `defer-scope`.
+    `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places it by size, and place other
+    cleanup as `pre-production`'s size budget does: done in the change, on its own pull request, or,
+    only on a ground it reserves a record for, a record with `defer-scope`.
 - **Next round** only while budget remains and a blocker or should is open, or code or guidance
   behavior changed since the last approval. Run the checks covering the fix and `git diff --shortstat <base>` first; if
   review grew the diff past what the intent needs, cut it first. Never agree just to end the loop.
