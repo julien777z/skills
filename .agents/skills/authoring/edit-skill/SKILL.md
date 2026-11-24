@@ -48,9 +48,11 @@ the subject, creates its new owner under **Guidance Changes Proceed Automaticall
 A user request or an encountered guidance gap, once **Validate input** confirms its premise,
 authorizes the canonical `.agents` correction its Scope Statement lists inside what the user said;
 a policy change, which that statement lists as beyond it, waits for the user as **Identify the failure class**
-says. The statement is shown, never asked: do not ask for a plan, or for approval of the statement
-or of a guidance-output example; an approval hold the invoking workflow sets is that workflow's and
-still applies. A guidance edit that intentionally changes the product still follows
+says. The statement is shown, never asked: do not ask for a plan, or for approval of the statement,
+of a guidance-output example, of a proposed flow or of the pull request. **A guidance change
+reaches the user only when the agent is unsure whether it does what they meant**, asked through
+the question tool; otherwise its gates run and it merges. An approval hold the invoking workflow
+sets is that workflow's and still applies. A guidance edit that intentionally changes the product still follows
 `pre-production`'s **Product Choices**. The gate set of the edit's route validates the correction.
 When a separate source task is active, or a guidance batch is in flight, preserve its execution and
 follow **Recording During A Task** for the edit's timing.
@@ -278,10 +280,6 @@ small it looks.** Each route below is the gate set its batch passes on the head 
        guidance change: a correction, a gap the agent noticed, a rule or global-rules edit, a
        skill edit. It is shown, and the edit proceeds without waiting for an answer, unless the
        statement lists something beyond what the user said or the invoking workflow holds it.
-     - **A guidance change reaches the user only when the agent is unsure about it**, such as
-       whether the change does what the user meant or a choice that is genuinely theirs, asked
-       through the question tool. Otherwise it is never put to them for review or approval: its
-       gates run and it merges.
    - **When no existing file of the inferred or selected type governs the subject, create the new
      owner under Guidance Changes Proceed Automatically.** Record its recommended name, scope, and
      behavior in the correction evidence; do not ask for approval. An existing file of that type

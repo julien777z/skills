@@ -104,9 +104,7 @@ only a subject no skill runs for.
 
 - Surface every question through the harness's user-question tool, including approvals and standalone questions. **A question asked anywhere else goes
   unseen**: the reader answers the question tool, and chat text around it, or in some harnesses all
-  text before a tool call, may never reach them. **A step only the user can take goes through the
-  question tool too**: a review, an approval, a sign-in or a manual action a report hands them is
-  asked there, never left in chat text alone. Ask directly in chat only when the harness has no
+  text before a tool call, may never reach them. Ask directly in chat only when the harness has no
   question tool. **One question holds one decision**, with options that answer it alone: several
   decisions are never folded into one question, offered as one choice that settles them all, such as
   following every recommendation, or listed as a multi-select question's checkboxes; an option that
