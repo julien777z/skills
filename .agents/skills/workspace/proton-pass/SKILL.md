@@ -1,6 +1,6 @@
 ---
 name: proton-pass
-description: Retrieve credentials from Proton Pass with pass-cli. Use every time a task needs to log in to an account, website, service, or tool, or needs a password, API key, token, SSH key, or other secret that neither the session environment nor the repository supplies, before asking the user for it. Vault availability is never a prerequisite for using an authenticated target service or completing its normal browser sign-in.
+description: Retrieve credentials from Proton Pass with pass-cli and apply lifetime preferences when issuing or renewing provider credentials. Use every time a task needs to log in to an account, website, service, or tool, or needs a password, API key, token, SSH key, or other secret that neither the session environment nor the repository supplies, before asking the user for it. Vault availability is never a prerequisite for using an authenticated target service or completing its normal browser sign-in.
 short_description: 'Retrieve credentials from Proton Pass with pass-cli.'
 ---
 
@@ -23,10 +23,11 @@ retiring a superseded credential. A provider’s authentication challenge or req
 gets an exact request to the user; it never becomes a request to configure an unrelated tool.
 Never ask the user to paste a secret into chat.
 
-When issuing a credential, use the requested lifetime when available. Otherwise choose the closest
-supported lifetime that respects any explicit limit or exact requirement, and report what was
-issued. When the user asks for the longest available lifetime, use the provider's longest option,
-including a credential that remains valid until revoked if that is the only option.
+When issuing a credential or changing its expiration, use the requested lifetime when available.
+For a duration preference, use the closest supported finite lifetime, or the provider's default
+when no finite option exists. Honor explicit limits and exact requirements. When the user asks for
+the longest lifetime, use the provider's longest option, including validity until revoked when
+available. Report the resulting lifetime.
 
 ## Access
 
