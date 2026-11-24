@@ -54,9 +54,8 @@ redesign, a broad sweep somebody could reasonably decline — or that is blocked
 awaits a decision already put to its owner and still open, or one the user declined in the current
 request; a question nobody has asked yet is asked, not recorded. **A defect is never recorded**, a defect as `pre-production`'s **Scope
 Follows The Defect, Not The Request** defines one, whether the change introduced it, the task asked
-to fix it or the work only ran into it: it is fixed now, in the change in flight or on the pull request of its own
-`pre-production` gives a large fix. Only cleanup that fixes
-no defect follows `pre-production`'s size budget, and only what that budget defers is recorded here.
+to fix it or the work only ran into it. Fix it now where `pre-production` places it. Only cleanup
+that fixes no defect follows `pre-production`'s size budget, and only what that budget defers is recorded here.
 Never offer the user the choice between fixing and recording. When part of a cleanup is small, fix
 that part and record only the remainder. Record consciously deferred work immediately, at the
 moment it is left undone, in the repository that owns it as **Ownership And Identity** resolves; no

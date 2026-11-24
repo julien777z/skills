@@ -299,10 +299,8 @@ ends the question.
    live run — a rate, a duration, a memory trail, a kill — is evidence of a defect the way a
    confirmed review finding is: the gate takes it as given and never re-derives the defect from the
    tree, because a tree read alone cannot see a rate. A defect is fixed whatever shape its fix takes, whether the
-   change introduced it, the task asked for it, or the work only ran into it, on the change or its
-   own pull request as `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places it
-   by size, or on a branch off the default when nothing is in flight; a defect is never deferred
-   for its size. A migration is how a fix is written, never a reason to record it instead. A check that
+   change introduced it, the task asked for it, or the work only ran into it. Use the placement
+   that `pre-production`'s **Scope Follows The Defect, Not The Request** requires. A migration is how a fix is written, never a reason to record it instead. A check that
    would rediscover the defect does not soften this: rediscovery excuses the record, never the fix.
    Product state never softens it either: broken is broken for one admin as for a thousand users.
    A missing safeguard that definition leaves out goes on to the tests below, its exploitability
@@ -343,8 +341,8 @@ ends the question.
    alone, naming the fork — the shape, every instance it would convert, the size of that change and
    the recommendation — which the caller puts to the user now; it is built only at the scope the
    user approves, never returned as do. Incidental cleanup past `pre-production`'s size budget is
-   defer without the arguability test, apart from a widened budget's larger cleanup, which that
-   budget sends to its own pull request, and incidental cleanup inside it is do. Nor are the size
+   defer without the arguability test, apart from broader cleanup the widened task takes up.
+   Incidental cleanup admitted by the active budget is do. Nor are the size
    and shape of the work inputs the gate may take on trust: "large", "not mechanical", "each site
    needs its own judgment" and "it spans suites the change does not touch" are the asker's
    characterization of the asker's own record. Check the count against the tree and open enough of
@@ -352,8 +350,7 @@ ends the question.
    treatment of a measured rate, which is taken as given precisely because reading the tree cannot
    produce one — size is exactly what reading the tree can.
 4. **do** — none of the above: the item is worth doing and its cleanest fix is within reach, so it is
-   done where `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places a fix of its size, or on a branch off the default when nothing is in
-   flight.
+   done where `pre-production`'s **Scope Follows The Defect, Not The Request** places the work.
 
 **Admission — may this work be deferred?** The triage question asked of a proposed record. The
 answer is accept when triage's disposition is defer, and otherwise a refusal naming the disposition

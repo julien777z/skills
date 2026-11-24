@@ -23,7 +23,7 @@ packages by what it does and by its key operation, and write its receipt. Reuse 
 or extend it with the one parameter or condition it lacks; write new code only with the search
 that found no owner, and add no parameter, option or branch for a condition nothing uses.
 Fix every defect you meet where `pre-production`'s **Scope Follows The Defect, Not The Request**
-places it: a small fix on this branch, a larger one handed up for its own pull request. Leave alone
+places it. Hand up work outside your assignment so the coordinator can apply that placement rule. Leave alone
 only cleanup past the repository's incidental size budget and a choice that is the user's, and
 report each.
 Push: commit each coherent step and push it once the Checks covering it pass, at least every five
