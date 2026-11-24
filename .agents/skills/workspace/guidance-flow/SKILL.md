@@ -401,7 +401,7 @@ step exists to catch.
    is an outline with `stacked` set and `collapsible` false whose groups are "What it does" (when
    the flow runs and what the step does now), "Proposed changes" (each choice, with what it saves
    and what it could miss), "Recommended" (the choice and why) and, once answered, "Decision" (the
-   user's words and what changes). Publish the page before each question, with that question's
+   choice taken and what changes, never a quote of the user's reply). Publish the page before each question, with that question's
    node `warning`, and again after its answer, with the node `done`, so the page always shows where
    the conversation is.
 5. **Ask one question at a time, in the order the run reaches them** — skill by skill, and within a
