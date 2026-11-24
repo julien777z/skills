@@ -86,8 +86,8 @@ plan of its own; only an edit that adds nothing skips it.
 - **A guidance change whose flow is affected is shown as a proposed flow.** Whenever a change's
   statement of scope records `flow affected`, as `edit-skill`'s **Scope Statement** defines it,
   whatever kind of guidance change it is, build `guidance-flow`'s proposed-flow comparison of its
-  pushed branch against the default branch, show it to the user, and ask through the question
-  tool whether they approve that flow; it merges only on their approval, as `edit-skill` says. **A substantial skill change the user asks for is
+  pushed branch against the default branch and show it to the user; delivery proceeds unless that
+  statement lists something waiting for them. **A substantial skill change the user asks for is
   held on it**, in place of a written plan, where a source change of its size would get one: until
   the user approves it in their own words, that pull request gets no `test-skill` round, no merge
   and no auto-merge; each edit they ask for lands on that branch and it is rendered again in place.

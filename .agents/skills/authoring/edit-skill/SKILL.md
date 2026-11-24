@@ -49,9 +49,8 @@ A user request or an encountered guidance gap, once **Validate input** confirms 
 authorizes the canonical `.agents` correction its Scope Statement lists inside what the user said;
 a policy change, which that statement lists as beyond it, waits for the user as **Identify the failure class**
 says. The statement is shown, never asked: do not ask for a plan, or for approval of the statement
-or of a guidance-output example; a change that records `flow affected` waits for the user's
-approval of its proposed flow, as **Identify the failure class** says, and an approval hold the
-invoking workflow sets is that workflow's and still applies. A guidance edit that intentionally changes the product still follows
+or of a guidance-output example; an approval hold the invoking workflow sets is that workflow's and
+still applies. A guidance edit that intentionally changes the product still follows
 `pre-production`'s **Product Choices**. The gate set of the edit's route validates the correction.
 When a separate source task is active, or a guidance batch is in flight, preserve its execution and
 follow **Recording During A Task** for the edit's timing.
@@ -277,11 +276,12 @@ small it looks.** Each route below is the gate set its batch passes on the head 
        comparison of the edit's branch against the default branch once the edit is pushed, built
        through the skill the listing describes as mapping guidance flows. This holds for every
        guidance change: a correction, a gap the agent noticed, a rule or global-rules edit, a
-       skill edit. It is shown, and the user is then asked through the question tool whether they
-       approve that flow, never whether they approve the pull request; the change merges only on
-       their approval, while its review and gates run. A change whose statement records
-       `flow not affected`, such as a rename, a move or a wording fix that leaves every decision as
-       it was, is neither shown nor asked about.
+       skill edit. It is shown, and the edit proceeds without waiting for an answer, unless the
+       statement lists something beyond what the user said or the invoking workflow holds it.
+     - **A guidance change reaches the user only when the agent is unsure about it**, such as
+       whether the change does what the user meant or a choice that is genuinely theirs, asked
+       through the question tool. Otherwise it is never put to them for review or approval: its
+       gates run and it merges.
    - **When no existing file of the inferred or selected type governs the subject, create the new
      owner under Guidance Changes Proceed Automatically.** Record its recommended name, scope, and
      behavior in the correction evidence; do not ask for approval. An existing file of that type
