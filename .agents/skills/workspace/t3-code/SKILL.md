@@ -1,6 +1,6 @@
 ---
 name: t3-code
-description: Inspect and configure T3 Code environments, providers, and settings. Use for provider environment variables, including bulk imports, merges, individual changes, and removals, to disconnect or remove a remote environment from T3 Code, or when T3 rejects requests after a usage reset or reports a provider quota or cooldown error.
+description: Inspect and configure T3 Code environments, providers, and settings. Use to reach a remote T3 terminal, manage provider environment variables, disconnect or remove a remote environment, or diagnose provider quota and cooldown errors.
 short_description: 'Manage T3 Code configuration and provider environment variables.'
 ---
 
@@ -8,6 +8,9 @@ short_description: 'Manage T3 Code configuration and provider environment variab
 
 Configure the selected T3 execution environment through its native interfaces. Discover actual
 provider instance IDs; a display name, model name, or local checkout does not identify the target.
+
+Use SSH only after confirming the target is a cloud server. For a personal computer, use T3 Code's
+existing connection, including T3 Connect for a registered device.
 
 ## Dependencies
 - `tailscale-config`
@@ -33,7 +36,7 @@ Merges replace matching variable names and preserve every unrelated variable and
 An empty value is a value, never a removal. Imported values are sensitive by default, matching
 T3's Add variable behavior. Preserve existing redaction markers and let T3 store secrets.
 
-For example, with the resolved helper path in `T3_ENV_SCRIPT`, the verified execution
+For a confirmed cloud server, with the resolved helper path in `T3_ENV_SCRIPT`, the verified execution
 environment's ID in `T3_ENVIRONMENT_ID`, and the provider ID from `list` in `T3_PROVIDER_ID`:
 
 ```sh
@@ -53,13 +56,12 @@ Apply `security-audit` to configuration changes. Use `proton-pass` for an existi
 1. Identify the requested environment, provider instances, and project scope. Read installed T3
    version and native CLI help; use source matching that release when the UI or CLI does not expose
    the needed operation. The authoritative source is [T3 Code](https://github.com/pingdotgg/t3code).
-   Inspect connected desktop environments as well as the server-linked CLI list. Distinguish the
-   execution environment, provider instance, and hub account; resolve the request's actual routing
-   through native settings or management before asking about a target. Locate the host and try its
-   available management routes: an SSH refusal rules out that route alone. Reuse the intended
-   account and environment; ask only about unresolved target ambiguity.
-2. Inspect current configuration. For variables, use the helper's `list` command when it can reach
-   the verified environment, passing `--expect-environment` with its ID, and resolve requested
+   Resolve the execution environment, provider instance, and hub account through native settings
+   or management before asking about a target. For a remote host, use
+   [Identify a remote environment connection](#identify-a-remote-environment-connection).
+   Reuse the intended account and environment, and try the eligible management routes for that host.
+2. Inspect current configuration. For variables, use the helper's local mode on the host or its
+   SSH mode for an eligible cloud server. Pass `--expect-environment` with its ID and resolve requested
    provider names to actual IDs. When the helper cannot reach it, use a reachable native management
    route for that same environment and provider. A direct provider does not require a hub account.
    The helper manages environment-wide provider values, which apply across projects on that
@@ -81,11 +83,30 @@ Apply `security-audit` to configuration changes. Use `proton-pass` for an existi
    operation not implemented by the variable helper; never invent a command or directly rewrite
    T3's persisted settings to bypass its secret handling.
 
+## Identify a remote environment connection
+
+In Settings → Environments, check **T3 Connect** for devices registered to the signed-in account
+and the saved environments list for client-side pairings. `t3 environment list` reports only
+server-side peer links for the selected source environment. If it returns an empty list, check
+the client's T3 Connect and saved connections before asking the user to add a device.
+
+### Open a terminal through T3 Connect
+
+If desktop control is unavailable, use automation that controls a task-owned browser tab without
+foreground desktop input. Open [T3 Code](https://app.t3.codes/) in an existing signed-in browser
+session. A target that is online through T3 Connect can have its screen locked. Under
+**Settings → Environments**, select the target under
+**T3 Connect**. If the device is online and marked **Not added** in this browser, choose **Add**
+from its existing registration. Read back **Connected** before opening its workspace.
+
+Open the terminal drawer in a project on that environment. Verify the run context, then run
+`hostname` and `pwd` to confirm the host and checkout from the terminal output. Keep credentials
+out of terminal input and captures. Use the service's sign-in flow if the browser has no
+authenticated session.
+
 ## Remove a remote environment connection
 
-Identify the exact connection on the T3 desktop app's Settings → Connections → Environments
-page. The desktop **Environments** list is separate from the server-side links reported by
-`t3 environment list` for the selected source environment.
+Follow [Identify a remote environment connection](#identify-a-remote-environment-connection).
 
 For a desktop connection, open **More actions** for the matching entry and select **Remove from
 this device**. Read the confirmation before applying it: this forgets the pairing, credentials,
