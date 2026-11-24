@@ -123,8 +123,9 @@ alwaysApply: true
 - **An agent-configuration pull request whose guidance depends on a still-open source pull request
   is held until that merge**, whatever its other gates say, unless the guidance rides that pull
   request, as **Branches and Pull Requests** and the skill that edits guidance set out; guidance
-  true on the default branch as it stands waits for nothing. The hold authorizes no merge of the source pull request: finish both pull
-  requests' independent checks, report the dependency, and leave the source one reviewable. After
+  true on the default branch as it stands waits for nothing. The hold authorizes no merge of the
+  source pull request: finish both pull requests' independent checks, report the dependency, and
+  leave the source one reviewable. After
   it merges, incorporate the updated base into the held one and rerun the affected gates before
   using the permission.
 - **Auto-merge is enabled only** for an eligible agent-configuration pull request whose gates have
