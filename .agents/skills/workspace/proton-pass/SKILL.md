@@ -1,6 +1,6 @@
 ---
 name: proton-pass
-description: Retrieve credentials from Proton Pass with pass-cli and apply lifetime preferences when issuing or renewing provider credentials. Use every time a task needs to log in to an account, website, service, or tool, or needs a password, API key, token, SSH key, or other secret that neither the session environment nor the repository supplies, before asking the user for it. Vault availability is never a prerequisite for using an authenticated target service or completing its normal browser sign-in.
+description: Retrieve credentials from Proton Pass with pass-cli and apply lifetime preferences when issuing provider credentials or changing their expiration. Use every time a task needs to log in to an account, website, service, or tool, or needs a password, API key, token, SSH key, or other secret that neither the session environment nor the repository supplies, before asking the user for it. Vault availability is never a prerequisite for using an authenticated target service or completing its normal browser sign-in.
 short_description: 'Retrieve credentials from Proton Pass with pass-cli.'
 ---
 
