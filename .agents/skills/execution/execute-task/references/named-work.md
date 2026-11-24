@@ -88,7 +88,15 @@ nor touches the files or resources the awaited work is changing.
 - **Classify an awaited result from its observed state before treating it as a blocker.** Startup,
   recovery, a queued review or an unanswered request is pending until it has a terminal result;
   current unavailability, a quiet interval or a bounded wait yielding without a result is not
-  failure.
+  failure, and for a worker the session started the check below reads that quiet interval.
+- **A running worker is never assumed healthy until it reports.** While any worker the session
+  started runs, a check every 30 minutes, set through the host's scheduler, such as a recurring
+  scheduled prompt, reads each worker's latest activity. One with no activity for 30 minutes and
+  no long command of its own in progress is cancelled and relaunched with its brief plus what
+  stalled it, such as a failed command it never recovered from, input it waits on that nobody
+  sees, or a provider error it never reported; one that finished without its completion arriving
+  has its result collected. The check is removed once no worker runs. This is the user's standing
+  instruction and holds over a harness default against polling a delegate.
 - **A status report is not a stopping point.** A message sent while authorized work or a wait
   remains goes out together with the next wait or action, never as the turn's last output, and is
   never the task's report. When every remaining item depends on an awaited result, keep the
