@@ -108,11 +108,11 @@ recording or delivering a batch.
   only the guidance files. Record the branch, the `commits` list and the pull request in the entry's
   `data`, bring that pull request's description up to date at the milestone, then run `update-skills` at once for eligible edits under its **What Takes Effect**, so the installed
   copy every agent loads, subagents included, carries them. A running agent keeps the text it
-  already read: tell each running worker this session started, as `subagent-matrix`'s **Dispatch** says. **Delivery starts at the next milestone of the work in hand**, never later: a
+  already read: tell each running worker this session started, as `subagent-matrix`'s **Dispatch** says. **Delivery starts at the next milestone of the work in hand and Completion delivers whatever is left**, never later: a
   finished plan step or worker task whose checks pass, a round of fixes the user asked for, or a
   publish. It then runs as **Guidance Delivery** says, beside the ongoing work and without the user
   asking, however long the surrounding task goes on; a session whose requests keep arriving never
-  holds a recorded correction for the task's end, and Completion delivers whatever is left. Until that milestone nothing else of delivery
+  holds a recorded correction for the task's end. Until that milestone nothing else of delivery
   runs: no review, gate, skill-test round, merge or worker, except the checks a batch in flight
   reruns for an edit that joined it, as `session-ledger`'s **Guidance Batches** says. A standing
   instruction about how guidance pull requests are reviewed or merged governs that delivery when it
