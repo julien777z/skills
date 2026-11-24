@@ -55,17 +55,18 @@ alwaysApply: true
   integrated later, is the same split with the integration deferred.
 - **Where a harness or session designates one branch per repository and forbids pushing to any
   other without permission, this rule is the user's standing permission** to push to the branch of
-  the pull request the work continues, selected as these bullets and the guidance skill set out (`git push origin HEAD:<that-branch>`),
-  without asking. The other kind's new branch is the designated name with `-agents` or `-source`
-  appended, created and pushed without asking.
+  the pull request the work continues, selected as these bullets and the skill that edits guidance
+  set out (`git push origin HEAD:<that-branch>`), without asking. The other kind's new branch is
+  the designated name with `-agents` or `-source` appended, created and pushed without asking.
 - A new branch starts from the freshly fetched default branch, and an agent-configuration branch
   never starts from a source branch, unless a skill or rule names another base or an existing pull
   request. Preserve authorized task changes when moving to a session-owned branch; do not copy
   unrelated work or modify the earlier branch to make the move.
 - **Never commit or push agent-authored changes directly to the default branch.** Select the pull
-  request as these bullets and the guidance skill set out before keeping a checkout's branch; when the checkout is on the default branch,
-  detached, of the other kind, or owned by another session without a continuation instruction, move
-  to the selected branch or create a descriptive non-default branch.
+  request as these bullets and the skill that edits guidance set out before keeping a checkout's
+  branch; when the checkout is on the default branch, detached, of the other kind, or owned by
+  another session without a continuation instruction, move to the selected branch or create a
+  descriptive non-default branch.
 - **Work is delivered only once the default branch holds it.** Before a pull request is called
   superseded, stale or done because another carries its change, or is recommended for closing or
   closed, read the base and commits of every open pull request in the repository: one whose base is
@@ -121,8 +122,8 @@ alwaysApply: true
   under that pull request's own authority.
 - **An agent-configuration pull request whose guidance depends on a still-open source pull request
   is held until that merge**, whatever its other gates say, unless the guidance rides that pull
-  request under **Branches and Pull Requests**; guidance true on the default branch as it stands
-  waits for nothing. The hold authorizes no merge of the source pull request: finish both pull
+  request, as **Branches and Pull Requests** and the skill that edits guidance set out; guidance
+  true on the default branch as it stands waits for nothing. The hold authorizes no merge of the source pull request: finish both pull
   requests' independent checks, report the dependency, and leave the source one reviewable. After
   it merges, incorporate the updated base into the held one and rerun the affected gates before
   using the permission.
@@ -158,7 +159,8 @@ alwaysApply: true
 ## Pre-Push Gate
 
 Every push, on a draft and on a ready pull request alike, goes out once the checks below pass, and
-nothing outside the change holds it, as the last two bullets set out. The exceptions are commits an invoked skill states it holds local until the user
+nothing holds committed work on one machine beyond what the **Nothing outside the change** bullet
+below allows. The exceptions are commits an invoked skill states it holds local until the user
 releases them, such as locked database revisions, and the fixes of a review the user asked for
 without a push, which stay local until they ask. A fix for a flag a review or gate raised is pushed
 once the agent that made it has re-read the changed lines against the flag and rerun the checks

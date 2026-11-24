@@ -440,8 +440,8 @@ Review** once each has its accepted head.
 - **Guidance stream.** Invoke `process-ledger` for the task's private ledger. It sends the
   `guidance_correction` batch it freezes to `edit-skill`'s **Guidance Delivery** route, which the
   primary agent coordinates so its review and checks never wait on the source stream. Before a source pull request's **Review the pull request**,
-  every pending `guidance_correction` entry the GitHub rule's **Branches and Pull Requests** puts
-  on it, in the batch in flight or the one after it, is pushed to it and passes its source check,
+  every pending `guidance_correction` entry that rides it, as the GitHub rule's **Branches and Pull
+  Requests** and `edit-skill`'s guidance pull-request reference set out, in the batch in flight or the one after it, is pushed to it and passes its source check,
   as **Guidance Delivery**'s **Resume the batch** says, so its review pass, history and ready message cover them. An entry recorded after the batch in flight merged is delivered in the batch frozen
   once that one is done, so the source stream then waits for that delivery too, and for nothing
   else before **Review the pull request**. Each such entry's skill-test round runs on the head **Review the pull request** accepted, before
