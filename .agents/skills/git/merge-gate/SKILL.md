@@ -296,9 +296,9 @@ trigger or required installation depends on the workflow conclusion, also verify
 on the same run. Use the same polling for run discovery while an eligible writer is being scheduled, including
 downstream runs after their prerequisites finish. Follow prerequisites only to establish whether the
 writer can run. If a later run cancels or replaces it, follow that writer only after verifying that it covers the merged source and the same
-outputs on the same branch. If the job is skipped, verify which condition made it inapplicable.
-If the writer fails, its run cannot be located, or coverage stays uncertain, fetch and refresh all
-available commits and report the specific job and unresolved write.
+outputs on the same branch. Distinguish a job skipped by its selection filters from a selected writer blocked by a failed
+or canceled prerequisite. If a selected write remains unresolved because of a failure, missing run,
+or uncertain coverage, fetch and refresh all available commits and report the job and cause.
 
 Read the writer's final pushed revision from its result or logs, accounting for any rebase before
 the push, and fetch the target branch. Verify the
