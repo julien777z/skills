@@ -47,11 +47,12 @@ Review, fix, and merge the pull requests selected under **Targets**.
   mentioned earlier as awaiting merge, not the dependency a held unit waits on, and not one a bare
   "yes" beside the request might answer. Such a dependency stays a gate under **Dependent Pull
   Requests**.
-- With no explicit target, run `list-prs` before starting any individual review and select every
-  open pull request created in the current session. Reconcile creation receipts across the whole
+- With no explicit target, ask `list-prs` for all open pull requests created in the current
+  session before starting any individual review. Reconcile creation receipts across the whole
   session through `session-ledger`, including earlier tasks and other repositories. A current
   checkout, recently discussed pull request, or singular wording does not narrow the set.
-  A pre-existing pull request the session only touched needs an explicit target.
+  A pre-existing pull request the session only touched needs an explicit target unless it
+  qualifies under the deferral exception above.
 - When that list is empty, inspect every repository carrying reviewable task-local changes, commit
   each one's task changes to a branch under the GitHub rules' branch rules, create one draft pull
   request per repository, and record every returned canonical URL with `session-ledger`. An empty
