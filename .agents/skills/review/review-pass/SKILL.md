@@ -232,7 +232,9 @@ changed. Make the smallest changes that answer real findings, and push back on t
   needs no new round. These rounds count the pull request's review loop; one finding's fix still
   follows the limit of 3 review rounds per change, as `acceptance-gate`'s **Bounds** counts them.
 - **Reviewer:** a model of a different provider from the author when one is reachable, so it does
-  not share the author's blind spots; the user may name another. Resolve it through
+  not share the author's blind spots; the user may name another. A launch on that provider that
+  does not start moves to the author's provider, as `subagent-matrix`'s **Workflow** says, and the
+  review goes on. Resolve it through
   `subagent-matrix` at the advanced level of that provider's families and medium effort, applying
   its launch fallback, and start it on that provider's model where the harness offers one, as
   **Harness Compatibility** says for the harnesses that need it, otherwise as a fresh subagent at

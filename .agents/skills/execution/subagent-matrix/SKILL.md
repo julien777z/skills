@@ -45,7 +45,8 @@ agent; the calling agent launches the actual assignment with the selected model.
    below. **A refusal that names its own cause or fix is a repair, never unavailability**: a client or runtime
    version too old, a sign-in, a disabled provider, a stale process. A rate limit or quota refusal is not this
    kind; it follows the capacity rule below. The repair is the first step and every
-   fallback comes after it: update the client, sign in, enable the provider or restart the process, or confirm the
+   fallback comes after it, except for a launch on another provider's model, which moves to the
+   session's own provider at once as the cross-provider bullet below says: update the client, sign in, enable the provider or restart the process, or confirm the
    condition no longer holds, then launch the same assignment again with the same identifier. Updating or
    repairing the agent's own client or runtime is that repair, never a repository or global settings change,
    which this step forbids below. Repair the component that actually holds the refused value, read from the
@@ -55,7 +56,8 @@ agent; the calling agent launches the actual assignment with the selected model.
    repair go to the user, as a question naming the whole step with the exact command. Record the original
    refusal, the repair attempted, and any relaunch receipt. If the failure remains operational or the repair
    cannot be made, use the launch fallback and retain that classification. Model substitution requires an
-   explicit receipt that the exact model is unsupported or, where step 4 allows it, denied.
+   explicit receipt that the exact model is unsupported or, where step 4 allows it, denied, apart from
+   the move to the session's own provider below.
    **A rate limit or quota refusal moves the assignment to the other harness's matching model**: a
    Codex model's refusal relaunches the same assignment, with the same brief and reasoning effort, on the
    Claude family at the same capability level in **model capabilities**, and a Claude model's refusal on the
@@ -67,7 +69,16 @@ agent; the calling agent launches the actual assignment with the selected model.
    the matching model so the pair keeps one model. When that model also refuses for capacity, or the host
    cannot launch the other harness's models, or the user's explicit constraint names the refused model,
    relaunch on whichever permitted model the request path shows cleared first: the coordinator answering on that model, or a relaunch being accepted, shows it has cleared, and
-   only a refused relaunch shows it still holds. The accepted worker
+   only a refused relaunch shows it still holds.
+   **A launch on another provider's model that does not start moves to the session's own
+   provider.** Where a step calls for or prefers a model on a provider other than the running
+   session's — a cross-provider reviewer, a council seat, the capacity relaunch above — and that
+   launch is refused, never starts, or shows no activity after its brief by the time its siblings
+   return or within 15 minutes, relaunch the same assignment, with the same brief and effort, on
+   the session's own provider at the same capability level, record both launches, and carry on: the
+   other provider is a preference that improves independence, never a blocker, and its repair
+   never holds the step. A model or provider the user named explicitly is still honored or held as
+   their words say. The accepted worker
    performs the assignment; never launch a throwaway availability probe. Record the runtime identifier only
    when the host exposes its exact value. Generic provider or product
    branding, a worker-reported label, or no runtime identifier is neither confirmation nor a contradiction of

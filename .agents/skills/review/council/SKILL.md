@@ -31,6 +31,9 @@ skill's model capabilities reference lists under **Review panel**, each at its l
 the host and at high effort, and resolve each launch through that skill. Start the three in
 parallel, read-only, each starting no subagents of its own.
 
+- **A seat whose launch on another provider does not start** is relaunched on the session's own
+  provider at the seat's level, as `subagent-matrix`'s **Workflow** says, and the result names the
+  substitution; the seat is never left empty or waited on for that provider.
 - **A seat whose family is unavailable**, as `subagent-matrix` establishes it, is filled through
   that skill's fallback order down to the `standard` capability level and no lower, because a
   member below it adds a vote without adding a strong independent read. When no candidate at
