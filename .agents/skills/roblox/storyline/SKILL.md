@@ -31,7 +31,7 @@ Each subagent and the orchestrator returns valid YAML using the [output schema](
 
 ## Guardrails
 
-- Every arc resolves its central dramatic question and earns its emotional ending. Future hooks do not excuse an unfinished current story, and keeps the frame open as the criteria's **Room to continue** says.
+- Every arc resolves its central dramatic question and earns its emotional ending. Future hooks do not excuse an unfinished current story, and each arc keeps the frame open as the criteria's **Room to continue** says.
 - Extend consequences of previous victories; do not erase them, resurrect a defeated threat without groundwork, or retroactively make the player's actions pointless. Mark any proposed retcon and explain its necessity.
 - Story length comes from meaningful developments, relationships, discoveries, and varied play—not repeated errands, long exposition, arbitrary travel, or word count.
 - Audit candidly. Preserve names and mechanics when they work; recommend substantial changes when evidence supports them, with what each requires and its continuity consequences.

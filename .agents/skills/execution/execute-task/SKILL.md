@@ -363,7 +363,7 @@ open question, a later step, or a batch still collecting changes holds none of i
 required check or the host prevents delivery, keep the push and pull request as pending work.
 
 **A pull request's title and description are brought up to date at every milestone, not at every
-push.** A milestone is a finished plan step or worker task whose checks pass, a round of fixes the user asked for, a publish, and a guidance correction pushed onto the pull request carrying it. After it, add
+push.** A milestone is a finished plan step or worker task whose checks pass, and a guidance correction pushed onto the pull request carrying it. After it, add
 what the milestone changed and rewrite whatever no longer holds, as `pre-production`'s **Repository
 Text** says, before the milestone is reported. A push inside a step, such as a repair or a rebase,
 leaves the description for that step's milestone. `review-pass`'s **Description Refresh** still

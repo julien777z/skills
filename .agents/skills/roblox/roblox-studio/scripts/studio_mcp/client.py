@@ -182,7 +182,7 @@ class StudioMcpConnection:
         started = time.monotonic()
         waiting_message = f"Studio MCP timed out waiting for another request on the connection: {method}"
 
-        if not self.turn.acquire(timeout=timeout.total_seconds()):
+        if not self.turn.acquire(timeout=max(timeout.total_seconds(), 0)):
             raise TimeoutError(waiting_message)
 
         try:

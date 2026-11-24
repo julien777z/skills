@@ -96,7 +96,7 @@ nor touches the files or resources the awaited work is changing.
   sets it, and each check reads the worker's latest activity. At an early check, one with no
   activity at all since launch, or whose last step failed and nothing followed, is stalled; at a
   later check, one with no activity for 30 minutes and no long command of its own in progress is.
-  A stalled worker is cancelled and relaunched with its brief plus what stalled it, such as a
+  A stalled worker is cancelled and relaunched, through `subagent-matrix`'s **Dispatch**, with its brief plus what stalled it, such as a
   failed command it never recovered from, input it waits on that nobody sees, or a provider
   error it never reported; one that finished without its completion arriving has its result
   collected. A worker's checks end when it finishes and the scheduled check is removed once no

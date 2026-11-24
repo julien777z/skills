@@ -222,12 +222,12 @@ with an obsolete owned contract or revision.
   - **The widened budget** holds instead under a broad scope, where the user named the whole
     product, the whole codebase or everything, and while a decision the user scoped to the whole
     session widens it, until they withdraw it: every cleanup the work meets is in scope and done,
-    whatever its file count, and the one-hop limit above does not bound it.
-  - Under either budget each cleanup fix gets its own commit, named for what it repairs, and a
-    cleanup that would reach a repository the change does not already edit goes on that
-    repository's own pull request, as a larger fix does above, so the requested change stays
-    reviewable as itself.
-  - **A deferral record is reserved for three grounds:** cleanup comparable in size to the change
+    whatever its file count, and the one-hop limit above does not bound it. Each such fix gets its
+    own commit, named for what it repairs.
+  - Under either budget a cleanup that would reach a repository the change does not already edit
+    goes on that repository's own pull request, as a larger fix does above, so the requested
+    change stays reviewable as itself.
+  - **A deferral record for incidental cleanup is reserved for three grounds:** cleanup comparable in size to the change
     in flight, such as a sweep as large again as the work it came from; work an external blocker
     holds, something outside every repository the user owns that the fix cannot be written
     without; and a decision that is the user's, such as a design choice or a change to what the
