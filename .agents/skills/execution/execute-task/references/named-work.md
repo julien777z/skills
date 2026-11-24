@@ -93,9 +93,12 @@ nor touches the files or resources the awaited work is changing.
   is checked on a schedule that backs off from its launch: 10 seconds, 30 seconds and 5 minutes
   after it starts, then every 30 minutes while it runs, since most stalls happen right at the
   start. A short background timer or the host's scheduler, such as a recurring scheduled prompt,
-  sets it, and each check reads the worker's latest activity. At an early check, one with no
-  activity at all since launch, or whose last step failed and nothing followed, is stalled; at a
-  later check, one with no activity for 30 minutes and no long command of its own in progress is.
+  sets it, and each check reads the worker's latest activity from whatever the host exposes for
+  it: its thread items, the files it writes, the processes or background tasks it runs. At an
+  early check, one with no activity at all since launch, or whose last step failed and nothing
+  followed, is stalled; at a later check, one with no activity for 30 minutes and no long command
+  of its own in progress is. A worker whose host shows nothing until it finishes is judged by
+  those other signals before it is cancelled, never by the empty thread alone.
   A stalled worker is cancelled and relaunched, through `subagent-matrix`'s **Dispatch**, with its brief plus what stalled it, such as a
   failed command it never recovered from, input it waits on that nobody sees, or a provider
   error it never reported; one that finished without its completion arriving has its result
