@@ -6,7 +6,7 @@ The first quality bar, ahead of everything below. A story's core is concrete and
 
 ## Direction pitch
 
-A direction is proposed as a short pitch, not a full story: its hook, the idea in a sentence or two, what the player does, the first world in a few lines, what keeps it going and the next worlds, why it is engaging, and its biggest risk. It meets the bar above, with who or what the player acts against or toward named, and the stakes and how the pressure escalates stated in the pitch. Beats, dialogue, art, consistency checks, critic rounds, dashboards and implementation come only after the user approves a direction.
+A direction is proposed as a short pitch of plain prose with no beats, no quoted dialogue, no art and no schema, not a full story: its hook, the idea in a sentence or two, what the player does, the first world in a few lines, what keeps it going and the next worlds, why it is engaging, and its biggest risk. It meets the bar above, with who or what the player acts against or toward named, and the stakes and how the pressure escalates stated in the pitch. Beats, dialogue, art, consistency checks, critic rounds, dashboards and implementation come only after the user approves a direction.
 
 ## Story structure
 
