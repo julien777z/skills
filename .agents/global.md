@@ -15,6 +15,12 @@ only a subject no skill runs for.
 
 - Guidance about anything under `.agents` — writing, placing, harness support and validating it —
   lives in the skill whose description covers how guidance is written, placed and checked.
+- **A change to how agents run serves every harness the user runs that has the capability it
+  touches**, wherever its code lives: guidance, hooks, settings, instructions, workspace setup and
+  machine provisioning alike. Build it on the provider-neutral source each harness's own files are
+  generated from, never on the files of the harness the session happens to use, and verify it in
+  each such harness. Only a capability a single harness alone has stays that harness's. That
+  skill's harness rule holds what each harness's contract needs.
 - Read the other shared rules relevant to the current repository and task. If a harness does not
   load them automatically, open the applicable files from its user-level rules directory.
 - A skill catalog is one discovery surface, not proof that a directly requested skill is absent.
