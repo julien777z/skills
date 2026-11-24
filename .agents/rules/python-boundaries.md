@@ -30,6 +30,11 @@ APPLICATION_CONFIG = ActionConfig()
 ```
 
 - Before declaring or reviewing a setting, read its supported operations, consumers, and example/test configuration. A required setting, one with no safe default and no documented supported absence, including an endpoint, API key or secret, is a required non-nullable Pydantic field with a nonempty field constraint, never `str | None = None` or an empty-string default. Declare a field optional only for a documented absence contract, at the settings class, never through a missing-value check in a consumer.
+- Validate settings when the owning model loads. Use Pydantic field constraints or validators for
+  each value and a model validator for relationships such as two credentials needing the same
+  provider mode. Expose values derived solely from settings as typed properties or computed fields
+  on the model. Services and request handlers consume those validated settings directly. Supply
+  newly required values in deployment, bootstrap, and test configuration.
 - Do not add useless config values like `DEFAULT_ENVIRONMENT`.
 - A provider's published sandbox and production hosts are constants in that provider's package, and the application's canonical environment check selects between them. Select a provider's host from that check (such as the settings object's `is_production`), never from a provider-specific environment setting or enum that restates what the deployment environment already decides.
 - Do not add helper functions like `_get_environment` when the value already exists on the shared settings object.

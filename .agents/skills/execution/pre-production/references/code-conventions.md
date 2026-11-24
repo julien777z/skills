@@ -19,6 +19,14 @@ commit messages and pull-request text. `SKILL.md` names this file at the point a
   one: its product name, its services, its table and column names, its record types, or the nouns
   its business speaks in. That holds for source, tests, fixtures, examples, and documentation
   alike, and it holds most strongly in a library, where every reader is a different consumer.
+- Name implementation symbols, comments, docstrings, model descriptions, logs, technical
+  documentation, and test examples for their behavior or domain. A product rename should require
+  edits only at the sources of branding and documented integration or deployment contracts.
+  Read the product name from its company or branding configuration when runtime text needs it,
+  including metadata, accessibility labels, emails, and test expectations for that text. Keep
+  literal names in their canonical sources, branded assets, company information and legal
+  documents. Preserve existing package, protocol, database, and deployed resource identifiers
+  when they are part of a compatibility contract.
 - A library owns the vocabulary of the protocol or provider it wraps. That protocol's field names
   and naming conventions, such as how it spells an event type or a scope, are the library's own,
   never a consumer's domain vocabulary: a helper encoding such a convention belongs in the library
