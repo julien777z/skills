@@ -85,6 +85,13 @@ nor touches the files or resources the awaited work is changing.
 - When the awaited work is a building worker, another edit starts only in an independently owned
   scope with separate files and resources, under `subagent-matrix`'s **Dispatch**; otherwise do
   read-only verification, review or question preparation while it runs.
+- **Resume the step a completed prerequisite was meant to unblock.** When the user says they
+  completed a requested prerequisite, verify the resulting state in the original account, tool,
+  session or resource and retry the operation that needed it. Apply this to sign-in, device access,
+  permissions, supplied inputs and other prerequisites. Use the verified result for the steps it
+  unblocks. Before switching to a second sign-in, another resource or a new request to the user,
+  establish the remaining blocker in the original route. Preserve any separate action-time
+  confirmation the next operation genuinely requires.
 - **Classify an awaited result from its observed state before treating it as a blocker.** Startup,
   recovery, a queued review or an unanswered request is pending until it has a terminal result;
   current unavailability, a quiet interval or a bounded wait yielding without a result is not
