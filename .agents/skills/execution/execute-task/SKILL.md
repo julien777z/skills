@@ -355,7 +355,7 @@ state an action left, at its source, and do whatever that read shows wrong next,
 
 The GitHub rule's **Branches and Pull Requests** owns pull-request selection, a guidance change
 riding a source branch included: apply it before keeping a checked-out branch or updating a pull
-request, verify the selection remotely, and leave another session's branch and pull request
+request, verify the selection remotely (for a guidance change, `edit-skill`'s `references/guidance-pull-requests.md` sets it out), and leave another session's branch and pull request
 untouched unless the selected route directs continuing it.
 
 **Every task that changes repository files opens or updates its draft pull request.** At the first
