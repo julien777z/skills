@@ -291,7 +291,9 @@ downstream checkout contains the merged source if it uses the moving branch tip.
 uploads artifacts, creates a release, or deploys stays outside this step.
 
 Use **Check Gate**'s bounded polling until the branch-writing step has a verified terminal result.
-Use the job's terminal result when the step cannot be tracked separately. Use the same polling for run discovery while an eligible writer is being scheduled, including
+Use the job's terminal result when the step cannot be tracked separately. When a downstream
+trigger or required installation depends on the workflow conclusion, also verify that conclusion
+on the same run. Use the same polling for run discovery while an eligible writer is being scheduled, including
 downstream runs after their prerequisites finish. Follow prerequisites only to establish whether the
 writer can run. If a later run cancels or replaces it, follow that writer only after verifying that it covers the merged source and the same
 outputs on the same branch. If the job is skipped, verify which condition made it inapplicable.
@@ -315,9 +317,10 @@ for the caller to apply the same procedure before reporting completion.
 
 ## After Agent Sync
 
-When the merged diff changes agent configuration, reuse the Agent Sync result from
-**CI Commits To The Target Branch**, including a replacement with verified coverage when applicable.
-Diagnose any unresolved synchronization failure from the relevant log.
+When the merged diff changes agent configuration, reuse the terminal Agent Sync workflow result
+from **CI Commits To The Target Branch**, including a replacement with verified coverage when
+applicable. Require workflow success before installation. Diagnose any unresolved synchronization
+failure from the relevant log.
 
 - **Refresh immediately after the run succeeds.** The refresh is part of the merge's delivery,
   including when the merge is the session's final work: complete it and verify the installed links
