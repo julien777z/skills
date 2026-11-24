@@ -62,12 +62,11 @@ specific set.
 - Verify each target's branch, head and state on the host. A target stays draft through its work
   and review: `merge-gate` marks it ready, as the last step before the merge, once `review-pass`
   has accepted its head.
-- **Each target merges as the change it was opened for.** A fix its review, checks or gates find
-  stays on it only where `pre-production`'s **Scope Follows The Defect, Not The Request** keeps a
-  fix with the change; a larger one, or one in another repository, goes on a pull request of its
-  own, which this run does not merge and the target does not consume. A fix past that reach an
-  earlier pass already put on the target moves to its own pull request the same way before the
-  target's review, leaving the target its requested change.
+- Apply the GitHub rule's **Branches and Pull Requests** to source follow-ups and fixes found by
+  review or checks. Update the selected pull request's intent and review the resulting head before
+  the merge gate. A distinct concern in the same repository is handled under that rule's
+  in-progress source pull request ownership. The rule also owns the separate guidance branch.
+  The **Targets** above still determine which pull requests this invocation may merge.
 - **Open recorded work `review-pass` returns is built on the target before its review starts**;
   review, merge and a dependency-held repoint keep their own order under **Workflow** and
   **Dependent Pull Requests**.
