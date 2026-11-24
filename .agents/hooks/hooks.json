@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/session-skills/main.py\" i-have-adhd",
+            "command": "[ ! -f \"$(git rev-parse --show-toplevel)/.agents/hooks/session-skills/main.py\" ] || python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/session-skills/main.py\" i-have-adhd",
             "timeout": 10
           }
         ]
@@ -15,7 +15,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/session-skills/main.py\" user-facing-output",
+            "command": "[ ! -f \"$(git rev-parse --show-toplevel)/.agents/hooks/session-skills/main.py\" ] || python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/session-skills/main.py\" user-facing-output",
             "timeout": 10
           }
         ]
@@ -26,7 +26,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/ledger/main.py\"",
+            "command": "[ ! -f \"$(git rev-parse --show-toplevel)/.agents/hooks/ledger/main.py\" ] || python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/ledger/main.py\"",
             "timeout": 30
           }
         ]
