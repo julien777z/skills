@@ -38,7 +38,7 @@ The statement is written before the edit, in the shape `SKILL.md`'s
 - **Each line says one thing the user can check against what they meant.**
   - *You said* quotes the user's words, each example value named by its kind in brackets as
     `pre-production`'s **Examples And Paths** says, in the ledger entry and every reviewer brief,
-    never in the statement shown to the user, who wrote them, as `user-facing-output` says; for a
+    never in the statement shown to the user, who wrote them; for a
     gap the agent noticed itself the shown statement opens with `Noticed:` and states the gap.
   - *From now on* names the situation, what agents do there and what they did before.
   - *Also changes, same class* lists every other situation of that class the edit changes, by the
