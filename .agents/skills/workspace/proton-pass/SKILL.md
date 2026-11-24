@@ -23,6 +23,11 @@ retiring a superseded credential. A provider’s authentication challenge or req
 gets an exact request to the user; it never becomes a request to configure an unrelated tool.
 Never ask the user to paste a secret into chat.
 
+When issuing a credential, use the requested lifetime when available. Otherwise choose the closest
+supported lifetime that respects any explicit limit or exact requirement, and report what was
+issued. When the user asks for the longest available lifetime, use the provider's longest option,
+including a credential that remains valid until revoked if that is the only option.
+
 ## Access
 
 Choose the route from the session's execution environment, not from whether a token variable
