@@ -93,8 +93,7 @@ plan of its own; only an edit that adds nothing skips it.
   and no auto-merge; each edit they ask for lands on that branch and it is rendered again in place.
 - Work a plan in execution already covers takes no new plan: an encountered issue, a gate's or a
   review's flag, a failing check, or a guidance correction discovered during the run. `edit-skill`
-  records verified guidance corrections and delivers them from the next milestone; `process-ledger`
-  processes any still pending at **Completion**.
+  records verified guidance corrections for delivery from the next milestone and `process-ledger` processes the rest at **Completion**.
 
 ### What The Plan Holds
 
@@ -267,8 +266,11 @@ independent one. Reassess ownership after each finding or follow-up. Each editin
 worktree of its own and `subagent-matrix`'s worker brief, filled with the plan's reuse receipts. Its
 report carries a receipt for each thing it added; one without them goes back to the worker before
 its head is built on. Before writing a script or doing a check by hand, the agent
-and every worker look in the repository's `.agents/tools/` and write, run and maintain helpers
-there as [repository helpers](references/repository-helpers.md) says.
+and every worker look in the repository's `.agents/tools/`. In a
+repository the owner runs, an operation the task will run more than once, or is about to run again,
+is first written as a helper there, created with its folder if missing, committed as source work on
+the pull request the GitHub rule selects for it, and run from there each time; a shell function,
+heredoc or temporary script is not a helper, though a skill's execution checks stay untracked.
 
 ### Task Authorization
 
@@ -293,9 +295,7 @@ guidance already answers.
 Apply [working environment](references/environment.md): its **Working Files** puts everything
 the run writes for itself or its workers in `.agent_sources/` at the worktree's root; its **Copies A
 Sync Service Left Behind** deletes each such copy before anything stages, stashes or snapshots the
-tree; its **Browser Access** selects the browser; its **Installed Apps** reads an app's version
-from its files, never by running it; its **Environment Refusals** treats an
-environment refusal as a route to find, and what a permission check refuses as not attempted again;
+tree; its **Browser Access** selects the browser; its **Installed Apps** reads an app's version from its files, never by running it; its **Environment Refusals** treats an environment refusal as a route to find, and what a permission check refuses as not attempted again;
 and its **Steps That Cannot Be Taken Back** runs a deletion, overwrite, push, merge or post only
 after its gating check has been read, outside the command, chain or batch that runs the check.
 
