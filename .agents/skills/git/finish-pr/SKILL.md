@@ -1,13 +1,12 @@
 ---
 name: finish-pr
-description: Review and fix the whole of each task pull request, then merge it at its accepted head. Use when the user asks to finish the task's pull requests. Run only when the user asks for it.
+description: Review and fix the whole of each selected pull request, then merge it at its accepted head. Use when the user asks to finish pull requests. Run only when the user asks for it.
 short_description: 'Review and fix the whole pull request, then merge it.'
 ---
 
 # Finish PR
 
-Review, fix, and merge every open pull request for the active task unless the user names a
-specific set.
+Review, fix, and merge the pull requests selected under **Targets**.
 
 ## Authorization
 
@@ -48,9 +47,11 @@ specific set.
   mentioned earlier as awaiting merge, not the dependency a held unit waits on, and not one a bare
   "yes" beside the request might answer. Such a dependency stays a gate under **Dependent Pull
   Requests**.
-- Otherwise run `list-prs` before starting any individual review, even when the current branch
-  already has a pull request or the request uses the singular. Use its full task-wide result,
-  including work in other repositories.
+- With no explicit target, run `list-prs` before starting any individual review and select every
+  open pull request created in the current session. Reconcile creation receipts across the whole
+  session through `session-ledger`, including earlier tasks and other repositories. A current
+  checkout, recently discussed pull request, or singular wording does not narrow the set.
+  A pre-existing pull request the session only touched needs an explicit target.
 - When that list is empty, inspect every repository carrying reviewable task-local changes, commit
   each one's task changes to a branch under the GitHub rules' branch rules, create one draft pull
   request per repository, and record every returned canonical URL with `session-ledger`. An empty
