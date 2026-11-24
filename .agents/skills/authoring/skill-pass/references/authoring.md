@@ -13,7 +13,8 @@ validated. The pass in `SKILL.md` names the section each step applies, and the
 - **Guidance about anything under `.agents` lives in this reference**, however widely it holds: how
   a skill, rule, agent definition, hook, setting, reference or project guidance is written, where it
   goes, which harnesses it serves, how its generated mirrors are produced, and how a change to it is
-  validated. A rule, another skill or `.agents/global.md` keeps only what its own subject needs and
+  validated. So does guidance about code outside `.agents` that installs or configures an agent
+  harness, such as workspace setup or machine provisioning. A rule, another skill or `.agents/global.md` keeps only what its own subject needs and
   leaves the rest here: a skill cites these sections by name, and a rule or `.agents/global.md`
   cites them by subject.
 - **Guidance lives in skills and rules, never in a harness's memory.** A correction, preference,
@@ -38,7 +39,9 @@ validated. The pass in `SKILL.md` names the section each step applies, and the
   - `.agents/global.md` holds only what must bind before any skill has loaded: which skills to
     start, who can authorize a merge, a deployment or a skill run, that only the user's words are
     approval, and how questions reach the user. A requirement goes there only when it must bind
-    with no skill loaded.
+    with no skill loaded. How agent configuration is written, placed, checked or made to serve each
+    harness never goes there, however widely it must hold: it lives in this reference, which the
+    work it governs loads.
   - Examples in `.agents/global.md` and a rule stay generic: invented names and
     placeholder shapes, never this repository's modules, helpers, packages, paths, or domain
     vocabulary, and never the product, tool, or platform whose incident prompted the change.
@@ -122,7 +125,11 @@ validated. The pass in `SKILL.md` names the section each step applies, and the
 ## Harnesses
 
 - **Everything under `.agents` works in every harness that loads it**, from one provider-neutral
-  implementation and one canonical source for skills, rules, and agent prompts. That covers what the
+  implementation and one canonical source for skills, rules, and agent prompts. So does every
+  change outside `.agents` to how agents run, such as workspace setup or machine provisioning that
+  installs skills or hooks: it builds on that provider-neutral source and the generator each
+  harness's files come from, never on the files of the harness the session happens to use, and
+  is verified in each harness the user runs. That covers what the
   harness runs or reads, not only prose: a hook script and the matcher that selects it, a skill's
   script, a setting, an instruction naming a tool, and how each harness discovers and installs the
   guidance. Each depends on a harness contract — its tool names, the payload a hook receives and the

@@ -15,12 +15,6 @@ only a subject no skill runs for.
 
 - Guidance about anything under `.agents` — writing, placing, harness support and validating it —
   lives in the skill whose description covers how guidance is written, placed and checked.
-- **A change to how agents run serves every harness the user runs that has the capability it
-  touches**, wherever its code lives: guidance, hooks, settings, instructions, workspace setup and
-  machine provisioning alike. Build it on the provider-neutral source each harness's own files are
-  generated from, never on the files of the harness the session happens to use, and verify it in
-  each such harness. Only a capability a single harness alone has stays that harness's. That
-  skill's harness rule holds what each harness's contract needs.
 - Read the other shared rules relevant to the current repository and task. If a harness does not
   load them automatically, open the applicable files from its user-level rules directory.
 - A skill catalog is one discovery surface, not proof that a directly requested skill is absent.
@@ -110,7 +104,9 @@ only a subject no skill runs for.
 
 - Surface every question through the harness's user-question tool, including approvals and standalone questions. **A question asked anywhere else goes
   unseen**: the reader answers the question tool, and chat text around it, or in some harnesses all
-  text before a tool call, may never reach them. Ask directly in chat only when the harness has no
+  text before a tool call, may never reach them. **A step only the user can take goes through the
+  question tool too**: a review, an approval, a sign-in or a manual action a report hands them is
+  asked there, never left in chat text alone. Ask directly in chat only when the harness has no
   question tool. **One question holds one decision**, with options that answer it alone: several
   decisions are never folded into one question, offered as one choice that settles them all, such as
   following every recommendation, or listed as a multi-select question's checkboxes; an option that
