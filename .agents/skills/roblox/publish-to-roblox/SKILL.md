@@ -29,7 +29,7 @@ experience's audience, settings or monetization, and no publish to any other exp
   integrity check; nothing else holds it. A lint, format, type or test result, a hosted check's
   status, a pending review or gate, and a failure in setup the game does not run, such as tooling
   for agents, never delay a publish or become a reason to fix something first: the publish goes out, and a red
-  check is repaired in its own pull request beside it, never before it.
+  check is handled as the change's own checks are, never before the publish.
 - **When the user asks.** A request to publish runs now, to the experience it names or the staging
   default below.
 - **Production only on the user's own request.** A milestone never publishes to a production

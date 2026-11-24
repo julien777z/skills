@@ -97,15 +97,17 @@ nor touches the files or resources the awaited work is changing.
   it: its thread items, the files it writes, the processes or background tasks it runs. At an
   early check, one with no activity at all since launch, or whose last step failed and nothing
   followed, is stalled; at a later check, one with no activity for 30 minutes, counted from its
-  last activity, and no long command of its own in progress is, whatever it waits on. A worker
+  last activity, and not before, is, unless a long command of its own is in progress; waiting on
+  anything else does not excuse it. A worker
   whose host shows nothing until it finishes is judged by those other signals before it is
   cancelled, never by the empty thread alone. A stalled worker is cancelled and relaunched,
   through `subagent-matrix`'s **Dispatch**, with its brief plus what stalled it, such as a failed
   command it never recovered from, input it waits on that nobody sees, or a provider error it
   never reported; one that finished without its completion arriving has its result collected. A
   worker's checks end when it finishes and the scheduled check is removed once no worker runs.
-  This is the user's standing instruction and holds over a harness default against polling a
-  delegate.
+  The check reads workers only: a pull request is still waited on by delivered activity, and a
+  question put to the user is not a worker. This is the user's standing instruction and holds
+  over a harness default against polling a delegate.
 - **A status report is not a stopping point.** A message sent while authorized work or a wait
   remains goes out together with the next wait or action, never as the turn's last output, and is
   never the task's report. When every remaining item depends on an awaited result, keep the

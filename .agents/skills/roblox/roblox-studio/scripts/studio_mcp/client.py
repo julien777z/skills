@@ -406,7 +406,10 @@ class Studio:
 
         arguments = {**arguments, "studio_id": self.studio_id}
 
-        with self.connection.turn:
+        if not self.connection.turn.acquire(timeout=max(timeout.total_seconds(), 0)):
+            raise TimeoutError(f"Studio MCP timed out waiting for another request on the connection: {name}")
+
+        try:
             if self.connection.session is not None:
                 return call_studio_tool(self.connection, name, arguments, self.lock_receipt, timeout)
 
@@ -415,6 +418,8 @@ class Studio:
             self.await_listing(config)
 
             return studio_tool_reply(self.connection, name, arguments, config, timeout)
+        finally:
+            self.connection.turn.release()
 
     def execute(self, code: str, data_model: str = "Client",
                 timeout: timedelta = OPERATION_TIMEOUTS[RunnerOperation.TOOL_CALL]) -> str:

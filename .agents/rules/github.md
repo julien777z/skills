@@ -14,8 +14,8 @@ alwaysApply: true
   is complete as a reviewable draft whose local checks under **Pre-Push Gate** and completion review
   have passed; its hosted test jobs are required only at the merge. A check that does run on a
   draft is read whenever the pull request's state is reported, its own or a worker's push alike,
-  and one that fails is fixed in that pull request at once like any defect, never set aside because
-  the draft's tests run only at the merge.
+  and one that fails is fixed in that pull request at once like any defect, a failure in setup the
+  change did not write included, never set aside because the draft's tests run only at the merge.
 - **Each repository is an independent publishing context.** Pull-request titles, descriptions,
   comments, issue text, branch names and commit messages use the target repository's domain,
   contracts, changes and validation, and never reference another repository's pull request or
