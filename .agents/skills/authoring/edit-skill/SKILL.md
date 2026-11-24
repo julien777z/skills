@@ -110,12 +110,16 @@ Validate skill dependencies and their actual call and policy-read paths under th
   only the guidance files. Record the branch, the `commits` list and the pull request in the entry's
   `data`, bring that pull request's description up to date at the milestone, then run `update-skills` at once for eligible edits under its **What Takes Effect**, so the installed
   copy every agent loads, subagents included, carries them. A running agent keeps the text it
-  already read: tell each running worker this session started which skill, rule or agent definition changed, each section that changed, and what it now says. Nothing else of delivery runs while the task does: no
-  review, gate, skill-test round, merge or worker, except the checks a batch in flight reruns for an edit
-  that joined it, as `session-ledger`'s **Guidance Batches** says. A standing instruction about how guidance
-  pull requests are reviewed or merged governs that delivery when it runs, never when. A gate result
-  that arrives for a guidance pull request already open is recorded as its entry's stage result, and
-  its repair waits with the rest.
+  already read: tell each running worker this session started which skill, rule or agent definition changed, each section that changed, and what it now says. **Delivery starts at the next milestone of the work in hand**, never later: a
+  finished plan step or worker task whose checks pass, a round of fixes the user asked for, or a
+  publish. It then runs as **Guidance Delivery** says, beside the ongoing work and without the user
+  asking, however long the surrounding task goes on; a session whose requests keep arriving never
+  holds a recorded correction for the task's end. Until that milestone nothing else of delivery
+  runs: no review, gate, skill-test round, merge or worker, except the checks a batch in flight
+  reruns for an edit that joined it, as `session-ledger`'s **Guidance Batches** says. A standing
+  instruction about how guidance pull requests are reviewed or merged governs that delivery when it
+  runs, never when. A gate result that arrives for a guidance pull request already open is recorded
+  as its entry's stage result, and its repair waits with the rest.
 - **Every `guidance_correction` entry is backed up** as `session-ledger`'s **Backup** section says.
 - A related correction recorded before its batch is frozen joins the same entry or sits beside it
   in that batch; the batch is one pull request, apart from edits the GitHub rule puts on a source

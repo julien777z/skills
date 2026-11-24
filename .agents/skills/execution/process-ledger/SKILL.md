@@ -1,6 +1,6 @@
 ---
 name: process-ledger
-description: Process a task's private ledger at task completion or when a user asks to process it. Reconcile verified records, route admitted guidance corrections, direct guidance requests included, into permanent guidance, and retain only entries with a concrete unresolved next action.
+description: Process a task's private ledger at each milestone of the work while guidance corrections are pending, at task completion, or when a user asks to process it. Reconcile verified records, route admitted guidance corrections, direct guidance requests included, into permanent guidance, and retain only entries with a concrete unresolved next action.
 short_description: 'Process verified private-ledger records into durable outcomes.'
 ---
 

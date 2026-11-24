@@ -97,7 +97,9 @@ Follow-ups that skip plan approval still write this record without a new approva
   each edit they ask for lands on the same branch and the comparison is rendered again in place.
 - Work the approved plan already covers takes no new plan: an encountered issue, a gate's or a
   review's flag, a failing check, or a guidance correction discovered during the run. `edit-skill`
-  records verified guidance corrections and `process-ledger` processes them at **Completion**.
+  records verified guidance corrections, and `process-ledger` sends them to delivery at the next
+  milestone of the work, as `edit-skill`'s recording section says, and at **Completion** for any
+  still pending.
 
 ### What The Plan Holds
 
