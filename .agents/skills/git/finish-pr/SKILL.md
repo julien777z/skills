@@ -62,11 +62,10 @@ specific set.
 - Verify each target's branch, head and state on the host. A target stays draft through its work
   and review: `merge-gate` marks it ready, as the last step before the merge, once `review-pass`
   has accepted its head.
-- Apply the GitHub rule's **Branches and Pull Requests** to source follow-ups and fixes found by
-  review or checks. Update the selected pull request's intent and review the resulting head before
-  the merge gate. A distinct concern in the same repository is handled under that rule's
-  in-progress source pull request ownership. The rule also owns the separate guidance branch.
-  The **Targets** above still determine which pull requests this invocation may merge.
+- Apply the GitHub rule's **Branches and Pull Requests** to source follow-ups, review fixes and
+  check fixes. When an addition changes a selected target, refresh that pull request's intent
+  before reviewing its resulting head. The **Targets** above still determine which pull requests
+  this invocation may merge.
 - **Open recorded work `review-pass` returns is built on the target before its review starts**;
   review, merge and a dependency-held repoint keep their own order under **Workflow** and
   **Dependent Pull Requests**.
@@ -130,7 +129,8 @@ Follow the active task's recorded priorities when choosing the next eligible uni
    - that this caller owns the primary checkout refresh after applicable CI writes and Agent Sync;
    - every exclusion it returned, with its evidence;
    - the fix rule for every fix `merge-gate` makes — a check fix, a conflict resolution, a commit
-     someone else pushed: `review-pass` runs again over that fix's delta, and the fix is pushed through
+     someone else pushed: refresh the target's intent if its scope changed, then `review-pass`
+     runs again over the fix's delta. The fix is pushed through
      the GitHub rule's **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
      passed.
 4. **Refresh the checkout.** After a verified merge, run **Local Checkout**. Record the merge and checkout outcome, or the
