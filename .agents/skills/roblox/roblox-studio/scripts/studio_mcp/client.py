@@ -169,8 +169,6 @@ class StudioMcpConnection:
         """Create the connection."""
 
         self.session: StudioMcpSession | None = None
-        # The session reads every reply from one pipe and drops a reply meant for another request, so the threads
-        # sharing this connection send one request at a time; the owner of the turn may take it again.
         self.turn = threading.RLock()
 
         atexit.register(self.close)
