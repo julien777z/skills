@@ -92,9 +92,10 @@ the client's T3 Connect and saved connections before asking the user to add a de
 
 ### Open a terminal through T3 Connect
 
-If desktop control is unavailable, use browser automation in a task-owned tab of an existing
-browser session signed in to [T3 Code](https://app.t3.codes/). The web client can operate while
-the local desktop is locked. Under **Settings → Environments**, select the target under
+If desktop control is unavailable, use automation that controls a task-owned browser tab without
+foreground desktop input. Open [T3 Code](https://app.t3.codes/) in an existing signed-in browser
+session. A target that is online through T3 Connect can have its screen locked. Under
+**Settings → Environments**, select the target under
 **T3 Connect**. If the device is online and marked **Not added** in this browser, choose **Add**
 from its existing registration. Read back **Connected** before opening its workspace.
 
