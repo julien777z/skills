@@ -33,17 +33,16 @@ The statement names:
   game-design bullet leaves to the agent. Work the change's scope requires without such an effect,
   such as moving consumers onto one owner or repairing the same defect beside it, is not;
 - the required behavior and ownership boundaries, with the accepted requirements that establish them;
-- the applicable target-contract instruction, the one canonical representation of each owned boundary
-  it changes, and every prior or candidate representation the change removes or rejects;
+- the applicable target-contract instruction, quoted; the one canonical representation of each
+  owned boundary it changes; and every prior, retained or candidate representation of that boundary
+  the change removes, keeps or rejects;
 - for each changed or newly resolved dependency, provider, generated contract, shared package, or
   other boundary owner: the current owner; the exact loaded source and revision; each consumer's
   declared source and revision; every owned consumer that differs from that declared contract; and
-  any explicit authorization to retain an earlier representation. Resolve a mismatch between the
-  declared and loaded source as a dependency-routing defect before proposing a consumer migration.
-  An unmerged pull request, proposed branch, or future release is candidate evidence only; it cannot
-  establish a target contract, satisfy a repair on another target, or be assumed to merge unless
-  the user explicitly makes it a dependency. The
-  comparison states why migrating consumers is insufficient before it accepts broadening an owner;
+  any explicit authorization to retain an earlier representation. An unmerged pull request,
+  proposed branch, or future release is candidate evidence only; it cannot establish a target
+  contract, satisfy a repair on another target, or be assumed to merge unless the user explicitly
+  makes it a dependency;
 - the shapes removed and their replacements, read from current deletions and the originating commits;
 - the pull request's title and body and the change's commit messages, checked against those
   requirements and the implementation;
@@ -64,11 +63,9 @@ The statement names:
   other repositories that hold the same kind of artifact shape it, read from their current default
   branches whether or not the task touches them.
 
-When work changes an owned boundary, the statement quotes the applicable target-contract instruction,
-names the one canonical representation, and identifies every retained or candidate representation of
-that boundary. The gate cannot accept an abstract summary in place of that receipt; a second consumer
-layout, branch, probe, fallback, or compatibility helper is a flag unless the user explicitly approved
-retaining it.
+When work changes an owned boundary, the gate cannot accept an abstract summary in place of the
+receipt the target-contract bullet above lists; a second consumer layout, branch, probe, fallback,
+or compatibility helper is a flag unless the user explicitly approved retaining it.
 
 The owned-boundary receipt distinguishes the actor or execution owner from its destination and
 names the permitted resources and prohibited placements, disclosures or writes. Trace the actual
@@ -89,12 +86,13 @@ scope cannot access or change the scoped data. Cite the evidence in the verdict.
 
 For every changed or newly resolved dependency, provider, generated contract, shared package, or
 other boundary owner, supply the receipt the dependency bullet above lists for it before a clean
-verdict. First reconcile a mismatch between the declared and loaded source: a workflow, cache,
-checkout, or resolver that loads another branch is a dependency-routing defect, not evidence that a
-consumer must migrate.
+verdict. First reconcile a mismatch between the declared and loaded source, before proposing a
+consumer migration: a workflow, cache, checkout, or resolver that loads another branch is a
+dependency-routing defect, not evidence that a consumer must migrate.
 
 Once the resolved sources agree, compare consumer migration with changing the owner before accepting
-either. Broadening an owner, adapter, generic bound, schema, or validation solely so an owned
+either, stating why migrating consumers is insufficient before accepting a broadened owner.
+Broadening an owner, adapter, generic bound, schema, or validation solely so an owned
 consumer's previous input still passes is compatibility even when it adds no branch or fallback.
 Flag it unless the evidence establishes that broader input is the owner's independent target
 contract or the user explicitly authorized the retained compatibility. Matching runtime behavior
