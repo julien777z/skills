@@ -16,9 +16,8 @@ Reviewed Batches**, **Relocations**, **Resuming A Batch**.
   step that produced the rejected recommendation, triage, brief or action: what instruction and
   review evidence it used, what next action those required, and how its chosen action differed.
   Repair that decision step at its owner rather than restating the substantive rule or ending
-  with a noncompliance report. Remove conflicting permissions and test other routes in the same
-  failure class, and none outside it, then replay the original decision under the repair before
-  closing the issue.
+  with a noncompliance report. Remove conflicting permissions, check other routes for the same
+  failure, and replay the original decision under the repair before closing the issue.
   Record missing historical evidence without inventing a cause; it does not prevent repairing
   the observed decision path. When the owning skill was not invoked, harden its frontmatter
   description first; body text cannot control a run that never loads the skill.
