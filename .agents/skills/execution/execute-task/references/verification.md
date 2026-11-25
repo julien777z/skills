@@ -75,6 +75,10 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
   `scripts/python_rule_findings.py` lists the candidate pairs. Fix every listed boundary in the
   lines the change writes or edits, and elsewhere in the changed files within `pre-production`'s
   incidental size budget; an unrelated bug or a passing formatter does not satisfy this check.
+  Before pushing, record the checked revision and file list, the check output (including an empty
+  result), and the disposition of any candidate kept together. When edits follow the check, rerun it
+  on the revision being pushed. A push, review handoff, or completion report with no matching
+  evidence is still waiting on this check, including after a narrow follow-up or repair round.
 - **A coherent step** is a function and its callers updated, a test brought to pass or one finding
   fixed, judged against `pre-production`'s complete target boundary, not the latest edited files:
   required consumer updates, superseded owners and declarations, generated contracts and
