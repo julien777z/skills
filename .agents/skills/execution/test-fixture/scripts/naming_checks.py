@@ -1,6 +1,7 @@
 from argparse import ArgumentParser
 from collections.abc import Iterator
-from ast import AST, AsyncFunctionDef, ClassDef, FunctionDef, Module, Name, parse, walk
+from ast import AsyncFunctionDef, ClassDef, FunctionDef, Module, Name, parse, walk
+from enum import StrEnum
 from http import HTTPStatus
 from pathlib import Path
 from re import findall
@@ -26,19 +27,36 @@ NON_MODEL_NAMES: Final[frozenset[str]] = frozenset(
         "Union",
     }
 )
+
 STATUS_CODES: Final[frozenset[int]] = frozenset(status.value for status in HTTPStatus)
-CHECKS: Final[tuple[str, ...]] = (
-    "article-led name",
-    "name past eight words",
-    "numeric status token",
-    "class or module noun overlap",
-    "model-returning helper (name it create_<shape>)",
-    "other helper (first word shown)",
+
+
+class NamingCheck(StrEnum):
+    """One block of the printed report, labeled by its check."""
+
+    ARTICLE_LED = "article-led name"
+    TOO_LONG = "name past eight words"
+    STATUS_TOKEN = "numeric status token"
+    NOUN_OVERLAP = "class or module noun overlap"
+    MODEL_HELPER = "model-returning helper (name it create_<shape>)"
+    OTHER_HELPER = "other helper (first word shown)"
+
+
+NAME_CHECKS: Final[tuple[NamingCheck, ...]] = (
+    NamingCheck.ARTICLE_LED,
+    NamingCheck.TOO_LONG,
+    NamingCheck.STATUS_TOKEN,
+    NamingCheck.NOUN_OVERLAP,
+)
+
+HELPER_CHECKS: Final[tuple[NamingCheck, ...]] = (
+    NamingCheck.MODEL_HELPER,
+    NamingCheck.OTHER_HELPER,
 )
 
 
 def stem(word: str) -> str:
-    """Reduce a word to a singular, lowercase stem so singular and plural forms match."""
+    """Reduce a word to its singular, lowercase stem."""
 
     word = word.lower()
 
@@ -63,21 +81,21 @@ def python_files(paths: list[Path]) -> list[Path]:
 
 
 def iter_test_functions(
-    node: AST, enclosing: ClassDef | None = None
+    node: Module | ClassDef, enclosing: ClassDef | None = None
 ) -> Iterator[tuple[FunctionDef | AsyncFunctionDef, ClassDef | None]]:
     """Yield every test function with the class that directly encloses it, if any."""
 
-    for child in getattr(node, "body", []):
+    for child in node.body:
         if isinstance(child, ClassDef):
             yield from iter_test_functions(child, child)
         elif isinstance(child, (FunctionDef, AsyncFunctionDef)) and child.name.startswith("test_"):
             yield child, enclosing
 
 
-def name_findings(path: Path, module: Module) -> dict[str, list[str]]:
+def name_findings(path: Path, module: Module) -> dict[NamingCheck, list[str]]:
     """Run the four name checks over every test function of one module."""
 
-    findings: dict[str, list[str]] = {check: [] for check in CHECKS[:4]}
+    findings: dict[NamingCheck, list[str]] = {check: [] for check in NAME_CHECKS}
     module_nouns = {stem(word) for word in words_of(path.stem.removeprefix("test_"))}
 
     for function, enclosing in iter_test_functions(module):
@@ -87,16 +105,16 @@ def name_findings(path: Path, module: Module) -> dict[str, list[str]]:
         overlap = sorted({stem(word) for word in words} & (class_nouns | module_nouns))
 
         if words and words[0].lower() in ARTICLES:
-            findings[CHECKS[0]].append(where)
+            findings[NamingCheck.ARTICLE_LED].append(where)
 
         if len(words) > MAX_NAME_WORDS:
-            findings[CHECKS[1]].append(f"{where}\t{len(words)} words")
+            findings[NamingCheck.TOO_LONG].append(f"{where}\t{len(words)} words")
 
         if any(word.isdigit() and int(word) in STATUS_CODES for word in words):
-            findings[CHECKS[2]].append(where)
+            findings[NamingCheck.STATUS_TOKEN].append(where)
 
         if overlap:
-            findings[CHECKS[3]].append(f"{where}\t{', '.join(overlap)}")
+            findings[NamingCheck.NOUN_OVERLAP].append(f"{where}\t{', '.join(overlap)}")
 
     return findings
 
@@ -112,10 +130,10 @@ def returns_model(function: FunctionDef | AsyncFunctionDef) -> bool:
     return any(name[:1].isupper() and name not in NON_MODEL_NAMES for name in names)
 
 
-def helper_findings(path: Path, module: Module) -> dict[str, list[str]]:
+def helper_findings(path: Path, module: Module) -> dict[NamingCheck, list[str]]:
     """List the module-level helpers of a utils or fixtures package, split by return type."""
 
-    findings: dict[str, list[str]] = {check: [] for check in CHECKS[4:]}
+    findings: dict[NamingCheck, list[str]] = {check: [] for check in HELPER_CHECKS}
 
     if not HELPER_PACKAGES & set(path.parts[:-1]):
         return findings
@@ -128,9 +146,9 @@ def helper_findings(path: Path, module: Module) -> dict[str, list[str]]:
         row = f"{path}:{node.lineno}\t{node.name}"
 
         if returns_model(node):
-            findings[CHECKS[4]].append(row)
+            findings[NamingCheck.MODEL_HELPER].append(row)
         else:
-            findings[CHECKS[5]].append(f"{row}\t{first_word}")
+            findings[NamingCheck.OTHER_HELPER].append(f"{row}\t{first_word}")
 
     return findings
 
@@ -140,9 +158,10 @@ def main() -> None:
 
     parser = ArgumentParser(description="Print the rubric's test-naming checks over files or directories.")
     parser.add_argument("paths", nargs="+", type=Path, help="Test files or directories to check.")
+
     arguments = parser.parse_args()
 
-    results: dict[str, list[str]] = {check: [] for check in CHECKS}
+    results: dict[NamingCheck, list[str]] = {check: [] for check in NamingCheck}
 
     for path in python_files(arguments.paths):
         module = parse(path.read_text(encoding="utf-8"), filename=str(path))
