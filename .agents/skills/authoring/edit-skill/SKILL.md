@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit anything under `.agents` — a skill, rule, agent definition, hook, setting, reference or project guidance — including when the user points out a mistake in how an agent followed or wrote guidance, or questions where guidance was placed, even with no request to edit a skill, and when carrying a guidance batch through delivery to its merge or hold. Fix the underlying issue and the guidance path that allowed it, writing the change for the class of failure the user plainly meant, no narrower and no broader, classified before the change is first described, proposed or edited anywhere and shown to them as a Scope Statement first. A correction that encodes a new process waits until that process has worked on the work in hand, which a merged change that carried it has; every other correction is recorded and written at once.
+description: Add or edit anything under `.agents` — a skill, rule, agent definition, hook, setting, reference or project guidance — including when the user points out a mistake in how an agent followed or wrote guidance, or questions where guidance was placed, even with no request to edit a skill, and when carrying a guidance batch through delivery to its merge or hold, and verifying a guidance change in a live agent chat. Fix the underlying issue and the guidance path that allowed it, writing the change for the class of failure the user plainly meant, no narrower and no broader, classified before the change is first described, proposed or edited anywhere and shown to them as a Scope Statement first. A correction that encodes a new process waits until that process has worked on the work in hand, which a merged change that carried it has; every other correction is recorded and written at once.
 short_description: 'Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.'
 ---
 
@@ -67,7 +67,6 @@ follow **Recording During A Task** for the edit's timing.
 - `session-ledger`
 - `update-skills`
 - `council`
-- `i-have-adhd`
 - `share-media`
 
 ## Recording During A Task
@@ -75,8 +74,9 @@ follow **Recording During A Task** for the edit's timing.
 Honor the selected workflow's verification sequence and any delivery or installation hold when
 recording or delivering a batch.
 
-- A process correction waits for its verified run or merge to be written, as **A process is encoded
-  only once it has worked** says, never to be classified; any other is recorded once diagnosed.
+- A process correction is classified at once and written only when its verified run or merge is
+  available, as **A process is encoded only once it has worked** says; any other correction is
+  recorded once diagnosed.
 - A direct request to change guidance, such as "use edit-skill to reflect that", is recorded the
   same way. While another task runs, the requested action is the behavior it describes, applied to
   the current work, and the guidance edit is its record. While a guidance batch is in flight, its
@@ -96,8 +96,7 @@ recording or delivering a batch.
   repeating the miss it records is the failure this section exists to prevent. What an entry's
   Scope Statement lists as waiting for the user governs nothing until they answer. A pending entry may
   restate or tighten the installed text, never grant an authorization the global rules' **Authorization** or the GitHub rule reserves to
-  the user's own words: a merge, a deployment, a publication, a comment, or a push to another
-  session's branch. A brief to any worker whose task a pending entry's subject covers carries that
+  the user's own words. A brief to any worker whose task a pending entry's subject covers carries that
   entry's intended behavior, with the user's words quoted and the installed text it amends named.
 - Write the edit in the checkout **Resolve which repository owns the target** resolves, on the branch **Branch and commit** selects — the batch's own
   branch while a batch is in flight and its pull request has not merged — commit it, and push it to
@@ -183,9 +182,7 @@ small it looks.** Each route below is the gate set its batch passes on the head 
    action. This route never sets an entry's terminal status.
 - Before the surrounding task ends or hands off, every `pending` entry is processed, or carries its
   concrete blocking decision, failed gate or unavailable dependency, with its evidence and saved next
-  action. Never lose a correction, treat a recorded one as
-  delivered, or hold the source pull request for it beyond the checks its ridden edits need and the
-  delivery of the batch carrying them.
+  action; a recorded correction is reported as recorded until its batch has merged.
 - **Delivery is the agent's own work, never the user's errand.** It starts at its own trigger
   without the user asking, and its operational choices — another round, splitting a correction onto
   its own pull request, dropping one, accepting a residual miss — are the agent's, a contested one
@@ -273,8 +270,7 @@ small it looks.** Each route below is the gate set its batch passes on the head 
        and written only once the user's own words, or an invoked skill's explicit instruction for
        that change, approve it, while the rest of the edit proceeds.
      - **When the statement records `flow affected`**, the user is also shown the proposed-flow
-       comparison of the edit's branch against the default branch once the edit is pushed, built
-       through the skill the listing describes as mapping guidance flows. This holds for every
+       comparison of the edit's branch against the default branch once the edit is pushed. This holds for every
        guidance change: a correction, a gap the agent noticed, a rule or global-rules edit, a
        skill edit. It is shown, and the edit proceeds without waiting for an answer, unless the
        statement lists something beyond what the user said or the invoking workflow holds it.
@@ -296,7 +292,7 @@ small it looks.** Each route below is the gate set its batch passes on the head 
      branch. The [edit criteria](references/edit-criteria.md)'s **Shared Targets** says which
      checkout that is, and how the edit transfers to a separate skills-repository session and is
      replayed when no writable checkout can be obtained.
-   - Never write `.cursor/*`, `.claude/*`, `.codex/*`, or any other non-`.agents` agent or provider folder, by hand or by a sync run, and never read one as the source of guidance; **Read the merged text back before using it** reads them only to verify what Agent Sync generated. Repository automation propagates changes from `.agents` to those targets. This holds with no exception, including where the change leaves a mirror pointing at a path it renames or deletes: the workflow reconciles those on the default branch, and a branch carrying a stale or broken one meanwhile is expected.
+   - Write guidance only under `.agents`. Provider folders such as `.cursor/`, `.claude/` and `.codex/` are generated by Agent Sync after the merge, so a hand edit or a local sync run's output is overwritten and drifts, as `skill-pass`'s **Harnesses** says; read one only to verify what Agent Sync generated, as **Read the merged text back before using it** says, never as the source of guidance. A mirror left pointing at a path the change renames or deletes is reconciled by the workflow on the default branch, so a branch carrying a stale or broken one meanwhile is expected.
    - This path restriction applies to the agent-content update, not to source changes required to fix an underlying issue from **Include the underlying issue**.
    - When importing external guidance, inspect its actual entry points and file layout before registering it. If an owned sync tool cannot represent the source, extend that tool for the source's format and register the original content directly. Keep a standalone reference collection standalone: do not invent a substitute skill, relabel its files as skills, or bury it in another skill's references.
 
@@ -308,7 +304,8 @@ small it looks.** Each route below is the gate set its batch passes on the head 
    - **A change to what a skill returns the user is specified with a concrete example before the
      skill is written to produce it.** The [edit criteria](references/edit-criteria.md)'s **Changed
      Output Examples** says which changes count, how the example is modeled and written, and how
-     it is validated; it is task evidence, not a user approval gate.
+     it is validated; send the example as `share-media`'s **What reaches the user, and when**
+     says. It is task evidence, not a user approval gate.
    - Trace each miss to the instruction that produced or allowed it, including instructions for
      adding or recording guidance. Name that governing instruction and its replacement in the
      change. Removing a bad example while retaining a directive that regenerates it is incomplete.
@@ -378,8 +375,8 @@ small it looks.** Each route below is the gate set its batch passes on the head 
       behind the request, which the gate walks through the resulting package. Resolve each flag through `acceptance-gate`'s **Bounds**: repair the
       owning instruction, push the changed increment, and put it to the fresh gate those **Bounds**
       require. Repeated flags do not permit dropping owed work or merging flagged guidance, apart
-      from the `council` decision that replaces another repair once 3 review rounds have failed the
-      change; acceptance, or that recorded round-limit decision, must cover the final wording before delivery.
+      from the `council` decision that replaces another repair once the review rounds `acceptance-gate`'s **Bounds**
+      allows have failed the change; acceptance, or that recorded round-limit decision, must cover the final wording before delivery.
    5. **Run one `test-skill` round** over the batch, started and concluded as **Guidance Delivery**
       says for its route. Give it every entry's reproduction scenario and observed miss, grouping
       entries that share a failure class, and each Scope Statement's Stays as it is line as the
@@ -430,9 +427,9 @@ small it looks.** Each route below is the gate set its batch passes on the head 
 
 ## Manual verification
 
-When skill behavior needs a live agent chat, follow the
-[manual verification reference](references/manual-verification.md): how the dispatch is chosen
-through `subagent-matrix` and recorded, and the Claude Desktop and Codex cloud procedures.
+When skill behavior needs a live agent chat, choose the dispatch through `subagent-matrix` and
+record it as the [manual verification reference](references/manual-verification.md) says, then
+follow that reference's Claude Desktop and Codex cloud procedures.
 
 ## Output
 
