@@ -1,6 +1,6 @@
 ---
 name: proton-pass
-description: Retrieve credentials from Proton Pass with pass-cli and apply lifetime preferences when issuing provider credentials or changing their expiration. Use every time a task needs to log in to an account, website, service, or tool, or needs a password, API key, token, SSH key, or other secret that neither the session environment nor the repository supplies, before asking the user for it. Vault availability is never a prerequisite for using an authenticated target service or completing its normal browser sign-in.
+description: Retrieve credentials from Proton Pass with pass-cli and apply lifetime preferences when issuing provider credentials or changing their expiration. Use every time a task needs to log in to an account, website, service, or tool, or needs a password, API key, token, SSH key, or other secret that neither the session environment nor the repository supplies, before asking the user for it, and repair a credential whose secret cannot be retrieved. Vault availability is never a prerequisite for using an authenticated target service or completing its normal browser sign-in.
 short_description: 'Retrieve credentials from Proton Pass with pass-cli.'
 ---
 
@@ -12,22 +12,28 @@ tooling uses to set or generate a local or development test identity's password.
 test identity a local stack or dev container creates never comes from Proton Pass.
 
 For other account credentials, try Proton Pass through `pass-cli` before asking the user.
-An unavailable vault stops that lookup, not the authorized task: use the target service’s existing
-authenticated session or normal browser sign-in with credentials already available to the session.
-When that route needs user input, ask for the specific authentication challenge or secure entry in
-the target service, and continue independent work. Do not require password-vault setup as the
-remedy for service access. Reuse or extend the existing provider credential first. When its secret
-cannot be retrieved and the task authorizes credential repair, regenerate it or create a replacement
-for the same role and required access, update its consumers, and verify the integration before
-retiring a superseded credential. A provider’s authentication challenge or required human action
-gets an exact request to the user; it never becomes a request to configure an unrelated tool.
-Never ask the user to paste a secret into chat.
+
+- An unavailable vault stops that lookup, not the authorized task: use the target service’s existing
+  authenticated session or normal browser sign-in with credentials already available to the session.
+  When that route needs user input, ask for the specific authentication challenge or secure entry in
+  the target service, and continue independent work. Vault setup is requested only when the task is
+  to configure the vault.
+- A provider’s authentication challenge or required human action gets an exact request to the user,
+  never a request to configure an unrelated tool.
+- Never ask the user to paste a secret into chat.
 
 When issuing a credential or changing its expiration, use the requested lifetime when available.
 For a duration preference, use the closest supported finite lifetime, or the provider's default
 when no finite option exists. Honor explicit limits and exact requirements. When the user asks for
 the longest lifetime, use the provider's longest option, including validity until revoked when
 available. Report the resulting lifetime.
+
+## Credential Repair
+
+Reuse or extend the existing provider credential first. When its secret cannot be retrieved and the
+task authorizes credential repair, regenerate it or create a replacement for the same role and
+required access, update its consumers, and verify the integration before retiring a superseded
+credential.
 
 ## Access
 
@@ -91,7 +97,6 @@ report a missing or inaccessible integration precisely.
   long task, and repeat steps 3–5 when it fails.
 - When any command fails, read its whole output before retrying: an authentication error means
   signing in again, while a permission or argument error does not.
-- `pass-cli test` checks the connection to the Proton Pass API.
 
 ## Finding Items
 
