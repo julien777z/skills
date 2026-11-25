@@ -406,9 +406,9 @@ step exists to catch.
    the conversation is.
 5. **Ask one question at a time, in the order the run reaches them** — skill by skill, and within a
    skill from its first step to its last — through the question tool, and wait for its answer before
-   asking the next. Each question opens with its place and the sequence's total, such as "Q7/19",
-   beside the page's highlighted node. Each says when the flow runs — what starts it and how often
-   in a task, such as "once per pull request, when its task finishes, and again for each follow-up"
+   asking the next. Each question opens with its place and the sequence's total, as the global rules'
+   **Asking the user** writes it, beside the page's highlighted node. Each says when the flow
+   runs — what starts it and how often in a task, such as "once per pull request, when its task finishes, and again for each follow-up"
    — then what the step does in a sentence: the skill and step, how many subagents, what they read
    and for how many rounds. How often the step runs decides the recommendation, never whether it is
    asked: for a step on every task, pull request or round, a change that saves a modest number of
