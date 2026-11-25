@@ -7,7 +7,7 @@ Contents: **Showing The Plan**, **Follow-Ups**, **Progress Record**.
 
 ## Showing The Plan
 
-- **The user sees a plan once `review-proposal` has accepted it, or, where the running workflow
+- **The user sees a plan once `review-proposal` returns it ready, or, where the running workflow
   states a plan route straight to the Proposal gate, once that gate has, and never before.** A plan
   still being drafted or reviewed stays with the run: nothing the user reads — a report, a summary,
   a status line, a task list, a dashboard or a question — shows its steps, estimates or an outline
@@ -22,7 +22,7 @@ Contents: **Showing The Plan**, **Follow-Ups**, **Progress Record**.
   is a product, scope, security, disclosure or authorization choice that is the user's and that
   they have not answered. A plan holding one sends those decisions first and starts only
   independent authorized work until they are answered. Once they are, or when the plan never held
-  one, the accepted plan goes to the user as a message with no approval question, **Execution**
+  one, the ready plan goes to the user as a message with no approval question, **Execution**
   starts without waiting for a reply, and the user can interrupt at any point.
 - **A plan shown this way is never called approved**: every record, report,
   dashboard and brief says it was shown with no open decision, and when.
@@ -79,7 +79,7 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
 ## Progress Record
 
 - **The ledger holds the plan's current state, so nothing about progress depends on what the chat
-  still remembers.** When an accepted plan goes to the user, record it with `session-ledger` as a
+  still remembers.** When a ready plan goes to the user, record it with `session-ledger` as a
   `plan` entry holding the fields `session-ledger` names for one, its status `shown` with that time,
   filled from the planning work even where the plan shown to the user leaves them out. Work the user
   adds to an active task, with or without a plan of its own, becomes a step on that plan or a plan

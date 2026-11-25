@@ -147,11 +147,13 @@ plan of its own; only an edit that adds nothing skips it.
 2. <step> (~<n> min)
 
 **Total: ~<n> min.** Then <what the user does next, such as review or merge; never a deploy the request does not name>. Interrupt to change any of it.
+
+<**Fixed after the final review:** one line per `last_fixes` item, only when there are any>
 ```
 
 ### Showing The Plan
 
-The user sees a plan only once `review-proposal` has accepted it, and its work starts in the same
+The user sees a plan only once `review-proposal` returns it ready, and its work starts in the same
 turn when no decision is open. [Planning](references/planning.md)'s **Showing The Plan** holds the
 route, read before a plan is shown.
 
