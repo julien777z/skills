@@ -54,8 +54,8 @@ change and a product choice, which reach the user as above, a guidance change re
 only when the agent is unsure whether it does what they meant**, asked through the question tool;
 otherwise its gates run and it merges. A hold the invoking workflow or a rule sets, such as the
 GitHub rule's hold on a pull request that adds a doctor skill, still applies. A guidance edit that
-intentionally changes the product still follows
-`pre-production`'s **Product Choices**. The gate set of the edit's route validates the correction.
+intentionally changes the product still follows `pre-production`'s **Product Choices**. The gate
+set of the edit's route validates the correction.
 When a separate source task is active, or a guidance batch is in flight, preserve its execution and
 follow **Recording During A Task** for the edit's timing.
 
