@@ -138,7 +138,7 @@ with the timing or coverage measure re-taken where the finding concerns one.
 
 ## Reviewers
 
-Reviewers are capped as `doctor-protocol`'s **Launches** sets; this doctor sets no lower cap. The
+Reviewers are capped as `doctor-protocol`'s **Launches** sets. The
 suite family dictates the partition cut: each application, service, and package suite, and each
 cross-boundary group such as end-to-end, migration, script, or front-end, is a partition of its own
 or is split inside itself, never merged with another family. The lens catalog a reviewer is given is

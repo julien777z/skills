@@ -379,7 +379,7 @@ configuration rules own.
 
 ## Reviewers
 
-Reviewers are capped as `doctor-protocol`'s **Launches** sets; this doctor sets no lower cap. The
+Reviewers are capped as `doctor-protocol`'s **Launches** sets. The
 schema, service, or contract owner dictates the partition cut, and each partition reviewer returns
 ledger entries for its declarations.
 

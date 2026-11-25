@@ -171,7 +171,7 @@ reading clean on the second walk, which the parent takes because it needs the ru
 
 ## Reviewers
 
-Reviewers are capped as `doctor-protocol`'s **Launches** sets; this doctor sets no lower cap, and
+Reviewers are capped as `doctor-protocol`'s **Launches** sets, and
 the walkthrough and the decision captures under **Dispositions** are the parent's work. The page dictates the partition cut. A partition is one app area: its page files, the components
 only those pages render, and their captures. A shared UI package is a partition of its own, audited
 with the component-use table rather than captures. Beside the protocol's size bound a partition

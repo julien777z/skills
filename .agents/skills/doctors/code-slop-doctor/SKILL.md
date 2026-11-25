@@ -219,7 +219,7 @@ each caller or importer that moves and what is deleted; its proving check is the
 
 ## Reviewers
 
-Reviewers are capped as `doctor-protocol`'s **Launches** sets; this doctor sets no lower cap. The
+Reviewers are capped as `doctor-protocol`'s **Launches** sets. The
 areas dictate the partition cut: a partition never spans two areas, and inside an area it follows
 the repository's ownership boundaries. The lens catalog a reviewer is given is the lens criteria
 reference together with the **Lenses** table.
