@@ -42,7 +42,8 @@ run `doctor-protocol`, and supplies:
 4. **measures** — one or more counts those commands produce, taken before the audit and after the
    fixes;
 5. **dispositions** in order, declaring the permitted changes and evidence required for exceptions,
-   and the calls its domain raises, which the doctor decides as **Gate And Show The Plan** says;
+   and the calls its domain raises, each named as the run's to decide or reserved to the user, as
+   **Gate And Show The Plan** says;
 6. what its **cross-cutting reviewer compares** and what its **final reviewer challenges**;
 7. **domain dependencies** — the skills whose policy it applies and never restates;
 8. **report additions** — the rows it appends to the skeleton below.
@@ -250,16 +251,22 @@ Otherwise write a decision-complete remediation plan from the ledger.
   directly. Preserve objections and their dispositions through either route.
 - **The doctor decides, and every decision is in the report.** The owner invokes a doctor to have
   its class corrected, and a run that stops for approvals returns a plan where a fix was wanted. So
-  the run decides and makes every change its findings call for, including removing a feature, a
-  product or scope choice a remedy makes, a rewording of correct text and a rewording across the
-  tree; a call its own checks cannot settle goes to `council` in **Ask** mode, and the ruling is
-  followed. Each decision goes in the plan file and the report with its reason.
-  - **Reserved to the user's own words**: a merge, deployment, publication or release, and a
-    security, disclosure or authorization choice, such as who may see a record. Fixing a
-    vulnerability so the product enforces the access it already intends is not one, and the run
-    makes that fix. Ask the reserved entries together through the global rules' question
-    procedure, each as options with each consequence and a recommendation; only the entries that
-    depend on an answer wait for it.
+  the run decides and makes every change its findings call for, including a rewording of correct
+  guidance text and a rewording across the tree, apart from the reserved entries below; a call its
+  own checks cannot settle goes to `council` in **Ask** mode, and the ruling is followed. Each
+  decision goes in the plan file and the report with its reason, and the report says which
+  decisions the run made and which went to the user.
+  - **Reserved to the user's own words**: a merge, deployment, publication or release, a security,
+    disclosure or authorization choice, such as who may see a record, and a product or scope
+    choice a remedy makes, as `pre-production`'s **Product Choices** defines one — removing or
+    hiding content or a feature, a remedy whose visible effect is large, a new surface, and a
+    rewording of correct text already in a product. A rewording of guidance text is not a product
+    choice, and a routine presentation detail stays the run's. Fixing a vulnerability so the
+    product enforces the access it already intends is not one, and the run makes that fix. Ask the
+    reserved entries together through the global rules' question procedure, each as options with
+    each consequence and a recommendation, and for a visible choice with its captures and the old
+    and new text in a message the user sees first; only the entries that depend on an answer wait
+    for it.
   - **A departure from a rule rides the rule change.** Where the run judges a shape a rule
     prescribes or exempts worse than the departure, as `pre-production`'s **Trade-Offs Are
     Surfaced, Never Enforced** asks of a rule, the rule change goes on the run's
@@ -335,10 +342,6 @@ The plan is implemented to its last entry in one continuous run, into the branch
 A finished wave is not a finished plan, and neither is a pushed commit or a green suite; start the
 next wave in the same turn. A genuine gate holds only its dependent work.
 
-Do not add source comments that narrate the change, its previous shape, or why something was added,
-removed, merged, or tightened. Make the result express the current state; tests validate that
-behavior.
-
 ## Run Repository-Native Checks
 
 Once the last group lands, run on the final head, once: the pre-push checks the GitHub rule's
@@ -376,9 +379,9 @@ points.
 
 Validate their findings, fix every confirmed in-scope issue, rerun affected checks, and review
 again only the changed code and the findings still open, with one reviewer, until no confirmed
-issue remains or a genuine external blocker or user decision prevents completion, within the limit
-of 3 review rounds per change that `execute-task`'s review-rounds reference sets; a change that
-fails its third round gets that reference's disposition.
+issue remains or a genuine external blocker or user decision prevents completion, within the
+review-round limit `acceptance-gate`'s **Bounds** sets; a change that has used those rounds gets
+the disposition that limit carries.
 
 ## Accept The Complete Diff
 

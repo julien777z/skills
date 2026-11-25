@@ -1,5 +1,8 @@
 # Doctor Run Records
 
+Contents: **Folder**, **Run And Stage Status**, **Shared Index**, **Manifest**, **Read Receipt**,
+**Finding**, **Ledger Entry**, **Plan**.
+
 The formats of the files a doctor run keeps, which `SKILL.md`'s **Keep The Run Ledger** places and
 its later sections fill. Every file is YAML unless its name says otherwise, and every path in one
 is written from the repository root.
