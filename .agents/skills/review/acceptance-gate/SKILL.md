@@ -236,6 +236,9 @@ For a repair, inspect the governing code or schema even if the diff leaves it un
 what caused the problem and where the repaired design now enforces the intended behavior. Flag a
 consumer-side fix when an owned design still admits the invalid state or forces the special case.
 Passing checks verify the behavior they exercise and do not establish that the design was fixed.
+Flag paths that exist only to bridge an owned cutover under `pre-production`'s **Product State**.
+Trace the case to a real writer and the target contract before treating a rollout sequence or
+synthetic migration fixture as proof that runtime code needs it.
 A verdict with none says `no workaround added` in those words.
 
 For a diff question, also apply the `code-simplify` rubric’s **Trace Changed Flows** to the supplied

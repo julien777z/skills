@@ -336,9 +336,10 @@ rename is the contract break `banned-terminology` describes.
 
 ## Tolerated Past
 
-Code that tolerates a past the repository no longer has, or silences what would report it. Trace
-each finding to the contract, producer, caller or check that proves the tolerated past is gone;
-without that proof it is not a finding.
+Code that tolerates a state outside the supported target contract, or silences what would report
+it. Trace each finding to the contract, producer, caller, check or release procedure that
+establishes whether the state belongs in that contract. An owned state reachable only during
+cutover remains a finding while the older writer still exists.
 
 - **Default over contract** — every `or` with a literal, nullish fallback, lookup with a default,
   attribute read with a default or probe on the repository's own type, optional chain on a value
@@ -349,6 +350,11 @@ without that proof it is not a finding.
   every configuration field selecting a former behavior; every backend selected by environment;
   every wire message with two fields for one concept and every reserved or deprecated wire field:
   the producers and readers on both sides, and whether any still reaches the old side.
+- **Runtime cutover behavior** — checks for which owned version is deployed, runtime repair of a
+  partly migrated shape, or branches reachable only while a release is changing the contract.
+  Trace each to the rollout or migration that owns it. Remove the runtime path and any tests that
+  exist solely to exercise it, as `pre-production`'s **Product State** requires. Keep versioned
+  conversion of retained data and recovery reachable in ordinary operation.
 - **Silent tolerance** — every catch that returns a default, passes or logs and continues; the
   pre-pass's suppression list, every suppression comment and type-ignore read against the
   measurement with it removed, and every escape hatch that does a suppression's job, an annotation

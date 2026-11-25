@@ -40,8 +40,11 @@ change writes:
   a hypothetical production concern alone supplies none. Do not invent a cutoff or reduce the
   requested outcome on that basis; carry out the authorized work and verify it. Preserve limits
   required by an established contract, and handle measured failures under **Encountered Issues**.
-- Migrate affected users and retained data onto the target contract before removing the old one.
-  Release state changes the migration work; it does not by itself justify a legacy runtime path.
+- Keep owned cutover sequencing in the release procedure and move retained data onto the target
+  contract in versioned migrations. Build one runtime contract. Do not add behavior for mixed
+  owned versions, half-applied transitions, or an in-flight state the work has established is
+  absent. A retry or recovery the target product needs during ordinary operation is part of
+  that product's contract.
 
 ## Encountered Issues
 
