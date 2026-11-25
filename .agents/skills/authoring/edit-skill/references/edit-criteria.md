@@ -16,9 +16,8 @@ Reviewed Batches**, **Relocations**, **Resuming A Batch**.
   step that produced the rejected recommendation, triage, brief or action: what instruction and
   review evidence it used, what next action those required, and how its chosen action differed.
   Repair that decision step at its owner rather than restating the substantive rule or ending
-  with a noncompliance report. Remove conflicting permissions and test other routes in the same
-  failure class, and none outside it, then replay the original decision under the repair before
-  closing the issue.
+  with a noncompliance report. Remove conflicting permissions, check other routes for the same
+  failure, and replay the original decision under the repair before closing the issue.
   Record missing historical evidence without inventing a cause; it does not prevent repairing
   the observed decision path. When the owning skill was not invoked, harden its frontmatter
   description first; body text cannot control a run that never loads the skill.
@@ -29,6 +28,9 @@ Reviewed Batches**, **Relocations**, **Resuming A Batch**.
   authorized repair. Do not mechanically apply a requested wording change or add a general
   reminder beside a stop rule it cannot override. The original scenario must demonstrate that
   the causal correction changes the reader's next action.
+- When several reported problems come from the same decision, correct that decision once at its
+  owner. Remove incident-specific rules that only restate the repair. Keep local details that
+  still govern a distinct contract or operation.
 
 ## Scope Statement
 
@@ -59,6 +61,11 @@ The statement is written before the edit, in the shape `SKILL.md`'s
   item under *Also changes*, and every behavior change under *Inherited*, whether the user,
   reading only their own words, would expect it. An item that fails leaves the draft, moves to
   *Beyond what you said* and takes the policy-change route, while the rest proceeds.
+- **Transfer evidence.** For a correction to a recurring failure class, run edited guidance on
+  a task with a different surface and vocabulary that still reaches the same decision. Also
+  exercise the closest legitimate case outside the class. Renaming the original example can
+  replay the incident but cannot demonstrate transfer. Keep the observed outcomes with the
+  guidance review.
 - **Finding what inherits is a search the editing agent makes itself.** List the readers of each
   changed skill, rule and section as `skill-pass`'s **Source Check** says, then search the rules
   and skills by the subject of the changed decision for a reader that makes that decision without

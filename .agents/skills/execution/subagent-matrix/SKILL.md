@@ -56,7 +56,10 @@ agent; the calling agent launches the actual assignment with the selected model.
    refusal, the repair attempted, and any relaunch receipt. If the failure remains operational or the repair
    cannot be made, use the launch fallback and retain that classification. Model substitution requires an
    explicit receipt that the exact model is unsupported or, where step 4 allows it, denied.
-   **A rate limit or quota refusal moves the assignment to the other harness's matching model**: a
+   When the user or calling skill requires a provider or exact model, rerun within that
+   requirement when capacity returns.
+   **For assignments with no provider or exact-model requirement, a capacity refusal moves the
+   assignment to the matching model on the other harness**: a
    Codex model's refusal relaunches the same assignment, with the same brief and reasoning effort, on the
    Claude family at the same capability level in **model capabilities**, and a Claude model's refusal on the
    Codex family, because the refusal is one provider's capacity and the other's model at that level does the
@@ -65,7 +68,7 @@ agent; the calling agent launches the actual assignment with the selected model.
    into the coordinator's own process, and it never holds work. Resolve the matching model through steps 2
    and 3, and record the original refusal beside the relaunch. In a comparison pair, relaunch both sides on
    the matching model so the pair keeps one model. When that model also refuses for capacity, or the host
-   cannot launch the other harness's models, or the user's explicit constraint names the refused model,
+   cannot launch the other harness's models,
    relaunch on whichever permitted model the request path shows cleared first: the coordinator answering on that model, or a relaunch being accepted, shows it has cleared, and
    only a refused relaunch shows it still holds. The accepted worker
    performs the assignment; never launch a throwaway availability probe. Record the runtime identifier only
@@ -85,8 +88,8 @@ agent; the calling agent launches the actual assignment with the selected model.
    select specialist as a fallback.
 
    For ordinary assignments, when a requested capability level or model is explicitly unsupported, apply a fallback only when the
-   calling skill declares its direction and limits and it respects the user's explicit model or capability
-   constraint. **A permitted fallback steps down as little as it can**, in this order, launching the actual
+   calling skill declares its direction and limits and the candidate meets any provider, exact model,
+   or tier requirement set by the user or calling skill. **A permitted fallback steps down as little as it can**, in this order, launching the actual
    assignment at each step and moving on only on an explicit unsupported receipt:
    1. earlier versions of the same family, newest first, resolved through the host or official provider discovery in step 2;
    2. the other provider's family at the requested level;
@@ -156,14 +159,12 @@ context and returns its verdict into the step waiting on it; nothing else does b
   rule roots pointed at a scratch root, and hands back its complete original output as the
   result-retention bullet below requires.
 - **Launch fallback: a worker that cannot launch a subagent its step needs hands the step up; never
-  absorb it.** Attempt the native dispatch when available. This covers a host that gives the worker
-  no agent tool and a native dispatch that fails other than by a capacity refusal, which step 3 relaunches on the other harness's matching model, for reviewers, lenses, validators, gates and
-  further implementation workers alike. The worker writes the complete assignment — the inputs, the
-  question, the reading list, the output shape, the originally requested tier, its fallback policy,
-  and launch receipts — to a file, asks the agent that delegated to it to
-  run that file as a subagent at the chosen capability level, and waits for the verdict before going
-  past the step; that agent launches the workers the step calls for, so each runs with its own
-  context. Work the step splits among several workers is never carried by one of them alone, which
+  absorb it.** Attempt the native dispatch when available. Use Workflow step 3 for capacity
+  refusals. If no agent tool is available or another dispatch failure persists, hand the
+  complete assignment to the delegating agent. Include the inputs, question, reading list,
+  output shape, requested tier, provider or model requirements, fallback policy, and launch
+  receipts. Wait for the verdict. The delegating agent will
+  launch the workers the step calls for, so each runs with its own context. Work the step splits among several workers is never carried by one of them alone, which
   cannot do it thoroughly. A worker whose only channel to that agent is its final message
   asks by returning: it ends its turn with the file path and the request, and resumes when the
   verdict comes back. The delegating agent runs it and returns the verdict unedited; when the
@@ -254,9 +255,9 @@ context and returns its verdict into the step waiting on it; nothing else does b
 
 ## Launch Failure Reporting
 
-When a required direct subagent dispatch cannot start, preserve its exact attempted dispatch,
-record it, and apply the launch fallback in **Dispatch**; a capacity refusal is recorded and relaunched on the other harness's matching model as Workflow step 3 says, never sent to that fallback. Do not turn a tool inventory from a nested bridge or an unrelated agent tool
-into evidence about the native launcher's availability.
+When a required direct subagent dispatch cannot start, preserve its exact attempted dispatch.
+Handle capacity refusals under Workflow step 3 and other launch failures under **Dispatch**.
+Use the native launcher's availability to judge whether it could start the assignment.
 
 - Attempt the selected native dispatch once whenever its direct tool is exposed. Never claim an
   attempted invocation when the tool was not exposed.

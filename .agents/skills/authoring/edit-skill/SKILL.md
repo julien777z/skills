@@ -385,10 +385,12 @@ small it looks.** Each route below is the gate set its batch passes on the head 
       from the `council` decision that replaces another repair once 3 review rounds have failed the
       change; acceptance, or that recorded round-limit decision, must cover the final wording before delivery.
    5. **Run one `test-skill` round** over the batch, started and concluded as **Guidance Delivery**
-      says for its route. Give it every entry's reproduction scenario and observed miss, grouping
-      entries that share a failure class, and each Scope Statement's Stays as it is line as the
-      case its scenario must leave unchanged. `test-skill` owns the scenario writing, coverage,
-      package, control, grading, and rerun procedure.
+      says for its route. Give it every entry's reproduction scenario, observed miss, and
+      Scope Statement's Stays as it is case, grouping entries that share a failure class.
+      A correction for a class of recurring failures also exercises a different task that
+      reaches the same decision, as the [edit criteria](references/edit-criteria.md)'s
+      **Scope Statement** describes. `test-skill` owns scenario writing, coverage, packaging,
+      controls, grading, and reruns.
       Record an entry whose run `test-skill` does not require as `not run: <test-skill reason>`;
       the gate of its batch's route is its check.
 

@@ -1,6 +1,6 @@
 ---
 name: council
-description: Put a question, a review or a disputed finding to three strong models, from more than one provider, and return what each thinks; or review work with them in rounds, fixing what they find, until they agree. Use when the user says "council" or "use council", asks what several models think of something, or as a step that needs several models' independent read.
+description: Put a question, a review or a disputed finding to three independent reviewers and return what each thinks; or review work with them in rounds, fixing what they find, until they agree. Use when the user says "council" or "use council", asks what several models think of something, or as a step that needs several models' independent read.
 short_description: 'Ask three strong models what they think, or review with them in rounds until they agree.'
 ---
 
@@ -26,18 +26,19 @@ short_description: 'Ask three strong models what they think, or review with them
 
 ## Members
 
-Use the members the user's instructions name. Otherwise take the three seats the `subagent-matrix`
-skill's model capabilities reference lists under **Review panel**, each at its latest version on
-the host and at high effort, and resolve each launch through that skill. Start the three in
-parallel, read-only, each starting no subagents of its own.
+Use the members the user names. For an unnamed panel on a provider required by the calling
+skill, dispatch three independent reviewers at the advanced tier on that provider. When
+neither the user nor the calling skill sets the selection, use the three seats listed under
+**Review panel** in the `subagent-matrix` model capabilities reference. Resolve each launch
+through that skill at high effort. Start the three in parallel, read-only, with no subagents
+of their own.
 
-- **A seat whose family is unavailable**, as `subagent-matrix` establishes it, is filled through
-  that skill's fallback order down to the `standard` capability level and no lower, because a
-  member below it adds a vote without adding a strong independent read. When no candidate at
-  `standard` or above launches, the council runs with the two members it has, and the result names
-  the empty seat and says the ruling came from two members. Two members who agree decide; a
-  split takes the option the asker lists first, as a three-way split does. A named member who is
-  unavailable is reported, never replaced silently.
+- **Missing members.** Resolve an unavailable default seat through `subagent-matrix` down to
+  the `standard` tier. Report a missing named or caller-constrained member and use only launches
+  that meet the original requirement. With two members available, name the empty seat and report
+  that the ruling came from two members. Two who agree decide. On a split, use the option the
+  asker lists first, as for a three-way split. With fewer than two available, report the panel as
+  incomplete and return no ruling. Distinguish members by seat when model names repeat.
 - **Brief:** a brief the invocation supplies is sent as it stands to every member. Otherwise give
   each the question or request, the intent, the material (a diff, files, a plan), and any check
   results. A review asks for findings, each with a file and line, rated `blocker` (the intended case

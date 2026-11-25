@@ -53,6 +53,12 @@ alias, package move, permission grant or test fixture repeating the implementati
 does not prove ownership or isolation. Missing evidence holds a clean verdict; it does not turn
 the implementation into the specification.
 
+Apply `pre-production`'s **Target Contract** to the resolved values themselves. Flag fabricated
+ownership or scope even when callers agree, tests pass, or an older path already used it.
+Trace affected reads and writes to the boundary that enforces their scope. At each distinct
+boundary, verify that the eligible scope can act and that missing required scope and unrelated
+scope cannot access or change the scoped data. Cite the evidence in the verdict.
+
 For every changed or newly resolved dependency, provider, generated contract, shared package, or
 other boundary owner, complete the dependency-authority receipt in `references/rubric.md` before a
 clean verdict. First reconcile a mismatch between the declared and loaded source: a workflow, cache,
@@ -226,6 +232,13 @@ room, moving a failing path behind a control, a flag, a fallback or a retry, cat
 an error, special-casing the one reported value, or loosening a check until it passes. Each is a
 flag whose remedy is fixing the cause, whatever the change calls itself and however small; a
 workaround the user's words in the intent statement explicitly ask for is the only one that stands.
+For a repair, inspect the governing code or schema even if the diff leaves it untouched. State
+what caused the problem and where the repaired design now enforces the intended behavior. Flag a
+consumer-side fix when an owned design still admits the invalid state or forces the special case.
+Passing checks verify the behavior they exercise and do not establish that the design was fixed.
+Flag unsupported paths that exist only to bridge an owned cutover under `pre-production`'s **Product State**.
+Trace the case to a real writer and the target contract before treating a rollout sequence or
+synthetic migration fixture as proof that runtime code needs it.
 A verdict with none says `no workaround added` in those words.
 
 For a diff question, also apply the `code-simplify` rubric’s **Trace Changed Flows** to the supplied
