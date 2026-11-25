@@ -335,7 +335,8 @@ out-of-scope or council-dropped answer with its evidence, go together to one fre
 Diff question, following `subagent-matrix`'s **Dispatch**; it answers each flag separately, and
 only its acceptance closes a flag. That gate is one of the change's re-reviews under the limit of 3
 review rounds per change, and one of the repair rounds below for each flag it reads a repair of. The exceptions are a style flag and a flag naming only missing evidence, each
-closed as its paragraph below says, and the decision `council` makes once 3 review rounds have failed the change, which settles its flags as it rules.
+closed as its paragraph below says, the decision `council` makes once 3 review rounds have failed the change, which settles its flags as it rules,
+and a proposal whose calling workflow states the final ruling its repairs get.
 
 **Each flag carries its severity, `defect` or `style`.** A style flag concerns only the form of
 lines whose behavior, structure and contract stand: a docstring's or comment's length, a missing

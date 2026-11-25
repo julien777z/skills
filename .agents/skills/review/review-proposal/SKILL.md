@@ -84,11 +84,12 @@ Follow the dependency's fallback procedure without inventing a compliant launch 
    review round: after the council, from the same members, resumed by the route council's
    **Harness Compatibility** names, a member who has ended replaced as its **Members** says; after
    an acceptance-gate verdict, from `council` in **Ask** mode with the packet step 4 describes;
-   either way accepted only when all three accept. A flag that final ruling raises is fixed, and
-   the proposal returns ready with those fixes in `last_fixes`. Renaming or caller re-entry cannot
-   erase objections or start the review again. Missing or lost output follows subagent-matrix
-   recovery without redoing valid attacker evidence. Return the result to the caller. Do not
-   present the proposal or request approval here, or recursively review the gate itself.
+   either way accepted only when all three accept. A flag that final ruling raises is admitted and
+   fixed the same way, and the proposal returns ready with those fixes in `last_fixes`. Renaming or
+   caller re-entry cannot erase objections or start the same proposal's review again. Missing or
+   lost output follows subagent-matrix recovery without redoing valid attacker evidence. Return the
+   result to the caller. Do not present the proposal or request approval here, or recursively review
+   the gate itself.
 
 Reuse a ready receipt only for its exact proposal, reviewed inputs and affected-owner map. A changed
 item invalidates that acceptance receipt even when earlier attack evidence can be carried forward.
