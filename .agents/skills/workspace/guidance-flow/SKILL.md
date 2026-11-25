@@ -1,6 +1,6 @@
 ---
 name: guidance-flow
-description: "Show how the guidance runs — the skills and the rules they read — as a dashboard: one page per category of skills, taken from the skills repository or chosen by kind of work when it has none, each a diagram of which skill invokes, spawns or borrows from which and which rules it reads, where subagents start and how many, and a page of every rule with how it loads and which skills read it, read from the current canonical guidance; or interrogate a skill or a whole flow, asking the user about each substantial step with a recommendation for using fewer subagents to better effect, and applying what they agree; or compare the current flows with a proposed set of skills and rules. Use when asked how skills or rules run, what calls what, which rules a skill reads or which skills read a rule, where subagents spawn, for the flow of one skill or category, to review, tune or interrogate skill flows, or how a change to the skills or rules compares with what runs now. It never runs the workflows it shows."
+description: "Show how the guidance runs — which skill invokes, spawns or borrows from which, which rules each reads, and where subagents start — as a dashboard with one page per category of skills and a page of every rule; or interrogate a skill or a whole flow, asking the user about each substantial step with a recommendation for using fewer subagents to better effect, and applying what they agree; or compare the current flows with a proposed set of skills and rules. Use when asked how skills or rules run, what calls what, which rules a skill reads or which skills read a rule, where subagents spawn, for the flow of one skill or category, to review, tune or interrogate skill flows, or how a change to the skills or rules compares with what runs now. It never runs the workflows it shows."
 short_description: 'Show how the skills and rules run, or interrogate a flow to tune it.'
 ---
 
@@ -112,28 +112,30 @@ pages it reaches. Pages follow the categories as the sources stand when they are
    facts, the rule citations and the `SKILL.md` lines that state them. Merging their maps, checking the claims and
    building the spec stay with the agent running this skill.
 3. **Map it.** For each page, record the order, the choices, the parallel streams, the repair and
-   rerun loops, and which skill owns each step. Keep four kinds of connection apart: one skill
-   invoking another, one launching subagents, one borrowing another's criteria, and one reading a
-   rule, recorded as `reads`. Invoking a skill, borrowing its rubric or reading a rule starts no
-   extra agent. For each rule, record how it loads, its sections, and the skills that cite it with
-   the section each cites; a rule no skill cites is still recorded, with how it loads. Record each subagent launch with its owner, role,
-   capability, whether it always or only sometimes runs, how many run per round, and whether it
-   recurs. A count that depends on the work is recorded as what it grows with, such as "1 per
-   area touched" or "1 per finding", with the most the skill allows when it sets one, such as
-   "1 per area, 3–6". A total shows the usual figure and what adds more, such as "~6, more per
-   finding", never the most or a sum of every worst case, and a count with no limit is recorded as a
-   "No limit set" gap. A launch always runs
-   when it runs on every run of the step that starts it. When one skill
-   runs another's phases, the launch belongs to the skill whose run starts it. These are structural
-   counts, never measured time or cost. For each skill on a page, also record its own run in
-   order: each step it takes, the subagents that step launches with how many and what they do, and
-   its review rounds — whether it has any, how many it allows, what ends them, and what a later
-   round reruns. Record every other loop the same way: a repair loop that fixes and checks again, a
-   wait that polls until something finishes, and a retry, each with its cap, what ends it, what a
-   repeat reruns, and the loop it runs inside, if any. For every launch, also record the scope each
-   subagent reads: the change's diff,
-   only what changed since the last review, the whole files it touches, related files such as
-   callers and siblings, one area of the repository, or the whole repository.
+   rerun loops, and which skill owns each step.
+   - **Connections.** Keep four kinds apart: one skill invoking another, one launching subagents,
+     one borrowing another's criteria, and one reading a rule, recorded as `reads`. Invoking a
+     skill, borrowing its rubric or reading a rule starts no extra agent.
+   - **Rules.** For each rule, record how it loads, its sections, and the skills that cite it with
+     the section each cites; a rule no skill cites is still recorded, with how it loads.
+   - **Launches.** Record each subagent launch with its owner, role, capability, whether it always
+     or only sometimes runs, how many run per round, and whether it recurs. A launch always runs
+     when it runs on every run of the step that starts it. When one skill runs another's phases,
+     the launch belongs to the skill whose run starts it. For every launch, also record the scope
+     each subagent reads: the change's diff, only what changed since the last review, the whole
+     files it touches, related files such as callers and siblings, one area of the repository, or
+     the whole repository.
+   - **Counts.** A count that depends on the work is recorded as what it grows with, such as "1
+     per area touched" or "1 per finding", with the most the skill allows when it sets one, such
+     as "1 per area, 3–6". A total shows the usual figure and what adds more, such as "~6, more
+     per finding", never the most or a sum of every worst case, and a count with no limit is
+     recorded as a "No limit set" gap. These are structural counts, never measured time or cost.
+   - **A skill's own run.** For each skill on a page, record its run in order: each step it takes,
+     the subagents that step launches with how many and what they do, and its review rounds —
+     whether it has any, how many it allows, what ends them, and what a later round reruns. Record
+     every other loop the same way: a repair loop that fixes and checks again, a wait that polls
+     until something finishes, and a retry, each with its cap, what ends it, what a repeat reruns,
+     and the loop it runs inside, if any.
 4. **Recheck the sources** before building. When a file the map cites changed while you read, map it
    again; never show a mix of two snapshots as current. A change to a file the map does not cite
    leaves it standing, and links stay on the commit read. A source that is missing or still
@@ -401,9 +403,9 @@ step exists to catch.
    is an outline with `stacked` set and `collapsible` false whose groups are "What it does" (when
    the flow runs and what the step does now), "Proposed changes" (each choice, with what it saves
    and what it could miss), "Recommended" (the choice and why) and, once answered, "Decision" (the
-   choice taken and what changes, never a quote of the user's reply). Publish the page before each question, with that question's
-   node `warning`, and again after its answer, with the node `done`, so the page always shows where
-   the conversation is.
+   choice taken and what changes, never a quote of the user's reply). Publish the page before the first question, with that question's
+   node `warning`, and again after each answer, with the answered node `done` and the next question's
+   node `warning`, so the page always shows where the conversation is.
 5. **Ask one question at a time, in the order the run reaches them** — skill by skill, and within a
    skill from its first step to its last — through the question tool, and wait for its answer before
    asking the next. Each question opens with its place and the sequence's total, such as "Q7/19",
@@ -433,5 +435,6 @@ step exists to catch.
 - Never invoke or dispatch a workflow the dashboard shows, apart from the read-only readers step 2
   launches under `subagent-matrix`; reading the sources, skill and rule files alike, is the whole
   job of Show, and of Interrogate until the user answers.
-- Show draws the current flow only. A proposed change, or a recommendation, appears only when the
-  request asks for it, as an outline beside the flow, never drawn into it.
+- Show draws the current flow only. A recommendation or proposed change reaches a Show dashboard
+  only when the request asks for it, as an outline beside the flow, never drawn into the diagram;
+  **Proposed Flow** marks its changes in its own diagram.
