@@ -12,7 +12,7 @@ once over a pull request's complete diff, before its merge, and otherwise only f
 below that a caller cannot settle alone. A plan step or worker task is gated only when later steps
 build on it; every other step, and every fix to a review finding, gets its author's own checks,
 while a gate's flag is closed only by a fresh gate under **Bounds**, apart from a proposal whose
-calling workflow states the final ruling its repairs get.
+calling workflow states how its repairs are judged.
 `references/rubric.md` holds what it judges by; this file holds how it is run.
 
 ## Dependencies
@@ -336,7 +336,7 @@ Diff question, following `subagent-matrix`'s **Dispatch**; it answers each flag 
 only its acceptance closes a flag. That gate is one of the change's re-reviews under the limit of 3
 review rounds per change, and one of the repair rounds below for each flag it reads a repair of. The exceptions are a style flag and a flag naming only missing evidence, each
 closed as its paragraph below says, the decision `council` makes once 3 review rounds have failed the change, which settles its flags as it rules,
-and a proposal whose calling workflow states the final ruling its repairs get.
+and a proposal whose calling workflow states how its repairs are judged.
 
 **Each flag carries its severity, `defect` or `style`.** A style flag concerns only the form of
 lines whose behavior, structure and contract stand: a docstring's or comment's length, a missing
