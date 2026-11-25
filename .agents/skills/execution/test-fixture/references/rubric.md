@@ -667,10 +667,11 @@ credentials** — such as a model provider, a paid API, or an identity or paymen
 double built from that provider's documented request and response structures, such as its API
 reference and SDK types, at the seam **Choose Test Doubles** names, never a live call with real
 credentials. New live cases, in a new suite or an existing one, are written only when the user asks
-for them; an existing live test the change breaks or alters is updated in place. A suite the
-repository already runs across that boundary runs as written, with the credentials where the
-repository configures them, under **A Missing Credential Leaves The Test Alone**. A plan, review or
-gate that asks for a live call is answered with this section.
+for them; an existing live test whose covered behavior the change breaks or alters is updated to
+match that behavior, adding no further live call. The one exception is a suite the repository
+already runs across that boundary: it runs as written, with the credentials where the repository
+configures them, under **A Missing Credential Leaves The Test Alone**. A plan, review or gate that
+asks for a live call is answered with this section.
 
 ## A Missing Credential Leaves The Test Alone
 
