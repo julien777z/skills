@@ -1,6 +1,6 @@
 ---
 name: research-games
-description: Research Roblox charts for the requested audience and region. Study 25 games by default, in passive mode (pages and popular gameplay videos) or play mode (also a short real session for games whose onboarding no video shows), asking which when the request names neither; or propose three ranked original game ideas from the latest study, shown as a dashboard and, once one is approved, written as a game brief file for building it. Reuse recent records of games studied before, delegate two games per researcher, collect YAML notes on gameplay, UI and onboarding, and wait for all researchers before keeping the records and routing supported themes into the Roblox skills that own them. Run only when the user asks for it.
+description: Research Roblox charts for the requested audience and region. Study 25 games by default, in passive mode (pages and popular gameplay videos) or play mode (also a short real session for games whose onboarding no video shows), asking which when the request names neither, reusing recent records of games studied before, keeping the new study records and routing supported themes into the Roblox skills that own them; or propose three ranked original game ideas from the latest study, shown as a dashboard and, once one is approved, written as a game brief file for building it. Run only when the user asks for it.
 short_description: 'Research Roblox charts for the requested audience and region.'
 ---
 
@@ -14,11 +14,6 @@ short_description: 'Research Roblox charts for the requested audience and region
 - `play-roblox-protocol`
 - `edit-skill`
 - `skill-pass`
-- `roblox-gameplay`
-- `roblox-ui`
-- `roblox-worldbuilding`
-- `roblox-characters`
-- `storyline`
 - `interactive-skill`
 - `review-proposal`
 - `use-dashboard`
@@ -97,13 +92,19 @@ Each researcher studies its games' experience pages and popular gameplay videos 
 
 ## Play mode
 
-Use this only when the user explicitly chooses play mode. Video evidence comes first, and real play only fills the one gap footage leaves: a new player's first minutes. After the video pass, list the games whose `onboarding_video_coverage` is `not_covered` and put that list to the user through the question tool before playing any of them, then assign each approved game as a play turn. Play each approved game under `play-roblox-protocol`, supplying the game, an objective of completing its onboarding as a new player would, and a stopping rule of onboarding's end or **at most five minutes of active play**, whichever comes first; this skill keeps its own play-turn delegation, and its only secondary goal is what onboarding itself hands out, with no detour for any other; its game record under **Output: structured YAML notes** takes the place of the protocol's playbook and report; and each turn spends no currency and opens no offer, as the [observations reference](references/observations.md) says, the narrower limit the protocol's spending line yields to. Record the actual elapsed time and what ended play. Start from the available account state and disclose whether it is a fresh or returning profile. Play runs in the VM of the game `research-games`: set `ROBLOX_STUDIO_GAME=research-games`, and its VM is created as any game's is when it has none. Run each turn as the [play mode reference](references/play-mode.md) says.
+Use this only when the user explicitly chooses play mode. Video evidence comes first, and real play only fills the one gap footage leaves: a new player's first minutes.
+
+- **Which games.** After the video pass, list the games whose `onboarding_video_coverage` is `not_covered` and put that list to the user through the question tool before playing any of them, then assign each approved game as a play turn.
+- **Protocol.** Play each approved game under `play-roblox-protocol`, supplying the game, an objective of completing its onboarding as a new player would, and a stopping rule of onboarding's end or **at most five minutes of active play**, whichever comes first. This skill keeps its own play-turn delegation, and its game record under **Output: structured YAML notes** takes the place of the protocol's playbook and report.
+- **Limits.** Its only secondary goal is what onboarding itself hands out, with no detour for any other, and each turn spends no currency and opens no offer, as the [observations reference](references/observations.md) says, the narrower limit the protocol's spending line yields to.
+- **Record.** The actual elapsed time and what ended play. Start from the available account state and disclose whether it is a fresh or returning profile.
+- **Where.** Play runs in the VM of the game `research-games`: set `ROBLOX_STUDIO_GAME=research-games`, and its VM is created as any game's is when it has none. Run each turn as the [play mode reference](references/play-mode.md) says.
 
 ## Main-agent synthesis
 
 After all assignments have returned, validate/deduplicate the records against the selected chart entries. Compare notes and identify supported common patterns, genre-specific exceptions, and tradeoffs. Use the number of this study's games with relevant evidence, reused records included, as each pattern's denominator; unknown UI/onboarding records are not evidence against a pattern. Popularity is correlation, not proof of causation or a measurement of dopamine. Translate observations into practical design guidance; avoid copying distinctive art, names, layouts, or mechanics wholesale.
 
-Route every supported theme to the skill that owns its subject, found by its description: gameplay systems, progression and onboarding to `roblox-gameplay`, UI conventions to `roblox-ui`, narrative, characters' roles and quest content to `storyline`, how characters look, move and present to `roblox-characters`, and maps and world presentation to `roblox-worldbuilding`. A theme that recurs across games and that no skill owns gets a new skill. A theme that holds for one genre only goes to the owning skill's `references/genres/<genre>.md`, listed in that skill's genre router, which the first genre file creates, as `skill-pass`'s **Routers** says; a theme that holds across genres goes in the skill's own text. Change a skill where its current text is silent on a theme or contradicted by it, keep each rule in one skill, and replace a conclusion when later observations contradict it rather than accumulating a catalog of trendy features. Keep only lasting, transferable themes in skills; dated ranks, per-game notes and sources stay in the study records. Preserve the user's scope and the game's identity, and never turn research suggestions into new gameplay features.
+Route every supported theme to the skill whose description covers its subject; a theme that recurs across games and that no skill owns goes through `edit-skill`'s owner search: the nearest skill's description is widened to name it, and a new skill is added only when no existing skill's subject can hold it. A theme that holds for one genre only goes to the owning skill's `references/genres/<genre>.md`, listed in that skill's genre router, which the first genre file creates, as `skill-pass`'s **Routers** says; a theme that holds across genres goes in the skill's own text. Change a skill where its current text is silent on a theme or contradicted by it, keep each rule in one skill, and replace a conclusion when later observations contradict it rather than accumulating a catalog of trendy features. Keep only lasting, transferable themes in skills; dated ranks, per-game notes and sources stay in the study records. Preserve the user's scope and the game's identity, and never turn research suggestions into new gameplay features.
 
 Invoke `edit-skill` once to deliver the study records and every skill change together as one guidance pull request.
 
@@ -123,7 +124,7 @@ The run ends once the dashboard is delivered: it asks no approval question and w
 
 ## Output: structured YAML notes
 
-Each researcher returns this structure for its assigned games. The orchestrator combines the game records and fills in the final synthesis only after all researchers finish. Use valid YAML, quote IDs as strings, use `null` for unknown values, and keep evidence separate from inference. The orchestrator writes each game record and the study file as **Study records** says, sends the study file as `share-media`'s **A file the user should see reaches them where they read** bullet requires, and summarizes its findings in chat.
+Each researcher returns this structure for its assigned games. The orchestrator combines the game records and fills in the final synthesis. Use valid YAML, quote IDs as strings, use `null` for unknown values, and keep evidence separate from inference. The orchestrator writes each game record and the study file as **Study records** says, sends the study file as `share-media`'s **A file the user should see reaches them where they read** bullet requires, and summarizes its findings in chat.
 
 ```yaml
 study:
