@@ -41,7 +41,6 @@ Read the whole brief before planning. Its product facts are the approved scope: 
 `accessibility` as requirements, and apply the gameplay, interface and world guidance the
 skill's dependencies hold to each part. `scope.later` and `scope.excluded` are not built.
 Every implementation choice is the builder's. An `open_questions` entry goes to the user only
-when it concerns the core loop or genre, what players pay for, security, disclosure or
-authorization; every other entry, and every product fact the first release needs that the brief
-leaves unstated, is decided as `roblox-gameplay`'s **Judge the game as a player meets it**
-section says.
+when the global rules' game-design bullet leaves it with them; every other entry, and every
+product fact the first release needs that the brief leaves unstated, is decided as
+`roblox-gameplay`'s **Judge the game as a player meets it** section says.
