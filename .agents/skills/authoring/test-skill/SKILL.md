@@ -1,6 +1,6 @@
 ---
 name: test-skill
-description: "Validate behavior-changing skill, rule, and agent edits before merge through realistic tasks with edited guidance and risk-based original controls. Choose isolated environments for actions, retain observed results, and repair guidance or defective tests until the required behavior is verified."
+description: "Validate behavior-changing skill, rule and agent edits before merge by having agents do the work the edited guidance governs, against risk-based original controls, repairing guidance or defective tests until the required behavior is verified. Use when a guidance edit changes what a reader does, or when asked to test or exercise a skill."
 short_description: 'Exercise guidance safely, compare behavior, and repair failing tests.'
 ---
 
@@ -13,7 +13,6 @@ confuse those conclusions.
 
 ## Dependencies
 - `subagent-matrix`
-- `code-simplify`
 - `session-ledger`
 - `council`
 
@@ -72,8 +71,6 @@ confuse those conclusions.
   shows what the skill adds over the model alone.
 
 ## Workflow
-
-Run after `code-simplify` completes its pass.
 
 1. **Have someone other than the edit's author define the behavior.** Record the observed miss, the
    outcome the user requires and the real case the miss came from. One fresh scenario writer,
@@ -169,8 +166,8 @@ Run after `code-simplify` completes its pass.
    where authorized; keep coupled instructions and their required repairs together. This assessment
    recommends which changes should merge and decides no merge itself. A passing skill test alone
    never decides that a pull request should merge.
-7. **Repair and rerun until verified**, within the global rules' limit of 3 review rounds per
-   change, whose disposition goes to `council` in **Ask** mode. Diagnose each reported issue at its owner. Fix guidance that permits the wrong behavior;
+7. **Repair and rerun until verified**, within the review-round limit `acceptance-gate`'s
+   **Bounds** sets, whose disposition goes to `council` in **Ask** mode. Diagnose each reported issue at its owner. Fix guidance that permits the wrong behavior;
    fix an invalid fixture, unavailable simulated operation, wrong reading list, ambiguous criterion
    or broken runner before judging guidance. Retain the diagnosis and earlier results. Recover
    missing evidence from the actual run or rerun the affected task; never reconstruct a result from
@@ -320,7 +317,6 @@ in the same evidence file; per-scenario conclusions do not replace that decision
 ## Guardrails
 
 - Readers never see the expected answer, the criteria, or one another's reports.
-- Follow the shared capability selection. Run or omit a control only as **When It Runs** says.
 - Never edit any file under test between launching its required readers and grading them.
 - Keep the scenario and raw evidence while the branch is open; reuse valid inputs in later rounds.
 - Never merge with a failing run or stand with a miss, short of the `council` ruling **Repair and
