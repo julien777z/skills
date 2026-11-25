@@ -108,7 +108,7 @@ The statement is written before the edit, in the shape `SKILL.md`'s
   was run.**`. Only where the work in hand gives the output nothing to show does the example use
   an invented scenario with invented names, first line `**EXAMPLE — fictional output; no skill
   test was run.**`. The example is task evidence: the skill text it leads to still keeps its own
-  examples generic. Read it whole and send it as `share-media`'s **What reaches the user, and when** says, write the
+  examples generic. Read it whole, write the
   skill to produce that shape, then validate it through the required skill-test run, review, and
   acceptance gate. A guidance-output format is routine guidance design, not a user approval gate; a change to the product
   a skill operates still follows `pre-production`'s **Product Choices**.
@@ -133,11 +133,9 @@ left for the user.
   its README and tooling: extend it where it exists, create one only where none does, and verify a
   fresh bootstrap provides the tool. Keep that bootstrap repository-neutral — it serves every developer
   and agent, so its name, behavior, and messages must not be Claude- or Codex-branded.
-- Follow the user's explicit consumer-reference choice; otherwise, after a dependency receives a
-  separately authorized release, replace its branch reference with a maintained version tag. Use
-  a minor release for a new capability or a patch release for a bug fix; verify any moving major
-  tag points to that release and validate the consumer against it. Never use an unpublished tag;
-  use the default branch when the user chose it or applicable reference guidance permits it.
+- Follow the user's explicit consumer-reference choice, and otherwise `pre-production`'s
+  **Versions**; use the default branch when the user chose it or applicable reference guidance
+  permits it.
 
 ## Source Check Routes
 
