@@ -198,7 +198,8 @@ context and returns its verdict into the step waiting on it; nothing else does b
   definition changed, each section that changed, and what it says.
 - **An editing worker's own worktree** is the host's worktree isolation where it offers one,
   otherwise a worktree the brief names under the task's working-files folder, made from the branch
-  the worker pushes to.
+  the worker pushes to. The coordinator's checkout is read-only to it: it never switches, branches,
+  merges or commits there, since the coordinator's next step reads that tree as it left it.
 
 ## Launch Failure Reporting
 

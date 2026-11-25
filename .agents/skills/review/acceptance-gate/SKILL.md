@@ -269,7 +269,8 @@ smallest coherent repair using the existing owner or mechanism.
 a repair re-reads the changed lines against the flag's objection and remedy and runs the checks
 covering that code. Then the repairs of every flag one verdict raised, and each settled,
 out-of-scope or council-dropped answer with its evidence, go together to one fresh gate under the
-Diff question, following `subagent-matrix`'s **Dispatch**; it answers each flag separately, and
+Diff question, its brief carrying each flag in the verdict's own words, the repair, and the output
+of the checks the repair reran, so the gate needs no evidence round to read them, following `subagent-matrix`'s **Dispatch**; it answers each flag separately, and
 only its acceptance closes a flag. A change gets at most 3 review rounds in total: the first
 review and 2 re-reviews after repairs; that gate is one of them, and one of the repair rounds below
 for each flag it reads a repair of. The exceptions are a style flag and a flag naming only missing

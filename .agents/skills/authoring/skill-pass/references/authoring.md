@@ -437,7 +437,7 @@ a template where correct results genuinely vary in shape.
   command, a flag and what a command prints each exist under that name in the file or tool named.
   Cite a section by its name, never by a step number, which moves with the next edit, and resolve a
   skill's own script from the skill's directory, never from a repository path.
-- Normalize the touched file's nearby structure when needed: combine narrow sections and remove redundant wording.
+- Normalize the touched file's nearby structure when needed: combine narrow sections and remove redundant wording. Lines an edit writes keep the wrap of the paragraph they sit in, so a repair never leaves an uneven paragraph for the next round to flag.
 - **State the class the user plainly meant, no narrower and no broader; the request's shape is
   its example.** A request arrives as one symptom, and the rule it needs names the class that
   symptom belongs to, with the symptom's shape kept as one illustration of it.

@@ -9,11 +9,11 @@ Task: <implement | fix> <one line naming the outcome>
 Intent: <the user's words for this work, each decision recorded on it, and what is out of scope>
 Scope: <the plan step, or the coupled steps in order, with the invariant the work keeps>
 Files: <exact paths to change; they bound the scope, not the design>
-Repo: <abs path> Worktree: <abs path> Branch: <the pull request's branch> Head: <sha>
+Repo: <abs path, read-only to the worker> Worktree: <abs path> Branch: <the pull request's branch> Head: <sha>
 Rules: <rule files whose patterns match those paths; the repository's `.agents/tools/` folder>
 Reuse: <one receipt per addition the plan names: what it does · searched · found · reuse | extend | new: why>
 Checks: <the verification batch: each command with its scope, and the point at which it runs>
-Result: <abs path the complete report is written to>
+Result: <abs path the complete report is written to, or the worker's final message where its isolation cannot write there>
 Findings (fix only): <each finding verbatim with its id, severity and the reviewer's remedy · remedies
 already tried and why each failed · round <n> of 3>
 
