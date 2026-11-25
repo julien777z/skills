@@ -116,7 +116,8 @@ type Status = (typeof Status)[keyof typeof Status];
   documents a supported absence, through the repository's schema validator where it has one, refusing an empty
   string as it refuses an absent one, such as `z.string().min(1)`, and throws naming the missing
   value. A read that lets an unset value through, such as `process.env.NAME || null` or
-  `?? ''`, followed by code that skips its work on the empty value, is the defect that section names.
+  `?? ''`, followed by code that skips its work on the empty value, is the defect this validation
+  exists to prevent.
 - Extract a literal only when it is reused or carries domain meaning. Keep trivial single-use
   literals inline.
 - Do not prefix a name with the area it already lives in. The module path says it; add a qualifier
@@ -158,7 +159,7 @@ type Status = (typeof Status)[keyof typeof Status];
 
 ## Comments
 
-- **The code carries its own explanation, so it carries no comments.** A name, a type, and a
+- **The code carries its own explanation, so it carries no comments, except a directive a compiler or build tool reads and a note on behavior this repository does not own (both below).** A name, a type, and a
   function small enough to read at once say what a sentence beside them would, and they cannot drift
   from the code the way the sentence does. Where a line needs prose to be understood, rename it,
   split it, or give the value a type that states what it is. That includes JSDoc on a prop, field,
