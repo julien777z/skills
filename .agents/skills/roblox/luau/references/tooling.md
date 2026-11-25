@@ -8,7 +8,7 @@ Use Rokit to pin tools, Wally to manage packages, Rojo to map source to places, 
 - [Lute lint](https://lute.luau.org/cli/lint/) is a separate lint pass, not interchangeable with Selene.
 - Use configured architecture and Gitleaks checks alongside those tools; keep engine and manual checks distinct.
 
-Exclude installed packages, generated networking, vendored code, and verification artifacts consistently. Anchor root exclusions so build-output patterns cannot accidentally exclude authored builders. Do not suppress first-party diagnostics to get a green check. Generated agent mirrors are owned by Agent Sync, not a competing formatter.
+Exclude installed packages, generated networking, vendored code, and verification artifacts consistently. Anchor root exclusions so build-output patterns cannot accidentally exclude authored builders. Generated agent mirrors are owned by Agent Sync, not a competing formatter.
 
 When configuring CI, keep lint, automated tests, and build/artifact integrity checks distinct. Read the actual workflows to determine which checks exist and whether cloud execution is provisioned.
 
