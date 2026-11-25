@@ -36,9 +36,10 @@ of their own.
 - **A default seat whose launch on another provider does not start** is relaunched on the
   session's own provider at the seat's level, as `subagent-matrix`'s fallbacks reference's **A
   Launch On Another Provider's Model** says, and the result names the substitution; the seat is
-  never left empty or waited on for that provider. Its activity is read when the first other seat
-  returns, or 15 minutes after its brief if none has, and if it shows none the relaunch goes out
-  then, before the coordinator waits on the remaining seats.
+  never left empty or waited on for that provider. Its activity is read at the first of two moments,
+  the first other seat returning or 15 minutes after its brief: once a seat returns, the
+  coordinator's very next call reads it, before any wait on another seat, and if it shows none the
+  relaunch goes out then.
 - **Missing members.** Resolve an unavailable default seat through `subagent-matrix` down to
   the `standard` tier. Report a missing named or caller-constrained member and use only launches
   that meet the original requirement. With two members available, name the empty seat and report
