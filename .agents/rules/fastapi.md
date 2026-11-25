@@ -106,6 +106,7 @@ for router in (resources_router, reports_router):
 - Do not add runtime field-presence checks in route handlers or route-facing services for request-shape validation.
 - Make required request fields required on the Pydantic model.
 - Use `model_validator(...)` only when validity depends on multiple fields together. Do not add a model validator just to restate that independently required fields are required.
+- Register one exception handler at the application boundary that answers the framework's request-validation error with the 400 status in the project's standard error body, as the HTTP rule's **Response Statuses** requires; a constraint declared on a request model never reaches the client as 422.
 
 ```python
 from typing import Self
