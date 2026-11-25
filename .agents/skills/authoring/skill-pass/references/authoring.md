@@ -4,8 +4,9 @@ Contents: **Where Guidance Lives** (placement), **Harnesses**, **Rules**, **Skil
 references, descriptions, dependencies, decisions, subagents, flows, output, routers), **Writing**
 (wording, scope and size budgets), **Scripts**, **Validation**.
 
-This reference holds how anything under `.agents` is written, placed, served to harnesses and
-validated. The pass in `SKILL.md` names the section each step applies, and the
+This reference holds how anything under `.agents`, and code outside it that sets up, configures
+or fixes how agents run, is written, placed, served to harnesses and validated. The pass in
+`SKILL.md` names the section each step applies, and the
 [vendor rubric](vendor-rubric.md) beside this file holds what the model vendors' guidance adds.
 
 ## Where Guidance Lives

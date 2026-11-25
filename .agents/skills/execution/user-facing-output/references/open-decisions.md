@@ -39,7 +39,8 @@ decision waiting on evidence is reported, and how an action the reader owns is h
 
 - **Timing.** Preparation is only work that changes what the reader will do; other queued work, a
   guidance edit included, waits behind the question, which goes out in the turn the need is
-  established. Chat text never announces the step ahead of that question.
+  established. Chat text never announces the step ahead of that question, apart from the material
+  the question shows, such as a report whose `Next:` line names the review it asks for.
 - **Content.** Its text names the whole step, including any command, and offers a confirmation
   option such as "Done" beside one for doing it later. An address it gives is one the governing
   guidance or the product itself states, or one the agent opened and saw serve that step; never one

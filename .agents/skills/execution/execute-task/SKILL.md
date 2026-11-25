@@ -77,17 +77,17 @@ plan of its own; only an edit that adds nothing skips it.
   verification, even when more than one file or an internal dependency must change. Record the
   added work and state the next action; do not turn its implementation outline into another
   approval question. Ask only about a concrete unresolved choice and continue independent work.
-  Completing that choice takes no separate plan. Canonical guidance changes
-  under `.agents` do not wait for a plan or an output-format approval: their request or an encountered guidance gap starts
-  the guidance-correction workflow, and the gate set `edit-skill`'s **Guidance Delivery**
+  Completing that choice takes no separate plan. Canonical guidance changes under `.agents` do not
+  wait for a plan or an output-format approval: their request or an encountered guidance gap
+  starts the guidance-correction workflow, and the gate set `edit-skill`'s **Guidance Delivery**
   selects verifies it, on the timing `edit-skill`'s **Recording During A Task** sets for an active task,
   whether the user asked for the correction directly or the run noticed it.
 - **A guidance change whose flow is affected is shown as a proposed flow.** Whenever a change's
   statement of scope records `flow affected`, as `edit-skill`'s **Scope Statement** defines it,
   whatever kind of guidance change it is, build `guidance-flow`'s proposed-flow comparison of its
   pushed branch against the default branch and show it to the user; delivery proceeds unless that
-  statement lists something waiting for them. A guidance change reaches the user for review or
-  approval only when the agent is unsure whether it does what they meant, as `edit-skill` says.
+  statement lists something waiting for them. `edit-skill`'s **Guidance Changes Proceed
+  Automatically** says when one reaches the user.
 - Work a plan in execution already covers takes no new plan: an encountered issue, a gate's or a
   review's flag, a failing check, or a guidance correction discovered during the run. `edit-skill`
   records verified guidance corrections and `process-ledger` processes them at **Completion**.
@@ -472,8 +472,9 @@ Review** once each has its accepted head.
    request stays draft.
 
 The ready-for-review message takes exactly this shape, one message per pull request, leaving out
-**Deferred** when nothing was deferred. Its **Next:** review is an action the reader owns, so it
-also goes to them through the question tool, as `user-facing-output` says:
+**Deferred** when nothing was deferred. Its **Next:** review is an action the reader owns: the
+message is the material the question tool request for that review shows, as `user-facing-output`
+says:
 
 ```markdown
 **Ready for review:** <pull request URL>
