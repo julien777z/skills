@@ -19,6 +19,12 @@ change writes:
   example values and paths, documentation, and repository text.
 - [The product-copy reference](references/product-copy.md), before writing or changing text or a
   form a product's reader meets.
+- [The contracts reference](references/contracts.md), before changing whether a field is required,
+  writing a backfill, adapting a third-party provider's contract, or letting the deployment's size
+  decide a design.
+- [The product-presentation reference](references/product-presentation.md), before changing what a
+  reader sees: a correction's reach across pages, a remedy's visible effect, content that has to fit
+  its space, or text already in the product.
 - [The environments reference](references/environments.md), before repairing or resetting a local
   stack or its records, combining or reordering verification, running an experimental fault,
   rebuilding a validated artifact, or sending a write to a live deployment.
@@ -225,19 +231,8 @@ with an obsolete owned contract or revision.
     put to the user as a question. A defect, a security vulnerability included, is never past it.
     An explicitly requested broad refactor sets its own scope and carries no budget.
 - **A correction to how one screen looks or reads reaches every page when the user makes it a
-  rule, and that screen alone when they do not.** A correction the user asks to have codified, or
-  gives a reason for that holds wherever the shape appears, such as "labels sit above their fields
-  so the eye moves straight down the form", names a defect. Every existing page with that shape is
-  fixed in the same pass, as the change's scope rather than incidental work under the size budget,
-  and the rule written from it governs existing pages as much as new ones. A layout, a wording, a
-  tone or a style changed on one page with no such reason is the user's choice about that page. It
-  is applied there, and other pages with the same shape are listed for the user to decide on,
-  never changed in the same pass. A shape a standing rule already named as a defect is fixed on
-  every page in the same pass too, as the change's scope; a broken mechanism, a wrong value, a
-  missing guard or a parallel implementation stays under the bullets above. A page that builds its own copy of a shared component moves onto the shared
-  one in the same pass even though its look changes with it: it takes the look the rest of the
-  product already has, which is no new choice about that page, unless the task's record or the
-  conversation shows the user decided that page's look, in which case the move goes to the user.
+  rule, and that screen alone when they do not**: [product
+  presentation](references/product-presentation.md)'s **Correction Reach** holds it.
 - Inspect the complete mechanism before choosing its repair. Prefer the clean result that solves
   that defect throughout its affected paths; do not equate a broader cleanup with a better fix.
 - The bar is what the cleanest result requires, not what the smallest diff permits. Existing users
@@ -251,24 +246,6 @@ with an obsolete owned contract or revision.
   structure it points at: split the module, remove the unused export, move the import. A manifest
   key, a bundler or compiler option, an alias or an exclusion that stops the tool from seeing the
   problem leaves the structure as it was and hides it from the next reader.
-
-## The Deployment's Size Is Not The Design
-
-- **Judge the mechanism, never the size of the environment it runs in.** How few rows the database
-  holds, how small the instance is and how little traffic it serves describe what is deployed
-  today, not what the code has to be able to do. "It is small enough today", "the table is short",
-  "the instance copes", "the job finishes overnight" and "nobody has complained" are true whenever
-  they are said and never for long. Ask whether the work grows with the data and whether anything
-  bounds it: a mechanism that cannot grow past one process, one core or one container is still that
-  on the day the same code meets a hundred times the data, and resizing is a number somebody
-  revisits under pressure, where a design that scales with the work is not.
-- Where the environment genuinely limits what can be *demonstrated* — a single-node database that
-  cannot show contention, a dataset too small to produce a rate — say so plainly and build for the
-  target anyway. A design that cannot yet be proven here is still the right design; one that cannot
-  scale is not, and a measurement taken on a small deployment is evidence about that deployment only.
-- This is not a license for speculative distribution. The bar is unchanged: the cleanest result for
-  the contract the released product needs. It removes exactly one argument from the discussion — that
-  the current deployment is small — and settles nothing else about how much scale the work warrants.
 
 ## Product Choices
 
@@ -290,17 +267,8 @@ the issue should be ignored.
   API or setting onto its supported replacement, even when the replacement tightens access, as the
   deprecated-usage bullet in **Scope Follows The Defect, Not The Request** says. A game's design is
   never a product choice, as the global rules' game-design bullet says.
-- **A fix's remedy meets the same test, judged by its visible reach.** A remedy whose visible
-  effect is large — one that changes the layout, controls or flow a reader meets on many pages or
-  across several products, or that a returning user would notice, such as every photo gallery
-  turning into a carousel once it holds more than a few photos, or a form splitting into steps
-  everywhere past some number of fields — is a product choice, and so is new visible behavior a
-  remedy carries past the surface the user named to others like it; the defect no longer showing
-  there is not. Each is proposed before it is built, whether it arrives as a fix, a later fix round
-  adjusts it, or a gate accepted it: the proposal lists every page it would change and carries
-  before-and-after captures of a few representative pages where the change shows, never every page,
-  so the user decides where it applies. The user's word on how something looks under one condition,
-  such as at one width, decides nothing about when it appears under another.
+- **A fix's remedy meets the same test, judged by its visible reach**: [product
+  presentation](references/product-presentation.md)'s **Visible Reach** holds it.
 - **A routine presentation or interaction detail is not a product choice, and is not put to the
   user.** An alignment, a spacing, a size or tone on the product's existing scale, the placement of
   a message or control among the product's established positions, the wording of a message the
@@ -311,28 +279,11 @@ the issue should be ignored.
   one, look for their earlier word on it in the task's record and the conversation, and follow it;
   changing it goes to the user.
 - **Making content fit its space is the agent's work; only what to remove or hide goes to the
-  user.**
-  - A remedy that keeps every value readable — a strip that scrolls with its scrollbar shown, a
-    long value broken at its natural boundaries, items stacked, a control moved to one of the
-    product's established positions — is a routine detail as above, decided and fixed at whatever
-    width the defect shows, and so is a defect a capture shows that predates the change.
-  - Squeezing columns until cells wrap onto several lines, truncating values, shrinking type, or
-    narrowing cards, form fields or toolbar controls until their labels break word by word keeps
-    everything visible by making rows and items tall and hard to scan, and is never the remedy.
-  - Removing a column, field or item, or hiding it below a width, changes what information the
-    product shows, so ask which content can go or be hidden at that size, with captures of the
-    options, before changing the layout; until the user answers, the content keeps the room its
-    values need.
-- **Text already in the product keeps its words unless it is wrong or the user named it.**
-  - Text that is plainly wrong or inconsistent, such as a label stating something untrue, one thing
-    called by two names, or a message that does not match what happens, is corrected or left by
-    judgment, and the report says which.
-  - Text a standing rule names as a defect counts as wrong, and is fixed on every page it appears
-    on, as the bullets in **Scope Follows The Defect, Not The Request** say.
-  - A request to reword one text rewords that text alone; any other existing title, label,
-    description or message that is correct but could read better keeps its words, beside it or
-    elsewhere, even when the new wording suggests changing it, and the suggested rewording goes to
-    the user for approval.
+  user**: [product presentation](references/product-presentation.md)'s **Content That Must Fit**
+  holds it.
+- **Text already in the product keeps its words unless it is wrong or the user named it**:
+  [product presentation](references/product-presentation.md)'s **Text Already In The Product** holds
+  it.
 
 ## Trade-Offs Are Surfaced, Never Enforced
 
@@ -413,7 +364,8 @@ the issue should be ignored.
 - Keep resilience within the current supported contract: error handling, browser support, empty
   states, and provider-failure behavior the released product needs. Supporting an obsolete owned
   contract or revision is compatibility, even when described as resilience or repair; it requires
-  the approval above. Third-party contracts remain governed by **Owned And Third-Party Contracts**.
+  the approval above. Third-party contracts remain governed by **Owned And Third-Party Contracts** in the contracts
+  reference.
 - Prefer a deliberate break to an owned API, wire, schema, payload, or stored shape when it
   materially simplifies the result. Update affected consumers and migrate retained data, then remove
   the old shape; update every consumer and generated contract in the same change. A break the
@@ -434,46 +386,3 @@ the issue should be ignored.
 - For disposable development records, follow the repository's stated policy: it decides which
   values a change may discard, never how the change reaches a deployed database. Never assume
   released user data is disposable or carry a tester conversion as a runtime compatibility path.
-
-## Owned And Third-Party Contracts
-
-- Everything above is about contracts the user owns and can change by migrating every consumer
-  of them. **A third-party provider's contract is not ours and cannot change at all.**
-- So where the two must meet, only one side can move, and it is always ours. "The provider encodes it
-  differently" is a statement about our model, not about theirs: our model is the one that accepts
-  what the provider sends, in the shape the provider sends it.
-- That makes a provider difference the weakest reason there is to keep a second model mirroring the
-  one it converts into. A second model is what you build when neither side can move; on this boundary
-  one side always can, so the pair is duplication rather than a boundary.
-- **Adapting is not imitating.** The provider's encoding comes across — its string tokens, its date
-  formats, its nesting, its keys — carried by validators and aliases on our own fields. Its
-  vocabulary does not: field names, casing, and domain terms stay ours.
-- Requiring a field the provider may legitimately omit is still wrong, and moving toward the
-  provider's shape never licenses it. Accept what it can send; require only what an owned validation
-  or selection boundary proves is present.
-
-## Required Data
-
-- Make fields and columns required by default. Keep one nullable only when absence is a genuine
-  supported domain state.
-- An absent value on a read path is a schema question, never a branch. When the column is already
-  required, a warn-and-skip, an `or` between two sources for the same value, and a refusal keyed on
-  the absence are all dead code and go, and the wire message and the model follow the column and
-  require the field. When the column is not required, the fix is the schema change that requires it,
-  and the wire and the model follow that column, never the other way round. The shape to recognize:
-  a validation error at a read site answered by widening the reader instead of asking what the store
-  allows.
-- For a requiredness change, establish the affected data's retention scope under **Product State**
-  before deciding what its revision keeps or clears; required columns do not themselves create an
-  obligation to preserve disposable or nonexistent rows.
-- For retained values, use the authoritative source where one exists and a type-valid placeholder
-  only where none exists. Never overwrite a known retained value, fabricate a placeholder in runtime
-  code, or keep a permanent schema default solely to make a migration convenient.
-- **A backfill writes each row's value under the new contract, never one chosen so existing rows
-  keep behaving as before.** A flag set on every pre-change row so it keeps the old outcome, such as
-  staying exempt from a new check, closed to a new path, or treated as the old kind, is a legacy
-  fallback written into data. So is a branch on a creation date or a stored version that does the
-  same. Where the new field records a fact, such as who did something or when, backfill that fact
-  from its authoritative source. The tell is a description or comment saying that rows from before
-  the change keep the old behavior; keeping it needs the user's approval, as any legacy support
-  does.
