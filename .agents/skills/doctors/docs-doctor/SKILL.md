@@ -110,7 +110,7 @@ is fixed there, as `doctor-protocol`'s **Resolve The Scope** says.
 
 Flags documentation that recounts what changed: "formerly", "used to", "replaces", migration
 tables, upgrade notes, and deprecation prose, against `pre-production`'s **Documentation**
-conventions. Git history is the record of what changed. Reach: partition.
+conventions. Reach: partition.
 
 - every history-word hit in a document or a description;
 - every table or section whose columns or headings are a before and an after.
