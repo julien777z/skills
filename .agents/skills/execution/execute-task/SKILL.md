@@ -198,6 +198,13 @@ This order grants no deployment or merge authority: **Task Authorization** still
 
 ### Follow-Ups
 
+**Work that serves the task's own outcome is part of the task, never a follow-up.** A request, a
+discussion or an answered decision that adds to what the task delivers, such as a check the user
+designs mid-task through answered questions, joins the active plan: once its decisions are
+answered, add its steps to the plan record, take the amended plan through `review-proposal`, show
+it in that turn and start it; its changes go on the task's pull request. Only a request for a
+separate outcome is a follow-up, routed below.
+
 Classify each source or product follow-up under **When A Plan Is Needed** before preparing a plan. A small, clearly specified follow-up executes on the user's request; only a follow-up outside that exception needs its own plan. A canonical guidance correction follows **When A Plan Is Needed** and waits for no plan; while a guidance batch is in flight it joins that batch, as `edit-skill`'s **Recording During A Task** says. **Priority** decides when other follow-ups run and whether affected work pauses now; none of the routes below makes arrival order a reason to preempt active recovery.
 
 - **One that touches nothing in flight** — other files, another outcome — leaves the running work
@@ -216,9 +223,9 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
   work and its saved next step under **Work You Have Already Named**, then updates the active
   plan record. Show an amended plan, as **Showing The Plan** says, only when **When A Plan Is
   Needed** requires one; a small, clearly specified follow-up starts without one.
-  Pause affected work when **Priority** brings the amendment into execution; otherwise retain it
-  for after the active work. Resume once any decision it opens is answered and its priority permits. Unaffected work keeps
-  running while the user decides.
+  Pause affected work when **Priority** brings the amendment into execution; otherwise run it
+  beside the active work under `subagent-matrix`'s **Dispatch**. Resume once any decision it opens
+  is answered and its priority permits. Unaffected work keeps running while the user decides.
 - **One that narrows scope reaches the work already in flight, at once.** Message every running
   worker to stop the work the cut removes and has not yet done, keeping what it already finished,
   and record the cut in the intent statement every later gate and review receives. A finding in
