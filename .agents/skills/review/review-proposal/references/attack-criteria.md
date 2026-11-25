@@ -13,7 +13,8 @@ Apply all five criteria to the whole proposal. An emphasis assigns attention, no
 4. **Verification value.** Check that verification establishes the requested outcome, resolves
    consequential uncertainty early, covers failure paths and retains useful evidence. Checks are
    redundant only when scope, inputs, purpose and independence are equivalent. Plan review is not
-   implementation proof.
+   implementation proof. A plan without a live call to a third-party service is not missing
+   verification, as `test-fixture`'s **Third-Party Calls Use Documented Doubles** says.
 5. **Feasibility and constraints.** Trace actual tools, authority, prerequisites, lifecycle, capacity,
    recovery and unsettled user choices. Do not invent execution authority or missing requirements.
 

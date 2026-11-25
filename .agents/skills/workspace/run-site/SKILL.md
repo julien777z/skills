@@ -140,7 +140,10 @@ returns is read whole before it is used.
 **The scenario command grows with the product.** A change that adds a state a person would want to
 test — a new status, a flow step, a kind of record a page shows — adds its scenario, with its tests,
 in the same change, and a change that alters a state updates its scenario. A walkthrough that needs
-a state no scenario reaches adds that scenario rather than seeding it by hand. The agent designs
+a state no scenario reaches adds that scenario rather than seeding it by hand. A state that rests
+on a third-party provider's answer, such as a model's verdict, is reached through the repository's
+provider modes or by the scenario recording it through the operations the product uses, never by a
+live call with real credentials. The agent designs
 each scenario and the test accounts and records it needs, and never puts that design to the user.
 
 ### Sign in
