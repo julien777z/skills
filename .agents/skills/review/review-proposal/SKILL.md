@@ -74,12 +74,15 @@ Follow the dependency's fallback procedure without inventing a compliant launch 
    content where the file boundary cannot be preserved, or hold for the actual delivery limitation.
    Do not add a snapshot platform or truncate evidence. Verify the separate fresh gate's compliant
    dispatch, exact packet and complete original verdict before counting it.
-5. **Repair and return.** Apply acceptance-gate Bounds to flags, preserving original objections and
-   remedies. A flag never becomes readiness because a counter elapsed. Under those Bounds a plan repair goes to a fresh gate;
-   restart attacker review only if a repair changes approach, scope, ownership or verification. A new
-   material design cycle retains its preceding history and the same two-round adjudication
-   checkpoint; renaming or caller re-entry cannot erase objections or reset a cycle. Missing or lost
-   gate output follows subagent-matrix recovery without redoing valid attacker evidence. Return the
+5. **Repair and return.** Apply every flag of a verdict in one pass, preserving original
+   objections and remedies; a flag is fixed, never dropped. The repaired proposal then gets one
+   final ruling and no further review round: after a council ruling, from that same council; after
+   an acceptance-gate flag, from `council` in **Ask** mode with the packet step 4 describes. A flag
+   that final ruling raises is fixed, and the proposal returns ready with those last fixes listed
+   for the caller to show beside it. Restart attacker review only if a repair changes approach,
+   scope, ownership or verification; a new design cycle keeps its history and the same checkpoints,
+   and renaming or caller re-entry cannot erase objections or reset a cycle. Missing or lost
+   output follows subagent-matrix recovery without redoing valid attacker evidence. Return the
    result to the caller. Do not present the proposal or request approval here, or recursively
    review the gate itself.
 
@@ -103,6 +106,7 @@ gate: <exact packet, dispatch and original verdict, or missing evidence>
 next_action: <caller presentation or concrete repair/recovery>
 ```
 
-`ready` requires independent acceptance. It is technical readiness, never the user's approval: the
-caller's rule says whether the proposal is then shown or asked, and it never authorizes merging,
-deployment, publication or a separate user-triggered action.
+`ready` requires independent acceptance, or the final ruling of step 5 with its last fixes listed.
+It is technical readiness, never the user's approval: the caller's rule says whether the proposal
+is then shown or asked, and it never authorizes merging, deployment, publication or a separate
+user-triggered action.
