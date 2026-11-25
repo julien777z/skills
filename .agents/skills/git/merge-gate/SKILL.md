@@ -1,6 +1,6 @@
 ---
 name: merge-gate
-description: Merge a pull request its caller is authorized to merge, once its review has accepted a head — verify its delivery dependencies, take it out of draft as the last step before the merge, gate that exact head, resolve conflicts, squash-merge, and include CI commits in the checkout refresh. Use when an authorized merge is reached; a pull request leaves draft only here. Holds what authorizes a merge, deployment, publication or release, which failing checks a merge excludes, what follows a merge, the refresh after a merge of agent configuration, and when a pull request may be polled.
+description: Merge a pull request its caller is authorized to merge, once its review has accepted a head. Use when an authorized merge is reached; a pull request leaves draft only here. Holds what authorizes a merge, deployment, publication or release, which failing checks a merge excludes, what follows a merge, the refresh after a merge of agent configuration, and when a pull request may be polled.
 short_description: 'Take a reviewed pull request out of draft, gate its exact head, and merge it.'
 ---
 
@@ -34,10 +34,10 @@ for an agent-configuration change, Agent Sync handling before this skill finishe
   authorizes the merge, or a standing permission in the GitHub rule's **Merge Authorization**. It
   creates no authorization of its own,
   and without one it is not invoked: the pull request stays draft.
-- Once that authorization holds, never ask the user for permission to merge and never end by
-  offering the merge as the remaining step. What stops a merge is a gate: a relevant required check
+- **The merge question was answered when the authorization was given.** When the gates are green and
+  the head is the accepted one, merge it. What stops a merge is a gate: a relevant required check
   that is not green, a head that no longer matches the accepted SHA, or a conflict still unresolved.
-  Report that gate.
+  Report that gate, never a request to merge or an offer of the merge as the remaining step.
 - An authorized merge includes the repository's automatic merge-triggered workflows. Their
   publication, rollout, and serving-state checks belong to separately authorized release or
   deployment work.
@@ -134,20 +134,14 @@ test jobs run once, on the head about to merge.
    reuse, exclusions, or hosted-result inventory. Send any new commits through the
    caller's rule and restart this gate.
 2. **Verify delivery dependencies before merge.** Inventory what the complete consumer head
-   resolves for its build, validation, packaging and delivered behavior, following the
-   [delivery dependency criteria](references/delivery-dependencies.md). Compare every consuming
-   location, configured reference and resolved revision with the freshly fetched default branch;
-   retain that comparison with the admission verdict. Newly introduced or changed PR/testing
-   references in workflows, application code, manifests or lockfiles block the merge.
-   Exempt only the same input already present unchanged at that location on the default branch;
-   a new location or changed resolution is not inherited. For nonexempt inputs, verify each
-   provider's merged state and each resolved revision's provenance; a branch label or immutable
-   identifier alone proves neither. A testing dependency or missing provenance blocks the merge,
-   even with passing tests. Surface the provider dependency and its evidence in user chat under
-   the GitHub rule's independent publishing context. The body states the consumer's own delivery
-   requirement. After the dependency merges, update every consuming reference to the maintained
-   target chosen by the user or repository guidance, revalidate the consumer's new head through
-   the caller's fix rule, and repeat this inventory before merging.
+   resolves for its build, validation, packaging and delivered behavior and admit or block each input
+   as the [delivery dependency criteria](references/delivery-dependencies.md) say, retaining the
+   comparison with the freshly fetched default branch beside the admission verdict. A newly
+   introduced or changed PR/testing reference in a workflow, application code, manifest or lockfile,
+   a testing dependency and missing provenance block the merge even with passing tests, and a
+   blocked dependency leaves the pull request draft. After the dependency merges, update every
+   consuming reference to the maintained target, revalidate the consumer's new head through the
+   caller's fix rule and repeat this inventory before merging.
 3. **Mark the pull request ready, and account for the checks that starts.** Run **Readiness**
    when the pull request is still draft. The state transition can start duplicate test
    jobs. It does not invalidate a terminal result
@@ -203,33 +197,38 @@ test jobs run once, on the head about to merge.
    job's own output — the run's jobs listing and decisively its log, which a finished job ends with
    its summary and cleanup. A log showing completion **is** the terminal result. Never diagnose a
    hang, push a speculative fix, cancel, re-run, or report the run stuck from a pending status alone.
-8. **Classify every unsuccessful check before repair.** A caller-supplied exclusion, or a
-   current-user waiver naming the test or check, is excluded. Preserve established baseline classifications;
-   classify a newly encountered possible baseline under `pre-production`'s **Encountered Issues**,
-   without reentering that skill's active run. A non-essential check failing only on findings
-   `pre-production`'s essential-checks bullet leaves red is an exclusion too. Record an exclusion's
-   evidence, remove it from required coverage, and do not repair, rerun, or wait for it. Apply
-   **Validation Exclusions**' interrupted-check exclusion automatically: record a qualified check as skipped
-   and do not rerun or wait for a green hosted result. For a canceled or otherwise interrupted
-   attempt with no recorded validation failure and no exclusion, use an equivalent successful
-   hosted attempt or follow a pending replacement through **Drive the complete inventory to terminal results**. If neither exists, obtain
-   equivalent local validation when it can qualify for the exclusion, or retry the hosted check
-   on the same head using `POST /repos/{owner}/{repo}/actions/jobs/{job_id}/rerun`. Verify the
-   retried job's head and required context before using its result. Missing logs or an unknown cancellation cause cannot justify local substitution;
-   recover hosted coverage in that case. A canceled attempt alone does not end the gate.
-   Every other failure is relevant. Read its annotations and complete log, fix the repository
-   input responsible — code, test, configuration or workflow — and commit it. **Every relevant
-   failure on the head goes into one push**: read all of them before fixing any, reproduce each
-   with the job's own command where it can run locally, and push only once each reproduced failure
-   passes locally, so the next hosted run is the last. Only a failure that cannot run locally —
-   a hosted service or credentials this session itself found absent from where the repository
-   configures them, never taken on a reviewer's, worker's or plan's word,
-   or runner-specific behavior, never disk, memory or ports the session can free — is pushed
-   without local proof. A relevant
-   external-service failure is an encountered issue under `pre-production` and is fixed the same way;
-   never rerun a failing validation to get a green result, or skip, disable, or quarantine a test
-   or confine its job to drafts to get past it. Report a blocker only when relevant missing
-   coverage needs user input or unavailable credentials, with the check, evidence and remediation attempted.
+8. **Classify every unsuccessful check before repair.**
+   - **Exclusions.** A caller-supplied exclusion, or a current-user waiver naming the test or check,
+     is excluded. Preserve established baseline classifications; classify a newly encountered
+     possible baseline under `pre-production`'s **Encountered Issues**, without reentering that
+     skill's active run. A non-essential check failing only on findings `pre-production`'s
+     essential-checks bullet leaves red is an exclusion too. Record an exclusion's evidence, remove
+     it from required coverage, and do not repair, rerun, or wait for it. Apply **Validation
+     Exclusions**' interrupted-check exclusion automatically: record a qualified check as skipped
+     and do not rerun or wait for a green hosted result.
+   - **An interrupted attempt.** For a canceled or otherwise interrupted attempt with no recorded
+     validation failure and no exclusion, use an equivalent successful hosted attempt or follow a
+     pending replacement through **Drive the complete inventory to terminal results**. If neither
+     exists, obtain equivalent local validation when it can qualify for the exclusion, or retry the
+     hosted check on the same head using
+     `POST /repos/{owner}/{repo}/actions/jobs/{job_id}/rerun`. Verify the retried job's head and
+     required context before using its result. Missing logs or an unknown cancellation cause cannot
+     justify local substitution; recover hosted coverage in that case. A canceled attempt alone does
+     not end the gate.
+   - **Every other failure** is relevant. Read its annotations and complete log, fix the repository
+     input responsible — code, test, configuration or workflow — and commit it.
+     - **Every relevant failure on the head goes into one push**: read all of them before fixing
+       any, reproduce each with the job's own command where it can run locally, and push only once
+       each reproduced failure passes locally, so the next hosted run is the last.
+     - Only a failure that cannot run locally — a hosted service or credentials this session itself
+       found absent from where the repository configures them, never taken on a reviewer's,
+       worker's or plan's word, or runner-specific behavior, never disk, memory or ports the session
+       can free — is pushed without local proof. A relevant external-service failure is an
+       encountered issue under `pre-production` and is fixed the same way.
+   - **Never** rerun a failing validation to get a green result, or skip, disable, or quarantine a
+     test or confine its job to drafts to get past it. Report a blocker only when relevant missing
+     coverage needs user input or unavailable credentials, with the check, evidence and remediation
+     attempted.
 9. **Leave services this workflow did not start alone.** Never stop, restart, reconfigure or claim a local service the calling workflow did not start:
    another agent or person may be using it. When relevant validation needs local services and one it
    did not start is running, use the matching hosted check as the fallback rather than running a
@@ -242,8 +241,7 @@ test jobs run once, on the head about to merge.
 When GitHub reports a conflict, or the merge is rejected for one:
 
 - Incorporate the base through `merge-conflict`; the resolution is a fix under **Check Gate**'s **Send every fix through the caller's rule**.
-- Report a blocker only when a safe resolution needs an unauthorized product decision, or a change
-  to a contract a consumer outside the user's control speaks.
+- A resolution `merge-conflict` cannot make safely is reported as the blocker it describes.
 
 ## Merge
 
@@ -340,13 +338,13 @@ generated commits pushed by downstream workflows.
 
 **A merge leaves no verification or deploy work.** Whatever a change needs verified — tests, a
 playtest, a walkthrough, an audit, a fresh-eye review — runs before its merge. Once the merge is
-verified, nothing runs again to check it:
-
-- never check whether the change is live or follow release, publication, artifact upload, or
-  deployment outcomes. **CI Commits To The Target Branch** covers only Git writes needed for the
-  checkout refresh, even when the same workflow also publishes or deploys;
-- never test, walk or audit what the merge deployed or the merged default branch;
-- never schedule a re-check, wait for a deploy, or assume one is coming.
+verified, nothing runs again to check it: no check by any route of whether the change is live (a
+provider's deployment status, a release run, the site itself), no following of release, publication,
+artifact upload or deployment outcomes, no inspecting or following of
+merge-triggered release, publication, artifact or deployment workflows, no test, walk or audit of
+what the merge deployed or of the merged default branch, and no scheduled re-check, wait for a
+deploy, or assumption that one is coming. **CI Commits To The Target Branch** covers only Git writes needed for the checkout refresh,
+even when the same workflow also publishes or deploys.
 
 A verification step still open at the merge closes with it, and nothing waits on such a run or on a
 deploy: no plan step, ledger or guidance hold, worker brief or report's next action. Other
