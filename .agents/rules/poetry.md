@@ -33,17 +33,15 @@ requires = ["poetry-core>=2.0.0"]
 build-backend = "poetry.core.masonry.api"
 ```
 
-- Use `poetry install`, `poetry run black .`, and, where Pyright is configured, `poetry run pyright` for the standard local workflow. Run the suite through the repository's own test-runner entry point when it defines one, since a bare `pytest` invocation reaches only the suites its default collection happens to find.
+- Install, format and type-check through the repository's own workflow, as its README and CI run it: Black for formatting and, where configured, Pyright. Run the suite through the repository's own test-runner entry point when it defines one, since a bare `pytest` invocation reaches only the suites its default collection happens to find.
 
 ## Application Structure
 
 - Prefer separate focused modules over monoliths, organizing code under `clients/`, `services/`, `models/`, and `core/` as applicable.
 - Prefer PEP 695 generic syntax when it improves an interface and the repository's minimum Python version is 3.12 or newer; otherwise use modern typing syntax supported across the declared range.
-- Give every function and class a one-line imperative docstring followed by a blank line.
 - Services may be plain functions. Pass clients and sessions explicitly rather than storing module-level runtime globals; settings are read from the settings object where they are used, as the Python boundaries rule's **Configuration** section says.
 - Use `aiohttp` for HTTP I/O, inject a `ClientSession`, create long-lived sessions at application startup, enable `raise_for_status` when appropriate, and parse responses asynchronously with `json()` or `text()`.
 - Keep HTTP-style error types in `core/errors.py` and import the project's canonical error type under its own name; create the missing canonical type rather than adding runtime import or compatibility fallbacks.
-- Configure logging centrally and use it instead of `print()`.
 
 ## Testing
 
@@ -53,4 +51,4 @@ build-backend = "poetry.core.masonry.api"
 ## Guardrails
 
 - Use Black rather than Ruff for formatting.
-- Keep comments minimal and do not generate additional Markdown beyond the existing rules and Project Layout documents unless the user requests it.
+- Keep comments minimal and do not generate additional Markdown unless the user requests it.
