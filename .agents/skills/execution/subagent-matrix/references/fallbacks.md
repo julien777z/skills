@@ -25,8 +25,8 @@ version too old, a sign-in, a disabled provider, a stale process.
 
 - A rate limit or quota refusal is not this kind; it follows **A Capacity Refusal** below.
 - The repair is the first step and every fallback comes after it, except for a launch on another
-  provider's model, which moves to the session's own provider at once as **A Launch On Another
-  Provider's Model** below says: update the client, sign in, enable the provider or restart the
+  provider's model that no provider or exact-model requirement binds, which moves to the session's
+  own provider at once as **A Launch On Another Provider's Model** below says: update the client, sign in, enable the provider or restart the
   process, or confirm the condition no longer holds, then launch the same assignment again with the
   same identifier.
 - Updating or repairing the agent's own client or runtime is that repair, never a repository or
@@ -69,13 +69,14 @@ that level does the same work without waiting out a reset time the refusal can o
 
 **A launch on another provider's model that does not start moves to the session's own provider.**
 Where a step calls for or prefers a model on a provider other than the running session's — a
-cross-provider reviewer, a council seat, the capacity relaunch above — and that launch is refused,
+default council seat, the capacity relaunch above — and that launch is refused,
 never starts, or shows no activity after its brief by the time its siblings return or within 15
 minutes, relaunch the same assignment, with the same brief and effort, on the session's own provider
 at the same capability level, record both launches, and carry on: the other provider is a preference
 that improves independence, never a blocker, and its repair never holds the step.
 
-- A model or provider the user named explicitly is still honored or held as their words say.
+- A provider or exact model the user or calling skill requires is honored: its launch is repaired
+  or rerun within that requirement as the sections above say, never moved.
 
 ## The Accepted Worker
 
