@@ -233,6 +233,13 @@ small it looks.** Each route below is the gate set its batch passes on the head 
      never waits to classify. Keep the incident and these cases in the verification record; shared
      guidance states the invariant, not their identities. Classify before choosing the owner, since
      a component's owner can hide a broader failure.
+   - **Work from the decision, then verify the edit transfers.** Name the decision an agent made
+     before it produced the rejected result, and locate the instruction or handoff that allowed
+     it. When separate corrections trace to the same decision, fix it once at its owner. Verify
+     the actual edited guidance on a task with a different surface and vocabulary that still
+     reaches that decision, and on the closest legitimate case outside the class. Changing only
+     names or values in the original scenario does not show that the edit transfers. If the
+     original guidance already states the invariant, repair the step that failed to apply it.
    - Supported types: every kind the description names. Use the type the user states; otherwise
      the owner search below decides it, never a question to the user.
    - A file or skill the request names is a candidate, not proof of ownership. Compare it with its

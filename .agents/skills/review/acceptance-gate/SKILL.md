@@ -232,6 +232,10 @@ room, moving a failing path behind a control, a flag, a fallback or a retry, cat
 an error, special-casing the one reported value, or loosening a check until it passes. Each is a
 flag whose remedy is fixing the cause, whatever the change calls itself and however small; a
 workaround the user's words in the intent statement explicitly ask for is the only one that stands.
+For a repair, inspect the governing code or schema even if the diff leaves it untouched. State
+what caused the problem and where the repaired design now enforces the intended behavior. Flag a
+consumer-side fix when an owned design still admits the invalid state or forces the special case.
+Passing checks verify the behavior they exercise and do not establish that the design was fixed.
 A verdict with none says `no workaround added` in those words.
 
 For a diff question, also apply the `code-simplify` rubric’s **Trace Changed Flows** to the supplied
