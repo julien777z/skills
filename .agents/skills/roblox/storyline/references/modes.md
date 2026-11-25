@@ -10,4 +10,4 @@ The full implemented journey is the baseline, including first launch and onboard
 
 ## Extend
 
-The complete earlier journey, from onboarding through revisits, is input canon, including fulfilled promises, irreversible choices, relationships, and the ending players already experienced. New scope follows from that aftermath. A coda or changed final invitation may connect the arcs while preserving earned resolution. Retcons are explicit proposed changes, never silently revised history. New worlds have their own complete arcs, connective characters/themes, accessible revisits, and a final state even when later adventures remain possible.
+The complete earlier journey, from onboarding through revisits, is input canon, including fulfilled promises, irreversible choices, relationships, and the ending players already experienced. New scope follows from that aftermath. A coda or changed final invitation may connect the arcs while preserving earned resolution. New worlds have their own complete arcs, connective characters/themes, accessible revisits, and a final state even when later adventures remain possible.
