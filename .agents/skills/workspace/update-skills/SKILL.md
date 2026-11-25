@@ -44,9 +44,9 @@ an untrusted one is left out and reported.
   host and trusted, whichever session recorded it, so one session's refresh never drops another's
   pending changes from the shared install.
 - **Pull request content starts with the fetched remote head.** Apply its local tip on top
-  when present. For a trusted pull request in effect whose verified scope is limited to
-  guidance or its tooling, include unpushed commits only while its head branch is checked out
-  in an existing worktree. An unchecked local head branch for such a pull request is stale.
+  when present. For a trusted pull request in effect whose fetched and local changes are
+  limited to guidance or its tooling, include unpushed commits only while its head branch
+  is checked out in an existing worktree. An unchecked local head branch for such a pull request is stale.
   Recheck the worktrees immediately before deleting that exact local branch with
   `git branch -D -- <branch>`. If Git refuses, honor the refusal and reevaluate local-tip
   eligibility. Use the fetched head after deletion. An earlier overlay marker supplies pull
