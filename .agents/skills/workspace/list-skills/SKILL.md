@@ -1,6 +1,6 @@
 ---
 name: list-skills
-description: List the shared skills repository's skills and the current repository's own skills, in separate sections grouped by category, each marked user- or model-invocable with a one- or two-line summary. Use when the user asks which skills exist, what a skill does, or what they can invoke.
+description: List the shared skills repository's skills and the current repository's own skills. Use when the user asks which skills exist, what a skill does, or what they can invoke.
 short_description: 'List shared and repository skills with who can invoke each and what it does.'
 ---
 

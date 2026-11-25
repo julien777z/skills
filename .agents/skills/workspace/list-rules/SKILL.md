@@ -17,6 +17,8 @@ default branch without changing its checkout or unrelated work.
 
 Read each applicable repository's canonical `.agents/rules/<name>.md` files. Exclude repositories whose primary purpose is developing, packaging, testing, or operating the agent-synchronization system itself unless the user explicitly includes them.
 
+## Reconciliation
+
 For each rule name, merge the repository names that contain it. Compare complete canonical rule text, including frontmatter. Group identical texts and use the largest group as the baseline. If any other group exists, report every repository outside that baseline as having conflicting language. If two or more groups tie for largest, report all tied groups as conflicting rather than choosing an arbitrary baseline.
 
 ## Output

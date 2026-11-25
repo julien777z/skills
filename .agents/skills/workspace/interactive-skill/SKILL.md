@@ -1,6 +1,6 @@
 ---
 name: interactive-skill
-description: Give a skill a command-line-style menu of what it can do. Skip the menu when the request already says which choice the user wants; otherwise ask, and accept the answer in any common form (a number, a name, a short prefix, or "y" for yes in a yes-or-no question). Use as a dependency of any skill that declares a menu, whenever that skill starts or reaches a point where the user picks what happens next; a skill that declares a menu asks it only through this skill, never by rebuilding the menu itself.
+description: Give a skill a command-line-style menu of what it can do, skipped when the request already says which choice the user wants. Use as a dependency of any skill that declares a menu, whenever that skill starts or reaches a point where the user picks what happens next; a skill that declares a menu asks it only through this skill, never by rebuilding the menu itself.
 short_description: 'Offer a skill’s choices as a menu, skipped when the request already says.'
 ---
 
