@@ -154,34 +154,9 @@ plan of its own; only an edit that adds nothing skips it.
 
 ### Showing The Plan
 
-- **The user sees a plan once `review-proposal` has accepted it, or, where the running workflow
-  states a plan route straight to the Proposal gate, once that gate has, and never before.** A plan
-  still being drafted or reviewed stays with the run: nothing the user reads — a report, a summary,
-  a status line, a task list, a dashboard or a question — shows its steps, estimates or an outline
-  of them, and a draft is never offered as a preview; a report says only that a plan is being
-  prepared. This holds back the plan, never its open decisions, which go first.
-- Off that route, before showing a plan, invoke `review-proposal` on the detailed plan once the
-  user's answers to its decisions are folded in, with its intent and verified ownership evidence;
-  the user's short plan consumes that receipt while it adds nothing the detailed plan lacks.
-  [Authorization](references/authorization.md)'s **Approval Boundaries** consumes the receipt, and
-  its **Choices Between Versions Of A Page** applies to a decision between versions of a page.
-- **A plan with no open decision is shown, and its work starts in the same turn.** An open decision
-  is a product, scope, security, disclosure or authorization choice that is the user's and that
-  they have not answered. A plan holding one sends those decisions first and starts only
-  independent authorized work until they are answered. Once they are, or when the plan never held
-  one, the accepted plan goes to the user as a message with no approval question, **Execution**
-  starts without waiting for a reply, and the user can interrupt at any point.
-- **A plan shown this way is never called approved**: every record, report,
-  dashboard and brief says it was shown with no open decision, and when.
-- Showing a plan starts ordinary implementation and verification under the task's authorization.
-  A merge, deployment, publication or release it lists still waits for what **Task Authorization**
-  names, and a substantial skill change the user asked for stays held on its proposed flow.
-- An interruption continues the same plan. Never replace or silently revise a plan the user has
-  seen: pause the work an amendment affects, fold it into the detailed plan, ask any decision it
-  opens, take the plan through `review-proposal` again, and show the complete revised plan.
-- **Offering the next step as a choice is a stop wearing a question mark.** "Say the word and I will
-  start the next group" hands back an instruction the user gave once. Ask only for a decision that
-  is genuinely the user's, and put it in the question rather than in the plan's continuation.
+The user sees a plan only once `review-proposal` has accepted it, and its work starts in the same
+turn when no decision is open. [Planning](references/planning.md)'s **Showing The Plan** holds the
+route, read before a plan is shown.
 
 ### Priority
 
@@ -201,58 +176,15 @@ This order grants no deployment or merge authority: **Task Authorization** still
 
 ### Follow-Ups
 
-Classify each source or product follow-up under **When A Plan Is Needed** before preparing a plan. A small, clearly specified follow-up executes on the user's request; only a follow-up outside that exception needs its own plan. A canonical guidance correction follows **When A Plan Is Needed** and waits for no plan; while a guidance batch is in flight it joins that batch, as `edit-skill`'s **Recording During A Task** says. **Priority** decides when other follow-ups run and whether affected work pauses now; none of the routes below makes arrival order a reason to preempt active recovery.
-
-- **One that touches nothing in flight** — other files, another outcome — leaves the running work
-  going. It gets a plan only when **When A Plan Is Needed** calls for one, and runs beside that work
-  once any decision it opens is answered and **Priority** permits, under `subagent-matrix`'s
-  **Dispatch**. Send this template only for a follow-up that needs a plan:
-
-```markdown
-**Running work keeps going:** <step in flight> doesn't touch <what the follow-up changes>.
-
-<**Decision needed:** …, asked on its own first | **Plan for the follow-up, starting now**, once no decision is open>
-1. <step> (~<n> min)
-```
-
-- **One that changes what is being built** — a source or product follow-up — records the affected
-  work and its saved next step under **Work You Have Already Named**, then updates the active
-  plan record. Show an amended plan, as **Showing The Plan** says, only when **When A Plan Is
-  Needed** requires one; a small, clearly specified follow-up starts without one.
-  Pause affected work when **Priority** brings the amendment into execution; otherwise retain it
-  for after the active work. Resume once any decision it opens is answered and its priority permits. Unaffected work keeps
-  running while the user decides.
-- **One that narrows scope reaches the work already in flight, at once.** Message every running
-  worker to stop the work the cut removes and has not yet done, keeping what it already finished,
-  and record the cut in the intent statement every later gate and review receives. A finding in
-  the cut work, a defect included, is answered as out of scope rather than fixed, unless this
-  change introduced it.
-- A follow-up on a pull request already sent for review pushes to the same draft; **Completion**'s
-  **Shape the history** folds it into the existing commits.
+A small, clearly specified follow-up executes on the user's request, and any other is classified
+under **When A Plan Is Needed**. [Planning](references/planning.md)'s **Follow-Ups** holds the
+routes and templates, read when a follow-up arrives.
 
 ### Progress Record
 
-- **The ledger holds the plan's current state, so nothing about progress depends on what the chat
-  still remembers.** When an accepted plan goes to the user, record it with `session-ledger` as a
-  `plan` entry holding the fields `session-ledger` names for one, its status `shown` with that time,
-  filled from the planning work even where the plan shown to the user leaves them out. Work the user
-  adds to an active task, with or without a plan of its own, becomes a step on that plan or a plan
-  entry of its own, with the user's words and the time they added it, before the first
-  edit or dispatch it authorizes; a harness task list, the chat or a summary is never where it first
-  lives. A step the agent adds, or widens past what the user asked, is recorded as agent-originated,
-  proceeds under the task's authorization like the work **When A Plan Is Needed** says a plan in
-  execution covers, and is never shown as user-approved; one that is a product choice goes to the user
-  before it is built, as `pre-production`'s **Product Choices** says. Update it when the state
-  changes, not when a report is due: the plan being shown, a step starting, finishing, blocking or being
-  skipped, a follow-up's plan.
-- **A step that waits on other work records what it waits for**: the gate, merge or result whose
-  outcome lets it start. Every relayed result is checked against those records, and a result that
-  clears one starts the waiting step in that same turn, whichever stream produced it. A report that
-  lists only what is still running has not read the plan.
-- **A step estimated over 30 minutes is recorded with its parts**: bounded pieces of that step's
-  work, each with its own estimate in whole minutes, at least 1, together adding up to the step's.
-  Mark each part done as it finishes, so recorded progress moves while a long step runs. The plan
-  the user reads keeps its numbered steps; the parts live in the record.
+The ledger holds the plan's current state through `session-ledger`, updated when the state changes.
+[Planning](references/planning.md)'s **Progress Record** holds what is recorded, read before a plan is
+recorded or a step is added.
 
 ## Execution
 
@@ -435,46 +367,11 @@ Two streams run side by side from here: the guidance stream and the source strea
 `review-pass`'s **Set and timing** defines holds more than one pull request, invoke its **Combined
 Review** once each has its accepted head.
 
-- **Guidance stream.** Invoke `process-ledger` for the task's private ledger. It sends the
-  `guidance_correction` batch it freezes to `edit-skill`'s **Guidance Delivery** route, which the
-  primary agent coordinates so its review and checks never wait on the source stream. Before a
-  source pull request's **Review the pull request**, every pending `guidance_correction` entry
-  that rides it, as the GitHub rule's **Branches and Pull Requests** and `edit-skill`'s guidance
-  pull-request reference set out, in the batch in flight or the one after it, is pushed to it and
-  passes its source check, as **Guidance Delivery**'s **Resume the batch** says, so its review
-  pass, history and ready message cover them. An entry recorded after the batch in flight merged
-  is delivered in the batch frozen once that one is done, so the source stream then waits for that
-  delivery too, and for nothing else before **Review the pull request**. Each such entry's
-  skill-test round runs on the head **Review the pull request** accepted, before **Shape the
-  history**, and a repair it makes returns to review as **Guidance Delivery**'s **Conclude the
-  skill test** says. A task with none has no guidance stream.
-- **Source stream**, in this order for each source pull request; an agent-configuration pull
-  request belongs to the guidance stream:
-
-1. **Review the pull request.** Invoke `review-pass` on the pull request with the
-   intent statement. It runs its review loop and one final `acceptance-gate` over the changes no
-   earlier pass reviewed, brings in a moved base, and returns the head its final acceptance passed.
-2. **Shape the history** with `rewrite-git-history`. The first time a pull request is sent for review,
-   rebuild it into one commit per material change. Each later **Completion** of the same pull
-   request, after a follow-up, folds every change into the commit it amends through that skill's
-   fixup route, or adds a new commit for a new material change, and never rebuilds it again, so the
-   commits the user already reviewed keep their shape. A rewrite whose tree proof shows an identical
-   tree keeps the acceptance verdict and moves `review-pass`'s reviewed head to the rewritten head.
-3. **Reconcile the result** with **Product Constraints**' target receipt, updating its sources when
-   accepted requirements changed. Verify every requested outcome and every incidental fix, confirm tests and relevant validation
-   cover each of them and every simplification, confirm intentional contract changes are reflected
-   in the expected behavior, and confirm multi-repository delivery artifacts describe only their
-   owning repository. Then build this pull request's ready-for-review message, in the shape below,
-   from `list-prs`, what the run did and `review-pass`'s **Output**.
-4. **Merge when authorized.** When **Task Authorization** finds the merge authorized, send **Reconcile the result**'s message together with the
-   invocation of `merge-gate`, passing the accepted head, `review-pass`'s **Checks** results with their
-   commands and head as the behaviors local tests already cover, every exclusion it returned with
-   its evidence, and, as its fix rule, `review-pass` over each fix's delta since the accepted head and the
-   GitHub rule's **Pre-Push Gate**, with each fix folded into its commit through `rewrite-git-history`'s
-   fixup route. It inventories exact-head hosted coverage, obtains fresh results only where no
-   equivalent terminal coverage exists, fixes what relevant checks report and merges; when it returns, send one line with the
-   result it read: the merge, or the gate that holds it. Otherwise send **Reconcile the result**'s message; the pull
-   request stays draft.
+The guidance stream and the source stream, with the steps of each, are in
+[completion streams](references/completion.md), read when this checkpoint starts. The source
+stream runs **Review the pull request**, **Shape the history**, **Reconcile the result** and **Merge
+when authorized** in that order for each source pull request; an agent-configuration pull request
+belongs to the guidance stream.
 
 The ready-for-review message takes exactly this shape, one message per pull request, leaving out
 **Deferred** when nothing was deferred:
