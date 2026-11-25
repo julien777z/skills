@@ -92,13 +92,13 @@ dependency-routing defect, not evidence that a consumer must migrate.
 
 Once the resolved sources agree, compare consumer migration with changing the owner before accepting
 either, stating why migrating consumers is insufficient before accepting a broadened owner.
-Broadening an owner, adapter, generic bound, schema, or validation solely so an owned
-consumer's previous input still passes is compatibility even when it adds no branch or fallback.
-Flag it unless the evidence establishes that broader input is the owner's independent target
-contract or the user explicitly authorized the retained compatibility. Matching runtime behavior
-does not establish that a consumer satisfies a type, API, or generated-contract constraint. The
-ordinary remedy corrects dependency selection or, when the resolved target contract is current,
-updates every owned consumer and removes its obsolete representation.
+Broadening an owner, adapter, generic bound, schema, or validation solely so an owned consumer's
+previous input still passes is compatibility even when it adds no branch or fallback. Flag it unless
+the evidence establishes that broader input is the owner's independent target contract or the user
+explicitly authorized the retained compatibility. Matching runtime behavior does not establish that
+a consumer satisfies a type, API, or generated-contract constraint. The ordinary remedy corrects
+dependency selection or, when the resolved target contract is current, updates every owned consumer
+and removes its obsolete representation.
 
 Read deletions before additions, but do not treat an empty deletion set as an empty intent. A file
 added and removed within the branch disappears from its final diff without canceling the ownership
