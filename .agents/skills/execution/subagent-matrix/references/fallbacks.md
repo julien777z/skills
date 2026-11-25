@@ -70,20 +70,19 @@ that level does the same work without waiting out a reset time the refusal can o
 **A launch on another provider's model that does not start moves to the session's own provider.**
 Where a step calls for or prefers a model on a provider other than the running session's — a default
 council seat, the capacity relaunch above — and that launch is refused, never starts, or shows no
-activity after its brief by the time its siblings return or within 15 minutes, relaunch the same
-assignment, with the same brief and effort, on the session's own provider at the same capability
-level, record both launches, and carry on: the other provider is a preference that improves
-independence, never a blocker, and its repair never holds the step.
+activity after its brief when the first of its siblings returns, or 15 minutes after its brief if
+none has (with no siblings, at 15 minutes), relaunch the same assignment, with the same brief and
+effort, on the session's own provider at the same capability level, record both launches, and
+carry on: the other provider is a preference that improves independence, never a blocker, and its
+repair never holds the step. The coordinator waits on its launches with that 15-minute limit,
+never on all of them together, so the check runs at that moment and the relaunch goes out before
+any further wait; a launch still running is cancelled once its replacement starts.
 
 - A provider or exact model the user or calling skill requires is honored: its launch is repaired
   or rerun within that requirement as the sections above say, never moved.
 - Inside **Ordinary Fallbacks** below, where the ladder reached the other provider because the
   session's own family at that level was refused as unsupported, a launch there that does not start
   goes on to the ladder's next step instead.
-- **The check happens while the siblings run, never after them.** Read such a launch's activity
-  when its siblings first return and at 15 minutes after its brief, whichever comes first, rather
-  than waiting on every launch together; once the trigger holds, the relaunch goes out at once,
-  before the coordinator waits on any other agent, and the stalled launch is cancelled.
 
 ## The Accepted Worker
 
