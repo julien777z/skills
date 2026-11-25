@@ -462,8 +462,19 @@ the issue should be ignored.
 - For a requiredness change, establish the affected data's retention scope under **Product State**
   before deciding what its revision keeps or clears; required columns do not themselves create an
   obligation to preserve disposable or nonexistent rows.
+- **A value a design needs that existing records lack is required and backfilled, never made
+  optional for them.** This holds for what the agent builds and equally for every option, plan or
+  recommendation it puts to the user: no option keeps the column nullable for records without the
+  value, proceeds without it, sends a provider less than the provider requires, or refuses or
+  skips the records that lack it until they gain it. Each is legacy support for those records.
+  The migration writes every row's value, from its authoritative source where one can derive it,
+  and otherwise, where **Product State** establishes that the affected records are disposable
+  pre-production data, a type-valid placeholder: a stored acceptance's date and client address
+  for accounts created before acceptances were recorded, for example. Released user data with no
+  authoritative source is a retention question for the user, asked before the design is offered.
 - For retained values, use the authoritative source where one exists and a type-valid placeholder
-  only where none exists and the placeholder expresses a legitimate domain state. The
+  only where none exists and either the placeholder expresses a legitimate domain state or the
+  records are disposable pre-production data, as the bullet above says. The
   **Target Contract** prohibition on invented identities, ownership, and scopes also applies during
   migration. Never overwrite a known retained value, fabricate a placeholder in runtime code, or
   keep a permanent schema default solely to make a migration convenient.
