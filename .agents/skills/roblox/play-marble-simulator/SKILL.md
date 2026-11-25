@@ -1,6 +1,6 @@
 ---
 name: play-marble-simulator
-description: Play the public Roblox marble game Marble Elimination Ultimate (a marble race where the last marbles each level are eliminated) in the isolated Roblox runner, alone or in the same server as a Roblox player the user names, playing to win and collecting the game's coins, and sending screenshots as play goes on. Use when the user asks to play, join, follow or watch someone in that game, or to keep playing it until they say stop; and whenever a session playing it learns something new about joining, controls, levels, coins or strategy, which is added to this skill's playbook.
+description: Play the public Roblox marble game Marble Elimination Ultimate (a marble race where the last marbles each level are eliminated) in the isolated Roblox runner, alone or in the same server as a Roblox player the user names. Use when the user asks to play, join, follow or watch someone in that game, or to keep playing it until they say stop; and whenever a session playing it learns something new about joining, controls, levels, coins or strategy, which is added to this skill's playbook.
 ---
 
 # Play Marble Simulator
