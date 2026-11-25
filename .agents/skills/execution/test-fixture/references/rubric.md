@@ -11,7 +11,7 @@ end-to-end.** End-to-end tests run the real services, integration tests replace 
 doubles, and unit tests replace all of them, so the same assertion proves something different in
 each: an end-to-end test that an integration test also reaches stays, and so does an integration
 test a unit test also reaches. When adding coverage, write the end-to-end test wherever one can
-reach the contract.
+reach the contract, within **Third-Party Calls Use Documented Doubles**.
 
 Before adding a test, answer five questions; a missing answer means do not add it yet:
 
@@ -659,6 +659,19 @@ the surrounding write still commits; a fake that raises the library's real excep
 an outage; a double container installed through the lifecycle override that carries real wire
 messages; a private attribute of a third-party object; a settings module tested as its own
 subject; a same-module symbol that constructs a third-party client.
+
+## Third-Party Calls Use Documented Doubles
+
+**A test or check an agent adds or runs for code that calls a third-party service with
+credentials** — such as a model provider, a paid API, or an identity or payment provider — uses a
+double built from that provider's documented request and response structures, such as its API
+reference and SDK types, at the seam **Choose Test Doubles** names, never a live call with real
+credentials. New live cases, in a new suite or an existing one, are written only when the user asks
+for them; an existing live test whose covered behavior the change breaks or alters is updated to
+match that behavior, adding no further live call. The one exception is a suite the repository
+already runs across that boundary: it runs as written, with the credentials where the repository
+configures them, under **A Missing Credential Leaves The Test Alone**. A plan, review or gate that
+asks for a live call is answered with this section.
 
 ## A Missing Credential Leaves The Test Alone
 
