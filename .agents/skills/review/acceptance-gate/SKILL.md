@@ -55,9 +55,9 @@ the implementation into the specification.
 
 Apply `pre-production`'s **Target Contract** to the resolved values themselves. Flag fabricated
 ownership or scope even when callers agree, tests pass, or an older path already used it.
-For every affected write and read that needs a scope, name three concrete cases in the verdict.
-Verify that the correct scope succeeds, a missing required scope is rejected, and an unrelated
-scope is rejected. Require the same checks in the repair if the evidence is missing.
+Trace affected reads and writes to the boundary that enforces their scope. At each distinct
+boundary, verify that the eligible scope can act and that missing required scope and unrelated
+scope cannot access or change the scoped data. Cite the evidence in the verdict.
 
 For every changed or newly resolved dependency, provider, generated contract, shared package, or
 other boundary owner, complete the dependency-authority receipt in `references/rubric.md` before a

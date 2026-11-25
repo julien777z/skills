@@ -233,14 +233,6 @@ small it looks.** Each route below is the gate set its batch passes on the head 
      never waits to classify. Keep the incident and these cases in the verification record; shared
      guidance states the invariant, not their identities. Classify before choosing the owner, since
      a component's owner can hide a broader failure.
-   - **Work from the decision, then verify the edit transfers.** Name the decision an agent made
-     before it produced the rejected result, and locate the instruction or handoff that allowed
-     it. When separate corrections trace to the same decision, fix it once at its owner and
-     remove incident-specific rules that only restate the repair. Verify the actual edited
-     guidance on a task with a different surface and vocabulary that still
-     reaches that decision, and on the closest legitimate case outside the class. Changing only
-     names or values in the original scenario does not show that the edit transfers. If the
-     original guidance already states the invariant, repair the step that failed to apply it.
    - Supported types: every kind the description names. Use the type the user states; otherwise
      the owner search below decides it, never a question to the user.
    - A file or skill the request names is a candidate, not proof of ownership. Compare it with its
@@ -390,9 +382,10 @@ small it looks.** Each route below is the gate set its batch passes on the head 
       change; acceptance, or that recorded round-limit decision, must cover the final wording before delivery.
    5. **Run one `test-skill` round** over the batch, started and concluded as **Guidance Delivery**
       says for its route. Give it every entry's reproduction scenario and observed miss, grouping
-      entries that share a failure class, and each Scope Statement's Stays as it is line as the
-      case its scenario must leave unchanged. `test-skill` owns the scenario writing, coverage,
-      package, control, grading, and rerun procedure.
+      entries that share a failure class. A correction for a class of recurring failures also
+      exercises a different task that reaches the same decision and the nearest legitimate case
+      outside the class, as the [edit criteria](references/edit-criteria.md)'s **Scope Statement**
+      describes. `test-skill` owns scenario writing, coverage, packaging, controls, grading, and reruns.
       Record an entry whose run `test-skill` does not require as `not run: <test-skill reason>`;
       the gate of its batch's route is its check.
 
