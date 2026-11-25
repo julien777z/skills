@@ -148,8 +148,9 @@ Run once a change is otherwise finished, over a scope fixed before it starts:
 - the adjacent test files: the other test modules in each such file's test package that mirror the
   same source package. One hop only: a file the sweep edits brings no further neighbors in.
 
-Apply the complete rubric to every test in that scope — **Test Value And Retention** with its
-dispositions, the **Mirror Source Ownership** test-module check, the **Naming Checks**, **Factory Contents**, **Auditing Existing Doubles**, and the
+Apply the complete rubric, and the language reference the **Language Router** selects, to every test
+in that scope — **Test Value And Retention** with its dispositions, the **Mirror Source Ownership**
+test-module check, the **Naming Checks**, **Factory Contents**, **Auditing Existing Doubles**, and the
 **Literal Sweep** — and fix what it finds: repair or rewrite a weak test, fold a duplicate into its
 keeper, and delete one that proves nothing once the rubric's deletion evidence is recorded. A
 repaired or strengthened guarantee follows the existing-check validation procedure above. A fix that repairs a defect —
