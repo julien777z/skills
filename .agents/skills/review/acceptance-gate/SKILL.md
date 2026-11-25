@@ -36,44 +36,10 @@ is a finding throughout the change, including corrections and base reconciliatio
 and bug fixes still have requirements for the gate to evaluate. Where no change is in flight, say so
 and judge the item on product state and the rubric.
 
-When work changes an owned boundary, the statement quotes the applicable target-contract instruction,
-names the one canonical representation, and identifies every retained or candidate representation of
-that boundary. The gate cannot accept an abstract summary in place of that receipt; a second consumer
-layout, branch, probe, fallback, or compatibility helper is a flag unless the user explicitly approved
-retaining it.
-
-The owned-boundary receipt distinguishes the actor or execution owner from its destination and
-names the permitted resources and prohibited placements, disclosures or writes. Trace the actual
-selectors, configuration and lifecycle to the resolved identities and scopes, with evidence that
-they match the accepted contract and one counterexample the implementation must reject. For a
-runtime connection, follow each affected process's actual client construction, endpoint and
-transport through startup to the observed connection; a credential or another component's listener
-establishes capability, not that process's route. A name,
-alias, package move, permission grant or test fixture repeating the implementation's assumption
-does not prove ownership or isolation. Missing evidence holds a clean verdict; it does not turn
-the implementation into the specification.
-
-For every changed or newly resolved dependency, provider, generated contract, shared package, or
-other boundary owner, complete the dependency-authority receipt in `references/rubric.md` before a
-clean verdict. First reconcile a mismatch between the declared and loaded source: a workflow, cache,
-checkout, or resolver that loads another branch is a dependency-routing defect, not evidence that a
-consumer must migrate.
-
-An unmerged pull request, proposed branch, or future release is candidate evidence only. It cannot
-establish a target contract, satisfy a required repair on another target, or be assumed to merge
-unless the user explicitly makes it a dependency.
-
-Once the resolved sources agree, compare consumer migration with changing the owner before accepting
-either. Broadening an owner, adapter, generic bound, schema, or validation solely so an owned
-consumer's previous input still passes is compatibility even when it adds no branch or fallback.
-Flag it unless the evidence establishes that broader input is the owner's independent target
-contract or the user explicitly authorized the retained compatibility. Matching runtime behavior
-does not establish that a consumer satisfies a type, API, or generated-contract constraint. The
-ordinary remedy corrects dependency selection or, when the resolved target contract is current,
-updates every owned consumer and removes its obsolete representation.
-
-`references/rubric.md` states what the statement names and how its inputs are reconciled. Read product
-state from the target repository's project guidance; never import another repository's assumptions.
+The statement carries the receipts `references/rubric.md`'s **What The Intent Statement Names**
+lists, and that section says how its inputs are reconciled; a missing receipt holds a clean verdict.
+Read product state from the target repository's project guidance; never import another repository's
+assumptions.
 
 ## The Gate Subagent
 
@@ -194,45 +160,21 @@ verify each against the sources. Name the searches and candidates read in `Also 
 suspect shapes, apply the rubric's removal test. Missing validation evidence
 is a separate flag, never a reason to leave the design judgment unfinished.
 
-**Trace changed state-like values during the design comparison.** Apply the rubric's **State
-Meaning** criteria to their writers, transformations and consumers, including values whose names did
-not change. Include the authority, lifetime and purpose evidence in `Also read`, and semantic
-collisions in the flag bullets; missing evidence prevents a clean verdict.
+**Trace changed state-like values during the design comparison**, as the rubric's **The Design
+Comparison** sets out; missing evidence prevents a clean verdict.
 
-**Then run the five greps** the `code-simplify` rubric's **Five Greps** defines over the diff's
-added lines, and list every hit as a flag ahead of all others, with the remedy that section names.
-Each hit is a `defect` flag here, whatever severity that pass gives it, because its remedy moves a
-value, a handler or a declaration rather than only the form of lines. A verdict with none says
-`no hit for any of the five greps` in those words.
+**Then run the five greps** the `code-simplify` rubric's **Five Greps** defines, as the rubric's
+**The Design Comparison** sets out; a verdict with none says `no hit for any of the five greps` in
+those words.
 
-**Then it lists every guard, refusal, validation, or branch the diff adds with the writers of the
-value it tests and of what its path reads next**, by path and function, and flags each one the
-rubric's diff test flags. For an owned boundary, it also names every representation each path reads
-or writes and flags a second representation, including one hidden behind a helper. Trace the
-actual producers and consumers from the supplied code. In `Writers read`, name the inputs each
-consumer accepts and how it excludes each obsolete representation. Flag missing paths or evidence.
-Distinct meanings carried by the canonical representation still receive the ordinary guard checks.
-A verdict with no added guard says `no guard added` in those words.
+**Then list every guard, refusal, validation, or branch the diff adds**, as the rubric's **The
+Design Comparison** sets out; a verdict with none says `no guard added` in those words.
 
-**Then it lists every product choice the diff makes**, as `pre-production`'s **Product Choices** defines one — a change to
-what a feature does or shows, a remedy whose visible effect is large, such as a layout, control or
-flow changing across many pages, a change carried past the surface the user named — each with the
-user's words in the intent statement that settle it. Small presentation decisions on the surface in
-hand are not listed; neither is a game's design, which the global rules' game-design bullet makes
-the agent's decision and never a question for the user, a new control or room included; nor is local
-test tooling or the records it seeds, which `pre-production`'s **Local Stacks** leaves to the
-agent. A product choice with no such words is a flag whose remedy is putting the choice to the
-user before the code stands, whatever the change calls itself, a fix included. An earlier
-acceptance, a plan record without the user's words, or a brief calling the choice decided is not
-those words. A verdict with none says `no product choice added` in those words.
+**Then list every product choice the diff makes**, as the rubric's **The Design Comparison** sets
+out; a verdict with none says `no product choice added` in those words.
 
-**Then it lists every workaround the diff makes**: a remedy that makes the reported symptom go away
-while its cause stays, such as hiding or folding away what no longer fits instead of giving it
-room, moving a failing path behind a control, a flag, a fallback or a retry, catching and ignoring
-an error, special-casing the one reported value, or loosening a check until it passes. Each is a
-flag whose remedy is fixing the cause, whatever the change calls itself and however small; a
-workaround the user's words in the intent statement explicitly ask for is the only one that stands.
-A verdict with none says `no workaround added` in those words.
+**Then list every workaround the diff makes**, as the rubric's **The Design Comparison** sets out; a
+verdict with none says `no workaround added` in those words.
 
 For a diff question, also apply the `code-simplify` rubric’s **Trace Changed Flows** to the supplied
 implementations, consumers, and affected-repository map. A diff alone that cannot establish that
