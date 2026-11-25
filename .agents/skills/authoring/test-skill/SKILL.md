@@ -15,6 +15,7 @@ confuse those conclusions.
 - `subagent-matrix`
 - `session-ledger`
 - `council`
+- `acceptance-gate`
 
 ## When It Runs
 
