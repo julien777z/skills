@@ -13,14 +13,8 @@ paths:
 
 - Add a blank line after each docstring.
 - Never add decorative separator comments (for example, `# -----` headers).
-- Add a blank line after multi-line statements (function calls, context managers, etc.) before the next statement.
-- Add a blank line before terminating statements (`sys.exit()`, `return`, `raise`) to visually separate them from preceding code.
-- Use blank lines as logical phase boundaries. Keep consecutive assignments or calculations together only when they jointly prepare one check, transformation, or result.
-- Insert a blank line whenever adjacent statements advance to a different responsibility, even when both are short. In particular, separate an action from logging or other reporting; separate construction of an object from configuring or using it; and separate each independently configured parser or command group from the next.
-- At module scope, separate runtime collaborators such as loggers from subsequent constants, type aliases, enum declarations, or configuration data. Keep the declarations together only when they form their own cohesive group.
-- A short compact block (2–3 lines) may stay together only when every line directly contributes to the same operation. Do not use compactness alone as a reason to remove a logical boundary.
-- When consecutive lines switch to a different statement kind (for example `assert` to a mock-verification call, or `setattr(...)` to an unrelated assignment), insert a blank line when the new statement begins a new logical group.
-- Add a blank line after setup/initialization code before the main logic begins.
+- Use blank lines as logical phase boundaries: separate adjacent statements that advance to a different responsibility, even when both are short, such as setup from main logic, an action from logging or reporting, the construction of an object from configuring or using it, each independently configured parser or command group from the next, a module-scope runtime collaborator such as a logger from the constants and declarations after it, and a statement of a different kind that begins a new logical group (for example `assert` to a mock-verification call). Statements that jointly prepare one check, transformation or result, or a 2–3 line block whose every line contributes to the same operation, stay together; compactness alone is no reason to remove a boundary.
+- Add a blank line after a multi-line statement (a function call, a context manager), before a multi-line `assert`, and before a terminating statement (`sys.exit()`, `return`, `raise`).
 
 ```python
 # Good: blank line separates setup from main logic
@@ -73,7 +67,6 @@ MAX_ITEMS: Final[int] = 20
 ALLOWED_STATES: Final[frozenset[str]] = frozenset({"ready", "complete"})
 ```
 
-- Add a blank line before multi-line assert statements.
 - Do not put docstrings or comments at the top of files (no module-level docstrings, no module-level comments, and no encoding header comments like `# coding: utf-8`).
   A migration revision file's first line may be a lock marker an invoked migration skill defines:
   it is a machine-read marker, and it stays verbatim.
