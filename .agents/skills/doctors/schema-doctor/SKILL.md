@@ -1,6 +1,6 @@
 ---
 name: schema-doctor
-description: Audit and correct unjustified nullability, model complexity, primary-key design, index design, and table and model declarations that depart from the repository's rules, across repository API contracts, serialized schemas, persisted schemas, and the field flows connecting them. Use to review requiredness, optional fields, nullable columns, duplicated contract models, unnecessary fields, shared model ownership, missing or redundant indexes, primary keys, or schema consistency across a repository. Run only when the user asks for it.
+description: Audit and correct unjustified nullability, model complexity, primary-key design, index design, and table and model declarations that depart from the repository's rules, across repository API contracts, serialized schemas, persisted schemas, and the field flows connecting them. Use to review requiredness, optional fields, nullable columns, duplicated contract models, unnecessary fields, shared model ownership, missing or redundant indexes, primary keys, or schema consistency across a repository, or to map how fields flow between contracts and storage. Run only when the user asks for it.
 short_description: 'Check models and schemas for unnecessary nulls, complexity, keys, and indexes.'
 ---
 
@@ -56,7 +56,7 @@ order, group, paginate, update, or delete rows. Trace foreign-key actions and ot
 through the referencing tables so index decisions reflect the operations the database must perform,
 not only the table declaration.
 
-Tests, fixtures, and factories may reveal assumptions and must validate the resulting contract, but
+Tests, fixtures, and factories may reveal assumptions and, where the repository keeps them, must validate the resulting contract, but
 they are never live consumers or authoritative evidence for requiredness, nullability, field or model
 retention, duplication, or ownership. A test cannot prevent a field merge, removal, rename, or move;
 update it after deciding the contract from authoritative sources and runtime behavior.
@@ -213,9 +213,8 @@ current wire shape cannot express the invariant cleanly, use `pre-production` to
 breaking message shape rather than preserving ambiguity.
 
 Edit protobuf source rather than generated output, update every producer and consumer the user controls, in any repository,
-regenerate all owned targets, and run the repository-native generation and contract checks. Never
-weaken a compatibility gate. Report the exact expected failure caused by an intentional break and
-separate it from any unintended break detected in the same run.
+regenerate all owned targets, and run the repository-native generation and contract checks. Treat
+the compatibility gate as `pre-production`'s **Target Contract** says.
 
 ### Convergence
 
@@ -247,13 +246,9 @@ Report each of these, with the pair and the fields:
 
 **Unifying a divergence is preferred over deriving around it.** A helper that intersects two models'
 field sets, or subtracts one from the other, is a second mechanism papering over the first; the fix
-is one declaration. Under `pre-production` an API, protobuf, or model contract break is the
-preferred resolution rather than a compatibility path — the reverse of the instinct to keep both
-shapes working.
+is one declaration. A contract break to reach it is made as **Dispositions** says.
 
-The guard in **Model Surplus** below still applies to every unification: a real
-authorization, disclosure, persistence, or wire distinction is never erased merely to reduce the
-declaration count.
+The retention test in **Model Surplus** applies to every unification.
 
 Left alone: an implementation-only declaration that crosses no serialized or stored boundary, which
 another doctor owns; and a pair whose difference **Model Surplus** retains.
@@ -291,27 +286,23 @@ authorization, disclosure, persistence, or wire distinction. Record that distinc
 recommendation does not erase domain meaning merely to reduce the declaration count. Equivalence or
 ownership lacks evidence while such a distinction cannot be ruled out.
 
-A provider difference is not one of those distinctions, because the two sides of that boundary are
-not equally fixed. **A contract the user owns can change; a third-party provider's cannot.**
-Only one side can move, so a provider difference is always resolved by moving the repository's model
-toward what the provider sends — never by standing a second model beside it and converting.
-
-Take these in order, and the first that fits is the answer:
+A provider difference is not one of those distinctions: a third-party provider's contract cannot
+change and one the user owns can, so the repository's model moves toward what the provider sends,
+and a second model beside it with a converter between them is not the answer. Take these in order;
+the first that fits is the answer:
 
 - **A difference in encoding is an annotation on the field** — a validator coercing the string the
   provider sends into the type the model holds, an alias naming its key, an alias path reaching its
-  nested one. Never a second model.
+  nested one. Two models that mirror each other field for field, joined by a conversion method, are
+  an encoding difference standing as a model.
 - **A difference in content earns a separate model**: the provider carries fields the repository
   deliberately does not, or a shape no annotation can express.
-- **A conversion method between two models that mirror each other field for field is the signal**
-  that the second model is an encoding difference wearing a model's clothes.
 - **Adapting is not imitating.** The provider's encoding crosses into the model — its tokens, its
   date formats, its nesting, its keys. Its vocabulary does not: field names, casing, and domain terms
   stay the repository's own, reached through aliases.
 
-The separate rule at **Third-Party Contracts** is unaffected: a local provider-shaped model
-must still represent what the provider can actually send. That rule constrains what the model may
-require; it never licenses a second model to hold it.
+**Third-Party Contracts** still holds: a local provider-shaped model must represent what the
+provider can actually send, and that constrains what the model may require.
 
 ### Keys And Indexes
 
@@ -351,7 +342,7 @@ change. A workload-dependent decision lacks evidence while the required plans or
 unavailable; continue correcting structurally provable gaps such as a referential action that must
 scan an unbounded referencing table. Apply each change through the canonical schema and
 the repository's migration skill, including its data safety, lock-risk, reversibility, and
-validation requirements. Never issue an ad hoc index change against a live database.
+validation requirements.
 
 Left alone: an index whose worth depends on workload evidence the run cannot read, recorded
 unresolved with the missing plan or statistic.
@@ -404,7 +395,9 @@ completion check confirms every planned field and model cascade reached each liv
 - Breaking an owned API, protobuf or model contract to reach the clean shape is ordinary work, made
   as `pre-production`'s **Target Contract** says; a contract a party outside the user's control
   speaks stays as it is and is reported.
-- Never retain a transitional nullable path.
+- Remove a nullable path kept only for a transition in the same change, as `pre-production`'s
+  **Target Contract** says of transitional support; the placeholder a requiredness migration uses
+  while it backfills belongs to that migration, as the repository's migration skill governs it.
 - Every schema change lands through the canonical schema and the repository's migration skill. For
   index changes, also run the repository's database-specific schema checks and representative
   read-only query-plan validation when configured.
