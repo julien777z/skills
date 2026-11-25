@@ -1,6 +1,6 @@
 ---
 name: execute-task
-description: "Always run this. Invoke once at the start of every task authorized to change files — including one whose edits sub-agents make or that starts because work turned up a defect — before recommending, delegating or making edits, and keep it active until verified completion or the user stops or hands it off. Never invoke it from inside a skill it runs. Its references also govern, in any task whether or not it changes files, what an invocation or authorization covers, approval boundaries, steps only the user can take, steps that cannot be taken back, reading state after a push or merge, checking a worker's claim and tracing a cause before reporting it, where working files go, waits and awaited results, and verification cadence and suite choice."
+description: "Run for reports of broken behavior and at the start of every task authorized to change files — including one whose edits sub-agents make or that starts because work turned up a defect — before recommending, delegating or making edits, and keep it active until verified completion or the user stops or hands it off. Never invoke it from inside a skill it runs. Its references also govern, in any task whether or not it changes files, what an invocation or authorization covers, approval boundaries, steps only the user can take, steps that cannot be taken back, reading state after a push or merge, checking a worker's claim and tracing a cause before reporting it, where working files go, waits and awaited results, and verification cadence and suite choice."
 short_description: 'Plan source and product changes and show the plan; validate canonical guidance changes through their delivery gates.'
 ---
 
@@ -43,11 +43,11 @@ is a proposed flow.
 Follow the explicitly selected workflow’s own declared sequence, checks and delivery holds throughout
 the task. Where it owns a stage, return its result to this run rather than starting a parallel stage.
 
-- Invoke this skill once when a task is authorized to change files, before its implementation
-  recommendation, delegated edits, or first edit. A run stays active until
-  the task's outcome is verified complete or the user explicitly stops or hands it off. **Work You
-  Have Already Named** retains outstanding items and their next actions through reports, gates and
-  interruptions. Nothing in the task re-enters the skill; the run simply has not ended.
+- A report of broken behavior starts a repair unless the user asks for diagnosis only. Invoke this
+  skill once at the start of each authorized change, before recommending, delegating or editing.
+  Carry defect reports through diagnosis, repair and verification within **Task Authorization**.
+  A workaround can help while repair proceeds. **Work You Have Already Named** keeps the run active
+  through reports, waits and interruptions, until verified completion or the user stops or hands it off.
 - The session agent selects independently applicable specialized skills from their descriptions once.
   They return outcomes, pending decisions and required coordinator work to the caller.
 - A selected workflow presents its own plan through the route it declares, an approval it requires included.
