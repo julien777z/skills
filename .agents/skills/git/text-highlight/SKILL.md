@@ -1,6 +1,6 @@
 ---
 name: text-highlight
-description: "Show changes as diff-shaped code blocks a reader can locate at a glance: an edited line marked + in the form it now takes, a line dropped with nothing in its place marked -, a few unchanged lines around each change, and ... where the file goes on. Every file fences with diff so the marks color, a document as readily as a module; text mode drops to a plain fence only when asked for. Use to show a diff or named paths as excerpts, in code mode or, when asked, text mode, or from a skill that declares it."
+description: "Show changes as diff-shaped code blocks a reader can locate at a glance. Every file fences with diff so the marks color, a document as readily as a module; text mode drops to a plain fence only when asked for. Use to show a diff or named paths as excerpts, in code mode or, when asked, text mode, or from a skill that declares it."
 short_description: 'Show code changes in small diff-shaped excerpts that are easy to locate.'
 ---
 
@@ -43,18 +43,18 @@ the call.
      and `-` is kept for a line that goes with nothing in its place — a run of removals no addition
      follows. A reader comparing two near-identical paragraphs word by word is reading noise; the
      one that stands is the one worth reading.
-   Where the file continues before the first hunk, after the last
-   one, or between two hunks, put `...` on its own line in that place. Two hunks whose context
-   overlaps or touches become one run with no `...` between them. A file added or deleted whole has one
-   hunk holding every line, so it renders whole with no `...` anywhere; a rename with no content
-   change shows the two paths and no block.
+   - **Gaps and whole files.** Where the file continues before the first hunk, after the last one,
+     or between two hunks, put `...` on its own line in that place. Two hunks whose context
+     overlaps or touches become one run with no `...` between them. A file added or deleted whole
+     has one hunk holding every line, so it renders whole with no `...` anywhere; a rename with no
+     content change shows the two paths and no block.
 4. **Write the path line.** Each block is preceded by a line holding the file's repository path in
    backticks, and, when the file was renamed, `old → new`.
 5. **Order the files** as the diff orders them, one block each, a blank line between files.
 
 ## Output
 
-Return exactly this shape, one entry per file, and nothing else:
+Return exactly this shape, one entry per file, and nothing else, so a caller that wants headings or links writes them around the blocks it receives:
 
 ````markdown
 `<path>`
@@ -93,10 +93,6 @@ nothing around it, and never wrap a block in a second fence to show its markers.
 
 ## Guardrails
 
-- Never invent or paraphrase a line: every line in a block comes from the diff verbatim, prefix
-  aside.
 - Never omit a hunk to shorten the response; a file with many hunks shows every one of them, each
   placed by `...`. The superseded run step 3 drops is the one omission there is, and it is dropped
   because the line that replaced it is right there.
-- Never add commentary inside or between the blocks; a caller that wants headings or links writes
-  them around the blocks it receives.
