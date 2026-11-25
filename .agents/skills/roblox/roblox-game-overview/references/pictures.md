@@ -40,7 +40,7 @@ whatever its fingerprints say.
 
 ## Staging A Scene
 
-Hold one of the game's editors, as `roblox-studio`'s testing reference says for the game's editor
+Hold one of the game's editors, as `roblox-studio`'s runner reference says for the game's editor
 pool, and open a built copy of the place that holds every map in that editor's slot, in place of its
 warm editor; start Play with a disposable profile, and never save. Reuse the repository's own capture helpers for each step below
 where it has them.

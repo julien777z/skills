@@ -45,7 +45,7 @@ delegation when it runs one.
    Roblox's search, since the user may misspell it, and resolve a named player to a user ID through
    Roblox's users API. Their presence names the place and server they are in right now. With no
    player named, launch the game's root place.
-2. **Play in the isolated runner, never the user's desktop**, as `roblox-studio`'s testing
+2. **Play in the isolated runner, never the user's desktop**, as `roblox-studio`'s runner
    reference's **Play a published experience** section says, adding the player app as that
    reference says when it is missing. Check the signed-in account from a capture after launch, and
    when it shows a sign-in page, sign it in by QR code as that reference's steps for adding the
@@ -63,7 +63,7 @@ delegation when it runs one.
 
 When the user names a player:
 
-- **Follow the player** with the follow link `roblox-studio`'s testing reference's **Play a
+- **Follow the player** with the follow link `roblox-studio`'s runner reference's **Play a
   published experience** section gives; a link to a server the game reserves for a round fails,
   and the game skill says which servers those are.
 - **Staying with the named player outranks finishing a round.** When the player list shows them
