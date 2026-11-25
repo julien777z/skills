@@ -410,8 +410,8 @@ step exists to catch.
    rules' **Asking the user** says, beside the page's highlighted node. Each says when the flow
    runs — what starts it and how often in a task, such as "once per pull request, when its task
    finishes, and again for each follow-up" — then what the step does in a sentence: the skill and
-   step, how many subagents, what they read
-   and for how many rounds. How often the step runs decides the recommendation, never whether it is
+   step, how many subagents, what they read and for how many rounds. How often the step runs decides
+   the recommendation, never whether it is
    asked: for a step on every task, pull request or round, a change that saves a modest number of
    subagents can be the recommended choice; for one that fires rarely, such as a security review of
    trust-boundary code or the review of a plan, keeping it is recommended unless the change only
