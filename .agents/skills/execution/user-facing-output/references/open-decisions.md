@@ -50,9 +50,10 @@ decision waiting on evidence is reported, and how an action the reader owns is h
   the reader's part is the action alone.
 - **Result.** A confirmation is the reader's word, not the outcome: check the result at its source
   before building on it.
-- Raise an action the reader owns again only when it blocks the next step or the reader asks what
-  they owe. Once they say they will do it later, it is settled and stays out of every later
-  message.
+- A question-tool request for an action the reader owns is asked again as global **Asking the
+  user** says; a later message mentions the action again only when it blocks the next step or the
+  reader asks what they owe. Once they say they will do it later, it is settled and stays out of
+  every later message and request.
 - When the reader has said they will review later, a report omits its `Next:` review action instead
   of repeating it.
 - Record the action and the reader's deferral of it with `session-ledger`, as an active-work entry
