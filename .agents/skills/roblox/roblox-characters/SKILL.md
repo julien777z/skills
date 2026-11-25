@@ -1,6 +1,6 @@
 ---
 name: roblox-characters
-description: Apply whenever a Roblox character is planned, created, modified, imported, placed, animated, or playtested — NPCs, enemies and other creatures, pets and companions, and the player's avatar — including avatar overrides, accessories and faces, rigs, skinning and bones, idle, procedural and action animation, locomotion, NPC conversations, overhead names, and character collision. Require visible motion that matches movement, grounded and purposeful placement, readable presentation, and motion verified in Play.
+description: Apply whenever a Roblox character is planned, created, modified, imported, placed, animated, or playtested — NPCs, enemies and other creatures, pets and companions, and the player's avatar — including avatar overrides, accessories and faces, rigs, skinning and bones, idle, procedural and action animation, locomotion, NPC conversations, overhead names, and character collision.
 short_description: 'Make Roblox NPCs, creatures, and avatars look, move, and present convincingly.'
 ---
 
@@ -29,7 +29,12 @@ Give stationary NPCs visible, restrained idle animation: breathing, a small weig
 
 ## Conversations and staged appearances
 
-For face-to-face conversations, guide the player to a clear spot in front of the NPC using actual walking and walking animation before framing the dialogue. Use the NPC's facing or a named conversation anchor, validate the approach and final proximity on the server, and avoid walking through obstacles or other characters. Bound the approach, cancel it on death, departure, or interruption, and restore controls if it fails. Do not snap the player across the scene or frame a conversation from behind either speaker. A conversation opens with a line from the character the player spoke to, and the camera holds one framing while the same speaker talks, moving only when the speaker changes. A character who appears only for a scene, such as an antagonist's entrance, arrives for it and leaves visibly when it ends, carries no prompt the player can walk up to, and returns only when a later scene stages it. A speaker stays present and framed for as long as its lines show, and anything the conversation says happens, such as a character leaving, arriving or handing something over, plays as a visible beat in the world between lines or after the last one, the camera on the beat and then back to the player; staging that removes a character while its lines are still on screen fails, as does a departure that happens off camera.
+For a face-to-face conversation, what the dialogue says happens must agree with what the player sees. Guide the player to a clear spot in front of the NPC using actual walking and walking animation before framing the dialogue:
+
+- Use the NPC's facing or a named conversation anchor, validate the approach and final proximity on the server, and keep the route clear of obstacles and other characters. Bound the approach, cancel it on death, departure or interruption, and restore controls if it fails. Do not snap the player across the scene or frame a conversation from behind either speaker.
+- The character the player spoke to says the opening line, and the camera holds one framing while the same speaker talks, moving only when the speaker changes.
+- A speaker stays present and framed for as long as its lines show. Anything the conversation says happens, such as a character leaving, arriving or handing something over, plays as a visible beat in the world between lines or after the last one, the camera on the beat and then back to the player; staging that removes a character while its lines are still on screen fails, as does a departure that happens off camera.
+- A character who appears only for a scene, such as an antagonist's entrance, arrives for it, leaves visibly when it ends, carries no prompt the player can walk up to, and returns only when a later scene stages it.
 
 ## Overhead names
 
