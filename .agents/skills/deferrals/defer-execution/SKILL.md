@@ -95,7 +95,7 @@ The work is owed once the originating pull request lands.
    merges: `<scope>`". The step is what a later turn reads. Where the harness has a task list, add the
    same item there as well, so anyone scanning it can tell a queued-on-merge item from an ordinary
    pending one without this skill being loaded at all. Both are session bookkeeping rather than a
-   deferral record, and the guardrail against creating one stands.
+   deferral record, and the opening paragraph's rule against creating one stands.
 
 2. **Tell the user the scope is queued behind that pull request**, in those terms. Say what will be
    executed and what it is waiting on. Then name it and its blocking pull request again in every

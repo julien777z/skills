@@ -1,6 +1,6 @@
 # Stored-Format Transitions
 
-Apply this section when a revision transforms values retained under **Data Scope**. A schema-only
+Apply this reference when a revision transforms values retained under **Data Scope**. A schema-only
 change still tests its schema upgrade and downgrade; generated rows do not require a value-preserving
 format transition or recovery mechanism for data explicitly declared disposable or nonexistent.
 

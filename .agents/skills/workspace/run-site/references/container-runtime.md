@@ -1,6 +1,6 @@
 # Container Runtime
 
-Contents: **macOS**, **Linux**.
+Contents: **macOS**, **Linux**, **Reporting unavailable**.
 
 How `run-site`'s **Start and verify the stack** starts the container runtime and when it reports
 Docker unavailable.
@@ -31,5 +31,7 @@ for attempt in $(seq 1 15); do
   sleep 1
 done
 ```
+
+## Reporting unavailable
 
 - Report Docker as unavailable only when the CLI is missing or `docker info` still fails after the explicit start attempt, and include the daemon log in that report.

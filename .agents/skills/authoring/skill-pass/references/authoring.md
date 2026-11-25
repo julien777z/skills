@@ -225,9 +225,10 @@ says which situations fire the skill, it works. If the remainder names no situat
 trigger.
 
 A description says what the skill does and when to use it, in the third person or the imperative
-(for both the work and the "Use when ..." trigger), never in the first or second person, and stays
+(for both the work and the "Use when ..." trigger), never speaking as "I" or "we" or addressing the
+reader as "you", and stays
 within 1,024 characters, the limit the open skill specification sets and a vendor's upload refuses
-past. The convention is recorded once, never per file. Its main use comes first, because a host's
+past. A doctor run reports a departure shared by every description once, as a convention, never per file. Its main use comes first, because a host's
 listing truncates a long description at its own cap and drops whole descriptions when the
 listing passes its budget. It names kinds of situation, never a list of near-synonymous phrases
 that grows by one with each missed trigger. Where a neighboring skill or a look-alike request

@@ -50,4 +50,3 @@ recording or delivering a batch.
   pull request. One recorded while a batch is in flight joins that
   batch, and one recorded after the batch's pull request merged starts the next, as
   `session-ledger`'s **Guidance Batches** says; tell the user which.
-- The task's next step is never held by a correction: record it and carry on.

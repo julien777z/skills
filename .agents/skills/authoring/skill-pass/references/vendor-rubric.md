@@ -271,7 +271,7 @@ about formatting.
 | Finishing | The coding agent's page: "keep going" lines cause over-work | The newest per-model page: the model can stop early, so add finishing text | Keep text that finishes authorized work and forbids ending on a promise; cut general encouragement |
 | Contents list threshold | The skill best-practices page: past 100 lines | The skill-writing skill: past 300 | 100, the published platform figure |
 | Size of a rules file | The coding agent's memory page: under 200 lines per always-loaded file | The skill pages: under 500 lines for a skill body | Both, by how the file loads, as the authoring reference's **Writing** sets out |
-| Description voice | Anthropic: always the third person | The open specification: imperative, "Use this skill when ..." | The third person or the imperative, for what the skill does and for the trigger; never the first or second person; reported once as a convention, never per file |
+| Description voice | Anthropic: always the third person | The open specification: imperative, "Use this skill when ..." | The third person or the imperative, for what the skill does and for the trigger; never "I", "we" or "you"; reported once as a convention, never per file |
 | What a description carries | The prompt audit: a description routes and does not instruct | This repository's **Descriptions**: it also carries a rule that binds before the body is read | The repository's, because a reader often acts on the description alone; such a rule is kept to one clause |
 
 ## Cutting A Passage

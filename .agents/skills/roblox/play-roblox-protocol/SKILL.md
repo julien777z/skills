@@ -51,9 +51,9 @@ delegation when it runs one.
    when it shows a sign-in page, sign it in by QR code as that reference's steps for adding the
    player say.
    Leave the runner's Studio editors alone: a play session holds no editor lease, so another session's check may be running in one.
-3. **Delegate play to one worker** chosen under `subagent-matrix`,
-   so the long play loop and its captures stay out of the delegating agent's context, briefed with this skill, the
-   game skill, the player to join, if any, and the capture folder. The delegating agent forwards each
+3. **Delegate play to one worker** chosen under `subagent-matrix` and briefed with this skill, the
+   game skill, the player to join, if any, and the capture folder, so the long play loop and its
+   captures stay out of the delegating agent's context. The delegating agent forwards each
    capture as it lands, after reading it, as `share-media` says, and relays the worker's findings.
 4. **Keep playing round after round** until the user says to stop or the game skill's stopping rule
    ends play, starting a new worker session when one ends and leaving the player in the game

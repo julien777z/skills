@@ -181,7 +181,7 @@ Report in the **Output** shape.
 
 ## Output
 
-One block per selected record, then the run's totals:
+One block per selected record:
 
 ```markdown
 - <stable key or issue identifier> — <title> (<Linear | repository>)

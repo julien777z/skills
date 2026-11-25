@@ -345,10 +345,10 @@ small it looks.** Each route below is the gate set its batch passes on the head 
       compare one run of your own on the branch in flight and every required skill-test run against that
       example: headings, columns, order, file shape. A divergence is the skill's wording, fixed and
       rerun; review and the acceptance gate validate the replacement shape before merge.
-   7. **Check the diff file list against the default branch, then merge**, 8. **Nothing is copied by
-      hand**, and 9. **Read the merged text back before using it**: read the [merge and read-back
-      reference](references/merge-and-readback.md) when the batch reaches the file-list check; it holds
-      all three, in order.
+   7. **Check the diff file list against the default branch, merge, copy nothing by hand, and read
+      the merged text back before using it.** Read the [merge and read-back
+      reference](references/merge-and-readback.md) when the batch reaches the file-list check; it
+      holds these last steps, in order.
 
 ## Manual verification
 

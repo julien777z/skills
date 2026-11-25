@@ -37,11 +37,11 @@ Reviewed Batches**, **Relocations**, **Resuming A Batch**.
 The statement is written before the edit, in the shape `SKILL.md`'s
 **Output** gives, and revised when the written text turns out to change more or less than it says.
 
-- **Each line says one thing the user can check against what they meant.**
-  - *You said* quotes the user's words, each example value named by its kind in brackets as
-    `pre-production`'s **Examples And Paths** says, in the ledger entry and every reviewer brief,
-    never in the statement shown to the user, who wrote them; for a
-    gap the agent noticed itself the shown statement opens with `Noticed:` and states the gap.
+- **The user's words go in the ledger entry and every reviewer brief, never in the statement shown
+  to them, who wrote them.** There they are quoted as *You said*, each example value named by its
+  kind in brackets as `pre-production`'s **Examples And Paths** says.
+- **Each line of the shown statement says one thing the user can check against what they meant.**
+  - *Noticed*, only for a gap the agent noticed itself, states the gap.
   - *From now on* names the situation, what agents do there and what they did before.
   - *Also changes, same class* lists every other situation of that class the edit changes, by the
     skill or rule that governs it.

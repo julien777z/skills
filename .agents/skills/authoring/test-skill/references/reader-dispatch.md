@@ -19,8 +19,8 @@ it never passes with a reader that saw another variant.
 
 ## Reviewer selection
 
-Only after a host receipt explicitly
-rejects the standard capability level's exact identifier as unsupported, select the next permitted lower mapped capability,
+Fall back from the standard capability level only after a host receipt explicitly rejects its
+exact identifier as unsupported: select the next permitted lower mapped capability,
 resolve its exact identifier, and launch the actual reader assignment. Advance again only after that candidate
 receives its own explicit unsupported receipt; never move upward or inherit the orchestrator's model. This
 fallback applies to this skill's default, never against the user's explicit model or capability constraint. A
