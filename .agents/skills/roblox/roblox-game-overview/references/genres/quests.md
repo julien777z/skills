@@ -38,7 +38,7 @@ such as a lighthouse adventure whose keeper sends the player along the coast aft
   voice from the cast list, where they stand, how many places the story moves them to, any shop
   they keep, and the quests they give or appear in.
 - **Creatures.** A `tree` of roaming species, rare variants and unique foes, each with its rank or
-  tier as a tag and its health as a figure; its dialog holds its picture in a fight, where it
+  level as a tag and its health as a figure; its dialog holds its picture in a fight, where it
   fights, its levels, each move it uses with damage, target and accuracy, any signature move, and
   what a win pays.
 

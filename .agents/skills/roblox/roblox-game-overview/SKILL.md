@@ -24,9 +24,6 @@ source is the authority; a design document is compared with it, never read in it
 - **With an argument**, it names the game, a repository or a branch; read that one. A request
   naming only part of a game, such as one world, still gets the Overview and How to play pages and
   the audit for that part.
-- Leave the game unchanged: nothing this skill does is committed to the game or saved into its
-  places.
-
 ## Run Order
 
 The page reaches the reader before any picture is staged, and every later step updates that same
@@ -45,8 +42,7 @@ page:
    2. close the editor and release its lock;
    3. render into the same page and deliver it.
 4. **Review the page after its last render**: open it through `use-browser` and read every page and
-   at least one dialog of each kind whole. A fix means another render, and after any render every
-   page is read again; no earlier read counts.
+   at least one dialog of each kind whole. A fix means another render; after it, read again each page the render changed and the dialogs those pages open, and every page when it changed the shared references or the app. A page left byte-identical by the render keeps its earlier read.
 
 ## Read The Game As Data
 
@@ -54,15 +50,13 @@ page:
    engine, such as a standalone test runner with its own module loader, load the content modules
    through it from a script outside the checkout, giving the engine's value types (vectors, frames,
    colors) small stand-ins and generating any network or build output those modules require first.
-   Dump the loaded tables to JSON: quests, side quests, story staging, maps and areas, points,
-   encounters and creatures, collections, shops and items, spells or abilities, progression. Where
+   Dump the loaded tables to JSON: whatever content the game defines, such as quests and story staging, maps and areas, encounters, collections, shops and items, abilities, rounds, stages, or level and progression data. Where
    the content cannot be loaded, read the definition files directly.
 2. **Use the game's own lookups** for anything it derives — which area a position falls in, where a
    character stands at a given progress, which map an encounter is fought on — by calling them on
    the loaded modules rather than reimplementing them. Their answer is the one a player sees.
 3. **Resolve places per map.** A combined place can hold every map, and a lookup built for one map
-   then answers for another: a point on a map with no named areas falls back to the other map's
-   town. Resolve each point against its own map's areas, and where that map names none, against
+   then answers for another: a point on a map with no entries in the lookup returns the lookup's default region. Resolve each point against its own map's areas, and where that map names none, against
    the landmarks it does have, such as the nearest named room or gate.
 4. **Read the game's design documents and its game skill** for summaries, cast notes and intended
    behavior, and note each place they disagree with the source for the audit.
@@ -82,7 +76,7 @@ Consistency:
   each row opening that check's findings; a findings `outline` grouped by check, each finding
   naming its quest, round or stage so the name opens its dialog, with a source link at the commit
   read; and a short `notes` section on how the content was read. Set the page's `status` in the
-  warning tone while findings exist. Report findings; never fix the game from this skill.
+  warning tone while findings exist.
 
 ## Genre Router
 
@@ -141,9 +135,8 @@ and reuse procedure is the [picture reference](references/pictures.md); read it 
 - **Draw what no scene shows** — a rule, a resource curve, a layout — as a clean SVG in the game's
   palette.
 - **Size**: compress each capture to a JPEG about 900 px wide and 60 to 90 KB, and keep the rendered
-  page well under `use-dashboard`'s size limit.
-- When the captures run long, hand them to a worker under `subagent-matrix` with the owed scenes, the
-  manifest, the runner lock procedure and the output folder; the page is delivered meanwhile.
+  page under the size limit of the delivery route `use-dashboard`'s **Delivery** and harness router select.
+- When more than one batch of captures is owed, hand the remaining batches to one worker under `subagent-matrix` with the owed scenes, the manifest, the runner lock procedure and the output folder; the page is delivered meanwhile. One worker takes every remaining batch, so the count does not grow with the scene count.
 
 ## Render And Deliver
 
@@ -168,5 +161,5 @@ only once **Run Order**'s review has read it.
 
 ## Guardrails
 
-- Never save, publish or commit the game's places or source from this skill.
+- Leave the game unchanged: report audit findings without fixing them, and never save, publish or commit its places or source, since the dashboard is the only deliverable.
 - Stop only processes this skill started in the runner, and leave it idle when each batch ends.
