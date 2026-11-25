@@ -86,4 +86,3 @@ the run stuck from a pending status alone.
   test or confine its job to drafts to get past it. Report a blocker only when relevant missing
   coverage needs user input or unavailable credentials, with the check, evidence and remediation
   attempted.
-
