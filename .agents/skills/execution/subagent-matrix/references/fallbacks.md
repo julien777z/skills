@@ -74,9 +74,10 @@ activity after its brief at the first of two moments — a sibling returning, or
 its brief (with no siblings, the 15 minutes alone) — relaunch the same assignment, with the same
 brief and effort, on the session's own provider at the same capability level, record both
 launches, and carry on: the other provider is a preference that improves independence, never a
-blocker, and its repair never holds the step. The coordinator waits on one launch at a time, never
-past 15 minutes after that launch's brief, and once any sibling returns its very next call reads
-the other-provider launch's activity, before any wait on another launch; a launch still running is
+blocker, and its repair never holds the step. While such a launch is pending, the coordinator
+waits on one launch at a time and wakes 15 minutes after the launch's brief to read it, a read and
+never a limit on its siblings; once any sibling returns, its very next call reads the
+other-provider launch's activity, before any wait on another launch. A launch still running is
 cancelled once its replacement starts.
 
 - A provider or exact model the user or calling skill requires is honored: its launch is repaired
