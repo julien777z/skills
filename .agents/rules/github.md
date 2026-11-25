@@ -36,7 +36,8 @@ alwaysApply: true
   request from its creation or authorized-continuation receipt, carried forward when a follow-up
   starts a new task in the same session, and verify its owner, open state and scope. Distinct
   concerns and worker contributions stay on it, in separate commits where appropriate. Open another
-  only when none is in progress, the user directs a split, or a new manually dispatched workflow
+  only when none is in progress, the user directs a split, a skill in use places a fix or cleanup
+  outside the requested change on a pull request of its own, or a new manually dispatched workflow
   needs its placeholder pull request. Continue another session's pull request only when the user,
   an invoked skill or a repository rule explicitly directs it; a matching topic, existing branch,
   open state or recorded touch does not. Other sessions' pull requests and branches stay untouched,
@@ -186,7 +187,8 @@ closes the flag, which the review's next round or a fresh gate does.
   Where a dependency is still in review, unreleased or unmerged, the branch
   consumes that dependency's pull-request branch in its manifest, lockfile and workflow checkouts,
   or builds on a same-repository sibling's branch, and pushes; never ask for the dependency's merge
-  or report the consumer blocked on it.
+  or report the push, checks or walkthrough as blocked on it; the consumer's merge waits for it as
+  the skill that runs a merge sets out, reported as held, never as a request.
 - **The order is change, checks, push, then the slow verification**: a browser walkthrough, a full
   or end-to-end suite, anything slow or needing a running stack, whose findings go out as fix
   pushes. **Pushed is not done**: a change is reported done only once that verification has passed.
