@@ -241,7 +241,7 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
 ### Progress Record
 
 - **The ledger holds the plan's current state, so nothing about progress depends on what the chat
-  still remembers.** When an accepted plan goes to the user, record it with `session-ledger` as a
+  still remembers.** When a ready plan goes to the user, record it with `session-ledger` as a
   `plan` entry holding the fields `session-ledger` names for one, its status `shown` with that time,
   filled from the planning work even where the plan shown to the user leaves them out. Work the user
   adds to an active task, with or without a plan of its own, becomes a step on that plan or a plan
