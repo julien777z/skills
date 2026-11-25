@@ -24,7 +24,9 @@ rewriting history does not establish that restriction.
 Stop and say so when any of these fails: each protects work the rebuild would otherwise lose.
 
 - **The branch is yours**: you created it, or its author handed it over. A branch somebody else is
-  working is never rewritten, and a commit already on its base branch is never touched.
+  working is never rewritten, and a commit already on its base branch is never touched. Nor is a
+  range holding a merge you did not perform: its resolution is someone else's, and replaying it
+  can silently redo it differently.
 - **The working tree is clean.** Commit or stash everything first; the rebuild reads only committed
   content, and anything uncommitted would be read as part of no change.
 - **The base branch is the one the branch's pull request targets**, read from the hosting service,

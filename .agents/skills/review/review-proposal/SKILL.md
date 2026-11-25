@@ -79,10 +79,10 @@ Follow the dependency's fallback procedure without inventing a compliant launch 
      disposition, coverage receipts, and locators/content identities for the directly available
      originals. An index is navigation, never a substitute for originals.
    - Retain each original and its digest/readback receipt through `session-ledger`; verify its bytes
-     again before dispatch and deliver frozen content by pasting the content or writing it to a file
-     the gate's prompt names, as `acceptance-gate` requires. An ordinary path or digest alone does
-     not freeze a file. Use direct content where the file boundary cannot be preserved, or hold for
-     the actual delivery limitation. Deliver the evidence whole through that route.
+     again before dispatch and deliver frozen content whole by pasting the content or writing it to
+     a file the gate's prompt names, as `acceptance-gate` requires. An ordinary path or digest alone
+     does not freeze a file. Use direct content where the file boundary cannot be preserved, or hold
+     for the actual delivery limitation.
    - Verify the separate fresh gate's compliant dispatch, exact packet and complete original verdict
      before counting it.
 5. **Repair and return.** Apply `acceptance-gate`'s **Bounds** to flags, preserving original

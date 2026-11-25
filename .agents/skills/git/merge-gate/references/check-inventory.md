@@ -55,7 +55,7 @@ the run stuck from a pending status alone.
 
 ## Classify every unsuccessful check before repair
 
-   - **Exclusions.** A caller-supplied exclusion, or a current-user waiver naming the test or check,
+- **Exclusions.** A caller-supplied exclusion, or a current-user waiver naming the test or check,
   is excluded. Preserve established baseline classifications; classify a newly encountered
   possible baseline under `pre-production`'s **Encountered Issues**, without reentering that
   skill's active run. A non-essential check failing only on findings `pre-production`'s

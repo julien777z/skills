@@ -215,7 +215,7 @@ Each quote is exact as the page or file returned it on the row's fetch date.
   task to a subagent doesn't make the answer any better. A fresh reviewer does help". "If
   something has to happen every time, make it a hook, a deny rule, or a managed setting."
 - skill-creator: "If you find yourself writing ALWAYS or NEVER in all caps, or using super rigid
-  structures, that's a yellow flag". "please make the skill descriptions a little bit "pushy"".
+  structures, that's a yellow flag". "please make the skill descriptions a little bit 'pushy'".
 - The new rules of context engineering for Claude 5 generation models: "Overall, we found that we
   were overconstraining Claude Code, both through our system prompt and in our CLAUDE.md files and
   skills." "Think of skills as lightweight guides to let Claude find information when needed.

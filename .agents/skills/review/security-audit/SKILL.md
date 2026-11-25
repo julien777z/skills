@@ -50,9 +50,10 @@ codebase security audit the skill listing describes.
   the review read in process, so its caller knows no independent refuter checked a finding.
 - **Larger scopes by slice.** Partition the reach by trust boundary or subsystem into at most four
   slices, the riskiest first, and launch one read-only hunter per slice in parallel. Each gets the
-  scope's map from **Scope**, its slice and attack classes, and the hunting reference's prompt. The
-  parent pastes those three rubric sections into each hunter prompt. A hunter may start at most two research agents of its own, as that reference allows, so a review
-  starts at most twelve hunting agents.
+  scope's map from **Scope**, its slice and attack classes, and the hunting reference's prompt,
+  with the rubric's **Exploitability**, **Precedents** and **What A Surviving Finding Has Been Put
+  Through** pasted into it. A hunter may start at most two research agents of its own, as that
+  reference allows, so a review starts at most twelve hunting agents.
 - **Every finding a hunter returns faces a refuter before it is reported.** Merge findings that
   share a root cause, then give each remaining finding one fresh read-only refuter with the
   validation reference's refute prompt, all in parallel: a hunter is biased toward keeping what it

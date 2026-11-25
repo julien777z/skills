@@ -165,6 +165,6 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
   explain the specific interruption and ask for explicit permission before that part runs. Continue
   independent checks through nondisruptive routes and report what still lacks verification.
 - A cloud workspace snapshot restores files, not running processes. A failing `docker info` at session start means the daemon may need to be started; it does not by itself prove Docker is unavailable.
-- Start the container runtime and report Docker unavailable as `run-site`'s
-  `references/container-runtime.md` says.
+- Start the container runtime and report Docker unavailable as `run-site`'s **Start and verify the
+  stack** says.
 - Browser-automation daemons may start browsers with fresh temporary profiles. Save authenticated session state explicitly and restore it after a daemon restart instead of assuming cookies survive.

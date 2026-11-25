@@ -299,7 +299,7 @@ run an audit of any kind later never stands in for it.
 The checks the gate runs with the design comparison, each with the phrase its verdict says when
 it finds none.
 
-**Trace changed state-like values during the design comparison.** Apply the rubric's **State
+**Trace changed state-like values during the design comparison.** Apply **State
 Meaning** criteria to their writers, transformations and consumers, including values whose names did
 not change. Include the authority, lifetime and purpose evidence in `Also read`, and semantic
 collisions in the flag bullets; missing evidence prevents a clean verdict.

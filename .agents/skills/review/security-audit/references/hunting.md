@@ -20,7 +20,8 @@ Every hunter prompt includes:
 2. The specific attack class and scope to investigate
 3. Relevant file paths from the map as starting points
 4. The hunting methodology (below)
-5. The validation rules (below)
+5. The validation rules (below), with the rubric's **Exploitability**, **Precedents** and **What A
+   Surviving Finding Has Been Put Through** pasted in whole
 
 ### Hunting methodology — include in every hunter prompt
 
