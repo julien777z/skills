@@ -1,6 +1,6 @@
 ---
 name: use-dashboard
-description: Render a dashboard spec into the shared HTML dashboard page and deliver it to the user. Use as a dependency whenever a skill delivers a dashboard page built from its data, so those dashboards share one look and the caller writes data, never HTML.
+description: Render a dashboard spec into the shared HTML dashboard page and deliver it to the user, a preview, sample or test render of the page included. Use as a dependency whenever a skill delivers a dashboard page built from its data, so the caller writes data, never HTML.
 short_description: 'Turn a dashboard spec into the shared HTML page and deliver it.'
 ---
 
@@ -15,16 +15,10 @@ self-contained file; its web font loads from Google Fonts and falls back to syst
 diagram is drawn by Mermaid, loaded from jsDelivr, with its connections listed as text when Mermaid
 cannot load. The page is dark unless the host's viewer is explicitly set to light
 (`data-theme="light"` on the root element), and renders every value as text, so data never runs
-as markup or script. A dialog opens just below the entry, row or node that opened it, at most 640 px
-tall, or less when the frame or window it opens in is shorter, with its contents scrolling; apart
-from that cap, nothing on the page is sized by the viewport's height, so it shows whole in a frame
-that a harness sizes to its content. The
-navbar keeps the title whole and the page links beside it: the page spans up to 1920 px so a wide
-screen shows more links, the links scroll sideways with a visible scrollbar when they still do not
-fit, and they fold into a menu only below 1024 px.
+as markup or script. Apart from a dialog's height cap, nothing on the page is sized by the
+viewport's height, so it shows whole in a frame that a harness sizes to its content.
 
 ## Dependencies
-- `pages:write-page`
 - `use-browser`
 
 ## Spec
@@ -108,7 +102,8 @@ instead of vanishing from the page. `ref`s, node `id`s and reference `text`s are
 list in the spec holds at least one entry, apart from a board column's cards, a locked page's `sections` and a tab's `sections`, so a list with nothing
 to show is left out, and so is the entry that requires it; a `tabs` section holds at least one tab
 with sections, and its tab labels are unique. A URL renders as a link only when it is
-`http` or `https`.
+`http` or `https`. A spec carries what the user may see, which excludes any credential, token or
+secret.
 
 ```json
 {
@@ -177,7 +172,7 @@ Dashboards look alike because they are built alike:
   or one line per theme naming the page that holds it. Overview repeats no item another page lists,
   apart from a summary row that opens an item's full write-up, or a link to it; each later page
   goes deeper on one subject and is named for it.
-- **A page serves a stage of the reader's work, never one narrow artifact.** When a request asks for
+- **A page serves a stage of the reader's work.** When a request asks for
   a page about one thing, such as the order parcels leave the warehouse in, find the stage that
   thing belongs to, such as dispatching the week's orders, and build the page for that stage, with
   the requested thing as one section among what the reader needs there. Name the page for the stage.
@@ -221,7 +216,7 @@ Dashboards look alike because they are built alike:
 - **Tone means the same everywhere.** `good` is fine, matches or finished, `warning` needs the
   reader's look or action, `critical` is wrong or blocking, `accent` is in progress or
   informational, and `done`, a purple, is finished work that must read apart from what is merely
-  fine, such as a merged pull request beside open ones. Leave it out for neutral; never tone an item only to decorate it.
+  fine, such as a merged pull request beside open ones. Leave it out for neutral, since a tone on an item that needs no attention dilutes every other tone.
 - **Blue text is a link.** A reader clicks blue text, so only links take it, and a tone colors a
   dot, border, line or bar, never text. A figure, number or label meant to stand out sits in a
   neutral badge rather than taking a color or the weight its neighboring names already use.
@@ -234,19 +229,17 @@ Dashboards look alike because they are built alike:
   what it shows, is left out: data that is not there shows its absence by itself.
 - **A pull request is named with its repository.** Every label, table cell, title and reference
   names a pull request as `repository#number`, such as `garden-api#42`, never `#number` alone.
-- **Sources are links, never paths in text.** Anything a reader can check, such as a file and line,
+- **Sources are links.** Anything a reader can check, such as a file and line,
   a diff, a pull request, a document's section or a page of a site, goes in `links` with a URL that
   opens it at that exact place: a permalink to the line or range at the commit that was read, or the
-  pull request's diff for that file. A path or line number written into `detail` or `meta` is not a
+  pull request's diff for that file. A path or line number written into a title, `detail` or `meta` is not a
   source the reader can open, and a branch, commit, pull request or file a sentence names takes a
   `references` entry so the mention itself is a link.
 - **Times are timestamps.** A moment goes in `at` as a timestamp, never as a clock time written into
   text, so every reader sees it in their own timezone.
 - **Text is plain.** Titles say what is true in a few words, in the words a reader scans for, such
   as "Opening hours" rather than "When you can visit us"; `detail` explains in a sentence or two
-  that reads without the source. Every title, label, caption and description is plain statement,
-  never flourish. A file, section or line is named by its `links` pill, never in the
-  title, `detail` or `meta`.
+  that reads without the source.
 
 ## Previews
 
@@ -282,7 +275,7 @@ data exists, or a change to the app — runs on one made-up scenario, never on r
    `--fragment` and `--compress` when the harness's delivery route says to. The script prints the written path, or names the first
    field that does not match the spec and exits non-zero; fix the spec and run it again.
    The first render after the app changes builds it with npm into the user cache directory
-   (`$XDG_CACHE_HOME/use-dashboard`, or `~/.cache/use-dashboard`), which needs Node.js 20 or newer,
+   (`$XDG_CACHE_HOME/use-dashboard`, or `~/.cache/use-dashboard`), which needs the Node.js version the app's dependencies support,
    npm and access to the npm registry, and takes up to a minute; later renders reuse that build. A
    failed build exits non-zero with npm's output.
 3. Keep one output path per dashboard, so each render replaces the last and updates the same
@@ -296,7 +289,8 @@ entry that opens a dialog included, shows the pointer cursor. Change the page it
 components live in `app/src/components/ui/` and are added with the shadcn CLI. The spec is declared
 once, in `scripts/` (its enums in `models.py`, its shapes in `render.py`), and `render.py` writes the
 app's TypeScript types from it into the build. Run `npm ci` once and then `npm run check` in `app/`
-to write those types and type-check and lint the app.
+to write those types and type-check and lint the app. A change to the spec's enums or shapes
+updates the **Spec** section in the same change, since that section is a copy callers read.
 
 ## Delivery
 
@@ -306,7 +300,7 @@ runs states a step that shows one. Finished work, a merge, a changed record or a
 request to update it never re-renders one on its own.
 
 Every render the user is shown goes out through this section, including a preview, a sample, or a
-test of a change to the page: a screenshot of a render is a capture of the page, never its delivery.
+test of a change to the page.
 Deliver through the routes the **Harness Router** below selects for the harness this session runs
 in, in their order, and through the same route for every update of one dashboard within that
 harness. A local file or a screenshot does not replace a publishing route the harness's file names.
@@ -350,7 +344,3 @@ harness, so one file applies.
 routes its file lists are unavailable or refuse the session, or beside them where its file says so,
 and a harness no row names takes it alone. Where that route does not apply, send the full page with
 a tool that sends a file to the user, or, with none, give its absolute path.
-
-## Guardrails
-
-- A spec carries what the user may see: never a credential, token or secret.
