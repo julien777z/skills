@@ -254,17 +254,10 @@ changed. Make the smallest changes that answer real findings, and push back on t
   host cannot continue it. A split or panel round 1 is the exception, and no reviewer starts
   subagents of its own. Leave the reviewed files unedited while a round runs, so the reviewer reads
   the head it was given; a timeout, an error or no reply is not approval.
-- **Split round 1 by area** when the delta spans several areas, such as packages, services or apps,
-  and is too large for one careful read: up to five reviewers, one per area group, each briefed with
-  its group's paths and the whole diff as context, so a finding that crosses groups is still seen.
-  Merge their findings into one ledger before answering. Later rounds go back to one reviewer over
-  the changed code and the open findings.
-- **Panel round 1 for risky deltas:** when the delta touches security, permissions, auth, data loss
-  or concurrency, round 1 goes to `council` in **Ask** mode with the round's brief, in place of the
-  single reviewer, and its findings become the ledger. When round 1 is also split, the risky area
-  group goes to `council` and the other groups share the remaining two of the five reviewers.
-  **Workflow**'s **Diff Review** is a separate check that neither replaces the panel nor is
-  replaced by it: it runs beside round 1, whoever reads that round, on a line-pattern match.
+- **Split or panel round 1:** a delta that spans several areas and is too large for one careful
+  read, or one that touches security, permissions, auth, data loss or concurrency, changes round 1
+  as [the round-1 variants](references/round-1-variants.md) say. **Workflow**'s **Diff Review**
+  runs beside round 1 either way, whoever reads that round.
 - **Brief:** send [the reviewer brief](references/reviewer-brief.md), this skill's reference holding
   the round text and severity scale, with the repository, base, intent, out-of-scope note, check
   results, applicable repository rules, and the Whole and Guidance intent fields filled in.
@@ -302,7 +295,8 @@ changed. Make the smallest changes that answer real findings, and push back on t
 
 Pull requests reviewed one at a time can each be right and still be wrong together. One reviewer
 reads the whole set for flaws only the combination has; it does not repeat each pull request's own
-review.
+review. [The combined-review reference](references/combined-review.md) holds the reviewer, its
+findings, later rounds and verdict.
 
 - **Set and timing:** the set is the open pull requests of the task or run in hand whose changes
   meet. Its source pull requests are in it together: in one repository or several, stacked or
@@ -313,26 +307,6 @@ review.
   accepted a head of every pull request in the set and before any of them merges. A pull request
   whose own review ends with its change reverted or the pull request closed, under the ruling the
   round limit calls for, leaves the set, and the round runs over the rest. A set of one does not run.
-- **Reviewer:** one per round, however many pull requests the set holds, resolved and launched as
-  **Review Loop**'s **Reviewer** bullet says, read-only and starting no subagents. Send the
-  **Combined review** form of [the reviewer brief](references/reviewer-brief.md) with each pull
-  request's checkout, base, accepted head, intent statement and description. The reviewer reads
-  every complete merge-base diff together; a stacked pull request's diff is its own patch against
-  the branch it builds on.
-- **What it looks for:** the flaws of the combination the **Combined review** form of the
-  reviewer brief lists.
-- **Findings:** check each against the code as **Answer each finding** says. A confirmed finding
-  goes to the pull request that owns the fix, or to both when both must change. It is repaired
-  there and reviewed as that pull request's new delta under **Workflow**, and it counts within that
-  change's review-round limit `acceptance-gate`'s **Bounds** sets. A finding that
-  spans repositories is reported in user chat; each fix's commits, description and threads speak
-  only of their own repository, under the GitHub rule's independent publishing context.
-- **A later round** runs only when a later change moves a head the round read: the reviewer reads
-  what changed, with the other heads as context and a pull request merged since at its merged
-  commit. A rewrite whose tree is identical keeps the verdict.
-- **Verdict:** one per head. With `session-ledger`, add to each head's `review` entry the heads it
-  was read with and `accepted` or the findings still open. A head this round has not accepted is
-  returned as held and is not a head to merge.
 
 ## Harness Compatibility
 
