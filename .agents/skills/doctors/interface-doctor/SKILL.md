@@ -206,7 +206,7 @@ Apply `pre-production` to every correction.
 3. **Wrong or inconsistent text is corrected**: a label that states something untrue, one thing
    under two names, a message that does not match what happens, and every text a lens flags. Wrong
    copy for a refusal a service words is fixed at that service, as the general React rule's **Rendering and
-   Data** says, with the interface showing what the service sends.
+   Data** says, with the interface showing the message the service wrote for the person using it.
 4. **Making content fit is a fix, decided and made at whatever width the defect shows**, by a
    remedy that keeps every value readable, as `pre-production`'s **Product Choices** says of
    content and its space. Squeezing, truncating, shrinking and narrowing are never the remedy.
