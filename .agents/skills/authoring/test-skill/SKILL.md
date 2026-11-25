@@ -98,8 +98,10 @@ confuse those conclusions.
    delete or change access, supply a synthetic boundary that records that action and changes only
    disposable state. Verify which implementation and resources each run actually uses before launch.
    **A reader sees only the variant it tests; with no isolated route the round is a concrete gate, never a pass.**
-   Read the [reader dispatch reference](references/reader-dispatch.md) before launching a reader: it says how the
-   reader is launched, how the variant reaches it and what is recorded.
+   A required reader, scenario writer or grader that cannot launch takes `subagent-matrix`'s launch
+   fallback for its assignment. Read the [reader dispatch reference](references/reader-dispatch.md)
+   before launching a reader: it says how the reader is launched, how the variant reaches it, when
+   the launch fallback applies and what is recorded.
    Before freezing the reader package, exercise its required fixture interfaces in a disposable
    copy: discovery must expose the identifiers the task needs, operations must be available, and
    state changes and failures must reach the intended records. This checks the fixture contract,

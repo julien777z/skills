@@ -76,9 +76,11 @@ follow **Recording During A Task** for the edit's timing.
 ## Recording During A Task
 
 A recorded correction governs the rest of the session at once, ahead of the installed text it
-amends, and never holds the task's next step. Read the [recording reference](references/recording-during-a-task.md)
-before recording one: it says how an entry is recorded, where the edit is written and when it is
-delivered.
+amends, and never holds the task's next step. Record it as a `guidance_correction` entry with
+`session-ledger`, backed up and batched as that skill says; once its edit is committed, run
+`update-skills` for eligible edits and tell each running worker as `subagent-matrix`'s
+**Dispatch** says. Read the [recording reference](references/recording-during-a-task.md) before
+recording one: it says what the entry holds, where the edit is written and when it is delivered.
 
 ## Guidance Delivery
 
@@ -95,9 +97,10 @@ small it looks.** Each route below is the gate set its batch passes on the head 
 
 - **Short route.** Every entry changes one requirement in one file, its Scope Statement records
   `flow not affected` and lists nothing beyond what the user said, and the batch adds or removes no
-  skill, rule, dependency or script. Read the
-  [delivery routes reference](references/delivery-routes.md) for what the short route runs and how a
-  batch moves to the full route.
+  skill, rule, dependency or script. It runs the source check, `skill-pass`'s pass and
+  `code-simplify` in process, one `acceptance-gate`, and `test-skill`'s single-scenario form, with
+  no `review-pass`. Read the [delivery routes reference](references/delivery-routes.md) for how
+  each runs and how a batch moves to the full route.
 - **Full route.** Every other batch, through **Check the sources** to **Conclude the skill test**
   below. One whose head its invoking workflow already reviewed and accepted skips **Review the
   batch**'s `review-pass`, as the [edit criteria](references/edit-criteria.md)'s **Already Reviewed Batches** says.
@@ -345,8 +348,8 @@ small it looks.** Each route below is the gate set its batch passes on the head 
       compare one run of your own on the branch in flight and every required skill-test run against that
       example: headings, columns, order, file shape. A divergence is the skill's wording, fixed and
       rerun; review and the acceptance gate validate the replacement shape before merge.
-   7. **Check the diff file list against the default branch, merge, copy nothing by hand, and read
-      the merged text back before using it.** Read the [merge and read-back
+   7. **Check the diff file list against the default branch, merge through `merge-gate`, copy
+      nothing by hand, and read the merged text back before using it.** Read the [merge and read-back
       reference](references/merge-and-readback.md) when the batch reaches the file-list check; it
       holds these last steps, in order.
 

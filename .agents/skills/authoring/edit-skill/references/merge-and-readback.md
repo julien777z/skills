@@ -9,7 +9,7 @@ a pull request carrying only `.agents` files, and the file outside them that sli
 announced. Read the changed paths, never your memory of what you edited. A path outside
 `.agents` leaves this branch — dropped when it was never meant, moved to the source pull
 request the work continues under **Branch and commit** when it was — and the new head goes back through **Brief `review-pass`'s final acceptance**. Everything
-in `.agents`, merge it through `merge-gate` with the head `acceptance-gate` accepted, which for a pull request in `review-pass`'s **Combined Review** set, and no other, is also the head that review accepted — but first
+in `.agents`, merge it, as the entry point's step says, with the head the gate accepted, which for a pull request in `review-pass`'s **Combined Review** set, and no other, is also the head that review accepted — but first
 ask whether any line it adds or drops is true only once a still-open source pull request
 merges. Select where dependent guidance goes under the GitHub rule's **Branches and Pull Requests**
 and the [guidance pull requests reference](guidance-pull-requests.md),

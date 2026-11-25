@@ -12,7 +12,7 @@ recording or delivering a batch.
   same way. While another task runs, the requested action is the behavior it describes, applied to
   the current work, and the guidance edit is its record. While a guidance batch is in flight, its
   delivery is that action and the user's words are its evidence.
-- Record the correction as a `guidance_correction` entry with `session-ledger`: the user's words, if
+- The `guidance_correction` entry holds the user's words, if
   any, quoted as `pre-production`'s **Examples And Paths** says, the evidence of the gap, and for a
   process its verified run, a reproduction scenario, the Scope Statement **Identify the failure class** writes,
   whose From now on line is the entry's intended behavior, the canonical files it will change, and
@@ -36,9 +36,10 @@ recording or delivering a batch.
   When the checkout holds the active task's uncommitted or source-branch work, write and commit the
   edit from a separate worktree on the selected branch, leave the task's tree untouched, and stage
   only the guidance files. Record the branch, the `commits` list and the pull request in the entry's
-  `data`, bring that pull request's description up to date at the milestone, then run `update-skills` at once for eligible edits under its **What Takes Effect**, so the installed
-  copy every agent loads, subagents included, carries them. A running agent keeps the text it
-  already read: tell each running worker this session started, as `subagent-matrix`'s **Dispatch** says. Nothing else of delivery runs while the task does: no
+  `data` and bring that pull request's description up to date at the milestone; the entry point's
+  refresh then follows at once for eligible edits under `update-skills`' **What Takes Effect**, so
+  the installed copy every agent loads, subagents included, carries them. A running agent keeps the
+  text it already read, so each running worker this session started is told. Nothing else of delivery runs while the task does: no
   review, gate, skill-test round, merge or worker, except the checks a batch in flight reruns for an edit
   that joined it, as `session-ledger`'s **Guidance Batches** says. A standing instruction about how guidance
   pull requests are reviewed or merged governs that delivery when it runs, never when. A gate result
