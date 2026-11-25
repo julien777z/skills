@@ -135,13 +135,14 @@ DESCRIPTION_FIELD: Final[str] = "description"
 DESCRIPTION_SPECIFICATION_CHARS: Final[int] = 1024
 DESCRIPTION_LISTING_CHARS: Final[int] = 1536
 OUTPUT_DIR_PATTERN: Final[re.Pattern[str]] = re.compile(r"^\s*output-dir:\s*(\S+)\s*$", re.MULTILINE)
-GENERATED_ROOT_FILES: Final[frozenset[str]] = frozenset({"AGENTS.md"})
+INSTRUCTIONS_FILENAME: Final[str] = "AGENTS.md"
+GENERATED_ROOT_FILES: Final[frozenset[str]] = frozenset({INSTRUCTIONS_FILENAME})
 PROVIDER_ROOT_DIRNAMES: Final[frozenset[str]] = frozenset({".claude", ".codex", ".cursor"})
-CODEX_CONFIG_PATH: Final[str] = ".codex/config.toml"
-INSTRUCTIONS_CAP_PATTERN: Final[re.Pattern[str]] = re.compile(
-    r"^project_doc_max_bytes\s*=\s*(\d+)\s*$", re.MULTILINE
-)
 CODEX_INSTRUCTIONS_CAP_BYTES: Final[int] = 32768
+FALLBACK_DEFAULT_REF: Final[str] = "origin/main"
+REMOTE_HEAD_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"^ref: refs/heads/(\S+)\tHEAD$", re.MULTILINE
+)
 
 EXIT_CODES: Final[dict[SyncOutcome, int]] = {
     SyncOutcome.VALID: 0,
@@ -295,22 +296,52 @@ def git_output(root: Path, *arguments: str) -> str | None:
     return run.stdout.strip() if run.returncode == 0 else None
 
 
+def default_branch_ref(root: Path) -> str | None:
+    """Resolve the remote-tracking ref of origin's default branch, or None when none resolves."""
+
+    symbolic = git_output(root, "symbolic-ref", "--short", "refs/remotes/origin/HEAD")
+
+    if symbolic is not None:
+        return symbolic
+
+    listing = git_output(root, "ls-remote", "--symref", "origin", "HEAD") or ""
+    remote_head = REMOTE_HEAD_PATTERN.search(listing)
+    candidates = [f"origin/{remote_head.group(1)}"] if remote_head else []
+
+    for candidate in [*candidates, FALLBACK_DEFAULT_REF]:
+        if git_output(root, "rev-parse", "--verify", "--quiet", f"refs/remotes/{candidate}"):
+            return candidate
+
+    return None
+
+
 def find_generated_edits(root: Path, agents_dirname: str) -> list[str]:
     """List generated paths a branch other than the default branch changes."""
 
-    default_ref = git_output(root, "symbolic-ref", "--short", "refs/remotes/origin/HEAD")
+    default_ref = default_branch_ref(root)
     branch = git_output(root, "rev-parse", "--abbrev-ref", "HEAD")
 
-    if default_ref is None or branch is None or default_ref == f"origin/{branch}":
+    if default_ref is None or branch is None:
+        logger.warning("Generated: skipped, since no default branch or current branch resolved")
+
+        return []
+
+    if default_ref == f"origin/{branch}":
         return []
 
     base = git_output(root, "merge-base", default_ref, "HEAD")
     changed = git_output(root, "diff", "--name-only", base) if base else None
+
+    if changed is None:
+        logger.warning("Generated: skipped, since no change against %s could be read", default_ref)
+
+        return []
+
     output_dir = generated_output_dir(root, agents_dirname)
 
     return [
         f"{path} is written by Agent Sync only"
-        for path in (changed or "").splitlines()
+        for path in changed.splitlines()
         if path.startswith(f"{output_dir}/")
         or path in GENERATED_ROOT_FILES
         or path.split("/", 1)[0] in PROVIDER_ROOT_DIRNAMES
@@ -320,18 +351,18 @@ def find_generated_edits(root: Path, agents_dirname: str) -> list[str]:
 def find_instructions_cap_problems(scratch: Path) -> list[str]:
     """Report a generated instructions file past Codex's default size cap."""
 
-    config = scratch / CODEX_CONFIG_PATH
+    instructions = scratch / INSTRUCTIONS_FILENAME
 
-    if not config.is_file():
+    if not instructions.is_file():
         return []
 
-    match = INSTRUCTIONS_CAP_PATTERN.search(config.read_text(encoding="utf-8"))
+    size = instructions.stat().st_size
 
-    if match is None or int(match.group(1)) <= CODEX_INSTRUCTIONS_CAP_BYTES:
+    if size <= CODEX_INSTRUCTIONS_CAP_BYTES:
         return []
 
     return [
-        f"the generated instructions file AGENTS.md is {match.group(1)} bytes, past the "
+        f"the generated instructions file {INSTRUCTIONS_FILENAME} is {size} bytes, past the "
         f"{CODEX_INSTRUCTIONS_CAP_BYTES}-byte default Codex reads"
     ]
 
