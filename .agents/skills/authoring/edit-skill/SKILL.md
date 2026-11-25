@@ -48,10 +48,14 @@ the subject, creates its new owner under **Guidance Changes Proceed Automaticall
 A user request or an encountered guidance gap, once **Validate input** confirms its premise,
 authorizes the canonical `.agents` correction its Scope Statement lists inside what the user said;
 a policy change, which that statement lists as beyond it, waits for the user as **Identify the failure class**
-says. The statement is shown, never asked: do not ask for a plan, or for approval of the statement
-or of a guidance-output example; an approval hold the invoking workflow sets is that workflow's and
-still applies. A guidance edit that intentionally changes the product still follows
-`pre-production`'s **Product Choices**. The gate set of the edit's route validates the correction.
+says. The statement is shown, never asked: do not ask for a plan, or for approval of the statement,
+of a guidance-output example, of a proposed flow or of the pull request. **Apart from a policy
+change and a product choice, which reach the user as above, a guidance change reaches the user
+only when the agent is unsure whether it does what they meant**, asked through the question tool;
+otherwise its gates run and it merges. A hold the invoking workflow or a rule sets, such as the
+GitHub rule's hold on a pull request that adds a doctor skill, still applies. A guidance edit that
+intentionally changes the product still follows `pre-production`'s **Product Choices**. The gate
+set of the edit's route validates the correction.
 When a separate source task is active, or a guidance batch is in flight, preserve its execution and
 follow **Recording During A Task** for the edit's timing.
 

@@ -39,7 +39,8 @@ decision waiting on evidence is reported, and how an action the reader owns is h
 
 - **Timing.** Preparation is only work that changes what the reader will do; other queued work, a
   guidance edit included, waits behind the question, which goes out in the turn the need is
-  established. Chat text never announces the step ahead of that question.
+  established. Chat text never announces the step ahead of that question, apart from the material
+  the question shows, such as a report whose `Next:` line names the review it asks for.
 - **Content.** Its text names the whole step, including any command, and offers a confirmation
   option such as "Done" beside one for doing it later. An address it gives is one the governing
   guidance or the product itself states, or one the agent opened and saw serve that step; never one
@@ -49,9 +50,10 @@ decision waiting on evidence is reported, and how an action the reader owns is h
   the reader's part is the action alone.
 - **Result.** A confirmation is the reader's word, not the outcome: check the result at its source
   before building on it.
-- Raise an action the reader owns again only when it blocks the next step or the reader asks what
-  they owe. Once they say they will do it later, it is settled and stays out of every later
-  message.
+- A question-tool request for an action the reader owns is asked again as global **Asking the
+  user** says; a later message mentions the action again only when it blocks the next step or the
+  reader asks what they owe. Once they say they will do it later, it is settled and stays out of
+  every later message and request.
 - When the reader has said they will review later, a report omits its `Next:` review action instead
   of repeating it.
 - Record the action and the reader's deferral of it with `session-ledger`, as an active-work entry
