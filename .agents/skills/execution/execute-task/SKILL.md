@@ -398,19 +398,23 @@ The run stays open until both streams finish: the source stream when its message
 `merge-gate` returns from an authorized merge; the guidance stream when `process-ledger` reports no
 remaining entries other than kept `review` records, or a concrete retained hold.
 
-### Process Review
-
-Once both streams finish, and before the final report, read back how the task ran: your own steps
-and every subagent, review round, gate, council and skill-test run, with their findings and how
-long each was waited on, from the ledger, the run records and the reports you hold. Look for time
-spent with no gain in what the work achieved: fixes that undo or redo each other, a flag rejected
-and repaired again and again, a gate asking for evidence its brief could have carried, rounds past
-a limit, a launch, gate or loop repeating what an earlier step settled, and a wait on an agent
-that had stalled. Where guidance caused or allowed one, correct that guidance through `edit-skill`
-as a gap you noticed. A cost that buys effectiveness, such as a round cap, an independent gate, a
-second reviewer or a skill test, is not waste and is never cut to save time, and a slip the
-guidance already rules out is reported, never written into guidance. With nothing found, the
-report says so in one line.
-
 A workflow that already runs `review-pass` runs **Review the pull request** as its own; one that already invokes
 `merge-gate` runs **Merge when authorized** as its own.
+
+### Process Review
+
+Once both streams finish, and before the final report, read back how the task ran, once per task:
+your own steps and every subagent, review round, gate, council and skill-test run, with their
+findings and how long each was waited on, from the ledger, the run records and the reports you
+hold. Look for time or usage spent with no gain in what the work achieved: fixes that undo or redo
+each other, a flag rejected and repaired again and again, a gate asking for evidence its brief
+could have carried, rounds past a limit, a launch, gate or loop repeating what an earlier step
+settled, parallel agents given the same task, a full rerun where only a small part changed, one
+diff read by several agents for overlapping criteria, and a wait on an agent that had stalled.
+Each one guidance caused or allowed goes through `edit-skill` as a gap you noticed, whose causal
+diagnosis repairs the step that let it through, a slip against guidance that already rules it out
+included; only one that diagnosis traces to no guidance step is just reported. A fix the review
+records starts the guidance stream again before the final report, the run stays open until that
+delivery merges or is held, and the review does not run again over it. A cost that buys
+effectiveness, such as a round cap, an independent gate, a second reviewer or a skill test, is not
+waste and is never cut to save time or usage. With nothing found, the report says so in one line.
