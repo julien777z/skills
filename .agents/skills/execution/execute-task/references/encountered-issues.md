@@ -1,5 +1,7 @@
 # Encountered issues
 
+Contents: **Disposition**, **CI Gates And Deliberate Breaks**.
+
 How `SKILL.md`'s **Encountered Issues** handles what the work runs into.
 
 ## Disposition
@@ -24,10 +26,8 @@ How `SKILL.md`'s **Encountered Issues** handles what the work runs into.
   for work that can change a surface the user has decided on, a simplification or review pass
   included, carries those decisions in the user's words, so the worker keeps them rather than
   undoing them; an item that would undo one goes to the user. The class is any item asking for
-  what a rule rules out: a review finding asking for the catch-all exception handler the language
-  rule bans, a brief telling a worker to skip a check a skill requires before a push, a correction
-  asking for copy the copy rules forbid, one asking for a boat-rental waiver to arrive filled in
-  from the renter's last booking when the forms rule says a form someone attests to starts empty. It
+  what a rule rules out, such as a review finding asking for the catch-all exception handler the
+  language rule bans, or a brief telling a worker to skip a check a skill requires before a push. It
   also takes in an item adding a stop, a question or an approval the guidance does not call for,
   such as a brief telling a worker to stop and ask before adding the schema revision a migration
   skill puts its change in: the guidance settled that step, and the added gate hands the user a
@@ -91,14 +91,5 @@ How `SKILL.md`'s **Encountered Issues** handles what the work runs into.
 
 ## CI Gates And Deliberate Breaks
 
-Some required checks exist to detect deliberate changes: contract compatibility, schema
-compatibility, generated-output drift.
-
-- Such a gate going red is an accepted, reported outcome of an intentional break, never a reason
-  to reshape the change.
-- Never weaken the gate to recover green, as `pre-production`'s **Target Contract** says of a
-  compatibility gate: no ignore lists, no exception entries, no reserved placeholders faking
-  compatibility. State in the pull request that the break is deliberate and list exactly what the
-  gate reported, so a reviewer can confirm nothing unintended is in the diff.
-- Do not let a green run drive design. Choosing a wider or additive shape so that a gate stays
-  green is the same defect as suppressing the gate.
+A required check that exists to detect deliberate changes going red on an intentional break is
+handled as `pre-production`'s **Target Contract** says.
