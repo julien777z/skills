@@ -10,13 +10,9 @@ from pathlib import Path
 from typing import Final
 
 NEW_SETTINGS_MODE: Final[int] = 0o600
-# Both forms of a registered hook command: the guarded one, which does nothing in a repository
-# without the hook file, and the unguarded one earlier installs wrote.
 SOURCE_COMMAND_PATTERN: Final[re.Pattern[str]] = re.compile(
-    r'(?:\[ ! -f "\$\(git rev-parse --show-toplevel\)/\.agents/hooks/([\w-]+)/main\.py" \] \|\| '
-    r'python3 "\$\(git rev-parse --show-toplevel\)/\.agents/hooks/\1/main\.py"'
-    r'|python3 "\$\(git rev-parse --show-toplevel\)/\.agents/hooks/([\w-]+)/main\.py")'
-    r"((?: [\w-]+)*)"
+    r'\[ ! -f "\$\(git rev-parse --show-toplevel\)/\.agents/hooks/([\w-]+)/main\.py" \] \|\| '
+    r'python3 "\$\(git rev-parse --show-toplevel\)/\.agents/hooks/\1/main\.py"((?: [\w-]+)*)'
 )
 
 HOOK_NAME_PATTERN: Final[re.Pattern[str]] = re.compile(r"[\w-]+")
@@ -99,10 +95,9 @@ def relocated_handler(handler: dict[str, object], hooks_dir: Path, path: Path) -
     if match is None:
         raise SettingsConflict(f"{path} has a hook command that is not a generated hook command")
 
-    guarded_name, unguarded_name, argument_text = match.groups()
-    name = guarded_name or unguarded_name
+    arguments = match.group(2).split()
 
-    return {**handler, "command": installer_command(hooks_dir, name, argument_text.split())}
+    return {**handler, "command": installer_command(hooks_dir, match.group(1), arguments)}
 
 
 def relocated_entry(entry: dict[str, object], hooks_dir: Path, path: Path) -> dict[str, object]:
