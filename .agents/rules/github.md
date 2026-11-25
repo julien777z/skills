@@ -125,9 +125,8 @@ alwaysApply: true
   request, as **Branches and Pull Requests** and the skill that edits guidance set out; guidance
   true on the default branch as it stands waits for nothing. The hold authorizes no merge of the
   source pull request: finish both pull requests' independent checks, report the dependency, and
-  leave the source one reviewable. After
-  it merges, incorporate the updated base into the held one and rerun the affected gates before
-  using the permission.
+  leave the source one reviewable. After it merges, incorporate the updated base into the held one
+  and rerun the affected gates before using the permission.
 - **Auto-merge is enabled only** for an eligible agent-configuration pull request whose gates have
   passed while checks are still pending, for the mistaken-merge revert, or where the user
   authorizes it in the current request or an explicitly invoked skill requires it.
@@ -160,8 +159,8 @@ alwaysApply: true
 ## Pre-Push Gate
 
 Every push, on a draft and on a ready pull request alike, goes out once the checks below pass, and
-nothing holds committed work on one machine beyond what the **Nothing outside the change** bullet
-below allows. The exceptions are commits an invoked skill states it holds local until the user
+nothing outside the change holds committed work on one machine, as the **Nothing outside the
+change** bullet below sets out. The exceptions are commits an invoked skill states it holds local until the user
 releases them, such as locked database revisions, and the fixes of a review the user asked for
 without a push, which stay local until they ask. A fix for a flag a review or gate raised is pushed
 once the agent that made it has re-read the changed lines against the flag and rerun the checks
