@@ -168,7 +168,7 @@ plan of its own; only an edit that adds nothing skips it.
   is a product, scope, security, disclosure or authorization choice that is the user's and that
   they have not answered. A plan holding one sends those decisions first and starts only
   independent authorized work until they are answered. Once they are, or when the plan never held
-  one, the accepted plan goes to the user as a message with no approval question, **Execution**
+  one, the ready plan goes to the user as a message with no approval question, **Execution**
   starts without waiting for a reply, and the user can interrupt at any point.
 - **A plan shown this way is never called approved**: every record, report,
   dashboard and brief says it was shown with no open decision, and when.
