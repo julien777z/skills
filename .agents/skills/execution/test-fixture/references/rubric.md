@@ -355,17 +355,11 @@ class TestRedeemCoupon:
 
 ### Naming Checks
 
-A name identifies the case; the docstring carries the behavior sentence. Run every check below
-over every `def test_` in the scope and report each result, an empty result included; each is a
-finding at any length, and each names the mechanical check that finds every instance:
-
-- a name whose first word after `test_` is `a`, `an`, or `the` (regex `def test_(a|an|the)_` over
-  every test module);
-- a name past eight words (split on `_` and count);
-- a numeric status token in a name (a `_`-delimited token that is a member of the runtime's HTTP
-  status enumeration);
-- a word restating a noun the enclosing class or module already states (tokenize the class name,
-  stem singular and plural, intersect with the name's words).
+A name identifies the case; the docstring carries the behavior sentence. Run
+`scripts/naming_checks.py` from the skill directory over the scope's paths and report each block it
+prints, an empty one included; it finds four name findings at any length: a name led by an article
+(`a`, `an`, `the`), a name past eight words, a numeric HTTP status token, and a word restating a noun
+the enclosing class or module already states.
 
 Cut in the order above: the article and connective prose first, then every noun the class already
 states, then the numeric code. A name that clears all four checks is finished;
@@ -381,13 +375,13 @@ Name several results in one test for their scenario or domain role, such as
 `response_a`, `response_b`, `result_1`, or `result_2`.
 
 A test class names its substantial coherent responsibility. Remove filler and misleading synonyms; small related cases extend their existing owning class rather than earning a separate class by being named. A helper that builds a model in a suite's `utils/` or `fixtures/`
-package is named `create_<shape>` (list every module-level `def` in those packages whose return type
+package is named `create_<shape>` (the script lists every module-level `def` in those packages whose return type
 is a model, with its name; report every row): a bare noun (`flag`), a mechanics prefix
 (`stored_driver_license`), or a coinage (`flag_page`) is renamed `create_<shape>`, and the same shape
 built under two names in two files or two suites is one name across all of them. Every other
 module-level `def` in those packages is named for the domain act it performs, as that section sets out
-(list each with its first word; report every row whose first word is `post`, `put`, `patch`, a
-transport verb, or a word saying how its value was made): `post_order` is renamed for what it asks
+(the script lists each with its first word; report every row whose first word is `post`, `put`,
+`patch`, a transport verb, or a word saying how its value was made): `post_order` is renamed for what it asks
 the application to do, and a `stored_customer` fixture for the role that customer plays.
 Read names across
 sibling files and sibling suites before settling one: a suite's vocabulary is its source's, and the
