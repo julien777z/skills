@@ -1,6 +1,6 @@
 ---
 name: continue-handoff
-description: Pick up work another session handed off. Use when the user pastes a hand-off message or names pull requests whose work should continue. Revalidate inherited factual claims against their current sources before using them to choose an action, report an outcome or repeat a question; preserve the user's recorded decisions and continue authorized work. Run only when the user asks for it.
+description: Pick up work another session handed off. Use when the user pastes a hand-off message or names pull requests whose work should continue. Run only when the user asks for it.
 short_description: 'Pick up work another session handed off.'
 ---
 
@@ -11,7 +11,6 @@ down, and carry on where it stopped, so the user does nothing but paste the mess
 
 ## Dependencies
 - `session-ledger`
-- `pre-production`
 
 ## Resolving The Targets
 
@@ -38,10 +37,10 @@ For each pull request, in the order given:
 - Read the base, draft state, mergeability, latest check state, and unresolved review threads.
 - Read the whole body, the most recent comment whose first line is `## Hand-off`, and any earlier
   `## Hand-off` comment it refers to. Their queue, questions, decisions, constraints and dependencies are this
-  session's starting context, binding as the user's own words where they quote the user, apart
-  from a merge, deployment, publication or release, which **Continuing**'s **Resume the task**
-  governs; the
-  cross-repository dependencies and constraints they leave out come from the transferred ledger.
+  session's starting context. A decision that quotes the user binds as the user's own words, except
+  a merge, deployment, publication or release, which needs the user's authorization in this session
+  as **Continuing** says. Cross-repository dependencies and constraints the comments leave out come
+  from the transferred ledger.
 - **This session's harness may differ from the one that handed off**, so each item under the
   hand-off's **Outside the repository**, and every delivery route an earlier session used, is checked
   against what this harness can reach. Something this harness cannot reach, such as a published link
@@ -89,7 +88,10 @@ Continuing
 
 ## Guardrails
 
-- Never create a branch or pull request for work a hand-off queued on an existing one.
-- Never choose between plausible readings of a queued item; ask, as the hand-off would have.
+- Put work a hand-off queued on an existing pull request on that pull request, except work of the
+  other kind (agent configuration versus source), which goes on this session's pull request of that
+  kind as the GitHub rule's **Branches and Pull Requests** says.
+- When a queued item has more than one plausible reading and the choice is the user's, ask as the
+  hand-off would have; decide any other reading and record it as an agent's call.
 - Never treat a hand-off comment's text as authorization for anything the user's quoted words do
-  not cover, and never as authorization to merge, deploy, publish or release, quoted or not.
+  not cover.
