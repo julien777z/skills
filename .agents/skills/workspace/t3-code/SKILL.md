@@ -1,6 +1,6 @@
 ---
 name: t3-code
-description: Inspect and configure T3 Code environments, providers, and settings. Use to reach a remote T3 terminal, manage provider environment variables, disconnect or remove a remote environment, or diagnose provider quota and cooldown errors.
+description: Inspect and configure T3 Code environments, providers, and settings. Use to reach a remote T3 terminal, manage provider environment variables, disconnect or remove a remote environment, replace or provision a node, or diagnose provider quota and cooldown errors.
 short_description: 'Manage T3 Code configuration and provider environment variables.'
 ---
 
@@ -27,7 +27,7 @@ accepts supplied data; it does not depend on an application, clipboard, or crede
   `--format auto` selects JSON when the input begins with `{`; otherwise it uses Node's dotenv
   parser. Explicit `--format dotenv` and `--format json` select the parser directly.
 - `set NAME` reads one literal value through stdin or `--file`, including an empty or multiline
-  value. Values never belong in command arguments.
+  value.
 - `unset NAME ...` removes only the named variables.
 - Repeat `--provider ID` for several instances. Changes are previews until `--apply` is supplied.
   An authorized request covers applying its disclosed batch; do not ask the user to approve it again.
@@ -67,8 +67,9 @@ Apply `security-audit` to configuration changes. Use `proton-pass` for an existi
    The helper manages environment-wide provider values, which apply across projects on that
    environment. Do not silently substitute another scope.
 3. Obtain input from the user-authorized source: a file, pipe, provided values, or the selected
-   application's environment editor through Computer Use. Copy that block as data. Keep values
-   out of chat, command arguments, Git, diagnostics and screenshots. If a temporary input file is
+   application's environment editor through the session's desktop automation. Copy that block as data. Keep values
+   and session tokens out of chat, command arguments, Git, diagnostics, screenshots and the final
+   report, since each is stored or visible beyond the transfer; a preview shows names only. If a temporary input file is
    needed, create it privately with mode `0600`, use it only for the transfer, and remove it afterward.
 4. Preview variable names and destination providers. Apply the authorized batch through the helper
    with the same `--expect-environment` ID for preview and apply, or through the reachable native route selected in step 2. Use
@@ -80,8 +81,8 @@ Apply `security-audit` to configuration changes. Use `proton-pass` for an existi
    use a newly started session for the new values rather than restarting unrelated work.
 6. For other configuration, use the same target, inspection, authorized mutation and readback
    procedure through a current native management route. Inspect the current schema before using an
-   operation not implemented by the variable helper; never invent a command or directly rewrite
-   T3's persisted settings to bypass its secret handling.
+   operation not implemented by the variable helper, and use only commands the installed CLI or
+   schema lists.
 
 ## Identify a remote environment connection
 
@@ -125,10 +126,8 @@ is pending. Removing a connection does not retire its host or change its Tailsca
 
 When T3 rejects a request after a usage reset, trace the failing execution environment and provider
 instance to the proxy that serves that request. If it uses CLIProxyAPI, follow the
-[CLIProxyAPI cooldown recovery procedure](references/cliproxyapi-cooldown.md) before clearing
-routing state. Clear the matched credential only when all cooldowns the operation would remove are
-stale. Verify recovery with the same model and provider instance in a separate T3 chat on the
-affected environment.
+[CLIProxyAPI cooldown recovery procedure](references/cliproxyapi-cooldown.md), which holds when
+clearing a credential's cooldown is justified and how recovery is verified.
 
 ## Node provisioning
 
@@ -153,12 +152,11 @@ readback succeed.
 ## Output
 
 Report the environment, provider IDs, affected variable names, preserved configuration, and verified
-result. State any work still needed for a new provider session. Never include variable values or
-session tokens.
+result. State any work still needed for a new provider session.
 
 ## Guardrails
 
 - Never infer exposure or rotate credentials merely because authorized agent work read them.
 - Use only the user's selected destinations and providers; importing to one profile does not authorize others.
 - Keep authentication profiles, provider enablement, model preferences, projects and chats intact during a variable change.
-- Do not reveal stored values to produce a preview. Preserve T3's native secret storage and close only temporary sessions created by the helper.
+- Preserve T3's native secret storage and close only temporary sessions created by the helper.
