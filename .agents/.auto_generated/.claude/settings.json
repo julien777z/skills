@@ -4,6 +4,7 @@
     "commit": "",
     "pr": ""
   },
+  "autoMemoryEnabled": false,
   "hooks": {
     "SessionStart": [
       {
