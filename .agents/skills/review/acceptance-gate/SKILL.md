@@ -11,7 +11,8 @@ state and the change's intent, applies the repository's rubric, and answers one 
 once over a pull request's complete diff, before its merge, and otherwise only for the questions
 below that a caller cannot settle alone. A plan step or worker task is gated only when later steps
 build on it; every other step, and every fix to a review finding, gets its author's own checks,
-while a gate's flag is closed only by a fresh gate under **Bounds**.
+while a gate's flag is closed only by a fresh gate under **Bounds**, apart from a proposal whose
+calling workflow states the final ruling its repairs get.
 `references/rubric.md` holds what it judges by; this file holds how it is run.
 
 ## Dependencies

@@ -20,7 +20,7 @@ proposal held for approval is asked under the global rules' **Asking the user** 
 
 ## Scope
 
-Apply `pre-production` to the proposal and each alternative. Invoke `acceptance-gate` for the independent Proposal verdict and its repair procedure. Use `session-ledger` to retain the proposal, inputs, evidence, dispositions and pending decision.
+Apply `pre-production` to the proposal and each alternative. Invoke `acceptance-gate` for the independent Proposal verdict and its **Bounds** admission and severity rules; step 5 sets how a proposal's repairs are judged. Use `session-ledger` to retain the proposal, inputs, evidence, dispositions and pending decision.
 
 Use on an implementation plan before the user sees it, and where approval of a proposed change is
 already required: explicit product, security, disclosure or scope alternatives. This creates no
@@ -74,17 +74,22 @@ Follow the dependency's fallback procedure without inventing a compliant launch 
    content where the file boundary cannot be preserved, or hold for the actual delivery limitation.
    Do not add a snapshot platform or truncate evidence. Verify the separate fresh gate's compliant
    dispatch, exact packet and complete original verdict before counting it.
-5. **Repair and return.** Apply every flag of a verdict in one pass, preserving original
-   objections and remedies; a flag is fixed, never dropped. The repaired proposal then gets one
-   final ruling and no further review round: after a council ruling, from that same council; after
-   an acceptance-gate flag, from `council` in **Ask** mode with the packet step 4 describes. A flag
-   that final ruling raises is fixed, and the proposal returns ready with those last fixes listed
-   for the caller to show beside it. Restart attacker review only if a repair changes approach,
-   scope, ownership or verification; a new design cycle keeps its history and the same checkpoints,
-   and renaming or caller re-entry cannot erase objections or reset a cycle. Missing or lost
-   output follows subagent-matrix recovery without redoing valid attacker evidence. Return the
-   result to the caller. Do not present the proposal or request approval here, or recursively
-   review the gate itself.
+5. **Repair and return.** Admit each flag under `acceptance-gate`'s **Bounds** (a settled,
+   out-of-scope or user-owned item is answered as those Bounds say, and style flags and evidence
+   gaps keep their handling there), then apply every admitted defect flag of a verdict in one pass,
+   preserving its objection and remedy; an admitted flag is fixed, never dropped. After a verdict
+   with an admitted defect flag, the repaired proposal and the fix diff get one final ruling and no
+   further review round: after the council, from the same members, resumed by the route council's
+   **Harness Compatibility** names, a member who has ended replaced as its **Members** says; after
+   an acceptance-gate verdict, from `council` in **Ask** mode with the packet step 4 describes;
+   either way accepted only when all three accept. A flag that final ruling raises is fixed, and
+   the proposal returns ready with those fixes in `last_fixes`, without restarting attacker review.
+   Before the final ruling, restart attacker review only if a repair changes approach, scope,
+   ownership or verification; that new design cycle keeps its history and the same two-round
+   adjudication checkpoint, and renaming or caller re-entry cannot erase objections or reset a
+   cycle. Missing or lost output follows subagent-matrix recovery without redoing valid attacker
+   evidence. Return the result to the caller. Do not present the proposal or request approval
+   here, or recursively review the gate itself.
 
 Reuse a ready receipt only for its exact proposal, reviewed inputs and affected-owner map. A changed
 item invalidates that acceptance receipt even when earlier attack evidence can be carried forward.
@@ -104,6 +109,7 @@ rounds: <actual history, clean streak and normal/adjudication route>
 evidence: <original report identities, coverage and alternative dispositions>
 gate: <exact packet, dispatch and original verdict, or missing evidence>
 next_action: <caller presentation or concrete repair/recovery>
+last_fixes: <fixes made after the final ruling, each with the flag it answers, or none>
 ```
 
 `ready` requires independent acceptance, or the final ruling of step 5 with its last fixes listed.

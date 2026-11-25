@@ -147,11 +147,13 @@ plan of its own; only an edit that adds nothing skips it.
 2. <step> (~<n> min)
 
 **Total: ~<n> min.** Then <what the user does next, such as review or merge; never a deploy the request does not name>. Interrupt to change any of it.
+
+<**Fixed after the final review:** one line per `last_fixes` item, only when there are any>
 ```
 
 ### Showing The Plan
 
-- **The user sees a plan once `review-proposal` has accepted it, or, where the running workflow
+- **The user sees a plan once `review-proposal` returns it ready, or, where the running workflow
   states a plan route straight to the Proposal gate, once that gate has, and never before.** A plan
   still being drafted or reviewed stays with the run: nothing the user reads — a report, a summary,
   a status line, a task list, a dashboard or a question — shows its steps, estimates or an outline
