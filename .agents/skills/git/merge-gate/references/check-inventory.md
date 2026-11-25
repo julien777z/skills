@@ -60,7 +60,7 @@ the run stuck from a pending status alone.
   possible baseline under `pre-production`'s **Encountered Issues**, without reentering that
   skill's active run. A non-essential check failing only on findings `pre-production`'s
   essential-checks bullet leaves red is an exclusion too. Record an exclusion's evidence, remove
-  it from required coverage, and do not repair, rerun, or wait for it. Apply **Validation
+  it from required coverage, and do not repair, rerun, or wait for it. Apply `SKILL.md`'s **Validation
   Exclusions**' interrupted-check exclusion automatically: record a qualified check as skipped
   and do not rerun or wait for a green hosted result.
 - **An interrupted attempt.** For a canceled or otherwise interrupted attempt with no recorded

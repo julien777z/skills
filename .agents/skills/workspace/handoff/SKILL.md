@@ -19,6 +19,7 @@ branch** when a lock holds commits locally.
 - `session-ledger`
 - `pre-production`
 - `lock-revision`
+- `edit-skill`
 
 ## Scope
 
@@ -83,7 +84,7 @@ branch** when a lock holds commits locally.
 6. **Close the pull requests this session made stale.** One whose commits now live on the pull
    request the work continues, or whose change is superseded, is closed with a comment naming where
    the work went, as the GitHub rule's **Branches and Pull Requests** and, for agent configuration,
-   the guidance-editing skill's `references/guidance-pull-requests.md` say. A pull request the
+   `edit-skill`'s guidance pull-request reference say. A pull request the
    session did not open is never closed, retargeted or folded.
 7. **Bring each pull request body up to date**: read the complete existing body, then rewrite it
    to describe everything the branch now changes, written the way `pre-production`'s **Repository Text**

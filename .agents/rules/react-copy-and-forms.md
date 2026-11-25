@@ -82,7 +82,7 @@ paths:
   effect nobody asked about, such as what happens to earlier versions.
 - **A dialog's commit button names the act in the fewest words, not the label its trigger and title already carry.** The
   reader pressed "Add song" to open the dialog and read "Add song" as its title; a third "Add song"
-  on the button says nothing new. The commit names the act in the fewest words: "Save" for a form
+  on the button says nothing new: "Save" for a form
   that adds or changes something, the bare verb for a confirmation — "Delete" under "Delete
   playlist". When that verb is also the word the product's dialogs use to dismiss, such as "Cancel",
   the commit adds what it acts on — "Cancel booking" — so one word never means both doing the

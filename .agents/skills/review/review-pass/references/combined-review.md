@@ -4,10 +4,6 @@ The mechanics of **Combined Review** in this skill's `SKILL.md`, which keeps the
 
 Contents: **Reviewer**, **What it looks for**, **Findings**, **A later round**, **Verdict**.
 
-Pull requests reviewed one at a time can each be right and still be wrong together. One reviewer
-reads the whole set for flaws only the combination has; it does not repeat each pull request's own
-review.
-
 ## Reviewer
 
 One per round, however many pull requests the set holds, resolved and launched as this skill's

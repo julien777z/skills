@@ -138,8 +138,7 @@ test jobs run once, on the head about to merge.
    as the [delivery dependency criteria](references/delivery-dependencies.md) say, retaining the
    comparison with the freshly fetched default branch beside the admission verdict. A newly
    introduced or changed PR/testing reference in a workflow, application code, manifest or lockfile,
-   a testing dependency and missing provenance block the merge even with passing tests, and a
-   blocked dependency leaves the pull request draft. After the dependency merges, update every
+   a testing dependency and missing provenance block the merge even with passing tests. After the dependency merges, update every
    consuming reference to the maintained target, revalidate the consumer's new head through the
    caller's fix rule and repeat this inventory before merging.
 3. **Mark the pull request ready, and account for the checks that starts.** Run **Readiness**
@@ -150,7 +149,7 @@ test jobs run once, on the head about to merge.
    behavior coverage are evidenced equivalent. A test job `skipped` because the pull request was
    draft is no result. If readiness makes a previously skipped job applicable or changes any of
    those inputs, obtain its fresh terminal result. Otherwise, do not wait for or rerun an equivalent
-   duplicate job that remains pending; classify every unsuccessful terminal duplicate under **Classify every unsuccessful check**.
+   duplicate job that remains pending; classify every unsuccessful terminal duplicate under the check inventory's **Classify every unsuccessful check before repair**.
 4. **Classify the complete pull-request diff.** A non-runtime diff — one that changes no executable
    source, package or dependency definition, test, runtime configuration, CI workflow, generated
    runtime artifact, or other executed-behavior contract — is validated only by the checks its
@@ -180,7 +179,7 @@ When GitHub reports a conflict, or the merge is rejected for one:
 Recheck delivery dependency state, resolved revisions and the recorded default-branch comparison,
 then re-read the pull request after the check gate and require its head to equal the head that passed
 acceptance. On a head mismatch, put the added commits through the caller's rule and repeat the check
-gate. On a base mismatch, apply the execution-input comparison of **For a runtime diff, inventory every check** and, when equivalence is not
+gate. On a base mismatch, apply the base comparison in the check inventory's **Drive the complete inventory to terminal results** and, when equivalence is not
 evidenced, incorporate it through `merge-conflict`, run the caller's rule, and repeat the gate. Then
 squash-merge
 with the accepted head SHA in the request —
@@ -201,7 +200,7 @@ the merged branch never waits on this, so a consumer left pinned stops installin
 
 An excluded check does not prevent the ordinary authorized merge attempt. If branch protection
 rejects it because it requires an interrupted hosted check, record the required context and head
-in the inventory. For that context, **Classify every unsuccessful check** cannot apply local substitution or reuse a result the
+in the inventory. For that context, the check inventory's **Classify every unsuccessful check before repair** cannot apply local substitution or reuse a result the
 provider already rejected. Follow its matching replacement or retry under **Check Gate**. Re-read
 the required context and attempt the merge once GitHub reports it passing. For other exclusions, or if hosted
 recovery is unavailable, report the actual rejection and its provider evidence. Never bypass protection.

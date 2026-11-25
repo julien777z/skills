@@ -4,8 +4,8 @@ What the short route runs and how a batch moves between routes; read from **Guid
 
 ## Short route
 
-The editing agent runs the source check and the two passes the entry point names itself, in
-process; the independent gate reads the batch's delta, briefed as **Brief `review-pass`'s final
+The editing agent itself runs, in process, the source check and the two passes the entry point
+names; the independent gate reads the batch's delta, briefed as **Brief `review-pass`'s final
 acceptance** says with the Scope Statements as intent; and the skill test runs its single-scenario
 form for each entry, entries that
 fail the same way sharing a scenario, with no control run, since the observed miss already

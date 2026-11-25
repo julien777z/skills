@@ -43,7 +43,7 @@ paths:
     controls; preserve automatic refresh instead of stopping it to hide flicker. These settled-view
     requirements apply to every data-dependent component, including one outside a shared page
     section.
-  - Verify: Validate each affected component through a cold load and repeated slow refreshes of
+  - Validate each affected component through a cold load and repeated slow refreshes of
     populated, empty, and failed results, including recovery after an initial failure and dismissal
     followed by the same and a changed failure. The cold load changes directly from one complete
     skeleton to the settled section or the failure presentation below; later requests keep the

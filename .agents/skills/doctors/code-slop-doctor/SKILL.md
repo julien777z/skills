@@ -195,7 +195,7 @@ Every lens applies in every area, read in that area's language; **Hand-Written S
 the frontend area, **Migration Chain** to the migrations area, **Build And Root**, **Configuration
 Drift** and **Dependency Drift** to the build area, and **Test Slop** to the tests area. Test Slop
 runs `test-fixture`'s **Test Value And Retention**, **Naming Checks** and **Auditing Existing
-Doubles** over every test module a finding in another lens changes; a migration-test deferral
+Doubles** over every test module mirroring code a finding in another lens changes; a migration-test deferral
 record whose path no longer exists is reported to `defer-scope`.
 
 | Lens | Flags | Reach |

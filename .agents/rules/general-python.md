@@ -181,7 +181,7 @@ from myapp.http_transport import fetch
 - **Never add an inline suppression**: no `# pylint: disable`, `# pyright: ignore`, `# type: ignore`, or `# noqa` — except on the outermost-wrapper catch-all the Python boundaries rule's **External APIs and Errors** allows. Fix what the checker reports about our own code — a precise annotation, a correctly typed decorator (a `ParamSpec` rather than a `Callable` that erases parameter names), the right import. A per-line disable reads the same whether its author weighed the finding or never looked, and once copied onto every sibling it hides the cause behind a pattern nobody questions.
 - **A third-party package's missing or incomplete types are that package's gap, never ours.** Write
   no stub file, `typings/` directory, cast, wrapper, checker plugin, inference transform or script to
-  quiet them, and delete any that exists together with its tests; the answer is the category-wide
+  quiet them or to teach a tool a third-party construct it misreads, and delete any that exists together with its tests; the answer is the category-wide
   configuration entry below, never code. A package the user owns is not third-party wherever it
   lives: its types are published at its source — a `py.typed` marker and the annotations its public
   surface needs. Read ownership from whose repository it is.
