@@ -134,6 +134,14 @@ WORDING_COLUMNS: Final[tuple[str, ...]] = (
 DESCRIPTION_FIELD: Final[str] = "description"
 DESCRIPTION_SPECIFICATION_CHARS: Final[int] = 1024
 DESCRIPTION_LISTING_CHARS: Final[int] = 1536
+OUTPUT_DIR_PATTERN: Final[re.Pattern[str]] = re.compile(r"^\s*output-dir:\s*(\S+)\s*$", re.MULTILINE)
+GENERATED_ROOT_FILES: Final[frozenset[str]] = frozenset({"AGENTS.md"})
+PROVIDER_ROOT_DIRNAMES: Final[frozenset[str]] = frozenset({".claude", ".codex", ".cursor"})
+CODEX_CONFIG_PATH: Final[str] = ".codex/config.toml"
+INSTRUCTIONS_CAP_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"^project_doc_max_bytes\s*=\s*(\d+)\s*$", re.MULTILINE
+)
+CODEX_INSTRUCTIONS_CAP_BYTES: Final[int] = 32768
 
 EXIT_CODES: Final[dict[SyncOutcome, int]] = {
     SyncOutcome.VALID: 0,
@@ -262,6 +270,72 @@ def run_sync_tool(python: Path, root: Path, agents_dirname: str, command: list[s
     return outcome
 
 
+def generated_output_dir(root: Path, agents_dirname: str) -> str:
+    """Read the directory the sync workflow writes generated output into."""
+
+    workflows_dir = root / WORKFLOWS_DIRNAME
+    workflow_paths = sorted(workflows_dir.glob("*.yml")) + sorted(workflows_dir.glob("*.yaml"))
+
+    for path in workflow_paths:
+        match = OUTPUT_DIR_PATTERN.search(path.read_text(encoding="utf-8"))
+
+        if match is not None:
+            return match.group(1).strip("\"'").rstrip("/")
+
+    return f"{agents_dirname}/{GENERATED_DIRNAME}"
+
+
+def git_output(root: Path, *arguments: str) -> str | None:
+    """Return one git command's output, or None when it fails."""
+
+    run = subprocess.run(
+        ["git", "-C", str(root), *arguments], check=False, capture_output=True, text=True
+    )
+
+    return run.stdout.strip() if run.returncode == 0 else None
+
+
+def find_generated_edits(root: Path, agents_dirname: str) -> list[str]:
+    """List generated paths a branch other than the default branch changes."""
+
+    default_ref = git_output(root, "symbolic-ref", "--short", "refs/remotes/origin/HEAD")
+    branch = git_output(root, "rev-parse", "--abbrev-ref", "HEAD")
+
+    if default_ref is None or branch is None or default_ref == f"origin/{branch}":
+        return []
+
+    base = git_output(root, "merge-base", default_ref, "HEAD")
+    changed = git_output(root, "diff", "--name-only", base) if base else None
+    output_dir = generated_output_dir(root, agents_dirname)
+
+    return [
+        f"{path} is written by Agent Sync only"
+        for path in (changed or "").splitlines()
+        if path.startswith(f"{output_dir}/")
+        or path in GENERATED_ROOT_FILES
+        or path.split("/", 1)[0] in PROVIDER_ROOT_DIRNAMES
+    ]
+
+
+def find_instructions_cap_problems(scratch: Path) -> list[str]:
+    """Report a generated instructions file past Codex's default size cap."""
+
+    config = scratch / CODEX_CONFIG_PATH
+
+    if not config.is_file():
+        return []
+
+    match = INSTRUCTIONS_CAP_PATTERN.search(config.read_text(encoding="utf-8"))
+
+    if match is None or int(match.group(1)) <= CODEX_INSTRUCTIONS_CAP_BYTES:
+        return []
+
+    return [
+        f"the generated instructions file AGENTS.md is {match.group(1)} bytes, past the "
+        f"{CODEX_INSTRUCTIONS_CAP_BYTES}-byte default Codex reads"
+    ]
+
+
 def mirror_in_scratch(python: Path, root: Path, agents_dirname: str) -> SyncOutcome:
     """Validate external resources and mirror canonical sources in a scratch copy."""
 
@@ -280,6 +354,14 @@ def mirror_in_scratch(python: Path, root: Path, agents_dirname: str) -> SyncOutc
 
             if outcome is not SyncOutcome.VALID:
                 return outcome
+
+        cap_problems = find_instructions_cap_problems(Path(scratch))
+
+        for problem in cap_problems:
+            logger.error("Instructions size: %s", problem)
+
+        if cap_problems:
+            return SyncOutcome.INVALID
 
     return SyncOutcome.VALID
 
@@ -907,6 +989,13 @@ def run_command(arguments: argparse.Namespace) -> SyncOutcome:
         logger.error("Citations: %s", problem)
 
     problems += citation_problems
+
+    generated_problems = find_generated_edits(root, agents_dirname)
+
+    for problem in generated_problems:
+        logger.error("Generated: %s", problem)
+
+    problems += generated_problems
 
     logger.info(
         "Validating %s in a scratch copy with %s@%s",

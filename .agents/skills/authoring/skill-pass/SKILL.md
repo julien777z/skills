@@ -83,7 +83,10 @@ included, so a clean changed file does not make a failing tree pass.
   without being declared, and a cycle among declared dependencies. It refuses a relative link whose
   file or anchor is missing, a section cited as a skill's or a rule's `**Section**` that the cited
   skill's entry point and references, or the cited rule, do not hold, and a rule file named that
-  does not exist.
+  does not exist. On a branch other than the default branch it refuses a changed path under the
+  workflow's generated output directory, `AGENTS.md` or a provider folder, since only Agent Sync
+  writes those; on any branch it refuses a generated instructions file past the 32,768 bytes Codex
+  reads by default.
 - **What it leaves to reading.** It matches name forms only, so a skill identified by a
   description, a declared edge that points back toward a caller, a cited path outside a link, a
   script, a command, a flag and what a command prints all pass it. For each file the pass covers,
