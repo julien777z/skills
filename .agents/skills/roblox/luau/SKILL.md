@@ -45,7 +45,3 @@ Use named attachments or tagged instances for movable interaction anchors. Valid
 ## Own lifecycle and cancellation
 
 Give connections, render callbacks, tweens, spawned/delayed work, and camera ownership an explicit owner and cleanup path. Invalidate stale work on unmount, character replacement, streaming removal, encounter exit, and shutdown. Check generation/session identity after every relevant asynchronous wait. Restore prior state rather than guessed defaults; release held inputs even on failure.
-
-## Keep guidance current
-
-Record verified reusable Luau/tooling issues and solutions here or in its references. A lesson whose subject another skill owns goes there, and game-specific rules go in the project skill. Replace superseded guidance, label unresolved limits, and leave evidence/logs in the workspace. Edit canonical `.agents` content only; generated provider mirrors belong to Agent Sync.
