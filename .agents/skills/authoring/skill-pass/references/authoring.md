@@ -22,8 +22,8 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   limit, exception or operating fact that tells agents how to work — such as a cap on workers, a
   repository that gets only minimal changes, or a machine whose processes may be ended — goes,
   as a guidance edit, into the skill, rule, project guidance or reference that owns it, so every
-  harness and session reads the same copy. A harness's memory, such as an auto-memory file, holds
-  none of it. A memory found holding guidance is moved to its owner and deleted.
+  harness and session reads the same copy; the global rules forbid writing a harness's memory. A
+  memory found holding guidance is moved to its owner and deleted.
 - **A requirement goes in the skill that runs when it applies; a rule or `.agents/global.md` takes
   only what no skill can carry.** Before adding to `.agents/global.md` or a rule, name the skill
   that runs when the requirement applies.
