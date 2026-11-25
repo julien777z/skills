@@ -13,6 +13,8 @@ doubles and its name.
   through a separate reusable workflow called by the main test workflow; selecting the suite
   selects its execution contract.
 - Smoke tests always exercise the real configured service; never mock service calls or responses.
+  A new smoke test against a third-party provider follows the rubric's **Third-Party Calls Use
+  Documented Doubles**.
   Remove live-mode flags, opt-in markers,
   conditional skips and fixture branches that choose between real and simulated execution. Missing
   credentials or an unavailable required service fail the suite; neither turns it into a skipped or

@@ -12,7 +12,7 @@ proposal held for approval is asked under the global rules' **Asking the user** 
 
 ## Dependencies
 - `pre-production`
-- `execute-task`
+- `test-fixture`
 - `subagent-matrix`
 - `acceptance-gate`
 - `session-ledger`

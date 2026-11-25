@@ -140,14 +140,6 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
 
 ## Environments
 
-- **Verification never calls a third-party service with real credentials.** Code that calls a
-  model provider, a paid API, or an identity or payment provider is verified against doubles built
-  from that provider's documented request and response structures, such as its API reference and
-  SDK types, at the seam `test-fixture`'s **Choose Test Doubles** names; a walkthrough exercises the
-  product with that double or with seeded data. A plan, reviewer or gate that asks for a live call,
-  a real key or a real model run is answered with that route. A live call runs only when the user
-  asks for one. A suite already written to cross the boundary for real keeps `test-fixture`'s
-  **A Missing Credential Leaves The Test Alone**.
 - **Verify the complete configuration rollout.** When a task introduces or changes required
   configuration, or the user requests a configuration rollout, account for every affected value and
   every authorized destination and consumer. Resolve where each consumer gets its value, including
