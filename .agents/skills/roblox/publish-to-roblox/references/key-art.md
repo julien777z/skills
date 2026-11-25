@@ -1,8 +1,10 @@
 # Key Art
 
 The `publish-to-roblox` skill's procedure for an experience's icon and thumbnails: what the pictures
-of today's top games share, how to stage and composite pictures of that kind from the game's own
+of the current top games share, how to stage and composite pictures of that kind from the game's own
 assets, and how to set and read them back.
+
+Contents: **Study the Top Games First**, **What Those Pictures Share**, **Stage From the Game's Own Assets**, **Capture**, **Composite**, **Check**, **Upload and Set**, **Read Back**.
 
 ## Study the Top Games First
 
@@ -91,7 +93,7 @@ rebuild it from the frozen head with the build command and integrity check of th
 ## Upload and Set
 
 The Open Cloud calls need the `asset:read` and `asset:write` scopes for the experience's creator,
-through whichever route the project provides for them.
+through whichever route the project provides for them. Use a key kept apart from the deploy workflow's, since these scopes reach every asset the creator owns.
 
 1. **Upload each picture as an Image asset.** Send `POST /assets/v1/assets` as a multipart form with
    a `request` part, a JSON object holding `assetType: "Image"`, a display name and the creator
