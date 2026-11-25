@@ -30,7 +30,7 @@ def hook_directory() -> Path:
 
 
 def installed_skill_path(name: str) -> Path:
-    """Return a skill's entry file in this hook's user-level root, flat or in a category folder."""
+    """Return a skill's entry file in the skills folder of the root this hook sits in."""
 
     skills = hook_directory().parent.parent / SKILLS_DIRECTORY_NAME
     flat = skills / name / SKILL_ENTRY_FILENAME
