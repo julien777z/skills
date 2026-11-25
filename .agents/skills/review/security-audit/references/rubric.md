@@ -5,15 +5,17 @@ trust boundary is built, and what a remedy costs. This file is the judgment; the
 applies it lives in `SKILL.md` and the other references. It is also read on its
 own, without that workflow, so it states criteria and never procedure.
 
-## Only Report What You Can Exploit
+Contents: **Exploitability**, **Precedents**, **Severity Requires Impact**, **Determine The Baseline
+Dynamically**, **What A Surviving Finding Has Been Put Through**, **Find The Smallest Fix Before
+Proposing One**, **Building It Safely**, **What Makes An Audit Useful**.
+
+## Exploitability
 
 Every finding names a concrete attack: who the attacker is, what they send, and what they get. "An
 attacker could theoretically" is not a finding. "Send this request, get this result" is.
 
 "Potentially" and "theoretically" mark the place where the work stopped. Either you can exploit it or
 you cannot; if you need the word, you have not researched it far enough.
-
-## Defense-In-Depth Gaps Are Not Vulnerabilities
 
 Where one layer already prevents the attack, the absence of a second is a hardening note, not a
 finding, and never inflated to carry a severity. "Missing validation where the query builder already
@@ -80,7 +82,8 @@ Identify what the application is and what comparable applications exist, and cal
 exploited makes the finding **stronger**. A comparable with the same pattern nobody has exploited in
 twenty years is one to understand before reporting.
 
-Never hardcode a comparable. A content system is compared to other content systems, a gateway to
+Choose the comparable from what this application is, never from a fixed list, because the right
+comparison depends on its kind: a content system is compared to other content systems, a gateway to
 other gateways; a genuinely novel application may have none.
 
 ## What A Surviving Finding Has Been Put Through
@@ -177,26 +180,21 @@ smallest-fix order above, applied before there is anything to fix.
   in. A control that skips or weakens itself when its setting is unset is the optional bypass
   above, a defect of the change that adds it, fixed there.
 
-## Anti-Patterns
+## What Makes An Audit Useful
 
-These are what make a security audit useless:
+An audit is useful when it reports few findings that are real.
 
-1. **Listing every deviation from a checklist as a finding.** A checklist is not a bug list, and
-   every real application makes tradeoffs.
-2. **Rating defense-in-depth gaps as HIGH or CRITICAL.**
-3. **Ignoring the deployment model.** Rate limiting at the edge is a valid architecture; not every
+1. **Findings, not checklist deviations.** A checklist is not a bug list, and every real
+   application makes tradeoffs.
+2. **The deployment model counts.** Rate limiting at the edge is a valid architecture; not every
    application needs it in the application layer.
-4. **Treating designed behavior as a bug.** Understand the trust model first. Where the design says
-   admins are fully trusted, an admin doing admin things is not a finding.
-5. **Padding with LOW findings to look thorough.** Ten LOWs do not make a useful report; three
-   MEDIUMs do.
-6. **"Potential" findings without proof.**
-7. **Ignoring what the codebase does well.** Where the authentication is solid, say so — it builds
-   trust in the findings that are reported and helps prioritize.
-8. **Constructing exploits from incorrect parser or runtime assumptions.**
-9. **Skipping business logic and creative attacks.** The standard classes are what every scanner
-   checks; the value of a manual audit is what scanners cannot find — logic errors, state-machine
-   violations, chained attacks, implicit trust assumptions.
-10. **Giving up too easily.** "It uses parameterized queries so there is no injection" is a lazy
-    conclusion. Check every raw query, every dynamic identifier, every search path, and every code
-    path that bypasses the builder. Push.
+3. **The trust model comes first.** Where the design says admins are fully trusted, an admin doing
+   admin things is not a finding.
+4. **A few findings of real severity beat a padded list.** Three MEDIUMs are a useful report; ten
+   LOWs are not.
+5. **Say what the codebase does well** where the authentication is solid: it builds trust in the
+   findings that are reported and helps prioritize.
+6. **Look past the standard classes.** Scanners check them; the value of a manual audit is logic
+   errors, state-machine violations, chained attacks and implicit trust assumptions.
+7. **Check every route to the sink.** "It uses parameterized queries so there is no injection"
+   needs every raw query, dynamic identifier, search path and builder bypass checked.

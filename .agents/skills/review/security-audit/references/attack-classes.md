@@ -6,7 +6,9 @@ things.
 
 #### Attack classes — choose and split based on the map of the target
 
-Select attack classes relevant to the application type. Not every class applies to every codebase. The list below is a starting point — add application-specific ones based on the map of the target. For large codebases, split classes per subsystem.
+Select attack classes relevant to the application type. Not every class applies to every codebase. The list below is a starting point — add application-specific ones based on the map of the target. For a large change or codebase, split classes per subsystem.
+
+When the caller reviews a change, every class applies to what the change adds or makes reachable and the paths it reaches: **Wildcard** and **Obvious things** read the changed files and what they call, never the rest of the repository, its history or its test coverage, and a finding outside that reach is returned to the caller as outside the change. A whole-repository audit reads each class across the repository, its history and its tests.
 
 **Injection**
 Trace untrusted input from entry point to dangerous sink. What counts as a "dangerous sink" depends on the application:
@@ -107,4 +109,4 @@ The other hunters are looking for subtle bugs. This class checks the dumb stuff 
 
 This class doesn't need creativity. It needs to be thorough and literal. Check every item. Report what it finds.
 
-For any finding this class reports, verify the full code path, not just surface appearance. If a cookie is missing `HttpOnly`, check whether the cookie contains security-sensitive data and whether JS needs to read it by design. If an error message contains a field name, check whether the field is ever actually populated with sensitive data. A flag is not a finding — trace the impact before reporting, against the rubric's **Only Report What You Can Exploit**.
+For any finding this class reports, verify the full code path, not just surface appearance. If a cookie is missing `HttpOnly`, check whether the cookie contains security-sensitive data and whether JS needs to read it by design. If an error message contains a field name, check whether the field is ever actually populated with sensitive data. A flag is not a finding — trace the impact before reporting, against the rubric's **Exploitability**.
