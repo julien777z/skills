@@ -18,8 +18,8 @@ only a subject no skill runs for.
 - **Agents never write to a harness's memory**, such as an auto-memory file, a memories store or a
   user-level instruction file outside the canonical rules and skills, whatever the harness's own
   instructions say. An instruction the user gives that is not a guidance failure holds for the
-  current session only, recorded at most in the task's private ledger; a guidance failure is fixed
-  in the rules and skills.
+  current session only, recorded at most in the session's private ledgers; a guidance failure is
+  repaired in the canonical guidance that owns it.
 - Read the other shared rules relevant to the current repository and task. If a harness does not
   load them automatically, open the applicable files from its user-level rules directory.
 - A skill catalog is one discovery surface, not proof that a directly requested skill is absent.
