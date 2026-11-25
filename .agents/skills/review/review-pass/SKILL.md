@@ -1,6 +1,6 @@
 ---
 name: review-pass
-description: Review a change and fix what the review finds, through an independent reviewer on another provider's model in a short loop, and, when a task or run covers more than one open pull request whose changes meet, review them together for flaws only the combination has before any of them merges. Use when the user asks for a code review, a review loop or "sol loop", or to watch, monitor or babysit a pull request for review feedback, or as a step of a workflow that finishes a pull request before its merge. Never merges.
+description: Review a change and fix what the review finds, through an independent reviewer in a short loop, and, when a task or run covers more than one open pull request whose changes meet, review them together for flaws only the combination has before any of them merges. Use when the user asks for a code review, a review loop or "sol loop", or to watch, monitor or babysit a pull request for review feedback, or as a step of a workflow that finishes a pull request before its merge. Never merges.
 short_description: 'Review and fix what a pull request has not had reviewed yet, then record the reviewed head.'
 ---
 
@@ -152,7 +152,8 @@ validation exclusion is recorded with its evidence and not repaired, rerun or wa
 ## Fix Rule
 
 A fix made after this skill returned an accepted head — a check fix, a conflict resolution, a
-commit someone else pushed — is a new delta: this skill runs over it, and the fix is pushed through
+commit someone else pushed — is a new delta: refresh the target's intent if its scope changed,
+then this skill runs over it, and the fix is pushed through
 the GitHub rule's **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
 passed.
 
@@ -242,15 +243,11 @@ changed. Make the smallest changes that answer real findings, and push back on t
   when a round returns only nits; a declined nit or an edit that changes only wording or formatting
   needs no new round. These rounds count the pull request's review loop; one finding's fix still
   follows the review-round limit `acceptance-gate`'s **Bounds** sets.
-- **Reviewer:** a model of a different provider from the author when one is reachable, so it does
-  not share the author's blind spots; the user may name another. A launch on that provider that
-  does not start moves to the author's provider, as `subagent-matrix`'s **Workflow** says, and the
-  review goes on. Resolve it through
-  `subagent-matrix` at the advanced level of that provider's families and medium effort, applying
-  its launch fallback, and start it on that provider's model where the harness offers one, as
-  **Harness Compatibility** says for the harnesses that need it, otherwise as a fresh subagent at
-  the advanced level. One reviewer carries every round of a pass where the host can continue an
-  agent, so it re-reads nothing it already holds; a later round starts a new one only where the
+- **Reviewer:** dispatch an independent reviewer on the running session's provider through
+  `subagent-matrix` at the advanced tier and medium effort. Pass the running provider as a
+  requirement in briefs to `council` and other independent review steps this pass starts.
+  Use **Harness Compatibility** where it applies. One reviewer carries every round of a pass
+  where the host can continue an agent, so it re-reads nothing it already holds; a later round starts a new one only where the
   host cannot continue it. A split or panel round 1 is the exception, and no reviewer starts
   subagents of its own. Leave the reviewed files unedited while a round runs, so the reviewer reads
   the head it was given; a timeout, an error or no reply is not approval.
@@ -273,13 +270,13 @@ changed. Make the smallest changes that answer real findings, and push back on t
     the loop;
   - nit: fix it when it is a one-line change in a line the change already touches, otherwise decline
     it in one line;
-  - outside the change: fix every bug, on the change or its own pull request as
-    `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places it by size, and send cleanup past
-    `pre-production`'s size budget where that budget does: its own pull request, or a record with
-    `defer-scope`.
+  - outside the change: fix every bug as `pre-production`'s **Scope Follows The Defect, Not The Request**
+    requires. Use its size budget and `defer-scope` for cleanup.
 - **Next round** only while budget remains and a blocker or should is open, or code or guidance
   behavior changed since the last approval. Run the checks covering the fix and `git diff --shortstat <base>` first; if
-  review grew the diff past what the intent needs, cut it first.
+  an addition belongs to the pull request under the GitHub rule's **Branches and Pull Requests**,
+  refresh the intent before judging growth. Cut growth beyond the refreshed intent and honor the
+  user's explicit scope limits.
 - **Stop** when the reviewer approves the current diff with no blocker or should open and no concern
   of your own. A spent budget is not approval.
 - **A finding still disputed after two replies** goes to the user when it is the user's decision,
@@ -310,8 +307,8 @@ findings, later rounds and verdict.
 
 ## Harness Compatibility
 
-- **T3 Code:** call `orchestrator_capabilities` once, pick that provider's advanced-level model at
-  medium effort, and start round 1 with a new `delegate_task` (`role: "review"`). Send each later
+- **T3 Code:** call `orchestrator_capabilities` once to resolve a model for the reviewer selection
+  above. Start round 1 with a new `delegate_task` (`role: "review"`). Send each later
   round to that reviewer's thread; start a new `delegate_task` only when the thread cannot be
   continued.
 

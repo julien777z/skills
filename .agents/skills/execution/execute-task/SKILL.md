@@ -1,6 +1,6 @@
 ---
 name: execute-task
-description: "Always run this. Invoke once at the start of every task authorized to change files — including one whose edits sub-agents make or that starts because work turned up a defect — before recommending, delegating or making edits, and keep it active until verified completion or the user stops or hands it off. Never invoke it from inside a skill it runs. Its references also govern, in any task whether or not it changes files, what an invocation or authorization covers, approval boundaries, steps only the user can take, what to do when the environment or a permission check refuses an action, steps that cannot be taken back, reading state after a push or merge, checking a worker's claim and tracing a cause before reporting it, where working files go and which browser a task drives, deleting the copies a sync service leaves behind, waits and awaited results, and verification cadence, suite choice and tests that touch the user's desktop."
+description: "Run for reports of broken behavior and at the start of every task authorized to change files — including one whose edits sub-agents make or that starts because work turned up a defect — before recommending, delegating or making edits, and keep it active until verified completion or the user stops or hands it off. Never invoke it from inside a skill it runs. Its references also govern, in any task whether or not it changes files, what an invocation or authorization covers, approval boundaries, steps only the user can take, what to do when the environment or a permission check refuses an action, steps that cannot be taken back, reading state after a push or merge, checking a worker's claim and tracing a cause before reporting it, where working files go and which browser a task drives, deleting the copies a sync service leaves behind, waits and awaited results, and verification cadence, suite choice and tests that touch the user's desktop."
 short_description: 'Plan source and product changes and show the plan; validate canonical guidance changes through their delivery gates.'
 ---
 
@@ -9,8 +9,7 @@ short_description: 'Plan source and product changes and show the plan; validate 
 Plan source and product changes, show the plan, then run it the same way every time. **Plan**
 decides what will be built; canonical guidance changes enter **Execution** directly and are
 validated by the gate set `edit-skill`'s **Guidance Delivery** selects for an
-agent-configuration pull request, except a substantial skill change the user asks for, whose plan
-is a proposed flow.
+agent-configuration pull request.
 
 ## Dependencies
 - `review-proposal`
@@ -43,11 +42,11 @@ is a proposed flow.
 Follow the explicitly selected workflow’s own declared sequence, checks and delivery holds throughout
 the task. Where it owns a stage, return its result to this run rather than starting a parallel stage.
 
-- Invoke this skill once when a task is authorized to change files, before its implementation
-  recommendation, delegated edits, or first edit. A run stays active until
-  the task's outcome is verified complete or the user explicitly stops or hands it off. **Work You
-  Have Already Named** retains outstanding items and their next actions through reports, gates and
-  interruptions. Nothing in the task re-enters the skill; the run simply has not ended.
+- A report of broken behavior starts a repair unless the user asks for diagnosis only. Invoke this
+  skill once at the start of each authorized change, before recommending, delegating or editing.
+  Carry defect reports through diagnosis, repair and verification within **Task Authorization**.
+  A workaround can help while repair proceeds. **Work You Have Already Named** keeps the run active
+  through reports, waits and interruptions, until verified completion or the user stops or hands it off.
 - The session agent selects independently applicable specialized skills from their descriptions once.
   They return outcomes, pending decisions and required coordinator work to the caller.
 - A selected workflow presents its own plan through the route it declares, an approval it requires included.
@@ -78,19 +77,17 @@ plan of its own; only an edit that adds nothing skips it.
   verification, even when more than one file or an internal dependency must change. Record the
   added work and state the next action; do not turn its implementation outline into another
   approval question. Ask only about a concrete unresolved choice and continue independent work.
-  Completing that choice takes no separate plan. Canonical guidance changes
-  under `.agents`, apart from the substantial skill change the next bullet holds, do not wait for a plan or an output-format approval: their request or an encountered guidance gap starts
-  the guidance-correction workflow, and the gate set `edit-skill`'s **Guidance Delivery**
+  Completing that choice takes no separate plan. Canonical guidance changes under `.agents` do not
+  wait for a plan or an output-format approval: their request or an encountered guidance gap
+  starts the guidance-correction workflow, and the gate set `edit-skill`'s **Guidance Delivery**
   selects verifies it, on the timing `edit-skill`'s **Recording During A Task** sets for an active task,
   whether the user asked for the correction directly or the run noticed it.
 - **A guidance change whose flow is affected is shown as a proposed flow.** Whenever a change's
   statement of scope records `flow affected`, as `edit-skill`'s **Scope Statement** defines it,
   whatever kind of guidance change it is, build `guidance-flow`'s proposed-flow comparison of its
   pushed branch against the default branch and show it to the user; delivery proceeds unless that
-  statement lists something waiting for them. **A substantial skill change the user asks for is
-  held on it**, in place of a written plan, where a source change of its size would get one: until
-  the user approves it in their own words, that pull request gets no `test-skill` round, no merge
-  and no auto-merge; each edit they ask for lands on that branch and it is rendered again in place.
+  statement lists something waiting for them. `edit-skill`'s **Guidance Changes Proceed
+  Automatically** says when one reaches the user.
 - Work a plan in execution already covers takes no new plan: an encountered issue, a gate's or a
   review's flag, a failing check, or a guidance correction discovered during the run. `edit-skill`
   records verified guidance corrections and `process-ledger` processes them at **Completion**.
@@ -177,8 +174,10 @@ This order grants no deployment or merge authority: **Task Authorization** still
 ### Follow-Ups
 
 A small, clearly specified follow-up executes on the user's request, and any other is classified
-under **When A Plan Is Needed**. [Planning](references/planning.md)'s **Follow-Ups** holds the
-routes and templates, read when a follow-up arrives.
+under **When A Plan Is Needed**. Source or product work that adds to what the task delivers joins
+the active plan and is never parked. [Planning](references/planning.md)'s **Follow-Ups** holds the
+routes and templates, read when a follow-up arrives or a request, discussion or answered decision
+extends the task's outcome.
 
 ### Progress Record
 
@@ -374,7 +373,9 @@ when authorized** in that order for each source pull request; an agent-configura
 belongs to the guidance stream.
 
 The ready-for-review message takes exactly this shape, one message per pull request, leaving out
-**Deferred** when nothing was deferred:
+**Deferred** when nothing was deferred. Its **Next:** review is an action the reader owns: the
+message is the material the question tool request for that review shows, as `user-facing-output`
+says:
 
 ```markdown
 **Ready for review:** <pull request URL>

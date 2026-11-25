@@ -40,9 +40,10 @@ agent; the calling agent launches the actual assignment with the selected model.
 3. Before a caller marks a requested capability level or explicit model unavailable, or follows a
    fallback, launch the actual assigned work once with its exact candidate identifier and explicit
    reasoning effort. When a refusal names its own cause or fix, repair that and relaunch the same
-   assignment; when it is a rate limit or quota refusal, relaunch on the other harness's matching
-   model at the same capability level. The rules for each refusal, a launch on another provider's
-   model, a specialist assignment and the ordinary fallback ladder are in
+   assignment; when it is a rate limit or quota refusal, rerun within a provider or exact model the
+   user or calling skill requires once capacity returns, and otherwise relaunch on the other
+   harness's matching model at the same capability level. The rules for each refusal, a launch on
+   another provider's model, a specialist assignment and the ordinary fallback ladder are in
    [fallbacks](references/fallbacks.md), read when a dispatch is refused or a model is reported
    unavailable.
 4. The calling agent chooses a capability level for each role or chat. Honor the user's
@@ -103,14 +104,14 @@ context and returns its verdict into the step waiting on it; nothing else does b
   rule roots pointed at a scratch root, and hands back its complete original output as the
   result-retention bullet below requires.
 - **Launch fallback: a worker that cannot launch a subagent its step needs hands the step up; never
-  absorb it.** Attempt the native dispatch when available. This covers a host that gives the worker
-  no agent tool and a native dispatch that fails other than by a capacity refusal, which the fallbacks reference's **A Capacity Refusal** relaunches on the other harness's matching model, for reviewers, lenses, validators, gates and
-  further implementation workers alike. The worker writes the complete assignment — the inputs, the
-  question, the reading list, the output shape, the originally requested capability level, its fallback policy,
-  and launch receipts — to a file, asks the agent that delegated to it to
-  run that file as a subagent at the chosen capability level, and waits for the verdict before going
-  past the step; that agent launches the workers the step calls for, so each runs with its own
-  context. Work the step splits among several workers is never carried by one of them alone, which
+  absorb it.** Attempt the native dispatch when available. Use the fallbacks reference's **A
+  Capacity Refusal** for capacity refusals. If no agent tool is available or another dispatch
+  failure persists, hand the complete assignment to the delegating agent: write the inputs,
+  question, reading list, output shape, originally requested capability level, provider or model
+  requirements, fallback policy and launch receipts to a file, ask that agent to run it as a
+  subagent at the chosen capability level, and wait for the verdict before going past the step.
+  That agent launches the workers the step calls for, so each runs with its own context, for
+  reviewers, lenses, validators, gates and further implementation workers alike. Work the step splits among several workers is never carried by one of them alone, which
   cannot do it thoroughly. A worker whose only channel to that agent is its final message
   asks by returning: it ends its turn with the file path and the request, and resumes when the
   verdict comes back. The delegating agent runs it and returns the verdict unedited; when the
@@ -201,9 +202,11 @@ context and returns its verdict into the step waiting on it; nothing else does b
 
 ## Launch Failure Reporting
 
-When a required direct subagent dispatch cannot start, preserve its exact attempted dispatch,
-record it, and apply the launch fallback in **Dispatch**; a capacity refusal is recorded and relaunched on the other harness's matching model as the fallbacks reference's **A Capacity Refusal** says, never sent to that fallback. Do not turn a tool inventory from a nested bridge or an unrelated agent tool
-into evidence about the native launcher's availability.
+When a required direct subagent dispatch cannot start, preserve its exact attempted dispatch and
+record it. Handle a capacity refusal as the fallbacks reference's **A Capacity Refusal** says,
+never through the launch fallback, and other launch failures under **Dispatch**. Judge whether the
+native launcher could start the assignment from that launcher's own availability, never from a
+tool inventory a nested bridge or an unrelated agent tool reports.
 
 - Attempt the selected native dispatch once whenever its direct tool is exposed. Never claim an
   attempted invocation when the tool was not exposed.

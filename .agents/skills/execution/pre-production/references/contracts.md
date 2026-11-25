@@ -46,19 +46,20 @@ Contents: **The Deployment's Size Is Not The Design**, **Owned And Third-Party C
 
 - Make fields and columns required by default. Keep one nullable only when absence is a genuine
   supported domain state.
-- An absent value on a read path is a schema question, never a branch. When the column is already
-  required, a warn-and-skip, an `or` between two sources for the same value, and a refusal keyed on
-  the absence are all dead code and go, and the wire message and the model follow the column and
-  require the field. When the column is not required, the fix is the schema change that requires it,
-  and the wire and the model follow that column, never the other way round. The shape to recognize:
-  a validation error at a read site answered by widening the reader instead of asking what the store
-  allows.
+- An absent value on a read path is a schema question. First establish whether the domain requires
+  it. Represent legitimate absence at the operation that can return it. When one shape represents
+  both a present entity and no entity, give those states distinct representations so a present
+  entity requires its identity. If the domain and the column both require a field, align the wire
+  and model with the column. If the domain requires it and the column allows absence, align the
+  column too. Apply **Target Contract** when a shared shape is the cause of an impossible branch.
 - For a requiredness change, establish the affected data's retention scope under **Product State**
   before deciding what its revision keeps or clears; required columns do not themselves create an
   obligation to preserve disposable or nonexistent rows.
 - For retained values, use the authoritative source where one exists and a type-valid placeholder
-  only where none exists. Never overwrite a known retained value, fabricate a placeholder in runtime
-  code, or keep a permanent schema default solely to make a migration convenient.
+  only where none exists and the placeholder expresses a legitimate domain state. The
+  **Target Contract** prohibition on invented identities, ownership, and scopes also applies during
+  migration. Never overwrite a known retained value, fabricate a placeholder in runtime code, or
+  keep a permanent schema default solely to make a migration convenient.
 - **A backfill writes each row's value under the new contract, never one chosen so existing rows
   keep behaving as before.** A flag set on every pre-change row so it keeps the old outcome, such as
   staying exempt from a new check, closed to a new path, or treated as the old kind, is a legacy

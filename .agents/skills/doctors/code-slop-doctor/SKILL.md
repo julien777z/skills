@@ -67,9 +67,9 @@ a table rather than rebuilding it:
 - a **symbol index** over the whole repository, whatever the scope: every exported symbol with its
   name, kind, signature, first docstring line and module, and its reference counts split into
   application, test and script;
-- every comment, constant or message carrying a compatibility word — legacy, compat, fallback,
-  deprecated, kept for, formerly, transitional, temporary, old format — as a search key pointing at
-  code;
+- every comment, constant or message naming compatibility or a deployment transition — legacy,
+  compat, fallback, deprecated, kept for, formerly, transitional, temporary, cutover, rollout,
+  mixed version, old format — as a search key pointing at code;
 - per migration chain: its revisions, registries and registered backfills with the callable behind
   each hook, revisions sharing a name across chains, and which environments have applied which
   revisions, read from the real version table where reachable and treated as applied where not;

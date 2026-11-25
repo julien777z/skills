@@ -4,8 +4,9 @@ Contents: **Where Guidance Lives** (placement), **Harnesses**, **Rules**, **Skil
 references, descriptions, dependencies, decisions, subagents, flows, output, routers), **Writing**
 (wording, scope and size budgets), **Scripts**, **Validation**.
 
-This reference holds how anything under `.agents` is written, placed, served to harnesses and
-validated. The pass in `SKILL.md` names the section each step applies, and the
+This reference holds how anything under `.agents`, and code outside it that sets up, configures
+or fixes how agents run, is written, placed, served to harnesses and validated. The pass in
+`SKILL.md` names the section each step applies, and the
 [vendor rubric](vendor-rubric.md) beside this file holds what the model vendors' guidance adds.
 
 ## Where Guidance Lives
@@ -13,15 +14,16 @@ validated. The pass in `SKILL.md` names the section each step applies, and the
 - **Guidance about anything under `.agents` lives in this reference**, however widely it holds: how
   a skill, rule, agent definition, hook, setting, reference or project guidance is written, where it
   goes, which harnesses it serves, how its generated mirrors are produced, and how a change to it is
-  validated. A rule, another skill or `.agents/global.md` keeps only what its own subject needs and
-  leaves the rest here: a skill cites these sections by name, and a rule or `.agents/global.md`
-  cites them by subject.
+  validated. So does guidance about code outside `.agents` that sets up, configures or fixes how
+  agents run, such as workspace setup or machine provisioning. A rule, another skill or
+  `.agents/global.md` keeps only what its own subject needs and leaves the rest here: a skill cites
+  these sections by name, and a rule or `.agents/global.md` cites them by subject.
 - **Guidance lives in skills and rules, never in a harness's memory.** A correction, preference,
   limit, exception or operating fact that tells agents how to work — such as a cap on workers, a
   repository that gets only minimal changes, or a machine whose processes may be ended — goes,
   as a guidance edit, into the skill, rule, project guidance or reference that owns it, so every
-  harness and session reads the same copy. A harness's memory, such as an auto-memory file, holds
-  none of it. A memory found holding guidance is moved to its owner and deleted.
+  harness and session reads the same copy; the global rules forbid writing a harness's memory. A
+  memory found holding guidance is moved to its owner and deleted.
 - **A requirement goes in the skill that runs when it applies; a rule or `.agents/global.md` takes
   only what no skill can carry.** Before adding to `.agents/global.md` or a rule, name the skill
   that runs when the requirement applies.
@@ -38,7 +40,9 @@ validated. The pass in `SKILL.md` names the section each step applies, and the
   - `.agents/global.md` holds only what must bind before any skill has loaded: which skills to
     start, who can authorize a merge, a deployment or a skill run, that only the user's words are
     approval, and how questions reach the user. A requirement goes there only when it must bind
-    with no skill loaded.
+    with no skill loaded. How agent configuration is written, placed, checked or made to serve each
+    harness never goes there, however widely it must hold: it lives in this reference, which the
+    work it governs loads.
   - Examples in `.agents/global.md` and a rule stay generic: invented names and
     placeholder shapes, never this repository's modules, helpers, packages, paths, or domain
     vocabulary, and never the product, tool, or platform whose incident prompted the change.
@@ -125,17 +129,21 @@ validated. The pass in `SKILL.md` names the section each step applies, and the
 ## Harnesses
 
 - **Everything under `.agents` works in every harness that loads it**, from one provider-neutral
-  implementation and one canonical source for skills, rules, and agent prompts. That covers what the
-  harness runs or reads, not only prose: a hook script and the matcher that selects it, a skill's
-  script, a setting, an instruction naming a tool, and how each harness discovers and installs the
-  guidance. Each depends on a harness contract — its tool names, the payload a hook receives and the
-  output it answers with, its settings keys — so read every loading harness's contract and handle
-  each, such as a hook that reads one harness's edited file path and another's patch. Only a
-  capability a single harness alone has, such as a tool no other harness offers, stays that
-  harness's, confined to a scoped compatibility section or a file only that harness loads. Verify
-  each path, such as running a hook against each harness's payload. A harness left unserved is a
-  defect, fixed in the change that finds it: never new behavior, a follow-up, or a question for
-  the user.
+  implementation and one canonical source for skills, rules, and agent prompts. So does code outside
+  `.agents` that sets up, configures or fixes how agents run, such as workspace setup or machine
+  provisioning that installs skills or hooks: it builds on that provider-neutral source and the
+  generator each harness's files come from, never on the files of the harness the session happens to
+  use. That covers what the harness runs or reads, not only prose: a hook script and the matcher
+  that selects it, a skill's script, a setting, an instruction naming a tool, and how each harness
+  discovers and installs the guidance. Each depends on a harness contract — its tool names, the
+  payload a hook receives and the output it answers with, its settings keys — so read every loading
+  harness's contract and handle each, such as a hook that reads one harness's edited file path and
+  another's patch. Only a capability a single harness alone has, such as a tool no other harness
+  offers, stays that harness's, confined to a scoped compatibility section or a file only that
+  harness loads. Verify each path in every harness that loads the guidance or that the change sets
+  up, such as running a hook against each harness's payload. A harness left unserved is a defect,
+  fixed now where `pre-production`'s **Scope Follows The Defect, Not The Request** places it,
+  never as new behavior.
 - Keep reusable skill names, instructions, scripts, and interfaces model-agnostic. Name a client or
   model only in a scoped compatibility section where its behavior genuinely differs. A skill states
   the facts an agent gathers about its own session — its transcript, its task list, its subagents

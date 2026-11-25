@@ -70,8 +70,7 @@ For Python suites; another language keeps test configuration where its runner re
     covers it. Where its fix goes follows who caused it, so the change stays reviewable as itself:
     - a suite the change made slower is fixed in the change, whatever the fix's size;
     - a suite the change did not slow is a defect the work noticed, placed as `pre-production`'s
-      **Scope Follows The Defect, Not The Request** says: a small fix rides with the change and a
-      larger one gets a pull request of its own.
+      **Scope Follows The Defect, Not The Request** says.
   - Every instruction about a suite's runtime — a worker's brief, a fix step, a gate's remedy —
     states the budget as its target, never only the timeout, since a suite that merely stays under
     the timeout can still be three times over budget.

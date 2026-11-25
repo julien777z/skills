@@ -137,6 +137,20 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
 
 ## Environments
 
+- **Verify the complete configuration rollout.** When a task introduces or changes required
+  configuration, or the user requests a configuration rollout, account for every affected value and
+  every authorized destination and consumer. Resolve where each consumer gets its value, including
+  build and runtime scope. Apply every needed value through the owning configuration system and
+  read back the saved value and its consumer binding before triggering the rollout, including a
+  merge that triggers it automatically. Reuse verified values already in place. CI variables,
+  local files, committed templates and provider settings are separate destinations.
+- For each destination, read back the effective configuration from the consuming process, or its
+  active deployment or completed job when direct process inspection is unavailable. Keep values out
+  of the report. Treat an unverified consumer or a required value lacking access or authorization
+  as an open item, name the specific value, destination and blocker, and continue independent
+  authorized updates. Configuration delivery is complete when every authorized consumer is
+  verified. Authorization for a configuration change follows **Task Authorization**.
+
 - Before planning browser walkthroughs or rendered UI inspections, read `run-site`'s **Principles**
   and follow its environment selection: a change a reader sees rendered is inspected rendered in
   every environment. Required automated tests and builds still run.

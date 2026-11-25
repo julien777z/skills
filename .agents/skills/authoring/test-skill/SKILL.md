@@ -82,7 +82,9 @@ confuse those conclusions.
    scenario rather than one of its own, each mapped to the changed boundary with its observable
    pass criteria. A failure that came from real work is tested on a fixture built from
    that real case; a reproduction scenario the caller supplies is the writer's input, never a
-   scenario itself. Where the caller names the nearest case the edit must leave unchanged, each
+   scenario itself. When the caller requires transfer evidence, exercise the same decision in a
+   different task with its own observable result. This case may share a fixture with the incident
+   replay if both outcomes can be checked. Where the caller names the nearest case the edit must leave unchanged, each
    scenario that case can arise in carries one criterion that behavior there is as before. Include relevant conflicting guidance in the edited reading list and, when a
    control is required, in its matching reading list.
 2. **Choose and verify the environment.** Use the smallest environment that exercises the actual

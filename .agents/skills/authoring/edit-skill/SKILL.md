@@ -48,10 +48,14 @@ the subject, creates its new owner under **Guidance Changes Proceed Automaticall
 A user request or an encountered guidance gap, once **Validate input** confirms its premise,
 authorizes the canonical `.agents` correction its Scope Statement lists inside what the user said;
 a policy change, which that statement lists as beyond it, waits for the user as **Identify the failure class**
-says. The statement is shown, never asked: do not ask for a plan, or for approval of the statement
-or of a guidance-output example; an approval hold the invoking workflow sets is that workflow's and
-still applies. A guidance edit that intentionally changes the product still follows
-`pre-production`'s **Product Choices**. The gate set of the edit's route validates the correction.
+says. The statement is shown, never asked: do not ask for a plan, or for approval of the statement,
+of a guidance-output example, of a proposed flow or of the pull request. **Apart from a policy
+change and a product choice, which reach the user as above, a guidance change reaches the user
+only when the agent is unsure whether it does what they meant**, asked through the question tool;
+otherwise its gates run and it merges. A hold the invoking workflow or a rule sets, such as the
+GitHub rule's hold on a pull request that adds a doctor skill, still applies. A guidance edit that
+intentionally changes the product still follows `pre-production`'s **Product Choices**. The gate
+set of the edit's route validates the correction.
 When a separate source task is active, or a guidance batch is in flight, preserve its execution and
 follow **Recording During A Task** for the edit's timing.
 
@@ -325,10 +329,12 @@ small it looks.** Each route below is the gate set its batch passes on the head 
       from the `council` decision that replaces another repair once the review rounds `acceptance-gate`'s **Bounds**
       allows have failed the change; acceptance, or that recorded round-limit decision, must cover the final wording before delivery.
    5. **Run one `test-skill` round** over the batch, started and concluded as **Guidance Delivery**
-      says for its route. Give it every entry's reproduction scenario and observed miss, grouping
-      entries that share a failure class, and each Scope Statement's Stays as it is line as the
-      case its scenario must leave unchanged. `test-skill` owns the scenario writing, coverage,
-      package, control, grading, and rerun procedure.
+      says for its route. Give it every entry's reproduction scenario, observed miss, and
+      Scope Statement's Stays as it is case, grouping entries that share a failure class.
+      A correction for a class of recurring failures also exercises a different task that
+      reaches the same decision, as the [edit criteria](references/edit-criteria.md)'s
+      **Scope Statement** describes. `test-skill` owns scenario writing, coverage, packaging,
+      controls, grading, and reruns.
       Record an entry whose run `test-skill` does not require as `not run: <test-skill reason>`;
       the gate of its batch's route is its check.
 

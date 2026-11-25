@@ -66,9 +66,8 @@ codebase security audit the skill listing describes.
   trace does not hold.
 
 A finding in lines the running task wrote is fixed in that task's change. Any other finding is
-returned to the caller, who places its fix on the change or its own pull request as
-`pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places
-it by size, which `pre-production` applies to a vulnerability the work finds. No findings file is
+returned to the caller, who applies `pre-production`'s **Scope Follows The Defect, Not The
+Request** to place the fix. No findings file is
 committed, and the review changes no code.
 
 Give each finding a stable id (`F1`, `F2`, …) and each hardening note its own (`H1`, `H2`, …) when

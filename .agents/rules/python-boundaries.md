@@ -30,9 +30,19 @@ APPLICATION_CONFIG = ActionConfig()
 ```
 
 - Before declaring or reviewing a setting, read its supported operations, consumers, and example/test configuration. A required setting, one with no safe default and no documented supported absence, including an endpoint, API key or secret, is a required non-nullable Pydantic field with a nonempty field constraint, never `str | None = None` or an empty-string default. Declare a field optional only for a documented absence contract, at the settings class, never through a missing-value check in a consumer.
+- Use Pydantic types and built-in field constraints for ordinary configuration. Declare the
+  constraints the application actually needs, and treat provider credentials as opaque values.
+  Leave credential formats, prefixes, modes, and compatibility to the provider.
+- Add custom validators only for established application-specific invariants that built-in
+  constraints cannot express. A documented restriction on an application's sandbox operation is
+  one example. Moving a manual check into a Pydantic validator does not establish a requirement
+  for that check. Handlers and services consume the validated settings directly.
+- Expose derived settings that callers need as typed properties or computed fields. Supply newly
+  required values in deployment, bootstrap, and test configuration.
 - A provider's published sandbox and production hosts are constants in that provider's package, and the application's canonical environment check selects between them. Select a provider's host from that check (such as the settings object's `is_production`), never from a provider-specific environment setting or enum that restates what the deployment environment already decides. Where the shared settings object already carries a value or a check, read it there: add no settings field that restates what another setting decides, such as a `DEFAULT_ENVIRONMENT`, and no helper that re-derives it.
 - Read environment-backed values from the typed settings object, never with `os.getenv`, `os.environ` or `os.environ.get` in application, service or library code, so defaults, validation and normalization live in one place. A one-off script may read from `os` when a settings model would be unnecessary overhead.
 - **A function whose behavior depends on a setting reads that setting itself.** No parameter carries in a configuration value, or a value derived from one such as an environment check, that a caller read from the settings object — not at many call sites and not at one: `render_receipt(order, show_debug_footer=not APPLICATION_CONFIG.is_production)` is `render_receipt(order)` reading the check inside, and a model method such as `order.is_refundable(window=APPLICATION_CONFIG.refund_window)` is a property `order.is_refundable` reading it. The same holds for any value every caller would take from one shared source: read it from that source where it is used. A test sets the setting through the settings it runs with, never through an argument added for it.
+
 ## Architecture and Boundaries
 
 ### Client Dependency Injection

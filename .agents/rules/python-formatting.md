@@ -88,6 +88,10 @@ ALLOWED_STATES: Final[frozenset[str]] = frozenset({"ready", "complete"})
   that identifies it. It is not a summary of the fields the class holds, the branches the function
   takes, or the guarantees it upholds — a reader who needs those reads the code directly, and the
   signature is already right there.
+- An ordinary provider docstring names the operation and explains behavior the caller needs to
+  know. Describe wire selectors and request field counts in the transport contract and verify
+  them in its tests. Document a provider quirk where it explains a decision a maintainer would
+  otherwise miss.
 - In an ordinary docstring, the failure mode is a sentence that grows a clause per aspect, usually joined by "and", "with",
   or "as what": each clause is true, and together they restate the body in prose that now has to be
   kept in step with it. Delete the clauses and keep the noun phrase.

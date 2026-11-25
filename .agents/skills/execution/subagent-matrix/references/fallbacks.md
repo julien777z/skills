@@ -45,8 +45,11 @@ version too old, a sign-in, a disabled provider, a stale process.
 
 ## A Capacity Refusal
 
-**A rate limit or quota refusal moves the assignment to the other harness's matching model**: a
-Codex model's refusal relaunches the same assignment, with the same brief and reasoning effort, on
+When the user or calling skill requires a provider or exact model, a rate limit or quota refusal
+is rerun within that requirement when capacity returns.
+
+**For an assignment with no provider or exact-model requirement, a rate limit or quota refusal
+moves the assignment to the other harness's matching model**: a Codex model's refusal relaunches the same assignment, with the same brief and reasoning effort, on
 the Claude family at the same capability level in **model capabilities**, and a Claude model's
 refusal on the Codex family, because the refusal is one provider's capacity and the other's model at
 that level does the same work without waiting out a reset time the refusal can only guess.
@@ -58,7 +61,7 @@ that level does the same work without waiting out a reset time the refusal can o
   record the original refusal beside the relaunch.
 - In a comparison pair, relaunch both sides on the matching model so the pair keeps one model.
 - When that model also refuses for capacity, or the host cannot launch the other harness's models,
-  or the user's explicit constraint names the refused model, relaunch on whichever permitted model
+  relaunch on whichever permitted model
   the request path shows cleared first: the coordinator answering on that model, or a relaunch being
   accepted, shows it has cleared, and only a refused relaunch shows it still holds.
 
@@ -105,8 +108,9 @@ fallback capability level.
 ## Ordinary Fallbacks
 
 For ordinary assignments, when a requested capability level or model is explicitly unsupported,
-apply a fallback only when the calling skill declares its direction and limits and it respects the
-user's explicit model or capability constraint. **A permitted fallback steps down as little as it
+apply a fallback only when the calling skill declares its direction and limits and the candidate
+meets any provider, exact model or capability-level requirement set by the user or calling skill.
+**A permitted fallback steps down as little as it
 can**, in this order, launching the actual assignment at each step and moving on only on an explicit
 unsupported receipt:
 

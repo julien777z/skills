@@ -81,6 +81,12 @@ alias, package move, permission grant or test fixture repeating the implementati
 does not prove ownership or isolation. Missing evidence holds a clean verdict; it does not turn
 the implementation into the specification.
 
+Apply `pre-production`'s **Target Contract** to the resolved values themselves. Flag fabricated
+ownership or scope even when callers agree, tests pass, or an older path already used it.
+Trace affected reads and writes to the boundary that enforces their scope. At each distinct
+boundary, verify that the eligible scope can act and that missing required scope and unrelated
+scope cannot access or change the scoped data. Cite the evidence in the verdict.
+
 For every changed or newly resolved dependency, provider, generated contract, shared package, or
 other boundary owner, supply the receipt the dependency bullet above lists for it before a clean
 verdict. First reconcile a mismatch between the declared and loaded source: a workflow, cache,
@@ -331,6 +337,13 @@ room, moving a failing path behind a control, a flag, a fallback or a retry, cat
 an error, special-casing the one reported value, or loosening a check until it passes. Each is a
 flag whose remedy is fixing the cause, whatever the change calls itself and however small; a
 workaround the user's words in the intent statement explicitly ask for is the only one that stands.
+For a repair, inspect the governing code or schema even if the diff leaves it untouched. State
+what caused the problem and where the repaired design now enforces the intended behavior. Flag a
+consumer-side fix when an owned design still admits the invalid state or forces the special case.
+Passing checks verify the behavior they exercise and do not establish that the design was fixed.
+Flag unsupported paths that exist only to bridge an owned cutover under `pre-production`'s **Product State**.
+Trace the case to a real writer and the target contract before treating a rollout sequence or
+synthetic migration fixture as proof that runtime code needs it.
 A verdict with none says `no workaround added` in those words.
 
 ## The Tests Behind Each Question
@@ -368,10 +381,8 @@ ends the question.
      a defect the way a confirmed review finding is: the gate takes it as given and never
      re-derives the defect from the tree, because a tree read alone cannot see a rate.
    - A defect is fixed whatever shape its fix takes, whether the change introduced it, the task
-     asked for it, or the work only ran into it, on the change or its own pull request as
-     `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect
-     places it by size, or on a branch off the default when nothing is in flight; a defect is never
-     deferred for its size.
+     asked for it, or the work only ran into it, in the placement `pre-production`'s **Scope Follows
+     The Defect, Not The Request** requires.
    - A migration is how a fix is written, never a reason to record it instead. A check that would
      rediscover the defect does not soften this: rediscovery excuses the record, never the fix.
    - Product state never softens it either: broken is broken for one admin as for a thousand users.
@@ -415,8 +426,8 @@ ends the question.
      which the caller puts to the user now; it is built only at the scope the user approves, never
      returned as do.
    - Incidental cleanup past `pre-production`'s size budget is defer without the arguability test,
-     apart from a widened budget's larger cleanup, which that budget sends to its own pull request,
-     and incidental cleanup inside it is do.
+     apart from broader cleanup the widened task takes up. Incidental cleanup admitted by the active
+     budget is do.
    - Nor are the size and shape of the work inputs the gate may take on trust: "large", "not
      mechanical", "each site needs its own judgment" and "it spans suites the change does not touch"
      are the asker's characterization of the asker's own record. Check the count against the tree
@@ -424,8 +435,7 @@ ends the question.
      of the fix test's treatment of a measured rate, which is taken as given precisely because
      reading the tree cannot produce one — size is exactly what reading the tree can.
 4. **do** — none of the above: the item is worth doing and its cleanest fix is within reach, so it is
-   done where `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places a fix of its size, or on a branch off the default when nothing is in
-   flight.
+   done where `pre-production`'s **Scope Follows The Defect, Not The Request** places the work.
 
 **Admission — may this work be deferred?** The triage question asked of a proposed record. The
 answer is accept when triage's disposition is defer, and otherwise a refusal naming the disposition
