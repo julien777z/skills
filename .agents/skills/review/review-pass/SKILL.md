@@ -1,6 +1,6 @@
 ---
 name: review-pass
-description: Review a change and fix what the review finds, through an independent reviewer on another provider's model in a short loop, and, when a task or run covers more than one open pull request whose changes meet, review them together for flaws only the combination has before any of them merges. Use when the user asks for a code review, a review loop or "sol loop", or to watch, monitor or babysit a pull request for review feedback, or as a step of a workflow that finishes a pull request before its merge. Never merges.
+description: Review a change and fix what the review finds, through an independent reviewer in a short loop, and, when a task or run covers more than one open pull request whose changes meet, review them together for flaws only the combination has before any of them merges. Use when the user asks for a code review, a review loop or "sol loop", or to watch, monitor or babysit a pull request for review feedback, or as a step of a workflow that finishes a pull request before its merge. Never merges.
 short_description: 'Review and fix what a pull request has not had reviewed yet, then record the reviewed head.'
 ---
 
@@ -231,13 +231,11 @@ changed. Make the smallest changes that answer real findings, and push back on t
   when a round returns only nits; a declined nit or an edit that changes only wording or formatting
   needs no new round. These rounds count the pull request's review loop; one finding's fix still
   follows the limit of 3 review rounds per change, as `acceptance-gate`'s **Bounds** counts them.
-- **Reviewer:** a model of a different provider from the author when one is reachable, so it does
-  not share the author's blind spots; the user may name another. Resolve it through
-  `subagent-matrix` at the advanced level of that provider's families and medium effort, applying
-  its launch fallback, and start it on that provider's model where the harness offers one, as
-  **Harness Compatibility** says for the harnesses that need it, otherwise as a fresh subagent at
-  the advanced level. One reviewer carries every round of a pass where the host can continue an
-  agent, so it re-reads nothing it already holds; a later round starts a new one only where the
+- **Reviewer:** dispatch an independent reviewer on the running session's provider through
+  `subagent-matrix` at the advanced tier and medium effort. Pass the running provider as a
+  requirement in briefs to `council` and other independent review steps this pass starts.
+  Use **Harness Compatibility** where it applies. One reviewer carries every round of a pass
+  where the host can continue an agent, so it re-reads nothing it already holds; a later round starts a new one only where the
   host cannot continue it. A split or panel round 1 is the exception, and no reviewer starts
   subagents of its own. Do not edit the reviewed files while a round runs; a timeout, an error or
   no reply is not approval.
@@ -323,8 +321,8 @@ review.
 
 ## Harness Compatibility
 
-- **T3 Code:** call `orchestrator_capabilities` once, pick that provider's advanced-level model at
-  medium effort, and start round 1 with a new `delegate_task` (`role: "review"`). Send each later
+- **T3 Code:** call `orchestrator_capabilities` once to resolve a model for the reviewer selection
+  above. Start round 1 with a new `delegate_task` (`role: "review"`). Send each later
   round to that reviewer's thread; start a new `delegate_task` only when the thread cannot be
   continued.
 
