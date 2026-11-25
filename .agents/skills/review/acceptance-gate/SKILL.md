@@ -1,6 +1,6 @@
 ---
 name: acceptance-gate
-description: Independent read-only verdict on a pull request's complete diff before merge, run once per pull request; also for a triage or deferral decision, a list of borderline incidental items, and base incorporation; per plan step only for a finished step that later steps build on. Never run per fix — the repairs of a verdict's defect flags go to one fresh gate.
+description: Independent read-only verdict on a pull request's complete diff before merge, run once per pull request; also for a triage or deferral decision, a list of borderline incidental items, and base incorporation; per plan step only for a finished step that later steps build on. Never run per fix — the repairs of a verdict's defect flags go to one fresh gate, apart from a proposal's, which its calling workflow judges.
 short_description: 'Have an independent reviewer decide whether a proposed change fits the task and the repository.'
 ---
 

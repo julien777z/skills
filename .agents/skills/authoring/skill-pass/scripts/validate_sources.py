@@ -139,7 +139,6 @@ INSTRUCTIONS_FILENAME: Final[str] = "AGENTS.md"
 GENERATED_ROOT_FILES: Final[frozenset[str]] = frozenset({INSTRUCTIONS_FILENAME})
 PROVIDER_ROOT_DIRNAMES: Final[frozenset[str]] = frozenset({".claude", ".codex", ".cursor"})
 CODEX_INSTRUCTIONS_CAP_BYTES: Final[int] = 32768
-FALLBACK_DEFAULT_REF: Final[str] = "origin/main"
 REMOTE_HEAD_PATTERN: Final[re.Pattern[str]] = re.compile(
     r"^ref: refs/heads/(\S+)\tHEAD$", re.MULTILINE
 )
@@ -297,7 +296,7 @@ def git_output(root: Path, *arguments: str) -> str | None:
 
 
 def default_branch_ref(root: Path) -> str | None:
-    """Resolve the remote-tracking ref of origin's default branch, or None when none resolves."""
+    """Resolve the remote-tracking ref of origin's default branch."""
 
     symbolic = git_output(root, "symbolic-ref", "--short", "refs/remotes/origin/HEAD")
 
@@ -306,13 +305,16 @@ def default_branch_ref(root: Path) -> str | None:
 
     listing = git_output(root, "ls-remote", "--symref", "origin", "HEAD") or ""
     remote_head = REMOTE_HEAD_PATTERN.search(listing)
-    candidates = [f"origin/{remote_head.group(1)}"] if remote_head else []
 
-    for candidate in [*candidates, FALLBACK_DEFAULT_REF]:
-        if git_output(root, "rev-parse", "--verify", "--quiet", f"refs/remotes/{candidate}"):
-            return candidate
+    if remote_head is None:
+        return None
 
-    return None
+    candidate = f"origin/{remote_head.group(1)}"
+
+    if git_output(root, "rev-parse", "--verify", "--quiet", f"refs/remotes/{candidate}") is None:
+        return None
+
+    return candidate
 
 
 def find_generated_edits(root: Path, agents_dirname: str) -> list[str]:
