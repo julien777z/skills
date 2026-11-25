@@ -14,9 +14,9 @@ to the intended editor**, **Qualify input and capture**, **Pending and partial t
 
 ## Coverage and verification
 
-UI coverage follows the interface dependency declared in the entry point. Scale the tests to the actual task. A small UI edit needs focused visual/input verification; a complete game chapter needs a complete journey and relevant systems coverage.
+Scale UI coverage to the change: the repeated-click pass runs at the checkpoints `roblox-ui` sets. Scale the tests to the actual task. A small UI edit needs focused visual/input verification; a complete game chapter needs a complete journey and relevant systems coverage.
 
-Default to relevant automated checks and one focused Studio playtest. Reuse passing evidence when source, packages, and assets match the delivery build, following [delivery build acceptance](source-delivery.md#test-the-delivery-build-directly). Do not add a final walkthrough, reopen, or live-client launch after sufficient evidence already exists.
+Default to relevant automated checks and one focused Studio playtest, reusing passing evidence as [delivery build acceptance](source-delivery.md#test-the-delivery-build-directly) says.
 
 ## Choose coverage for the change
 
@@ -27,7 +27,7 @@ Mobile testing is selective, not a required step in every iteration. For a game 
 - **Small shared-world fixes:** grass clipping, a misplaced prop, a sign support, or a local terrain seam normally need the grounding, blocking, boundary and surface audit below, desktop visual inspection and relevant walking checks only. Do not repeat the same verification on mobile when the geometry and behavior are shared and there is no device-specific concern.
 - **Mobile defects or explicit requests:** reproduce and verify on the affected mobile layout/device regardless of change size.
 
-After the relevant checks pass, continue to delivery. Repeat or broaden testing only when a subsequent change invalidates passing evidence or an observed failure requires investigation; do not restart a blanket desktop/mobile suite at every follow-up.
+After the relevant checks pass, continue to delivery, repeating only what a later change or an observed failure invalidated, as [delivery build acceptance](source-delivery.md#test-the-delivery-build-directly) says.
 
 ## Evidence types, not sequential delivery gates
 
@@ -42,11 +42,11 @@ Record which layer each result proves. A fast automated driver skips reading and
 
 ## Studio test orchestration
 
-Recent Studio builds expose `StudioTestService:ExecutePlayModeAsync(args)` and `ExecuteMultiplayerTestAsync(playerCount, args)` from an editor-capable context, with `EndTest(result)` inside the test. Check current official docs/tool capabilities before relying on an API in a different Studio version.
+Studio exposes `StudioTestService:ExecutePlayModeAsync(args)` and `ExecuteMultiplayerTestAsync(playerCount, args)` from an editor-capable context, with `EndTest(result)` inside the test. Check current official docs/tool capabilities before relying on an API in a different Studio version.
 
 Prefer the built-in Studio MCP orchestration and input tools in the [chosen runner](#choose-and-qualify-a-runner). Qualify input and launch/window behavior separately; unattended client launches stay in the runner. Inspect running/queued state before another launch and give profile-load/setup waits explicit deadlines.
 
-Inject temporary server/client probes deliberately. Create LocalScripts/Script/ModuleScript with the correct classes; exclude fixtures from Rojo production projects. Have an explicit deadline and a structured result. Clean up scripts, test-only remotes, time-scale overrides, persistence flags, and disabled encounter directors even after failure. Do not leave testing hooks in the published game.
+Inject temporary server/client probes deliberately. Create LocalScripts/Script/ModuleScript with the correct classes; exclude fixtures from Rojo production projects. Have an explicit deadline and a structured result. Clean up scripts, test-only remotes, time-scale overrides, persistence flags, and disabled encounter directors even after failure.
 
 When multiplayer behavior changes, test at least two independent clients and the supported capacity where relevant. Include real disconnects, independent progression, joining during supported phases, duplicate/late requests, unrelated players receiving no rewards, and restoration of movement/UI after exit. If an ordinary server fixture disables automatic engagement for deterministic tests, separately prove actual proximity entry in normal play.
 
@@ -99,8 +99,7 @@ Workers use these helpers and extend them for each new repeatable step; a repeat
 a throwaway script in a temporary folder or Luau pasted into one run. Each helper returns a
 structured result and fails with what it observed, never a bare timeout. A false alarm traced to a
 helper, such as a walk that stops short or a press that lands on another control, is fixed in the
-helper, never worked around in the run that met it. Helpers are test support under `test-fixture`
-and go through the game's source pull request with its checks. A brief for Studio work names the
+helper, never worked around in the run that met it. Helpers are test support and are reviewed as the entry point says. A brief for Studio work names the
 helpers the worker uses.
 
 ## Input coordinates: the phone notch matters
@@ -123,7 +122,7 @@ The bundled `scripts/virtual_input.luau` implements this conversion. Its `releas
 
 Assert that the intended control actually responds through visible state and its authoritative outcome. A timeout or automatic transition can falsely attribute progression to a click that never worked. Inspect input events and the actual UI hierarchy when uncertain.
 
-Before clicking an underlying control, dismiss any current tutorial/modal overlay. Do not mistake a blocked test click behind an overlay for a broken control. Recheck the current round and modal after every transition.
+Dismiss any current tutorial or modal overlay before clicking an underlying control, because a click behind an overlay fails whatever the control does and reads as a broken control. Recheck the current round and modal after every transition.
 
 ## Coverage and visual inspection
 
@@ -135,7 +134,7 @@ Actively use the camera during the walkthrough. Periodically orbit left and righ
 
 When the game supports normal camera-orbit input, press the right mouse button, allow a frame for the camera to lock the cursor, then use `VirtualInput:SendMouseDelta()` while locked. `SendMousePosition()` positions the pointer; use relative motion for locked-cursor camera controls. Assert that the camera actually changed and the character stayed still. Release the mouse button in failure cleanup as well as on success. See [VirtualInput](https://create.roblox.com/docs/reference/engine/classes/VirtualInput).
 
-When mobile coverage is warranted by the change, use Studio's device simulator to test the touch branch and actual interactions. Confirm that touch input was delivered, that affected scrollable content moves, and that movement controls do not overlap interactive UI. Record the simulated device and safe viewport; do not claim physical-device performance from an emulator.
+When mobile coverage is warranted by the change, use Studio's device simulator to test the touch branch and actual interactions. Confirm that touch input was delivered, that affected scrollable content moves, and that movement controls do not overlap interactive UI. Record the simulated device and safe viewport.
 
 ## Placement and before-and-after verification
 
@@ -205,7 +204,7 @@ world's data first and in captures second:
 
 ## Report honestly
 
-Keep a concise latest-results report plus enough raw evidence to explain meaningful failures and fixes. Record the tested revision and any publication outcome. Separate verified behavior from untested internet latency, physical-device performance, estimates, or remaining external blockers.
+Report each result as evidence of the layer it came from, and state what that layer cannot show: a simulator does not establish physical-device performance, a mock save does not establish durable persistence, a viewer image does not establish rendering, and Studio does not establish cross-place transport or published asset permissions. Keep a concise latest-results report with the tested revision, any publication outcome and enough raw evidence to explain meaningful failures and fixes. Separate verified behavior from untested internet latency, estimates, or remaining external blockers.
 
 Official references: [Studio testing modes](https://create.roblox.com/docs/studio/testing-modes), [VirtualInput](https://create.roblox.com/docs/reference/engine/classes/VirtualInput), [GuiService inset areas](https://create.roblox.com/docs/reference/engine/classes/GuiService#GetInsetArea), [data stores](https://create.roblox.com/docs/cloud-services/data-stores).
 
@@ -216,14 +215,14 @@ logic. Arrival logic may deliberately update the loaded profile's current destin
 contract for the actual place while checking retained quest progress, rewards, and custom
 data. Do not force a multi-place fixture into a single-place artifact when required scenery or services are absent. Real cross-place teleport
 behavior is a separate check.
-Do not weaken gameplay arrival behavior to satisfy a persistence fixture's wrong destination assumption. For teleport failure coverage, substitute only the external transport in a disposable test copy, exercise the actual persistence and session recovery path, and remove injected modules afterward. A mocked failure is not a
+Keep gameplay arrival behavior as it is and correct the fixture's destination assumption, because the fixture exists to check that behavior. For teleport failure coverage, substitute only the external transport in a disposable test copy, exercise the actual persistence and session recovery path, and remove injected modules afterward. A mocked failure is not a
 successful published-client teleport.
 
 ## Choose and qualify a runner
 
 Studio work runs in an isolated runner: a Tart VM on a macOS host, the container runner below on Linux. The user's own desktop Studio is not the runner, even for an operation that sends no input, unless the user chooses it as described below, since opening a place, building or capturing still launches windows and takes focus there; a supported Studio MCP operation that avoids moving the host pointer does not change that. Qualify editor identity, input, capture, rendering, and window/focus isolation separately before claiming unattended testing is safe.
 
-**On the Tart runner, each game has its own VM**, named for the game, so one game's editors, settings, files and memory never land on another game's tests. When the game in hand has a configured VM, reuse its installed Studio, authentication, and tooling; when it has none, create it as [Add a VM for a game](#add-a-vm-for-a-game) says, without asking. Verify the intended place before acting, and coordinate exclusive control of the game's VM between the sessions working on that game. Start a stopped runner when needed, discover its current address, and leave it as [Leave the shared runner as you found it](#leave-the-shared-runner-as-you-found-it) says. An unavailable isolated capability, or a runner lock another session holds, leaves only the operations that need the runner waiting; every other part of the work — source, builds, world art, audio, tests and later plan steps — continues meanwhile. The [Linux container runner](#linux-container-runner) serves the one session its container runs, so it has no VM to name, create or lock. Never switch to the host's desktop Studio on your own. Inside the runner, install or update Studio and the tools the work needs, sign in with the retained session, and create the upload staging directory, without asking.
+**On the Tart runner, each game has its own VM**, named for the game, so one game's editors, settings, files and memory never land on another game's tests. When the game in hand has a configured VM, reuse its installed Studio, authentication, and tooling; when it has none, create it as [Add a VM for a game](#add-a-vm-for-a-game) says, without asking. Verify the intended place before acting, and coordinate exclusive control of the game's VM between the sessions working on that game. Start a stopped runner when needed, discover its current address, and leave it as [Leave the shared runner as you found it](#leave-the-shared-runner-as-you-found-it) says. An unavailable isolated capability, or a runner lock another session holds, leaves only the operations that need the runner waiting; every other part of the work — source, builds, world art, audio, tests and later plan steps — continues meanwhile. The [Linux container runner](#linux-container-runner) serves the one session its container runs, so it has no VM to name, create or lock. Inside the runner, install or update Studio and the tools the work needs, sign in with the retained session, and create the upload staging directory, without asking.
 
 ### Retained Tart/macOS runner
 
@@ -330,7 +329,7 @@ the background, under `nohup` and `disown`, or in a session of its own, and the 
 runs the job above, so no agent process owns `tart run`: `launchctl print "gui/$(id -u)/$job"`
 shows it running, and `ps -o ppid=` on `tart run` shows `1`.
 
-Verify SSH host keys, the intended VM editor, and the source/place before running tests. The no-graphics, no-clipboard, no-audio options keep the VM from opening a host window or sharing clipboard/audio. Store versions and qualification evidence outside this skill. Do not provision or reset a working retained VM as routine setup.
+Verify SSH host keys, the intended VM editor, and the source/place before running tests. The no-graphics, no-clipboard, no-audio options keep the VM from opening a host window or sharing clipboard/audio. Reuse a working retained VM as it is.
 
 #### Size the host for its VMs
 
@@ -353,7 +352,7 @@ back a VM and another session's VM is up and idle, shut that idle VM down first,
 idle and how to shut it down; propose a
 size change only when the host is still short.
 
-**A VM's size is a setting the user approves, never a wall.** When the measured need differs from the
+**A VM's size changes only with the user's approval.** When the measured need differs from the
 VM's size, or the host still cannot back it after that, propose the change to the user with the measurement: the
 VM's memory with its editors in Play, the host's free memory and swap, and what else holds the
 host's memory. Once they approve it, take the whole VM with `acquire_runner_lock(priority=True)`,
@@ -463,8 +462,7 @@ ends with its check:
    `spctl -a -vv` reports a notarized Developer ID. Copy it to `/Applications/Roblox.app`; opening
    it shows its sign-in page. It registers itself as a login item.
 3. **Sign it in by QR code.** Choose Sign In, then QR code. A code expires in about two minutes,
-   so capture it just before the message that shows it, show that capture as `share-media`
-   says, then ask through the question tool for the user to scan it, with a Done option, one for
+   so capture it just before the message that shows it, show that capture to the user as the entry point says, then ask through the question tool for the user to scan it, with a Done option, one for
    a new code and one for later. A new-code answer or a timeout captures a fresh code and shows it
    again before asking again. A prompt asking the account to accept something goes to the user,
    as [authentication](#authentication-and-user-handoff) says.
@@ -540,13 +538,10 @@ has the same driver limit and no such setting, so treat its 3D visuals as untest
 A Tart macOS VM runs system daemons for hardware and services it lacks, and some of them burn
 CPU there, more the longer the VM runs:
 
-- **`airportd`**, the Wi-Fi daemon. The VM has no Wi-Fi port. `bluetoothd`'s Wi-Fi coexistence
-  code finds no Wi-Fi device, retries about every 11 seconds, and opens two new connections to
-  `airportd` each time, which `airportd` never closes. `airportd` sends every network
-  configuration event to each of them, so its CPU grows with uptime, past a full core after two
-  days.
-- **`audioanalyticsd`**, which processes the overload reports `coreaudiod` writes each time a
-  Studio or player audio cycle misses on a loaded VM, tens of them a second.
+- **`airportd`**, the Wi-Fi daemon. The VM has no Wi-Fi port, and `bluetoothd`'s Wi-Fi coexistence
+  code opens connections to `airportd` that it never closes, so its CPU grows with uptime.
+- **`audioanalyticsd`**, which processes the overload reports `coreaudiod` writes each time an
+  audio cycle misses on a loaded VM.
 
 Disable both in the VM, under the runner lock; launchd keeps the setting across reboots:
 
@@ -587,14 +582,12 @@ blocker, naming the screen and the log line.
 ## Tart VM capabilities
 
 For a configured Tart runner, use the official [quick start](https://tart.run/quick-start/) and the installed
-CLI's help. Keep actual versions, image identity, resource allocation, and qualification results in
-local configuration and verification evidence. Reuse the retained runner before provisioning one.
+CLI's help. Reuse the retained runner before provisioning one.
 
 With the Tart options above, the VM does not create a host window, share the clipboard, or play test audio through the user's speakers. Transfer only the project/test files over
 SSH, and invoke the VM's Studio MCP executable through `runner_ssh.sh`. Keep the VM proxy connection alive
 long enough for Studio discovery, as [Connect to the intended editor](#connect-to-the-intended-editor) describes. Retrieve viewport captures and
-structured results through that channel. Do not mount the whole home directory or transfer a Roblox
-session cookie. Use normal Roblox authentication.
+structured results through that channel. Do not mount the whole home directory. Use normal Roblox authentication.
 
 Follow [authentication and user handoff](#authentication-and-user-handoff) before presenting the
 viewer. A toggle enabled on the host does not enable the VM.
@@ -603,10 +596,10 @@ Qualify the existing runner before relying on it, and recheck affected capabilit
 VM updates: confirm the [daemons a headless VM does not use](#turn-off-daemons-a-headless-vm-does-not-use)
 are off, applying that section where they are not, authenticate, discover the intended Studio, load the current assets, run client/server
 Play, operate a real button and movement, and capture the viewport without host windows or focus changes. For multiplayer coverage, also qualify the requested number of independent clients. Studio launching alone is not compatibility proof. Keep
-dated qualification results in workspace evidence; do not recreate a working runner to requalify it.
+dated qualification results in workspace evidence.
 
 Use MCP inside the VM wherever supported. Every other UI step in the VM uses input posted inside
-it, as [Direct VM control](#direct-vm-control) says; never drive the host's game input. If Roblox rejects virtualization or
+it, as [Direct VM control](#direct-vm-control) says; the host's own game input is used only when the user chose host Studio, as below. If Roblox rejects virtualization or
 rendering/input is unreliable, attempt the applicable documented recovery and record the concrete
 remaining limitation. Repair the runner itself, reinstalling Studio or recreating the VM where
 that is what it takes; the Studio work waits for it rather than moving to the host's desktop.
@@ -617,7 +610,7 @@ without a visible Screen Sharing window. It describes connection requirements, a
 unencrypted-transport limitation, live-image check, and cleanup. It does not establish
 that the VM renders game assets correctly.
 
-Use the host's desktop Studio only when the user explicitly chooses it for the task. Then keep host input and extra client windows within their authorization, and set a local installation's host-Studio override, such as `ROBLOX_ALLOW_HOST_STUDIO=1`, only for that choice.
+Use the host's desktop Studio only when the user explicitly chooses it for the task. Then keep host input and extra client windows within their authorization, and set any local host-Studio override only for that choice.
 
 On a macOS host, native input and screen capture need Accessibility and Screen Recording granted to
 the app the agent runs under, identified by the agent's process ancestry, not to its shell or
@@ -633,8 +626,7 @@ running and SSH still reaches its normal signed-in desktop. Prefer MCP inside th
 Studio actions. **Input posted inside the VM is the default for every other UI step and needs no
 user authorization**: a helper native to the VM operates the published Roblox player and the VM's
 own UI over SSH without opening a host viewer. Where posted input cannot reach, use the hidden
-viewer; Screen Sharing on the user's Mac is the last resort. Do not infer that the VM needs
-rebuilding or new Roblox login.
+viewer; Screen Sharing on the user's Mac is the last resort.
 
 Before relying on direct control, take a fresh capture, click a real visible button, hold and release
 a movement key briefly, then capture the result. Permission checks and screenshots alone do not
@@ -656,8 +648,7 @@ before input, and bound key holds. Check existing VM Accessibility and Screen Re
 use normal VM permission/login UI when required, never disable authentication or edit privacy
 databases. SSH access alone does not establish UI permission or an unlocked VM.
 
-Every setting and permission change in the VM is the agent's own step, never a request
-to the user, since the agent controls the whole VM. Input posted inside the VM leaves the host's cursor alone and
+Every setting and permission change in the VM is made by the agent, since it controls the whole VM. Input posted inside the VM leaves the host's cursor alone and
 is the route for the VM's UI work; a host viewer click moves the user's cursor and serves only where
 posted input cannot reach. Read the VM's Accessibility list first: a Cirrus Labs image already
 grants `osascript`, `sshd-keygen-wrapper` and `tart-guest-agent`, so `osascript -l JavaScript`
@@ -699,8 +690,7 @@ actual PNG dimensions to that same window's `CGWindowBounds`, including its orig
 scale. Recapture after resizing, navigation, or process replacement.
 Do not reuse coordinates from a resized image without converting them back to its source dimensions.
 A main-window capture can omit a separate save or permission dialog. If input appears ineffective,
-inspect the VM window inventory or capture the VM desktop before retrying; never substitute
-a host-desktop capture.
+inspect the VM window inventory or capture the VM desktop before retrying.
 
 Control, capture, and rendering are separate capabilities. A usable screenshot proves capture;
 its contents still need visual inspection. Diagnose artifacts where the image is rendered, using
@@ -712,7 +702,7 @@ VM access, and record any untested capability without blocking the ones that wor
 Treat viewer authentication, the VM's macOS login/unlock, and Roblox account sign-in as separate steps.
 Complete the viewer and VM login yourself with the existing authorized VM credentials. Use
 the normal UI; do not disable authentication or change credentials to avoid a prompt. Keep secrets
-out of repository files, commands, URLs, and reports. If credentials are unavailable, identify that
+out of repository files, commands, URLs, reports and chat, and never copy or transfer a Roblox session cookie: a copied session carries the account and outlives the task. If credentials are unavailable, identify that
 specific missing access rather than assuming the user must handle every login.
 
 Authenticate each viewer the agent opens normally; one viewer's connection does not authenticate
@@ -758,8 +748,7 @@ no sign-out. When Studio shows its sign-in screen, or its log reports `Authentic
 
 Never ask the user to sign in through a viewer, Screen Sharing or any other route to the VM's
 screen, and never ask for a password or a second factor: a screen inside the runner is one the
-agent's input reaches. Do not transfer
-session cookies. Continue independent work while the question waits.
+agent's input reaches. Continue independent work while the question waits.
 
 ## Keep the game's editors warm
 
@@ -798,8 +787,8 @@ checks run at once as the pool has slots.
   write only the scripts that differ, creating a missing one under its parent; a file removed since
   the last sync, or a sync that failed, resends the whole code tree and prunes what the checkout no
   longer holds. Record in the editor which files the sync covered, so the next one sees a removal.
-  On a warm editor holding about 600 scripts, comparing every digest takes about a second, one
-  changed script about 3 seconds, and the whole tree with its prune about 30 seconds. Rojo's live
+  Comparing every digest takes about a second on a warm editor, so the sync is cheap enough
+  to run before every check. Rojo's live
   sync does not fit a pool: its Studio plugin reconnects by itself only to a place with a place ID,
   which a local place file lacks, so connecting it takes clicks in the editor's front window, and the
   port it connects to is set only in its panel, so an editor left on Rojo's default port takes
@@ -912,23 +901,18 @@ shut down. A restart is the same shutdown followed by `launchctl kickstart "gui/
 VM is stopped; do not substitute a suspended state for a requested shutdown. If an unfinished test
 must continue, report that explicitly rather than claiming shutdown.
 
-**Do not tear down the sandbox's persistent state.** Do not uninstall Studio or Roblox, log out,
-delete/recreate the VM, reset its disk, remove its project setup, clear caches/keychains, or erase its
-settings/authentication as end-of-task cleanup. A task's own copies and output are not that state;
-[the section above](#leave-the-shared-runner-as-you-found-it) removes them. Keep the VM, installed apps, signed-in accounts, files, configuration, and
-SSH access available for another session. Do not publish or commit the authenticated image or keys.
+**At a task's end the runner's persistent state stays for the next session**: the VM and its disk, installed Studio and Roblox, signed-in accounts, files, configuration and SSH access, because the signed-in VM is reused by every session of the game and rebuilding it costs the user a new sign-in code. The task's own copies and output are not that state; [the section above](#leave-the-shared-runner-as-you-found-it) removes them. Reinstalling Studio or recreating the VM is a repair, decided under [Tart VM capabilities](#tart-vm-capabilities), never cleanup. Do not publish or commit the authenticated image or keys.
 
 At the next session, locate the existing VM, starting it when it is stopped with the same
 no-window/no-clipboard/no-audio options. Discover its current IP rather than assuming the prior address, reconnect via SSH, and
-verify the intended Studio/project. Create a replacement only when a repair needs it, as [Tart VM capabilities](#tart-vm-capabilities) says; a new
-session is not a reason to rebuild or ask the user to sign in again. Open a viewer automatically
+verify the intended Studio/project. Create a replacement only when a repair needs it, as [Tart VM capabilities](#tart-vm-capabilities) says. Open a viewer automatically
 when a UI step in the VM needs one that input posted inside the VM cannot give.
 
 ## Studio MCP connection and input
 
 Prefer the [built-in Studio MCP server](https://create.roblox.com/docs/studio/mcp) when the installed Studio and tool surface support it. Inspect tool schemas and connect to the verified editor. MCP input can avoid host keyboard/mouse injection; qualify any windows it launches separately.
 
-If an installed isolated runner fails a capability, inspect and recover that capability in the runner. A single editor answering MCP does not establish that multiplayer windows or VM rendering work. Keep evidence separate for input, capture, rendering, isolation, Studio Play, and a published client.
+If an installed isolated runner fails a capability, inspect and recover that capability in the runner. A single editor answering MCP does not establish that multiplayer windows or VM rendering work.
 
 **Keep one StudioMCP running in the VM for as long as the VM runs.** Every editor reaches Studio
 MCP through one helper port that the oldest running `StudioMCP` process holds, and when that process
@@ -944,9 +928,8 @@ detached with its input held open (`tail -f /dev/null | StudioMCP`) and its proc
 On macOS installations, the stdio executable may be `/Applications/RobloxStudio.app/Contents/MacOS/StudioMCP`; discover the installed location before connecting.
 Enable Assistant → … → Settings → MCP Servers → Enable Studio as MCP server **yourself if disabled**;
 in a VM, [direct VM control](#direct-vm-control) runs the bundled script for it.
-This is part of the authorized setup and never a step for the user: the agent reaches the setting
-itself, through input posted inside the VM or, for an editor on an unlocked host where the task
-authorizes host input, through the host's own input. A setting enabled in another machine
+The agent reaches the setting itself, through input posted inside the VM or, where the task
+authorizes host input, the host's own. A setting enabled in another machine
 or VM does not enable the local editor. Follow the [authentication procedure](#authentication-and-user-handoff):
 complete viewer/VM login yourself and sign in to Roblox as that section says.
 
@@ -1070,9 +1053,8 @@ correctly. Also check ancestor visibility and clipping, and scroll hidden contro
 Verify selection, confirmation, and the server outcome; callbacks or remote calls are separate
 integration evidence, not a substitute for player input.
 
-Do not silently fall back to host client launches or native host HID automation if a capability is missing. Repair the runner as
-[Tart VM capabilities](#tart-vm-capabilities) describes when it cannot support the operation. Record the concrete blocker. Keep Studio, simulated-device, persistence, and published-client
-verification distinct; one does not establish another. Keep reusable tools in the test tooling area as
+When a capability is missing, repair the runner as
+[Tart VM capabilities](#tart-vm-capabilities) describes when it cannot support the operation. Record the concrete blocker. Keep reusable tools in the test tooling area as
 [the game's test helpers](#keep-the-games-test-helpers-in-its-repository) says, and keep screenshots, logs,
 temporary fixtures, and runner state ignored.
 
@@ -1116,7 +1098,7 @@ console line as the current result; Studio output can include old failures and p
 attributes and current run identity authoritative.
 
 If using a separate test project, synchronize its complete explicitly mounted trees. Copying packages while omitting the suite can wait forever for an uninstalled runner. Verify the test entry before dispatch and
-prove fixture removal after restoring the game project. Delivery builds must reject all test trees.
+prove fixture removal after restoring the game project.
 
 ## Optional VM desktop viewer
 
@@ -1141,8 +1123,7 @@ installation outside game checkouts and record actual versions in verification e
   is the intended VM endpoint, optionally reached through an existing SSH tunnel. It never
   serves the repository/home directory or exposes public forwarding for convenience.
 - A permitted browser-control surface holds a background tab for the local viewer. VM login
-  uses the existing authorized credentials through the normal form; credentials never enter URLs,
-  command lines, repository files, or reports. Clipboard transfer stays unused.
+  uses the existing authorized credentials through the normal form. Clipboard transfer stays unused.
 - A fresh image reflects a harmless VM action after any native viewer closes. A connection
   banner or unchanged frame does not establish live capture. MCP remains preferred for supported
   orchestration; viewer input stays inside the VM and uses current screenshots/state.
@@ -1202,14 +1183,13 @@ privacy or security guarantee.
 
 Successful desktop viewing does not qualify Studio-native capture, mesh rendering, asset
 permissions, sound, or published-client behavior. Each capability needs its own relevant evidence.
-A viewer can expose a rendering defect but cannot repair the renderer. Keep dated images and
-recovery attempts in verification output; only a reusable decision rule belongs in this reference.
+A viewer can expose a rendering defect but cannot repair the renderer.
 
 When switching away or ending the session, close the hidden tab and stop its websockify
 process and any task-owned SSH forward. Verify their listening ports closed. Follow the
 [retained VM lifecycle](#end-of-session-for-a-retained-vm):
 save project artifacts, leave the VM running unless one of that section's two shutdown cases
-holds, and preserve its disk, installed software, login, preferences, and SSH setup. Never remove the VM to clean up a viewer.
+holds, and preserve its disk, installed software, login, preferences, and SSH setup. Closing the viewer touches only the tab and the proxy.
 
 ### VM file pickers
 
