@@ -108,7 +108,7 @@ rounds: <actual history, clean streak and normal/adjudication route>
 evidence: <original report identities, coverage and alternative dispositions>
 gate: <exact packet, dispatch and original verdict, or missing evidence>
 next_action: <caller presentation or concrete repair/recovery>
-last_fixes: <fixes made after the last verdict or final ruling, each with the flag it answers, or none>
+last_fixes: <fixes since the last verdict or final ruling, each with its flag, or none>
 ```
 
 `ready` requires independent acceptance, or step 5's route with its last fixes listed.
