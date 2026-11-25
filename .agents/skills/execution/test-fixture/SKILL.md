@@ -24,7 +24,8 @@ Apply `pre-production` to the scope of issues encountered while tracing a test s
    files or test infrastructure. Where tests are allowed, compare existing patterns with the
    applicable guidance; do not adopt a conflicting pattern merely because it already exists or
    matches the source language. The runtime under test and the assertion framework are separate
-   choices. Read the complete [rubric](references/rubric.md) and the
+   choices. Read the complete [rubric](references/rubric.md), the language reference the
+   **Language Router** selects, and the
    [suites reference](references/suites.md), which holds suite, module, configuration and
    time-budget conventions, before inspecting, reviewing, changing,
    or executing any covered test surface. Discover the repository's test roots, distribution and build
@@ -88,6 +89,17 @@ Apply `pre-production` to the scope of issues encountered while tracing a test s
    changed and the module holding it. Report the available test, module and suite durations; mark
    missing attribution unmeasured. Do not add reporting infrastructure or withhold an ordinary
    repair's completion because that attribution is unavailable.
+
+## Language Router
+
+The task's value is the language and runner of the tests it creates, changes or runs.
+
+| Value | Read |
+| ----- | ---- |
+| Python (pytest) | [Python tests](references/languages/python.md) |
+
+When no row matches, follow this file and the rubric alone; when the task spans languages, read
+each matching row.
 
 ## Mutation Proof
 
