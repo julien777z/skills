@@ -53,6 +53,12 @@ alias, package move, permission grant or test fixture repeating the implementati
 does not prove ownership or isolation. Missing evidence holds a clean verdict; it does not turn
 the implementation into the specification.
 
+Apply `pre-production`'s **Target Contract** to the resolved values themselves. Flag fabricated
+ownership or scope even when callers agree, tests pass, or an older path already used it.
+For every affected write and read that needs a scope, name three concrete cases in the verdict.
+Verify that the correct scope succeeds, a missing required scope is rejected, and an unrelated
+scope is rejected. Require the same checks in the repair if the evidence is missing.
+
 For every changed or newly resolved dependency, provider, generated contract, shared package, or
 other boundary owner, complete the dependency-authority receipt in `references/rubric.md` before a
 clean verdict. First reconcile a mismatch between the declared and loaded source: a workflow, cache,

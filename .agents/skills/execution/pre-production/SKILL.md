@@ -384,6 +384,11 @@ the issue should be ignored.
   documentation, and instructions as well as runtime paths. An old owned consumer failing against
   the current contract is a reason to update it, not an exception; update affected owned consumers
   and migrate retained data onto the target contract instead.
+- When a valid operation falls outside an owned contract's current shape, refactor the owner and
+  its consumers to express the real state. A required field is not evidence that its value exists.
+  Never invent a parent, owner, membership, identifier, or scope, or borrow an unrelated real one
+  to satisfy validation, routing, persistence, or authorization. Represent legitimate absence
+  directly where the domain calls for it, and migrate stored values that encoded the shortcut.
 - **A partial update expresses intent through its existing field presence or field mask.** Apply
   the fields that mechanism selects and leave every other field alone. Use the contract's own
   representation for an explicit clear. A separate control earns a place only when it expresses
@@ -444,19 +449,22 @@ the issue should be ignored.
 
 - Make fields and columns required by default. Keep one nullable only when absence is a genuine
   supported domain state.
-- An absent value on a read path is a schema question, never a branch. When the column is already
-  required, a warn-and-skip, an `or` between two sources for the same value, and a refusal keyed on
-  the absence are all dead code and go, and the wire message and the model follow the column and
-  require the field. When the column is not required, the fix is the schema change that requires it,
-  and the wire and the model follow that column, never the other way round. The shape to recognize:
+- An absent value on a read path is a schema question. First establish whether the domain requires
+  it. When absence is a legitimate state, preserve it in the schema, wire, and model. When the
+  domain and the column both require the value, a warn-and-skip, an `or` between two sources for
+  the same value, and a refusal keyed on the absence are dead code. The wire and model follow the
+  column and require the field. If the domain requires it and the column allows absence, make the column
+  required and align the wire and model with it. The shape to recognize:
   a validation error at a read site answered by widening the reader instead of asking what the store
   allows.
 - For a requiredness change, establish the affected data's retention scope under **Product State**
   before deciding what its revision keeps or clears; required columns do not themselves create an
   obligation to preserve disposable or nonexistent rows.
 - For retained values, use the authoritative source where one exists and a type-valid placeholder
-  only where none exists. Never overwrite a known retained value, fabricate a placeholder in runtime
-  code, or keep a permanent schema default solely to make a migration convenient.
+  only where none exists and the placeholder expresses a legitimate domain state. The
+  **Target Contract** prohibition on invented identities, ownership, and scopes also applies during
+  migration. Never overwrite a known retained value, fabricate a placeholder in runtime code, or
+  keep a permanent schema default solely to make a migration convenient.
 - **A backfill writes each row's value under the new contract, never one chosen so existing rows
   keep behaving as before.** A flag set on every pre-change row so it keeps the old outcome, such as
   staying exempt from a new check, closed to a new path, or treated as the old kind, is a legacy
