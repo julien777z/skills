@@ -30,10 +30,7 @@ def hook_directory() -> Path:
 
 
 def installed_skill_path(name: str) -> Path:
-    """Return where a skill's entry file sits in the user-level root this hook is linked into.
-
-    A flat `skills/<name>` install wins; otherwise the first `skills/<category>/<name>` holding it.
-    """
+    """Return a skill's entry file in this hook's user-level root, flat or in a category folder."""
 
     skills = hook_directory().parent.parent / SKILLS_DIRECTORY_NAME
     flat = skills / name / SKILL_ENTRY_FILENAME
@@ -41,7 +38,7 @@ def installed_skill_path(name: str) -> Path:
     if flat.is_file():
         return flat
 
-    return next(iter(sorted(skills.glob(f"*/{name}/{SKILL_ENTRY_FILENAME}"))), flat)
+    return min(skills.glob(f"*/{name}/{SKILL_ENTRY_FILENAME}"), default=flat)
 
 
 def session_context(name: str) -> str | None:
