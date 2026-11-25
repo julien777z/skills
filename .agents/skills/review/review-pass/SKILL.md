@@ -7,8 +7,7 @@ short_description: 'Review and fix what a pull request has not had reviewed yet,
 # Review Pass
 
 Review every change a pull request carries that no earlier pass reviewed, fix what the review
-finds, and leave the pull request at an accepted head. The caller decides what happens next; this
-skill never readies, merges or deploys.
+finds, and leave the pull request at an accepted head. The caller decides what happens next.
 
 ## Dependencies
 - `acceptance-gate`
@@ -56,8 +55,7 @@ skill never readies, merges or deploys.
   Passes** says; a fix that pass pushes is watched to the same end, and the watch then stops. The
   report names each exclusion, leaving out baseline failures and non-essential checks left red as
   `pre-production`'s **Encountered Issues** says, and each thread waiting on the user. A draft runs no test jobs, so
-  its watch reports `draft: watch ended, tests not run`; this mode never readies or merges a pull
-  request.
+  its watch reports `draft: watch ended, tests not run`.
 - **Combined** (the invocation names more than one open pull request, each with its accepted head
   and intent statement): run **Combined Review** over the set.
 
@@ -151,6 +149,13 @@ passed is not run again. Fix what the change broke and push. A failure the user 
 established baseline failure, or a hosted interruption that qualifies for the GitHub rule's
 validation exclusion is recorded with its evidence and not repaired, rerun or waited on.
 
+## Fix Rule
+
+A fix made after this skill returned an accepted head — a check fix, a conflict resolution, a
+commit someone else pushed — is a new delta: this skill runs over it, and the fix is pushed through
+the GitHub rule's **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
+passed.
+
 ## Workflow
 
 1. **Resolve the target.** Before the first round, read the task's ledger through
@@ -209,8 +214,8 @@ until it returns; a quiet interval or a yielded wait is not completion.
 
 These run in the order below, in process unless a pass says otherwise.
 
-- **Python rules:** for the delta's changed Python files, run `acceptance-gate`'s
-  `scripts/python_rule_findings.py` over them; each finding it lists gets its fix, and each
+- **Python rules:** for the delta's changed Python files, run the Python rule script
+  `acceptance-gate` ships over them; each finding it lists gets its fix, and each
   paragraph candidate `pre-production`'s **Code Layout** makes a boundary gets its blank line.
 - **Simplification:** run `code-simplify` over every delta that holds executable lines or changes
   guidance under `.agents`, with the intent statement, whatever the delta looks like to its author:
@@ -225,12 +230,18 @@ These run in the order below, in process unless a pass says otherwise.
 One reviewer reads the change, the author answers each finding, and the next round checks only what
 changed. Make the smallest changes that answer real findings, and push back on the rest.
 
+- **A delta with no design choice in it**, such as a typo, a one-line fix or a rename the user
+  named, skips **Local Passes**' simplification and round 1's reviewer and takes the final
+  `acceptance-gate` question alone, with the gate told the delta took this route; a flag that the
+  delta holds a design choice returns it to the whole loop. A delta matching a **Diff Review**
+  pattern or a risky-delta **Panel round 1** class never takes this route, and any doubt takes the
+  full route.
 - **Budget:** three rounds. Round 1 reviews the pass's unreviewed delta, as **Range** sets it, with the
   merge-base diff as context; later rounds review the changed code and the findings still open,
   whatever the delta touches. Stop early
   when a round returns only nits; a declined nit or an edit that changes only wording or formatting
   needs no new round. These rounds count the pull request's review loop; one finding's fix still
-  follows the limit of 3 review rounds per change, as `acceptance-gate`'s **Bounds** counts them.
+  follows the review-round limit `acceptance-gate`'s **Bounds** sets.
 - **Reviewer:** a model of a different provider from the author when one is reachable, so it does
   not share the author's blind spots; the user may name another. A launch on that provider that
   does not start moves to the author's provider, as `subagent-matrix`'s **Workflow** says, and the
@@ -241,8 +252,8 @@ changed. Make the smallest changes that answer real findings, and push back on t
   the advanced level. One reviewer carries every round of a pass where the host can continue an
   agent, so it re-reads nothing it already holds; a later round starts a new one only where the
   host cannot continue it. A split or panel round 1 is the exception, and no reviewer starts
-  subagents of its own. Do not edit the reviewed files while a round runs; a timeout, an error or
-  no reply is not approval.
+  subagents of its own. Leave the reviewed files unedited while a round runs, so the reviewer reads
+  the head it was given; a timeout, an error or no reply is not approval.
 - **Split round 1 by area** when the delta spans several areas, such as packages, services or apps,
   and is too large for one careful read: up to five reviewers, one per area group, each briefed with
   its group's paths and the whole diff as context, so a finding that crosses groups is still seen.
@@ -275,7 +286,7 @@ changed. Make the smallest changes that answer real findings, and push back on t
     `defer-scope`.
 - **Next round** only while budget remains and a blocker or should is open, or code or guidance
   behavior changed since the last approval. Run the checks covering the fix and `git diff --shortstat <base>` first; if
-  review grew the diff past what the intent needs, cut it first. Never agree just to end the loop.
+  review grew the diff past what the intent needs, cut it first.
 - **Stop** when the reviewer approves the current diff with no blocker or should open and no concern
   of your own. A spent budget is not approval.
 - **A finding still disputed after two replies** goes to the user when it is the user's decision,
@@ -313,7 +324,7 @@ review.
 - **Findings:** check each against the code as **Answer each finding** says. A confirmed finding
   goes to the pull request that owns the fix, or to both when both must change. It is repaired
   there and reviewed as that pull request's new delta under **Workflow**, and it counts within that
-  change's limit of 3 review rounds, as `acceptance-gate`'s **Bounds** counts them. A finding that
+  change's review-round limit `acceptance-gate`'s **Bounds** sets. A finding that
   spans repositories is reported in user chat; each fix's commits, description and threads speak
   only of their own repository, under the GitHub rule's independent publishing context.
 - **A later round** runs only when a later change moves a head the round read: the reviewer reads
