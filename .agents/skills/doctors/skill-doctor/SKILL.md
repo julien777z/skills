@@ -1,6 +1,6 @@
 ---
 name: skill-doctor
-description: 'Audit all agent guidance — every rule, skill, agent definition, hook, settings file and external-skill registry entry — for what to cut, tighten, fix or add. It first refreshes its record of the vendors'' skill and prompting guidance online, then reads every file against the repository''s own authoring criteria, what a current model does unprompted and that record, and finds prohibitions, absolutes and cautions the vendor rubric would reword, merge or cut, conflicting instructions, stale citations, misplaced or duplicated requirements, descriptions that fail as the index, rules broader or more literal than their case, size budgets, undeclared dependencies, and flows that spend more subagents, rounds or gates than the work needs. Use for a skill doctor, rule doctor or guidance doctor run, or to audit, deep-review or clean up skills, rules or how skills run. Run only when the user asks for it.'
+description: 'Audit all agent guidance — every rule, skill, agent definition, hook, settings file and external-skill registry entry — for what to cut, tighten, fix or add. It first refreshes its record of the vendors'' skill and prompting guidance online, then reads every file against the repository''s own authoring criteria, what a current model does unprompted and that record, and finds prohibitions, absolutes and cautions the vendor rubric would reword, merge or cut, conflicting instructions, stale citations, misplaced or duplicated requirements, descriptions that fail as the index, rules broader or more literal than their case, size budgets, undeclared dependencies, installed copies that shadow the canonical skills, and flows that spend more subagents, rounds or gates than the work needs. Use to audit, deep-review or clean up skills, rules or how skills run. Run only when the user asks for it.'
 short_description: 'Audit rules, skills and their flows for what to cut, fix, or add.'
 ---
 
@@ -136,7 +136,7 @@ skill the external-resources registry, `.agents/external_resources.json`, lists 
 frontmatter, description, body and bundled files are read only for what the repository's own files
 need from them, such as whether one names, depends on or duplicates it. What a lens would report
 inside that text — a flag that hides it from the listing or a description with no trigger under
-Unreachable, a description's length or wording under Budget and the two description lenses, a
+Unreachable, a description's length or wording under Budget and **Description Spends Its Budget On Nothing**, a
 sentence under Restates, Wrong Altitude, Scope Calibration, Vendor Rubric or Authoring Sections,
 a skill name under Dependencies — is listed once in the report as upstream, with the registry
 entry and the
@@ -221,9 +221,10 @@ and let the departing skill state its own departure.
 Text at the wrong height for the reader, in two groups. The countable shapes come from the
 pre-pass and no reviewer recounts them: capital emphasis and bold-led prohibitions from the
 `wording` rows, a heading with one bullet, a bullet carrying an appended exception past the length
-`skill-pass`'s **Writing** allows, banned terms, and a description in the first or second person,
-or addressed to the reader as an instruction, where the host's guidance wants the third person —
-reported once as a convention when every description shares it, never as a finding per file. The
+`skill-pass`'s **Writing** allows, banned terms, and a description in the first or second person
+(the third person and the imperative both pass; "you", "your" or an instruction addressed to the
+reader as owner is the finding), reported once as a convention when every description shares it,
+never as a finding per file. The
 judgment shapes are what a reviewer reads for: hedges, brittle step-by-step logic where a heuristic
 would do, vagueness where a decision was needed, a menu of options where one default belongs, and
 incident narrative or evidence that belongs in a project or verification record. Evidence: the
@@ -261,7 +262,8 @@ prohibition, absolutes, approval rules that name their actions, incident patches
 examples, instructions about thinking and tools, and text written for older models. A rubric check
 whose shape another lens owns is reported there and judged against the rubric's text: sizes under
 Budget, a restated default under Restates, emphasis and steps under Wrong Altitude, descriptions
-under the two description lenses, subagent text under Flow.
+under **Description Spends Its Budget On Nothing** and the description check of **Unreachable**,
+subagent text under Flow.
 
 A reviewer reads each file in its partition whole. The `wording` rows say which files to expect
 most from, never which passages fail. It judges every prohibition and absolute in the file as
@@ -321,10 +323,7 @@ whole-file cut under Dispositions.
 
 Every description is read on every turn, for every skill, so a clause that neither helps decide
 whether this skill fires nor carries a rule that must bind before the body is read is paid for
-constantly and returns nothing. The shapes: a slash command or invocation name that already identifies
-the task, because the listing carries it and the reader deciding already has it; a paraphrase of the skill's own title;
-`Use this skill to`; and what the skill does elaborated past the point a reader needs to recognize
-the situation.
+constantly and returns nothing. The shapes are those `skill-pass`'s **Descriptions** names.
 
 Score each by the substitution test `skill-pass`'s **Descriptions** states; where the remainder names
 no situation and no file names the skill either, it is a finding under **Unreachable** as well.
@@ -388,17 +387,18 @@ description, and `skill-pass`'s **Scripts** keeps tests of skills out of the tre
 **Lenses are grouped onto reviewers, never one reviewer per lens or per file.** Every reviewer
 reads the whole **Lenses** section; the grouping says who reports which checks.
 
-- Reviewers are capped as `doctor-protocol`'s **Launches** sets; this doctor sets no lower cap. The
+- Reviewers are capped as `doctor-protocol`'s **Launches** sets. The
   repository's skill categories dictate the partition cut: a skill's whole package stays in one
   partition, a category is split only between packages, and the rule files and every other non-skill
   file form partitions of their own.
 - A partition reviewer reports the lenses judged within a file or package: the per-file Budget
   table, Restates, Stale, Wrong Altitude, Scope Calibration, Vendor Rubric, Authoring Sections,
-  Dependencies, the
-  two description lenses, and the launch records Flow needs for each skill in its slice.
+  Dependencies, **Description Spends Its Budget On Nothing**, the description check of
+  **Unreachable** (a subject the skill owns that no clause of its description names) for each skill
+  in its slice, and the launch records Flow needs for each skill in its slice.
 - The cross-cutting reviewer reports the whole-repository lenses, what is visible only across files,
   working from the pre-pass output and the dependency graph: Redundant, Contradictory, Misplaced,
-  Unreachable, Missing, Installed Copies, the Flow checks that span a caller and the skills it
+  Unreachable's other checks, Missing, Installed Copies, the Flow checks that span a caller and the skills it
   runs, and the unconditional set judged as one document against the per-host budget.
 - The final reviewers and the final acceptance gate are briefed with `skill-pass`'s **Reviewer
   Brief**. The adversarial one takes each proposed cut and tries to name a task the sentence would
@@ -421,14 +421,13 @@ reads the whole **Lenses** section; the grouping says who reports which checks.
   with no usage is the ground to fix the trigger first. Age, size, and a
   reference count on their own never cut a file.
 - **A passage is cut for restating the model only on a repeatable result**, as `skill-pass`'s
-  **Cutting A Passage** sets out. The trial runs at `subagent-matrix`'s standard capability level,
-  as that section says, with the bound the whole-file trial has: twice with the passage removed, a third time when the two disagree, and at
-  most five passages in a run. An untried candidate is reported and stays as written or is
-  reworded.
-- **A rewording is ordinary work however many files it reaches.** Because a rewording across the
-  tree changes how the guidance reads everywhere, the report shows the `wording` counts for the
-  tree and for the ten highest-ranked files, the number of passages under each verdict, and three
-  to five representative rewrites, original beside rewrite, drawn from a file loaded in every
+  **Cutting A Passage** sets out, at its capability level and within its bound; an untried
+  candidate is reported and stays as written or is reworded.
+- **A rewording that removes no requirement is ordinary work however many files it reaches**,
+  unlike a contradiction, whose disposition the **Contradictory** lens states. Because a rewording
+  across the tree changes how the guidance reads everywhere, the report shows the `wording` counts
+  for the tree and for the ten highest-ranked files, the number of passages under each verdict, and
+  three to five representative rewrites, original beside rewrite, drawn from a file loaded in every
   session, a rule and a skill entry point.
 - **Cutting a firm rule the user stated, or making it less firm, takes the repeatable trial result**
   above and a `council` ruling, since the rule records the owner's own judgment; the report shows
@@ -438,8 +437,6 @@ reads the whole **Lenses** section; the grouping says who reports which checks.
   put to `council` when the remedy is contested and reported with the structural count before and
   after; one that batches, caps or stops a rerun of unchanged input is ordinary work.
 - A rule that must be deterministic becomes a hook, and the rule stays for hosts without hooks.
-- A wording change within a file that removes no requirement is ordinary work, unlike a
-  contradiction, whose disposition the Contradictory lens already states.
 - Each mechanical check gets a guard in `skill-pass`'s source check or a hook, never a committed
   test, as its **Scripts** says: a check that fails when the generated rules file reaches its cap,
   when a registry entry has no directory, when two rule files share a byte-identical bullet.
