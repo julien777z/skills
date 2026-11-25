@@ -1,6 +1,6 @@
 ---
 name: roblox-gameplay
-description: Apply every time actively modifying a Roblox game, a bug fix as much as a feature, including mechanics, progression, rewards, controls, presentation, UI, and world content, and when deciding a flag or finding raised on such a change. Shape a fun, immediately understandable loop with frequent satisfying successes, rich readable feedback, meaningful progression suited to the game. Change whatever in the game stands out as incorrect or would be better another way, art included, without asking, apart from the core loop or genre, anything players pay for, security, disclosure, authorization and what the user's own words decided.
+description: Apply every time actively modifying a Roblox game, a bug fix as much as a feature, including mechanics, progression, rewards, controls, presentation, UI, world content, onboarding, player-facing text, loading and arrival, paid offers and quest-gated objects, and when deciding a flag or finding raised on such a change. Change whatever in the game stands out as incorrect or would be better another way, art included, without asking, apart from the core loop or genre, anything players pay for, security, disclosure, authorization and what the user's own words decided.
 short_description: 'Apply every time actively modifying a Roblox game, including mechanics, progression, rewards, controls, presentation, UI, and world content.'
 ---
 
@@ -17,7 +17,7 @@ short_description: 'Apply every time actively modifying a Roblox game, including
 
 Apply this skill whenever actively modifying a game. Keep the current request's instructions, the genre and the core loop; change whatever else stands out as incorrect or would be better another way, as **Judge the game as a player meets it** says. Use it to improve the affected player experience; it does not require adding a new feature, economy, or pet system to every code change.
 
-Fit the rhythm of success to the requested genre, audience, and mood. Establish an understandable first action and a visible result early, then connect smaller achievements to meaningful longer goals. Fast rewards suit some games; quieter discovery, mastery, or social play can be equally intentional. Do not infer a fixed reward cadence or neurological effect from chart popularity.
+Fit the rhythm of success to the requested genre, audience, and mood. Establish an understandable first action and a visible result early, then connect smaller achievements to meaningful longer goals. Fast rewards suit some games; quieter discovery, mastery, or social play can be equally intentional.
 
 Make successful actions legible through appropriately scaled visual, audio, motion, and progress feedback. Attribute the result to the player's action without obscuring targets, text, or threats. Bound concurrent effects, clean them up, and respect motion, camera-shake, contrast, and audio preferences. Keep frequent feedback short enough that the next action remains available.
 
@@ -47,7 +47,7 @@ Every result is judged in the game as a player would meet it, whether you built 
 
 Show what was earned and why using the game's actual rewards and progress states. Synchronize reward UI and effects with authoritative outcomes and prevent duplicates on retries, repeated clicks, or reconnects. A predicted hit animation must not claim an unconfirmed reward. Do not invent currency, misleading pickups, or progress that the game does not grant.
 
-Tie near-term actions to clear medium-term goals and recognizable milestones. New powers, useful upgrades, newly accessible areas, personalization, and increased player skill can all make progress tangible. Vary tasks, pacing, encounters, and scenery while retaining a familiar core action. Avoid extending play only through repetitive waiting or arbitrary travel; preserve intentional anticipation, exploration, and tactical pauses where they make the genre enjoyable. Pace a leveled game through level design rather than level requirements on encounters: an encounter never refuses to start because of the player's level. Place each area's creatures and each fight in the level band a player naturally has when the game first sends them there, never above it, and let the curve and the amount of content set how long a world lasts; a check that fails when an area's creatures start above its arrival level keeps that true as content grows. A tier the player sees, such as an enemy's star grade, rises with progression the same way: the opening areas and the early quests show only the lowest tier, and a higher one first appears late, on the way to the challenge that closes the world, after the player has mastered the one below; a check over the progression order fails on a higher tier met earlier.
+Tie near-term actions to clear medium-term goals and recognizable milestones. New powers, useful upgrades, newly accessible areas, personalization, and increased player skill can all make progress tangible. Vary tasks, pacing, encounters, and scenery while retaining a familiar core action. Avoid extending play only through repetitive waiting or arbitrary travel; preserve intentional anticipation, exploration, and tactical pauses where they make the genre enjoyable. An encounter that has begun to be offered is never refused for the player's level; a level requirement lives in a gate that shows its number, as the locked-content paragraph below says. Place each area's creatures and each fight in the level band a player naturally has when the game first sends them there, never above it, and let the curve and the amount of content set how long a world lasts; a check that fails when an area's creatures start above its arrival level keeps that true as content grows. A grade the player sees, such as an enemy's star grade, rises with progression the same way: the opening areas and the early quests show only the lowest grade, and a higher one first appears late, on the way to the challenge that closes the world, after the player has mastered the one below; a check over the progression order fails on a higher grade met earlier.
 
 Show locked content where the player will use it, together with what unlocks it: a silhouetted collection entry, a padlocked slot, a grayed move labeled with the level or mastery that opens it, a mode showing the wins it needs, or a gate that states its requirement as a number the player can read from the approach. The condition shown must be the one the game actually checks. Content the progression contract keeps secret can stay hidden or appear as an unnamed slot.
 
@@ -74,7 +74,7 @@ Travel choices should describe their actual destination and action. Reveal locke
 
 Give repeated play different decisions: tactical choices, complementary roles, discoveries, alternate approaches, or expressive customization that suits the game. Shared goals and visible contributions can reward cooperation before a large objective is complete. Support players who are learning or playing solo as well as groups. Where players can attack, block or take from each other, protect a newcomer's first attempts: a clearly bounded spawn area that really is safe, a short opening in which combat is off, or a protected moment after death. Comfortable controls and a world worth inhabiting matter alongside reward effects.
 
-Treat design themes as hypotheses to test, not proof of what causes popularity. A tactical RPG, social roleplay game, and rapid collection game can be enjoyable for different reasons.
+Treat design themes and a feature's popularity as hypotheses to test, never as proof of what makes a game enjoyable: a tactical RPG, a social roleplay game and a rapid collection game are enjoyable for different reasons, so fit each feature to the game's genre, audience and production stage, and distinguish passive inspection of a game from actually playing it.
 
 ## Loading and arrival
 
@@ -88,8 +88,6 @@ In the focused loading check, observe arrival through the handoff to gameplay, i
 
 When companions fit the game, give them understandable useful behavior and a clear role rather than adding them as a checklist feature. Show their contribution with readable actions and feedback, give them character, and keep them from blocking controls, navigation, performance, or the player's own sense of agency.
 
-Fit companions to the genre, progression, and production stage. A popular feature is not automatically appropriate for every game.
-
 ## Paid offers
 
 When a game sells items, a paid action never looks like free progression or help. Give paid controls their own shape and a price label, not only a color or a small badge. Keep them off the routes and controls that guidance sends a new player through. A help, hint or "+" button either does what its label promises for free or shows its cost before it is pressed.
@@ -99,7 +97,3 @@ When a game sells items, a paid action never looks like free progression or help
 Play the affected loop through ordinary controls. Observe how quickly a beginner understands the next action, whether success is visible/audible, whether rewards agree with real state, and whether another attempt feels inviting. Check feedback at normal player pace and during rapid repeated successes, including overlap, audio buildup, cleanup, and performance. Keep stronger milestones distinct from routine hits.
 
 When the work involves UI, apply `roblox-ui` for clarity and its scheduled repeated-click checks. Apply `roblox-worldbuilding` for maps and world content, `roblox-characters` for NPCs, creatures and avatars, and `luau` when reading or changing Luau, including authority and cleanup. Return non-interfering Play tests to the caller. Static checks cannot establish enjoyment; short playtests cannot prove long-term retention.
-
-## Learn from evidence
-
-Keep only transferable design principles here; dated observations stay in the records that hold them. Distinguish passive inspection from actual play, label popularity hypotheses, and apply only ideas that fit the current game. Update canonical `.agents` sources only and leave mirrors to Agent Sync.
