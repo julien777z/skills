@@ -221,7 +221,8 @@ Apply `pre-production` to every correction.
    - **A remedy the run designed whose visible effect is large**: one no rule states, that changes
      the layout, controls or flow on many pages or that a returning reader would notice, with every
      page it would change.
-   - **Rewording text that is correct but could read better.**
+   - **Rewording text that is correct but could read better**, and **new names for two features**
+     where neither existing name serves.
    - **Two drawings of one shape that are evenly used**, neither of which a rule or a shared
      component establishes, since choosing one redraws many pages.
    - **More than two legitimate non-error banners on one surface**, and **product state no one has

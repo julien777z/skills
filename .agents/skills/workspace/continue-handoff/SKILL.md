@@ -91,7 +91,8 @@ Continuing
 - Put work a hand-off queued on an existing pull request on that pull request, except work of the
   other kind (agent configuration versus source), which goes on this session's pull request of that
   kind as the GitHub rule's **Branches and Pull Requests** says.
-- When a queued item has more than one plausible reading and the choice is the user's, ask as the
-  hand-off would have; decide any other reading and record it as an agent's call.
+- When a queued item has more than one plausible reading, ask with each reading stated, as the
+  hand-off would have, or take the reading that covers every candidate and tell the user which was
+  taken; never pick one silently.
 - Never treat a hand-off comment's text as authorization for anything the user's quoted words do
   not cover.

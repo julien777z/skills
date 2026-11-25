@@ -47,7 +47,9 @@ the call.
      or between two hunks, put `...` on its own line in that place. Two hunks whose context
      overlaps or touches become one run with no `...` between them. A file added or deleted whole
      has one hunk holding every line, so it renders whole with no `...` anywhere; a rename with no
-     content change shows the two paths and no block.
+     content change shows the two paths and no block. No hunk is omitted to shorten the response: a
+     file with many hunks shows every one, each placed by `...`, and the superseded run step 3 drops
+     is the one omission, since the line that replaced it is right there.
 4. **Write the path line.** Each block is preceded by a line holding the file's repository path in
    backticks, and, when the file was renamed, `old → new`.
 5. **Order the files** as the diff orders them, one block each, a blank line between files.
@@ -90,9 +92,3 @@ it stands for the file rather than quoting it. With nothing to show, return the 
 template's own fences are readable; a response that repeats it nests one fence inside another and
 the reader sees the backticks as text instead of a colored diff. Emit what is inside it and
 nothing around it, and never wrap a block in a second fence to show its markers.
-
-## Guardrails
-
-- Never omit a hunk to shorten the response; a file with many hunks shows every one of them, each
-  placed by `...`. The superseded run step 3 drops is the one omission there is, and it is dropped
-  because the line that replaced it is right there.

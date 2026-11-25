@@ -27,7 +27,7 @@ Contents: **The Deployment's Size Is Not The Design**, **Owned And Third-Party C
 
 ## Owned And Third-Party Contracts
 
-- **Target Contract** is about contracts the user owns and can change by migrating every consumer
+- `SKILL.md`'s **Target Contract** is about contracts the user owns and can change by migrating every consumer
   of them. **A third-party provider's contract is not ours and cannot change at all.**
 - So where the two must meet, only one side can move, and it is always ours. "The provider encodes it
   differently" is a statement about our model, not about theirs: our model is the one that accepts
@@ -51,12 +51,12 @@ Contents: **The Deployment's Size Is Not The Design**, **Owned And Third-Party C
   both a present entity and no entity, give those states distinct representations so a present
   entity requires its identity. If the domain and the column both require a field, align the wire
   and model with the column. If the domain requires it and the column allows absence, align the
-  column too. Apply **Target Contract** when a shared shape is the cause of an impossible branch.
-- For a requiredness change, establish the affected data's retention scope under **Product State**
+  column too. Apply `SKILL.md`'s **Target Contract** when a shared shape is the cause of an impossible branch.
+- For a requiredness change, establish the affected data's retention scope under `SKILL.md`'s **Product State**
   before deciding what its revision keeps or clears; required columns do not themselves create an
   obligation to preserve disposable or nonexistent rows.
 - For retained values, use the authoritative source where one exists and a type-valid placeholder
-  only where none exists and the placeholder expresses a legitimate domain state. The
+  only where none exists and the placeholder expresses a legitimate domain state. `SKILL.md`'s
   **Target Contract** prohibition on invented identities, ownership, and scopes also applies during
   migration. Never overwrite a known retained value, fabricate a placeholder in runtime code, or
   keep a permanent schema default solely to make a migration convenient.

@@ -189,8 +189,8 @@ component both names resolve to.
 
 Remedy: the name the product, its navigation and most rows already use wins, and every other row
 moves to it in the same change, the fixture text that restates it included; a status maps to each
-audience's label in one place. Where neither name is established, or two features need new names,
-the choice between names is the run's decision, as `SKILL.md`'s **Dispositions** says. Left alone:
+audience's label in one place. Where neither name is established, the choice between them is the run's decision; new names for
+two features are a reserved entry, both as `SKILL.md`'s **Dispositions** says. Left alone:
 a proper noun's own capitals; an audience's own label for a status; and a variable or file name,
 which is not interface text.
 

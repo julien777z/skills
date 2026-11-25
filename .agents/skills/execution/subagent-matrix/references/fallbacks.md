@@ -77,6 +77,9 @@ independence, never a blocker, and its repair never holds the step.
 
 - A provider or exact model the user or calling skill requires is honored: its launch is repaired
   or rerun within that requirement as the sections above say, never moved.
+- Inside **Ordinary Fallbacks** below, where the ladder reached the other provider because the
+  session's own family at that level was refused as unsupported, a launch there that does not start
+  goes on to the ladder's next step instead.
 
 ## The Accepted Worker
 

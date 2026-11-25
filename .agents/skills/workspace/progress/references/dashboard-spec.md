@@ -133,8 +133,9 @@ The spec for the dashboard `progress` builds at **Workflow** step 4.
   `critical` in place of either when the head's checks fail, read the way the Ready to merge table's
   Checks column reads them.
 - **`questions` "Open"**: each open question, with its `recommendation`.
-- **`questions` "Answered"**: each answered question with the user's `answer` in their words and
-  `at` the time it was given, with `page_size` 5.
+- **`questions` "Answered"**: each answered question with the choice taken and what it settles as
+  its `answer`, never a quote of the user's reply, which stays in the ledger, and `at` the time it
+  was given, with `page_size` 5.
 - **`notes` "Decisions and notes"**: each recorded decision and each assumption made without the
   user, labeled as an assumption.
 - **`table`**, only when the ledger holds tabular facts worth a grid, such as checks per pull
