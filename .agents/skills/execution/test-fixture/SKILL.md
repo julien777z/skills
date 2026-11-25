@@ -94,8 +94,8 @@ Apply `pre-production` to the scope of issues encountered while tracing a test s
 Mutation experiments are temporary diagnostic work, not a maintained validation system. Reuse
 existing tools and native test selections; do not turn an experiment into committed runners,
 registries, workflow inputs, CI jobs, or recurring gates, including steps hidden inside an existing
-job. Such infrastructure requires a separate explicit user request; approval of a test-repair plan
-or a CI-only execution constraint does not supply it. When the existing route cannot perform the
+job. Such infrastructure requires its own explicit user request, which approving a plan or an execution
+constraint does not supply. When the existing route cannot perform the
 experiment, record the limitation and validate the repair with the ordinary existing checks rather
 than building tooling or withholding completion for its absence.
 
@@ -160,6 +160,21 @@ into an unrelated repository-wide audit.
 Run the locally available targets the final diff reaches. That is this skill's own check of the
 tests it changed; it never narrows which suites verify a change as a whole.
 
-Report source-to-test placement, sibling conventions checked, fixture and factory owners reused or
-extended, parametrized cases reused, encountered corrections, literal-sweep corrections, any mutation
-experiments, and final affected targets.
+Report as **Output** sets.
+
+## Output
+
+Return one block per change, leaving out a line that has nothing to report:
+
+- **Placement:** <each test module -> its source file, and the sibling conventions checked>
+- **Owners:** <fixture and factory owners reused or extended, parametrized cases reused>
+- **Boundary matrix:** <safe rows (field names, shape, outcome) -> exercising test cases, with the
+  private ledger entry that established them>
+- **Literals:** <each changed literal family with its rubric disposition>
+- **Tests in scope:** <test -> retain | repair | consolidate | delete, with the deletion evidence for
+  each delete>
+- **Mutation experiments:** <each mutation, the regression failure it showed, the restored passing
+  run>
+- **Corrections:** <encountered and literal-sweep corrections made>
+- **Cost:** <test, module and suite durations, or `unmeasured`>
+- **Targets run:** <the final affected targets and their result>
