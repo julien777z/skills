@@ -235,8 +235,9 @@ small it looks.** Each route below is the gate set its batch passes on the head 
      a component's owner can hide a broader failure.
    - **Work from the decision, then verify the edit transfers.** Name the decision an agent made
      before it produced the rejected result, and locate the instruction or handoff that allowed
-     it. When separate corrections trace to the same decision, fix it once at its owner. Verify
-     the actual edited guidance on a task with a different surface and vocabulary that still
+     it. When separate corrections trace to the same decision, fix it once at its owner and
+     remove incident-specific rules that only restate the repair. Verify the actual edited
+     guidance on a task with a different surface and vocabulary that still
      reaches that decision, and on the closest legitimate case outside the class. Changing only
      names or values in the original scenario does not show that the edit transfers. If the
      original guidance already states the invariant, repair the step that failed to apply it.
