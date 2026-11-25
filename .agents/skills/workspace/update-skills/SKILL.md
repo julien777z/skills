@@ -43,8 +43,14 @@ an untrusted one is left out and reported.
   the newest complete one, read at step 2 — names in its stored inputs that is still open on the
   host and trusted, whichever session recorded it, so one session's refresh never drops another's
   pending changes from the shared install.
-- **A pull request's content** is its fetched remote head followed by its local branch tip when one
-  exists, so pushed commits from other workers and unpushed local commits both arrive.
+- **Pull request content starts with the fetched remote head.** Apply its local tip on top
+  when present. For a trusted pull request in effect whose fetched and local changes are
+  limited to guidance or its tooling, include unpushed commits only while its head branch
+  is checked out in an existing worktree. An unchecked local head branch for such a pull request is stale.
+  Recheck the worktrees immediately before deleting that exact local branch with
+  `git branch -D -- <branch>`. If Git refuses, honor the refusal and reevaluate local-tip
+  eligibility. Use the fetched head after deletion. An earlier overlay marker supplies pull
+  request provenance only.
 - **The checked-out branch**, when it is not the default branch, takes effect at its local tip only
   when it is the head branch of a pull request in effect or its upstream is a branch on the shared
   repository's own remote. A branch with no upstream, or one tracking a fork, is left out; its
@@ -100,6 +106,9 @@ and lock ownership throughout.
    checkout's current commit, branch, working-tree
    status, installed source, and each `skills-overlay/` worktree with the built head its marker
    stores. Fetch the remote default branch and the branch of every pull request in effect.
+   Apply **What Takes Effect** to their local branches using `git worktree list --porcelain`.
+   When step 4 replaces an overlay based on a stale tip, keep the old marker for pull request
+   provenance until the replacement is verified, then retire it under step 6.
 3. **With no pull request in effect, the checkout on the default branch, and no caller about to
    clean the source checkout**, fast-forward it in
    place: create a named `git stash push --include-untracked` when the tree is dirty, fast-forward,

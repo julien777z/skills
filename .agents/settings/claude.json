@@ -3,5 +3,6 @@
     "commit": "",
     "pr": ""
   },
+  "autoMemoryEnabled": false,
   "skillListingBudgetFraction": 0.06
 }

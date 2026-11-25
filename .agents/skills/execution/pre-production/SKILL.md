@@ -40,8 +40,10 @@ change writes:
   a hypothetical production concern alone supplies none. Do not invent a cutoff or reduce the
   requested outcome on that basis; carry out the authorized work and verify it. Preserve limits
   required by an established contract, and handle measured failures under **Encountered Issues**.
-- Migrate affected users and retained data onto the target contract before removing the old one.
-  Release state changes the migration work; it does not by itself justify a legacy runtime path.
+- Keep owned cutover sequencing in the release procedure. Move affected users to the target
+  contract and convert retained data in versioned migrations. Do not add runtime behavior for
+  mixed owned versions, half-applied transitions, or an in-flight state the work has established
+  is absent. Ordinary recovery and any compatibility explicitly authorized under **Target Contract** belong to the supported product for the scope and period they govern.
 
 ## Encountered Issues
 
@@ -173,27 +175,17 @@ with an obsolete owned contract or revision.
   released users move as **Product State**'s migration bullet says. Only a step the move needs that
   the user alone can take, such as supplying an identifier the session cannot read, goes to them,
   as that step.
-- **A defect the work notices is always fixed, and a large fix gets a pull request of its own.**
-  The hop limit above does not bound it, and neither does its home: a shared component, an owned
-  library or another owned repository. Its size decides where the fix goes, so the requested change
-  stays reviewable as itself:
-  - **A small fix rides with the change**: one within the widened budget's reach below, about five
-    files, in the repositories the change already edits.
-  - **A larger fix goes on its own pull request**: one reaching more files or another repository,
-    such as a dependency or runtime upgrade a warning leads to, or a fix inside an owned library. It
-    is opened from each affected repository's freshly fetched default branch and carried through
-    its own checks now. The change in flight neither carries it nor consumes its branch, and a
-    merge authorized for the change does not reach it.
-  - **A defect the change itself introduced, or one the requested behavior cannot work without,
-    stays the change's** whatever its size, and a dependency it needs is consumed as the GitHub
-    rule's **Pre-Push Gate** says.
-
-  It is never deferred, left as a note, or offered to the user as a question.
+- **A defect the work notices is always fixed.** The hop limit above does not bound it, and neither
+  does its home: a shared component, an owned library or another owned repository. Use the GitHub
+  rule's **Branches and Pull Requests** to place the fix in each affected repository. Keep distinct
+  concerns reviewable in separate commits. A defect the change introduced or the requested
+  behavior cannot work without stays part of the change at any size. Use the GitHub rule's
+  **Pre-Push Gate** for a dependency it needs. A defect is never deferred, left as a note or offered
+  to the user as a question.
 - **A security vulnerability the work finds is such a defect, whoever finds it and whenever it
   arrived.** One a gate, reviewer or audit reports in code the change never touched, one that
   predates the change, and one another layer is said to stop before that layer is traced on every
-  path the attack takes are all fixed now, in the change in flight or on a pull request of its own
-  as the bullet above places it, with a test that reproduces the attack first where one can exist. A shape that may be exploitable is traced to an attacker or
+  path the attack takes are all fixed now as the bullet above requires, with a test that reproduces the attack first where one can exist. A shape that may be exploitable is traced to an attacker or
   ruled out in the same run. It is always closed with the fix that enforces the access
   the product already intends; only a change that widens access or changes who the feature serves
   goes to the user, as **Product Choices** says. Every mitigation
@@ -216,9 +208,8 @@ with an obsolete owned contract or revision.
     session widens it, until they withdraw it: such cleanup fits when its fix touches about five
     files or fewer, needs no design decision from the user, does not change what the product does
     and needs no plan of its own. Each such fix gets its own commit, named for what it repairs.
-    A cleanup that would reach more files or a repository the change does not already edit goes
-    on its own pull request, as a larger fix does above, so the requested change stays reviewable
-    as itself.
+    When widened cleanup reaches more files or another repository, keep it in its own commit and
+    use the GitHub rule's **Branches and Pull Requests** in each affected repository.
   - Other cleanup past the budget in force is deferred work: returned to the caller to record,
     listed in the change's report one line each with its record, and never fixed in the change or
     put to the user as a question. A defect, a security vulnerability included, is never past it.
@@ -395,6 +386,13 @@ the issue should be ignored.
   documentation, and instructions as well as runtime paths. An old owned consumer failing against
   the current contract is a reason to update it, not an exception; update affected owned consumers
   and migrate retained data onto the target contract instead.
+- **Repair the design that causes the defect.** Trace the operation from its entry point to the
+  component that decides the outcome. Check which constraints are real product or external
+  requirements and which are choices the repository already made. If an owned contract, model,
+  or flow cannot express the intended behavior directly, change it and its callers. The number of
+  callers is a cost to verify, not a reason to preserve the old design. Never invent an entity,
+  identity, scope, or state to satisfy the old shape. A guard, fallback, or special case needs to
+  represent a supported case at the boundary that owns it.
 - **A partial update expresses intent through its existing field presence or field mask.** Apply
   the fields that mechanism selects and leave every other field alone. Use the contract's own
   representation for an explicit clear. A separate control earns a place only when it expresses
@@ -455,19 +453,20 @@ the issue should be ignored.
 
 - Make fields and columns required by default. Keep one nullable only when absence is a genuine
   supported domain state.
-- An absent value on a read path is a schema question, never a branch. When the column is already
-  required, a warn-and-skip, an `or` between two sources for the same value, and a refusal keyed on
-  the absence are all dead code and go, and the wire message and the model follow the column and
-  require the field. When the column is not required, the fix is the schema change that requires it,
-  and the wire and the model follow that column, never the other way round. The shape to recognize:
-  a validation error at a read site answered by widening the reader instead of asking what the store
-  allows.
+- An absent value on a read path is a schema question. First establish whether the domain requires
+  it. Represent legitimate absence at the operation that can return it. When one shape represents
+  both a present entity and no entity, give those states distinct representations so a present
+  entity requires its identity. If the domain and the column both require a field, align the wire
+  and model with the column. If the domain requires it and the column allows absence, align the
+  column too. Apply **Target Contract** when a shared shape is the cause of an impossible branch.
 - For a requiredness change, establish the affected data's retention scope under **Product State**
   before deciding what its revision keeps or clears; required columns do not themselves create an
   obligation to preserve disposable or nonexistent rows.
 - For retained values, use the authoritative source where one exists and a type-valid placeholder
-  only where none exists. Never overwrite a known retained value, fabricate a placeholder in runtime
-  code, or keep a permanent schema default solely to make a migration convenient.
+  only where none exists and the placeholder expresses a legitimate domain state. The
+  **Target Contract** prohibition on invented identities, ownership, and scopes also applies during
+  migration. Never overwrite a known retained value, fabricate a placeholder in runtime code, or
+  keep a permanent schema default solely to make a migration convenient.
 - **A backfill writes each row's value under the new contract, never one chosen so existing rows
   keep behaving as before.** A flag set on every pre-change row so it keeps the old outcome, such as
   staying exempt from a new check, closed to a new path, or treated as the old kind, is a legacy
