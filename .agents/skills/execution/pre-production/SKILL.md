@@ -1,6 +1,6 @@
 ---
 name: pre-production
-description: Apply target-contract and product-state constraints to implementation, review, and operational data tasks, including maintenance, cleanup, tooling, and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update its owned consumers and migrate retained data instead. Apply to relevant CI failures after validation classification, and whenever a lint, formatting or other non-essential check is red on code the change did not write. Also use when telling a product choice from a routine detail, placing or laying out code, declaring configuration, logging, naming or choosing American English, choosing versions or dependency releases, writing documentation, comments, commit or pull-request text, example values or paths, writing product copy or forms, repairing a local stack or development data, experimenting against shared state, rebuilding an artifact, or mutating a live deployment.
+description: Apply target-contract and product-state constraints to implementation, review, and operational data tasks, including cleanup, tooling and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update owned consumers and migrate retained data instead. Apply to CI failures after classification, to a non-essential check left red on code the change did not write, and to deprecated usage, printed warnings and defects the work notices. Also use when telling a product choice from a routine detail, placing or laying out code, declaring configuration, logging, naming or choosing American English, choosing versions or dependency releases, writing documentation, comments, commit or pull-request text, example values or paths, writing product copy or forms, making fields required or backfilling data, repairing a local stack or development data, experimenting against shared state, rebuilding an artifact, or mutating a live deployment.
 short_description: 'Apply target-contract constraints to implementation and review tasks.'
 ---
 
@@ -25,9 +25,10 @@ change writes:
 
 ## Product State
 
-- Apply this skill in every repository. Read its project guidance to determine which contracts have
-  external users, which environments and records are disposable, and which surfaces are privileged;
-  never infer those facts from an environment name.
+- Apply this skill in every repository the user owns, and in any other only as **Whose Standards
+  Apply** in the code-conventions reference says. Read its project guidance to determine which
+  contracts have external users, which environments and records are disposable, and which surfaces
+  are privileged; never infer those facts from an environment name.
 - **Establish retention obligations before proposing preservation work.** Use the user's explicit
   instructions and repository facts to identify the affected users and records that must survive.
   A schema, an audit field, or generated test rows prove a supported shape, not that real users or
@@ -46,32 +47,31 @@ change writes:
 ## Encountered Issues
 
 - **Classify validation failures first, before the failure is diagnosed, handed to a worker, or
-  mentioned to the user.** Read the default branch's latest run of the
-  same check, hosted or local, and reproduce there only when no such run exists. When that evidence
-  establishes the same failure under comparable inputs, and the change neither introduces nor
-  worsens it, record the check and that evidence as a baseline failure in the task's record, which
-  every later gate receives. A test already
-  failing on the default branch is recorded this way and left. Continue the requested work
-  and its relevant validation; do not repair, rerun, investigate further, ask a product question, or
-  record a deferral for that failure merely because validation encountered it. **Nothing the user
-  reads names a baseline failure or says one was left out**: no report, summary, status list, open
-  item or question, apart from a merge that branch protection rejects for it, whose rejection is
-  reported with its provider evidence. No report claims the excluded check passed either; it
-  covers the checks the change answers for. This exclusion does not cover a defect the user assigned, a suite past its
-  runtime budget, deprecated usage or a printed warning, as the
-  deprecated-usage bullet below says, a failure of the behavior the task must establish,
-  a non-essential check's finding the next bullet has the change fix,
-  or a confirmed finding independently established by a review or source inspection apart from
-  diagnosis of the excluded check. Do not reopen an exclusion by relabeling that same failure as a
-  review or source finding. Assigned defects and independent findings remain fix responsibilities
-  even when older code caused them.
-  Missing comparison evidence is not a baseline exclusion; inspect the failure at its native owner
-  before choosing its disposition. Pass established exclusions and their evidence to every later
-  validation or merge gate.
-  A brief that hands a validation failure to a worker carries the classification's result, and
-  never asks the worker to fix a baseline failure. A baseline failure's cause, even one only the
-  user could remove such as a provider setting or credential, is never put to the user as a gate or
-  a request, apart from that rejection.
+  mentioned to the user.** Read the default branch's latest run of the same check, hosted or local,
+  and reproduce there only when no such run exists.
+  - **A baseline failure is recorded and left.** When that evidence establishes the same failure
+    under comparable inputs and the change neither introduces nor worsens it, record the check and
+    that evidence as a baseline failure in the task's record, and pass it to every later validation
+    or merge gate. A test already failing on the default branch is recorded this way. Continue the
+    requested work and its relevant validation; the failure is not repaired, rerun, investigated
+    further, put to the user as a product question or recorded as a deferral merely because
+    validation encountered it. A brief that hands a validation failure to a worker carries this
+    classification and never asks the worker to fix a baseline failure.
+  - **Nothing the user reads names it.** No report, summary, status list, open item or question
+    names a baseline failure, says one was left out, or claims the excluded check passed; a report
+    covers the checks the change answers for. Its cause, even one only the user could remove such
+    as a provider setting or credential, is never put to the user as a gate or a request. The one
+    exception is a merge that branch protection rejects for it, whose rejection is reported with its
+    provider evidence.
+  - **What the exclusion does not cover:** a defect the user assigned, a suite past its runtime
+    budget, deprecated usage or a printed warning (as the deprecated-usage bullet below says), a
+    failure of the behavior the task must establish, a non-essential check's finding the next
+    bullet has the change fix, and a confirmed finding independently established by a review or
+    source inspection apart from diagnosis of the excluded check. Relabeling the same failure as a
+    review or source finding does not reopen the exclusion, and assigned defects and independent
+    findings stay fix responsibilities even when older code caused them.
+  - **Missing comparison evidence is not a baseline exclusion**: inspect the failure at its native
+    owner before choosing its disposition.
 - **Only essential checks have to pass: the test suites, and only for what the change answers for.**
   A non-essential check, such as lint, formatting or other static analysis, that fails on findings
   in code the change did not write may stay red. That holds whether the findings predate the change
@@ -179,11 +179,12 @@ with an obsolete owned contract or revision.
   stays reviewable as itself:
   - **A small fix rides with the change**: one within the widened budget's reach below, about five
     files, in the repositories the change already edits.
-  - **A larger fix goes on its own pull request**: one reaching more files or another repository,
-    such as a dependency or runtime upgrade a warning leads to, or a fix inside an owned library. It
-    is opened from each affected repository's freshly fetched default branch and carried through
-    its own checks now. The change in flight neither carries it nor consumes its branch, and a
-    merge authorized for the change does not reach it.
+  - **A larger fix goes on its own pull request**, which the GitHub rule's **Branches and Pull
+    Requests** allows for a skill that places it there: one reaching more files or another
+    repository, such as a dependency or runtime upgrade a warning leads to, or a fix inside an owned
+    library. It is opened from each affected repository's freshly fetched default branch and
+    carried through its own checks now. The change in flight neither carries it nor consumes its
+    branch, and a merge authorized for the change does not reach it.
   - **A defect the change itself introduced, or one the requested behavior cannot work without,
     stays the change's** whatever its size, and a dependency it needs is consumed as the GitHub
     rule's **Pre-Push Gate** says.
@@ -253,18 +254,14 @@ with an obsolete owned contract or revision.
 
 ## The Deployment's Size Is Not The Design
 
-- **The deployment's current dimensions are facts about today, never constraints on the design.** How
-  few rows its database holds, how small its instance is, how little traffic it serves: those
-  describe what is deployed, not what the code has to be able to do. A mechanism that cannot grow past
-  one process, one core, or one container is a property of the mechanism, and it is still that on the
-  day the same code meets a hundred times the data.
-- **"It is small enough today" is the sentence that ships the ceiling.** It is true whenever it is
-  said and it is never true for long, and it sounds like an argument about the code while being an
-  argument about the environment. The same goes for every relative of it: the table is short, the
-  instance copes, the job finishes overnight, nobody has complained.
-- **Judge the mechanism, not the environment it currently runs in.** Ask whether the work grows with
-  the data and whether anything bounds it — not whether this month's instance survives it. Resizing is
-  a number somebody revisits under pressure; a design that scales with the work is not.
+- **Judge the mechanism, never the size of the environment it runs in.** How few rows the database
+  holds, how small the instance is and how little traffic it serves describe what is deployed
+  today, not what the code has to be able to do. "It is small enough today", "the table is short",
+  "the instance copes", "the job finishes overnight" and "nobody has complained" are true whenever
+  they are said and never for long. Ask whether the work grows with the data and whether anything
+  bounds it: a mechanism that cannot grow past one process, one core or one container is still that
+  on the day the same code meets a hundred times the data, and resizing is a number somebody
+  revisits under pressure, where a design that scales with the work is not.
 - Where the environment genuinely limits what can be *demonstrated* — a single-node database that
   cannot show contention, a dataset too small to produce a rate — say so plainly and build for the
   target anyway. A design that cannot yet be proven here is still the right design; one that cannot
@@ -428,8 +425,12 @@ the issue should be ignored.
   outside the user's control freezes a shape. **Scope Follows The Defect, Not The Request** holds for a break as for
   a bug: the new shape reaches every site answering the same question, never only the one the work
   started from.
-- Do not weaken a compatibility gate to hide an intentional break. Report the exact failure and the
-  contract change it detected so a reviewer can distinguish intended from accidental breakage.
+- Do not weaken a gate that exists to detect deliberate changes — contract or schema compatibility,
+  generated-output drift — to hide an intentional break: no ignore lists, exception entries or
+  reserved placeholders faking compatibility, and no wider or additive shape chosen so the gate
+  stays green. The gate going red is an accepted, reported outcome: state in the pull request that
+  the break is deliberate and list exactly what the gate reported, so a reviewer can distinguish
+  intended from accidental breakage.
 - For disposable development records, follow the repository's stated policy: it decides which
   values a change may discard, never how the change reaches a deployed database. Never assume
   released user data is disposable or carry a tester conversion as a runtime compatibility path.
