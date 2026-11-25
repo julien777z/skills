@@ -139,8 +139,8 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   offers, stays that harness's, confined to a scoped compatibility section or a file only that
   harness loads. Verify each path in every harness that loads the guidance or that the change sets
   up, such as running a hook against each harness's payload. A harness left unserved is a defect,
-  fixed now where `pre-production`'s **Scope Follows The Defect, Not The Request** places it:
-  never new behavior, a follow-up, or a question for the user.
+  fixed now where `pre-production`'s **Scope Follows The Defect, Not The Request** places it,
+  never as new behavior.
 - Keep reusable skill names, instructions, scripts, and interfaces model-agnostic. Name a client or
   model only in a scoped compatibility section where its behavior genuinely differs. A skill states
   the facts an agent gathers about its own session — its transcript, its task list, its subagents
