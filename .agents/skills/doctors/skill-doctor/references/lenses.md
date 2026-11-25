@@ -84,7 +84,7 @@ Text at the wrong height for the reader, in two groups. The countable shapes com
 pre-pass and no reviewer recounts them: capital emphasis and bold-led prohibitions from the
 `wording` rows, a heading with one bullet, a bullet carrying an appended exception past the length
 `skill-pass`'s **Writing** allows, banned terms, and a description in the first or second person
-(the third person and the imperative both pass; "I", "we", "you" or "your" is the finding), reported once as a convention when every description shares it,
+(the third person and the imperative both pass; "I", "we" or "you" is the finding), reported once as a convention when every description shares it,
 never as a finding per file. The
 judgment shapes are what a reviewer reads for: hedges, brittle step-by-step logic where a heuristic
 would do, vagueness where a decision was needed, a menu of options where one default belongs, and
