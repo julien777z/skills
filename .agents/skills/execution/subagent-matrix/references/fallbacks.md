@@ -80,6 +80,10 @@ independence, never a blocker, and its repair never holds the step.
 - Inside **Ordinary Fallbacks** below, where the ladder reached the other provider because the
   session's own family at that level was refused as unsupported, a launch there that does not start
   goes on to the ladder's next step instead.
+- **The check happens while the siblings run, never after them.** Read such a launch's activity
+  when its siblings first return and at 15 minutes after its brief, whichever comes first, rather
+  than waiting on every launch together; once the trigger holds, the relaunch goes out at once,
+  before the coordinator waits on any other agent, and the stalled launch is cancelled.
 
 ## The Accepted Worker
 
