@@ -1,6 +1,6 @@
 ---
 name: execute-task
-description: "Always run this. Invoke once at the start of every task authorized to change files — including one whose edits sub-agents make or that starts because work turned up a defect — before recommending, delegating or making edits, and keep it active until verified completion or the user stops or hands it off. Never invoke it from inside a skill it runs. Its references also govern, in any task whether or not it changes files, what an invocation or authorization covers, approval boundaries, steps only the user can take, steps that cannot be taken back, reading state after a push or merge, checking a worker's claim and tracing a cause before reporting it, where working files go, waits and awaited results, and verification cadence and suite choice."
+description: "Always run this. Invoke once at the start of every task authorized to change files — including one whose edits sub-agents make or that starts because work turned up a defect — before recommending, delegating or making edits, and keep it active until verified completion or the user stops or hands it off. Never invoke it from inside a skill it runs. Its references also govern, in any task whether or not it changes files, what an invocation or authorization covers, approval boundaries, steps only the user can take, what to do when the environment or a permission check refuses an action, steps that cannot be taken back, reading state after a push or merge, checking a worker's claim and tracing a cause before reporting it, where working files go and which browser a task drives, deleting the copies a sync service leaves behind, waits and awaited results, and verification cadence, suite choice and tests that touch the user's desktop."
 short_description: 'Plan source and product changes and show the plan; validate canonical guidance changes through their delivery gates.'
 ---
 
@@ -227,8 +227,8 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
   and record the cut in the intent statement every later gate and review receives. A finding in
   the cut work, a defect included, is answered as out of scope rather than fixed, unless this
   change introduced it.
-- A follow-up on a pull request already sent for review pushes to the same draft, and its
-  **Completion** folds each change into the history under `rewrite-git-history`, never rebuilding it.
+- A follow-up on a pull request already sent for review pushes to the same draft; **Completion**'s
+  **Shape the history** folds it into the existing commits.
 
 ### Progress Record
 
@@ -261,8 +261,7 @@ Execution starts once a required plan has been shown, or immediately when **When
 ### Assigning Work
 
 Before implementation and whenever new work is admitted, delegate the work `subagent-matrix`'s
-**When To Delegate** gives to a subagent, launched under its **Dispatch**; a task waiting on a worker never holds another
-independent one. Reassess ownership after each finding or follow-up. Each editing worker gets a
+**When To Delegate** gives to a subagent, launched under its **Dispatch**. Reassess ownership after each finding or follow-up. Each editing worker gets a
 worktree of its own and `subagent-matrix`'s worker brief, filled with the plan's reuse receipts. Its
 report carries a receipt for each thing it added; one without them goes back to the worker before
 its head is built on. Before writing a script or doing a check by hand, the agent
@@ -283,11 +282,10 @@ guidance already answers.
   **What An Authorization Covers** says a new authorization is needed.
 - Merge, deployment, publication and release are separate outcomes, authorized as `merge-gate`'s
   **Authorization** says. Without it, the task is complete at the reviewable draft pull request whose
-  local checks and **Completion** review have passed; hosted test jobs are required only at the merge.
-- With the merge authorized, the pull request stays draft through the source stream's review;
-  `merge-gate` marks it ready, as the last step before the merge, once `review-pass` has accepted
-  its head.
-- A change that has failed 3 review rounds is not repaired again: put its disposition to `council`
+  local checks and **Completion** review have passed.
+- With the merge authorized, the pull request stays draft through the source stream's review, and
+  `merge-gate`'s **Readiness** takes it out of draft.
+- A change that has used its review rounds is not repaired again: put its disposition to `council`
   in **Ask** mode as [review rounds](references/review-rounds.md) says, and follow its ruling.
 
 ### Working Environment
@@ -422,9 +420,9 @@ affected-repository map and comparison evidence along with the diff.
 Before the final delivery steps below, select the applicable verification route under
 [verification](references/verification.md)'s **Environments**, then verify the requested behavior
 on the change's branch within the authorized scope, including reachable dependency branches, as
-[branch verification](references/branch-verification.md) says. Missing merge approval holds
-merging, never available branch verification. Merge is delivery after verification, never a
-substitute for an available branch test.
+[branch verification](references/branch-verification.md) says. Branch verification runs whether
+or not a merge is authorized, since missing merge approval holds only the merge. A merge is
+delivery after verification and replaces no available branch test.
 
 Then finish each pull request the task changed, once, with its work finished. A follow-up arriving
 after the streams ran is built, then reaches this checkpoint again when it is finished;

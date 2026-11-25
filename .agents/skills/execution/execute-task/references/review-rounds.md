@@ -1,9 +1,9 @@
 # Review rounds
 
-**A change gets at most 3 review rounds in total, in every review loop: the first review and 2
-re-reviews after repairs.** A change that has failed 3 rounds is not repaired again: findings that
-keep coming on one change say the approach is wrong, not that the next patch will land. The stop
-exists to end wasted rounds, never to add questions, and the task stays active.
+A change gets the review rounds `acceptance-gate`'s **Bounds** allows, in every review loop. A
+change that has used its rounds is not repaired again: findings that keep coming on one change say
+the approach is wrong, not that the next patch will land. The stop exists to end wasted rounds,
+never to add questions, and the task stays active.
 
 ## Counting
 
