@@ -1,6 +1,6 @@
 ---
 name: acceptance-gate
-description: Independent read-only verdict on a pull request's complete diff before merge, run once per pull request; also for a triage or deferral decision, a list of borderline incidental items, and base incorporation; per plan step only for a finished step that later steps build on. Never run per fix, apart from one fresh gate over the repairs of, and answers to, a verdict's defect flags; a style flag waits for final acceptance, and evidence a gate asked for goes back to the same run.
+description: Independent read-only verdict on a pull request's complete diff before merge, run once per pull request; also for a triage or deferral decision, a list of borderline incidental items, and base incorporation; per plan step only for a finished step that later steps build on. Never run per fix — the repairs of a verdict's defect flags go to one fresh gate.
 short_description: 'Have an independent reviewer decide whether a proposed change fits the task and the repository.'
 ---
 
@@ -83,6 +83,12 @@ applicable task pull requests, not only default-branch or local checkout compari
 checks analogous implementations and the evidence for retained differences; missing applicable
 pull-request context is a flag to obtain that context, not permission to assume consistency.
 
+**Before dispatch, the caller runs the pre-gate check.** When the Python rules apply, the caller
+runs `scripts/python_rule_findings.py` with the project's Python interpreter on the in-scope Python
+files, fixes each finding, and each paragraph candidate `pre-production`'s **Code Layout** makes a
+boundary, in the lines the change writes or edits, then runs it again. The reader verifies each
+reported shape against the source and rule.
+
 The gate is read-only and distinct from the author. If its reader cannot launch, apply
 `subagent-matrix`'s launch fallback. Invoke `subagent-matrix` at the capability level
 **Questions** gives the gate's question. Dispatch the gate with that exact identifier, and retain catalog state, identifier, assignment
@@ -105,8 +111,9 @@ after them say:
    explicit empty result. A diff that adds code carries the reuse receipts `code-simplify`'s
    **Before Choosing A Design** check left and the results of a search made with a shell at the
    judged head: for each addition, the terms searched and the candidates found, with a source
-   excerpt for each candidate and callee the gate needs to verify its effect. A gate that follows
-   a review loop carries that loop's reviewer's search; any other carries the caller's own. A
+   excerpt for each candidate and callee the gate needs to verify its effect. A gate carries
+   the reuse search of the review that preceded it when its caller ran one; any other carries the
+   caller's own. A
    citation without its source content, or an addition with no search result, is missing
    evidence. For a skill or rule change, include the frozen base and resulting
    package contents and the real case it governs, when supplied;
@@ -115,13 +122,8 @@ after them say:
    rules by path. Supply the complete text and scope of each source inline or in a named file. In a
    repository the owner does not own, as `pre-production`'s **Whose Standards Apply** defines it, the
    brief says so: the gate judges the change against the request, its defects and that repository's
-   own guidance and conventions, and a shared rule's standard is no flag there.
-   **The pre-gate check runs before every gate.** When the Python rules apply, the caller runs
-   `scripts/python_rule_findings.py` with the project's Python interpreter on the in-scope Python
-   files before dispatch, fixes each finding, and each paragraph candidate `pre-production`'s **Code
-   Layout** makes a boundary, in the lines the change writes or edits, then runs it again. Supply the
-   file list and every finding that run prints, including an explicit empty result. The reader
-   verifies each reported shape against the source and rule;
+   own guidance and conventions, and a shared rule's standard is no flag there. Supply the
+   pre-gate check's file list and every finding it printed, including an explicit empty result;
 5. exactly one question from the list below.
 
 **The gate judges with its dependencies' criteria.** Apply `pre-production` to the scope decision,
@@ -137,29 +139,33 @@ names, with deletions intact; a commit range, a branch name, or a `git` command 
 judging a working tree that other edits may have moved, or nothing at all. Its selector receipt is the
 model-dispatch record; never replace it with a generic “largest model” label.
 
-**A diff review judges the code as it stands, not only the lines that changed.** Read every module
-the diff adds, moves or rewrites whole; moved and renamed code is judged as if it were new. A diff
-that changes a skill or rule is judged as the package it results in: every file of each skill and
-rule it touches is read whole at the head, for the checks `skill-pass`'s **Reviewer Brief**
-assigns the acceptance gate and no other reader's. Where the item
-carries a real case the guidance governs, the gate walks the resulting text through it and flags
-the step a reader would take wrongly. Apply the rubric's **Guidance Intent** check. Record
-the evidence for a clean result under `Also read`. Before
-the design comparison, answer the plain question: would an experienced reviewer reading the change —
-its code, configuration and prose, and the verification output supplied — call any of it slop, or
-say it does not make sense? Each reason they would give is a flag with its remedy, whether or not a
-narrower rule below names it: layers that each add one tweak, wrappers that only forward or fix a
-value, one-symbol fragments, a file for a slice of a concern another module owns, one thing
-implemented twice, comments narrating code, confusing or near-duplicate names, dead or speculative
-code, hand-written configuration or styling where an owner exists, a setting left in the form its
-library warns against, a shortcut a comment or report admits, a result its reader would question.
-The list illustrates the question and never bounds it. A rubric exemption that would excuse such a
-shape is named in the flag. A remedy that sends the author to an existing piece judges that piece the same way first: a wrapper or
-a duplicate is not an owner. An increment fixing an earlier flag is judged on the earlier flags it
-answers and on its own lines, read the same way, never only against that flag; the rest of the
-modules it touches and of the originating diff, which the earlier gate judged, is context, open to a
-new flag only where the increment changes what it depends on or it holds a confirmed defect or
-exploitable vulnerability.
+**A diff review judges the code as it stands, not only the lines that changed.**
+
+- Read every module the diff adds, moves or rewrites whole; moved and renamed code is judged as if
+  it were new.
+- A diff that changes a skill or rule is judged as the package it results in: every file of each
+  skill and rule it touches is read whole at the head, for the checks `skill-pass`'s **Reviewer
+  Brief** assigns the acceptance gate and no other reader's.
+- Where the item carries a real case the guidance governs, the gate walks the resulting text through
+  it and flags the step a reader would take wrongly.
+- Apply the rubric's **Guidance Intent** check. Record the evidence for a clean result under
+  `Also read`.
+- Before the design comparison, answer the plain question: would an experienced reviewer reading the
+  change — its code, configuration and prose, and the verification output supplied — call any of it
+  slop, or say it does not make sense? Each reason they would give is a flag with its remedy,
+  whether or not a narrower rule below names it: layers that each add one tweak, wrappers that only
+  forward or fix a value, one-symbol fragments, a file for a slice of a concern another module
+  owns, one thing implemented twice, comments narrating code, confusing or near-duplicate names,
+  dead or speculative code, hand-written configuration or styling where an owner exists, a setting
+  left in the form its library warns against, a shortcut a comment or report admits, a result its
+  reader would question. The list illustrates the question and never bounds it.
+- A rubric exemption that would excuse such a shape is named in the flag. A remedy that sends the
+  author to an existing piece judges that piece the same way first: a wrapper or a duplicate is not
+  an owner.
+- An increment fixing an earlier flag is judged on the earlier flags it answers and on its own
+  lines, read the same way, never only against that flag; the rest of the modules it touches and of
+  the originating diff, which the earlier gate judged, is context, open to a new flag only where the
+  increment changes what it depends on or it holds a confirmed defect or exploitable vulnerability.
 
 Before the design comparison, verify that the supplied rule sources are complete and cover the
 file groups in the diff. Check preambles, imports, declarations and executable bodies in the
@@ -270,8 +276,10 @@ question and never a level of its own:
 - **Final acceptance — may this merge?** The complete pull-request diff, read once after review is
   clean and before any check gate. A calling workflow that states the size past which it reads a
   diff in slices puts that diff slice by slice instead, one gate per slice, and then puts the
-  seams between slices to one more gate. The diff is accepted when every slice and the seams are;
-  each line is still read once.
+  seams between slices to one more gate. At most five slices, grouped by package the
+  way `code-simplify` slices a scope. The diff is accepted when every slice and the seams
+  are; each line is still read once, and a repair round reruns only the slices a repair touched and
+  their seams.
 
 ### Base incorporation
 
@@ -300,7 +308,7 @@ under the GitHub rules on branch ownership, and its resolved result is theirs to
 
 ## Bounds
 
-The gate is never advisory; the rubric says what each disposition binds the caller to.
+A verdict binds its caller as the rubric's **What A Verdict Binds** says.
 
 A flag blocks the flagged proposal or diff, not an ordinary repair the task already authorizes.
 Before admitting a flag, check it against the task's recorded decisions and the commit that
@@ -319,9 +327,11 @@ a repair re-reads the changed lines against the flag's objection and remedy and 
 covering that code. Then the repairs of every flag one verdict raised, and each settled,
 out-of-scope or council-dropped answer with its evidence, go together to one fresh gate under the
 Diff question, following `subagent-matrix`'s **Dispatch**; it answers each flag separately, and
-only its acceptance closes a flag. That gate is one of the change's re-reviews under the limit of 3
-review rounds per change, and one of the repair rounds below for each flag it reads a repair of. The exceptions are a style flag and a flag naming only missing evidence, each
-closed as its paragraph below says, and the decision `council` makes once 3 review rounds have failed the change, which settles its flags as it rules.
+only its acceptance closes a flag. A change gets at most 3 review rounds in total: the first
+review and 2 re-reviews after repairs; that gate is one of them, and one of the repair rounds below
+for each flag it reads a repair of. The exceptions are a style flag and a flag naming only missing
+evidence, each closed as its paragraph below says, and the decision `council` makes once 3 review
+rounds have failed the change, which settles its flags as it rules.
 
 **Each flag carries its severity, `defect` or `style`.** A style flag concerns only the form of
 lines whose behavior, structure and contract stand: a docstring's or comment's length, a missing
@@ -358,8 +368,9 @@ it proposed itself.
 - A flag the council returns as the user's choice goes to the user, as a report of those facts with
   a recommended next step, never as a choice about whether to fix it or leave it in place.
 
-Never rerun an unchanged item hoping for acceptance, argue it through the same gate, rename it to
-reset its history, or keep flagged code because the caller can authorize its merge. Carry unresolved
+A verdict changes only when the item does: rerunning an unchanged item, arguing it through the same
+gate or renaming it to reset its history changes nothing, and flagged code stays flagged whoever can
+authorize the merge. Carry unresolved
 objections and previous remedies into the next review; a remedy that reverses one given earlier
 names it and the evidence it was wrong. If evidence refutes an objection, put the
 objection, that evidence and the code it concerns to `council` in **Ask** mode for a ruling: a
@@ -385,7 +396,7 @@ Escalate only a genuine unresolved product, scope, security, disclosure or autho
 fork and why authorized remedies cannot settle it. Repair authority and merge authority are separate:
 a source pull request awaiting merge permission continues through authorized repairs and reviews.
 Keep unrelated authorized work moving while a real decision waits. No diff merges with a flag
-still open.
+still open, apart from the acceptance with recorded findings `council` makes at the 3-round limit.
 
 ## Reporting
 

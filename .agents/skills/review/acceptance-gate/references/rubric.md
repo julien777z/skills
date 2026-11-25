@@ -5,6 +5,11 @@ worth is priced, and the tests behind each question. `SKILL.md` says how the gat
 also borrows two rubrics it does not own: `code-simplify`'s, which defines slop and prices a
 mechanism, and `security-audit`'s, which defines an exploitable finding and its remedy.
 
+Contents: **Why The Gate Exists**, **What The Intent Statement Names**, **Repository Purpose And
+Conventions**, **Product State**, **What A Verdict Names**, **Guidance Intent**, **Independent
+Judgment**, **State Meaning**, **Exploitable Findings**, **The Tests Behind Each Question**,
+**What A Verdict Binds**.
+
 ## Why The Gate Exists
 
 An agent that has decided a fix is owed, a deferral is justified, an issue is worth building, or a
@@ -47,7 +52,7 @@ The statement names:
   case-insensitively, whole and by its parts and reformattings, such as a code's prefix alone, an amount
   without separators or a slug, in the item under judgment, the diff's added lines, the branch
   name, the pull request's title and body and the commit messages. The receipt names each value by
-  its kind, such as "the reported plant code", never by the value itself, and lists the forms and
+  its kind, such as "the reported part number", never by the value itself, and lists the forms and
   places searched and its hits; or it states that the user supplied none. Each bracketed kind in
   the quoted request appears in it;
 - the target repository's purpose and scope, as its README and project guidance state them;
@@ -225,30 +230,15 @@ what an attacker can reach, whenever the diff changes code the repository execut
 configuration that grants access, a dependency manifest, a workflow. Prose, documentation and agent
 configuration are not that, and a diff confined to them skips this section entirely.
 
-The criteria are `security-audit`'s `references/rubric.md`, and they cut in both directions.
-
-- **Only what can be exploited.** A finding names the attacker, what they send, and what they get.
-  "Theoretically" and "potentially" mark the place where the work stopped, not a finding.
-- **A defense-in-depth gap is not one.** Where a layer the diff leaves in place already prevents the
-  attack, the absence of a second layer is a hardening note under `Also read`, never a flag, and
-  never inflated to carry one. The note names that layer and shows it stops the attack on every
-  path; a layer that covers some paths, such as one kind of handler, leaves a finding on the rest.
-- **When it arrived does not matter.** An exploitable finding on a surface the diff touches or
-  reads, whether the change introduced it, inherited it or sits beside it, is a flag whose remedy
-  goes where `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places it. "Not new in this round" never demotes it to a note.
-- **Severity is likelihood and impact together, and it orders the flags.** A targeted exploit with
-  real consequence, a state change an attacker can force, a disclosure of secrets or credentials, a
-  business-logic bypass whose blast radius is real: each is a flag of medium severity or above. A
-  finding that defeats an explicit security boundary — an action the system gates behind a role,
-  performed without it — is a flag with the boundary named. An exploitable finding below medium is
-  still a flag, and its fix goes where `pre-production`'s noticed-defect bullet places it, ordered by severity; only the
-  defense-in-depth gap the bullet above defines is a hardening note. If the concrete damage cannot
-  be described, the severity is lower than it looks.
-- **The remedy is found in `security-audit`'s order, not written for the sink.** A guarantee the code
-  already has and fails to read, then the surface whose deletion closes the finding outright, then a
-  product decision that dissolves it, and only then new enforcement. A flag that names new machinery
-  where a value already in hand would have closed the hole is at the wrong altitude, and naming the
-  smaller option is part of the flag even when it is not the one recommended.
+The criteria are the `security-audit` skill's rubric reference: **Exploitability**,
+**Severity Requires Impact** and **Find The Smallest Fix Before Proposing One** apply as written
+there. The gate adds: a defense-in-depth gap is a hardening note under `Also read`
+naming the layer and showing it stops the attack on every path, and a layer that covers some paths
+leaves a finding on the rest; an exploitable finding on a surface the diff touches or reads is a
+flag whether the change introduced it, inherited it or sits beside it, with its fix placed where
+`pre-production`'s noticed-defect bullet places it and ordered by severity even below medium; and a
+flag that names the smaller remedy the rubric orders first states it even when it is not the one
+recommended.
 
 An exploitable finding also reaches triage and admission, which are not diff questions: the fix
 test and the close test each carry the clause that keeps it, and **Product State** carries the bound.
@@ -295,18 +285,19 @@ the answer is one of four dispositions, decided by the tests below in order. The
 ends the question.
 
 1. **fix** — the item is a confirmed defect, as `pre-production`'s **Scope Follows The Defect, Not
-   The Request** defines one. Measured evidence from a
-   live run — a rate, a duration, a memory trail, a kill — is evidence of a defect the way a
-   confirmed review finding is: the gate takes it as given and never re-derives the defect from the
-   tree, because a tree read alone cannot see a rate. A defect is fixed whatever shape its fix takes, whether the
-   change introduced it, the task asked for it, or the work only ran into it, on the change or its
-   own pull request as `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places it
-   by size, or on a branch off the default when nothing is in flight; a defect is never deferred
-   for its size. A migration is how a fix is written, never a reason to record it instead. A check that
-   would rediscover the defect does not soften this: rediscovery excuses the record, never the fix.
-   Product state never softens it either: broken is broken for one admin as for a thousand users.
-   A missing safeguard that definition leaves out goes on to the tests below, its exploitability
-   judged under **Exploitable Findings**.
+   The Request** defines one. A missing safeguard that definition leaves out goes on to the tests
+   below, its exploitability judged under **Exploitable Findings**.
+   - Measured evidence from a live run — a rate, a duration, a memory trail, a kill — is evidence of
+     a defect the way a confirmed review finding is: the gate takes it as given and never
+     re-derives the defect from the tree, because a tree read alone cannot see a rate.
+   - A defect is fixed whatever shape its fix takes, whether the change introduced it, the task
+     asked for it, or the work only ran into it, on the change or its own pull request as
+     `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect
+     places it by size, or on a branch off the default when nothing is in flight; a defect is never
+     deferred for its size.
+   - A migration is how a fix is written, never a reason to record it instead. A check that would
+     rediscover the defect does not soften this: rediscovery excuses the record, never the fix.
+   - Product state never softens it either: broken is broken for one admin as for a thousand users.
 2. **close** — the item is real but not worth doing. Either the product state leaves it protecting or
    serving nobody — an access control between the one admin and the data only that admin can see, a
    hardening against users the product does not have, neither of which retires a finding an attacker
@@ -323,34 +314,38 @@ ends the question.
    written without — a credential nobody has issued, a vendor change, an answer only a third party
    can give; a decision that is somebody else's is already put to that person and still open, or the
    user declined it in the current request; or an attempted fix, shown to the gate, could not be
-   completed without the removed shape or a rubric finding. Work owed by a library or service the
-   user owns is never an external blocker: its fix is written in that repository and the consuming
-   change is written against it, the other tests deciding the item as if the library lived here — so
-   it is never closed by handing the work to that repository's backlog. Ownership is read from whose
-   repository the dependency is, never from where it sits or from a record calling it out of scope.
-   That the code under change is deployed or running somewhere, a backfill in flight on live data
-   included, is the order the fix rolls out in, stated in the pull request; it is never a blocker.
-   The gate never routes work to a decision on its own: where a fix's remedy is a product choice
-   `pre-production`'s **Product Choices** reserves to the user, the fork is put to the user now, before that remedy is built,
-   never filed as theirs unasked; a trade-off inside a choice the user's words already settled takes
-   the cleanest fix and states it in the pull request. A defer also requires that the record's
-   resolution criteria describe an end state and name the intent a fix has to preserve, never a
-   mechanical condition a relocated shape could satisfy. Size is not that arguability and never
-   stands in for it. The test is a question somebody could answer differently, so a conversion
-   repeated across a hundred call sites is long rather than arguable and the number of files it
-   touches decides nothing. A conversion of existing instances to a better shape that no defect or
-   requirement owes is the user's decision whatever its size: triage returns defer on that ground
-   alone, naming the fork — the shape, every instance it would convert, the size of that change and
-   the recommendation — which the caller puts to the user now; it is built only at the scope the
-   user approves, never returned as do. Incidental cleanup past `pre-production`'s size budget is
-   defer without the arguability test, apart from a widened budget's larger cleanup, which that
-   budget sends to its own pull request, and incidental cleanup inside it is do. Nor are the size
-   and shape of the work inputs the gate may take on trust: "large", "not mechanical", "each site
-   needs its own judgment" and "it spans suites the change does not touch" are the asker's
-   characterization of the asker's own record. Check the count against the tree and open enough of
-   the actual call sites to see whether the edit repeats. This is the inverse of the fix test's
-   treatment of a measured rate, which is taken as given precisely because reading the tree cannot
-   produce one — size is exactly what reading the tree can.
+   completed without the removed shape or a rubric finding.
+   - Work owed by a library or service the user owns is never an external blocker: its fix is
+     written in that repository and the consuming change is written against it, the other tests
+     deciding the item as if the library lived here — so it is never closed by handing the work to
+     that repository's backlog. Ownership is read from whose repository the dependency is, never
+     from where it sits or from a record calling it out of scope.
+   - That the code under change is deployed or running somewhere, a backfill in flight on live data
+     included, is the order the fix rolls out in, stated in the pull request; it is never a
+     blocker.
+   - The gate never routes work to a decision on its own: where a fix's remedy is a product choice
+     `pre-production`'s **Product Choices** reserves to the user, the fork is put to the user now,
+     before that remedy is built, never filed as theirs unasked; a trade-off inside a choice the
+     user's words already settled takes the cleanest fix and states it in the pull request.
+   - A defer also requires that the record's resolution criteria describe an end state and name the
+     intent a fix has to preserve, never a mechanical condition a relocated shape could satisfy.
+   - Size is not that arguability and never stands in for it. The test is a question somebody could
+     answer differently, so a conversion repeated across a hundred call sites is long rather than
+     arguable and the number of files it touches decides nothing.
+   - A conversion of existing instances to a better shape that no defect or requirement owes is the
+     user's decision whatever its size: triage returns defer on that ground alone, naming the fork
+     — the shape, every instance it would convert, the size of that change and the recommendation —
+     which the caller puts to the user now; it is built only at the scope the user approves, never
+     returned as do.
+   - Incidental cleanup past `pre-production`'s size budget is defer without the arguability test,
+     apart from a widened budget's larger cleanup, which that budget sends to its own pull request,
+     and incidental cleanup inside it is do.
+   - Nor are the size and shape of the work inputs the gate may take on trust: "large", "not
+     mechanical", "each site needs its own judgment" and "it spans suites the change does not touch"
+     are the asker's characterization of the asker's own record. Check the count against the tree
+     and open enough of the actual call sites to see whether the edit repeats. This is the inverse
+     of the fix test's treatment of a measured rate, which is taken as given precisely because
+     reading the tree cannot produce one — size is exactly what reading the tree can.
 4. **do** — none of the above: the item is worth doing and its cleanest fix is within reach, so it is
    done where `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places a fix of its size, or on a branch off the default when nothing is in
    flight.
@@ -416,7 +411,7 @@ sibling paths lack. An added check is never accepted as a security gain on its f
 **Final acceptance — may this merge?** The item is the complete pull-request diff against the intent
 statement and the rubric, read once after review is clean and before any check gate.
 
-## The Gate Is Never Advisory
+## What A Verdict Binds
 
 The gate is never advisory. A proposal it flags is not written; a diff it flags does not stand.
 Repeated flags follow **Bounds**, with no exception for agent configuration; a disposition is
