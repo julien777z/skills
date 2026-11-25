@@ -212,6 +212,10 @@ These run in the order below, in process unless a pass says otherwise.
 - **Python rules:** for the delta's changed Python files, run `acceptance-gate`'s
   `scripts/python_rule_findings.py` over them; each finding it lists gets its fix, and each
   paragraph candidate `pre-production`'s **Code Layout** makes a boundary gets its blank line.
+  Read the comments added by the delta even when the script finds nothing. For each, identify the
+  external constraint it explains or refactor the owned code so its intent is visible. For owned
+  behavior described in a comment, point to an assertion on the observed result that fails when
+  the behavior regresses.
 - **Simplification:** run `code-simplify` over every delta that holds executable lines or changes
   guidance under `.agents`, with the intent statement, whatever the delta looks like to its author:
   in process when one reader can hold the delta, its touched files and their siblings, and by slice
