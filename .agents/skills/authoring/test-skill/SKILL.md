@@ -174,6 +174,9 @@ confuse those conclusions.
    never decides that a pull request should merge.
 7. **Repair and rerun until verified**, within the review-round limit `acceptance-gate`'s
    **Bounds** sets, whose disposition goes to `council` in **Ask** mode. Diagnose each reported issue at its owner. Fix guidance that permits the wrong behavior;
+   when a change check or regression scenario misses the same criterion again after a guidance
+   repair, reconsider where the instruction lives and which reader meets it before the next
+   repair, as those **Bounds** say of a second miss, never reword the same lines again;
    fix an invalid fixture, unavailable simulated operation, wrong reading list, ambiguous criterion
    or broken runner before judging guidance. Retain the diagnosis and earlier results. Recover
    missing evidence from the actual run or rerun the affected task; never reconstruct a result from

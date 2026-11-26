@@ -290,9 +290,9 @@ changed. Make the smallest changes that answer real findings, and push back on t
   lines each. Any other goes to `council` in **Ask** mode for a ruling, with the finding, the
   reviewer's case and yours with their evidence, and the code it concerns; its ruling settles it:
   fix it, or record it declined with the ruling. A spent budget with a blocker or should still open
-  goes to `council` in **Ask** mode, which decides between a simpler approach, reverting the
-  change and accepting it with the remaining findings recorded, within the limit its **Ask** sets
-  on what a ruling accepts.
+  goes to `council` in **Ask** mode, which decides between a different approach, with your best
+  candidate stated, a simpler approach, reverting the change and accepting it with the remaining
+  findings recorded, within the limit its **Ask** sets on what a ruling accepts.
 
 ## Combined Review
 
