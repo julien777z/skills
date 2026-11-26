@@ -57,3 +57,7 @@ history:
     reason: the fallbacks section now says that a wait on the launch ending at 15 minutes with no events is the
       15-minute read, so a reader that waits 15 minutes takes the next step without a second read; the
       read-at-fifteen check already allows a wait of at most 15 minutes as that one read
+  - date: "2026-11-25"
+    route: behavior-change
+    pull_request: "423"
+    reason: "The fallbacks text now caps a wait on the stalled launch at 15 minutes after its brief; the reader's 20-minute wait showed the moment was named but not capped."

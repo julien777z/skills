@@ -75,9 +75,9 @@ its brief (with no siblings, the 15 minutes alone) — relaunch the same assignm
 brief and effort, on the session's own provider at the same capability level, record both
 launches, and carry on: the other provider is a preference that improves independence, never a
 blocker, and its repair never holds the step. While such a launch is pending, the coordinator
-waits on one launch at a time and reads it 15 minutes after its brief; a wait on that launch that
-ends at 15 minutes with no events is that read, so no second read follows it. That read sets no
-limit on how long its siblings run. Once any sibling returns, the coordinator's very next call reads the
+waits on one launch at a time, never waits on that launch past 15 minutes after its brief, and
+reads it then; a wait on it that ends there with no events is that read, so no second read follows
+it. That read sets no limit on how long its siblings run. Once any sibling returns, the coordinator's very next call reads the
 other-provider launch's activity, before any wait on another launch. The replacement launches
 first. Once it is accepted, the stalled launch is cancelled. If the replacement is refused, the
 stalled launch is left running.
