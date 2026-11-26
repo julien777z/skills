@@ -11,6 +11,9 @@ frozen variant through an option that adds a source for that one run, such as a 
 directory, an appended system prompt or an input file the run reads. An option that sets where
 the harness reads user-level skills or rules is a user-level root whatever folder it names, so
 the variant never goes in one, in a folder one points at, or in any folder searched by default.
+A regression scenario's reader is the exception: its user-level root is a fresh scratch home
+holding only the installer's install of the branch under test, as the regression scenarios
+reference's **Isolation** says.
 A subagent of the running session stands in only when its loaded guidance lists no copy of a
 skill or rule under test, with the variant in its brief. Record the route, the command, the
 scratch root's file list with digests, and the harness's record of the guidance it loaded. With

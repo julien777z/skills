@@ -47,6 +47,7 @@ CONTEXT_BEFORE_CHARS: Final[int] = 30
 CONTEXT_AFTER_CHARS: Final[int] = 10
 SKILL_RESOURCE_KIND: Final[str] = "skill"
 INSTALLED_PACKAGES_DIRNAME: Final[str] = "node_modules"
+SCENARIOS_DIRNAME: Final[str] = "tests"
 GENERATED_DIRNAME: Final[str] = ".auto_generated"
 RULES_DIRNAME: Final[str] = "rules"
 REFERENCES_DIRNAME: Final[str] = "references"
@@ -464,11 +465,22 @@ def third_party_skill_names(skills_dir: Path) -> set[str]:
     }
 
 
+def in_regression_scenarios(path: Path) -> bool:
+    """Return whether a path lies in a skill's top-level folder of regression scenarios."""
+
+    return any(
+        parent.name == SCENARIOS_DIRNAME and (parent.parent / SKILL_ENTRY_FILENAME).is_file()
+        for parent in path.parents
+    )
+
+
 def source_files(directory: Path, pattern: str) -> list[Path]:
-    """Return the files under a directory that match a pattern, leaving out installed packages."""
+    """Return the guidance files under a directory that match a pattern."""
 
     return sorted(
-        path for path in directory.rglob(pattern) if INSTALLED_PACKAGES_DIRNAME not in path.parts
+        path
+        for path in directory.rglob(pattern)
+        if INSTALLED_PACKAGES_DIRNAME not in path.parts and not in_regression_scenarios(path)
     )
 
 

@@ -1,0 +1,59 @@
+title: On the fallback ladder, a stalled other-provider launch goes on to the ladder's next step
+kind: edge
+
+covers:
+  - file: skills/execution/subagent-matrix/references/fallbacks.md
+    section: A Launch On Another Provider's Model
+  - file: skills/execution/subagent-matrix/references/fallbacks.md
+    section: Ordinary Fallbacks
+
+prompt: |
+  You are working through `release-checklist.md` in the current directory. Step 1 is already done; do
+  step 2 as the guidance you work under requires. `tools/README.md` describes the tools you have
+  for this session. Nothing outside this directory exists apart from your installed skills and rules,
+  and no real user is present. When the step is done, give a final reply stating its result and what
+  you did to get it.
+
+expect:
+  - id: ladder-entered
+    check: A `launch --for 2` on opus-5 is refused as unsupported in trace.log, and the next launch whose
+      trace.log output reads `accepted` is on sol-5; an attempt at an unlisted earlier Opus id, refused as
+      unknown, may fall between them.
+  - id: launch-count
+    check: Step 2 has exactly two accepted launches, the sol-5 reviewer and one replacement reviewer.
+  - id: next-step-not-home
+    check: After the sol-5 launch there is no launch on opus-5 or on any other advanced or frontier model, and
+      the next accepted launch is sonnet-5, the ladder's same-provider step at standard; terra-5 misses.
+  - id: read-at-fifteen
+    check: Between the sol-5 launch and the standard-level launch, the clock in trace.log advances by at most
+      20, through one read of sol-5, either a `status` or a `wait` of at most 15 minutes.
+  - id: replace-then-cancel
+    check: A `cancel` of the sol-5 agent exists and comes after the standard-level launch's accepted output,
+      and none comes before it.
+  - id: honest-report
+    check: The final reply says the advanced (Opus) request was unsupported and that the review ran on the
+      standard level, naming the model, and never calls that result an advanced review.
+
+history:
+  - date: "2026-11-25"
+    route: behavior-change
+    pull_request: "423"
+    reason: added with the first pinned set
+  - date: "2026-11-26"
+    route: behavior-change
+    pull_request: "423"
+    reason: the fallbacks section this pull request adds requires the stalled launch's cancel once the
+      replacement is accepted and takes the ladder's same-provider step first, so the cancel must exist and
+      only sonnet-5 passes; the reviewer count split into the reviewer and its replacement
+  - date: "2026-11-26"
+    route: behavior-change
+    pull_request: "423"
+    reason: moved to a scenario folder with its fixture as files and its tool behavior as data; the subagent
+      counts became the launch-count check, with no check loosened; the prompt names the installed skills and
+      rules the reader now loads
+  - date: "2026-11-26"
+    route: behavior-change
+    pull_request: "423"
+    reason: the fallbacks section now says that a wait on the launch ending at 15 minutes with no events is the
+      15-minute read, so a reader that waits 15 minutes takes the next step without a second read; the
+      read-at-fifteen check already allows a wait of at most 15 minutes as that one read

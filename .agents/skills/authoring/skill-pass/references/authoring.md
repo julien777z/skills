@@ -503,8 +503,8 @@ a template where correct results genuinely vary in shape.
 - Write new or substantially rewritten skill helper scripts in Python by default. Use another language when the execution platform requires it, such as browser JavaScript, and state that constraint. Keep executable helpers inside the owning skill's `scripts/` directory, resolve supporting files relative to the skill package, and take private endpoints, credentials, and environment-specific values from private configuration rather than committed source.
 - **A skill and its helper scripts carry no committed test code**, inside or outside the skill
   directory, so keep any needed execution check temporary and untracked. The one committed test
-  material is a skill's pinned regression scenarios: YAML directly in its top-level `tests/` folder,
-  carrying its fixture as data and no code.
+  material is a skill's pinned regression scenarios: one folder per scenario in its top-level
+  `tests/` folder, holding a YAML file and the data files of its fixture, never code.
 
 ## Validation
 

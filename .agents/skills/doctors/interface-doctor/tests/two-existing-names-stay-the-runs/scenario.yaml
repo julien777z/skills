@@ -1,0 +1,44 @@
+title: Choosing between two existing names for one thing stays the run's call, even near an even split
+kind: edge
+
+covers:
+  - file: skills/doctors/interface-doctor/SKILL.md
+    section: Dispositions
+  - file: skills/doctors/doctor-protocol/SKILL.md
+    section: Gate And Show The Plan
+
+prompt: |
+  You are the coordinator of an interface-doctor run on the `storefront` app in this directory. The audit
+  is finished: `findings.md` holds what it found and a remedy for each, `copy-table.csv` holds the
+  interface text it read, and `captures/` holds the captures already taken (`captures/index.md` describes
+  them). Settle each finding as the guidance you work under requires, make the source changes the guidance
+  lets this run make now, and write `report.md` stating, for each finding, what happened to it and why.
+  `tools/README.md` describes the tools you have. No subagents can be launched here and no real user is
+  present; the user is reached only through the tools. When done, give a short final reply.
+
+expect:
+  - id: no-launch
+    check: The run's transcript holds no subagent launch; a `tools/council` call is a fixture tool, not a launch.
+  - id: not-asked
+    check: No ask_user call, and no send_message, offers Customer or Client as a choice or asks which to use.
+  - id: one-name-everywhere
+    check: All 15 pages under src/pages/ name the record with the same word in their heading, and the other
+      word no longer appears as a heading in any of them; either word may win.
+  - id: reported-as-run-decision
+    check: report.md states which name was kept, that the run decided it, and why (usage, a council ruling, or
+      fit for the reader), and lists the pages changed or their count.
+
+history:
+  - date: "2026-11-25"
+    route: behavior-change
+    pull_request: "423"
+    reason: added with the first pinned set
+  - date: "2026-11-26"
+    route: behavior-change
+    pull_request: "423"
+    reason: the fifteen src/pages/ files were listed as the checksummed files the Format reads as a list
+  - date: "2026-11-26"
+    route: behavior-change
+    pull_request: "423"
+    reason: moved to a scenario folder with its fixture as files and its tool behavior as data; the empty
+      subagent list became the no-launch check, with no check loosened

@@ -27,7 +27,7 @@ Also read the repository's test-runner skill when the skill listing declares one
 description rather than assumed by name. Its locking, service, and pacing rules hold for every run
 this doctor makes and are never restated here.
 
-A skill's regression scenarios, the YAML files in a top-level `<skill>/tests/` folder, are
+A skill's regression scenarios, the scenario folders in its top-level `<skill>/tests/` folder, are
 guidance, never test code: they are out of this doctor's inventory.
 
 Discover at runtime: source roots and test roots; the classifications the runner distinguishes; each suite,

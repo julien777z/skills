@@ -22,7 +22,7 @@ confuse those conclusions.
 
 - **A round runs two kinds of test.** A change check asks whether the new change holds up, through
   the scenarios **Workflow** writes for it. Regression scenarios ask whether a skill regresses: the
-  pinned YAML scenarios in each skill's `tests/` folder that the diff touches, run beside the change
+  pinned scenario folders in each skill's `tests/` folder that the diff touches, run beside the change
   check and never in place of it. The [regression scenarios reference](references/regression-scenarios.md)
   holds their format, which ones a diff selects, who may change an expectation, and their isolation
   and criteria. Run every regression scenario the diff selects, reading the reference's **When They

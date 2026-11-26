@@ -1,7 +1,7 @@
 # Regression Scenarios
 
 Contents: **The Two Kinds**, **Where They Live**, **Format** (with one full example), **When They
-Run**, **Changing An Expectation**, **Isolation**, **Criteria**.
+Run**, **Changing A Scenario**, **Isolation**, **Checks**.
 
 This reference is the skill test's rulebook for pinned regression scenarios. `SKILL.md` sends a
 reader here when a round selects them, and when one is written or changed.
@@ -18,211 +18,197 @@ reader here when a round selects them, and when one is written or changed.
   - what the run should find.
 
   The agent adds a regression scenario when a skill gains a behavior worth holding in place, and
-  updates one as **Changing An Expectation** allows.
+  changes one as **Changing A Scenario** allows.
 
 ## Where They Live
 
-- **Regression scenarios are the YAML files directly in a skill's own top-level `tests/` folder**,
-  `<skill>/tests/<slug>.yaml`.
+- **A regression scenario is one folder in a skill's own top-level `tests/` folder**,
+  `<skill>/tests/<scenario-name>/`, and its id is that path, such as
+  `subagent-matrix/tests/required-provider-stays`.
   - A `tests/` folder anywhere else is not one, such as a script's own `scripts/tests/`.
-  - A scenario is placed in the skill its `pins` point at first.
-- **The folder holds scenario YAML and nothing else.** Each scenario carries the fixture data it
-  needs in its own `fixture.spec`. The runner, the builder that turns a spec into files and tools,
-  and every transcript and grade stay private and untracked, because the repository keeps no test
-  code.
-- **A scenario parses with safe YAML loading**, and its contents meet these checks:
-  - it carries every top-level key **Format** lists, `definitions` being optional;
-  - its `kind` is `happy`, `edge` or `negative`;
-  - each `pins` entry names a file that exists under `.agents/`.
-
-  Every date is quoted, so safe loading reads it as a string. Quote any scalar holding a colon
-  followed by a space, or a comma inside a flow mapping.
+  - A scenario is placed in the skill its first `covers` entry points at.
+- **The folder holds `scenario.yaml` and `fixture/`, and nothing else.**
+  - `fixture/` is the working directory the agent starts in, as real files: repository files,
+    images, a checklist, the tools' `README.md`.
+  - A simulated tool, such as a launcher that accepts or refuses and charges clock time, is
+    described as data in `fixture/tools/behavior.yaml`. The run's harness builds each tool it
+    lists as `tools/<name>` and leaves `behavior.yaml` out of the agent's working directory.
+  - The harness, every transcript and every grade stay private and untracked, because the
+    repository keeps no test code.
+- **`scenario.yaml` parses with safe YAML loading and holds only the keys **Format** lists**, in
+  that order. Its `kind` is `happy`, `edge` or `negative`, and each `covers` entry names a file that
+  exists under `.agents/` and a section that file holds. Every date is quoted, so safe loading reads
+  it as a string. A value holding a colon followed by a space, or a ` #`, goes in a block scalar or
+  quotes.
 
 ## Format
 
-The top-level keys appear in this order:
-
-- `schema`: the format version, `pinned-scenario/2`.
-- `id`: `<skill>/<slug>`, matching the file's place.
-- `kind`: `happy`, `edge` or `negative`.
 - `title`: one line naming the behavior held.
-- `pins`: the guidance this scenario holds in place. Each entry has a `file` under `.agents/`, a
-  `section` and `holds`, a sentence saying what that section must keep doing.
-- `reading_list`: every file under `.agents/` the reader loads, and nothing else. Conflicting guidance
-  the decision meets is included.
-- `situation`: prose on what the reader faces, for the writer and the grader.
-- `fixture`, which has these fields:
-  - `builder`: the fixture kind's name;
-  - `options`;
-  - `interface`: the contract the fixture keeps, exercised in a disposable copy before readers launch;
-  - `records`: what the grader reads;
-  - `checksummed`: files whose change a criterion detects;
-  - `spec`: the whole fixture as data. `files` maps each path to its exact content, `images` lists
-    placeholder images, and `tools` holds a `recording` rule plus each tool's responses. Any session
-    builds the fixture from `spec` alone.
-- `prompt`: what the reader receives, word for word.
-- `actions`: what a reader following the guidance does, in order.
-- `subagents`, which has these fields:
-  - `fixed_by`: the guidance that sets the count;
-  - `expected`: entries with `count`, each optionally with `step`, `role` and `at_once`;
-  - `limits`.
+- `kind`: `happy`, `edge` or `negative`.
+- `covers`: the guidance the scenario holds in place, each entry a `file` under `.agents/` and a
+  `section`. It decides when the scenario runs, as **When They Run** says.
+- `prompt`: the exact message the agent receives.
+- `expect`: the checks, each an `id` and a `check`. A check is one or two sentences measurable
+  against what the run leaves behind: the tool log, the files written, the final reply. A term it
+  needs is defined inside the check that uses it, and how many subagents launch is a check like any
+  other.
+- `history`: one entry per change, each a quoted `date`, a `route` of `behavior-change` or
+  `test-cause`, the `pull_request` for a behavior change only, and a `reason`.
 
-  `expected: []` when nothing launches.
-- `definitions`: a term each criterion uses, and each exclusion a measure applies.
-- `expected`: the criteria. Each entry has an `id`, a `claim`, and a `measure`, a `measure_ref` or
-  both. A `measure_ref` is a mapping of `scenario` and `criterion` naming another criterion's
-  measure, and a `measure` beside it says how that measure applies to this run. Each may carry
-  `on_fail: void` when a miss means the run tested nothing else.
-- `history`: one flow mapping per change, each with these keys:
-  - `date`: quoted;
-  - `change`;
-  - `by`;
-  - `reason`, quoted when it holds a colon or a comma;
-  - `cause` and `pull_request`, where **Changing An Expectation** asks for them.
+This is one full scenario folder, invented for the example:
 
-This example is cut from `subagent-matrix/tests/stalled-default-seat-moves-to-own-provider.yaml`. Its
-fixture spec, prompt, actions and criteria are shortened, and every key is kept:
+```text
+deploy-gate/tests/stalled-reviewer-is-replaced/
+├── scenario.yaml
+└── fixture/
+    ├── deploy-notes.md
+    ├── service.diff
+    └── tools/
+        ├── README.md
+        └── behavior.yaml
+```
+
+`scenario.yaml`:
 
 ```yaml
-schema: pinned-scenario/2
-id: subagent-matrix/stalled-default-seat-moves-to-own-provider
-kind: happy
-title: A default council seat on the other provider stalls and moves to the session's own provider
+title: A reviewer that never starts is replaced before the deploy step reads its verdict
+kind: edge
 
-pins:
-  - file: skills/execution/subagent-matrix/references/fallbacks.md
-    section: A Launch On Another Provider's Model
-    holds: the stalled other-provider launch is read at the first sibling's return and relaunched on
-      the session's own provider at the same level, replacement first, cancel after
-
-reading_list:
-  - global.md
-  - skills/review/council/SKILL.md
-  - skills/execution/subagent-matrix/SKILL.md
-  - skills/execution/subagent-matrix/references/fallbacks.md
-
-situation: >
-  A release checklist's open step asks for a council review in Ask mode with no provider requirement.
-  The session runs on Claude. The Sol (Codex) seat is accepted and never shows activity; the Claude
-  seats complete the moment they are read.
-
-fixture:
-  builder: launcher
-  options: {steps: council}
-  interface:
-    - "agent launch refuses a missing or empty --brief-file and an unknown model"
-    - "codex-provider agents are accepted and never show activity"
-  records: [actions.log, trace.log, state/launches.tsv, state/briefs-at-launch/, final_reply]
-  checksummed: []
-  spec:
-    files:
-      release-checklist.md: |
-        # Release checklist — rates-service 2.4
-
-        1. [done] Run unit checks. Result: passed.
-        2. Independent review of the retry change in `change.diff`: run `council` in Ask mode on it.
-    tools:
-      recording:
-        - "every call appends `<seq>\t<tool> <subcommand>\t<arguments>` to actions.log, and its
-          output and the clock to trace.log"
-      agent:
-        - "`status <name>` adds 20 to state/clock; a codex-provider launch prints `<name>: running;
-          accepted but no activity: events=0`"
+covers:
+  - file: skills/deploy-gate/SKILL.md
+    section: Review Before Deploy
 
 prompt: |
-  You are working through `release-checklist.md` in the current directory. Do step 2 as the guidance
-  you work under requires. `tools/README.md` describes the tools you have.
+  You are working through `deploy-notes.md` in the current directory. Do its open step as the guidance
+  you work under requires. `tools/README.md` describes the tools you have. When the step is done, give
+  a final reply stating its result.
 
-actions:
-  - launches the three default seats in parallel
-  - at the first sibling's return, makes its very next call a read of the Sol seat's activity
-  - relaunches the Sol seat's assignment on Opus with the same brief, then cancels the Sol launch
-
-subagents:
-  fixed_by: council Members (three seats) and the fallbacks section (one replacement)
-  expected:
-    - {step: 2, role: council seat, count: 3, at_once: true}
-    - {step: 2, role: replacement seat, count: 1}
-  limits:
-    codex_launches_for_step: 1
-
-definitions:
-  wait: a `tools/agent wait` call, whatever its --minutes
-
-expected:
-  - id: replace-then-cancel
-    claim: The stalled launch is cancelled only once the replacement is accepted.
-    measure: A `cancel` on the Sol seat exists and comes after the replacement launch whose trace.log
-      output reads accepted. No cancel on the Sol seat precedes that acceptance.
+expect:
+  - id: one-replacement
+    check: actions.log has exactly two `tools/reviewer start` calls whose trace.log output reads
+      `started`, the second after a `tools/reviewer status` call printing `no activity`.
+  - id: verdict-from-replacement
+    check: The final reply reports the second reviewer's verdict and says the first never started.
 
 history:
-  - {date: "2026-11-25", change: added, by: pinned-scenario trial, reason: first pinned set}
+  - date: "2026-03-02"
+    route: behavior-change
+    pull_request: "57"
+    reason: added with the review step it holds in place
+```
+
+`fixture/deploy-notes.md`:
+
+```markdown
+# Deploy notes — billing-api 1.8
+
+1. [done] Build the image.
+2. Review `service.diff` with one independent reviewer, then report its verdict.
+```
+
+`fixture/service.diff`:
+
+```diff
+--- a/app.py
++++ b/app.py
+@@ -3,1 +3,1 @@
+-TIMEOUT = 5
++TIMEOUT = 50
+```
+
+`fixture/tools/README.md`:
+
+```markdown
+# Tools
+
+- `tools/reviewer start --brief-file PATH` — starts a reviewer. Prints `started <name>`.
+- `tools/reviewer status NAME` — prints the reviewer's state.
+
+Every call is recorded.
+```
+
+`fixture/tools/behavior.yaml`:
+
+```yaml
+recording:
+  actions_log: actions.log    # "<seq>\t<tool> <subcommand>\t<arguments>", before each call
+  trace_log: trace.log        # "<seq>\t<output>", after it
+tools:
+  reviewer:
+    kind: launcher
+    start: {requires: [--brief-file], prints: "started {name}"}
+    # the first reviewer started never shows activity; every later one completes
+    status: {first: "{name}: no activity", later: "{name}: complete; verdict: TIMEOUT tenfold, should"}
 ```
 
 ## When They Run
 
 - **A round runs every regression scenario its diff touches, beside the change check and never
-  instead of it.** A scenario is selected when any of these holds:
-  - it pins a changed file;
-  - its `reading_list` lists a changed file;
-  - it belongs to a skill that reads a changed skill: one that declares the changed skill or cites it,
-    as `skill-pass`'s **Source Check** lists readers.
+  instead of it.** A scenario is selected when either holds:
+  - a `covers` entry names a changed file;
+  - it belongs to a skill that reads a changed skill: one that declares the changed skill or cites
+    it, as `skill-pass`'s **Source Check** lists readers.
 - **Each selected scenario gets one reader and runs with no control**, since it asks only whether
   the skill still does what its scenario says. The scenarios join the round's grader batches of up
   to eight. So a round adds one reader per selected scenario and no writer, and its count grows only
   with the scenarios the diff selects.
-- **Each scenario passes or fails as a whole**, and passes only when every criterion passes.
+- **Each scenario passes or fails as a whole**, and passes only when every check passes.
 - **A miss blocks like a failing edited run.** It is diagnosed at its owner, repaired and rerun
   within **Repair and rerun until verified** in `SKILL.md`. A miss caused by the guidance is
-  repaired in the guidance. A miss caused by the scenario is repaired as **Changing An Expectation**
+  repaired in the guidance. A miss caused by the scenario is repaired as **Changing A Scenario**
   says.
 
-## Changing An Expectation
+## Changing A Scenario
 
-- **Adding a scenario needs nothing more** than its `history` line.
-- **Every key but `history` changes by one of two routes, and by no other**, `expected` and `kind`
-  as much as `pins`, `reading_list`, `prompt`, `fixture`, `actions`, `subagents` and `definitions`.
-  Each change adds a `history` line on its route, so a later reader can tell an intended change of
-  behavior from a drifted test.
-  - **Behavior changed.** The change is made in the pull request whose guidance diff changes that
-    behavior, and its `history` line names that pull request in `pull_request` and gives the reason,
-    with no `cause`. Deleting a scenario file takes this route, in the pull request that removes the
-    behavior it holds.
-  - **Test cause.** A fresh writer's rewrite, whose `history` line carries `cause: test cause` and
-    claims no change of behavior.
-- **The test-cause route opens only on a grader's "ambiguous" return**, as **Criteria** says; a
-  "pass (note)" verdict, a pass carrying a reservation about the measure, counts as one.
-  - The writer, launched as `subagent-matrix` says, one for every criterion awaiting a rewrite at
-    that point, gets the criterion, the guidance it tests and the grader's two readings, and no
-    transcript text, so the new text measures the guidance rather than one run's answer.
-  - The rewritten criterion goes to an independent Diff gate, through `acceptance-gate`, before any
+- **Adding a scenario needs nothing more** than its `history` entry, on the behavior-change route
+  of the pull request that adds it.
+- **Every change to a scenario takes one of two routes, and no other**: any key but `history`,
+  `kind` and `expect` as much as `covers` and `prompt`, and any file under `fixture/`, its
+  `behavior.yaml` included. Each change adds a `history` entry on its route, so a later reader can
+  tell an intended change of behavior from a drifted test.
+  - **Behavior change.** The change is made in the pull request whose guidance diff changes that
+    behavior, and its entry names that pull request in `pull_request` and gives the reason.
+    Deleting a scenario folder takes this route, in the pull request that removes the behavior it
+    holds.
+  - **Test cause.** A fresh writer's rewrite, whose entry claims no change of behavior and carries
+    no `pull_request`.
+- **The test-cause route opens only on a grader's "ambiguous" return**, as **Checks** says; a
+  "pass (note)" verdict, a pass carrying a reservation about the check, counts as one.
+  - The writer, launched as `subagent-matrix` says, one for every check awaiting a rewrite at that
+    point, gets the check, the guidance it tests and the grader's two readings, and no transcript
+    text, so the new text measures the guidance rather than one run's answer.
+  - The rewritten check goes to an independent Diff gate, through `acceptance-gate`, before any
     rerun.
   - Every scenario the rewrite governs then reruns fresh, and its earlier results are kept for the
     record.
-- **A measure is never loosened so that a run passes.** A miss the guidance caused is repaired in the
-  guidance. A rewrite answers an ambiguity in what the measure says, never the verdict it gave.
+- **A check is never loosened so that a run passes.** A miss the guidance caused is repaired in the
+  guidance. A rewrite answers an ambiguity in what the check says, never the verdict it gave.
 
 ## Isolation
 
-- **A reader receives only the compiled prompt, the files on its reading list and the fixture built
-  from `fixture.spec`**, launched as the [reader dispatch reference](reader-dispatch.md) says. It
-  never receives the scenario file, its `actions`, `subagents`, `definitions`, `expected` or
-  `history`.
+- **A reader gets a real install of the branch under test, never a reading list.** Run the
+  repository's installer from a fresh copy of that branch into a fresh scratch home, the way a
+  session gets its skills, and point the reader's harness at that home as its only user-level root.
+  The reader then finds and loads skills itself, from the skill listing and descriptions. The
+  installer leaves each skill's top-level `tests/` folder out, so no scenario reaches the install.
+- **The reader's working directory is a copy of `fixture/`** with each tool built from
+  `behavior.yaml` and that file left out. The prompt is the only message it receives, launched as
+  the [reader dispatch reference](reader-dispatch.md) says. It never receives `scenario.yaml`.
 - **Every reader transcript is audited for a read of any `tests/` path**, whether by a file tool, a
   search or a shell command. A hit voids the run, and the run is rerun once the route that exposed
   the path is closed.
-- **Only the grader sees the scenario YAML**, as the run's frozen criteria.
-- **The writer of a scenario or a criterion is never the author of the guidance change under test**,
+- **Only the grader sees `scenario.yaml`**, as the run's frozen checks, with the fixture and the
+  run's records.
+- **The writer of a scenario or a check is never the author of the guidance change under test**,
   so the expectation is not shaped by the change's own reasoning.
 
-## Criteria
+## Checks
 
-- **A measure reads recorded artifacts**: the action log, the tool outputs, the resulting files, a
-  checksum, a sent message, the final reply. It never asks for the grader's impression of what the
-  reader meant.
-- **Every exclusion a measure applies goes in `definitions`** with the edge cases settled, such as
-  text that also occurs in the fixture, or fixed template labels, so two graders apply it the same
-  way.
-- **A grader that finds a measure admitting two readings returns "ambiguous" with both readings and
-  the verdict each gives**, and never chooses one. The criterion then takes the test-cause route
-  in **Changing An Expectation**.
+- **A check reads recorded artifacts**: the tool log, the tool outputs, the resulting files against
+  the fixture's copies, a sent message, the transcript's launches, the final reply. It never asks for
+  the grader's impression of what the reader meant.
+- **Every term and exclusion a check applies is settled inside that check**, such as text that also
+  occurs in the fixture, or fixed template labels, so two graders apply it the same way.
+- **A grader that finds a check admitting two readings returns "ambiguous" with both readings and
+  the verdict each gives**, and never chooses one. The check then takes the test-cause route in
+  **Changing A Scenario**.

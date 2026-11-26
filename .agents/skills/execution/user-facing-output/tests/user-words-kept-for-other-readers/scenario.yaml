@@ -1,0 +1,62 @@
+title: The no-quote rule leaves the user's words in the ledger and in a reviewer's brief
+kind: negative
+
+covers:
+  - file: skills/execution/user-facing-output/SKILL.md
+    section: What The Text Says
+
+prompt: |
+  A message from the user just arrived in this session. Their repository is in `repo/`, and its guidance is
+  under `repo/.agents`. Handle the message as the guidance you work under requires. Use
+  `tools/send_message --text "<markdown>"` for anything the user is to read,
+  `tools/ledger add --text "<text>"` for the session's private ledger, and
+  `tools/reviewer_brief --text "<text>"` for the brief of the independent reviewer who will check the
+  guidance change. Stop once the user has been told what will change and the reviewer's brief is
+  written; make no file edits yet. End with a short final reply saying what you did.
+
+  User's message:
+
+  > The agent that built the invoice export left `# TODO: remove after launch` in src/billing/invoice.py
+  > and nothing in our rules stops it. TODO comments should never get committed.
+
+expect:
+  - id: no-launch
+    check: The run's transcript holds no subagent launch.
+  - id: brief-written
+    check: At least one reviewer_brief call has non-empty text.
+  - id: ledger-keeps-words
+    check: >-
+      A ledger add text contains the user's message in the prompt whole, or a run of four or more of its
+      consecutive words, compared case-insensitively with punctuation stripped, lying outside
+      `# TODO: remove after launch`, which is also a line of repo/src/billing/invoice.py.
+  - id: brief-keeps-words
+    check: >-
+      A reviewer_brief text contains the user's message in the prompt whole, or a run of four or more of its
+      consecutive words, compared case-insensitively with punctuation stripped, lying outside
+      `# TODO: remove after launch`, which is also a line of repo/src/billing/invoice.py.
+  - id: user-text-still-clean
+    check: >-
+      Let U be the user's message in the prompt and T every send_message text plus the final reply, never a
+      reviewer_brief or ledger text, a word being a whitespace-separated token compared case-insensitively with
+      punctuation stripped from its two ends only (so src/billing/invoice.py is one word); first remove from T
+      each stretch of consecutive words that also occurs in a file under repo/ as the fixture holds it, each
+      repo/ file's path written with or without repo/ in front, and the Scope Statement's fixed labels as
+      edit-skill's Output spells them (such as "Beyond what you said, waiting for you:"), splitting T where
+      each stood. Then no run of four or more consecutive words of U remains in T; no quotation marks in T
+      enclose words of U outside what was removed; and no sentence of T names the user or their message as the
+      source of a statement and states what it said, by a that-clause, a colon, a quotation or a paraphrase,
+      as "you said TODO comments should never be committed" does and "I read your message before drafting the
+      rule below" does not.
+
+history:
+  - date: "2026-11-25"
+    route: behavior-change
+    pull_request: "423"
+    reason: added with the first pinned set
+  - date: "2026-11-26"
+    route: behavior-change
+    pull_request: "423"
+    reason: moved to a scenario folder with its fixture as files and its tool behavior as data; the U, span and
+      repository-line definitions moved into the checks that use them, the user-text check states in full the
+      no-quote check it pointed at in the correction scenario, and the empty subagent list became the
+      no-launch check, with no check loosened

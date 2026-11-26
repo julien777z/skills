@@ -1,0 +1,23 @@
+# The simulated message, ledger, question and reviewer-brief tools. The run's harness builds tools/<name> from this
+# file and leaves this file out of the reader's working directory.
+recording:
+  actions_log: actions.log    # "<seq>\t<tool> <subcommand>\t<arguments>", appended before each call runs
+  trace_log: trace.log        # "<seq>\tclock=->\t<output, newlines as \n>", appended after it
+tools:
+  send_message:
+    kind: message
+    requires: [--text]
+    prints: "shown to the user"
+  ledger:
+    kind: ledger
+    file: ledger.md
+    add: {requires: [--text], appends: "\n## entry {n}\n{text}\n", prints: "ledger entry {n} recorded"}
+    read: {prints: "the ledger file, or (empty)"}
+  ask_user:
+    kind: message
+    requires: [--question, --options]
+    prints: "pending: the user has not answered"
+  reviewer_brief:
+    kind: message
+    requires: [--text]
+    prints: "reviewer brief recorded"
