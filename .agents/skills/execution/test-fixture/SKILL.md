@@ -34,9 +34,14 @@ Apply `pre-production` to the scope of issues encountered while tracing a test s
    it. That target is the only contract for the durable regression test: construct, execute, and
    validate it there. A local host can diagnose a failure, but never defines the test's contract or
    validates a passing regression test.
-2. Apply the rubric's value gate before adding or changing a test. Name its observable
-   guarantee, credible regression, distinct coverage need, and any production seam it demands.
-   Search and read existing coverage of the same classification first; do not add a test or file when it already catches the regression. Check an existing test's independent contract and collect the rubric's evidence before deleting it.
+2. For a behavior change, trace the paths it can affect and identify conditions that could cause
+   distinct regressions, including relevant state transitions, mismatched evidence, fallback or
+   retry, and concurrent operations. Apply the rubric's value gate before adding or changing a
+   test, including each candidate from that trace. Read existing coverage of the same classification
+   and add or extend a case for each uncovered regression the gate admits. Exercise interacting
+   components together when their interaction determines the outcome, and assert the caller-visible
+   result and any persisted effect the contract promises.
+   Before deleting a test, check its independent contract and collect the rubric's evidence.
 3. For an application change, finish and validate the source implementation across every affected
    component and repository before writing or strengthening tests or test support. If an applicable
    authorized manual path exists, verify the complete behavior there first; fix and retry failures
