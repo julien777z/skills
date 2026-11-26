@@ -26,8 +26,9 @@ Fix every defect you meet where `pre-production`'s **Scope Follows The Defect, N
 places it. Hand up work outside your assignment so the coordinator can apply that placement rule. Leave alone
 only cleanup past the repository's incidental size budget and a choice that is the user's, and
 report each.
-Push: commit each coherent step and push it once the Checks covering it pass, at least every five
-minutes of work. Fetch and rebase unpushed commits onto the remote branch before each push; never
+Push: commit each coherent step and push it once the fast Checks covering it pass, at least every
+five minutes of work. Run test suites only when your assignment completes the task's changes, once,
+then rerun only the suites covering each fix. Fetch and rebase unpushed commits onto the remote branch before each push; never
 amend or rebase a pushed commit. End with nothing uncommitted and nothing unpushed.
 A review, gate or further worker your step needs and you cannot launch is handed up to the agent
 that briefed you, never done in process.

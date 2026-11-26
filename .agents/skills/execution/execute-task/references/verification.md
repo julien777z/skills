@@ -12,14 +12,17 @@ writing, keeping or removing, and how suites are laid out, configured and budget
   including setup and every selected suite or tool. Use recent comparable runs to estimate it;
   an unknown duration or a total of one minute or more waits. Splitting a batch into individually
   quick commands does not qualify.
-- Finish a feature, including its callers and necessary tests, before running its relevant tests,
-  build, applicable browser verification and review once. Select browser verification under
+- **Test suites run once, when the task's changes are complete**, never before a push, after a plan
+  step or worker task, or per feature; a failure that run finds reruns only the suites covering its
+  fix. Finish a feature, including its callers and necessary tests, before running its build,
+  applicable browser verification and review once. Select browser verification under
   **Environments** before planning its prerequisites. Where it applies to a UI feature, inspect its
   rendered screen and comparable existing interactions at this checkpoint, and fix design or copy
   defects before moving to unrelated work or the final combined checks. Take browser captures only of
   a change that alters what a page shows; a change with no visible effect, a backend or test-only
   repair included, gets no walkthrough capture unless the user asks for one. A task with several features
-  may verify each completed feature; an edit, file, commit, push, handoff or plan step is not a feature boundary.
+  may verify each completed feature that way, its test suites excepted; an edit, file, commit, push,
+  handoff or plan step is not a feature boundary.
 - Classify validation failures under `pre-production`'s **Encountered Issues** before expanding
   repair work. Fix a completed-feature batch's relevant failures together, then repeat only the
   checks the fixes affect. While repairing a failure or a review or gate finding, run only the tests
@@ -56,8 +59,9 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
   holds no intermediate push and stays required afterward: run the relevant batch once the feature
   is complete, then the required final checks before delivery, keeping evidence the change has not
   invalidated rather than restarting the batch for each push.
-- **Which jobs run here.** A job that needs a hosted service or a running stack, or is too slow to
-  run before every push, joins the slow verification and is named in the report. Room on this
+- **Which jobs run here.** A test suite, a job that needs a hosted service or a running stack, or
+  one too slow to run before every push joins the slow verification at the end and is named in
+  the report. Room on this
   machine never leaves a job to its hosted run: a shortage of disk, memory or ports is recovered as
   `pre-production`'s **Local Stacks** says, and the job runs here. **Suites And Failures**'
   cannot-run bullet decides when a job may be left to its hosted run. A non-essential check left
