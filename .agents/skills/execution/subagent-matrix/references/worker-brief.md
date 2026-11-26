@@ -12,7 +12,8 @@ Files: <exact paths to change; they bound the scope, not the design>
 Repo: <abs path> Worktree: <abs path> Branch: <the pull request's branch> Head: <sha>
 Rules: <rule files whose patterns match those paths; the repository's `.agents/tools/` folder>
 Reuse: <one receipt per addition the plan names: what it does · searched · found · reuse | extend | new: why>
-Checks: <the verification batch: each command with its scope, and the point at which it runs>
+Push checks: <each fast check command with its scope; never a test suite>
+Suites: <each test suite command with its scope, run once at the end | none: a later assignment ends the task>
 Result: <abs path the complete report is written to>
 Findings (fix only): <each finding verbatim with its id, severity and the reviewer's remedy · remedies
 already tried and why each failed · round <n> of 3>
@@ -26,9 +27,10 @@ Fix every defect you meet where `pre-production`'s **Scope Follows The Defect, N
 places it. Hand up work outside your assignment so the coordinator can apply that placement rule. Leave alone
 only cleanup past the repository's incidental size budget and a choice that is the user's, and
 report each.
-Push: commit each coherent step and push it once the Checks covering it pass, at least every five
-minutes of work. Fetch and rebase unpushed commits onto the remote branch before each push; never
-amend or rebase a pushed commit. End with nothing uncommitted and nothing unpushed.
+Push: commit each coherent step and push it once its Push checks pass, at least every five minutes
+of work. Run the Suites once, when your assignment's changes are complete, then rerun only the
+suites covering each fix. Fetch and rebase unpushed commits onto the remote branch before each
+push; never amend or rebase a pushed commit. End with nothing uncommitted and nothing unpushed.
 A review, gate or further worker your step needs and you cannot launch is handed up to the agent
 that briefed you, never done in process.
 
@@ -36,7 +38,7 @@ Report, written to Result and returned:
 BRANCH: <branch> HEAD: <sha>
 CHANGED: <file: what changed, one line each>
 REUSE: <one receipt per addition made, planned or not: what it does · searched · found · decision>
-CHECKS: <command: result, one line each>
+CHECKS: <command: result, one line each; a suite not run: owed at the end>
 FINDINGS (fix only): <id: fixed at file:line | disagree: evidence>
 LEFT ALONE: <item: why, or none>
 OPEN: <question or hand-up, or none>
