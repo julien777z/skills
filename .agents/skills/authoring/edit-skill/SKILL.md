@@ -145,7 +145,7 @@ worker start subagents of its own.
 small it looks.** Each route below is the gate set its batch passes on the head that merges.
 
 - **Short route.** Every entry changes one requirement in one file, its Scope Statement records
-  `flow not affected` and lists nothing beyond what the user said, and the batch adds or removes no
+  `flow not affected` and lists nothing beyond what the user asked, and the batch adds or removes no
   skill, rule, dependency or script. The editing agent runs the source check, `skill-pass`'s pass
   and the `code-simplify` pass itself, in process; one independent `acceptance-gate` reads the
   batch's delta, briefed as **Brief `review-pass`'s final acceptance** says with the Scope
@@ -274,7 +274,7 @@ small it looks.** Each route below is the gate set its batch passes on the head 
      plainly meant, no narrower and no broader. It costs no subagent and holds nothing.
      - What the statement lists inside that class is written at once, with no question; product
        choices still follow `pre-production`'s **Product Choices**.
-     - **Beyond what the user said is a policy change**: a requirement neither the request nor its
+     - **Beyond what the user asked is a policy change**: a requirement neither the request nor its
        failure needs, such as a step, a routing rule or a hold the request never named; any
        exception to, or change of, standing guidance the user did not ask to change, however
        necessary the repair makes it look; and any other change they would not expect from their
@@ -286,7 +286,7 @@ small it looks.** Each route below is the gate set its batch passes on the head 
        through the skill the listing describes as mapping guidance flows. This holds for every
        guidance change: a correction, a gap the agent noticed, a rule or global-rules edit, a
        skill edit. It is shown, and the edit proceeds without waiting for an answer, unless the
-       statement lists something beyond what the user said or the invoking workflow holds it.
+       statement lists something beyond what the user asked or the invoking workflow holds it.
    - **When no existing file of the inferred or selected type governs the subject, create the new
      owner under Guidance Changes Proceed Automatically.** Record its recommended name, scope, and
      behavior in the correction evidence; do not ask for approval. An existing file of that type
@@ -451,12 +451,12 @@ The Scope Statement, shown in the message that acknowledges a correction, one pe
 ```markdown
 Guidance change — flow affected | flow not affected
 
-- You said: "<the user's words, each example value named by its kind in brackets>" | Noticed: <the gap>
+- Noticed: <the gap> (only for a gap the agent noticed itself)
 - From now on: when <situation>, agents <do this> instead of <that>.
 - Also changes, same class: <skill or rule> — <situation>: <new behavior> | None
 - Stays as it is: <the nearest case outside the class, and what agents still do there>
 - Inherited without an edit: <skill, rule or flow that reads the changed text> — <what changes for it | no change> | None
-- Beyond what you said, waiting for you: <change, the standing text it would alter, why it seems needed> | None
+- Beyond what you asked, waiting for you: <change, the standing text it would alter, why it seems needed> | None
 ```
 
 The delivery report, filled in; keep every heading, write `None` under one with nothing to list,
