@@ -440,10 +440,14 @@ the issue should be ignored.
   shape would serve better, on a contract the work does not otherwise alter, is proposed to the user
   first, as the code-conventions reference's **A better shape is proposed, never swept in** says.
 - **An owned contract stays owned across repositories.** A consumer in a sibling repository the
-  user owns makes the break multi-repository work, never somebody else's decision; only a consumer
-  outside the user's control freezes a shape. **Scope Follows The Defect, Not The Request** holds for a break as for
-  a bug: the new shape reaches every site answering the same question, never only the one the work
-  started from.
+  user owns makes the break multi-repository work, never somebody else's decision. **Scope Follows
+  The Defect, Not The Request** holds for a break as for a bug: the new shape reaches every site
+  answering the same question, never only the one the work started from.
+  - **A tool, action or library the user owns has the user's repositories as its only consumers**,
+    published or not, so a change to it lands for them directly: no opt-in setting, compatibility
+    path or question is added to protect outside users nobody has named.
+  - Only a consumer outside the user's control freezes a shape: a third-party project, and one the
+    user says others consume, keep the care their consumers need.
 - Do not weaken a compatibility gate to hide an intentional break. Report the exact failure and the
   contract change it detected so a reviewer can distinguish intended from accidental breakage.
 - For disposable development records, follow the repository's stated policy: it decides which
