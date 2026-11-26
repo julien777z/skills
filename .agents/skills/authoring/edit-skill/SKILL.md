@@ -120,7 +120,8 @@ small it looks.** Each route below is the gate set its batch passes on the head 
    prose duplication**'s checks for its simplification pass. Once that simplification pass is
    done, start **Run one `test-skill` round** on the pushed head, beside review round 1 and never
    behind it: its scenario writing, environment and readers need the failure class and the diff,
-   not the accepted head.
+   not the accepted head. A batch on a pull request that a workflow holding verification to its
+   own end is still fixing, such as a doctor run, starts it only at that end.
 4. **Conclude the skill test** on every head `review-pass` accepted: `test-skill` carries each
    result whose inputs that head left unchanged and reruns the rest. It takes every entry's
    reproduction scenario as an input, entries that share a failure class grouped into one

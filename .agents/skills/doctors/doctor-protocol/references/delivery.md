@@ -155,6 +155,13 @@ their reviewers and gate briefed as `edit-skill`'s **Guidance Delivery** asks of
 readers. Hand that route the accepted head as already reviewed: it adds the source check and one
 skill-test round for the guidance the fixes changed, and starts no second review or acceptance.
 
+**Behavioral verification runs once, at the run's end.** The skill-test round, the regression
+scenarios it selects, a walkthrough and any end-to-end suite start only once every entry has landed
+and **Accept The Complete Diff** has passed. None starts while a finding is open, and a guidance
+correction recorded during the run joins that one round rather than starting its own. A check
+that guards one edit, such as the source check or a worker's own checks, runs where its step puts
+it.
+
 ## Report
 
 The final report names:

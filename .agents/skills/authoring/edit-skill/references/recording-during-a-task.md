@@ -42,8 +42,10 @@ recording or delivering a batch.
   text it already read, so each running worker this session started is told.
 - **Delivery starts at the next milestone of the work in hand and Completion delivers whatever is left**, never later: a
   finished plan step or worker task whose checks pass, a round of fixes the user asked for, or a
-  publish. It then runs as **Guidance Delivery** says, beside the ongoing work and without the user
-  asking, however long the surrounding task goes on; a session whose requests keep arriving never
+  publish. For a batch on a pull request a doctor run is driving, the milestone is that run's end,
+  where its review, gates and skill-test round join the run's own. It then runs as **Guidance
+  Delivery** says, beside the ongoing work and without the user asking, however long the
+  surrounding task goes on; a session whose requests keep arriving never
   holds a recorded correction for the task's end. Until that milestone nothing else of delivery
   runs: no review, gate, skill-test round, merge or worker, except the checks a batch in flight
   reruns for an edit that joined it, as `session-ledger`'s **Guidance Batches** says. A standing
