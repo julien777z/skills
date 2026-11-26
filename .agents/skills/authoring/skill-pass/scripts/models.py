@@ -19,6 +19,21 @@ class SyncOutcome(StrEnum):
     UNAVAILABLE = "unavailable"
 
 
+class ScenarioKind(StrEnum):
+    """The path a regression scenario holds in place."""
+
+    HAPPY = "happy"
+    EDGE = "edge"
+    NEGATIVE = "negative"
+
+
+class ScenarioRoute(StrEnum):
+    """The route a change to a regression scenario takes."""
+
+    BEHAVIOR_CHANGE = "behavior-change"
+    TEST_CAUSE = "test-cause"
+
+
 class ActionReference(TypedDict):
     """The sync action a workflow pins."""
 

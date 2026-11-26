@@ -144,6 +144,10 @@ REMOTE_HEAD_PATTERN: Final[re.Pattern[str]] = re.compile(
     r"^ref: refs/heads/(\S+)\tHEAD$", re.MULTILINE
 )
 
+YAML_REQUIREMENT: Final[str] = "PyYAML==6.0.3"
+YAML_ENVIRONMENT_DIRNAME: Final[str] = "validate-sources-yaml"
+SCENARIO_CHECK_SCRIPT: Final[Path] = Path(__file__).with_name("scenarios.py")
+
 EXIT_CODES: Final[dict[SyncOutcome, int]] = {
     SyncOutcome.VALID: 0,
     SyncOutcome.INVALID: 1,
@@ -199,54 +203,47 @@ def tool_python(install_dir: Path) -> Path:
     return install_dir / ("Scripts" if os.name == "nt" else "bin") / "python"
 
 
-def install_tool(action: ActionReference, commit: str) -> Path:
-    """Install the sync tool at one commit and return its interpreter."""
+def cache_dir() -> Path:
+    """Return the user's cache directory, where the script's environments are installed."""
 
-    install_dir = (
-        Path(os.environ.get("XDG_CACHE_HOME") or Path.home() / ".cache") / CACHE_DIRNAME / commit
-    )
+    return Path(os.environ.get("XDG_CACHE_HOME") or Path.home() / ".cache")
+
+
+def install_environment(install_dir: Path, requirement: str) -> Path:
+    """Install one pinned requirement into its own environment and return its interpreter."""
+
     marker = install_dir / INSTALL_MARKER_FILENAME
 
     if marker.exists():
-        logger.info(
-            "Sync tool %s@%s is installed at %s",
-            action["repository"],
-            commit[:12],
-            install_dir,
-        )
+        logger.info("%s is installed at %s", requirement, install_dir)
 
         return tool_python(install_dir)
 
     if install_dir.exists():
         shutil.rmtree(install_dir)
 
-    logger.info(
-        "Installing sync tool %s@%s into %s",
-        action["repository"],
-        commit[:12],
-        install_dir,
-    )
+    logger.info("Installing %s into %s", requirement, install_dir)
 
     # A copied interpreter from a standalone Python build cannot find its standard library, so the
     # environment links to the interpreter, as `python -m venv` does outside Windows.
     venv.EnvBuilder(with_pip=True, symlinks=os.name != "nt").create(install_dir)
 
-    url = REPOSITORY_URL_TEMPLATE.format(repository=action["repository"])
     subprocess.run(
-        [
-            str(tool_python(install_dir)),
-            "-m",
-            "pip",
-            "install",
-            "--quiet",
-            f"git+{url}@{commit}",
-        ],
+        [str(tool_python(install_dir)), "-m", "pip", "install", "--quiet", requirement],
         check=True,
     )
 
     marker.touch()
 
     return tool_python(install_dir)
+
+
+def install_tool(action: ActionReference, commit: str) -> Path:
+    """Install the sync tool at one commit and return its interpreter."""
+
+    url = REPOSITORY_URL_TEMPLATE.format(repository=action["repository"])
+
+    return install_environment(cache_dir() / CACHE_DIRNAME / commit, f"git+{url}@{commit}")
 
 
 def run_sync_tool(python: Path, root: Path, agents_dirname: str, command: list[str]) -> SyncOutcome:
@@ -606,6 +603,12 @@ def section_names(prose: str) -> tuple[set[str], set[str]]:
     return headings, leads
 
 
+def guidance_prose(path: Path) -> str:
+    """Return a guidance file's text with its fenced code blocks blanked out."""
+
+    return blank_matches(path.read_text(encoding="utf-8"), FENCED_BLOCK_PATTERN)
+
+
 def owned_guidance_files(agents_dir: Path) -> list[Path]:
     """Return the canonical Markdown the repository owns, without mirrors or upstream packages."""
 
@@ -634,9 +637,7 @@ def find_citation_problems(agents_dir: Path) -> list[str]:
 
     def prose_of(path: Path) -> str:
         if path not in prose_by_path:
-            prose_by_path[path] = blank_matches(
-                path.read_text(encoding="utf-8"), FENCED_BLOCK_PATTERN
-            )
+            prose_by_path[path] = guidance_prose(path)
 
         return prose_by_path[path]
 
@@ -742,6 +743,21 @@ def find_citation_problems(agents_dir: Path) -> list[str]:
                 f"{label}:{line_number(prose, match.start())}: rule file"
                 f" {rules_dir.relative_to(root).as_posix()}/{filename} does not exist"
             )
+
+    return problems
+
+
+def find_scenario_problems(python: Path, agents_dir: Path) -> list[str]:
+    """Report regression scenario files that break the scenario format, using a YAML interpreter."""
+
+    run = subprocess.run(
+        [str(python), str(SCENARIO_CHECK_SCRIPT), str(agents_dir)],
+        check=True,
+        stdout=subprocess.PIPE,
+        text=True,
+    )
+
+    problems: list[str] = json.loads(run.stdout)
 
     return problems
 
@@ -1034,6 +1050,17 @@ def run_command(arguments: argparse.Namespace) -> SyncOutcome:
         logger.error("Citations: %s", problem)
 
     problems += citation_problems
+
+    yaml_python = install_environment(
+        cache_dir() / YAML_ENVIRONMENT_DIRNAME / YAML_REQUIREMENT, YAML_REQUIREMENT
+    )
+
+    scenario_problems = find_scenario_problems(yaml_python, root / agents_dirname)
+
+    for problem in scenario_problems:
+        logger.error("Scenarios: %s", problem)
+
+    problems += scenario_problems
 
     generated_problems = find_generated_edits(root, agents_dirname)
 

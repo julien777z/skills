@@ -40,6 +40,12 @@ reader here when a round selects them, and when one is written or changed.
   exists under `.agents/` and a section that file holds. Every date is quoted, so safe loading reads
   it as a string. A value holding a colon followed by a space, or a ` #`, goes in a block scalar or
   quotes.
+- **The source check enforces these rules.** `skill-pass`'s **Source Check** refuses a
+  `scenario.yaml` that breaks them or the history keys **Format** sets: a file that does not parse, a key missing, extra or out of order, a
+  `kind` outside the three, a `covers` file or heading that does not exist, an `expect` entry
+  without an `id` and a `check`, and a `history` entry whose date is not a string, whose route is
+  neither route, or whose keys do not match its route. The first entry is the one that adds the
+  scenario, on the behavior-change route with no `file` or `section`.
 
 ## Format
 
