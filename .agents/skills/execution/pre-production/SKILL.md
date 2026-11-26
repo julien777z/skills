@@ -314,7 +314,7 @@ the issue should be ignored.
   so the user decides where it applies. The user's word on how something looks under one condition,
   such as at one width, decides nothing about when it appears under another.
 - **Check the visible behavior in loading, failure, recovery, and success before choosing a repair.**
-  Showing a second control for an existing action or substituting different content, duration, or
+  Adding a second control for an existing action or replacing the intended content, duration, or
   behavior in any of those states is a product choice even when the change is called a preload,
   fallback, or review fix. Ask before building an option the user has not approved. Approval to
   repair a defect or merge the work does not settle a product choice the user was never shown.
