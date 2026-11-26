@@ -69,7 +69,7 @@ pages, in order:
 - **Loops** (`list`). One `tree`: each workflow, then its rounds or groups, then the agents or
   assignments inside them, each broken down as **What happened** says. Every entry's `figure` is its
   time; its outcome is its `status` pill in the matching tone, such as Done, Running, Approved,
-  Changes or Flag; the model a reviewer ran on is its `tag`.
+  Changes or Flag; the exact model and version a reviewer ran on, such as Opus 5.5, is its `tag`.
 - **Timeline** (`calendar`). One `tree` of the session's phases in order, each labeled by the work
   done in it with its time as `figure`. Its children are the agents, assignments and reviewers that
   worked in that phase, in the order they started, each with its time in the phase, its `status` and

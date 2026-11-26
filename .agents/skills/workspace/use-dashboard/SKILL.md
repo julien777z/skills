@@ -218,10 +218,14 @@ Dashboards look alike because they are built alike:
   group is headed with the area it covers, never with the task's name.
 - **Labels and headings are written in sentence case and shown as written.** The dashboard's
   `title` and the preview `topic` `Synthetic Preview` are names, in title case.
-- **Tone means the same everywhere.** `good` is fine, matches or finished, `warning` needs the
-  reader's look or action, `critical` is wrong or blocking, `accent` is in progress or
-  informational, and `done`, a purple, is finished work that must read apart from what is merely
-  fine, such as a merged pull request beside open ones. Leave it out for neutral; never tone an item only to decorate it.
+- **Tone means the same everywhere.** `good`, green, is fine, matches or finished: Done,
+  Approved, Passed. `warning` needs the reader's look or action, `critical` is wrong or blocking,
+  and `accent` is in progress or informational, such as Running. `done`, a purple, is only a merged
+  pull request's color beside open ones, never a status reading Done or finished. A status takes
+  the tone its meaning carries on every dashboard, never a color picked for one page. Leave it out
+  for neutral; never tone an item only to decorate it.
+- **A model is named exactly.** A label, tag or figure naming the model an agent ran on gives its
+  name and version as the session's records show it, such as Opus 5.5, never the family alone.
 - **Blue text is a link.** A reader clicks blue text, so only links take it, and a tone colors a
   dot, border, line or bar, never text. A figure, number or label meant to stand out sits in a
   neutral badge rather than taking a color or the weight its neighboring names already use.
@@ -289,6 +293,15 @@ data exists, or a change to the app — runs on one made-up scenario, never on r
    published page or browser tab. A full page also writes `<page>.update.js` beside itself; an
    open local copy checks it every few seconds and shows a new render's data in place, on the same
    page and scroll position, with no reload; only a render from a changed app reloads it.
+4. **Look the page over before it reaches the user.** The agent that delivers the dashboard,
+   never a subagent, views the rendered page itself, every page and the entries and dialogs that
+   carry its content, and judges it as the user will: does each page make sense, is every color,
+   pill and label the standard one for what it marks, are names exact and readable, and does
+   anything look wrong, repeated, raw or confusing, such as a command line or tool name as a label,
+   a model named in both a label and its tag, or a figure that contradicts another. These rules list
+   what is already known; the look-over uses judgment for everything else. Fix what it finds in the
+   spec or in the caller's data, re-render, and look again; only a page with nothing left to fix is
+   delivered.
 
 Change a delivered dashboard only by re-rendering its whole spec, never by editing the page's
 HTML, which skips the renderer's validation. Everything the reader can click, a table row or tree
