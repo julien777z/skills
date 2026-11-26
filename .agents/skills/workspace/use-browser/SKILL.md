@@ -1,12 +1,13 @@
 ---
 name: use-browser
-description: Show the user a page the agent made, such as a dashboard or report, in their browser, reloading its tab in the task group; or operate the user's browser to open websites, fill forms, click, take screenshots, extract data, test web apps, QA and bug hunts, sign in, or automate Electron apps and Slack. Use whenever a task opens, shows, reloads or controls a browser page, before selecting a browser or binding a task tab, and when a browser or app surface reports an inventory or availability error.
+description: Show the user a page the agent made, such as a dashboard or report, in their browser, reloading its tab in the task group; or operate a browser — by default a headless one the agent runs itself, and the harness's or an MCP browser only when the user asks for it or gives a specific URL to inspect or debug — to open websites, fill forms, click, take screenshots, extract data, test web apps, QA and bug hunts, sign in, or automate Electron apps and Slack. Use whenever a task opens, shows, reloads or controls a browser page, before selecting a browser or binding a task tab, and when a browser or app surface reports an inventory or availability error.
 short_description: 'Show a local page in the user''s browser, or operate a browser.'
+allowed-tools: Bash(agent-browser:*), Bash(npx agent-browser:*)
 ---
 
 # Use Browser
 
-Show a page or operate the user's existing browser through the harness.
+Show a page in the user's browser, or operate a browser: by default a headless one the agent runs.
 
 ## Showing A Local Page
 
@@ -23,18 +24,27 @@ cannot load the file, use a local URL served to that browser or report the previ
 For the agent's own work in a browser: visiting sites, filling forms, clicking, screenshots,
 extracting data, testing and QA, signing in, Electron desktop apps and Slack.
 
-- Use the harness's browser control to connect to the user's existing browser and the relevant
-  profile. This applies to public pages, local previews, debugging, and verification alike.
-- Do not launch or attach to a separate Chrome test or debug browser, a headless session, or a
-  temporary browser profile. Apply this to browser tools, commands, helper scripts and delegated work.
-- If the harness cannot connect to the required browser or profile, report the blocked browser
-  step and continue any work that can be verified independently.
+- **The agent's own headless browser is the default**, for public pages, local stacks, walkthroughs,
+  screenshots, QA, sign-in to a test account and every other browser step, by the agent and by
+  every worker, script or skill it runs. Drive it with the `agent-browser` CLI, which runs Chrome or
+  Chromium headless over the DevTools protocol with accessibility-tree snapshots and `@eN` element
+  references. Install it with `npm i -g agent-browser && agent-browser install`, and before its
+  first command load its guide from the CLI, which matches the installed version:
+  `agent-browser skills get core`, adding `--full` for the command reference.
+- **The harness's browser control or an MCP browser is used only when the user asks for it, or
+  gives a specific URL to inspect or debug in their own browser.** Then connect to their existing
+  browser and the relevant profile, as **Selecting And Binding A Tab** says.
+- If the headless browser cannot run, report the blocked browser step with its error and continue
+  any work that can be verified independently. Never move to the user's browser or a harness
+  preview, or ask the user to show or keep a window open, unless they asked for that route.
 
 ## Selecting And Binding A Tab
 
 Bind a tab in the selected browser before reading, navigating or interacting.
 
-- Inventory browser metadata and select the user's existing browser and the relevant profile. An
+- In the agent's headless browser, run one named session per task (`--session <name>`), record
+  its name, and keep every action of the task in it.
+- In the user's browser, inventory browser metadata and select the user's existing browser and the relevant profile. An
   open user tab can identify the URL and profile, but leave that tab and the user's groups alone.
 - Create a dedicated tab group for the task through the browser harness. Open task-owned tabs in
   that group, in the background when supported. Keep navigation, debugging, screenshots, sign-in,
