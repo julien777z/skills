@@ -1,6 +1,6 @@
 ---
 name: test-skill
-description: "Validate behavior-changing skill, rule and agent edits before merge by having agents do the work the edited guidance governs, against risk-based original controls, repairing guidance or defective tests until the required behavior is verified. Use when a guidance edit changes what a reader does, or when asked to test or exercise a skill."
+description: "Validate behavior-changing skill, rule and agent edits before merge by having agents do the work the edited guidance governs, against risk-based original controls, and run the pinned regression scenarios each skill keeps in its tests folder, repairing guidance or defective tests until the required behavior is verified. Use when a guidance edit changes what a reader does, when asked to test or exercise a skill, or when writing or changing a regression scenario."
 short_description: 'Exercise guidance safely, compare behavior, and repair failing tests.'
 ---
 
@@ -13,12 +13,20 @@ confuse those conclusions.
 
 ## Dependencies
 - `subagent-matrix`
+- `skill-pass`
 - `session-ledger`
 - `council`
 - `acceptance-gate`
 
 ## When It Runs
 
+- **A round runs two kinds of test.** A change check asks whether the new change holds up, through
+  the scenarios **Workflow** writes for it. Regression scenarios ask whether a skill regresses: the
+  pinned YAML scenarios in each skill's `tests/` folder that the diff touches, run beside the change
+  check and never in place of it. The [regression scenarios reference](references/regression-scenarios.md)
+  holds their format, which ones a diff selects, who may change an expectation, and their isolation
+  and criteria; read it when a round selects one, or when one is written or changed. The bullets below
+  set when a round runs and how a change check is sized.
 - **Run before merge for every behavior-changing skill, rule, or agent edit**, however it was
   made. A rule is reader guidance, so its source type never
   exempts it. An edit that changes what the skill returns the user runs against the concrete example
@@ -43,8 +51,9 @@ confuse those conclusions.
 - **Each scenario gets its own reader for each variant it runs**, so its context holds that one
   task: one edited reader per scenario step 1 writes, plus its original control where the next
   bullet requires one. Add readers only for a distinct named risk. A round starts one scenario
-  writer, one reader per scenario, a second per scenario that runs a control, and one grader per
-  eight scenarios; the count grows only with the failure classes the batch holds.
+  writer, one reader per scenario, a second per scenario that runs a control, one reader per
+  regression scenario the diff selects, and one grader per eight scenarios of either kind; the count
+  grows only with the failure classes the batch holds and the regression scenarios it selects.
 - **An original control runs only where the comparison has nothing else to stand on.** It is
   required for a new skill, as the last bullet here says; where two instructions conflict and the
   comparison decides between them; and for an edit with no observed miss under the original text
@@ -177,7 +186,8 @@ confuse those conclusions.
    selection**, holding only the dependent action while repair or resolution remains active.
 8. **Report the verified result.** Send the tables and one evidence file in the **Output** shape.
    Describe the behavior verified in the pull request; claim improved behavior only where the
-   comparison demonstrates it. Scenario packages and raw evidence remain private, never committed.
+   comparison demonstrates it. A change check's scenario packages and all raw evidence remain
+   private, never committed; regression scenarios are committed in their skills' `tests/` folders.
 
 ## Reviewer selection
 
