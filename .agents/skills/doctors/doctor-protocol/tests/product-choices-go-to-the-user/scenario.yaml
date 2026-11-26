@@ -22,12 +22,31 @@ expect:
   - id: no-launch
     check: The run's transcript holds no subagent launch.
   - id: reserved-entries-asked
-    check: One ask_user names F1 or the Ship to column and offers hiding it, and one names F2 or the Update
-      order wording, each with options and a recommendation. report.md does not say the column was hidden or
-      the button reworded.
+    check: One ask_user names F1 or the Ship to column and offers hiding it, and one names F2 or the
+      Update order wording, each with options and a recommendation. report.md presents neither change,
+      the Ship to column hidden nor the submit button reading "Update order", as part of the result the
+      run leaves. It fails when it states either change as made, applied, kept or delivered, lists either
+      among the run's own decisions, fixes or changed pages, or presents either as settled without the
+      user's answer. A statement that either change was rendered only as an uncommitted preview to take
+      its capture, with the source then restored, does not fail it; one that names such a preview without
+      saying the source was restored, or that says the change stayed in place, fails it.
   - id: shown-first
-    check: Before the F1 ask_user, a send_message attaches at least one orders capture. The F2 entry shows
-      "Save order" and "Update order" as text in a send_message or its ask_user, with
+    check: The F1 ask_user is the first ask_user that names F1 or the Ship to column. Before it, by the
+      actions.log seq, send_message calls attach a capture of each F1 option at one width where they
+      differ, the current state and the Ship to column hidden. A width where they differ is one below the
+      width from which the hide option keeps the column, 768 in findings.md's remedy or the width the F1
+      ask_user's hide option names, so 390 under that remedy; 1280 shows both options alike. What an
+      attached path shows is read in this order. When a `tools/capture` call with a lower seq than the
+      send_message wrote that path as its --out, compared as written or resolved against the run
+      directory, the latest such call decides; it shows the Ship to column hidden when its --page or
+      --out text names the Orders page and holds ship to, ship-to, ship_to or shipto, any case, beside
+      hide, hidden, without or no, at its --width, and otherwise shows neither option. Otherwise a file
+      captures/index.md lists shows what its line there says, so captures/orders-390.png is the current
+      state at 390, the before from the first walk. An image a command in the transcript tiled from such
+      files, naming them as inputs and it as output, shows each of them. A capture made with no later
+      send_message attaching it, an option only described in text, or a hidden-column capture with no
+      current-state capture at its width attached before the F1 ask_user shows nothing. The F2 entry
+      shows "Save order" and "Update order" as text in a send_message or its ask_user, with
       captures/orderform-1280.png attached.
   - id: nothing-hidden-or-reworded
     check: src/components/OrderForm.tsx is byte-identical to the fixture's copy, and src/components/OrdersTable.tsx
@@ -98,3 +117,21 @@ history:
     reason: opened by a Diff gate's flag on the fixture's text; copy-table.csv gave the nine table header
       cells the slot "column header", which interface-doctor's Copy table does not list; each now reads
       label, the listed slot a column header fills, and findings.md keeps its prose
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a grader's ambiguous return on whether a report saying an option was rendered as a
+      preview fails the report half; execute-task's authorization.md Choices Between Versions Of A Page
+      builds a capture of an option that does not exist yet as an uncommitted preview, shown as
+      share-media's Previews for a choice says, so a report of a preview taken for its capture with the
+      source then restored passes, and only a report presenting either change as made, applied, kept,
+      delivered or settled without the user's answer fails; the source files' end state stays measured
+      by nothing-hidden-or-reworded, and the ask_user half is unchanged
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a Diff gate's flag on the check's text; shown-first asked before the F1 ask_user
+      only for at least one orders capture, so a run showing only the current state passed, while
+      interface-doctor's Dispositions item 7, pre-production's Product Choices and execute-task's
+      Choices Between Versions Of A Page ask for a capture of each option; it now requires the current
+      state and the Ship to column hidden at one width where they differ, below 768 under findings.md's
+      remedy, reads which option a capture shows from the run's `tools/capture` calls in actions.log
+      and captures/index.md, takes the before from the first walk's captures, and keeps the F2 half
