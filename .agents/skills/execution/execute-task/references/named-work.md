@@ -101,24 +101,27 @@ nor touches the files or resources the awaited work is changing.
   current unavailability, a quiet interval or a bounded wait yielding without a result is not
   failure, and for a worker the session started the check below reads that quiet interval.
 - **A running worker is never assumed healthy until it reports.** Each worker the session started
-  is checked on a schedule that backs off from its launch: 10 seconds, 30 seconds and 5 minutes
-  after it starts, then every 30 minutes while it runs, since most stalls happen right at the
-  start. A short background timer or the host's scheduler, such as a recurring scheduled prompt,
-  sets it, and each check reads the worker's latest activity from whatever the host exposes for
-  it: its thread items, the files it writes, the processes or background tasks it runs. At an
-  early check, one with no activity at all since launch, or whose last step failed and nothing
-  followed, is stalled; at a later check, one with no activity for 30 minutes, counted from its
-  last activity, and not before, is, unless a long command of its own is in progress; waiting on
-  anything else does not excuse it. A worker
-  whose host shows nothing until it finishes is judged by those other signals before it is
-  cancelled, never by the empty thread alone. A stalled worker is cancelled and relaunched,
-  through `subagent-matrix`'s **Dispatch**, with its brief plus what stalled it, such as a failed
-  command it never recovered from, input it waits on that nobody sees, or a provider error it
-  never reported; one that finished without its completion arriving has its result collected. A
-  worker's checks end when it finishes and the scheduled check is removed once no worker runs.
-  The check reads workers only: a pull request is still waited on by delivered activity, and a
-  question put to the user is not a worker. This is the user's standing instruction and holds
-  over a harness default against polling a delegate.
+  is checked on a schedule that backs off from its launch, since most stalls happen right at the
+  start. This is the user's standing instruction and holds over a harness default against polling
+  a delegate.
+  - **Schedule:** 10 seconds, 30 seconds and 5 minutes after it starts, then every 30 minutes while
+    it runs. A short background timer or the host's scheduler, such as a recurring scheduled
+    prompt, sets it, and a worker's checks end when it finishes. The scheduled check is removed
+    once no worker runs.
+  - **Reading:** each check reads the worker's latest activity from whatever the host exposes for
+    it: its thread items, the files it writes, the processes or background tasks it runs. A worker
+    whose host shows nothing until it finishes is judged by those other signals before it is
+    cancelled, never by the empty thread alone.
+  - **Stalled:** at an early check, one with no activity at all since launch, or whose last step
+    failed and nothing followed. At a later check, one with no activity for 30 minutes, counted
+    from its last activity and not before, unless a long command of its own is in progress;
+    waiting on anything else does not excuse it.
+  - **Response:** a stalled worker is cancelled and relaunched, through `subagent-matrix`'s
+    **Dispatch**, with its brief plus what stalled it, such as a failed command it never
+    recovered from, input it waits on that nobody sees, or a provider error it never reported. One
+    that finished without its completion arriving has its result collected.
+  - **Scope:** the check reads workers only: a pull request is still waited on by delivered
+    activity, and a question put to the user is not a worker.
 - **A status report is not a stopping point.** A message sent while authorized work or a wait
   remains goes out together with the next wait or action, never as the turn's last output, and is
   never the task's report. When every remaining item depends on an awaited result, keep the

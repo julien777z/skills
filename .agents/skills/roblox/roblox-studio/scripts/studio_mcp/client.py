@@ -185,7 +185,7 @@ class StudioMcpConnection:
             self.turn.release()
 
     def take_turn(self, timeout: timedelta, operation: str) -> timedelta:
-        """Wait for this connection's turn within the timeout and return the time left, holding the turn."""
+        """Wait for this connection's turn."""
 
         started = time.monotonic()
 
@@ -201,7 +201,7 @@ class StudioMcpConnection:
 
     def session_request(self, method: str, params: Mapping[str, JsonValue], timeout: timedelta,
                         config: RunnerConfig) -> JsonRpcMessage:
-        """Send a request while holding the connection's turn, unless a renewal has found a lock on the runner lost."""
+        """Send a request while holding the connection's turn."""
 
         assert_runner_locks_kept(config)
 
