@@ -33,9 +33,9 @@ expect:
 history:
   - date: "2026-11-25"
     route: behavior-change
-    pull_request: "423"
+    pull_request: "440"
     reason: added with the first pinned set; the fixture refuses a missing brief file, which a round of the
-      change check behind the fallbacks section found it accepting
+      change check behind the stalled-launch rule in subagent-matrix's Workflow found it accepting
   - date: "2026-11-26"
     route: test-cause
     reason: opened by a Diff gate's flag that the outcome check asked for the grader's impression; the

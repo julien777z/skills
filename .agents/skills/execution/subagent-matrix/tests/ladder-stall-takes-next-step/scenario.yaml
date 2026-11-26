@@ -35,7 +35,7 @@ expect:
 history:
   - date: "2026-11-25"
     route: behavior-change
-    pull_request: "423"
+    pull_request: "440"
     reason: added with the first pinned set
   - date: "2026-11-26"
     route: test-cause

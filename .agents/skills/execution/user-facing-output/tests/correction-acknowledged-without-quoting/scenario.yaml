@@ -49,7 +49,7 @@ expect:
 history:
   - date: "2026-11-25"
     route: behavior-change
-    pull_request: "423"
+    pull_request: "440"
     reason: added with the first pinned set; the checks carry the repository-text and template-label
       exclusions that criteria rewrites in the change-check rounds behind the no-quote rule found
   - date: "2026-11-25"

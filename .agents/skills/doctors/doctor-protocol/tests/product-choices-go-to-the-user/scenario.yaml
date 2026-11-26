@@ -47,7 +47,7 @@ expect:
 history:
   - date: "2026-11-25"
     route: behavior-change
-    pull_request: "423"
+    pull_request: "440"
     reason: added with the first pinned set; carries the fit-fix definition a criteria rewrite in the
       change-check rounds of the interface-doctor change added
   - date: "2026-11-25"
@@ -59,14 +59,14 @@ history:
       the run changed
   - date: "2026-11-26"
     route: behavior-change
-    pull_request: "423"
+    pull_request: "440"
     file: skills/doctors/interface-doctor/SKILL.md
     section: Report Additions
     reason: interface-doctor's Report Additions names each capture shown by its file, so a capture is named
       only by its file name and no longer by a page and width
   - date: "2026-11-26"
     route: behavior-change
-    pull_request: "423"
+    pull_request: "440"
     file: skills/doctors/interface-doctor/SKILL.md
     section: Report Additions
     reason: interface-doctor's Report Additions asks for the file of each capture shown for a decision named

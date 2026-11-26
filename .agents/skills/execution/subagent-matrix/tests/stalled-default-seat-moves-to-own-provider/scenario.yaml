@@ -48,9 +48,9 @@ expect:
 history:
   - date: "2026-11-25"
     route: behavior-change
-    pull_request: "423"
+    pull_request: "440"
     reason: added with the first pinned set; carries the behavior the change-check rounds behind the
-      fallbacks section tested, at its current text
+      stalled-launch rule in subagent-matrix's Workflow tested, at its current text
   - date: "2026-11-25"
     route: test-cause
     reason: the read-at-trigger check failed any clock-advancing call before the relaunch, but the guidance
@@ -77,15 +77,15 @@ history:
       this pull request's scenario batch
   - date: "2026-11-26"
     route: behavior-change
-    pull_request: "423"
+    pull_request: "440"
     file: skills/execution/subagent-matrix/SKILL.md
     section: Workflow
-    reason: the fallbacks section caps every wait while the other-provider launch is pending, on that launch
-      or a sibling, at 15 minutes after its brief, so no-hold-no-repair reads each wait on a seat until the
+    reason: subagent-matrix's Workflow caps every wait while the other-provider launch is pending, on that
+      launch or a sibling, at 15 minutes after its brief, so no-hold-no-repair reads each wait on a seat until the
       sol-5 cancel against that cap instead of only waits on the sol-5 seat
   - date: "2026-11-26"
     route: behavior-change
-    pull_request: "423"
+    pull_request: "440"
     file: skills/execution/subagent-matrix/SKILL.md
     section: Workflow
     reason: "The 15-minute cap on waits now ends at the launch's 15-minute read, so no-hold-no-repair measures waits until the first read of the sol-5 seat showing zero events."
