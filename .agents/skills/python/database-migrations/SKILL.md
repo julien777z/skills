@@ -77,13 +77,13 @@ Shared tooling lives in the project's shared migration package (runner, revision
   and place substantial revision-specific logic in the project's revision-owned backfill package.
 - Generic backfill and rollback mechanics that know no project's schema, such as paging, measured
   progress, resumable checkpoints and running asynchronous code inside a revision, belong to the
-  shared migration tooling **Migration Support Packages** defines. Do not promote one-off
-  migration behavior into it.
+  schema-independent migration library **Migration Support Packages** defines. Do not promote
+  one-off migration behavior into it.
 - **Data work is registered inside the revision that owns it**, the pull request's one unlocked
   revision on that chain under **Applied Is What Makes History**, through the mechanism the
-  project's migration tooling gives for running data work inside a revision, where it has one. An
-  operation that tooling spreads over several revisions is never a route to a second unlocked
-  revision on one chain.
+  project provides for running data work inside a revision, where it has one. An operation that
+  mechanism spreads over several revisions is never a route to a second unlocked revision on one
+  chain.
 - Revision IDs must be real hex strings, not placeholder values like `a1b2c3d4e5f6`.
 - A revision-specific helper under the project's revision-specific fixture package uses the migration filename with
   its leading revision hash and underscore removed. Its test module uses the same name prefixed
@@ -233,18 +233,19 @@ format transition or recovery mechanism for data explicitly declared disposable 
 - The project's shared migration runtime package contains the Alembic runtime and helpers with multiple migration-set
   consumers. Its chain-owner module owns everything a chain is addressed by: its target, the database
   URL it reads, and whether that database carries the revisions this code does.
-- The shared migration tooling is the schema-independent owner of migration mechanics: the
-  migration library the project consumes where it has one, otherwise the project's shared backfill
-  runtime package.
+- The schema-independent migration library is a library the project's owner maintains and the
+  project consumes, never the third-party migration framework; it owns the migration mechanics
+  that know no project's schema. A project that consumes none keeps those mechanics in its shared
+  backfill runtime package.
 - The project's shared backfill runtime package contains the backfill and rollback mechanics that
-  read the project's own models and catalogs, and the generic ones too where the project consumes
-  no such library, grouped further by database engine where their behavior is engine-specific.
+  read the project's own models and catalogs, grouped further by database engine where their
+  behavior is engine-specific.
 - **A rebaseline deletes revision-owned code with its revisions, never the shared procedure.**
   Paging, progress, checkpoint and similar mechanics that name no table or revision are the
   procedure the next data migration runs on, so a rebaseline that leaves one without a caller moves
-  it to the shared migration tooling rather than deleting it. The shared Python boundaries rule's
-  deletion of code with no consumer still takes the helper written for one revision, which goes
-  with that revision.
+  it to the schema-independent migration library rather than deleting it. The shared Python
+  boundaries rule's deletion of code with no consumer still takes the helper written for one
+  revision, which goes with that revision.
 - The project's revision-owned backfill package contains behaviorally immutable implementation code owned
   by one logical handwritten migration set, including provider and database adapters used only by
   that backfill. Keep it for as long as any deployed database may replay that revision.

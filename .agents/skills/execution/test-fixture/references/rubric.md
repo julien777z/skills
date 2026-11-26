@@ -394,8 +394,10 @@ them. Nor does a name carry a role its value does not carry: a plain account is 
 `owner` until something gives it that role, and one value is not offered under two fixture names.
 In the fixture packages of the suites in scope, list every family of fixtures of one kind with
 each member's name and ordinal, and report every family with an unnumbered member, a gap or a lone
-ordinal; list every fixture definition whose first word is `test`, `alternate`, `other` or
-`another`, and every fixture that returns another fixture's value unchanged; report every row.
+ordinal; list every fixture definition whose first word is `alternate`, `other` or `another`,
+every one whose first word is `test` and only marks test support, every fixture that returns
+another fixture's value unchanged, and every fixture named for a role with what gives its value
+that role; report every row.
 
 Name several results in one test for their scenario or domain role, such as
 `invited_member_response` and `created_member_response`, never with a letter or a number, such as
