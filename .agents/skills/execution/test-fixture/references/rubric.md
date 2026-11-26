@@ -396,8 +396,8 @@ In the fixture packages of the suites in scope, list every family of fixtures of
 each member's name and ordinal, and report every family with an unnumbered member, a gap or a lone
 ordinal; list every fixture definition whose first word is `alternate`, `other` or `another`,
 every one whose first word is `test` and only marks test support, every fixture that returns
-another fixture's value unchanged, and every fixture named for a role with what gives its value
-that role; report every row.
+another fixture's value unchanged, and every fixture named for a role nothing gives its value;
+report every row.
 
 Name several results in one test for their scenario or domain role, such as
 `invited_member_response` and `created_member_response`, never with a letter or a number, such as

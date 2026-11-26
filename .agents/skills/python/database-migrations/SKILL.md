@@ -243,9 +243,10 @@ format transition or recovery mechanism for data explicitly declared disposable 
 - **A rebaseline deletes revision-owned code with its revisions, never the shared procedure.**
   Paging, progress, checkpoint and similar mechanics that name no table or revision are the
   procedure the next data migration runs on, so a rebaseline that leaves one without a caller moves
-  it to the schema-independent migration library rather than deleting it. The shared Python
-  boundaries rule's deletion of code with no consumer still takes the helper written for one
-  revision, which goes with that revision.
+  it to the schema-independent migration library, or where the project consumes none to its
+  shared backfill runtime package, rather than deleting it. The shared Python boundaries rule's
+  deletion of code with no consumer still takes the helper written for one revision, which goes
+  with that revision.
 - The project's revision-owned backfill package contains behaviorally immutable implementation code owned
   by one logical handwritten migration set, including provider and database adapters used only by
   that backfill. Keep it for as long as any deployed database may replay that revision.
