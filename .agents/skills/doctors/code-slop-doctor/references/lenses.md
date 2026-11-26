@@ -128,7 +128,8 @@ and after on the same stack, and a merge that makes it wait longer for its first
 not the remedy. Two cases are decided case by case, never merged or left alone silently: an
 operation another use case also calls on its own, where the use case may gain a merged operation
 while the other keeps its own; and a read only some runs of the use case need, which a merged
-operation may still carry. The run decides each, and its record lets a reader check the decision
+operation may still carry. The run decides each that leaves what every caller sees unchanged; a merge that changes what a
+caller sees is put to the user as a reserved entry. Either way its record lets a reader check the decision
 without opening the code: the operations it would combine, by method and path or RPC name; the proposed operation's method, path,
 parameters and response fields; every other caller of each of those operations, found in the code
 by page, job or service, with what it reads and whether it already shares the use case's read; what
@@ -432,23 +433,23 @@ A chain, its registries and its tooling, held to one shape and no more machinery
 - **Tests** — lifecycle wiring only in the shared test setup; fixtures and helpers where the
   migration skill's **Where A Revision's Test Scaffolding Lives** puts them; a revision-to-test
   pairing rule the repository states holds; a migration-test deferral record pointing at a path that
-  no longer exists is reported to `defer-scope`.
+  no longer exists, which `SKILL.md`'s **Lenses** sends to `defer-scope`.
 - **History** — the migration skill's **Applied Is What Makes History** decides whether a revision
   is corrected in place or by stacking; a create-then-rename across unapplied revisions collapses; a
   merge-of-main revision carrying unrelated operations is split or rebaselined; a hand edit to a
   generated revision is stated in the change.
-- **Tooling** — each piece of repository tooling around the migration library is weighed against
-  what the library already does and what its extension points can do: a rewriter, renderer or
-  post-processing pass is a finding when it restates the library's own output, or when the library's
+- **Tooling** — each piece of repository tooling around the migration framework is weighed against
+  what the framework already does and what its extension points can do: a rewriter, renderer or
+  post-processing pass is a finding when it restates the framework's own output, or when the framework's
   generation hooks — a render hook, a revision-directive hook, a custom template — can emit the same
   result as the revision is written. Read those hooks' documentation and the repository's current
-  use of them before keeping the pass. A runner that wraps the library's command with nothing added
+  use of them before keeping the pass. A runner that wraps the framework's command with nothing added
   is a finding too.
 
 The remedy is the one shape: re-pointed parents, regenerated headers and the shared helper in place
 of per-revision idioms, each only where **Applied Is What Makes History** allows editing that
-revision; the missing policy, hook or downgrade added; code moved to its owner, tooling the library
-makes redundant deleted with its callers switched to the library, and the repository's migration
+revision; the missing policy, hook or downgrade added; code moved to its owner, tooling the framework
+makes redundant deleted with its callers switched to the framework, and the repository's migration
 skill followed for every correction. Where project guidance says no environment keeps data, a chain
 grown long is collapsed into one baseline revision. Left alone: an applied revision's body, which
 is corrected only by stacking; and the schema the chain produces — its nullability, keys and
@@ -562,8 +563,8 @@ projects.
 
 Tests that cost reading time and prove nothing, audited with the code and fixed after it.
 
-- run `test-fixture`'s **Test Value And Retention**, **Naming Checks** and **Auditing Existing
-  Doubles** over every test module mirroring code a finding in another lens changes;
+- every test module mirroring code a finding in another lens changes, held to `test-fixture`'s
+  **Test Value And Retention**, **Naming Checks** and **Auditing Existing Doubles**;
 - every test that only exercises a layer, alias, branch or symbol another lens's finding removes;
 - every test package with no tests, and every test module mirroring no source.
 

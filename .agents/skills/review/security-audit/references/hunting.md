@@ -20,7 +20,8 @@ Every hunter prompt includes:
 2. The specific attack class and scope to investigate
 3. Relevant file paths from the map as starting points
 4. The hunting methodology (below)
-5. The validation rules (below)
+5. The validation rules (below), with the rubric's **Exploitability**, **Precedents** and **What A
+   Surviving Finding Has Been Put Through** pasted in whole
 
 ### Hunting methodology — include in every hunter prompt
 
@@ -107,7 +108,8 @@ auth — report it. Don't ignore a bug because it's "not your area." Attackers d
 respect category boundaries.
 
 ## Validation rules — apply before reporting a finding
-Read `references/rubric.md` and apply **Only Report What You Can Exploit**, **Precedents**, and the
-five tests in **What A Surviving Finding Has Been Put Through**. Return only findings that survive all five, each
-with its concrete attack, or "No exploitable vulnerabilities found" if that is honest.
+Apply the three sections of the rubric pasted below: **Exploitability**, **Precedents**, and the
+five tests in **What A Surviving Finding Has Been Put Through**. Return only findings that survive
+all five, each with its concrete attack, or "No exploitable vulnerabilities found" if that is
+honest.
 ```

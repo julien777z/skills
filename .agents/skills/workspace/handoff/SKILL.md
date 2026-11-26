@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: Move the current session's work to another session with nothing lost and nothing left for the user to do. Stops running workers once their work is pushed and posts their queues, brings every pull request body up to date, closes the pull requests this session made stale, posts a hand-off comment on each pull request carrying every piece of context the next agent needs, releases every subscription and timer, and ends with the exact message the user pastes into the next session. Use when a session is too bloated to continue and the work moves elsewhere. Run only when the user asks for it.
+description: Move the current session's work to another session with nothing lost and nothing left for the user to do, by posting a hand-off comment on each pull request and ending with the message the user pastes into the next session. Use when a session is too bloated to continue and the work moves elsewhere. Run only when the user asks for it.
 short_description: 'Move the current session''s work to another session with nothing lost and nothing left for the user to do.'
 ---
 
@@ -9,8 +9,9 @@ short_description: 'Move the current session''s work to another session with not
 Continue this session elsewhere. Everything the next agent needs — the work left, the order, the
 files, the user's decisions and words, the questions still open — goes onto the pull requests,
 because the next session starts with nothing else. The private task ledger transfers separately
-through `session-ledger`; its contents never go into those published comments. The user's only part is pasting the message this
-skill ends with.
+through `session-ledger`; its contents never go into those published comments. The user's only part
+is pasting the message this skill ends with, and answering the lock question in **Secure every
+branch** when a lock holds commits locally.
 
 ## Dependencies
 - `list-prs`
@@ -18,7 +19,7 @@ skill ends with.
 - `session-ledger`
 - `pre-production`
 - `lock-revision`
-- `execute-task`
+- `edit-skill`
 
 ## Scope
 
@@ -82,7 +83,8 @@ skill ends with.
    answer before the steps below.
 6. **Close the pull requests this session made stale.** One whose commits now live on the pull
    request the work continues, or whose change is superseded, is closed with a comment naming where
-   the work went, as the GitHub rule's **Branches and Pull Requests** says. A pull request the
+   the work went, as the GitHub rule's **Branches and Pull Requests** and, for agent configuration,
+   `edit-skill`'s guidance pull-request reference say. A pull request the
    session did not open is never closed, retargeted or folded.
 7. **Bring each pull request body up to date**: read the complete existing body, then rewrite it
    to describe everything the branch now changes, written the way `pre-production`'s **Repository Text**
@@ -153,7 +155,8 @@ Task: `<task token>`
   and transferred by `session-ledger`. Do not create a separate checkpoint file.
 - Never arm a timer, wake-up, or subscription during the hand-off.
 - Never merge, mark ready, or re-request review on a pull request.
-- Never fabricate a pull request URL, a record link, or a check state; verify each with a read.
+- Verify each pull request URL, record link and check state with a read before it goes into a
+  comment or the report.
 - Write every comment for the next agent, never in the user's voice and never addressed to the user.
 
 ## Completion Report

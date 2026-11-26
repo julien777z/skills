@@ -22,8 +22,8 @@ Resolve the team in this order:
 
 When multiple candidates remain, ask the user. Never guess from a repository name. Resolve workflow
 states from an explicit caller choice or by category, such as started, completed, or canceled,
-rather than hard-coding a state name. Use a sole category match; ask before writing when several
-states share the requested category. When an explicit state or required category has no accessible
+rather than hard-coding a state name. Use a sole category match; with several in the category, take the first
+in the team's workflow order and name it in the result. When an explicit state or required category has no accessible
 match, ask for a correction and do not write.
 
 Resolve a project only when the caller requires one or a confidently matched issue establishes it:
@@ -63,8 +63,8 @@ creating another issue.
 ## Labels
 
 Read the available labels and their descriptions, then apply the existing labels that best describe
-the issue. Do not embed label names in this skill, create labels without approval, or substitute a
-nearby label for an exact label required by the invoking workflow. Respect label-group exclusivity
+the issue. Create a label only with approval, and use an exact label the
+invoking workflow requires as named, never a nearby one. Respect label-group exclusivity
 and omit an optional label when no confident match exists.
 
 ## Issue Contract

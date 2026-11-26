@@ -110,7 +110,7 @@ is fixed there, as `doctor-protocol`'s **Resolve The Scope** says.
 
 Flags documentation that recounts what changed: "formerly", "used to", "replaces", migration
 tables, upgrade notes, and deprecation prose, against `pre-production`'s **Documentation**
-conventions. Git history is the record of what changed. Reach: partition.
+conventions. Reach: partition.
 
 - every history-word hit in a document or a description;
 - every table or section whose columns or headings are a before and an after.
@@ -171,7 +171,7 @@ same values in source code, which belong to the doctor `get-doctors` lists for c
 
 ## Reviewers
 
-Reviewers are capped as `doctor-protocol`'s **Launches** sets; this doctor sets no lower cap. The
+Reviewers are capped as `doctor-protocol`'s **Launches** sets. The
 document dictates the partition cut: a documentation tree and the docstrings of the packages it
 documents stay in one partition where the size bound allows. The cross-cutting reviewer owns
 **Structure**, working from the reference table, and compares documents with each other: one

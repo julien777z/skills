@@ -21,6 +21,12 @@ short_description: 'Ask three strong models what they think, or review with them
   options, such as simplify, revert or accept, takes the option most members pick first; a
   three-way split takes the option the asker lists first. A ruling never accepts a confirmed
   defect, an exploitable vulnerability or a failing required check.
+- **A disposition after repeated misses is never framed narrowly.** A ruling on how to resolve a
+  change that keeps failing, such as one at a review-round limit, lists a different approach among
+  its options, with the asker's best candidate and how it departs from the repairs tried; a brief
+  whose options are all repairs to the same lines is completed with one before it is sent. Each
+  member may also judge every listed option wrong and name its own; two members naming the same
+  approach make it the ruling, and any other named approach is carried in **Split on**.
 - **Loop:** the user asks the council to review or give feedback on work, such as "council this
   pull request". Run **Rounds**, fixing between them.
 
@@ -33,13 +39,19 @@ neither the user nor the calling skill sets the selection, use the three seats l
 through that skill at high effort. Start the three in parallel, read-only, with no subagents
 of their own.
 
+- **A default seat whose launch on another provider does not start** is relaunched on the
+  session's own provider at the seat's level, as `subagent-matrix`'s fallbacks reference's **A
+  Launch On Another Provider's Model** says, and the result names the substitution; the seat is
+  never left empty or waited on for that provider. When the seat is read and the replacement
+  launched follow that section, which owns the timing.
 - **Missing members.** Resolve an unavailable default seat through `subagent-matrix` down to
   the `standard` tier. Report a missing named or caller-constrained member and use only launches
   that meet the original requirement. With two members available, name the empty seat and report
   that the ruling came from two members. Two who agree decide. On a split, use the option the
   asker lists first, as for a three-way split. With fewer than two available, report the panel as
   incomplete and return no ruling. Distinguish members by seat when model names repeat.
-- **Brief:** a brief the invocation supplies is sent as it stands to every member. Otherwise give
+- **Brief:** a brief the invocation supplies is sent as it stands to every member, completed only
+  as **Ask** says for a disposition after repeated misses. Otherwise give
   each the question or request, the intent, the material (a diff, files, a plan), and any check
   results. A review asks for findings, each with a file and line, rated `blocker` (the intended case
   is wrong), `should` (a real bug, an unsafe input or a workaround) or `nit`, and a score out of 10.

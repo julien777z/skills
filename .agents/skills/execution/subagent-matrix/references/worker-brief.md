@@ -9,11 +9,14 @@ Task: <implement | fix> <one line naming the outcome>
 Intent: <the user's words for this work, each decision recorded on it, and what is out of scope>
 Scope: <the plan step, or the coupled steps in order, with the invariant the work keeps>
 Files: <exact paths to change; they bound the scope, not the design>
-Repo: <abs path> Worktree: <abs path> Branch: <the pull request's branch> Head: <sha>
+Repo: <abs path, read-only to the worker> Worktree: <abs path>
+Branch: <the pull request's branch> Head: <sha>
 Rules: <rule files whose patterns match those paths; the repository's `.agents/tools/` folder>
 Reuse: <one receipt per addition the plan names: what it does · searched · found · reuse | extend | new: why>
 Checks: <the verification batch: each command with its scope, and the point at which it runs>
-Result: <abs path the complete report is written to>
+Result: <abs path the complete report is written to; where the worker's isolation cannot write
+there, it returns the report as its final message and the coordinator writes that message to the
+path before reading it>
 Findings (fix only): <each finding verbatim with its id, severity and the reviewer's remedy · remedies
 already tried and why each failed · round <n> of 3>
 
@@ -24,8 +27,8 @@ or extend it with the one parameter or condition it lacks; write new code only w
 that found no owner, and add no parameter, option or branch for a condition nothing uses.
 Fix every defect you meet where `pre-production`'s **Scope Follows The Defect, Not The Request**
 places it. Hand up work outside your assignment so the coordinator can apply that placement rule. Leave alone
-only cleanup past the repository's incidental size budget and a choice that is the user's, and
-report each.
+only cleanup `pre-production`'s size budget reserves a record for, and a choice that is the
+user's, and report each with its ground.
 Push: commit each coherent step and push it once the Checks covering it pass, at least every five
 minutes of work. Fetch and rebase unpushed commits onto the remote branch before each push; never
 amend or rebase a pushed commit. End with nothing uncommitted and nothing unpushed.

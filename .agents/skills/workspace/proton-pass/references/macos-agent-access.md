@@ -3,7 +3,7 @@
 Use the user's designated macOS Keychain entry for the existing Proton Pass agent token.
 The configured agent-access setup uses service `codex.proton-pass.agent` and account
 `codex-agent`. These are Keychain lookup identifiers, not token values; the same entry is
-usable by Claude, Codex, or another authorized harness running on that Mac. If the user's
+usable by any authorized harness running on that Mac. If the user's
 setup specifies different identifiers, use those rather than creating another credential.
 
 With the task's `PROTON_PASS_SESSION_DIR` already exported, recover an inactive session in
@@ -38,7 +38,7 @@ pass-cli info
 Command substitution captures the token without displaying it. Preserve `security`'s failure
 status and diagnostic message; a missing entry, a locked Keychain, and denied access require
 different remedies. Do not enumerate or dump unrelated Keychain entries. A Keychain approval
-prompt is handled at that boundary; never ask for the token in chat or recreate the agent merely
+prompt is handled at that boundary; never recreate the agent merely
 because a shell did not inherit its token.
 
 Proton [agent access](https://protonpass.github.io/pass-cli/commands/agent/) uses a scoped personal

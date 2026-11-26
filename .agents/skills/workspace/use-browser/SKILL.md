@@ -1,6 +1,6 @@
 ---
 name: use-browser
-description: Show the user a page the agent made, such as a dashboard or report, in their browser, reloading the tab already opened for it; or operate a browser — the user's own, or one the agent runs with the agent-browser CLI — to open websites, fill forms, click, take screenshots, extract data, test web apps, QA and bug hunts, sign in, or automate Electron apps and Slack. Use whenever a task opens, shows, reloads or controls a browser page, before selecting, reusing or binding a tab, and when a browser or app surface reports an inventory or availability error.
+description: Show the user a page the agent made, such as a dashboard or report, in their browser, reloading the tab already opened for it; or operate a browser — the user's own, or one the agent runs with the agent-browser CLI — to work in web pages and apps, such as forms, screenshots, data extraction, QA, sign-in, Electron apps and Slack. Use whenever a task opens, shows, reloads or controls a browser page, before selecting, reusing or binding a tab, and when a browser or app surface reports an inventory or availability error.
 short_description: 'Show a local page in the user''s browser, or operate a browser.'
 allowed-tools: Bash(agent-browser:*), Bash(npx agent-browser:*)
 ---
@@ -47,8 +47,7 @@ extracting data, testing and QA, signing in, Electron desktop apps and Slack.
   `agent-browser skills get core`, adding `--full` for the command reference. Load a specialized
   guide when the target is not a web page, such as `electron`, `slack` or `dogfood` for exploratory
   testing; `agent-browser skills list` names them all.
-- Its observability dashboard runs on port 4848, also reachable through a forwarded address such as
-  `https://dashboard.agent-browser.localhost`; stay on that origin, which proxies the sessions.
+- Its observability dashboard is documented in the CLI guide; stay on the origin the CLI reports.
 
 ## Selecting And Binding A Tab
 

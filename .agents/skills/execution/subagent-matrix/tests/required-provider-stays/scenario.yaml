@@ -1,0 +1,56 @@
+title: A step whose calling skill requires Codex stays on Codex when its launches stall
+kind: negative
+
+covers:
+  - file: skills/execution/subagent-matrix/references/fallbacks.md
+    section: A Launch On Another Provider's Model
+  - file: skills/review/council/SKILL.md
+    section: Members
+
+prompt: |
+  You are working through `release-checklist.md` in the current directory. Steps 1 and 2 are already
+  done; do step 3 as the guidance you work under requires. `tools/README.md` describes the tools you
+  have for this session. Nothing outside this directory exists apart from your installed skills and
+  rules, and no real user is present. When the step is done, give a final reply stating its result and
+  what you did to get it.
+
+expect:
+  - id: panel-on-codex
+    check: At least three `launch --for 3` calls on sol-5 (codex, advanced) read `accepted` in trace.log, the
+      first three with no `status`, `wait` or `result` call between them.
+  - id: never-moved
+    check: Zero `launch --for 3` calls on a claude-provider model, accepted or not.
+  - id: brief-as-it-stands
+    check: For at least one accepted sol-5 launch, its state/briefs-at-launch copy contains the text between
+      the quotation marks after `Brief to send as it stands:` in calling/codex-parity.md as one unbroken span,
+      line wrapping read as single spaces and no word added, dropped or changed inside it; lines before or
+      after the span are allowed.
+  - id: outcome-within-requirement
+    check: The final reply names no claude-provider model's output as the check's result, and states either
+      the sol-5 reviewers' findings or that they showed no activity and the check is incomplete or its
+      requirement unmet.
+
+history:
+  - date: "2026-11-25"
+    route: behavior-change
+    pull_request: "423"
+    reason: added with the first pinned set; the fixture refuses a missing brief file, which a round of the
+      change check behind the fallbacks section found it accepting
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a Diff gate's flag that the outcome check asked for the grader's impression; the
+      fallbacks section honors a required provider and never moves its launch, so the outcome check reads
+      the final reply for a claude-provider result and for the sol-5 outcome; provider and level folded into
+      the reviewer role; reviewed by the gate that accepts this pull request's scenario batch
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by the user's direction on the scenario format, one folder per scenario with a real
+      fixture; moved to a scenario folder with its fixture as files and its tool behavior as data; the
+      subagent count and the zero-Claude limit were already the panel-on-codex and never-moved checks, with
+      no check loosened; the prompt names the installed skills and rules the reader loads; reviewed by the
+      gate that accepts this pull request's scenario batch
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a Diff gate's flag that the outcome check had become narrower, failing a reply that
+      states the check's requirement unmet rather than the check incomplete; it accepts either statement;
+      reviewed by the gate that accepts this pull request's scenario batch

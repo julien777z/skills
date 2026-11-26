@@ -1,5 +1,9 @@
 # Code Conventions
 
+Contents: **Whose Standards Apply**, **Code Layout**, **Configuration**, **Logging**,
+**Credentials**, **Versions**, **Naming And Language**, **Examples And Paths**, **Documentation**,
+**Repository Text**.
+
 What every line a change writes follows: code, configuration, manifests, documentation, comments,
 commit messages and pull-request text. `SKILL.md` names this file at the point a change is written.
 
@@ -116,6 +120,8 @@ commit messages and pull-request text. `SKILL.md` names this file at the point a
   wholesale because it might hold personal data. Records that report no failure may still withhold
   personal data.
 
+## Credentials
+
 - An agent's authorized access to a credential is not credential exposure. Seeing a credential in a
   prompt, private configuration, tool input or output, or the agent's own execution history never
   establishes compromise and never warrants revocation by itself. Treat a credential as exposed
@@ -127,24 +133,31 @@ commit messages and pull-request text. `SKILL.md` names this file at the point a
 - Reference external code and automation by a maintained version tag when available, or by a
   maintained branch while developing or when no release tag exists. Do not pin dependency manifests,
   shared checkouts, or workflow references to commit hashes. Lockfiles and release records may retain
-  the exact resolved commit for reproducibility and provenance.
+  the exact resolved commit for reproducibility and provenance. After a dependency receives a
+  separately authorized release, the consumer's branch reference becomes a maintained version tag:
+  a minor release for a new capability, a patch release for a bug fix, a moving major tag only
+  after it is verified to point at that release, and never an unpublished tag; the consumer is
+  validated against it.
 
 - **Every project the owner runs or consumes runs the newest stable language runtime, base image
-  and dependency releases it works with.** A change made for that move — one the user asks for, or
-  the upgrade pull request a warning leads to, as this skill's **Scope Follows The Defect, Not The
-  Request** places it — moves what the project actually runs onto them: its version file,
-  container images, CI and lockfile, with whatever code changes the new releases need, including in
-  an owned package that only widened its range to let a consumer move. Neither of these is that
-  move: a CI leg kept on the old release beside the new one, or a dependency held below its newest
-  release. A change that touches a manifest or lockfile for another purpose, such as adding one
-  dependency, takes that dependency's newest stable release and moves nothing else. Hold one back only
-  where an install or test shows the newer release failing on the project's runtime, such as
-  another dependency pinning it, and name that failure in a comment beside the constraint; a
-  migration the newer release needs is part of the move, not a reason to hold. Widening a
-  supported range to admit a newer release is fine, since an owned project's range serves the
-  owner's own projects. Raise its minimum once keeping the lower release no longer makes sense,
-  such as when the formatter or the code would stay on the older release's syntax. A library
-  published for consumers outside the owner's projects keeps the range its language rule sets.
+  and dependency releases it works with.**
+  - **A move to newer releases changes what the project actually runs**: its version file,
+    container images, CI and lockfile, with whatever code changes the new releases need, including
+    in an owned package that only widened its range to let a consumer move. A change made for that
+    move is one the user asks for, or the upgrade pull request a warning leads to, as this skill's
+    **Scope Follows The Defect, Not The Request** places it. A CI leg kept on the old release beside
+    the new one, or a dependency held below its newest release, is not that move.
+  - **A change that touches a manifest or lockfile for another purpose**, such as adding one
+    dependency, takes that dependency's newest stable release and moves nothing else.
+  - **Hold a release back** only where an install or test shows the newer release failing on the
+    project's runtime, such as another dependency pinning it, and name that failure in a comment
+    beside the constraint; a migration the newer release needs is part of the move, not a reason to
+    hold.
+  - **Ranges.** Widening a supported range to admit a newer release is fine, since an owned
+    project's range serves the owner's own projects. Raise its minimum once keeping the lower
+    release no longer makes sense, such as when the formatter or the code would stay on the older
+    release's syntax. A library published for consumers outside the owner's projects keeps the range
+    its language rule sets.
 
 ## Naming And Language
 
@@ -247,7 +260,18 @@ commit messages and pull-request text. `SKILL.md` names this file at the point a
   `(generate only)`: the code already shows how the value is passed and who reads it, and a list of
   users goes stale with the next change to the code. Where a value is one of a fixed set, the
   sentence says what each one does.
-- Use conventional commit messages when applicable and keep commits atomic and focused.
+- **Text handed to Git or the hosting service is staged where only its author writes and read back
+  once published.** A commit message, title, description, comment or issue body goes inline, on
+  standard input, or from a file whose path was generated for that one text, such as one `mktemp`
+  creates, never from a name another session or worker could also choose in any directory. Once it
+  is accepted, read the stored text back, with `git log -1` for a commit, compare it with the text
+  the author wrote, never with the staging file, which may have been overwritten, and correct a
+  difference at once under the authorization the original post had; a commit message is read back
+  before its push and amended only while unpushed. Earlier revisions in the edit history are left
+  alone and never raised with the user, unless one holds a credential that evidence shows reached
+  an unauthorized recipient, a public surface or a compromised destination.
+- Write commit messages in the conventional-commit form when the repository's existing history or
+  tooling uses it, and keep each commit atomic and focused.
 - Name what a branch, commit or pull request changes by its category of change, in generic nouns
   such as page, request or button. A branch takes the repository's required prefix and a slug of
   that description. Leave branch names and pull-request metadata that automation owns unchanged.

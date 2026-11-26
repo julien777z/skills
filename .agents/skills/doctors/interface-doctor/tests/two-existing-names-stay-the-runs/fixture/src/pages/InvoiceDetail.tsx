@@ -1,0 +1,8 @@
+export default function InvoiceDetail({ order }: { order: Order }) {
+  return (
+    <section>
+      <h3>Client</h3>
+      <p>{order.customer}</p>
+    </section>
+  );
+}

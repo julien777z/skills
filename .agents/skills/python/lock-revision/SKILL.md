@@ -1,6 +1,6 @@
 ---
 name: lock-revision
-description: Lock the database revisions a branch has added or changed so far, including default-branch revisions it re-parented or edited, because the user is about to deploy them to a test environment; until the user unlocks, no revision change and no source change that depends on one is pushed. Each invocation locks the revisions added or changed since the last one. Use to lock the branch's revisions. Run only when the user asks for it.
+description: Lock the database revisions a branch has added or changed so far, including default-branch revisions it re-parented or edited, because the user is about to deploy them to a test environment; until the user unlocks, no revision change and no source change that depends on one is pushed. Each invocation locks the revisions added or changed since the last one. Run only when the user asks for it.
 short_description: 'Lock the current migration revisions before a test deploy; revision changes are held unpushed until the user unlocks.'
 ---
 
@@ -10,8 +10,7 @@ Invoking this skill means the user is about to deploy the branch's current chang
 environment, so its revisions may be applied there. The lock is a push hold and nothing more, as
 **After Locking** says.
 
-The user is waiting to deploy, so this run is the next work in the session, ahead of all work
-that ranks below a waiting deploy, and it does only the steps below. Those numbered steps
+The user is waiting to deploy, so this run starts now and does only the steps below. Those numbered steps
 are the plan the user approved by invoking it. It never asks whether a revision was applied: the
 lock marker and a deploy the user reported are the only record, and a revision with neither is
 locked.

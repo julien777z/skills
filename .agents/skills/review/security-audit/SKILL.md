@@ -1,6 +1,6 @@
 ---
 name: security-audit
-description: Must be used before writing or changing code that crosses a trust boundary — input handling, authentication, authorization, sessions, secrets, cryptography, deserialization, file paths, subprocesses, outbound requests, templates — and for any security review of a branch, pull request or pending changes. Its rubric owns what counts as an exploitable finding, the precedents that rule false positives out, how code is built safely, and the smallest fix; the skill reports, and its caller owns what happens to each finding. Use when asked to check a change for security bugs or to security-review a change.
+description: Must be used before writing or changing code that crosses a trust boundary — input handling, authentication, authorization, sessions, secrets, cryptography, deserialization, file paths, subprocesses, outbound requests, templates — and for any security review of a branch, pull request or pending changes. Its rubric owns what counts as an exploitable finding, the precedents that rule false positives out, how code is built safely, and the smallest fix. Use when asked to check a change for security bugs or to security-review a change.
 short_description: 'Security guidance for writing code and reviewing a change for exploitable vulnerabilities.'
 ---
 
@@ -50,9 +50,10 @@ codebase security audit the skill listing describes.
   the review read in process, so its caller knows no independent refuter checked a finding.
 - **Larger scopes by slice.** Partition the reach by trust boundary or subsystem into at most four
   slices, the riskiest first, and launch one read-only hunter per slice in parallel. Each gets the
-  scope's map from **Scope**, its slice and attack classes, and the hunting reference's prompt. A
-  hunter may start at most two research agents of its own, as that reference allows, so a review
-  starts at most twelve hunting agents.
+  scope's map from **Scope**, its slice and attack classes, and the hunting reference's prompt,
+  with the rubric's **Exploitability**, **Precedents** and **What A Surviving Finding Has Been Put
+  Through** pasted into it. A hunter may start at most two research agents of its own, as that
+  reference allows, so a review starts at most twelve hunting agents.
 - **Every finding a hunter returns faces a refuter before it is reported.** Merge findings that
   share a root cause, then give each remaining finding one fresh read-only refuter with the
   validation reference's refute prompt, all in parallel: a hunter is biased toward keeping what it
@@ -71,8 +72,9 @@ Request** to place the fix. No findings file is
 committed, and the review changes no code.
 
 Give each finding a stable id (`F1`, `F2`, …) and each hardening note its own (`H1`, `H2`, …) when
-the result is first presented, and refer to it by that id everywhere afterwards — in chat, in a
-plan, in a commit. A title or a position in a list changes; an id does not.
+the result is first presented, and refer to it by that id in reports, plans and commits afterwards; a question
+to the user names the finding in plain words, as the global rules' **Asking the user** requires. A
+title or a position in a list changes; an id does not.
 
 ## Output
 

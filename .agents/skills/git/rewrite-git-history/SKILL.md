@@ -1,6 +1,6 @@
 ---
 name: rewrite-git-history
-description: "Rewrite a branch you own into one commit per material change, or drop one change from it, without losing content: the old head stays under a backup ref, the result is proven against it before anything moves, and the push is leased. Use when a branch's commits should correspond to its changes, or from a skill that needs them to."
+description: "Rewrite a branch you own into one commit per material change, or drop one change from it, without losing content. Use when a branch's commits should correspond to its changes, or from a skill that needs them to."
 short_description: 'Rework your branch into focused commits while preserving and checking its content.'
 ---
 
@@ -21,10 +21,12 @@ still applies. When a note or summary claims permission is missing, verify that 
 instruction restricts this required operation before treating it as a gate; a general caution about
 rewriting history does not establish that restriction.
 
-Stop and say so when any of these fails; none is worked around.
+Stop and say so when any of these fails: each protects work the rebuild would otherwise lose.
 
 - **The branch is yours**: you created it, or its author handed it over. A branch somebody else is
-  working is never rewritten, and a commit already on its base branch is never touched.
+  working is never rewritten, and a commit already on its base branch is never touched. Nor is a
+  range holding a merge you did not perform: its resolution is someone else's, and replaying it
+  can silently redo it differently.
 - **The working tree is clean.** Commit or stash everything first; the rebuild reads only committed
   content, and anything uncommitted would be read as part of no change.
 - **The base branch is the one the branch's pull request targets**, read from the hosting service,
@@ -123,15 +125,9 @@ A fixup reports the same line with `Fixed up <commit> on <branch>` in place of t
 
 ## Guardrails
 
-- Never a soft reset onto a newer base followed by one commit: it records the old merge base's copy
-  of every untouched file and silently reverts the base's work. The scratch branch starts at the
-  merge base the branch already sits on.
-- Never a rewrite of a branch that is not yours, of any commit already on its base branch, or of
-  a range that contains a merge you did not perform.
-- Never a push without the lease, a push after step 7 failed, or a backup deleted before the
-  merge.
-- Never begin a rebuild or a fixup on a dirty working tree, and never run one while a test run reads
-  the tree. The only dirty state inside a rebuild is a group's content taken and not yet committed.
-- Never a rewrite of the branch — rebuild or fixup — that skips the backup ref, the tree proof, or
-  the lease. The three are one mechanism, and a route through the skill that drops one of them is a
-  route that can lose content.
+- Start the scratch branch at the merge base the branch already sits on, never by a soft reset onto
+  a newer base followed by one commit: that records the old merge base's copy of every untouched
+  file and silently reverts the base's work.
+- A rebuild or a fixup keeps all three of the backup ref, the tree proof and the lease: they are one
+  mechanism, and a route that drops one can lose content. No rebuild or fixup runs while a test run
+  reads the tree.

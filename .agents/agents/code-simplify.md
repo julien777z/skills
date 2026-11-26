@@ -13,7 +13,7 @@ file's status.
 
 ## Rubric
 
-Apply the `code-simplify` skill's rubric reference, `references/rubric.md`, whole. Nothing the intent asks for is a candidate for removal.
+Apply the `code-simplify` skill's rubric reference whole. Nothing the intent asks for is a candidate for removal.
 
 ## Work
 

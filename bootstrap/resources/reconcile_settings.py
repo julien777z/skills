@@ -11,7 +11,8 @@ from typing import Final
 
 NEW_SETTINGS_MODE: Final[int] = 0o600
 SOURCE_COMMAND_PATTERN: Final[re.Pattern[str]] = re.compile(
-    r'python3 "\$\(git rev-parse --show-toplevel\)/\.agents/hooks/([\w-]+)/main\.py"((?: [\w-]+)*)'
+    r'\[ ! -f "\$\(git rev-parse --show-toplevel\)/\.agents/hooks/([\w-]+)/main\.py" \] \|\| '
+    r'python3 "\$\(git rev-parse --show-toplevel\)/\.agents/hooks/\1/main\.py"((?: [\w-]+)*)'
 )
 
 HOOK_NAME_PATTERN: Final[re.Pattern[str]] = re.compile(r"[\w-]+")

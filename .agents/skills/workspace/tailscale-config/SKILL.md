@@ -28,8 +28,7 @@ of that proof; agreement in one never establishes agreement in another.
 1. Establish the authorized outcome, environments and mutation boundaries. Apply **Policy** for
    naming, groups and tag ownership. Discover each repository's deployment procedure and
    configuration owner from its workflows, deployment configuration and README. This procedure
-   reconciles a Tailscale change and is no general configuration audit. Reading a
-   deployment procedure supplies its read-only inspection route and never authorizes a rollout.
+   reconciles a Tailscale change and is no general configuration audit.
 2. Discover Git repositories within the user's authorized collection, accessible sibling roots and
    worktrees, and previously established task targets. Normalize remotes and deduplicate worktrees
    into one repository row per remote; do not crawl unrelated locations. Record the affected
@@ -60,15 +59,14 @@ of that proof; agreement in one never establishes agreement in another.
    One shared OAuth client and separate clients per environment are both valid when their scopes
    and permitted tags provide least privilege for the authority they hold. Use separate clients
    when sharing would grant a consumer authority belonging to another environment; retain sharing
-   when the authorized consumers need the same authority. Do not prescribe either topology from
-   the incident. Reconcile policy, service and route ownership with the chosen identities without
-   broadening permissions merely to make a failed operation pass. When Tailscale defines access to
-   a service, keep that decision in tailnet policy. Check every route to the backend, including
-   paths around a gateway. If a shared identity can bypass the intended access boundary, give the
-   intended consumer a narrowly owned identity and remove the broader grant. Do not compensate
-   with a second access policy, a service secret, or a forwarded proof header. Keep authentication
-   for distinct application operations and protections against requests from other browser origins.
-   Surface any unsettled security choice before applying it while continuing independent authorized
+   when the authorized consumers need the same authority. Choose the topology from each
+   consumer's required operations. Reconcile policy, service and route ownership with the chosen
+   identities without broadening permissions merely to make a failed operation pass. When
+   Tailscale defines access to a service, tailnet policy is the one place that decision lives, so a
+   shared identity that can bypass it is narrowed (a narrowly owned identity for the intended
+   consumer, the broader grant removed) rather than compensated for by a second control. Check
+   every route to the backend, including paths around a gateway. Application authentication for
+   distinct operations and protections against requests from other browser origins stay. Surface any unsettled security choice before applying it while continuing independent authorized
    work.
 6. Prepare the replacement authority and a cutover sequence that keeps required consumers working.
    Update every affected consumer within the authorized scope through its existing configuration
@@ -96,8 +94,9 @@ of that proof; agreement in one never establishes agreement in another.
 
 ## Encountered Failures
 
-Every Tailscale failure encountered during the task starts `edit-skill` for its guidance diagnosis
-alongside the operational repair. Keep the failing execution, consumer identity, required operation,
+Failures encountered during the task are collected as they occur and handed to one `edit-skill`
+guidance diagnosis, started when the operational repair settles or when a failure's repair needs a
+guidance change first. Keep the failing execution, consumer identity, required operation,
 effective authority and missing validation in the task's private verification evidence. Repair an
 evidenced guidance gap at its canonical owner; let `edit-skill` determine the disposition when no
 gap is established rather than inferring noncompliance from existing text. Generalize the failure class,

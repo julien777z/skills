@@ -11,9 +11,9 @@ Changed Flows**, **Remedies**, **Guidance Prose**.
 - **Judge the change and the code it must touch**: the diff, the consumers it has to update, and the
   existing code it should have reused. Read whole files and sibling modules to find owners and
   duplicates; reading a file does not make its unchanged code a target.
-- **The intent wins.** Never recommend removing, narrowing or reshaping something the change's
-  stated intent asks for, such as a cache, a retry or a guard the request names. Where it looks
-  wrong, say so as a question beside the finding, never as the fix.
+- **The intent wins.** Something the change's stated intent asks for, such as a cache, a retry or a
+  guard the request names, is not recommended for removal, narrowing or reshaping; where it looks
+  wrong, raise it as a question beside the finding.
 - **The change is the pull request's whole diff against its merge base**, whatever scope a pass or
   slice reviews: a finding in lines or files the pull request wrote is inside it, in an earlier
   commit, another slice or a file it moved, copied or recreated at a new path alike. Check a
@@ -202,6 +202,7 @@ difference). A map listing only the current repository states the search that fo
 ## Guidance Prose
 
 The rubric applies to `.agents` rules and skills too, with one exception: **a skill restating a
-rule is never a finding**, because the skill is the copy read when the task starts. Duplication
-between two rules, two skills, two files of one skill, or within one file stays a finding, and a
-skill and rule that disagree are reconciled.
+rule is not a finding when the restatement helps the reader act at the point of use**, because the
+skill is the copy read when the task starts. A second copy of a decision boundary owned by a skill
+that necessarily runs, duplication between two rules, two skills, two files of one skill, or within
+one file stays a finding, and a skill and rule that disagree are reconciled.

@@ -1,0 +1,16 @@
+text,file,line,slot,reader
+Customer,src/pages/Orders.tsx,4,heading,end user
+Customer,src/pages/OrderNew.tsx,4,heading,end user
+Customer,src/pages/OrderEdit.tsx,4,heading,end user
+Customer,src/pages/Checkout.tsx,4,heading,end user
+Customer,src/pages/Cart.tsx,4,heading,end user
+Customer,src/pages/Refunds.tsx,4,heading,end user
+Customer,src/pages/Returns.tsx,4,heading,end user
+Customer,src/pages/Dashboard.tsx,4,heading,end user
+Client,src/pages/Invoices.tsx,4,heading,end user
+Client,src/pages/InvoiceDetail.tsx,4,heading,end user
+Client,src/pages/Statements.tsx,4,heading,end user
+Client,src/pages/Payments.tsx,4,heading,end user
+Client,src/pages/Reports.tsx,4,heading,end user
+Client,src/pages/Settings.tsx,4,heading,end user
+Client,src/pages/Shipments.tsx,4,heading,end user

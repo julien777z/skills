@@ -26,6 +26,8 @@ session uses it, whatever it holds.** Its name is the original's plus a copy suf
 `budget 2.csv` or `HEAD 2`. Find every one with a name search of the whole tree and its Git
 directories (`git rev-parse --git-dir` and `--git-common-dir`), never `git status` or `ls`, which
 miss ignored and hidden ones, and delete each before anything stages, stashes or snapshots the tree.
+A path `git ls-files` lists is repository content, never a sync copy, whatever its name; the name
+search selects only untracked, ignored and Git-directory entries.
 A file, folder, clone or Git entry goes even when it differs from its original or names a commit or
 branch the original lacks: nothing is compared, backed up or kept on a branch, since what a session
 keeps lives in the original and on the remote. The report names each one deleted.

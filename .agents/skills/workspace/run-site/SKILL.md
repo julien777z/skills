@@ -1,6 +1,6 @@
 ---
 name: run-site
-description: Bring an application stack up and repair startup blockers. A change a reader sees rendered is inspected rendered before it is reported, in every execution environment, in a browser the agent runs itself when local; the full recorded walkthrough applies in cloud execution environments and whenever the user asks for browser work. Use before planning, recommending, delegating or performing browser walkthroughs or rendered UI inspections, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works. Use before starting container-backed work, to select the local container runtime.
+description: Bring an application stack up and repair startup blockers. A change a reader sees rendered is inspected rendered before it is reported. Use before planning, recommending, delegating or performing browser walkthroughs or rendered UI inspections, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works. Use before starting container-backed work, to select the local container runtime.
 short_description: 'Start an application stack and perform browser verification where applicable.'
 ---
 
@@ -61,9 +61,9 @@ Use `use-browser` for browser control through its supported route. Apply `test-f
   a prior install registers, and must not import anything that reads the application's runtime
   settings, because those settings are the thing being configured. Resolve the environment inside
   the command instead of requiring the caller to have exported it.
-- **When you find one of these, fix it — do not report it as a caveat.** "Run this other thing
-  first" is the defect, not the workaround. A setup step with a documented precondition is a setup
-  step that will fail for whoever does not read the document.
+- **A setup step that needs prior state is fixed in the setup path.** A documented precondition
+  fails for whoever does not read the document, so "run this other thing first" is the defect, not
+  the workaround.
 
 ## Work out which repositories are present
 
@@ -94,47 +94,38 @@ restored snapshot restores files, not a running daemon. Check ownership before t
 services; a running container does not prove another test is active. Keep secrets out of logs and
 preserve configured ports.
 
-- **Use OrbStack for local containers when it is installed.** Before starting container-backed
-  work for any application on macOS, check whether OrbStack is installed even if the current Docker
-  context points elsewhere. Start OrbStack if it is stopped, then verify that Docker can reach its
-  engine. Use the OrbStack context for Docker and Compose. Pass it through `DOCKER_CONTEXT` when an
-  application launcher invokes those commands, then verify the containers are running in OrbStack.
-  If its engine is unavailable, diagnose startup and context selection without falling back to
-  Docker Desktop. When OrbStack is absent, follow the host's configured container runtime.
+- **Use OrbStack for local containers when it is installed.** The [container runtime
+  reference](references/container-runtime.md) holds the macOS and Linux start procedures and when
+  Docker is reported unavailable.
 
-| Symptom | Likely cause | Fix at the owner |
-|---|---|---|
-| Every authenticated request returns 401 | A checked-in placeholder shadowed the real value from the session environment | Make the environment win over the dotenv layers; read the running process's environment to confirm |
-| A service starts but every query fails | The database has no schemas | Run schema provisioning before launch and read its output for the failing service |
-| A module is missing at import though the manifest names it | It is declared where the package manager does not install it | Declare it in the manifest's install list, regenerate the lock, and install; never patch the environment by hand |
-| A setup command reports missing settings before doing anything | It imports something that builds the application config at import time | Import only what build tooling needs, and keep a test guarding it |
-| A `run`-style script reports command not found | Its entry point is registered only by an install that has not run since | Invoke bootstrap commands as modules so they need no registration |
-| A dependency service refuses connections | It is not in the started set | Start it through the launcher's service selection |
-| The browser reaches loopback but no external host | The egress relay accepts only HTTPS CONNECT tunnels | Bypass the proxy for loopback in the browser configuration |
-| The browser fails with a connection reset where `curl` succeeds | An inspecting proxy resets the browser's TLS 1.3 handshake | Cap the browser's TLS version in its configuration; never read this as no browser egress |
-| Signed in, but mutations no-op and the console reports a cookie failure | The page is not a secure context, so `crypto.subtle` is undefined | Serve and browse on `localhost`, not a wildcard bind address |
-| A click reports success and no request follows | The ref resolved but the event never reached the handler | Click the element through `eval` and confirm the request in the service log |
+Symptoms of a stack that will not start or sign in, each with its cause and the fix at its owner,
+are under **Symptoms** in [browser commands](references/browser-commands.md).
 
 ## Prove it works in a browser
 
 ### When a walkthrough is owed
 
-After selecting browser verification under **Principles**, perform the following walkthrough
-where it applies. Passing tests, type checks, and a clean build show the code runs, never what the
-reader meets, and do not replace it. A change that can alter what a page shows — new or reordered
-UI, layout or spacing, a component's props or state, a hook, a redirect or an auth round trip the
-reader sees — is walked end to end before it is reported done, however few lines it took, apart
-from a change confined to a component's own behavior that **Principles** lets the agent check on a
-page it builds; the walkthrough follows the push rather than holding it. **A change no page shows
-is verified by request checks, with no capture or recording**: for a route, middleware or the shape
-of a request, make the requests the change affects against the running stack, allowed and refused
-cases alike, and read each status, header, redirect target and body against the intended behavior;
-the report states those requests and results in words. It is captured only when the user asks. An
-edit that provably cannot reach behavior — rewording text already rendered in its existing slot, a
-comment, prose in Markdown — is verified by reading it and by finding the new text in the build
-output and the old text nowhere in the tree. Judge by what the edit touches, not how small it looks:
-moving text into a shared constant stays a copy change only while every call site keeps its slot. Where a component has no surface in the running app,
-say so and name what only a harness rendered.
+After selecting browser verification under **Principles**, perform the walkthrough where it
+applies. Passing tests, type checks and a clean build show the code runs, never what the reader
+meets, and do not replace it.
+
+- A change that can alter what a page shows (new or reordered UI, layout or spacing, a component's
+  props or state, a hook, a redirect or an auth round trip the reader sees) is walked end to end
+  before it is reported done, however few lines it took, apart from a change confined to a
+  component's own behavior that **Principles** lets the agent check on a page it builds. The
+  walkthrough follows the push rather than holding it.
+- **A change no page shows is verified by request checks, with no capture or recording**: for a
+  route, middleware or the shape of a request, make the requests the change affects against the
+  running stack, allowed and refused cases alike, and read each status, header, redirect target and
+  body against the intended behavior; the report states those requests and results in words. It is
+  captured only when the user asks.
+- An edit that provably cannot reach behavior (rewording text already rendered in its existing
+  slot, a comment, prose in Markdown) is verified by reading it and by finding the new text in the
+  build output and the old text nowhere in the tree. Judge by what the edit touches, not how small
+  it looks: moving text into a shared constant stays a copy change only while every call site keeps
+  its slot.
+- Where a component has no surface in the running app, say so and name what only a harness
+  rendered.
 
 ### Scenarios
 
@@ -180,20 +171,8 @@ file its configuration or README names, or the helper its tooling uses to set or
 password, run first when the identity has none yet — and through `proton-pass` only for an account
 the repository provides no source for, such as a deployed or third-party one. Set the value through
 the native setter and dispatch a bubbling `input` event so a framework-controlled input registers
-it:
-
-```bash
-# Account with no repository source: SIGN_IN_PASSWORD="$(PROTON_PASS_AGENT_REASON="<why>" pass-cli item view \
-#   --vault-name "<vault>" --item-title "<title>" --field password)"
-SIGN_IN_PASSWORD="$(cat <password-file>)" python3 - <<'EOF' | agent-browser --session <name> eval --stdin
-import json, os
-secret = os.environ["SIGN_IN_PASSWORD"]
-js = ("const el=document.querySelector('input[type=\"password\"]');"
-      "Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(el,%s);"
-      "el.dispatchEvent(new Event('input',{bubbles:true}));'ok'") % json.dumps(secret)
-print(js)
-EOF
-```
+it. The command is under **Sign in** in
+[browser commands](references/browser-commands.md).
 
 ### Drive the change
 
@@ -207,14 +186,8 @@ EOF
   every screen that mounts it, or on the page the agent builds for a change **Principles** confines
   to a component, then read the state it was meant to leave — where the element landed,
   what the field holds, whether the list closed up — and reload where it persists something. A drag
-  is several moves, not one jump:
-
-  ```bash
-  agent-browser --session <name> mouse move <x> <y>
-  agent-browser --session <name> mouse down
-  agent-browser --session <name> mouse move <x2> <y2>
-  agent-browser --session <name> mouse up
-  ```
+  is several moves, not one jump. The commands are under **Drive the change** in
+  [browser commands](references/browser-commands.md).
 
 - A library doing the work is a reason to exercise it, never an exemption: the arguments handed to it
   and the state handed back belong to the change.
@@ -252,17 +225,8 @@ height before each capture — the larger of the document's and its scrolling co
 height — and restore it before interacting again. The loop runs over the widths walked for that
 state: 1280 alone when its layout did not change.
 
-```bash
-for width in <widths walked>; do
-  agent-browser --session <name> set viewport "$width" 900
-  agent-browser --session <name> eval "document.documentElement.scrollWidth <= innerWidth"
-  height=$(agent-browser --session <name> eval \
-    "Math.max(document.documentElement.scrollHeight, document.querySelector('<scroll-container>')?.scrollHeight ?? 0)")
-  agent-browser --session <name> set viewport "$width" "$height"
-  agent-browser --session <name> screenshot --full <path>-"$width".png
-  agent-browser --session <name> set viewport "$width" 900
-done
-```
+The loop is under **Widths and full-page captures** in
+[browser commands](references/browser-commands.md).
 
 ### Without the API changes it relies on
 

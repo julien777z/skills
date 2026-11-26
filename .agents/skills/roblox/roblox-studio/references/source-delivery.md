@@ -8,7 +8,7 @@ Prefer building delivery files before the focused Studio playtest so the same se
 
 For multiple places, check their expected source closures and place configuration. Exercise place-specific startup only when it changed or an observed failure requires investigation. Keep injected fixtures in disposable copies, never in delivery files. Rebuild and check integrity after changes, then repeat only behavior whose passing result was invalidated. Formatting-only or guidance edits do not require another gameplay pass.
 
-Reopen specifically to investigate serialization failures or verify a saved-file repair. Cross-place transport remains unverified without a live client; that is a reporting distinction, not a routine delivery gate. Follow [testing guidance](testing.md) for the narrow conditions that justify live tests.
+Reopen specifically to investigate serialization failures or verify a saved-file repair. Cross-place transport stays unverified without a live client, as [the live-only investigation criteria](testing.md#evidence-types-not-sequential-delivery-gates) say.
 
 ## Serialization and synchronization lessons
 

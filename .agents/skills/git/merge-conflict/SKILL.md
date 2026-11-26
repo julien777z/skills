@@ -1,6 +1,6 @@
 ---
 name: merge-conflict
-description: Incorporate the base branch into a branch — a merge, a rebase, a pull, a branch update, or a conflict Git or the hosting service reports — by comparing what each side did and keeping the better answer, with the resolved result put to `acceptance-gate`'s base-incorporation question when that procedure calls for a gate. Use whenever the base is brought into a branch, whether or not Git reports a conflict, whenever a pull request is un-mergeable, when a finished change's base has moved before its final acceptance, or when an already applied local overlay input needs conflict resolution.
+description: Incorporate the base branch into a branch — a merge, a rebase, a pull, a branch update, or a conflict Git or the hosting service reports. Use whenever the base is brought into a branch, whether or not Git reports a conflict, whenever a pull request is un-mergeable, when a finished change's base has moved before its final acceptance, or when an already applied local overlay input needs conflict resolution.
 short_description: 'Bring the base branch into a work branch, resolve conflicts, and validate the result.'
 ---
 
@@ -16,18 +16,17 @@ answers to one question may now sit in one tree.
 - `pre-production`
 - `council`
 
-## Neither Side Is Authoritative
+## Choosing Between Sides
 
 - **The branch is not privileged because it is yours, and the base is not privileged because it
   landed first.** Arrival order is evidence about nothing, in either direction. "Incoming code takes
   a shape my change removes" and "the base already merged this" are available in every collision and
   each always points the same way, so on their own they decide nothing.
-- **Never resolve by side.** `ours`, `theirs`, a checkout of one side's file, or accepting every
-  hunk from one branch resolves nothing; each is a decision made without reading what the other side
-  did. Every conflicting file is read on both sides before any of it is written.
-- **A rule that favors your own side is not the judgment.** Once the comparison below has named a
-  winner, code that takes the losing shape is refactored onto the winner in the same change, and
-  which branch it came from is never a reason to leave it there.
+- **Resolve each collision by reading both sides, never by choosing one.** `ours`, `theirs`, a
+  checkout of one side's file, or accepting every hunk from one branch each decide without reading
+  what the other side did, so every conflicting file is read on both sides before any of it is
+  written. Once the comparison below names a winner, code that takes the losing shape is refactored
+  onto the winner in the same change, whichever branch it came from.
 
 - **A clean merge is not a consistent one, in guidance most of all.** Git reports a collision only
   where both sides touched the same lines. Where either side changed agent guidance — a skill, a
@@ -73,22 +72,21 @@ source checkout, remote branches and unrelated edits throughout.
    input's diff from its supplied base against the overlay as built so far. Every place both touched
    the same question is a collision, whether Git marked it or merged it silently.
 3. **Compare each collision on what the two designs do in this tree.** Apply `pre-production`'s
-   target-contract policy to each candidate; a legacy path does not survive because it preserves
-   previous behavior. Before touching either, name which answer is better and why: which leaves fewer
+   target-contract policy to each candidate. Before touching either, name which answer is better and why: which leaves fewer
    mechanisms for one concern, which removes duplication the other invites, and which failure modes
    each has produced. A design already duplicated in its own tree is evidence. Record the reason for
    the outcome: keep the target's shape and move incoming call sites onto it; take the incoming shape
    and move the target's call sites; or deliberately combine what each lacks in one mechanism.
-4. **A tie has not finished.** There is no coin-flip default and no presumption for either side:
-   apply `pre-production`'s test and take whichever yields the cleaner result and leaves the fewest
-   mechanisms behind. Where that still does not separate them, the two are one design under two
-   names, and the answer is the spelling the rest of the repository already reads.
+4. **A tie has not finished.** Apply `pre-production`'s test and take whichever yields the cleaner
+   result and leaves the fewest mechanisms behind. Where that still does not separate them, the two
+   are one design under two names, and the answer is the spelling the rest of the repository already
+   reads.
 5. **Preserve behavior required by the target contract.** Migrate affected consumers and retained
    data before removing an obsolete shape. A resolution that drops required behavior is a defect;
    preserving a legacy runtime path is not a way to avoid the migration. Where a close choice changes
    an interface others build on, put it to `council` in **Ask** mode and follow its ruling; a
-   conflict of intent the evidence does not settle goes to the user instead, as **Neither Side Is
-   Authoritative** says. Block only when a safe resolution needs an unauthorized product decision
+   conflict of intent the evidence does not settle goes to the user instead, as **Choosing Between
+   Sides** says. Block only when a safe resolution needs an unauthorized product decision
    or a change to a contract a consumer outside the user's control speaks.
 6. Remove every conflict marker and run `git diff --check`. Read the changed-file list against the
    target before proceeding. For a local overlay, preserve paths unrelated to the input and inspect

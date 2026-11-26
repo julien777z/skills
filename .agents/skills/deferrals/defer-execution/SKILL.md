@@ -29,7 +29,8 @@ Every invocation resolves to one of two routes. Make the call explicitly and say
 taken and why.
 
 **Execute now, in a worktree.** Take this route whenever the scope cannot conflict with the change
-in flight, whatever its size, including a scope large enough to need a plan.
+in flight and does not depend on what that change lands, whatever its size, including a scope
+large enough to need a plan.
 
 **Execute after the merge.** Take this route only when the merge supplies something the scope
 uses: it touches files the current branch also touches, or its correct shape depends on what the
@@ -62,15 +63,20 @@ The worktree leaves the current branch's working tree untouched.
    git worktree add <path> -b <required-prefix><slug> origin/<default-branch>
    ```
 
-2. **Delegate the work to a subagent** scoped to that worktree, once no other building worker in the
-   session is changing the same files or resources. Invoke `subagent-matrix` at its standard capability
-   level, launch its exact resolved identifier, and retain catalog state, identifier, assignment state
-   and host receipt with the scope's evidence in the task ledger through `session-ledger`, as
-   `subagent-matrix`'s **Dispatch** requires. This keeps the
-   parent session's own state and working directory where they were. Give the worker the scope, the worktree
-   path, and the commit and push cadence the GitHub rule's **Pre-Push Gate** sets for delegated edits.
+   `<required-prefix>` is the branch-name prefix the harness or the repository's guidance requires
+   for agent branches; where neither names one, the branch is named `<slug>` alone.
 
-3. **Validate inside the worktree** with the repository's own checks for what changed.
+2. **Do the work in the worktree**: directly when it is a few edits, and through one subagent
+   scoped to that worktree otherwise, once no other building worker in the session is changing the
+   same files or resources. A subagent keeps the parent session's context and working directory
+   free for the change in flight; a few edits cost less done directly. To delegate, invoke
+   `subagent-matrix` at its standard capability level, launch its exact resolved identifier, and
+   retain catalog state, identifier, assignment state and host receipt with the scope's evidence in
+   the task ledger through `session-ledger`, as `subagent-matrix`'s **Dispatch** requires. Give the
+   worker the scope, the worktree path, and the commit and push cadence the GitHub rule's
+   **Pre-Push Gate** sets for delegated edits.
+
+3. **Validate inside the worktree** with the checks the GitHub rule's **Pre-Push Gate** requires.
 
 4. **Push and open a pull request** as a draft, titled for the work.
 
@@ -89,7 +95,7 @@ The work is owed once the originating pull request lands.
    merges: `<scope>`". The step is what a later turn reads. Where the harness has a task list, add the
    same item there as well, so anyone scanning it can tell a queued-on-merge item from an ordinary
    pending one without this skill being loaded at all. Both are session bookkeeping rather than a
-   deferral record, and the guardrail against creating one stands.
+   deferral record, and the rule that this skill creates no deferral record stands.
 
 2. **Tell the user the scope is queued behind that pull request**, in those terms. Say what will be
    executed and what it is waiting on. Then name it and its blocking pull request again in every
@@ -142,8 +148,9 @@ an earlier deferred pull request is open or still being implemented.
 - Before starting, check both the session's queued work and its open deferred pull requests for one
   on the scope's subject.
 - A scope that joins does so on the branch of its kind: agent configuration and source stay apart,
-  except guidance the GitHub rule's **Branches and Pull Requests** puts on the source pull request it
-  depends on.
+  except guidance that rides the source pull request it depends on, as the GitHub rule's
+  **Branches and Pull Requests** says and the guidance-editing skill's pull-request reference sets
+  out.
 - A same-subject scope that arrives before the first pull request opens joins the same future
   branch.
 - Update the pull request body to cover the added work when appending. A body describing half of a
@@ -151,23 +158,7 @@ an earlier deferred pull request is open or still being implemented.
 
 ## Guardrails
 
-- Never fold the deferred scope into the branch it came from. That is the whole point: it must be
-  reviewable and mergeable on its own.
-- Never hand a would-be fix from the change under review here to get it out of that change. That is
-  a deferral, and `defer-scope`'s admission decides whether it may leave the change.
-- Never record a scope handed only to this skill through `defer-scope`.
-  Deferral records describe problems nobody has committed to; this skill's scopes are committed to
-  by definition.
-- Never branch a deferred scope from the working branch, on either route.
-- Never arm a timer, monitor, or scheduled check-in to notice the merge. The observation is
-  delivered or already being read.
-- A queued scope that outlives its pull request's merge by a turn has been dropped, whatever else
-  that turn accomplished.
-- A queued scope survives a summary. Re-establish it and check its pull request rather than reading
-  a skill listed as already run as a scope already done.
-- A later scope reuses an existing deferred branch and pull request only when it is on the same
-  subject, as **Continuing deferred execution** says.
-- Report which route was taken and why, every time. "Deferred" without the route and its reason
-  tells the user nothing about when to expect the work.
-- Scheduling is not merging. Opening the pull request completes this skill; merging it is a
-  separate authorization.
+- A would-be fix from the change under review is never handed here to get it out of that change:
+  that is a deferral, and `defer-scope`'s admission decides whether it may leave the change.
+- Report which route was taken and why, every time; "deferred" without them tells the user nothing
+  about when to expect the work.

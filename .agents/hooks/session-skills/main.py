@@ -30,11 +30,15 @@ def hook_directory() -> Path:
 
 
 def installed_skill_path(name: str) -> Path:
-    """Return where a skill's entry file sits in the user-level root this hook is linked into."""
+    """Return a skill's entry file in the skills folder of the root this hook sits in."""
 
-    user_root = hook_directory().parent.parent
+    skills = hook_directory().parent.parent / SKILLS_DIRECTORY_NAME
+    flat = skills / name / SKILL_ENTRY_FILENAME
 
-    return user_root / SKILLS_DIRECTORY_NAME / name / SKILL_ENTRY_FILENAME
+    if flat.is_file():
+        return flat
+
+    return min(skills.glob(f"*/{name}/{SKILL_ENTRY_FILENAME}"), default=flat)
 
 
 def session_context(name: str) -> str | None:

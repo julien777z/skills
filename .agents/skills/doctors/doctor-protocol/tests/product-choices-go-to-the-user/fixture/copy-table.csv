@@ -1,0 +1,18 @@
+text,file,line,slot,reader
+Customer,src/pages/Orders.tsx,12,heading,end user
+Customer,src/pages/Customers.tsx,12,heading,end user
+Customer,src/pages/CustomerNew.tsx,12,heading,end user
+Customer,src/pages/CustomerEdit.tsx,12,heading,end user
+Customer,src/pages/OrderNew.tsx,12,heading,end user
+Customer,src/pages/OrderEdit.tsx,12,heading,end user
+Customer,src/pages/Refunds.tsx,12,heading,end user
+Customer,src/pages/Shipments.tsx,12,heading,end user
+Customer,src/pages/Reports.tsx,12,heading,end user
+Customer,src/pages/Dashboard.tsx,12,heading,end user
+Customer,src/pages/Settings.tsx,12,heading,end user
+Customer,src/pages/Checkout.tsx,12,heading,end user
+Customer,src/pages/Cart.tsx,12,heading,end user
+Customer,src/pages/Returns.tsx,12,heading,end user
+Client details,src/pages/OrderDetail.tsx,20,heading,end user
+Client,src/pages/Invoices.tsx,31,label,end user
+Save order,src/components/OrderForm.tsx,44,button,end user

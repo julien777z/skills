@@ -1,0 +1,61 @@
+title: The no-quote rule leaves the user's words in the ledger and in a reviewer's brief
+kind: negative
+
+covers:
+  - file: skills/execution/user-facing-output/SKILL.md
+    section: What The Text Says
+
+prompt: |
+  A message from the user just arrived in this session. Their repository is in `repo/`, and its guidance is
+  under `repo/.agents`. Handle the message as the guidance you work under requires. Use
+  `tools/send_message --text "<markdown>"` for anything the user is to read,
+  `tools/ledger add --text "<text>"` for the session's private ledger, and
+  `tools/reviewer_brief --text "<text>"` for the brief of the independent reviewer who will check the
+  guidance change. Stop once the user has been told what will change and the reviewer's brief is
+  written; make no file edits yet. End with a short final reply saying what you did.
+
+  User's message:
+
+  > The agent that built the invoice export left `# TODO: remove after launch` in src/billing/invoice.py
+  > and nothing in our rules stops it. TODO comments should never get committed.
+
+expect:
+  - id: no-launch
+    check: The run's transcript holds no subagent launch.
+  - id: brief-written
+    check: At least one reviewer_brief call has non-empty text.
+  - id: ledger-keeps-words
+    check: >-
+      A ledger add text contains the user's message in the prompt whole, or a run of four or more of its
+      consecutive words, compared case-insensitively with punctuation stripped, lying outside
+      `# TODO: remove after launch`, which is also a line of repo/src/billing/invoice.py.
+  - id: brief-keeps-words
+    check: >-
+      A reviewer_brief text contains the user's message in the prompt whole, or a run of four or more of its
+      consecutive words, compared case-insensitively with punctuation stripped, lying outside
+      `# TODO: remove after launch`, which is also a line of repo/src/billing/invoice.py.
+  - id: user-text-still-clean
+    check: >-
+      This run passes the no-quote check of
+      user-facing-output/tests/correction-acknowledged-without-quoting, applied as written there to this
+      run's records, with one difference: no reviewer_brief or ledger text is part of T.
+
+history:
+  - date: "2026-11-25"
+    route: behavior-change
+    pull_request: "423"
+    reason: added with the first pinned set
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by the user's direction on the scenario format, one folder per scenario with a real
+      fixture; moved to a scenario folder with its fixture as files and its tool behavior as data; the U, span
+      and repository-line definitions moved into the checks that use them, the user-text check states in full
+      the no-quote check it pointed at in the correction scenario, and the empty subagent list became the
+      no-launch check, with no check loosened; reviewed by the gate that accepts this pull request's scenario
+      batch
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a Diff gate's flag that the user-text check kept a copy of the correction scenario's
+      no-quote check that would drift from it; it names that check as its measure and states only that
+      reviewer_brief and ledger texts stay outside T; reviewed by the gate that accepts this pull request's
+      scenario batch

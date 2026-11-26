@@ -1,6 +1,6 @@
 ---
 name: doctor-protocol
-description: The audit-and-fix protocol every doctor skill runs on — scope resolution, a repository index doctors share, a mechanical pre-pass, a partitioned read-only audit under a reviewer cap, a resumable run ledger, a remediation plan shown and started at once, fixes by area on one pull request, one final review, deferral of leftovers, and the report skeleton. Read from a doctor skill that declares it; never invoked on its own.
+description: The audit-and-fix protocol every doctor skill runs on — scope resolution, a repository index doctors share, a mechanical pre-pass, a partitioned read-only audit under a reviewer cap, a resumable run ledger, a remediation plan shown and started at once, fixes by area on one pull request, re-planning mid-run so every finding is fixed in the run and only user decisions and external blockers stay open, one final review, behavioral verification once every fix is in, and the report skeleton, which opens with what changed in and between skills. Read from a doctor skill that declares it; never invoked on its own.
 short_description: 'Set the audit, fix, review, and reporting process used by every doctor skill.'
 ---
 
@@ -42,7 +42,8 @@ run `doctor-protocol`, and supplies:
 4. **measures** — one or more counts those commands produce, taken before the audit and after the
    fixes;
 5. **dispositions** in order, declaring the permitted changes and evidence required for exceptions,
-   and the calls its domain raises, which the doctor decides as **Gate And Show The Plan** says;
+   and the calls its domain raises, each named as the run's to decide or reserved to the user, as
+   **Gate And Show The Plan** says;
 6. what its **cross-cutting reviewer compares** and what its **final reviewer challenges**;
 7. **domain dependencies** — the skills whose policy it applies and never restates;
 8. **report additions** — the rows it appends to the skeleton below.
@@ -65,7 +66,7 @@ selects none, with any reviewer fallback the doctor specifies; workers run at st
 
 | Launch | Small route | Whole route |
 |---|---|---|
-| Audit reviewers | 1, applying every lens | 1 per partition, at most 11, and 1 cross-cutting |
+| Audit reviewers | 1, applying every lens | 1 per partition, at most 11 at once, and 1 cross-cutting |
 | Plan attackers | 0 | 0 when every remedy is one a lens states |
 | Plan gate | 1 | 1 |
 | Workers | 1 | 1 per group, as many at once as `subagent-matrix`'s **Dispatch** allows |
@@ -78,9 +79,9 @@ selects none, with any reviewer fallback the doctor specifies; workers run at st
 - **The whole route usually takes 15 launches** on a repository of four partitions and six groups:
   5 audit reviewers, 1 plan gate, 6 workers, 2 final reviewers and 1 final gate. On a diff read in
   slices the same run takes up to 22.
-- **A run starts at most twelve audit reviewers.** A doctor may set a lower cap, never a higher
-  one. Launches a doctor adds beyond the table follow the counts the doctor states and stand outside
-  this cap.
+- **At most twelve audit reviewers run at once**, and a partition past that starts as one returns,
+  as **Delegate The Audit** says. A doctor may set a lower cap, never a higher one. Launches a
+  doctor adds beyond the table follow the counts the doctor states and stand outside this cap.
 - **What adds launches beyond the table:** one verifier for a partition whose reviewer returned
   findings unverified; `review-proposal`'s rounds when a whole-route plan holds a remedy the run
   designed;
@@ -116,6 +117,31 @@ Discover the repository's actual languages, projects, ownership boundaries, runn
 validation commands, and dependency graph at runtime. Do not assume a framework, directory layout,
 tool, provider, or hosting system.
 
+## Leave Nothing Open
+
+The owner invokes a doctor for a complete pass over its class, so the run fixes every finding
+inside its boundary before it reports.
+
+- **A finding is fixed once its proving check passes and each measure it counts toward reaches its
+  target**, such as a file brought within its size budget. A landed commit whose check or measure
+  still misses leaves the entry open.
+- **The plan changes mid-run when the work outgrows it.** A remedy that falls short of its
+  finding's measure, more instances of a finding than the plan counted, and a remedy the work shows
+  to be wrong are each re-planned and carried out in this run, as the delivery reference's
+  **Implement In Waves** says. No plan foresees every case, so the parent judges the new remedy
+  from what the finding's measure needs, such as moving text to the file that owns it where
+  rewording cannot bring a file within its budget.
+- **Unplanned, older than the run and too large are not dispositions.** A finding the plan missed
+  joins it, one that predates the run is fixed like any other, and size only sequences an entry
+  late, as **Gate And Show The Plan** says.
+- **A round limit ends an approach, never a finding.** Where a review or gate loop reaches its
+  limit on an in-boundary entry, the disposition picks the approach the entry is then fixed by;
+  reverting the fix or accepting it with the finding recorded would leave it open.
+- **Only two kinds of item stay open:** a decision reserved to the user, asked as **Gate And Show
+  The Plan** says, and a genuine external blocker the run cannot remove, such as access it lacks or
+  a release another owner holds. Each is recorded as the delivery reference's **Record What Stays
+  Open** says, the blocker with what removes it.
+
 ## Keep The Run Ledger
 
 The run's records live in the working-files folder of the worktree the run works in,
@@ -133,8 +159,8 @@ stage.
   another base describe a tree that is gone and are replaced.
 - **The ledger holds one entry per verified finding and per item retained with a reason**, in the
   reference's shape, with its disposition: fix, keep with the reason, a council ruling, a reserved
-  user decision, declined by
-  an earlier record, deferred with its record, or unresolved with the missing evidence. Each
+  user decision, declined by an earlier record, unresolved while the run gathers the missing
+  evidence, or deferred with its record for an item **Leave Nothing Open** lets stay open. Each
   partition's check results, an empty result included, stay in its receipt.
 - Do not infer an invariant from one observation: one passing run, one fixture, one file that
   happens to follow a convention. Enumerate the items before deciding what the convention is.
@@ -165,7 +191,8 @@ Before any reviewer launches, the parent runs three things once and saves each r
 folder. Every reviewer reads the same results and repeats none of them.
 
 - **Baseline checks.** The checks the repository's CI runs on a pull request, as the GitHub rule's
-  **Pre-Push Gate** finds them, run once on the base, so a failure that predates the run is known.
+  **Pre-Push Gate** finds them, run once on the base, so the run knows which failures predate it;
+  each is a defect it fixes, as **Resolve The Scope** says.
   They run once more on the final head under **Run Repository-Native Checks**, and in between only
   where a group's own files need one.
 - **Mechanical pre-pass.** Each command the doctor declares runs in its read-only mode over the
@@ -194,13 +221,13 @@ of this section is the whole route.
    directory order; a single file past the bound is a partition of its own. Merge small neighbors
    up to the bound.
 2. **Launch one reviewer per partition, within the cap.** When the manifest holds more partitions
-   than the cap allows, audit the ones with the most pre-pass candidates first and mark the rest
-   unread; a resumed run audits them. Each reviewer gets its partition's paths, the complete lens
-   catalog, the pre-pass candidates in its partition and the measures. It reads every file of its
-   partition whole and runs each lens check by check, reporting each check's result, an empty
-   result included: a check whose result is not reported was not run. An instance of a
-   whole-repository lens is returned as a candidate for the cross-cutting reviewer, never chased
-   across partitions.
+   than the cap allows at once, audit the ones with the most pre-pass candidates first and start
+   the next as each reviewer returns, so this run reads every partition. Each reviewer gets its
+   partition's paths, the complete lens catalog, the pre-pass candidates in its partition and the
+   measures. It reads every file of its partition whole and runs each lens check by check,
+   reporting each check's result, an empty result included: a check whose result is not reported
+   was not run. An instance of a whole-repository lens is returned as a candidate for the
+   cross-cutting reviewer, never chased across partitions.
 3. **Launch one fresh cross-cutting reviewer** once the partition reviewers have returned their
    final results. It is handed the manifest, the doctor's
    whole-repository lenses, the pre-pass output, and every partition's findings and receipt. It
@@ -221,7 +248,8 @@ of this section is the whole route.
    reading source only to settle a disagreement.
 7. **Coverage is checked against the manifest.** The parent compares each read receipt with its
    partition by command. A path missing from a receipt goes back to that reviewer, or to another
-   within the cap; a path no reviewer read whole stays marked unread and is named in the report.
+   within the cap, until it is read whole; only a path the run cannot open stays marked unread,
+   named in the report with what would let it be read.
 
 ## State The Intent
 
@@ -239,9 +267,11 @@ Otherwise write a decision-complete remediation plan from the ledger.
 - **Entries are grouped by area, never by lens.** A group is the files that change together: one
   area of the repository, with every lens's entries for those files. The plan names each group's
   files, what it waits on and the wave it runs in, as **Implement In Waves** sets out.
-- **Each entry is checked against the doctor's change boundary.** An entry whose required exception
-  evidence is absent leaves the plan, stays in the ledger as unresolved naming that evidence, and
-  follows **Defer Leftovers**; a shown plan cannot supply that evidence.
+- **Each entry is checked against the doctor's change boundary.** An entry whose remedy needs
+  exception evidence the ledger lacks gets a step that gathers it, such as a measurement or a
+  trial, and takes the disposition that evidence supports; a shown plan cannot supply that
+  evidence, and only evidence the run cannot obtain leaves the entry open, as **Leave Nothing
+  Open** says.
 - **The plan takes one gate.** When every entry's fix is the remedy its lens states, put the plan
   to `acceptance-gate`'s Proposal question directly, and no attacker starts. When some entries
   carry a remedy the run designed, or alternatives the run chose between, invoke `review-proposal`
@@ -250,16 +280,22 @@ Otherwise write a decision-complete remediation plan from the ledger.
   directly. Preserve objections and their dispositions through either route.
 - **The doctor decides, and every decision is in the report.** The owner invokes a doctor to have
   its class corrected, and a run that stops for approvals returns a plan where a fix was wanted. So
-  the run decides and makes every change its findings call for, including removing a feature, a
-  product or scope choice a remedy makes, a rewording of correct text and a rewording across the
-  tree; a call its own checks cannot settle goes to `council` in **Ask** mode, and the ruling is
-  followed. Each decision goes in the plan file and the report with its reason.
-  - **Reserved to the user's own words**: a merge, deployment, publication or release, and a
-    security, disclosure or authorization choice, such as who may see a record. Fixing a
-    vulnerability so the product enforces the access it already intends is not one, and the run
-    makes that fix. Ask the reserved entries together through the global rules' question
-    procedure, each as options with each consequence and a recommendation; only the entries that
-    depend on an answer wait for it.
+  the run decides and makes every change its findings call for, including a rewording of correct
+  guidance text and a rewording across the tree, apart from the reserved entries below; a call its
+  own checks cannot settle goes to `council` in **Ask** mode, and the ruling is followed. Each
+  decision goes in the plan file and the report with its reason, and the report says which
+  decisions the run made and which went to the user.
+  - **Reserved to the user's own words**: a merge, deployment, publication or release, a security,
+    disclosure or authorization choice, such as who may see a record, and a product or scope
+    choice a remedy makes, as `pre-production`'s **Product Choices** defines one — removing or
+    hiding content or a feature, a remedy whose visible effect is large, a new surface, and a
+    rewording of correct text already in a product. A rewording of guidance text is not a product
+    choice, and a routine presentation detail stays the run's. Fixing a vulnerability so the
+    product enforces the access it already intends is not one, and the run makes that fix. Ask the
+    reserved entries together through the global rules' question procedure, each as options with
+    each consequence and a recommendation, and for a visible choice with its captures and the old
+    and new text in a message the user sees first; only the entries that depend on an answer wait
+    for it.
   - **A departure from a rule rides the rule change.** Where the run judges a shape a rule
     prescribes or exempts worse than the departure, as `pre-production`'s **Trade-Offs Are
     Surfaced, Never Enforced** asks of a rule, the rule change goes on the run's
@@ -284,6 +320,9 @@ group late and describe it clearly in the pull request, never a reason for a sec
 that split, only the user asking to hold work apart puts an entry anywhere else. The plan may name
 checkpoints that group related entries on the same draft pull request.
 
+Once the plan is shown, read [the delivery reference](references/delivery.md) for the waves,
+checks, review, acceptance, deferral, delivery and report.
+
 ## Guard Recurrences
 
 A shape a lens finds more than once is a shape the next change will add again. Where the repository
@@ -291,166 +330,3 @@ already keeps structural tests or lint configuration, pair the fix with a guard:
 on the shape, a lint rule, a generator template corrected at its source. A doctor that only cleans
 up what it finds runs forever; a guard is what lets a lens retire. A guard asserts the convention,
 never the absence of a retired implementation.
-
-## Implement In Waves
-
-Once the plan is shown, workers implement it side by side while the parent keeps the ledger, the
-plan's order, every judgment over the combined result and every check that needs a shared
-resource.
-
-- **A wave is the groups that can run at once:** groups whose files do not overlap and none of which
-  needs what another group in flight produces. A group that reaches into other groups' files — a
-  rename across the scope, a shared module, a lockfile, generated output, a migration, a guard the
-  others rely on — runs alone, before every group that needs what it produces. Cut this way a run
-  has few waves: the cross-area groups in order, then every area group together.
-- **Each group gets one worker, within `subagent-matrix`'s cap on execution workers**; as one
-  finishes, the next group in the wave starts.
-- **The brief is `subagent-matrix`'s worker brief form with every field filled.** Its scope is the
-  group's ledger entries, each with its fix and proving check; its files are the group's files; its
-  checks are those proving checks and the checks covering those files; its branch is the run's.
-  Two lines of the form are filled for a doctor run: every entry in the group is in scope whatever
-  its size, since the size budget does not apply, and a defect the worker meets outside its files
-  is handed up in its report, never edited, so two workers never edit one file.
-- **The parent adds each handed-up defect to the ledger** as a required entry and gives it to the
-  worker that owns its files, or to a later group.
-- **A shared resource is never used by two workers at once** — a database, a port, a running stack.
-  A check that needs one runs in the parent.
-- **Fixes land as commits per area on the one pull request.** The parent reads each worker's
-  reported head and check results at their source, as `execute-task`'s reported-outcomes reference
-  says, and marks the group's entries fixed with their commits.
-- **Nothing reads the diff per wave.** A worker runs its own checks and the reuse search its brief
-  requires; no simplification pass, review or whole-diff gate runs per group or per wave. The one
-  exception is a group later groups build on, which gets `acceptance-gate`'s Diff question over
-  its own diff before they start, as `execute-task`'s **Ongoing Simplification** says of such a
-  step.
-- **A doctor may declare a late audit** for lenses whose items settle only once earlier entries
-  land. It is one more audit and verification stage over the partitions those lenses cover, taken
-  after the entries it waits on are pushed. Its reviewers count toward the run's cap, and its
-  findings join the same ledger and plan under the same gate, shown as an amendment.
-
-A decision discovered during implementation is settled as **Gate And Show The Plan** settles one and
-added to the plan as an amendment; do not silently narrow the correction.
-
-The plan is implemented to its last entry in one continuous run, into the branch in flight.
-A finished wave is not a finished plan, and neither is a pushed commit or a green suite; start the
-next wave in the same turn. A genuine gate holds only its dependent work.
-
-Do not add source comments that narrate the change, its previous shape, or why something was added,
-removed, merged, or tightened. Make the result express the current state; tests validate that
-behavior.
-
-## Run Repository-Native Checks
-
-Once the last group lands, run on the final head, once: the pre-push checks the GitHub rule's
-**Pre-Push Gate** defines, the baseline checks from **Measure Before Fan-Out**, and any further
-repository-native check applicable to the changed files and their consumers: formatting, static
-analysis, tests, builds, code generation, and contract checks. Report a check category that is not
-configured rather than inventing one.
-
-Then take every measure again and rerun the mechanical pre-pass. Each instance a measure of defect
-candidates still counts is matched to a ledger entry that retains it: kept with a reason, declined, deferred or
-waiting on a reserved user decision or held on a rule change's merge. An instance with no such
-entry is a missed fix and goes back out as a fix step. Inventory totals, such as files, symbols,
-dependencies, documents and strings, and performance measures are compared before and after, never
-reconciled item by item.
-
-## Review The Result
-
-The diff is reviewed once, at the end. Launch two independent read-only final reviewers:
-
-- one verifies that every planned disposition was carried out completely, and applies
-  `code-simplify`'s rubric to the diff in the same read, so no separate simplification pass runs;
-- one tries to disprove the decisions, checks what was retained, and reviews unresolved evidence.
-  The doctor names what this reviewer challenges.
-
-On the small route one reviewer does both. Both check the delivered changes against the doctor's
-boundary, which holds the fix for every defect or vulnerability the run noticed, and required
-exception evidence, including changes introduced while incorporating the base branch or resolving
-conflicts.
-
-**A diff past 2,500 changed lines or 60 changed files is read in slices by area.** The first
-reviewer's read is split into at most four slices of neighboring groups, one reviewer per slice,
-each given its slice's diff, the entries it covers and the list of files the other slices change.
-The second reviewer stays one, working from the ledger and opening the diff where a decision
-points.
-
-Validate their findings, fix every confirmed in-scope issue, rerun affected checks, and review
-again only the changed code and the findings still open, with one reviewer, until no confirmed
-issue remains or a genuine external blocker or user decision prevents completion, within the limit
-of 3 review rounds per change that `execute-task`'s review-rounds reference sets; a change that
-fails its third round gets that reference's disposition.
-
-## Accept The Complete Diff
-
-Once review is clean, put the complete diff to `acceptance-gate`'s final-acceptance question
-against the intent statement. A diff read in slices is put slice by slice, the same slices, each
-gate given its slice's diff as content with the intent statement and the list of files the other
-slices change, and every slice must be accepted. One more gate then reads the seams between
-slices, as `acceptance-gate`'s final-acceptance question allows: each place one slice's change
-calls, imports or shares a contract with a file another slice changes. Answer every flag under `acceptance-gate`'s **Bounds**, pushing each fix as its own
-increment through the GitHub rule's **Pre-Push Gate**.
-
-When acceptance passes, record a `review` entry with `session-ledger` for each pull request: the
-repository, the pull request, the accepted head, its tree and the scope `whole`, with the
-requirements checked and the base revision of the governing guidance where the diff changes agent
-configuration. A later review asked for the whole pull request then measures only what changed
-after that head.
-
-## Defer Leftovers
-
-Nothing the run leaves unfixed lives only in chat, the plan or the report.
-
-- **A confirmed defect or vulnerability is fixed in this run**, whatever its size or area, as
-  **Resolve The Scope** says, and is never deferred.
-- **Cleanup the run cannot finish is recorded through `defer-scope`** at the moment that is
-  decided: an entry left unresolved for missing evidence or an external blocker, a decision the
-  user has not answered when the run ends, and cleanup that fixes no defect found outside the
-  doctor's boundary, subject to its reporting disposition. A refused admission means in-boundary
-  work is done in this run, unless the refusal names close, which is recorded canceled with its
-  reason and reconsideration criterion.
-- **A decision the user declined is recorded the same way**, so a later run reads it under
-  **Resolve The Scope** and skips the finding.
-- **A path no reviewer read is not a finding.** It stays marked unread in the manifest and is
-  named in the report with the count.
-
-## Deliver
-
-Keep each repository's run on its draft pull request for the user's review: no doctor pull request
-is merged or set to auto-merge by the run, whatever standing merge exception would otherwise cover
-it, because the merge is where the owner reads the decisions the run made on its own. A later
-explicit user instruction naming the target may authorize merge. A run that changes both agent configuration and source carries each on its own pull
-request, except guidance the GitHub rule puts on the source pull request it depends on, and each
-kind stays on one pull request however many fixes the run makes. Complete
-every planned entry continuously; checkpoints sequence work on those drafts and never wait for a
-merge. The one exception is a source entry held on a rule change's merge under **Gate And Show The
-Plan**: the run completes its independent work and reports that entry as held. Run **Run
-Repository-Native Checks**, **Review The Result**, and **Accept The Complete Diff** over the completed work before reporting it for the user's review. Confirm that every planned
-disposition landed.
-
-**A run's guidance fixes are reviewed once.** Where the run changed agent configuration, **Review
-The Result** and **Accept The Complete Diff** are that change's delivery review and acceptance,
-their reviewers and gate briefed as `edit-skill`'s **Guidance Delivery** asks of a guidance diff's
-readers. Hand that route the accepted head as already reviewed: it adds the source check and one
-skill-test round for the guidance the fixes changed, and starts no second review or acceptance.
-
-## Report
-
-The final report names:
-
-- the resolved scope, the route taken, and the inventory counts;
-- each draft pull request the run opened and what it carries;
-- coverage: partitions and paths read whole, and every path no reviewer read, with the reason;
-- each measure before and after, side by side, and each pre-pass tool that was not run;
-- per area and per lens, the counts by disposition;
-- each retained item and the distinction or reason that retains it;
-- each recorded deferral and each declined record that skipped a finding, by its record;
-- the launches the run made against the counts in **Launches**, final-review results, and every
-  gate verdict with what it named;
-- the baseline and final check results and any category not configured;
-- every decision the run made, each council ruling, and each reserved decision with the user's
-  answer or as still open;
-- each source entry held on a rule change's merge, with that pull request;
-- remaining external blockers.
-
-Per-entry detail, each applied correction with its evidence and commit, goes in a file sent with
-the report once the run holds more than five entries. Each doctor appends its own rows.

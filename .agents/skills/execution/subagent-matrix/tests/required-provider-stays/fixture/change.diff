@@ -1,0 +1,13 @@
+--- a/rates.py
++++ b/rates.py
+@@ -8,6 +8,16 @@ import time
+ def fetch_rates(client):
+-    return client.get("/rates", timeout=5)
++    for attempt in range(3):
++        try:
++            return client.get("/rates", timeout=5)
++        except TimeoutError:
++            time.sleep(2)
++        except Exception:
++            pass
++    return None

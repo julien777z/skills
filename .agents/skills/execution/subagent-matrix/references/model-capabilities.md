@@ -3,7 +3,7 @@
 These are model families, not pinned versions. Each capability label selects the latest available
 member of its family on the current host. The calling skill chooses the capability level appropriate
 to each assignment. Cheap through frontier form the ordinary capability ladder; specialist is a
-separate tier.
+separate level.
 
 | Capability | Codex family | Claude family | Selection | Fallback |
 | ---------- | ------------ | ------------- | --------- | -------- |
@@ -11,7 +11,7 @@ separate tier.
 | `standard` | Terra | Sonnet | Balanced reviews, analysis, and substantive tasks, and a narrow independent judgment: a small packet whose answer accepts no diff for merge | Caller-authorized ordinary ladder |
 | `advanced` | Sol | Opus | Difficult tasks requiring stronger reasoning, and an independent judgment that accepts a diff for merge or a plan before it is built | Caller-authorized ordinary ladder |
 | `frontier` | Astra | Fable | The most demanding ordinary assignments | Caller-authorized ordinary ladder |
-| `specialist` | Astra | Mythos | Only a calling skill explicitly selecting specialist | Claude: `frontier` by default, or caller-selected tier; Codex Astra holds |
+| `specialist` | Astra | Mythos | Only a calling skill explicitly selecting specialist | Claude: `frontier` by default, or caller-selected capability level; Codex Astra holds |
 
 The labels describe selection policy, not identical capabilities across providers or guaranteed
 host availability. A catalog omission is not availability evidence; the workflow resolves an

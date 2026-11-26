@@ -1,5 +1,7 @@
 # Story quality criteria
 
+Contents: **Concrete core**, **Direction pitch**, **Story structure**, **Room to continue**, **Dialogue**, **Progression and reward cadence**, **Critique checks**, **Opening, onboarding, and character appearance**, **Character staging and encounters**, **Proposal evaluation**.
+
 ## Concrete core
 
 The first quality bar, ahead of everything below. A story's core is concrete and active, never a mood, a metaphor or an abstract idea. There is someone or something the player can name and act against or toward — an antagonist, a rival, a disaster, a contest, a mystery with a culprit, whatever fits the game — with a clear goal, plain stakes a child can repeat ("if nobody does X, Y happens"), pressure that escalates, and the game's own verbs aimed at it. When one conflict resolves, the next arises, which is how the story keeps going under **Room to continue**. A theme or a deeper mystery may sit underneath and is never the premise. The gate is the retell test: a ten-year-old can say who or what it is, what it is doing, what happens if nobody acts, and what the player does about it. A pitch that fails the test fails regardless of any score. A villain threatening a city passes, and so do a rival, a flood or a tournament; no one shape is the template, and the game decides which fits. Never copy an existing game's story, names or characters.

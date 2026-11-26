@@ -1,9 +1,9 @@
 # Review rounds
 
-**A change gets at most 3 review rounds in total, in every review loop: the first review and 2
-re-reviews after repairs.** A change that has failed 3 rounds is not repaired again: findings that
-keep coming on one change say the approach is wrong, not that the next patch will land. The stop
-exists to end wasted rounds, never to add questions, and the task stays active.
+A change gets the review rounds `acceptance-gate`'s **Bounds** allows, in every review loop. A
+change that has used its rounds is not repaired again: findings that keep coming on one change say
+the approach is wrong, not that the next patch will land. The stop exists to end wasted rounds,
+never to add questions, and the task stays active.
 
 ## Counting
 
@@ -14,8 +14,9 @@ exists to end wasted rounds, never to add questions, and the task stays active.
 
 ## Disposition At The Limit
 
-- Put the disposition to `council` in **Ask** mode as **Bounds** says, with the change and each
-  round's findings and remedies. Record its ruling and follow it.
+- Put the disposition to `council` in **Ask** mode as **Bounds** says, with the change, each
+  round's findings and remedies, and the different approach your reconsideration found. Record its
+  ruling and follow it.
 - If the authorized outcome still needs work, update the active plan and start the replacement, a
   new change with its own rounds, at its first step **Priority** permits, under the existing
   authorization and without a new plan. A different implementation idea is not a new

@@ -3,6 +3,8 @@
 The `roblox-game-overview` skill's procedure for staging, checking, capturing and reusing the
 pictures its dashboard shows.
 
+Contents: **Manifest And Reuse**, **Staging A Scene**, **Framing Check**.
+
 ## Manifest And Reuse
 
 The manifest is a JSON file beside the spec and the pictures, in the dashboard's folder that survives a restart. Each picture has one entry: the
@@ -38,7 +40,7 @@ whatever its fingerprints say.
 
 ## Staging A Scene
 
-Hold one of the game's editors, as `roblox-studio`'s testing reference says for the game's editor
+Hold one of the game's editors, as `roblox-studio`'s runner reference says for the game's editor
 pool, and open a built copy of the place that holds every map in that editor's slot, in place of its
 warm editor; start Play with a disposable profile, and never save. Reuse the repository's own capture helpers for each step below
 where it has them.
@@ -79,14 +81,13 @@ model: a scene with no named subject is captured unmeasured and read first.
 - **Find the subject by walking the world's character models** and picking the actor the scene
   stages by its own name or encounter, or the small props around the target when the scene stages
   no character. Spatial queries skip parts that turn querying off, which characters and props often
-  do, so a query finds the wrong model or none: it passed an actor hidden behind the avatar and
-  failed props standing in plain view. Nearness alone misleads too: an actor that walks its ground
-  stands away from its encounter's named point, and the nearest model there can be another one, so a
-  check that measures that neighbor passes a frame that cuts the real subject off.
+  do, and an actor that walks its ground stands away from its encounter's named point, so the
+  nearest model there can be another one; a check that measures either passes a frame that cuts the
+  real subject off.
 - **Project every visible part's corners** through the camera to get the subject's screen box.
 - **Judge it**:
-  - in frame: the whole box sits inside the frame, clear of each edge by a small margin. A check on
-    the box's middle alone passed a creature cut off by the frame's corner;
+  - in frame: the whole box sits inside the frame, clear of each edge by a small margin, since a
+    check on the box's middle alone passes a creature cut off at the frame's corner;
   - large enough: a character covers a meaningful share of the frame, more for a portrait or a
     creature in a fight than for a scene;
   - not behind the avatar: a ray from the camera to the subject's middle reaches it before the

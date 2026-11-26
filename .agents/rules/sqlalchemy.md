@@ -12,7 +12,7 @@ paths:
 - Tables use SQLAlchemy 2.0 declarative models and inherit from the project's shared declarative base classes.
 - Define `__tablename__` and `__table_args__` explicitly for each table.
 - Use `Mapped[T]` + `mapped_column(...)` for all columns.
-- Prefer schema-qualified foreign keys with typed configuration values (for example, `ForeignKey(f"{CONFIG.DATABASE_SCHEMA_NAME}.resources.id")`).
+- Prefer schema-qualified foreign keys with typed configuration values (for example, `ForeignKey(f"{APPLICATION_CONFIG.DATABASE_SCHEMA_NAME}.resources.id")`).
 
 ```python
 import uuid
@@ -21,8 +21,7 @@ from typing import TYPE_CHECKING
 from sqlalchemy import ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from myapp.core.config import CONFIG
-
+from myapp.core.config import APPLICATION_CONFIG
 from myapp.models.base import Base
 
 if TYPE_CHECKING:
@@ -33,11 +32,11 @@ class Post(Base):
     __tablename__ = "posts"
     __table_args__ = (
         UniqueConstraint("blog_id", "slug", name="uq_post_blog_slug"),
-        {"schema": CONFIG.DATABASE_SCHEMA_NAME},
+        {"schema": APPLICATION_CONFIG.DATABASE_SCHEMA_NAME},
     )
 
     author_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey(f"{CONFIG.DATABASE_SCHEMA_NAME}.authors.id"),
+        ForeignKey(f"{APPLICATION_CONFIG.DATABASE_SCHEMA_NAME}.authors.id"),
         index=True,
     )
     author: Mapped["Author"] = relationship(lazy="selectin")
@@ -53,7 +52,7 @@ class Post(Base):
 
 Prefer the project's shared ORM helpers for common reads, pagination, counts, inserts, upserts, and updates when they exist.
 
-- **Important**: when the project's persistence helpers treat bare `None` as omitted, use the project's explicit SQL-NULL sentinel to persist `NULL` on nullable columns.
+- When the project's persistence helpers treat a bare `None` as omitted, pass the project's explicit SQL-NULL sentinel to persist `NULL` on a nullable column, because the bare value leaves the column unchanged.
 - Use a single-row update path when changing one loaded entity and a bulk-update path only when one statement intentionally updates multiple matching rows.
 - Do not refresh an entity merely to repair stale state after a persistence helper that already updates and flushes the loaded instance.
 - Do not manually mutate ORM entity attributes and flush when the repository provides a persistence helper for that operation.
@@ -64,7 +63,6 @@ Prefer the project's shared ORM helpers for common reads, pagination, counts, in
 ## Session and Transaction Boundaries
 
 - Route handlers should depend on the project's database-session dependency.
-- Route handlers must not perform ORM reads or writes or build response models from ORM rows inline; that data access belongs in a service function that returns the response model.
 - Service functions should accept `AsyncSession` and never create their own DB sessions.
 - Do not call `commit()` inside service functions; request/session lifecycle owns transaction completion.
 - **A commit boundary is the one exception.** When a write must land on a transaction of its own — an audit or compliance record that has to survive the caller rolling back — it cannot join the caller's session, and neither can the rows it references. Such a helper opens its own session, performs that one write, commits, and returns; it deliberately takes no caller session, because the caller's open transaction is precisely what it must not join.
@@ -79,6 +77,6 @@ Prefer the project's shared ORM helpers for common reads, pagination, counts, in
 
 ## Gotchas
 
-- Do not use SQLModel-only APIs (`table=True`, `Field(...)`, SQLModel `Relationship(...)`) in this codebase.
+- Define tables with SQLAlchemy's declarative API only; SQLModel-only APIs (`table=True`, `Field(...)`, SQLModel `Relationship(...)`) are not used.
 - All service surfaces should centralize transaction lifecycle in their database-session dependency.
 - When adding filters/upserts, align with existing `where` clause patterns and class helper methods instead of bespoke query flows.

@@ -47,6 +47,7 @@ CONTEXT_BEFORE_CHARS: Final[int] = 30
 CONTEXT_AFTER_CHARS: Final[int] = 10
 SKILL_RESOURCE_KIND: Final[str] = "skill"
 INSTALLED_PACKAGES_DIRNAME: Final[str] = "node_modules"
+SCENARIOS_DIRNAME: Final[str] = "tests"
 GENERATED_DIRNAME: Final[str] = ".auto_generated"
 RULES_DIRNAME: Final[str] = "rules"
 REFERENCES_DIRNAME: Final[str] = "references"
@@ -134,6 +135,18 @@ WORDING_COLUMNS: Final[tuple[str, ...]] = (
 DESCRIPTION_FIELD: Final[str] = "description"
 DESCRIPTION_SPECIFICATION_CHARS: Final[int] = 1024
 DESCRIPTION_LISTING_CHARS: Final[int] = 1536
+OUTPUT_DIR_PATTERN: Final[re.Pattern[str]] = re.compile(r"^\s*output-dir:\s*(\S+)\s*$", re.MULTILINE)
+INSTRUCTIONS_FILENAME: Final[str] = "AGENTS.md"
+GENERATED_ROOT_FILES: Final[frozenset[str]] = frozenset({INSTRUCTIONS_FILENAME})
+PROVIDER_ROOT_DIRNAMES: Final[frozenset[str]] = frozenset({".claude", ".codex", ".cursor"})
+CODEX_INSTRUCTIONS_CAP_BYTES: Final[int] = 32768
+REMOTE_HEAD_PATTERN: Final[re.Pattern[str]] = re.compile(
+    r"^ref: refs/heads/(\S+)\tHEAD$", re.MULTILINE
+)
+
+YAML_REQUIREMENT: Final[str] = "PyYAML==6.0.3"
+YAML_ENVIRONMENT_DIRNAME: Final[str] = "validate-sources-yaml"
+SCENARIO_CHECK_SCRIPT: Final[Path] = Path(__file__).with_name("scenarios.py")
 
 EXIT_CODES: Final[dict[SyncOutcome, int]] = {
     SyncOutcome.VALID: 0,
@@ -190,54 +203,47 @@ def tool_python(install_dir: Path) -> Path:
     return install_dir / ("Scripts" if os.name == "nt" else "bin") / "python"
 
 
-def install_tool(action: ActionReference, commit: str) -> Path:
-    """Install the sync tool at one commit and return its interpreter."""
+def cache_dir() -> Path:
+    """Return the user's cache directory, where the script's environments are installed."""
 
-    install_dir = (
-        Path(os.environ.get("XDG_CACHE_HOME") or Path.home() / ".cache") / CACHE_DIRNAME / commit
-    )
+    return Path(os.environ.get("XDG_CACHE_HOME") or Path.home() / ".cache")
+
+
+def install_environment(install_dir: Path, requirement: str) -> Path:
+    """Install one pinned requirement into its own environment and return its interpreter."""
+
     marker = install_dir / INSTALL_MARKER_FILENAME
 
     if marker.exists():
-        logger.info(
-            "Sync tool %s@%s is installed at %s",
-            action["repository"],
-            commit[:12],
-            install_dir,
-        )
+        logger.info("%s is installed at %s", requirement, install_dir)
 
         return tool_python(install_dir)
 
     if install_dir.exists():
         shutil.rmtree(install_dir)
 
-    logger.info(
-        "Installing sync tool %s@%s into %s",
-        action["repository"],
-        commit[:12],
-        install_dir,
-    )
+    logger.info("Installing %s into %s", requirement, install_dir)
 
     # A copied interpreter from a standalone Python build cannot find its standard library, so the
     # environment links to the interpreter, as `python -m venv` does outside Windows.
     venv.EnvBuilder(with_pip=True, symlinks=os.name != "nt").create(install_dir)
 
-    url = REPOSITORY_URL_TEMPLATE.format(repository=action["repository"])
     subprocess.run(
-        [
-            str(tool_python(install_dir)),
-            "-m",
-            "pip",
-            "install",
-            "--quiet",
-            f"git+{url}@{commit}",
-        ],
+        [str(tool_python(install_dir)), "-m", "pip", "install", "--quiet", requirement],
         check=True,
     )
 
     marker.touch()
 
     return tool_python(install_dir)
+
+
+def install_tool(action: ActionReference, commit: str) -> Path:
+    """Install the sync tool at one commit and return its interpreter."""
+
+    url = REPOSITORY_URL_TEMPLATE.format(repository=action["repository"])
+
+    return install_environment(cache_dir() / CACHE_DIRNAME / commit, f"git+{url}@{commit}")
 
 
 def run_sync_tool(python: Path, root: Path, agents_dirname: str, command: list[str]) -> SyncOutcome:
@@ -262,6 +268,105 @@ def run_sync_tool(python: Path, root: Path, agents_dirname: str, command: list[s
     return outcome
 
 
+def generated_output_dir(root: Path, agents_dirname: str) -> str:
+    """Read the directory the sync workflow writes generated output into."""
+
+    workflows_dir = root / WORKFLOWS_DIRNAME
+    workflow_paths = sorted(workflows_dir.glob("*.yml")) + sorted(workflows_dir.glob("*.yaml"))
+
+    for path in workflow_paths:
+        match = OUTPUT_DIR_PATTERN.search(path.read_text(encoding="utf-8"))
+
+        if match is not None:
+            return match.group(1).strip("\"'").rstrip("/")
+
+    return f"{agents_dirname}/{GENERATED_DIRNAME}"
+
+
+def git_output(root: Path, *arguments: str) -> str | None:
+    """Return one git command's output, or None when it fails."""
+
+    run = subprocess.run(
+        ["git", "-C", str(root), *arguments], check=False, capture_output=True, text=True
+    )
+
+    return run.stdout.strip() if run.returncode == 0 else None
+
+
+def default_branch_ref(root: Path) -> str | None:
+    """Resolve the remote-tracking ref of origin's default branch."""
+
+    symbolic = git_output(root, "symbolic-ref", "--short", "refs/remotes/origin/HEAD")
+
+    if symbolic is not None:
+        return symbolic
+
+    listing = git_output(root, "ls-remote", "--symref", "origin", "HEAD") or ""
+    remote_head = REMOTE_HEAD_PATTERN.search(listing)
+
+    if remote_head is None:
+        return None
+
+    candidate = f"origin/{remote_head.group(1)}"
+
+    if git_output(root, "rev-parse", "--verify", "--quiet", f"refs/remotes/{candidate}") is None:
+        return None
+
+    return candidate
+
+
+def find_generated_edits(root: Path, agents_dirname: str) -> list[str]:
+    """List generated paths a branch other than the default branch changes."""
+
+    default_ref = default_branch_ref(root)
+    branch = git_output(root, "rev-parse", "--abbrev-ref", "HEAD")
+
+    if default_ref is None or branch is None:
+        logger.warning("Generated: skipped, since no default branch or current branch resolved")
+
+        return []
+
+    if default_ref == f"origin/{branch}":
+        return []
+
+    base = git_output(root, "merge-base", default_ref, "HEAD")
+    changed = git_output(root, "diff", "--name-only", base) if base else None
+
+    if changed is None:
+        logger.warning("Generated: skipped, since no change against %s could be read", default_ref)
+
+        return []
+
+    output_dir = generated_output_dir(root, agents_dirname)
+
+    return [
+        f"{path} is written by Agent Sync only"
+        for path in changed.splitlines()
+        if path.startswith(f"{output_dir}/")
+        or path in GENERATED_ROOT_FILES
+        or path.split("/", 1)[0] in PROVIDER_ROOT_DIRNAMES
+    ]
+
+
+def find_instructions_cap_problems(scratch: Path) -> list[str]:
+    """Report a generated instructions file past Codex's default size cap."""
+
+    instructions = scratch / INSTRUCTIONS_FILENAME
+
+    if not instructions.is_file():
+        return []
+
+    size = instructions.stat().st_size
+
+    if size <= CODEX_INSTRUCTIONS_CAP_BYTES:
+        return []
+
+    return [
+        f"the generated instructions file {INSTRUCTIONS_FILENAME} is {size} bytes, past the "
+        f"{CODEX_INSTRUCTIONS_CAP_BYTES}-byte default Codex reads"
+    ]
+
+
 def mirror_in_scratch(python: Path, root: Path, agents_dirname: str) -> SyncOutcome:
     """Validate external resources and mirror canonical sources in a scratch copy."""
 
@@ -280,6 +385,14 @@ def mirror_in_scratch(python: Path, root: Path, agents_dirname: str) -> SyncOutc
 
             if outcome is not SyncOutcome.VALID:
                 return outcome
+
+        cap_problems = find_instructions_cap_problems(Path(scratch))
+
+        for problem in cap_problems:
+            logger.error("Instructions size: %s", problem)
+
+        if cap_problems:
+            return SyncOutcome.INVALID
 
     return SyncOutcome.VALID
 
@@ -349,11 +462,22 @@ def third_party_skill_names(skills_dir: Path) -> set[str]:
     }
 
 
+def in_regression_scenarios(path: Path) -> bool:
+    """Return whether a path lies in a skill's top-level folder of regression scenarios."""
+
+    return any(
+        parent.name == SCENARIOS_DIRNAME and (parent.parent / SKILL_ENTRY_FILENAME).is_file()
+        for parent in path.parents
+    )
+
+
 def source_files(directory: Path, pattern: str) -> list[Path]:
-    """Return the files under a directory that match a pattern, leaving out installed packages."""
+    """Return the guidance files under a directory that match a pattern."""
 
     return sorted(
-        path for path in directory.rglob(pattern) if INSTALLED_PACKAGES_DIRNAME not in path.parts
+        path
+        for path in directory.rglob(pattern)
+        if INSTALLED_PACKAGES_DIRNAME not in path.parts and not in_regression_scenarios(path)
     )
 
 
@@ -479,6 +603,12 @@ def section_names(prose: str) -> tuple[set[str], set[str]]:
     return headings, leads
 
 
+def guidance_prose(path: Path) -> str:
+    """Return a guidance file's text with its fenced code blocks blanked out."""
+
+    return blank_matches(path.read_text(encoding="utf-8"), FENCED_BLOCK_PATTERN)
+
+
 def owned_guidance_files(agents_dir: Path) -> list[Path]:
     """Return the canonical Markdown the repository owns, without mirrors or upstream packages."""
 
@@ -507,9 +637,7 @@ def find_citation_problems(agents_dir: Path) -> list[str]:
 
     def prose_of(path: Path) -> str:
         if path not in prose_by_path:
-            prose_by_path[path] = blank_matches(
-                path.read_text(encoding="utf-8"), FENCED_BLOCK_PATTERN
-            )
+            prose_by_path[path] = guidance_prose(path)
 
         return prose_by_path[path]
 
@@ -615,6 +743,21 @@ def find_citation_problems(agents_dir: Path) -> list[str]:
                 f"{label}:{line_number(prose, match.start())}: rule file"
                 f" {rules_dir.relative_to(root).as_posix()}/{filename} does not exist"
             )
+
+    return problems
+
+
+def find_scenario_problems(python: Path, agents_dir: Path) -> list[str]:
+    """Report regression scenario files that break the scenario format, using a YAML interpreter."""
+
+    run = subprocess.run(
+        [str(python), str(SCENARIO_CHECK_SCRIPT), str(agents_dir)],
+        check=True,
+        stdout=subprocess.PIPE,
+        text=True,
+    )
+
+    problems: list[str] = json.loads(run.stdout)
 
     return problems
 
@@ -907,6 +1050,24 @@ def run_command(arguments: argparse.Namespace) -> SyncOutcome:
         logger.error("Citations: %s", problem)
 
     problems += citation_problems
+
+    yaml_python = install_environment(
+        cache_dir() / YAML_ENVIRONMENT_DIRNAME / YAML_REQUIREMENT, YAML_REQUIREMENT
+    )
+
+    scenario_problems = find_scenario_problems(yaml_python, root / agents_dirname)
+
+    for problem in scenario_problems:
+        logger.error("Scenarios: %s", problem)
+
+    problems += scenario_problems
+
+    generated_problems = find_generated_edits(root, agents_dirname)
+
+    for problem in generated_problems:
+        logger.error("Generated: %s", problem)
+
+    problems += generated_problems
 
     logger.info(
         "Validating %s in a scratch copy with %s@%s",

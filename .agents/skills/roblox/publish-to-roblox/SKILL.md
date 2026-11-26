@@ -15,6 +15,7 @@ experience's audience, settings or monetization, and no publish to any other exp
 
 - `roblox-studio`
 - `agent-lock`
+- `share-media`
 
 ## When to publish
 
@@ -64,10 +65,7 @@ experience's audience, settings or monetization, and no publish to any other exp
 3. **Publish through the project's deploy workflow** when it has one, triggered for the frozen head
    and the chosen environment as the Open Cloud route in `roblox-studio`'s source, editor, and
    publication reference describes. Follow the run to its end and confirm it ran on the frozen
-   head. A project with no such workflow gets one set up as that reference says, in the two pull
-   requests the `github-workflows` rule's **Branch Runs And Dispatch** sets for a new workflow with a
-   manual dispatch,
-   so later publishes leave Studio out; until it is on the default branch, publish this run from
+   head. A project with no such workflow gets one set up as that reference says, so later publishes leave Studio out; until it is on the default branch, publish this run from
    Studio as **Publish from the isolated runner** says.
 4. **Publish from the isolated runner** only where no deploy workflow exists yet, as `roblox-studio`
    sets up, holding one editor's lock: open each built place in the runner's signed-in Studio and
@@ -89,8 +87,8 @@ experience's audience, settings or monetization, and no publish to any other exp
      game's own characters, creatures, effects and places, then composite it with a grade, a burst
      or glow and a bold wordmark;
    - read each picture whole at full size, check the whole set as one sheet with every picture at
-     150 px beside those sheets, and send the set to the user as it is made, as any capture of a
-     change is sent, then go on without waiting;
+     150 px beside those sheets, and send the set to the user as it is made through `share-media`,
+     then go on without waiting;
    - upload each as an Image asset, set each place's icon and thumbnails through the Assets API
      with the place's revision left unchanged, and read them back through the thumbnails API, as
      one sheet of the downloaded pictures, until moderation completes.

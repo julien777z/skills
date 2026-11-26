@@ -18,8 +18,8 @@ merged without an earlier `review-pass`.
   `review-pass`'s **Combined Review** before the first merge and `review-pass` over each merged range; the fix pull requests its findings need, one per
   repository; and their merges. It authorizes no deployment,
   release, or review of unrelated work.
-- Never ask to merge a target and never end by offering a merge; what stops one is a gate under
-  **Merge**, reported with its evidence.
+- The invocation answers the merge question: what stops a merge is a gate under **Merge**, reported
+  with its evidence, as `merge-gate`'s **Authorization** says.
 
 ## Dependencies
 - `list-prs`
@@ -58,10 +58,8 @@ target in the set reaches **Check gate** until that round has accepted its head.
    target waits, still draft, while one stands.
 2. **Check gate.** Invoke `merge-gate`, which marks the target ready as the last step before the
    merge, with the accepted head, validation receipts, established
-   exclusions and the fix rule for every fix it makes — a check fix, a conflict resolution, a commit
-   someone else pushed: `review-pass` runs again over that fix's delta, and the fix is pushed through
-   the GitHub rule's **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
-   passed. `merge-gate`'s **Check Gate** owns complete-diff classification, check inventory, failure
+   exclusions and the fix rule `review-pass`'s **Fix Rule** states for every fix it makes.
+   `merge-gate`'s **Check Gate** owns complete-diff classification, check inventory, failure
    handling and the evidence required before merging.
 3. **Merge.** `merge-gate` squash-merges at the gated head and verifies it. Record the merge commit and its first parent with `session-ledger`.
 

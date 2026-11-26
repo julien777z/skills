@@ -16,20 +16,24 @@ it — the user asking about something else is not the user withdrawing what the
 
 - **Write it down before anything else starts.** The displaced work is recorded as **Progress
   Record** says, with its next step, before the first step of whatever displaced it.
-- **An interruption pauses the step in flight; it never ends the run.** After a follow-up finishes,
-  mark the displaced work active again in the ledger and execute its saved next step without waiting
-  for "continue". A promise to resume is not that step, and neither is a report that ends by naming
-  what comes next: a turn that relays a worker's result, finishes a unit or answers a question
-  starts the next named step before it ends, and every step that result unblocks, as **Progress
-  Record** records them. A defect a turn finds while answering is handled in that turn as
-  **Encountered Issues** says, one its own change made always fixed, and the answer reports it fixed
-  or recorded; it never goes out as work the agent will do. Completing its own delivery — including
-  a guidance merge and refresh, a diagnostic answer, or a local environment repair — does not
-  complete the surrounding task. Report that intermediate result while continuing. A held item keeps
-  its saved next action; repair, resolution and waiting follow **Waits And Awaited Results** below.
-  End only when the task is verified complete or the user explicitly stops
-  or hands it off. "Continue", or anything meaning it, resumes exactly the paused step and is never
-  answered with nothing.
+- **An interruption pauses the step in flight; it never ends the run.** End only when the task is
+  verified complete or the user explicitly stops or hands it off.
+  - **Resume without being asked.** After a follow-up finishes, mark the displaced work active
+    again in the ledger and execute its saved next step without waiting for "continue".
+    "Continue", or anything meaning it, resumes exactly the paused step and is never answered with
+    nothing.
+  - **A promise to resume is not that step, and neither is a report that ends by naming what comes
+    next.** A turn that relays a worker's result, finishes a unit or answers a question starts the
+    next named step before it ends, and every step that result unblocks, as **Progress Record**
+    records them.
+  - **A defect a turn finds while answering is handled in that turn** as **Encountered Issues**
+    says: one its own change made is always fixed, and the answer reports it fixed or recorded,
+    never as work the agent will do.
+  - **Completing its own delivery does not complete the surrounding task.** A guidance merge and
+    refresh, a diagnostic answer or a local environment repair is reported as an intermediate
+    result while the work continues.
+  - A held item keeps its saved next action; repair, resolution and waiting follow **Waits And
+    Awaited Results** below.
 - **A context summary's pending list is this run's named work**, not background, **and its state is
   read from the record, never from the summary.** After a compaction or handoff, and before
   starting, delegating or reporting any plan work, read each step's state, and each decision or
