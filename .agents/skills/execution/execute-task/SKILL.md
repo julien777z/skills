@@ -483,7 +483,8 @@ Review** once each has its accepted head.
    request stays draft.
 
 The ready-for-review message takes exactly this shape, one message per pull request, leaving out
-**Deferred** when nothing was deferred. Its **Next:** review is an action the reader owns: the
+**Deferred** when nothing was deferred and **Before deploy** when the change needs nothing outside
+the code to deploy. Its **Next:** review is an action the reader owns: the
 message is the material the question tool request for that review shows, as `user-facing-output`
 says:
 
@@ -496,6 +497,7 @@ says:
 - **Fixed on the way:** <each incidental fix, or none>
 - **Deferred** (over the size budget):
   1. <item> — <record link>
+- **Before deploy:** <each step only a deployment needs, such as a secret to add, in plain text>
 - **Still running:** <the authorized merge through `merge-gate` (CI ~<n> min) | the guidance fixes from this task that have their own pull request (<n> correction(s)) | nothing>
 
 **Next:** <review the pull request; send follow-ups here, `/finish-pr` to review what this pass has not and merge, or `/merge-now` to merge first and review after | review the pull request; it merges once its checks pass>
