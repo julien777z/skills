@@ -384,7 +384,7 @@ step exists to catch.
    subagents are worth what they cost, so the skills start fewer without missing what they catch.",
    its `status` the count of questions still open and its `progress` how many are
    decided, `label` "Questions decided" and `detail` "<decided> of <total> decided", with one segment per question in the order
-   they are asked, toned `good` once answered and `warning` while asked. It holds one `diagram` per skill a
+   they are asked, toned `good` once answered, `warning` while asked and `next` before. It holds one `diagram` per skill a
    question concerns, the skill being asked about first so its flow sits right under the progress
    bar, then an `outline` `Decided so far` listing each answer and what it changes once there is
    one, then the other skills in asking order. A diagram holds that
@@ -395,9 +395,9 @@ step exists to catch.
    step is seen beside the rest of the run and where it hands over. Its
    description says what the skill's run does in a sentence, never how to read the colors or that
    nodes can be clicked;
-   its `legend` is `[{tone: warning, label: Being asked}, {tone: good, label: Decided}]`. The node a
+   its `legend` is `[{tone: next, label: Still to ask}, {tone: warning, label: Being asked}, {tone: good, label: Decided}]`. The node a
    question concerns — the launch it questions — carries
-   `tone` `warning` while it is asked and `good` once answered, and none before, and its `details`
+   `tone` `next` before it is asked, `warning` while it is asked and `good` once answered, and its `details`
    is an outline with `stacked` set and `collapsible` false whose groups are "What it does" (when
    the flow runs and what the step does now), "Proposed changes" (each choice, with what it saves
    and what it could miss), "Recommended" (the choice and why) and, once answered, "Decision" (the

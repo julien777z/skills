@@ -57,13 +57,18 @@ anything else carries no assessment.
 
 ### Now and next
 
-Work is in one of three states, each in its own tone: **Active**, `accent`, for an agent or step
-running now; **Up next**, `next`, for work not started yet; and finished. Read the task's plans
-through `session-ledger`: a step that is next or blocked is up next, with its estimate, under the
-workflow it continues, or under a workflow of its own when nothing has started it. A status pill
-appears only where something stands out: Active, Up next, Blocked, a reviewer's verdict, Rework,
-Detour or Avoidable. Finished work shows Done and nothing more, and an assessment that says
-nothing, such as necessary, is never shown.
+Each workflow, agent, assignment and plan step is in one state, with its pill and tone: **Active**,
+`accent`, running now; **Blocked**, `critical`, started and waiting on something; **Up next**,
+`next`, not started yet; **Done**, `good`, finished. A reviewer's verdict, such as Approved,
+Changes or Flag, takes the place of Done on a review, and a workflow's Rework, Detour or Avoidable,
+`warning`, takes its place where the evidence supports one; finished work with nothing standing out
+shows Done alone, and an assessment that says nothing, such as necessary, is never shown. Read the
+plans of every ledger this session wrote through `session-ledger`, leaving out withdrawn and
+complete plans: a step or part `active` is Active, `blocked` is Blocked, `next` is Up next with its
+estimate, `done` is Done and `skipped` is left out. Work not started goes under the workflow it
+continues, or under a workflow of its own when nothing has started it, whose time is the sum of its
+remaining estimates, marked `~`. A ledger that cannot be read is a gap the dashboard names, never
+an empty plan.
 
 ## Dashboard
 
@@ -74,17 +79,18 @@ pages, in order:
 
 - **Overview** (`overview`). Metrics: the session's working time, the number of agents with the
   split between workers and reviewers as its detail, and the longest workflow's time with its name
-  as the detail. A `board` "Now and next" with the columns Active (`accent`) and Up next (`next`),
-  each card a running agent or step, or a step still to do, saying what it does and, for up next,
-  its estimate. A `table` of where the time went: one row per top-level workflow, with its time and
-  its State — Active, Up next or Done, followed by its assessment when it has one — each row
+  as the detail. A `board` "Now and next" with the columns Active (`accent`), holding active and
+  blocked work, and Up next (`next`), each card a summary saying what the work does and, for up
+  next, its estimate and the plan step it belongs to; the Loops page holds its entry. This board is
+  the one place the Overview lists items another page lists, because the user asked to see at a
+  glance what is running and what is still to do. A `table` of where the time went: one row per
+  top-level workflow, with its time and its State, as **Now and next** names it — each row
   opening a short write-up of that workflow in a dialog: what it did, its outcome and its largest
   stages, as **What happened** names them.
 - **Loops** (`list`). One `tree`: each workflow, then its rounds or groups, then the agents or
   assignments inside them, each broken down as **What happened** says. Every entry's `figure` is its
   time, or for work up next its estimate in `meta`; its `status` is a pill as **Now and next**
-  says, such as Done, Active, Up next, Approved, Changes or Flag, in the matching tone, and its
-  `tone` colors its dot the same way; the model a reviewer ran on is its `tag`.
+  says, in the matching tone; the model a reviewer ran on is its `tag`.
 - **Timeline** (`calendar`). One `tree` of the session's phases in order, each labeled by the work
   done in it with its time as `figure`. Its children are the agents, assignments and reviewers that
   worked in that phase, in the order they started, each with its time in the phase, its `status` and
