@@ -1,5 +1,6 @@
 import argparse
 import json
+import subprocess
 from pathlib import Path
 from typing import Final
 
@@ -33,27 +34,53 @@ BEHAVIOR_CHANGE_ENTRY_KEYS: Final[tuple[str, ...]] = (
 TEST_CAUSE_ENTRY_KEYS: Final[tuple[str, ...]] = ("date", "route", "reason")
 
 
-def scenario_folders(skills_dir: Path) -> list[tuple[Path, Path]]:
-    """Return each entry of a skill's top-level tests folder with the skill package it sits in."""
+def listed_files(agents_dir: Path) -> set[Path]:
+    """Return the files Git tracks or would track under a directory, leaving out ignored ones."""
+
+    listing = subprocess.run(
+        ["git", "-C", str(agents_dir), "ls-files", "-z", "--cached", "--others", "--exclude-standard"],
+        check=True,
+        stdout=subprocess.PIPE,
+        text=True,
+    )
+
+    return {agents_dir / name for name in listing.stdout.split("\0") if name}
+
+
+def folder_entries(directory: Path, files: set[Path]) -> dict[str, bool]:
+    """Return each listed entry directly inside a directory, mapped to whether it is a folder."""
+
+    entries: dict[str, bool] = {}
+
+    for path in files:
+        if path.is_relative_to(directory):
+            parts = path.relative_to(directory).parts
+            entries[parts[0]] = entries.get(parts[0], False) or len(parts) > 1
+
+    return entries
+
+
+def scenario_folders(skills_dir: Path, files: set[Path]) -> list[tuple[Path, Path]]:
+    """Return each listed entry of a skill's top-level tests folder with the skill it sits in."""
 
     return sorted(
-        (folder, package)
+        (package / SCENARIOS_DIRNAME / name, package)
         for package in skill_packages(skills_dir).values()
-        if (package / SCENARIOS_DIRNAME).is_dir()
-        for folder in (package / SCENARIOS_DIRNAME).iterdir()
+        for name in folder_entries(package / SCENARIOS_DIRNAME, files)
     )
 
 
-def folder_problems(folder: Path) -> list[str]:
+def folder_problems(folder: Path, files: set[Path]) -> list[str]:
     """Report a scenario folder that does not hold exactly its scenario file and fixture folder."""
 
-    if not folder.is_dir():
+    entries = folder_entries(folder, files)
+
+    if not entries:
         return ["is not a scenario folder"]
 
-    entries = {entry.name for entry in folder.iterdir()}
     expected = {SCENARIO_FILENAME, FIXTURE_DIRNAME}
 
-    if entries == expected and (folder / FIXTURE_DIRNAME).is_dir():
+    if set(entries) == expected and entries[FIXTURE_DIRNAME] and not entries[SCENARIO_FILENAME]:
         return []
 
     held = ", ".join(sorted(entries)) or "nothing"
@@ -185,11 +212,11 @@ def history_problems(history: object) -> list[str]:
     return problems
 
 
-def scenario_problems(folder: Path, package: Path, agents_dir: Path) -> list[str]:
+def scenario_problems(folder: Path, package: Path, agents_dir: Path, files: set[Path]) -> list[str]:
     """Report every way one scenario folder breaks the regression-scenario format."""
 
     label = folder.relative_to(agents_dir.parent).as_posix()
-    layout = folder_problems(folder)
+    layout = folder_problems(folder, files)
 
     if layout:
         return [f"{label}: {problem}" for problem in layout]
@@ -230,10 +257,11 @@ def main() -> None:
     parser.add_argument("agents_dir", type=Path, help="Canonical source directory to check.")
 
     agents_dir: Path = parser.parse_args().agents_dir.resolve()
+    files = listed_files(agents_dir)
     problems = [
         problem
-        for folder, package in scenario_folders(agents_dir / SKILLS_DIRNAME)
-        for problem in scenario_problems(folder, package, agents_dir)
+        for folder, package in scenario_folders(agents_dir / SKILLS_DIRNAME, files)
+        for problem in scenario_problems(folder, package, agents_dir, files)
     ]
 
     print(json.dumps(problems))

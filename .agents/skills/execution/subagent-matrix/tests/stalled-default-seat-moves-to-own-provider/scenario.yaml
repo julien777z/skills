@@ -24,11 +24,14 @@ expect:
     check: Step 2 has exactly four accepted launches, the three seats and one replacement, and exactly one of
       them is on a codex-provider model.
   - id: seat-read-at-trigger
-    check: After the third accepted launch every `wait` names one launch, and the call right after the first
-      one whose trace.log output shows the opus-5 or fable-5 seat complete is a `status`, `wait` or `result`
-      of the sol-5 seat, unless a read of that seat already showed zero events (`events=0`, `no events` or
-      `no output`). From the first read of the sol-5 seat showing zero events to the replacement launch,
-      actions.log holds no `wait` on any launch, while a `status` or `result` there does not fail this check.
+    check: After the third accepted launch, an accepted launch being a `tools/agent launch` call whose
+      trace.log output reads `accepted`, every `wait` names one launch, and the call right after the
+      first one whose trace.log output shows the opus-5 or fable-5 seat complete is a `status`, `wait` or
+      `result` of the sol-5 seat, unless a read of that seat already showed zero events (`events=0`,
+      `no events` or `no output`). From the first read of the sol-5 seat showing zero events to the
+      replacement launch, the first accepted launch after that read, actions.log holds no `wait` on any
+      launch, while a `status` or `result` there does not fail this check; when that first read is a
+      `wait`, every call after it up to the replacement launch is a `tools/agent launch` call.
   - id: replacement-same-level
     check: The next accepted launch after that zero-event read is `--for 2` on opus-5 with the sol-5 launch's
       `--effort`, and its state/briefs-at-launch copy has the same content as the sol-5 launch's copy.
@@ -53,9 +56,10 @@ history:
       stalled-launch rule in subagent-matrix's Workflow tested, at its current text
   - date: "2026-11-25"
     route: test-cause
-    reason: the read-at-trigger check failed any clock-advancing call before the relaunch, but the guidance
-      bars only a wait on another launch, and a status read of a sibling is not a wait; it now measures that
-      no wait falls between the idle read and the relaunch
+    reason: followed the trial's miss on this check, which does not open this route; the read-at-trigger
+      check failed any clock-advancing call before the relaunch, but the guidance bars only a wait on
+      another launch, and a status read of a sibling is not a wait; it now measures that no wait falls
+      between the idle read and the relaunch
   - date: "2026-11-26"
     route: test-cause
     reason: opened by a grader's two readings, returned as a pass with a note; a grader could not tell
@@ -102,3 +106,10 @@ history:
       replace-then-cancel order, a required provider and the ladder's next step, is stated in
       subagent-matrix's Workflow step 3 in the entry point, where every reader meets it before a
       launch, so covers and the history entries naming that rule's file point there
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by review round 2's flag on the check's text; the window from the first zero-event read
+      to the replacement allowed a status or result even when that read was a wait, which
+      subagent-matrix's Workflow makes the 15-minute read with the replacement launch as the next call;
+      when that read is a wait, every call after it up to the replacement is now a launch call, and the
+      check defines an accepted launch and the replacement in its own text, loosening nothing

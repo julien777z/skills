@@ -66,14 +66,16 @@ history:
       and one word, and no span runs across a removed stretch
   - date: "2026-11-26"
     route: test-cause
-    reason: the no-quote check failed any sentence holding phrases such as your message even when it repeats
-      none of the message; user-facing-output's rule is that the user's own message is never quoted or
-      restated back to them, so only a sentence that states what the message said is an attribution
+    reason: followed a run's miss, which does not open this route; the no-quote check failed any sentence
+      holding phrases such as your message even when it repeats none of the message; user-facing-output's
+      rule is that the user's own message is never quoted or restated back to them, so only a sentence
+      that states what the message said is an attribution
   - date: "2026-11-26"
     route: test-cause
-    reason: the no-attribution example sentence was word for word one an earlier run wrote, so it read as a
-      ruling on that run; the new example states none of the message's content and was written from the
-      check and the guidance alone
+    reason: the coordinator found the previous rewrite had copied a run's sentence into the check, which
+      no opener covers; the no-attribution example sentence was word for word one an earlier run wrote, so
+      it read as a ruling on that run; the new example states none of the message's content and was
+      written from the check and the guidance alone
   - date: "2026-11-26"
     route: test-cause
     reason: opened by the user's direction on the scenario format, one folder per scenario with a real

@@ -74,7 +74,7 @@ confuse those conclusions.
   and carry it, with no rerun, when every pair matches:
   - by content digest, each guidance file on its reading list, or, for a file every reader loads
     whole, such as the global rules, the sections its criteria cite; its fixture; its criteria;
-    for a regression scenario, whose reader has no reading list, the installed package, its
+    for a regression scenario, whose reader has no reading list, the whole install it reads, its
     `scenario.yaml` and its fixture;
   - the model and reasoning effort **Reviewer selection** resolves for a rerun now, such as the
     standard capability level's current identifier, never one the catalog merely still lists; the harness and
@@ -104,35 +104,34 @@ Run after `code-simplify` completes its pass.
    scenario that case can arise in carries one criterion that behavior there is as before. Include relevant conflicting guidance in the edited reading list and, when a
    control is required, in its matching reading list.
 2. **Choose and verify the environment.** Use the smallest environment that exercises the actual
-   decision or operation. A review can inspect a relevant live codebase read-only, a frozen diff,
-   or an isolated repository with known defects. An action workflow needs a task-owned synthetic
+   decision or operation. A review can inspect a relevant live codebase read-only, a frozen diff, or
+   an isolated repository with known defects. An action workflow needs a task-owned synthetic
    environment: disposable files, fake credentials, local services or browser surfaces, and action
    recorders as appropriate. Preserve the relevant interfaces, permissions, failures and state
-   transitions; a canned success or written promise does not exercise the workflow.
-   Never give skill-test agents access to the user's browser, profiles, sessions, real credentials, or
-   live mutation targets. When a workflow would revoke a credential, send a message, purchase,
-   delete or change access, supply a synthetic boundary that records that action and changes only
-   disposable state. Verify which implementation and resources each run actually uses before launch.
-   **A reader sees only the variant it tests, and the variant reaches it only as that run's input.**
-   Launch the reader as a local headless harness process the running session starts and waits on,
-   every user-level skill and rule root it is given set to an empty scratch root, and pass the
-   frozen variant through an option that adds a source for that one run, such as a plugin
-   directory, an appended system prompt or an input file the run reads. An option that sets where
-   the harness reads user-level skills or rules is a user-level root whatever folder it names, so
-   the variant never goes in one, in a folder one points at, or in any folder searched by default.
-   A regression scenario's reader is the exception: its user-level root is a fresh scratch home
-   holding only the installer's install of the branch under test, as the regression scenarios
-   reference's **Isolation** says. A subagent of the running session stands in only when its loaded guidance lists no copy of a
-   skill or rule under test, with the variant in its brief. Record the route, the command, the
-   scratch root's file list with digests, and the harness's record of the guidance it loaded. With
-   neither route, the round is a concrete gate, surfaced with its evidence and saved next action;
-   it never passes with a reader that saw another variant.
-   Before freezing the reader package, exercise its required fixture interfaces in a disposable
-   copy: discovery must expose the identifiers the task needs, operations must be available, and
-   state changes and failures must reach the intended records. This checks the fixture contract,
-   not the reader's decisions or the comparison's expected result. Reuse that receipt while its
-   implementation and interface inputs remain unchanged; repair and recheck a changed contract
-   before spending reader runs on it.
+   transitions; a canned success or written promise does not exercise the workflow. Never give
+   skill-test agents access to the user's browser, profiles, sessions, real credentials, or live
+   mutation targets. When a workflow would revoke a credential, send a message, purchase, delete or
+   change access, supply a synthetic boundary that records that action and changes only disposable
+   state. Verify which implementation and resources each run actually uses before launch. **A reader
+   sees only the variant it tests, and the variant reaches it only as that run's input.** Launch the
+   reader as a local headless harness process the running session starts and waits on, every
+   user-level skill and rule root it is given set to an empty scratch root, and pass the frozen
+   variant through an option that adds a source for that one run, such as a plugin directory, an
+   appended system prompt or an input file the run reads. An option that sets where the harness
+   reads user-level skills or rules is a user-level root whatever folder it names, so the variant
+   never goes in one, in a folder one points at, or in any folder searched by default. A regression
+   scenario's reader is the exception: its user-level root is a fresh scratch home holding only the
+   installer's install of the branch under test, as the regression scenarios reference's
+   **Isolation** says. A subagent of the running session stands in only when its loaded guidance
+   lists no copy of a skill or rule under test, with the variant in its brief. Record the route, the
+   command, the scratch root's file list with digests, and the harness's record of the guidance it
+   loaded. With neither route, the round is a concrete gate, surfaced with its evidence and saved
+   next action; it never passes with a reader that saw another variant. Before freezing the reader
+   package, exercise its required fixture interfaces in a disposable copy: discovery must expose the
+   identifiers the task needs, operations must be available, and state changes and failures must
+   reach the intended records. This checks the fixture contract, not the reader's decisions or the
+   comparison's expected result. Reuse that receipt while its implementation and interface inputs
+   remain unchanged; repair and recheck a changed contract before spending reader runs on it.
 3. **Freeze the inputs and criteria.** Save the scenario, environment baseline, reading list,
    edited guidance, any required original guidance, and the observable pass criteria needed to judge
    each scenario in private task evidence storage through `session-ledger` before dispatch. Criteria measure actions, resulting state or
@@ -188,20 +187,21 @@ Run after `code-simplify` completes its pass.
    recommends which changes should merge and decides no merge itself. A passing skill test alone
    never decides that a pull request should merge.
 7. **Repair and rerun until verified**, within the limit of 3 review rounds per change that
-   `acceptance-gate`'s **Bounds** sets, whose disposition goes to `council` in **Ask** mode as
-   those **Bounds** say. Diagnose each reported issue at its owner. Fix guidance that permits the
-   wrong behavior; when a change check or regression scenario misses the same criterion again
-   after a guidance repair, the next repair follows the second-miss bullet in those **Bounds**; fix an invalid fixture, unavailable simulated operation, wrong reading list, ambiguous criterion
-   or broken runner before judging guidance. Retain the diagnosis and earlier results. Recover
-   missing evidence from the actual run or rerun the affected task; never reconstruct a result from
-   a summary. A worker that ended without a complete result is replaced on the same assignment.
-   Every completed run is graded and kept: a rerun follows a recorded repair of its cause, never an
+   `acceptance-gate`'s **Bounds** sets, whose disposition goes to `council` in **Ask** mode as those
+   **Bounds** say. Diagnose each reported issue at its owner. Fix guidance that permits the wrong
+   behavior; when a change check or regression scenario misses the same criterion again after a
+   guidance repair, the next repair follows the second-miss bullet in those **Bounds**; fix an
+   invalid fixture, unavailable simulated operation, wrong reading list, ambiguous criterion or
+   broken runner before judging guidance. Retain the diagnosis and earlier results. Recover missing
+   evidence from the actual run or rerun the affected task; never reconstruct a result from a
+   summary. A worker that ended without a complete result is replaced on the same assignment. Every
+   completed run is graded and kept: a rerun follows a recorded repair of its cause, never an
    unchanged scenario rerun for a better result, and covers what the carry-forward bullet in **When
-   It Runs** does not carry.
-   Inconclusive, improperly tested and missing-evidence states are work to repair, never final
-   skill-test verdicts or reasons to abandon an authorized change. Keep working through recovery;
-   genuine external authorization or host boundaries follow the global rules and **Reviewer
-   selection**, holding only the dependent action while repair or resolution remains active.
+   It Runs** does not carry. Inconclusive, improperly tested and missing-evidence states are work to
+   repair, never final skill-test verdicts or reasons to abandon an authorized change. Keep working
+   through recovery; genuine external authorization or host boundaries follow the global rules and
+   **Reviewer selection**, holding only the dependent action while repair or resolution remains
+   active.
 8. **Report the verified result.** Send the tables and one evidence file in the **Output** shape.
    Describe the behavior verified in the pull request; claim improved behavior only where the
    comparison demonstrates it. Scenario packages and raw evidence remain private, never committed.

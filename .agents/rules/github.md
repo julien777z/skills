@@ -40,10 +40,10 @@ alwaysApply: true
   its own agent-configuration pull request in each repository.** Agent configuration is the
   canonical `.agents` tree: skills with their own scripts, assets and templates, rules and agent
   definitions, plus nonbehavioral text and guidance-reference corrections in agent hooks and
-  installers. A change to execution, timing, installation, discovery, permissions or mutation
-  scope is source work, as is everything else. The one exception is guidance true only once a
-  still-open source pull request merges, which rides that pull request when this session opened it
-  or the user explicitly directs its continuation, and is otherwise held for it. The skill that edits guidance
+  installers. A change to execution, timing, installation, discovery, permissions or mutation scope
+  is source work, as is everything else. The one exception is guidance true only once a still-open
+  source pull request merges, which rides that pull request when this session opened it or the user
+  explicitly directs its continuation, and is otherwise held for it. The skill that edits guidance
   sets out how a pull request is selected, opened and consolidated, and where that guidance goes.
 - **Every worker pushes to the branch of the pull request the work continues**, fetching and
   rebasing its unpushed commits onto the remote branch before each push. A branch per worker,

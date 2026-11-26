@@ -387,8 +387,8 @@ it proposed itself.
   after its own second repair, with the change still under the limit, goes to `council` in **Ask**
   mode as a disposition, with the open flag, and as your candidates the gate's proposed remedy and
   an approach that departs from both repairs tried. Its ruling decides the remedy, which is applied
-  and checked as any repair is, and the caller's result names the flag and the ruling. The verdict's other flags go on to their fresh
-  gate meanwhile.
+  and checked as any repair is, and the caller's result names the flag and the ruling. The verdict's
+  other flags go on to their fresh gate meanwhile.
 - A flag the council returns as the user's choice goes to the user, as a report of those facts with
   a recommended next step, never as a choice about whether to fix it or leave it in place.
 

@@ -130,19 +130,19 @@ operation another use case also calls on its own, where the use case may gain a 
 while the other keeps its own; and a read only some runs of the use case need, which a merged
 operation may still carry. The run decides each that leaves what the product shows or offers
 unchanged; a merge that changes it, a product choice as `pre-production`'s **Product Choices**
-defines one, is put to the user as a reserved entry. Either way its record
-lets a reader check the decision without opening the code: the operations it would combine, by
-method and path or RPC name; the proposed operation's method, path, parameters and response fields;
-every other caller of each of those operations, found in the code by page, job or service, with what
-it reads and whether it already shares the use case's read; what would become of each existing
-operation, kept for which caller or deleted; the current counts and timings, and the call count the
-proposed operation would leave; and the decision with its reason. The timings after are measured
-once the merge is made. Left alone: a call a later interaction makes — a tab opened, a page turned,
-a row expanded; reads under different authorization or caching that one response cannot carry, and
-any set of items one operation cannot authorize as the per-item calls did; a slow section kept apart
-so it does not hold a fast one, with the timing showing it; a third-party provider's operations,
-batched only where the provider offers it; and the one complete read of its own collection the
-FastAPI rules' **Pagination** allows a domain service.
+defines one, is put to the user as a reserved entry. Either way its record lets a reader check the
+decision without opening the code: the operations it would combine, by method and path or RPC name;
+the proposed operation's method, path, parameters and response fields; every other caller of each of
+those operations, found in the code by page, job or service, with what it reads and whether it
+already shares the use case's read; what would become of each existing operation, kept for which
+caller or deleted; the current counts and timings, and the call count the proposed operation would
+leave; and the decision with its reason. The timings after are measured once the merge is made. Left
+alone: a call a later interaction makes — a tab opened, a page turned, a row expanded; reads under
+different authorization or caching that one response cannot carry, and any set of items one
+operation cannot authorize as the per-item calls did; a slow section kept apart so it does not hold
+a fast one, with the timing showing it; a third-party provider's operations, batched only where the
+provider offers it; and the one complete read of its own collection the FastAPI rules'
+**Pagination** allows a domain service.
 
 ## Divergent Siblings
 

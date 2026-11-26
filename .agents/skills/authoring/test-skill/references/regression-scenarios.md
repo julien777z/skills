@@ -36,8 +36,9 @@ changes one as **Changing A Scenario** allows.
   - The harness, every transcript and every grade stay private and untracked, because the
     repository keeps no test code.
 - **`scenario.yaml` parses with safe YAML loading and holds only the keys Format lists**, in that
-  order. Its `kind` is `happy`, `edge` or `negative`, and each `covers` entry names a file that
-  exists under `.agents/` and a section that file holds. Every date is quoted, so safe loading reads
+  order. Its `kind` is `happy`, `edge` or `negative`, and each `covers` entry names a guidance
+  file under `.agents/`, outside every `tests/` folder, and a section that file holds; the first
+  entry's file is in the scenario's own skill. Every date is quoted, so safe loading reads
   it as a string. A value holding a colon followed by a space, or a ` #`, goes in a block scalar or
   quotes.
 - **The source check enforces these rules.** `skill-pass`'s **Source Check** refuses a
@@ -113,7 +114,6 @@ history:
 ```
 
 `fixture/service.diff`:
-
 ```diff
 --- a/app.py
 +++ b/app.py

@@ -95,10 +95,10 @@ preflight to distinguish managed links from foreign links. Reading merged guidan
 it. Preserve foreign files and links outside user skill roots, native skill namespaces, trust checks
 and lock ownership throughout.
 
-1. Resolve an installed user-level skill link to its Git checkout; a skill with a top-level
-   `tests/` folder installs as a directory, so resolve one of its linked entries instead. When the link resolves into an
-   overlay worktree, use the main checkout it is a linked worktree of. Confirm the checkout is the
-   shared skills repository and its README identifies `bootstrap/install.sh`.
+1. Resolve an installed user-level skill link to its Git checkout; a skill with a top-level `tests/`
+   folder installs as a directory, so resolve one of its linked entries instead. When the link
+   resolves into an overlay worktree, use the main checkout it is a linked worktree of. Confirm the
+   checkout is the shared skills repository and its README identifies `bootstrap/install.sh`.
 2. Delete every copy a file-sync service or the operating system made in the checkout, its Git
    directory, each `skills-overlay/` worktree and every user-level agent root: find them by a
    name search of each tree and its Git directories, never `git status` or `ls`, and delete each,
@@ -140,20 +140,21 @@ and lock ownership throughout.
       reach the next overlay at the next refresh.
 5. Run the installer: `bash bootstrap/install.sh` from the source checkout on a local machine, or
    the setup clone's installer in a cloud session, which selects the attached checkout and relinks
-   every cloud home. The installer fetches a cloud setup clone's configured branch and
-   fast-forwards it, and installs from the newest complete overlay when one exists, first
-   regenerating that overlay's provider mirrors with the sync tool its workflow pins, so pending
-   rule and agent edits reach the providers that link a generated copy. A failed regeneration stops
-   the installer before any link changes; treat it as recovery work. Resolve each
-   installed skill, rule and hook link in every existing user-level agent root and confirm it
-   points into the installed source; a skill installed as a directory is confirmed by its linked
-   entries and a `SKILL.md` matching the source's content. Confirm each hook registration the installer wrote — in
-   Claude's `settings.json` and Codex's and Cursor's `hooks.json` — runs a `main.py` that resolves
-   through a hook link in that root, unless the installer warned that it registered none. Check Codex's global `AGENTS.md` link when Codex is installed. Preserve
-   provider-owned hidden packages, Claude account-synced skills and the `session-start-hook` skill
-   a Claude cloud session supplies. The installer reconciles other user skill entries to the
-   selected catalog, replacing foreign links and real entries. Real
-   files and foreign links for other artifact types remain protected by conflict preflight.
+   every cloud home. The installer fetches a cloud setup clone's configured branch and fast-forwards
+   it, and installs from the newest complete overlay when one exists, first regenerating that
+   overlay's provider mirrors with the sync tool its workflow pins, so pending rule and agent edits
+   reach the providers that link a generated copy. A failed regeneration stops the installer before
+   any link changes; treat it as recovery work. Resolve each installed skill, rule and hook link in
+   every existing user-level agent root and confirm it points into the installed source; a skill
+   installed as a directory is confirmed by its linked entries and a `SKILL.md` matching the
+   source's content. Confirm each hook registration the installer wrote — in Claude's
+   `settings.json` and Codex's and Cursor's `hooks.json` — runs a `main.py` that resolves through a
+   hook link in that root, unless the installer warned that it registered none. Check Codex's global
+   `AGENTS.md` link when Codex is installed. Preserve provider-owned hidden packages, Claude
+   account-synced skills and the `session-start-hook` skill a Claude cloud session supplies. The
+   installer reconciles other user skill entries to the selected catalog, replacing foreign links
+   and real entries. Real files and foreign links for other artifact types remain protected by
+   conflict preflight.
 6. Once the links point into the installed source, remove every other `skills-overlay/` worktree of
    the checkout, complete or not; this step alone removes overlays. First compare each with the
    built head step 2 recorded for it, or for each of this run's abandoned builds the head it

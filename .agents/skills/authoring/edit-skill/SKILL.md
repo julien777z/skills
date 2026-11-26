@@ -363,13 +363,15 @@ small it looks.** Each route below is the gate set its batch passes on the head 
    the user under **Bounds** while independent work continues, and it authorizes no release
    workflow.
    1. **Branch and commit.** Select the edit's pull request under the GitHub rule's **Branches and
-      Pull Requests** and the [guidance pull requests reference](references/guidance-pull-requests.md)
-      — never put it onto a source branch, the one checked out included, except guidance that
-      reference puts on the source pull request it depends on, which merges with it. Commit the `.agents` files, never a provider
-      mirror, and push each step once the checks the GitHub rule's **Pre-Push Gate** defines pass. Open the pull
-      request as a draft; it stays draft until `merge-gate` marks it ready as the last step before its merge. An
-      open pull request leaves the current guidance in use. A source fix **Include the underlying issue** requires is source work: it goes onto the source pull request
-      the work continues in its repository under the same rule and merges as that work does.
+      Pull Requests** and the [guidance pull requests
+      reference](references/guidance-pull-requests.md) — never put it onto a source branch, the one
+      checked out included, except guidance that reference puts on the source pull request it
+      depends on, which merges with it. Commit the `.agents` files, never a provider mirror, and
+      push each step once the checks the GitHub rule's **Pre-Push Gate** defines pass. Open the pull
+      request as a draft; it stays draft until `merge-gate` marks it ready as the last step before
+      its merge. An open pull request leaves the current guidance in use. A source fix **Include the
+      underlying issue** requires is source work: it goes onto the source pull request the work
+      continues in its repository under the same rule and merges as that work does.
    2. **Run `validate_sources.py check`**, the source check `skill-pass`'s **Source Check**
       describes, before the pull request merges, and again whenever the branch changes after that
       run. Nothing on a pull request runs the sync: the workflow runs on the default branch after

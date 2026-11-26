@@ -1,7 +1,8 @@
 # Code Conventions
 
 What every line a change writes follows: code, configuration, manifests, documentation, comments,
-commit messages, pull-request text, and pull-request comments and issue bodies. `SKILL.md` names this file at the point a change is written.
+commit messages, pull-request text, and pull-request comments and issue bodies. `SKILL.md` names
+this file at the point a change is written.
 
 ## Whose Standards Apply
 
