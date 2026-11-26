@@ -383,6 +383,41 @@ Outside Tests** below sets out. A name coined from an abstraction or an adjectiv
 a mechanism, a synonym for the thing — where the concrete thing it provides or lacks would name it is a finding,
 renamed for that thing.
 
+Fixtures that provide more instances of one kind, which no role or state tells apart, are siblings
+of one family:
+
+- A relation a test relies on, such as which organization a user belongs to, tells siblings apart
+  and names them, every member of the family naming its side of that relation so none stays bare
+  beside a qualified sibling, and ordinals number only the siblings that share every such
+  relation, such as `first_org_member` and `second_org_member`, never a synonym for one more of
+  the kind.
+- An ordinal sequence runs `first_`, `second_`, `third_` from `first_` without a gap and numbers
+  every sibling that shares those relations. A fixture with no such sibling takes no ordinal, and
+  neither does a factory. No `alternate_`, `other_` or `another_` stands in for a relation's side
+  or an ordinal.
+- A change that adds a sibling names it this way and renames the family's other members to match
+  in that change, with every consumer: a qualified or numbered name means nothing beside a bare
+  sibling, so the rename is part of naming the fixture the change adds, never incidental cleanup
+  under `pre-production`'s size budget, whatever the number of consumers.
+
+For every fixture, in a family or not:
+
+- A fixture's name carries no `test_` prefix that only marks it as test support, which repeats
+  where it lives; the word stays where it names what the fixture provides, such as a test run in a
+  product that manages them.
+- A name carries no role its value does not carry: a plain account is not `admin` or `owner` until
+  something gives it that role, and one value is not offered under two fixture names.
+- In the fixture packages of the suites in scope, and in each fixture package a change edits,
+  list every family of fixtures of one kind with each member's name, the side of each relation it
+  names and its ordinal, and report every family with a member left bare beside a qualified or
+  numbered sibling, a gap or a lone ordinal; list every fixture definition whose first word is
+  `alternate`, `other` or `another`, every one whose first word is `test` and only marks test
+  support, every fixture that returns another fixture's value unchanged, and every fixture named
+  for a role nothing gives its value; report every row.
+- A change that adds, renames or removes a fixture in a package reports that package's rows before
+  it is finished, rows in families it did not add to included, and fixes each one in that change
+  unless `pre-production`'s size budget reserves a record for it.
+
 Name several results in one test for their scenario or domain role, such as
 `invited_member_response` and `created_member_response`, never with a letter or a number, such as
 `response_a`, `response_b`, `result_1`, or `result_2`.
