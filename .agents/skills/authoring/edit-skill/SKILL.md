@@ -453,7 +453,7 @@ The Scope Statement, shown in the message that acknowledges a correction, one pe
 ```markdown
 Guidance change — flow affected | flow not affected
 
-- You said: "<the user's words, each example value named by its kind in brackets>" | Noticed: <the gap>
+- Noticed: <the gap> — only for a gap the agent noticed itself; a statement answering the user's request opens with From now on
 - From now on: when <situation>, agents <do this> instead of <that>.
 - Also changes, same class: <skill or rule> — <situation>: <new behavior> | None
 - Stays as it is: <the nearest case outside the class, and what agents still do there>
