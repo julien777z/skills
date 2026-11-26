@@ -51,8 +51,8 @@ Read the complete Linear issue with comments or the complete repository-ledger r
 the pull request carrying it. Read the current implementation and history of the code it names. Confirm that
 the problem still exists before considering its proposed solution.
 
-Put each record whose problem still exists to `acceptance-gate`'s triage question and carry its
-disposition: fix and do become **Implement** or **Simplify and incorporate**, defer keeps the record
+Put the records whose problem still exists to `acceptance-gate`'s triage question as one list, one
+entry per record, and carry each disposition: fix and do become **Implement** or **Simplify and incorporate**, defer keeps the record
 active or marks it **Blocked**, and close becomes **Decline**. **Already resolved** and **Void** come
 from the tree read before the gate. The dispositions:
 
@@ -136,10 +136,11 @@ delivered only when the default branch holds it, and a completed issue whose pul
 lands drops out of ordinary `all` selection. A flagged resolution records nothing: the issue stays
 active. Merging a resolution pull request carrying any other change needs its own authorization. One
 confined to deferral records, such as declined repository-ledger moves and retired records, merges under the
-GitHub rule's deferral-record permission: put its complete diff to `acceptance-gate`'s
+GitHub rule's **Merge Authorization**: put its complete diff to `acceptance-gate`'s
 final-acceptance question, one gate per such pull request, then invoke `merge-gate` with that
 accepted head, no local test coverage, and the rule that a fix it makes goes back to final
-acceptance over its delta, one more gate per fix, within the limit of 3 review rounds per change.
+acceptance over its delta, one more gate per fix, within the review-round limit `acceptance-gate`'s
+**Bounds** sets.
 
 When inventorying, read each active issue's recorded `Resolution PR`: one that has merged moves the
 issue to a completed-category state with that evidence, and one that closed without merging is
@@ -176,8 +177,21 @@ modules. Run the repository's required validation for every behavioral change an
 migration or contract check. A repository-ledger disposition-only documentation diff gets artifact validation
 and `git diff --check`, not application tests.
 
-Report every selected record, source, disposition, both gate outcomes, Linear state change,
-replacement pull request, closed or updated pull request carrying a record, and active blocker. A gate objection
-or flag is reported with what it named, whether or not the resolution went on to land. If Linear becomes unavailable after a record
-was found or updated, keep its identifier and report the blocked update rather than dual-writing a
-repository record.
+Report in the **Output** shape.
+
+## Output
+
+One block per selected record:
+
+```markdown
+- <stable key or issue identifier> — <title> (<Linear | repository>)
+  - Disposition: <Implement | Simplify and incorporate | Already resolved | Decline | Void | Blocked> — <reason>
+  - Gates: proposal <accepted | flagged — what it named>; diff <accepted | flagged — what it named>
+  - Linear state: <change made | none>
+  - Resolution pull request: <link | none>; superseded pull request <closed | updated | left open> <link>
+  - Active blocker: <blocker and required decision | None>
+```
+
+A gate objection or flag is reported with what it named, whether or not the resolution went on to
+land. When Linear became unavailable after a record was found or updated, the identifier is kept
+and the blocked update reported, never a repository record written in its place.

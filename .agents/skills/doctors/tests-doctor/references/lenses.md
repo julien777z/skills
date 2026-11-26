@@ -80,11 +80,11 @@ mechanical check that finds every instance rather than the first one noticed:
 
 ## Audit Test Value And Repair Weak Proof
 
-Apply `test-fixture`'s **Test Value And Retention**, its dispositions included, to every test
-declaration in scope, parameter rows that need different dispositions included, and record each
-declaration's disposition, actual assertion and the contract it protects.
+Every test declaration in scope, parameter rows that need different dispositions included, is held
+to `test-fixture`'s **Test Value And Retention**, its dispositions included, and each declaration's
+disposition, actual assertion and the contract it protects is recorded.
 
-These sections of `test-fixture`'s rubric also run over every test tree in scope, never over a
+These sections of `test-fixture`'s rubric are also held over every test tree in scope, never over a
 diff, and each reports its result, an empty one included:
 
 - **Literal Sweep**: every literal family in the test trees, classified as that section classifies
@@ -101,23 +101,16 @@ kind, which parametrizing would hide.
 ## Find Repeated Blocks With A Detector
 
 Every other lens reads one module at a time or searches for one shape it can name, so a block copied
-into two files — most of all into two different suites — survives all of them. Run a cross-file
-duplication detector over every test tree in scope, at the tool's own default similarity rather than
-a threshold picked to quiet it, and read what it reports:
+into two files — most of all into two different suites — survives all of them. Run the cross-file
+duplication detector the repository's tooling already configures over every test tree in scope, at
+the tool's default similarity, and read what it reports. The report names the detector and what it
+returned, whatever it returned; where the detector cannot be run, it says so and why, since reading
+the modules or grepping for a suspected shape is not this lens.
 
-```
-<the repository's configured cross-file duplication detector, over every test tree>
-```
-
-Run the detector the repository's tooling already configures for its language.
-
-**Every pair it reports is a finding, whether or not this run introduced it.** Nothing else in the
-audit reports these, so the pairs that predate the run are precisely what the lens exists to catch,
-and a count of what the branch added is not the measure: the measure is zero, less the pairs a
-reviewer dismisses. A reviewer reading a pair may dismiss it with a recorded reason when the
-matched lines are not one test or one piece of setup, such as two parametrize tables whose rows
-look alike but cover different behaviors, so a run is never held open by text that only resembles
-itself; the report lists each dismissed pair with its reason.
+**Every pair it reports is a finding, whether or not this run introduced it**: the measure is zero,
+less the pairs a reviewer dismisses with a recorded reason because the matched lines are not one test
+or one piece of setup, such as two parametrize tables whose rows look alike but cover different
+behaviors. The report lists each dismissed pair with its reason.
 
 Name the owner each block moves to before editing: repeated setup goes to the fixture package of the
 suite that reads it, a repeated call to that suite's utility package, repeated model construction to
@@ -125,23 +118,16 @@ the repository's established shared factory owner, and a repeated list of field 
 derives from the model or table that declares them. Where two callers differ only in a value, the
 owner takes it as a parameter rather than growing a second copy.
 
-**The report names the detector and what it returned, whatever it returned.** Reading the modules,
-or grepping for a shape somebody already suspects, is not this lens and does not stand in for it: the
-pairs it exists to catch are the ones nobody suspects, which is why nothing else in the audit reports
-them. Where the detector cannot be run at all, say that and say why, rather than presenting an
-inspection as its result.
-
-Re-run the detector after each cluster and keep going until it reports no pair that has not been
-dismissed. A pair that survives
-because the lines it matched are still identical says the owner was wrong or the call site still
+Re-run the detector after each cluster until it reports no pair that has not been dismissed. A pair
+that survives because its lines are still identical says the owner was wrong or the call site still
 spells the call over four lines; shorten the call or move the boundary. The threshold stays at the
-tool's default and the check stays on, because a widened threshold hides every pair below it, real
-copies included, where a dismissal names the one pair and why it is not a copy.
+tool's default, because a widened threshold hides every pair below it, real copies included, where a
+dismissal names the one pair and why it is not a copy.
 
 ## Name Cases As Labels
 
-Run `test-fixture`'s **Naming Checks** over every `def test_`, fixture, factory and test helper in
-the scope and report each check's result, an empty result included. Every naming and structural
+Every `def test_`, fixture, factory and test helper in the scope is held to `test-fixture`'s
+**Naming Checks**, and each check's result is reported, an empty result included. Every naming and structural
 check in this section is a finding the run fixes. A check that reports its rows and leaves them
 standing, or a row admitted as an observation, is the miss this doctor exists to close.
 
@@ -163,13 +149,9 @@ suite nobody will wait for is coverage nobody runs. A case or module disproporti
 `pre-production` says.
 
 **No budget removes a test as redundant because a test of another classification makes the same
-assertion.** A disproportionate cost is a separate reason, decided above. An
-end-to-end test that an integration or unit test also reaches is not cut as redundant, however
-far over budget its suite is and whatever stage the repository is in: its worth is that it runs the
-real services, which the cheaper test does not. Being over budget, being pre-production, and the
-cheaper test being "sufficient" are not reasons to cut it as redundant; bring the suite under budget
-by making its cases cheaper, folding them into cases of the same classification, or removing a
-disproportionate one as above.
+assertion**, as `test-fixture`'s **Test Value And Retention** says; a disproportionate cost is a
+separate reason, decided above, and the suite comes under budget by cheaper cases, by folding cases
+of the same classification, or by removing a disproportionate one.
 
 Preserve every unique guarantee while doing it, except where a disproportionate case is removed
 for its cost. Cutting a case whose assertion nothing else in its classification makes is otherwise a
@@ -219,9 +201,9 @@ unit test added for a flow whose integration or end-to-end path is untested is i
 
 ## Make Doubles Honest
 
-The inventory's table of doubles — target, owner, boundary, declared seam — is the evidence. Run
-`test-fixture`'s **Auditing Existing Doubles** checks over it and report each check's result, an
-empty result included, and name each double it leaves alone with its reason.
+The inventory's table of doubles — target, owner, boundary, declared seam — is the evidence. It is
+held to `test-fixture`'s **Auditing Existing Doubles** checks, each check's result is reported, an
+empty result included, and each double left alone is named with its reason.
 
 ## Keep Construction Out Of Test Modules
 
@@ -235,8 +217,8 @@ says of a parallel copy: inspect every related implementation, move every consum
 owner, and flag a partial move even when the factory left behind was already there. Generic
 lifecycle helpers retain their own owners; a shared word does not establish shared responsibility.
 
-Run `test-fixture`'s **Factory Contents** checks over every factory module in the suite, with
-the inventory and check rows that section requires in the report.
+Every factory module in the suite is held to `test-fixture`'s **Factory Contents** checks, with the
+inventory and check rows that section requires in the report.
 
 Every placement check below runs over the whole suite; each names the mechanical check that finds
 every instance:
@@ -296,9 +278,9 @@ noun the suite's own fixtures invent.
 
 ## Hold Suite Configuration To Its Rules
 
-Suite and runner configuration that departs from `test-fixture`'s suites reference. Run that
-reference section by section over every suite, runner configuration block and test job, and report
-each section's result, an empty one included:
+Suite and runner configuration that departs from `test-fixture`'s suites reference. Every suite,
+runner configuration block and test job is read against that reference section by section, and each
+section's result is reported, an empty one included:
 
 - **Suites And Classifications**: a smoke test that mocks its service, or carries a live-mode flag,
   an opt-in marker, a conditional skip or a fixture branch choosing between real and simulated

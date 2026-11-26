@@ -10,13 +10,13 @@ Core must not require feature implementation. Narrow composition files may combi
 
 Expose a feature's public module or contracts to other features; keep private modules private. Wire optional cross-feature events in the entry module through injected callbacks or GoodSignal. If two features depend on one another, move the shared contract, connect a signal, or reconsider their ownership. Do not make Core understand quests, map names, or enemy IDs to satisfy the folder structure.
 
-Use Rojo string-path requires: `@game/...` for public mounted modules, `./Name` or `../Name` within an owning module tree, and `@self/Child` for children of a folder's `init.luau`. Use the actual Rojo sourcemap, including package trees. Avoid service-chain requires except at a runner boundary that explicitly needs an Instance.
+Use Rojo string-path requires: `@game/...` for public mounted modules, `./Name` or `../Name` within an owning module tree, and `@self/Child` for children of a folder's `init.luau` (`./Child` there resolves to a sibling of the ModuleScript). Use the actual Rojo sourcemap, including package trees. Avoid service-chain requires except at a runner boundary that explicitly needs an Instance.
 
 Use frozen constants with literal-preserving casts for state/tag unions rather than repeating strings throughout producers and consumers. Keep the constants beside their feature contract and reuse generated network types where applicable. Content identifiers are authored data; registries should check unique IDs and required fields. Separate mechanics from content definitions rather than branching on named spells inside generic rules.
 
 ## Server platform adapters
 
-Put server engine access behind a server-side platform layer. A typed port is a narrow table of functions in domain terms. Construct adapters at the application composition boundary and inject only the ports each service uses. Engine types in annotations are fine; engine values (`game`, `workspace`, `Instance`, `Enum`) remain in adapters, documented environment/network boundaries, or roots. Enforce this boundary with an architecture check. Do not broaden its allowlist to conceal coupling.
+Put server engine access behind a server-side platform layer. A typed port is a narrow table of functions in domain terms. Construct adapters at the application composition boundary and inject only the ports each service uses. Engine types in annotations are fine; engine values (`game`, `workspace`, `Instance`, `Enum`) remain in adapters, documented environment/network boundaries, or roots. Enforce this boundary with an architecture check.
 
 Keep time, logging, players, persistence, networking, character operations, world queries, and teleportation explicit. Return domain values and translate engine enums in adapters. Disconnectable shapes let tests supply simple fakes. Add only the ports and features the game actually uses.
 
@@ -30,7 +30,7 @@ Keep ProfileStore behind the server persistence boundary and one typed session o
 
 ## Feature networking
 
-Declare server-client messages in feature-owned `.blink` files and import them through the root Blink schema. Generate with the configured recipe; never edit generated modules or create competing handwritten remotes. Only the network owner should load generated Blink runtime modules, and only during startup. Feature services take typed event/transport dependencies so tests can deliver requests without real traffic.
+Declare server-client messages in feature-owned `.blink` files and import them through the root Blink schema. Generate the modules with the configured recipe and declare every message in a `.blink` file, because the next generation overwrites an edited generated module and a handwritten remote bypasses the schema's bounds. A generated-output drift check in the project's lint recipe is the guard. Only the network owner should load generated Blink runtime modules, and only during startup. Feature services take typed event/transport dependencies so tests can deliver requests without real traffic.
 
 Bound strings, arrays, and numeric payloads using syntax supported by the pinned compiler. Generated types are not authorization: validate player/session/round ownership, proximity, eligible targets, resources, request rates, and once-only outcomes on the server. Derive positions, stats, and rewards from server state. Keep acknowledgments for pending UI operations. Reject stale and duplicate requests without granting duplicate rewards.
 

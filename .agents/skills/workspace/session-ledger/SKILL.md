@@ -37,8 +37,7 @@ identity, never a second authoritative copy of its records.
 - A readable ledger with missing referenced evidence is incomplete retrieval. Recover the artifact
   from its verified source or retained copy; if neither exists, preserve the prior observation as
   such, mark its proof unavailable and rerun only the verification that needs it. Reconstructing
-  inputs does not reconstruct a past result. Never invent a replacement report or silently treat
-  its absence as an empty or completed task.
+  inputs does not reconstruct a past result.
 - The task owner is the sole writer. Workers receive the locator and relevant entries and return
   new records and observations; they never write the owner's file or replace it with their
   snapshots. Serialize owner updates, reread the current file for each merge, and preserve all
@@ -73,22 +72,24 @@ identity, never a second authoritative copy of its records.
      context needed to resume: decisions and constraints, affected callers, dependencies, check
      results and their validity conditions, open questions and next actions. Choose useful `data`
      fields for the record; local work is never an externally verified artifact claim.
-   - For a plan shown or put to the user, record a `plan` entry: its title, goal, the context it
-     starts from, status (`proposed` while a decision or a required approval is open, `shown` for
-     one shown with no open decision, with that time, `approved` only with the user's words
-     approving it, the message they came in and its time, `complete` or `withdrawn`), which steps
-     overlap, the decisions it settled with their
-     reasons, how its result will be verified, what it needs from the user, and its ordered steps,
-     each with a title, what the step changes and how, origin (`user` for a step the user saw in
-     that form, `agent` for one the agent added or widened past what the user asked), status
-     (`next`, `active`, `done`, `blocked` or `skipped`), wall-clock estimate, the observed start and
-     finish times once known, and any parts, each with a title, a status from that same set and an
-     estimate. A plan's total is the sum of its step estimates, with steps the plan records as
-     overlapping counted once, at the longest of them. A `shown` plan and an `agent` step proceed
-     under the task's authorization, the step unless it is a product choice, and neither is ever
-     recorded or shown as user-approved.
-     Change a step's status when the work changes it, with an observation for the transition; a
-     follow-up plan is an entry of its own.
+   - For a plan shown or put to the user, record a `plan` entry:
+     - its title, goal, the context it starts from, the decisions it settled with their reasons,
+       which steps overlap, how its result will be verified, and what it needs from the user;
+     - its status: `proposed` while a decision or a required approval is open, `shown` for one
+       shown with no open decision, with that time, `approved` only with the user's words approving
+       it, the message they came in and its time, `complete` or `withdrawn`;
+     - its ordered steps, each with a title, what the step changes and how, origin (`user` for a
+       step the user saw in that form, `agent` for one the agent added or widened past what the
+       user asked), status (`next`, `active`, `done`, `blocked` or `skipped`), wall-clock
+       estimate, the observed start and finish times once known, and any parts, each with a title,
+       a status from that same set and an estimate;
+     - its total, the sum of its step estimates, with steps the plan records as overlapping
+       counted once, at the longest of them.
+
+     A `shown` plan and an `agent` step proceed under the task's authorization, the step unless
+     it is a product choice, and neither is ever recorded or shown as user-approved. Change a
+     step's status when the work changes it, with an observation for the transition; a follow-up
+     plan is an entry of its own.
    - For a question put to the user, record a `question` entry: the question, its options, the
      recommendation, the work that depends on it, its status (`open`, `evidence_pending`,
      `answered` or `withdrawn`), and the user's answer in their words with when it was given.
@@ -170,7 +171,7 @@ This skill authorizes those comments and their edits under the GitHub rule's **C
   the comment's URL in that item's place.
 - **Posting and recording are one step.** Add the comment's URL to the entry's `recovery_comment`
   list in the ledger update that follows the post, before any other work.
-- **A comment is edited at stage boundaries, never at every state change.** Edit it in place,
+- **A comment is edited at stage boundaries.** Edit it in place,
   rather than posting another, when its entry is first recorded, when its work is first pushed,
   accepted, merged or held, and when a later answer replaces the one it holds. A change between
   those boundaries, such as a step starting, a part finishing or an interim check result, updates
@@ -187,8 +188,9 @@ This skill authorizes those comments and their edits under the GitHub rule's **C
 - The installed turn-end hook `ledger` checks each ledger this session writes: one under
   `agent-ledgers/` that the session's transcript names and that changed at or after the session's
   first recorded timestamp, or that the transcript names at all when it records no timestamp. While
-  one owes a backup or cannot be read, the hook lists each entry and what it lacks. In Claude Code
-  and Codex it refuses to end the turn; in Cursor it submits the list as the next message. It
+  one owes a backup or cannot be read, the hook lists each entry and what it lacks. Where the
+  harness lets a stop hook refuse to end the turn it does; where the harness only accepts a
+  follow-up message it submits the list as the next message. It
   holds a turn back at most once in a row, so post or edit the comment and record its URL, or
   repair the ledger, in the turn it reopens. It runs only where `python3` is Python 3.11 or newer
   with PyYAML installed; without PyYAML it reports every turn that the backups were not checked.
@@ -219,11 +221,12 @@ new top-level collections or an envelope per kind.
 
 ## Guardrails
 
-- Do not commit a ledger file or its private evidence, or infer a record from a transcript. Never record
-  credentials, tokens, request bodies, other secrets, or unrelated session details. Remove task
-  ledger files, retained evidence and transfer copies after the task ends and no receiver or active
-  worker still needs them; a handoff continues the task and is not its end.
-- Never infer a record from a repository directory, local branch, remembered pull-request number,
-  or search result alone.
+- Keep the ledger file and its private evidence out of commits. Record only what verified evidence
+  shows: a transcript, repository directory, local branch, remembered pull-request number or search
+  result alone establishes no record. Keep credentials, tokens, request bodies, other secrets and
+  unrelated session details out of the ledger, since the file persists after the task and travels
+  with handoffs. Remove task ledger files, retained evidence and transfer copies after the task
+  ends and no receiver or active worker still needs them; a handoff continues the task and is not
+  its end.
 - A missing record is not permission to broaden a query. Ask for the target when the current task
   and verified records leave multiple plausible artifacts.

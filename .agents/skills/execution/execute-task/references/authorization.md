@@ -1,5 +1,8 @@
 # Authorization
 
+Contents: **What An Authorization Covers**, **Approval Boundaries**, **Steps Only The User Can Take**,
+**Choices Between Versions Of A Page**.
+
 What `SKILL.md`'s **Task Authorization** and **Showing The Plan** apply: what an authorization covers, when a
 step is a new approval boundary, and how a step or choice reaches the user.
 
@@ -16,8 +19,7 @@ step is a new approval boundary, and how a step or choice reaches the user.
   ordinary authorized action.
 - **A new authorization is needed only where the action materially expands the target, recipient
   or outcome**, or a platform actually requires an action-time confirmation. Make that question
-  specific to the new decision or action; never ask the user to reconfirm the task or say
-  "continue" to resume it.
+  specific to the new decision or action.
 - **Work is never declined for a guessed budget.** For an invoked skill, do not decline, defer or
   drop a finding, fix or validation step because the work looks large, difficult, or likely to
   exceed a guessed time, context or token budget. Only the user declares a budget spent. Work until

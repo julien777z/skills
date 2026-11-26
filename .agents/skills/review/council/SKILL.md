@@ -33,6 +33,11 @@ neither the user nor the calling skill sets the selection, use the three seats l
 through that skill at high effort. Start the three in parallel, read-only, with no subagents
 of their own.
 
+- **A default seat whose launch on another provider does not start** is relaunched on the
+  session's own provider at the seat's level, as `subagent-matrix`'s fallbacks reference's **A
+  Launch On Another Provider's Model** says, and the result names the substitution; the seat is
+  never left empty or waited on for that provider. When the seat is read and the replacement
+  launched follow that section, which owns the timing.
 - **Missing members.** Resolve an unavailable default seat through `subagent-matrix` down to
   the `standard` tier. Report a missing named or caller-constrained member and use only launches
   that meet the original requirement. With two members available, name the empty seat and report

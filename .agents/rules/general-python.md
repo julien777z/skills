@@ -179,14 +179,13 @@ from myapp.http_transport import fetch
 ## Suppressions
 
 - **Never add an inline suppression**: no `# pylint: disable`, `# pyright: ignore`, `# type: ignore`, or `# noqa` — except on the outermost-wrapper catch-all the Python boundaries rule's **External APIs and Errors** allows. Fix what the checker reports about our own code — a precise annotation, a correctly typed decorator (a `ParamSpec` rather than a `Callable` that erases parameter names), the right import. A per-line disable reads the same whether its author weighed the finding or never looked, and once copied onto every sibling it hides the cause behind a pattern nobody questions.
-- **A third-party package's missing or incomplete types are that package's gap, never ours.** Delete
-  any stub file, `typings/` directory, cast or wrapper written to quiet them, and write none; the
-  answer is the category-wide configuration entry below, never code. A checker plugin, inference
-  transform or script that teaches a tool a third-party construct it lacks types for or misreads is
-  the same code under another name, and so are its tests: delete them, write none, and turn the
-  category off as below. A package the user owns is not
-  third-party wherever it lives: its types are published at its source — a `py.typed` marker and the
-  annotations its public surface needs. Read ownership from whose repository it is.
+- **A third-party package's missing or incomplete types are that package's gap, never ours.** Write
+  no stub file, `typings/` directory, cast, wrapper, checker plugin, inference transform or script
+  to quiet them or to teach a tool a third-party construct it misreads, and delete any that exists
+  together with its tests; the answer is the category-wide configuration entry below, never code. A
+  package the user owns is not third-party wherever it lives: its types are published at its source
+  — a `py.typed` marker and the annotations its public surface needs. Read ownership from whose
+  repository it is.
 - A category is turned off once in the tool's configuration, or filtered once by the repository's
   lint gate, with its reason beside it, in two cases: it reports a third-party package's missing or
   unknown types, or it misreads a construct the codebase deliberately relies on everywhere — a
@@ -223,7 +222,7 @@ EVENT_PATTERNS: Final[dict[EventKind, re.Pattern[str]]] = {
 - Prefer enums for error identifiers/messages instead of a constant per error string.
 
 - **Never commit development or test secret values into application or library code** — not even to compare against them. Embedding a known dev key (or its hash) so the code can reject it just moves the secret *into* the codebase, which is the opposite of the goal. Real secrets live in the secrets manager; test secrets live in test configuration (`pyproject.toml` env), never in `.py` source.
-- **Do not branch on the environment in application code to relax or vary security posture** (`if ENVIRONMENT == "development": allow the weaker cipher / skip the check`). Which crypto backend, keys, and credentials are used is a deployment concern: production sets the real backend and secrets, tests set test values via test config. Application code states the single required contract (for example "encryption is AWS/KMS") and lets it hold everywhere.
+- **Do not branch on the environment in application code to relax or vary security posture** (`if ENVIRONMENT == "development": allow the weaker cipher / skip the check`). Which crypto backend, keys, and credentials are used is a deployment concern: production sets the real backend and secrets, tests set test values via test config. Application code states the single required contract (for example "tokens are signed by the managed key service") and lets it hold everywhere.
 - **Let the owning library validate its own contract; do not duplicate it behind an environment gate.** If a third-party SDK already requires a key for its selected method, do not re-implement that check in our config with environment branches — that is redundant and drifts.
 
 ## Functions and Interfaces
@@ -238,7 +237,6 @@ Avoid trivial wrapper functions that add no value. A function that just returns 
 - A subprocess return code is an external value and may remain an `int` at that boundary. Convert it into the domain outcome enum before carrying it through the application.
 - Do not rebind function arguments to a second local name when the value is unchanged (for example, `profile = obj`); name the parameter correctly at the signature instead.
 - When omission and an explicit `None` have different meanings for a parameter, use one reusable `Undefined` sentinel from a neutral shared owner; do not define a database-, transport-, or feature-specific sentinel for a general presence distinction.
-- Give domain-specific parsers and converters domain-qualified names so imports from multiple domains cannot silently shadow one another. Keep unqualified names only for genuinely domain-independent transformations.
 - **Name a guard for the condition it asserts, not for the outcome it prevents.** A function that
   raises when an invariant is broken is named `assert_<invariant>`, so the call site reads as the
   condition that must hold. Prose names built around the refusal — `refuse_dropping_the_last_key`,
@@ -367,7 +365,7 @@ match self:
 ## Logging
 
 - Use the `logging` module instead of `print()` for debugging, status, progress, or diagnostics in any code, including scripts and CLI tools.
-- Configure a logger at the top of each ordinary module: `logger = logging.getLogger(__name__)`.
+- Configure logging once, centrally at the application or script entry point; each ordinary module only creates its logger at the top: `logger = logging.getLogger(__name__)`.
 - Treat logger instances as runtime collaborators: name them `logger`, never `LOGGER`, and do not annotate them as `Final`.
 - Use appropriate log levels: `debug`, `info`, `warning`, `error`, `critical`.
 

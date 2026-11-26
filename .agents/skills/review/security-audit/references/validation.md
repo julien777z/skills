@@ -29,7 +29,7 @@ Your job is to DISPROVE this finding. Read the actual source code at every step.
 - "REJECTED: [explanation of what the finding got wrong, with code evidence]"
 ```
 
-Kill false positives on the rubric's terms — its **What A Surviving Finding Has Been Put Through** closes on what that costs and what it must not cost.
+Kill false positives without killing real findings, as the rubric's **What A Surviving Finding Has Been Put Through** closes.
 
 For each finding that survives, hold in the session everything the result will need — the session
 is the only carrier, so a field nobody writes down is a field the later steps cannot check. That
@@ -43,7 +43,9 @@ verify it or reject it.
 ### Independent verification
 
 The agent that found a vulnerability also wrote its trace, and it will not catch its own blind spots.
-A run that verifies findings independently launches **one fresh read-only agent per confirmed
+This is the step a whole-repository audit launches; `security-audit`'s own
+review of a change launches refuters only and has the parent check each trace against the source. A
+run that verifies findings independently launches **one fresh read-only agent per confirmed
 finding**, all in parallel, within the launching skill's cap. Each gets exactly one finding and
 verifies it independently. Give each agent that finding and this prompt:
 
@@ -79,4 +81,4 @@ Apply the agent's corrections:
 - **CORRECTED** — correct the finding before it is reported, and say in the report that it was corrected
 - **REJECTED** — drop the finding, or report it as investigated and rejected with the reason
 
-This is the final quality gate, and the result waits for it.
+For a caller that launches verifiers, this is the final quality gate, and the result waits for it.

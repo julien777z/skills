@@ -1,6 +1,6 @@
 ---
 name: pre-production
-description: Apply target-contract and product-state constraints to implementation, review, and operational data tasks, including maintenance, cleanup, tooling, and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update its owned consumers and migrate retained data instead. Apply to relevant CI failures after validation classification, and whenever a lint, formatting or other non-essential check is red on code the change did not write. Also use when telling a product choice from a routine detail, placing or laying out code, declaring configuration, logging, naming or choosing American English, choosing versions or dependency releases, writing documentation, comments, commit or pull-request text, example values or paths, writing product copy or forms, repairing a local stack or development data, experimenting against shared state, rebuilding an artifact, or mutating a live deployment.
+description: Apply target-contract and product-state constraints to implementation, review, and operational data tasks, including cleanup, tooling and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update owned consumers and migrate retained data instead. Apply to CI failures after classification, to a non-essential check left red on code the change did not write, and to deprecated usage, warnings and defects the work notices. Also use when telling a product choice from a routine detail, placing or laying out code, declaring configuration, logging, naming or choosing American English, choosing versions or dependency releases, writing documentation, comments, commit or pull-request text, example values or paths, writing product copy or forms, requiring fields or backfilling data, repairing a local stack or development data, experimenting against shared state, rebuilding an artifact, or mutating a live deployment.
 short_description: 'Apply target-contract constraints to implementation and review tasks.'
 ---
 
@@ -19,15 +19,22 @@ change writes:
   example values and paths, documentation, and repository text.
 - [The product-copy reference](references/product-copy.md), before writing or changing text or a
   form a product's reader meets.
+- [The contracts reference](references/contracts.md), before changing whether a field is required,
+  writing a backfill, adapting a third-party provider's contract, or letting the deployment's size
+  decide a design.
+- [The product-presentation reference](references/product-presentation.md), before changing what a
+  reader sees: a correction's reach across pages, a remedy's visible effect, content that has to fit
+  its space, or text already in the product.
 - [The environments reference](references/environments.md), before repairing or resetting a local
   stack or its records, combining or reordering verification, running an experimental fault,
   rebuilding a validated artifact, or sending a write to a live deployment.
 
 ## Product State
 
-- Apply this skill in every repository. Read its project guidance to determine which contracts have
-  external users, which environments and records are disposable, and which surfaces are privileged;
-  never infer those facts from an environment name.
+- Apply this skill in every repository the user owns, and in any other only as **Whose Standards
+  Apply** in the code-conventions reference says. Read its project guidance to determine which
+  contracts have external users, which environments and records are disposable, and which surfaces
+  are privileged; never infer those facts from an environment name.
 - **Establish retention obligations before proposing preservation work.** Use the user's explicit
   instructions and repository facts to identify the affected users and records that must survive.
   A schema, an audit field, or generated test rows prove a supported shape, not that real users or
@@ -48,32 +55,31 @@ change writes:
 ## Encountered Issues
 
 - **Classify validation failures first, before the failure is diagnosed, handed to a worker, or
-  mentioned to the user.** Read the default branch's latest run of the
-  same check, hosted or local, and reproduce there only when no such run exists. When that evidence
-  establishes the same failure under comparable inputs, and the change neither introduces nor
-  worsens it, record the check and that evidence as a baseline failure in the task's record, which
-  every later gate receives. A test already
-  failing on the default branch is recorded this way and left. Continue the requested work
-  and its relevant validation; do not repair, rerun, investigate further, ask a product question, or
-  record a deferral for that failure merely because validation encountered it. **Nothing the user
-  reads names a baseline failure or says one was left out**: no report, summary, status list, open
-  item or question, apart from a merge that branch protection rejects for it, whose rejection is
-  reported with its provider evidence. No report claims the excluded check passed either; it
-  covers the checks the change answers for. This exclusion does not cover a defect the user assigned, a suite past its
-  runtime budget, deprecated usage or a printed warning, as the
-  deprecated-usage bullet below says, a failure of the behavior the task must establish,
-  a non-essential check's finding the next bullet has the change fix,
-  or a confirmed finding independently established by a review or source inspection apart from
-  diagnosis of the excluded check. Do not reopen an exclusion by relabeling that same failure as a
-  review or source finding. Assigned defects and independent findings remain fix responsibilities
-  even when older code caused them.
-  Missing comparison evidence is not a baseline exclusion; inspect the failure at its native owner
-  before choosing its disposition. Pass established exclusions and their evidence to every later
-  validation or merge gate.
-  A brief that hands a validation failure to a worker carries the classification's result, and
-  never asks the worker to fix a baseline failure. A baseline failure's cause, even one only the
-  user could remove such as a provider setting or credential, is never put to the user as a gate or
-  a request, apart from that rejection.
+  mentioned to the user.** Read the default branch's latest run of the same check, hosted or local,
+  and reproduce there only when no such run exists.
+  - **A baseline failure is recorded and left.** When that evidence establishes the same failure
+    under comparable inputs and the change neither introduces nor worsens it, record the check and
+    that evidence as a baseline failure in the task's record, and pass it to every later validation
+    or merge gate. A test already failing on the default branch is recorded this way. Continue the
+    requested work and its relevant validation; the failure is not repaired, rerun, investigated
+    further, put to the user as a product question or recorded as a deferral merely because
+    validation encountered it. A brief that hands a validation failure to a worker carries this
+    classification and never asks the worker to fix a baseline failure.
+  - **Nothing the user reads names it.** No report, summary, status list, open item or question
+    names a baseline failure, says one was left out, or claims the excluded check passed; a report
+    covers the checks the change answers for. Its cause, even one only the user could remove such
+    as a provider setting or credential, is never put to the user as a gate or a request. The one
+    exception is a merge that branch protection rejects for it, whose rejection is reported with its
+    provider evidence.
+  - **What the exclusion does not cover:** a defect the user assigned, a suite past its runtime
+    budget, deprecated usage or a printed warning (as the deprecated-usage bullet below says), a
+    failure of the behavior the task must establish, a non-essential check's finding the next
+    bullet has the change fix, and a confirmed finding independently established by a review or
+    source inspection apart from diagnosis of the excluded check. Relabeling the same failure as a
+    review or source finding does not reopen the exclusion, and assigned defects and independent
+    findings stay fix responsibilities even when older code caused them.
+  - **Missing comparison evidence is not a baseline exclusion**: inspect the failure at its native
+    owner before choosing its disposition.
 - **Only essential checks have to pass: the test suites, and only for what the change answers for.**
   A non-essential check, such as lint, formatting or other static analysis, that fails on findings
   in code the change did not write may stay red. That holds whether the findings predate the change
@@ -215,19 +221,8 @@ with an obsolete owned contract or revision.
     put to the user as a question. A defect, a security vulnerability included, is never past it.
     An explicitly requested broad refactor sets its own scope and carries no budget.
 - **A correction to how one screen looks or reads reaches every page when the user makes it a
-  rule, and that screen alone when they do not.** A correction the user asks to have codified, or
-  gives a reason for that holds wherever the shape appears, such as "labels sit above their fields
-  so the eye moves straight down the form", names a defect. Every existing page with that shape is
-  fixed in the same pass, as the change's scope rather than incidental work under the size budget,
-  and the rule written from it governs existing pages as much as new ones. A layout, a wording, a
-  tone or a style changed on one page with no such reason is the user's choice about that page. It
-  is applied there, and other pages with the same shape are listed for the user to decide on,
-  never changed in the same pass. A shape a standing rule already named as a defect is fixed on
-  every page in the same pass too, as the change's scope; a broken mechanism, a wrong value, a
-  missing guard or a parallel implementation stays under the bullets above. A page that builds its own copy of a shared component moves onto the shared
-  one in the same pass even though its look changes with it: it takes the look the rest of the
-  product already has, which is no new choice about that page, unless the task's record or the
-  conversation shows the user decided that page's look, in which case the move goes to the user.
+  rule, and that screen alone when they do not**: [product
+  presentation](references/product-presentation.md)'s **Correction Reach** holds it.
 - Inspect the complete mechanism before choosing its repair. Prefer the clean result that solves
   that defect throughout its affected paths; do not equate a broader cleanup with a better fix.
 - The bar is what the cleanest result requires, not what the smallest diff permits. Existing users
@@ -241,28 +236,6 @@ with an obsolete owned contract or revision.
   structure it points at: split the module, remove the unused export, move the import. A manifest
   key, a bundler or compiler option, an alias or an exclusion that stops the tool from seeing the
   problem leaves the structure as it was and hides it from the next reader.
-
-## The Deployment's Size Is Not The Design
-
-- **The deployment's current dimensions are facts about today, never constraints on the design.** How
-  few rows its database holds, how small its instance is, how little traffic it serves: those
-  describe what is deployed, not what the code has to be able to do. A mechanism that cannot grow past
-  one process, one core, or one container is a property of the mechanism, and it is still that on the
-  day the same code meets a hundred times the data.
-- **"It is small enough today" is the sentence that ships the ceiling.** It is true whenever it is
-  said and it is never true for long, and it sounds like an argument about the code while being an
-  argument about the environment. The same goes for every relative of it: the table is short, the
-  instance copes, the job finishes overnight, nobody has complained.
-- **Judge the mechanism, not the environment it currently runs in.** Ask whether the work grows with
-  the data and whether anything bounds it — not whether this month's instance survives it. Resizing is
-  a number somebody revisits under pressure; a design that scales with the work is not.
-- Where the environment genuinely limits what can be *demonstrated* — a single-node database that
-  cannot show contention, a dataset too small to produce a rate — say so plainly and build for the
-  target anyway. A design that cannot yet be proven here is still the right design; one that cannot
-  scale is not, and a measurement taken on a small deployment is evidence about that deployment only.
-- This is not a license for speculative distribution. The bar is unchanged: the cleanest result for
-  the contract the released product needs. It removes exactly one argument from the discussion — that
-  the current deployment is small — and settles nothing else about how much scale the work warrants.
 
 ## Product Choices
 
@@ -284,17 +257,8 @@ the issue should be ignored.
   API or setting onto its supported replacement, even when the replacement tightens access, as the
   deprecated-usage bullet in **Scope Follows The Defect, Not The Request** says. A game's design is
   never a product choice, as the global rules' game-design bullet says.
-- **A fix's remedy meets the same test, judged by its visible reach.** A remedy whose visible
-  effect is large — one that changes the layout, controls or flow a reader meets on many pages or
-  across several products, or that a returning user would notice, such as every photo gallery
-  turning into a carousel once it holds more than a few photos, or a form splitting into steps
-  everywhere past some number of fields — is a product choice, and so is new visible behavior a
-  remedy carries past the surface the user named to others like it; the defect no longer showing
-  there is not. Each is proposed before it is built, whether it arrives as a fix, a later fix round
-  adjusts it, or a gate accepted it: the proposal lists every page it would change and carries
-  before-and-after captures of a few representative pages where the change shows, never every page,
-  so the user decides where it applies. The user's word on how something looks under one condition,
-  such as at one width, decides nothing about when it appears under another.
+- **A fix's remedy meets the same test, judged by its visible reach**: [product
+  presentation](references/product-presentation.md)'s **Visible Reach** holds it.
 - **A routine presentation or interaction detail is not a product choice, and is not put to the
   user.** An alignment, a spacing, a size or tone on the product's existing scale, the placement of
   a message or control among the product's established positions, the wording of a message the
@@ -305,28 +269,11 @@ the issue should be ignored.
   one, look for their earlier word on it in the task's record and the conversation, and follow it;
   changing it goes to the user.
 - **Making content fit its space is the agent's work; only what to remove or hide goes to the
-  user.**
-  - A remedy that keeps every value readable — a strip that scrolls with its scrollbar shown, a
-    long value broken at its natural boundaries, items stacked, a control moved to one of the
-    product's established positions — is a routine detail as above, decided and fixed at whatever
-    width the defect shows, and so is a defect a capture shows that predates the change.
-  - Squeezing columns until cells wrap onto several lines, truncating values, shrinking type, or
-    narrowing cards, form fields or toolbar controls until their labels break word by word keeps
-    everything visible by making rows and items tall and hard to scan, and is never the remedy.
-  - Removing a column, field or item, or hiding it below a width, changes what information the
-    product shows, so ask which content can go or be hidden at that size, with captures of the
-    options, before changing the layout; until the user answers, the content keeps the room its
-    values need.
-- **Text already in the product keeps its words unless it is wrong or the user named it.**
-  - Text that is plainly wrong or inconsistent, such as a label stating something untrue, one thing
-    called by two names, or a message that does not match what happens, is corrected or left by
-    judgment, and the report says which.
-  - Text a standing rule names as a defect counts as wrong, and is fixed on every page it appears
-    on, as the bullets in **Scope Follows The Defect, Not The Request** say.
-  - A request to reword one text rewords that text alone; any other existing title, label,
-    description or message that is correct but could read better keeps its words, beside it or
-    elsewhere, even when the new wording suggests changing it, and the suggested rewording goes to
-    the user for approval.
+  user**: [product presentation](references/product-presentation.md)'s **Content That Must Fit**
+  holds it.
+- **Text already in the product keeps its words unless it is wrong or the user named it**:
+  [product presentation](references/product-presentation.md)'s **Text Already In The Product** holds
+  it.
 
 ## Trade-Offs Are Surfaced, Never Enforced
 
@@ -414,7 +361,8 @@ the issue should be ignored.
 - Keep resilience within the current supported contract: error handling, browser support, empty
   states, and provider-failure behavior the released product needs. Supporting an obsolete owned
   contract or revision is compatibility, even when described as resilience or repair; it requires
-  the approval above. Third-party contracts remain governed by **Owned And Third-Party Contracts**.
+  the approval above. Third-party contracts remain governed by **Owned And Third-Party Contracts** in the contracts
+  reference.
 - Prefer a deliberate break to an owned API, wire, schema, payload, or stored shape when it
   materially simplifies the result. Update affected consumers and migrate retained data, then remove
   the old shape; update every consumer and generated contract in the same change. A break the
@@ -426,52 +374,12 @@ the issue should be ignored.
   outside the user's control freezes a shape. **Scope Follows The Defect, Not The Request** holds for a break as for
   a bug: the new shape reaches every site answering the same question, never only the one the work
   started from.
-- Do not weaken a compatibility gate to hide an intentional break. Report the exact failure and the
-  contract change it detected so a reviewer can distinguish intended from accidental breakage.
+- Do not weaken a gate that exists to detect deliberate changes — contract or schema compatibility,
+  generated-output drift — to hide an intentional break: no ignore lists, exception entries or
+  reserved placeholders faking compatibility, and no wider or additive shape chosen so the gate
+  stays green. The gate going red is an accepted, reported outcome: state in the pull request that
+  the break is deliberate and list exactly what the gate reported, so a reviewer can distinguish
+  intended from accidental breakage.
 - For disposable development records, follow the repository's stated policy: it decides which
   values a change may discard, never how the change reaches a deployed database. Never assume
   released user data is disposable or carry a tester conversion as a runtime compatibility path.
-
-## Owned And Third-Party Contracts
-
-- Everything above is about contracts the user owns and can change by migrating every consumer
-  of them. **A third-party provider's contract is not ours and cannot change at all.**
-- So where the two must meet, only one side can move, and it is always ours. "The provider encodes it
-  differently" is a statement about our model, not about theirs: our model is the one that accepts
-  what the provider sends, in the shape the provider sends it.
-- That makes a provider difference the weakest reason there is to keep a second model mirroring the
-  one it converts into. A second model is what you build when neither side can move; on this boundary
-  one side always can, so the pair is duplication rather than a boundary.
-- **Adapting is not imitating.** The provider's encoding comes across — its string tokens, its date
-  formats, its nesting, its keys — carried by validators and aliases on our own fields. Its
-  vocabulary does not: field names, casing, and domain terms stay ours.
-- Requiring a field the provider may legitimately omit is still wrong, and moving toward the
-  provider's shape never licenses it. Accept what it can send; require only what an owned validation
-  or selection boundary proves is present.
-
-## Required Data
-
-- Make fields and columns required by default. Keep one nullable only when absence is a genuine
-  supported domain state.
-- An absent value on a read path is a schema question. First establish whether the domain requires
-  it. Represent legitimate absence at the operation that can return it. When one shape represents
-  both a present entity and no entity, give those states distinct representations so a present
-  entity requires its identity. If the domain and the column both require a field, align the wire
-  and model with the column. If the domain requires it and the column allows absence, align the
-  column too. Apply **Target Contract** when a shared shape is the cause of an impossible branch.
-- For a requiredness change, establish the affected data's retention scope under **Product State**
-  before deciding what its revision keeps or clears; required columns do not themselves create an
-  obligation to preserve disposable or nonexistent rows.
-- For retained values, use the authoritative source where one exists and a type-valid placeholder
-  only where none exists and the placeholder expresses a legitimate domain state. The
-  **Target Contract** prohibition on invented identities, ownership, and scopes also applies during
-  migration. Never overwrite a known retained value, fabricate a placeholder in runtime code, or
-  keep a permanent schema default solely to make a migration convenient.
-- **A backfill writes each row's value under the new contract, never one chosen so existing rows
-  keep behaving as before.** A flag set on every pre-change row so it keeps the old outcome, such as
-  staying exempt from a new check, closed to a new path, or treated as the old kind, is a legacy
-  fallback written into data. So is a branch on a creation date or a stored version that does the
-  same. Where the new field records a fact, such as who did something or when, backfill that fact
-  from its authoritative source. The tell is a description or comment saying that rows from before
-  the change keep the old behavior; keeping it needs the user's approval, as any legacy support
-  does.

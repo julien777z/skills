@@ -16,12 +16,11 @@ Review, fix, and merge the pull requests selected under **Targets**.
   validate, open a pull request, fix CI, finish implementation, or merge.
 - **The invocation authorizes the squash merge of every selected target** at the head its
   `review-pass` accepted, unless the user explicitly withholds merge, in which case each unit ends at
-  that head with its pull request left draft. When merge is authorized, nothing reopens it: not the
-  diff's size, and not this run's own unease about how much it
-  changes.
-- **So never ask the user for permission to merge, and never end a run by offering the merge as the
-  remaining step.** The answer was given when the skill was invoked. When the gates are green and the
-  head is the accepted one, merge it.
+  that head with its pull request left draft. When merge is authorized, nothing reopens it, however
+  large the diff is.
+- **The merge question was answered when the skill was invoked.** When the gates are green and the
+  head is the accepted one, merge it; a gate that holds the merge is reported with its evidence, as
+  `merge-gate`'s **Authorization** says.
 - The same invocation authorizes `review-pass` and `merge-gate` for every selected pull request.
   It does not authorize separately dispatching a release workflow, creating a deployment, or an
   unrelated provider mutation: `merge-gate`'s **Authorization** says what authorizes those, its
@@ -62,8 +61,7 @@ Review, fix, and merge the pull requests selected under **Targets**.
   discovery as pending and recover the missing records. Add all recovered targets before marking
   discovery complete; known units can proceed while recovery runs.
 - Verify each target's branch, head and state on the host. A target stays draft through its work
-  and review: `merge-gate` marks it ready, as the last step before the merge, once `review-pass`
-  has accepted its head.
+  and review; `merge-gate`'s **Readiness** marks it ready.
 - Apply the GitHub rule's **Branches and Pull Requests** to source follow-ups, review fixes and
   check fixes. When an addition changes a selected target, refresh that pull request's intent
   before reviewing its resulting head. The **Targets** above still determine which pull requests
@@ -130,11 +128,7 @@ Follow the active task's recorded priorities when choosing the next eligible uni
    - its **Checks** results, with their commands and head, as the behaviors local tests already cover;
    - that this caller owns the primary checkout refresh after applicable CI writes and Agent Sync;
    - every exclusion it returned, with its evidence;
-   - the fix rule for every fix `merge-gate` makes — a check fix, a conflict resolution, a commit
-     someone else pushed: refresh the target's intent if its scope changed, then `review-pass`
-     runs again over the fix's delta. The fix is pushed through
-     the GitHub rule's **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
-     passed.
+   - the fix rule `review-pass`'s **Fix Rule** states, for every fix `merge-gate` makes.
 4. **Refresh the checkout.** After a verified merge, run **Local Checkout**. Record the merge and checkout outcome, or the
    gate that holds the merge, with `session-ledger`, and continue to the next unit.
 

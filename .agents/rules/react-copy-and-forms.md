@@ -41,13 +41,13 @@ paths:
   reader needs: an agent's carries the URL it can follow. The service sends a reason code beside
   it, and the interface writes the words for its own reader and the page they are on, never
   showing the other reader's message.
-- **Never write copy about the product's state that nobody has confirmed.** A page that says a
+- **Confirm the product's state with the user before any copy states it.** A page that says a
   feature is unavailable, coming soon or not yet supported, when nobody said so, misinforms the
-  reader; the product's state is confirmed with the user before any copy states it.
-- **Never state what the reader takes for granted.** That data is encrypted, stored securely, kept
-  private, or handled carefully is assumed of any product in this category; saying it out loud plants
-  the doubt it was meant to settle. Mention a property only where the reader has to act on it or
-  where it departs from what they would assume.
+  reader.
+- **Mention a property only where the reader has to act on it or where it departs from what they
+  would assume.** That data is encrypted, stored securely, kept private, or handled carefully is
+  assumed of any product in this category; saying it out loud plants the doubt it was meant to
+  settle.
 - **Keep implementation out of the interface.** Storage, masking, hashing, background jobs, retries
   and the names of internal states belong in the code. A description says what the field is for and
   what the reader should put in it, in the words they would use themselves.
@@ -80,9 +80,9 @@ paths:
   Where a sentence is only there to cover the product, cut it. That includes a paragraph explaining
   the mechanics around an action, such as which party performs which step, and a note of a side
   effect nobody asked about, such as what happens to earlier versions.
-- **A dialog's commit button never repeats the label its trigger and title already carry.** The
+- **A dialog's commit button names the act in the fewest words, not the label its trigger and title already carry.** The
   reader pressed "Add song" to open the dialog and read "Add song" as its title; a third "Add song"
-  on the button says nothing new. The commit names the act in the fewest words: "Save" for a form
+  on the button says nothing new: "Save" for a form
   that adds or changes something, the bare verb for a confirmation — "Delete" under "Delete
   playlist". When that verb is also the word the product's dialogs use to dismiss, such as "Cancel",
   the commit adds what it acts on — "Cancel booking" — so one word never means both doing the
@@ -121,10 +121,9 @@ paths:
   working, whether it can be undone — and nothing else. On a confirmation, this body is the
   dialog's description, and the question with its one consequence sentence stands in for the
   one-sentence limit.
-- **The body never opens with the title again.** A title reading "Archive record" over a body
+- **Write the body as though the title is above it.** A title reading "Archive record" over a body
   reading "Archive Ann Lee? …" says the same words twice and spends the only line the reader
-  actually reads on the one they have already read. Write the body as though the title is above it,
-  because it is.
+  actually reads on the one they have already read.
 - Name the record in the title's noun, not the title's value: a dialog headed with one record's
   name is a different heading on every row, and the reader learns nothing from it that the row they
   clicked did not already tell them.
@@ -169,10 +168,11 @@ paths:
   scrolls while changes are unsaved, and slides away once they are saved or canceled. A reader who
   unchecks one topic on a newsletter preferences page sees it rise, and checking the topic again sends
   it away. A save or reset button per section, a row of them at the end of the page or form, and a
-  footer that sticks to the bottom of the page whether or not anything changed are the defect. A
-  form that creates a record or submits a flow step is not editing saved values and keeps its own
-  footer, and a form inside a dialog saves through the dialog's own actions; the panel belongs to a
-  page the reader scrolls. One shared component owns the panel, under the React layout rule's **Shared Surfaces**.
+  footer that sticks to the bottom of the page whether or not anything changed are the defect. One
+  shared component owns the panel, under the React layout rule's **Shared Surfaces**.
+  - A form that creates a record or submits a flow step is not editing saved values and keeps its own
+    footer, and a form inside a dialog saves through the dialog's own actions; the panel belongs to a
+    page the reader scrolls.
 - **A form a person signs, certifies or attests to starts empty.** Nothing is seeded from a profile
   or an earlier submission, because the signer vouches for what they entered.
 - **A form where the signed-in person enters someone else's details turns browser autofill off on
@@ -182,12 +182,13 @@ paths:
   around the form sets it for every control inside, including those a shared field component
   renders, never a token per field that the next added field forgets. "Off" means what the browser
   and the common password managers actually honor, which a bare `autocomplete="off"` is not for
-  name, email and address fields. A search or picker box offers nothing the browser saved — neither
-  saved details nor values typed into other fields — wherever it appears, since it never holds
-  anyone's details: Chrome stops typed history only for exactly `off`, and fills nothing in a field
-  it reads as a search term, so such a box takes `off` with a `search` name. The shared input and
-  combobox components own those attributes. A form for the person's own details keeps accurate
-  autocomplete tokens on each field.
+  name, email and address fields. A form for the person's own details keeps accurate autocomplete
+  tokens on each field.
+  - A search or picker box offers nothing the browser saved — neither saved details nor values typed
+    into other fields — wherever it appears, since it never holds anyone's details: Chrome stops
+    typed history only for exactly `off`, and fills nothing in a field it reads as a search term, so
+    such a box takes `off` with a `search` name. The shared input and combobox components own those
+    attributes.
 - **A search box that picks a consequential record — a person, an account, a project — shows no
   suggestions and makes no request until the reader types.** A list on focus invites a pick by
   proximity rather than intent, and offers records the reader never asked to see. A picker over a

@@ -120,14 +120,14 @@ write:
    open — the admission verdict goes here — pickup scope, and a table of supporting files. Copy only
    supporting material required to keep the record durable.
 3. Commit only that directory on this session's source pull request in that repository, the one the
-   GitHub rules' source-ownership bullet selects, and push it there; it merges with that pull
+   GitHub rule's **Branches and Pull Requests** selects, and push it there; it merges with that pull
    request. Only when the session has no open source pull request there does the record go on a pull
    request holding only deferral records, the session's open one or a new draft from the default
    branch, which later records join. Once its records are pushed, put its complete diff to
    `acceptance-gate`'s final-acceptance question, one gate per such pull request, then invoke
-   `merge-gate` under the GitHub rule's deferral-record permission with the accepted head, no local
+   `merge-gate` under the GitHub rule's **Merge Authorization** with the accepted head, no local
    test coverage, and the rule that a fix it makes goes back to final acceptance over that fix's
-   delta, one more gate per fix, within the limit of 3 review rounds per change. It is never left
+   delta, one more gate per fix, within the review-round limit `acceptance-gate`'s **Bounds** sets. It is never left
    open, and no report or next action leaves its merge to the user.
 
 Never mix Linear and repository records for one deferral. Existing repository records remain in
@@ -140,9 +140,7 @@ Read active issues carrying the deferral label the repository's project guidance
 `deferrals/declined/` from the ordinary active view. Deduplicate only on strong repository, stable-key,
 pull-request, and problem evidence.
 
-Report one concise entry per deferral with its title, why it remains open, source (`Linear` or
-`repository`), and durable link. If Linear is unavailable, report that limitation and return the
-repository set rather than claiming the combined ledger is empty.
+Report one entry per deferral in the **Output** shape.
 
 ### Reading A Scope
 
@@ -154,9 +152,24 @@ record whose affected surface falls in that scope, whatever its state:
 - from the repository ledger, every `deferrals/` child, `deferrals/declined/` included, on the
   fetched remote default branch and in each open pull request's `deferrals/` diff.
 
-Report one entry per record: its stable key, title, affected surface, state (active, declined,
-canceled or resolved), source and durable link. A declined or canceled entry also carries the
+Report one entry per record in the **Output** shape. A declined or canceled entry carries the
 reason it was declined and its reconsideration criterion, which is what would reopen it, both
 quoted from the record; one that states neither is reported as missing them, never filled in.
 The caller decides what a returned record means for its own findings; this read changes no record
 and admits none.
+
+## Output
+
+Recording returns the issue identifier and URL, or the matching repository-ledger record. Reading
+returns one entry per record, and nothing else when none exists:
+
+```markdown
+- <stable key> — <title>
+  - Source: <Linear | repository> — <durable link>
+  - Why it remains open: <one sentence> (active records)
+  - Affected surface: <path, service or domain>; State: <active | declined | canceled | resolved> (reading a scope only)
+  - Declined or canceled because: <reason quoted from the record, or `missing`>; reconsider when: <criterion quoted, or `missing`> (declined and canceled records)
+```
+
+When Linear is unavailable, the limitation is stated first and the repository set follows, never an
+empty ledger.

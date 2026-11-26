@@ -1,5 +1,7 @@
 # Map making and surface integration
 
+Contents: **Composition and traversal**, **Scene audit**, **Functional placement**, **Terrain, paving, and adjoining parts**, **Spatial rules and inspection**, **Frame-relative terrain and scenery**.
+
 Apply this guidance to the requested genre and map.
 
 ## Composition and traversal

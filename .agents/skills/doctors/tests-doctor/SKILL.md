@@ -1,6 +1,6 @@
 ---
 name: tests-doctor
-description: Audit and correct existing tests for contract value, redundancy, weak assertions, naming, runtime, third-party rate limits, coverage by test, determinism, and suite configuration such as skips, warnings and time limits. It aligns suites with their source owners, consolidates duplicate proof, preserves independent contracts, measures runtime, and repairs proven defects. Use to review, clean up, speed up, de-duplicate, or find gaps in tests across a repository. Run only when the user asks for it.
+description: Audit and correct existing tests for contract value, redundancy, weak assertions, naming, suite layout against siblings and source, runtime, third-party rate limits, coverage by test, doubles of repository-owned code, construction and data placed outside their owners, determinism, and suite configuration such as skips, warnings and time limits, posting one cost comment on each pull request it opens. Use to review, clean up, speed up, de-duplicate, or find gaps in tests across a repository. Run only when the user asks for it.
 short_description: 'Audit tests for contract value, redundant proof, weak assertions, runtime, provider rate limits, and determinism.'
 ---
 
@@ -14,8 +14,8 @@ Repair the existing tests and their necessary configuration through existing run
 apply `test-fixture`'s validation boundary to diagnostic experiments.
 
 ## Dependencies
-- `pre-production`
 - `doctor-protocol`
+- `pre-production`
 - `test-fixture`
 - `council`
 
@@ -26,6 +26,9 @@ Run `doctor-protocol`.
 Also read the repository's test-runner skill when the skill listing declares one, found by its
 description rather than assumed by name. Its locking, service, and pacing rules hold for every run
 this doctor makes and are never restated here.
+
+A skill's regression scenarios, the YAML files in a top-level `<skill>/tests/` folder, are
+guidance, never test code: they are out of this doctor's inventory.
 
 Discover at runtime: source roots and test roots; the classifications the runner distinguishes; each suite,
 the ownership boundary it belongs to, and the source it mirrors; where each suite keeps fixtures,
@@ -97,13 +100,12 @@ such line, or names the removed disproportionate case that accounts for it.
 The budget is the suite budget `test-fixture`'s **Time Budgets** set, and within it no test, parametrized family
 or module is disproportionate under `test-fixture`'s cost question.
 
-**The budget binds the run, and a breach is never an end state.** A suite measured over it is worked
-until it is under, by the dispositions below — the run is not finished while one stands. Reporting a
-breach, recording it, or carrying it into the plan as an observation is the failure this paragraph
-exists to prevent: the measurement was taken on day one and the number was already known, so a run
-that delivers with the same number has spent the measurement on nothing. Where the work genuinely
-cannot land in this run, the run puts that to `council` in **Ask** mode with the number and the
-cause, follows its ruling and names it in the report; it is never assumed without that ruling.
+**The budget binds the run.** A suite measured over it is worked until it is under, by the
+dispositions below, and the run is not finished while one stands: the number was known before the
+run began, so reporting the breach, recording it or carrying it into the plan as an observation
+spends the measurement on nothing. Where the work genuinely cannot land in this run, the run puts
+that to `council` in **Ask** mode with the number and the cause, follows its ruling and names it in
+the report; a breach stands only on that ruling.
 
 **Read setup against assertion before reading any single case.** Where existing reporting supplies
 per-test call durations, compare their sum with suite wall time. A large difference identifies cost
@@ -116,7 +118,10 @@ Report available totals and mark missing attribution unmeasured under `test-fixt
 Read [the lens criteria](references/lenses.md) before building the inventory: each lens named here
 and in this skill's other sections is a section of that reference, stating what the lens flags, the
 checks that find every instance, what is left alone, and its remedy where **Findings** below does
-not already give it.
+not already give it. Its lenses apply `test-fixture`'s sections named in the lens criteria (**Test
+Value And Retention**, **Literal Sweep**, **Prefer Parametrized Cases**, **Boundary Representations
+And Decision Matrices**, **Naming Checks**, **Auditing Existing Doubles**, **Factory Contents**, and
+its suites reference).
 
 | Lens | Flags | Reach |
 | --- | --- | --- |
@@ -138,7 +143,7 @@ with the timing or coverage measure re-taken where the finding concerns one.
 
 ## Reviewers
 
-Reviewers are capped as `doctor-protocol`'s **Launches** sets; this doctor sets no lower cap. The
+Reviewers are capped as `doctor-protocol`'s **Launches** sets. The
 suite family dictates the partition cut: each application, service, and package suite, and each
 cross-boundary group such as end-to-end, migration, script, or front-end, is a partition of its own
 or is split inside itself, never merged with another family. The lens catalog a reviewer is given is
@@ -174,9 +179,7 @@ condition, and the slop that keeps one out of it is usually structural — a cle
 rebuilds the same world per test, a fixture every module reaches for at the wrong scope — so a run
 that fixes every symptom and leaves the structure has not done the job.
 
-Neither the number of modules a rewrite reaches nor the number of call sites naming a fixture is a
-reason to hold it back, split it into a change of its own, or hand it to a later run. A fixture kept
-under its existing name costs its callers nothing however many there are, and a rewrite that changes
+A fixture kept under its existing name costs its callers nothing however many there are, and a rewrite that changes
 the isolation model is verified the same way as any other edit here: the affected suites re-run
 green, and the durations are re-taken against the same workload.
 
@@ -238,8 +241,10 @@ before delivery and verify that none enters the delivered diff.
   Limits**, and is verified by the per-run count, per account and per destination, fitting the
   provider's documented limit with room for the runs that overlap it, and by running the affected
   suite twice back to back with neither drawing a refusal.
-- A redundant test merges into the survivor of its own classification; an assertion nobody else
-  in that classification makes is never dropped.
+- A redundant test merges into the survivor of its own classification, and the merge keeps every
+  assertion nobody else in that classification makes; only a case disproportionate under
+  `test-fixture`'s cost question is removed with its assertion, as **Bring Every Suite Under
+  Budget** says.
 - A test-only production seam with no non-test caller is removed after its contract has a keeper;
   a baseline test exposing a product defect is repaired at the owner with failing control and
   passing candidate proof.

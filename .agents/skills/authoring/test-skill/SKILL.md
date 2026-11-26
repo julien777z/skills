@@ -1,6 +1,6 @@
 ---
 name: test-skill
-description: "Validate behavior-changing skill, rule, and agent edits before merge through realistic tasks with edited guidance and risk-based original controls. Choose isolated environments for actions, retain observed results, and repair guidance or defective tests until the required behavior is verified."
+description: "Validate behavior-changing skill, rule and agent edits before merge by having agents do the work the edited guidance governs, against risk-based original controls, and run the pinned regression scenarios each skill keeps in its tests folder, repairing guidance or defective tests until the required behavior is verified. Use when a guidance edit changes what a reader does, when asked to test or exercise a skill, or when writing or changing a regression scenario."
 short_description: 'Exercise guidance safely, compare behavior, and repair failing tests.'
 ---
 
@@ -13,12 +13,20 @@ confuse those conclusions.
 
 ## Dependencies
 - `subagent-matrix`
-- `code-simplify`
+- `skill-pass`
 - `session-ledger`
 - `council`
+- `acceptance-gate`
 
 ## When It Runs
 
+- **A round runs two kinds of test.** A change check asks whether the new change holds up, through
+  the scenarios **Workflow** writes for it. Regression scenarios ask whether a skill regresses: the
+  pinned YAML scenarios in each skill's `tests/` folder that the diff touches, run beside the change
+  check and never in place of it. The [regression scenarios reference](references/regression-scenarios.md)
+  holds their format, which ones a diff selects, who may change an expectation, and their isolation
+  and criteria; read it when a round selects one, or when one is written or changed. The bullets below
+  set when a round runs and how a change check is sized.
 - **Run before merge for every behavior-changing skill, rule, or agent edit**, however it was
   made. A rule is reader guidance, so its source type never
   exempts it. An edit that changes what the skill returns the user runs against the concrete example
@@ -43,8 +51,9 @@ confuse those conclusions.
 - **Each scenario gets its own reader for each variant it runs**, so its context holds that one
   task: one edited reader per scenario step 1 writes, plus its original control where the next
   bullet requires one. Add readers only for a distinct named risk. A round starts one scenario
-  writer, one reader per scenario, a second per scenario that runs a control, and one grader per
-  eight scenarios; the count grows only with the failure classes the batch holds.
+  writer, one reader per scenario, a second per scenario that runs a control, one reader per
+  regression scenario the diff selects, and one grader per eight scenarios of either kind; the count
+  grows only with the failure classes the batch holds and the regression scenarios it selects.
 - **An original control runs only where the comparison has nothing else to stand on.** It is
   required for a new skill, as the last bullet here says; where two instructions conflict and the
   comparison decides between them; and for an edit with no observed miss under the original text
@@ -73,8 +82,6 @@ confuse those conclusions.
 
 ## Workflow
 
-Run after `code-simplify` completes its pass.
-
 1. **Have someone other than the edit's author define the behavior.** Record the observed miss, the
    outcome the user requires and the real case the miss came from. One fresh scenario writer,
    launched through `subagent-matrix` for the round's whole batch of corrections, receives those,
@@ -99,18 +106,11 @@ Run after `code-simplify` completes its pass.
    live mutation targets. When a workflow would revoke a credential, send a message, purchase,
    delete or change access, supply a synthetic boundary that records that action and changes only
    disposable state. Verify which implementation and resources each run actually uses before launch.
-   **A reader sees only the variant it tests, and the variant reaches it only as that run's input.**
-   Launch the reader as a local headless harness process the running session starts and waits on,
-   every user-level skill and rule root it is given set to an empty scratch root, and pass the
-   frozen variant through an option that adds a source for that one run, such as a plugin
-   directory, an appended system prompt or an input file the run reads. An option that sets where
-   the harness reads user-level skills or rules is a user-level root whatever folder it names, so
-   the variant never goes in one, in a folder one points at, or in any folder searched by default.
-   A subagent of the running session stands in only when its loaded guidance lists no copy of a
-   skill or rule under test, with the variant in its brief. Record the route, the command, the
-   scratch root's file list with digests, and the harness's record of the guidance it loaded. With
-   neither route, the round is a concrete gate, surfaced with its evidence and saved next action;
-   it never passes with a reader that saw another variant.
+   **A reader sees only the variant it tests; with no isolated route the round is a concrete gate, never a pass.**
+   A required reader, scenario writer or grader that cannot launch takes `subagent-matrix`'s launch
+   fallback for its assignment. Read the [reader dispatch reference](references/reader-dispatch.md)
+   before launching a reader: it says how the reader is launched, how the variant reaches it, when
+   the launch fallback applies and what is recorded.
    Before freezing the reader package, exercise its required fixture interfaces in a disposable
    copy: discovery must expose the identifiers the task needs, operations must be available, and
    state changes and failures must reach the intended records. This checks the fixture contract,
@@ -171,8 +171,8 @@ Run after `code-simplify` completes its pass.
    where authorized; keep coupled instructions and their required repairs together. This assessment
    recommends which changes should merge and decides no merge itself. A passing skill test alone
    never decides that a pull request should merge.
-7. **Repair and rerun until verified**, within the global rules' limit of 3 review rounds per
-   change, whose disposition goes to `council` in **Ask** mode. Diagnose each reported issue at its owner. Fix guidance that permits the wrong behavior;
+7. **Repair and rerun until verified**, within the review-round limit `acceptance-gate`'s
+   **Bounds** sets, whose disposition goes to `council` in **Ask** mode. Diagnose each reported issue at its owner. Fix guidance that permits the wrong behavior;
    fix an invalid fixture, unavailable simulated operation, wrong reading list, ambiguous criterion
    or broken runner before judging guidance. Retain the diagnosis and earlier results. Recover
    missing evidence from the actual run or rerun the affected task; never reconstruct a result from
@@ -186,43 +186,14 @@ Run after `code-simplify` completes its pass.
    selection**, holding only the dependent action while repair or resolution remains active.
 8. **Report the verified result.** Send the tables and one evidence file in the **Output** shape.
    Describe the behavior verified in the pull request; claim improved behavior only where the
-   comparison demonstrates it. Scenario packages and raw evidence remain private, never committed.
+   comparison demonstrates it. A change check's scenario packages and all raw evidence remain
+   private, never committed; regression scenarios are committed in their skills' `tests/` folders.
 
 ## Reviewer selection
 
-Invoke `subagent-matrix` and request **standard** by default. Only after a host receipt explicitly
-rejects the standard capability level's exact identifier as unsupported, select the next permitted lower mapped capability,
-resolve its exact identifier, and launch the actual reader assignment. Advance again only after that candidate
-receives its own explicit unsupported receipt; never move upward or inherit the orchestrator's model. This
-fallback applies to this skill's default, never against the user's explicit model or capability constraint. A
-`dispatch required` result with an exact identifier launches the actual required reader set. When a
-required reader, scenario writer or grader cannot launch, apply `subagent-matrix`'s launch
-fallback for its assignment.
-
-Classify a rejected reader dispatch from the host receipt. Only a receipt establishing that the
-requested capability or model is unsupported makes it unavailable for that attempt and permits the
-fallback to a lower capability level. Retry a transient, concurrency, timeout, or unknown rejection once with the
-same resolved selection; do not lower the comparison's capability level. When no required reader launched, retry
-the required reader set. When one required reader launched, wait for its terminal report and retry
-only the rejected or unattempted required counterpart, never a duplicate of the accepted reader.
-When that retry cannot complete the required set, record its receipts and apply `subagent-matrix`'s
-launch fallback for the missing assignment. Record every failed attempt separately from reader-run evidence,
-including every required reader's receipt; grade and retain each run that completed, and withhold
-the comparison and the passing verdict until the required set completes. When an unsupported request has a permitted fallback, wait for any accepted counterpart's
-terminal report, record the incomplete attempt, then launch a fresh required set. When no permitted model fallback remains, record the rejection and apply `subagent-matrix`'s launch
-fallback for the missing assignment.
-
-Run each scenario's edited reader, and its original control only where **When It Runs** requires
-one, with the same resolved model and reasoning effort where both run. Record
-the catalog state, requested capability and family, exact dispatch identifier, resolved reasoning
-effort, selector resolution, and accepted actual-assignment dispatch receipt with those explicit
-parameters in each run's evidence entry. Record catalog state separately
-from assignment state: a catalog-hidden family is `dispatch required` until its exact identifier is resolved
-and the assigned worker accepts it, then it is `accepted`; a missing identifier triggers the launch
-fallback and is not an unsupported-model receipt. Selector resolution retains an explicit unsupported request,
-the exact fallback capability and dispatch identifier when one is permitted, why that fallback was selected,
-and any explicit user override. Record the runtime-identity and runtime-label evidence as
-`subagent-matrix`'s **Workflow** defines. Follow the selector's dispatch instructions.
+Invoke `subagent-matrix` and request **standard** by default; fall back only on an explicit
+unsupported receipt and never upward. The [reader dispatch reference](references/reader-dispatch.md) holds how a
+rejected dispatch is classified, retried and recorded, and what each run's evidence carries.
 
 ## Output
 
@@ -322,7 +293,6 @@ in the same evidence file; per-scenario conclusions do not replace that decision
 ## Guardrails
 
 - Readers never see the expected answer, the criteria, or one another's reports.
-- Follow the shared capability selection. Run or omit a control only as **When It Runs** says.
 - Never edit any file under test between launching its required readers and grading them.
 - Keep the scenario and raw evidence while the branch is open; reuse valid inputs in later rounds.
 - Never merge with a failing run or stand with a miss, short of the `council` ruling **Repair and

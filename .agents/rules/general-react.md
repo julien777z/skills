@@ -20,18 +20,20 @@ paths:
   another's variant or a hook's wrapper. A client component's `"use client"` directive goes on the
   first line of its own file.
 - **A shared UI library is primitives and the fuller components built from them, and a difference in
-  look or behavior is a prop or variant on its owner, never another component.** A primitive is one
-  layout, type, surface or control with variants — a stack, a text, a panel, a button — taking
-  children but no named slots and opening no portal. A fuller component — a page, a section, a
-  dialog, a list, a form — composes primitives and takes slots, as the structure bullet below says.
-  A component that renders one other component with some of its look or behavior props fixed or
-  defaulted, and adds no content, data or state of its own, is that owner's variant: a
-  `DangerNotice` rendering `<Notice tone="danger" dismissible={false}>` is `tone="danger"` on
-  `Notice`. One that only runs a hook and renders nothing or its children is that hook, called where
-  it is needed, unless it carries the `"use client"` boundary for a Server Component call site. A
-  chain of components each adding one prop or value is one component with variants, counted from the
-  call site to the primitive at its end. A variant shares its owner's structure; a branch that
-  renders a different tree is a second component behind a prop, and becomes that component.
+  look or behavior is a prop or variant on its owner, never another component.**
+  - A primitive is one layout, type, surface or control with variants — a stack, a text, a panel, a
+    button — taking children but no named slots and opening no portal. A fuller component — a page,
+    a section, a dialog, a list, a form — composes primitives and takes slots, as the structure
+    bullet below says.
+  - A component that renders one other component with some of its look or behavior props fixed or
+    defaulted, and adds no content, data or state of its own, is that owner's variant: a
+    `DangerNotice` rendering `<Notice tone="danger" dismissible={false}>` is `tone="danger"` on
+    `Notice`. One that only runs a hook and renders nothing or its children is that hook, called
+    where it is needed, unless it carries the `"use client"` boundary for a Server Component call
+    site.
+  - A chain of components each adding one prop or value is one component with variants, counted from
+    the call site to the primitive at its end. A variant shares its owner's structure; a branch that
+    renders a different tree is a second component behind a prop, and becomes that component.
 - Named exports for components
 - Default exports only for page components
 
@@ -56,8 +58,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   component libraries and pattern guides, a third-party skill's compound examples included, are the
   hand-assembly this forbids.
   A call site fills slots; it never assembles the surface from parts or primitives, and structural
-  behavior a caller needs becomes a prop or variant. Where a surface is hand-assembled or exports
-  its parts, the fix names the one component that replaces it and lists each slot prop it takes.
+  behavior a caller needs becomes a prop or variant.
+  - Where a surface is hand-assembled or exports its parts, the fix names the one component that
+    replaces it and lists each slot prop it takes.
 - **Layout and type come from primitives, never from class strings.** A feature component arranges
   its content with the shared layout and text primitives — a row, a column, a grid, a box, a text, a
   heading — through their variants (`<Flex gap="sm" justify="between">`, `<Type size="sm"
@@ -172,15 +175,7 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
 
 - Use ternary for simple conditions
 - Use early return for complex conditions
-- Avoid `&&` with numbers (renders 0)
-
-```typescript
-// Good
-{count > 0 ? <Badge count={count} /> : null}
-
-// Bad - renders "0" when count is 0
-{count && <Badge count={count} />}
-```
+- Avoid `&&` with numbers, which renders `0` when the count is 0: write `{count > 0 ? <Badge count={count} /> : null}`, never `{count && <Badge count={count} />}`.
 
 - Always provide stable `key` prop
 - Don't use array index as key (unless list is static)
@@ -207,15 +202,13 @@ Apply this section only when the repository uses the Next.js App Router.
 ### Rendering and Data
 
 ```typescript
-// user-list.tsx - Server Component, no directive
 export async function UserList() {
-  const users = await fetchUsers(); // Direct DB/API access
+  const users = await fetchUsers();
   return <ul>{users.map(u => <li key={u.id}>{u.name}</li>)}</ul>;
 }
 ```
 
 ```typescript
-// search-input.tsx - Client Component, directive on the first line
 "use client";
 
 export function SearchInput() {
@@ -236,7 +229,7 @@ export function SearchInput() {
   generic message; diagnose and repair an unexpected 500 encountered during normal operation
   rather than accepting the failure feedback as a finished result. Clearly label failures deliberately
   induced to verify failure presentation so they cannot be mistaken for normal-flow defects.
-- **Show the message the API sent.** Never key a table of your own copy off status codes for a first-party API: that is a second copy of its error vocabulary that nothing keeps in step, and it overrides the message the service chose. Wrong copy is fixed at the service that produced it.
+- **Show the message the service wrote for the person using the interface.** Never key a table of your own copy off status codes for a first-party API: that is a second copy of its error vocabulary that nothing keeps in step, and it overrides the message the service chose. A message the service wrote for another reader, such as an agent or an API client, is not that message: the React copy and forms rule's reason-code route has the interface write its own text for it. Wrong copy is fixed at the service that produced it.
 - Keep one status-independent fallback for a response that carries no message at all, and reject a body that is a document rather than a message so a proxy's error page cannot reach the user as one.
 
 ### Metadata and Assets

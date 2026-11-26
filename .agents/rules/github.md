@@ -41,46 +41,32 @@ alwaysApply: true
   an invoked skill or a repository rule explicitly directs it; a matching topic, existing branch,
   open state or recorded touch does not. Other sessions' pull requests and branches stay untouched,
   apart from damaged local Git state a skill installing shared guidance backs up and repairs.
-- **Each session opens its own agent-configuration pull request in each repository.** Agent
-  configuration is the canonical `.agents` tree: skills with their own scripts, assets and
-  templates, rules and agent definitions, plus nonbehavioral text and guidance-reference
-  corrections in agent hooks and installers. A change to execution, timing, installation,
-  discovery, permissions or mutation scope is source work, as is everything else. Select an open
-  pull request only when this session's ledger records its creation receipt or the user explicitly
-  directs its continuation, and verify its state and scope remotely; a touch or reference receipt,
-  matching topic, branch, open state or batch record establishes neither. If none qualifies, open
-  one from the freshly fetched default branch; later guidance edits and worker tasks join it.
-  Consolidate a duplicate this session opened onto it and close the duplicate, saying where the
-  work went; never retarget, close or fold in one this session did not open.
+- **Agent configuration and source never share a pull request or a branch, and each session opens
+  its own agent-configuration pull request in each repository.** Agent configuration is the
+  canonical `.agents` tree: skills with their own scripts, assets and templates, rules and agent
+  definitions, plus nonbehavioral text and guidance-reference corrections in agent hooks and
+  installers. A change to execution, timing, installation, discovery, permissions or mutation
+  scope is source work, as is everything else. The one exception is guidance true only once a
+  still-open source pull request merges, which rides that pull request when this session opened it
+  and is otherwise held for it. The skill that edits guidance sets out how a pull request is
+  selected, opened and consolidated, and where that guidance goes.
 - **Every worker pushes to the branch of the pull request the work continues**, fetching and
   rebasing its unpushed commits onto the remote branch before each push. A branch per worker,
   integrated later, is the same split with the integration deferred.
-- **Agent configuration and source never share a branch**, even when a guidance change follows the
-  source work checked out: sharing holds the guidance behind source review and outside the
-  agent-configuration merge permission below. A pull request found carrying both is split by moving
-  one kind's files onto the pull request of that kind the work continues.
-- **The one exception is guidance true only once a still-open source pull request merges**: it
-  describes behavior that pull request introduces, drops guidance about something it removes, or
-  needs a workflow or tool change it carries. It goes on that pull request and merges with it when
-  this session created the pull request, as its ledger receipt proves, or the user explicitly
-  directs its continuation; a separate agent-configuration pull request this session opened for it
-  is folded in and closed, saying where the work went. Otherwise it joins the session's
-  agent-configuration pull request and is held until the source pull request merges, in this
-  repository or another. A dependency never authorizes continuing another session's pull request
-  or opening a second agent-configuration one.
 - **Where a harness or session designates one branch per repository and forbids pushing to any
   other without permission, this rule is the user's standing permission** to push to the branch of
-  the pull request the work continues, selected as above (`git push origin HEAD:<that-branch>`),
-  without asking. The other kind's new branch is the designated name with `-agents` or `-source`
-  appended, created and pushed without asking.
+  the pull request the work continues, selected as these bullets and the skill that edits guidance
+  set out (`git push origin HEAD:<that-branch>`), without asking. The other kind's new branch is
+  the designated name with `-agents` or `-source` appended, created and pushed without asking.
 - A new branch starts from the freshly fetched default branch, and an agent-configuration branch
   never starts from a source branch, unless a skill or rule names another base or an existing pull
   request. Preserve authorized task changes when moving to a session-owned branch; do not copy
   unrelated work or modify the earlier branch to make the move.
 - **Never commit or push agent-authored changes directly to the default branch.** Select the pull
-  request as above before keeping a checkout's branch; when the checkout is on the default branch,
-  detached, of the other kind, or owned by another session without a continuation instruction, move
-  to the selected branch or create a descriptive non-default branch.
+  request as these bullets and the skill that edits guidance set out before keeping a checkout's
+  branch; when the checkout is on the default branch, detached, of the other kind, or owned by
+  another session without a continuation instruction, move to the selected branch or create a
+  descriptive non-default branch.
 - **Work is delivered only once the default branch holds it.** Before a pull request is called
   superseded, stale or done because another carries its change, or is recommended for closing or
   closed, read the base and commits of every open pull request in the repository: one whose base is
@@ -136,11 +122,11 @@ alwaysApply: true
   under that pull request's own authority.
 - **An agent-configuration pull request whose guidance depends on a still-open source pull request
   is held until that merge**, whatever its other gates say, unless the guidance rides that pull
-  request under **Branches and Pull Requests**; guidance true on the default branch as it stands
-  waits for nothing. The hold authorizes no merge of the source pull request: finish both pull
-  requests' independent checks, report the dependency, and leave the source one reviewable. After
-  it merges, incorporate the updated base into the held one and rerun the affected gates before
-  using the permission.
+  request, as **Branches and Pull Requests** and the skill that edits guidance set out; guidance
+  true on the default branch as it stands waits for nothing. The hold authorizes no merge of the
+  source pull request: finish both pull requests' independent checks, report the dependency, and
+  leave the source one reviewable. After it merges, incorporate the updated base into the held one
+  and rerun the affected gates before using the permission.
 - **Auto-merge is enabled only** for an eligible agent-configuration pull request whose gates have
   passed while checks are still pending, for the mistaken-merge revert, or where the user
   authorizes it in the current request or an explicitly invoked skill requires it.
@@ -173,9 +159,8 @@ alwaysApply: true
 ## Pre-Push Gate
 
 Every push, on a draft and on a ready pull request alike, goes out once the checks below pass, and
-nothing else holds committed work on one machine: not a gate, review or simplification pass pending
-on it, an integration merge, a plan that orders one first, deferred feature verification or a suite
-still running. The exceptions are commits an invoked skill states it holds local until the user
+nothing outside the change holds committed work on one machine, as the **Nothing outside the
+change** bullet below sets out. The exceptions are commits an invoked skill states it holds local until the user
 releases them, such as locked database revisions, and the fixes of a review the user asked for
 without a push, which stay local until they ask. A fix for a flag a review or gate raised is pushed
 once the agent that made it has re-read the changed lines against the flag and rerun the checks
@@ -196,10 +181,13 @@ closes the flag, which the review's next round or a fresh gate does.
   pushes to the pull request's branch at the same cadence. A push is what lets the user review and
   test the work, and the only copy that outlives the machine.
 - **Nothing outside the change holds a push, a check or a walkthrough, or becomes a question about
-  pushing or merging.** Where a dependency is still in review, unreleased or unmerged, the branch
+  pushing or merging**: not a gate, review or simplification pass pending on it, an integration
+  merge, a plan that orders one first, deferred feature verification or a suite still running.
+  Where a dependency is still in review, unreleased or unmerged, the branch
   consumes that dependency's pull-request branch in its manifest, lockfile and workflow checkouts,
   or builds on a same-repository sibling's branch, and pushes; never ask for the dependency's merge
-  or report the consumer blocked on it.
+  or report the push, checks or walkthrough as blocked on it; the consumer's merge waits for it as
+  the skill that runs a merge sets out, reported as held, never as a request.
 - **The order is change, checks, push, then the slow verification**: a browser walkthrough, a full
   or end-to-end suite, anything slow or needing a running stack, whose findings go out as fix
   pushes. **Pushed is not done**: a change is reported done only once that verification has passed.

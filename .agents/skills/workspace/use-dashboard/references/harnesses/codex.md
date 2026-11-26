@@ -1,7 +1,7 @@
 # Codex
 
 Delivery when the user reads the session in Codex: a Page when the session has the Pages tools, as
-below, applying `pages:write-page`.
+below, following the session's page-writing skill, found by its description in the skill listing.
 
 ## Spaces publishing
 
@@ -25,8 +25,8 @@ destination, create a private Page. Keep the dashboard itself in this skill's sh
    upload outcome is unknown, inspect Files or Library before another upload. If the file exceeds
    the upload limit too, report the publishing failure and continue its repair without trimming data.
 4. Inspect the edit receipt and read the Page back. If an error returns an uploaded visualization,
-   reconcile that file and the Page before retrying; an uncertain save is read back first. Do not
-   create another Page or visualization to escape an uncertain result.
+   reconcile that file and the Page before retrying, and read an uncertain save back before any
+   retry, so no second Page or visualization is created to escape an uncertain result.
 5. Verify the saved visualization reference and, where `read_page_reference` supports its size,
    compare the saved file's byte size and SHA-256 with the rendered file. Inspect the rendered
    dashboard when browser preview is available, checking page navigation and the controls the spec

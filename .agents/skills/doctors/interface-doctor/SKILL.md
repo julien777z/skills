@@ -171,7 +171,7 @@ reading clean on the second walk, which the parent takes because it needs the ru
 
 ## Reviewers
 
-Reviewers are capped as `doctor-protocol`'s **Launches** sets; this doctor sets no lower cap, and
+Reviewers are capped as `doctor-protocol`'s **Launches** sets, and
 the walkthrough and the decision captures under **Dispositions** are the parent's work. The page dictates the partition cut. A partition is one app area: its page files, the components
 only those pages render, and their captures. A shared UI package is a partition of its own, audited
 with the component-use table rather than captures. Beside the protocol's size bound a partition
@@ -206,33 +206,42 @@ Apply `pre-production` to every correction.
 3. **Wrong or inconsistent text is corrected**: a label that states something untrue, one thing
    under two names, a message that does not match what happens, and every text a lens flags. Wrong
    copy for a refusal a service words is fixed at that service, as the general React rule's **Rendering and
-   Data** says, with the interface showing what the service sends.
+   Data** says, with the interface showing the message the service wrote for the person using it.
 4. **Making content fit is a fix, decided and made at whatever width the defect shows**, by a
    remedy that keeps every value readable, as `pre-production`'s **Product Choices** says of
    content and its space. Squeezing, truncating, shrinking and narrowing are never the remedy.
 5. **A routine presentation detail is decided and stated in the report**, as **Product Choices**
    says of one, and a detail the user already decided on a page is followed.
-6. **These calls are the run's too**, decided as `doctor-protocol`'s **Gate And Show The Plan**
-   decides one, by what serves the reader, through `council` where the run's checks cannot settle
-   it, and made in this run:
+6. **A product or scope choice goes to the user, and the rest of these calls stay the run's.**
+   These are reserved entries, asked with the run's other reserved entries as `doctor-protocol`'s
+   **Gate And Show The Plan** says, each with its captures and its old and new text in a message
+   the user sees first:
    - **Removing or hiding content.** Where content cannot get the room its values need at some
      width, which column, field or item goes or is hidden there.
    - **A remedy the run designed whose visible effect is large**: one no rule states, that changes
-     the layout, controls or flow on many pages or that a returning reader would notice. The report
-     lists every page it changed.
-   - **Rewording text that is correct but could read better.**
-   - **Which of two names, or of two drawings of one shape, wins** where neither is established,
-     most used or the one a rule states.
+     the layout, controls or flow on many pages or that a returning reader would notice, with every
+     page it would change.
+   - **Rewording text that is correct but could read better**, and **new names for two features**
+     where neither existing name serves.
+   - **Two drawings of one shape that are evenly used**, neither of which a rule or a shared
+     component establishes, since choosing one redraws many pages.
    - **More than two legitimate non-error banners on one surface**, and **product state no one has
-     confirmed**, where copy says a feature is unavailable or coming: the run settles which banners
-     stay and what the copy says from what the code and product show.
+     confirmed**, where copy says a feature is unavailable or coming: which banners stay and what
+     the copy says.
+
+   These stay the run's, decided by what serves the reader, through `council` where the run's
+   checks cannot settle it, and made in this run:
+   - **Which of two names for one thing wins**, as `pre-production` corrects one thing called by
+     two names, and **which drawing wins** where a rule or a shared component already establishes
+     one.
    - **A departure from a rule that would serve the reader better**: the run proposes the departure
      as the rule change, as `doctor-protocol`'s **Gate And Show The Plan** says.
-7. **How a decision is shown.** A decision about layout, controls or hidden content is reported
-   with before-and-after captures of a few representative pages where the change shows, never every
+7. **How a decision is shown.** A decision about layout, controls or hidden content is shown with
+   before-and-after captures of a few representative pages where the change shows, never every
    page, the before from the first walk, at the widths where they differ, sent as `share-media`
    says. A wording decision shows the old and new text as text, beside one capture of where it
-   sits.
+   sits. For a reserved entry they go with its question; for a decision the run made they go in
+   the report.
 8. **A defect the walk meets that no lens names** — a failed request, an error boundary, a value
    shown wrong — is fixed in this run, as `doctor-protocol`'s **Resolve The Scope** says.
 9. **A recurring shape's guard** is the shared component made unable to take it — a description
@@ -248,11 +257,14 @@ Apply `pre-production` to every correction.
 - the page list: rows walked and unwalked per app and role, the widths captured, and whether each
   walk ran;
 - per lens: copy-table rows and captures judged, findings, and fixes, by app;
-- each page a fix visibly changed, as a before-and-after pair at each width where its captures
-  differ, directly under that page's line, sent as `share-media` says;
+- each page a fix visibly changed, one line per page in the detail file, with the before-and-after
+  pairs at each width where the captures differ shown for the representative pages **Dispositions**
+  names, directly under their lines, sent as `share-media` says;
 - each text changed, with its old and new wording and its slot, in the detail file;
 - each shape moved onto a shared component, with the pages moved and the variant or prop added;
 - each routine presentation detail decided, with its reason;
-- each decision the run made, with the pages it changed, the captures shown and any council ruling;
+- each decision the run made and each that went to the user, with the pages it changed, the
+  file of each capture shown for it named inside that entry, never only as a count or a list kept
+  elsewhere, and any council ruling or the user's answer;
 - each rule departure made, with its rule change;
 - each finding another doctor owns, named with that doctor.

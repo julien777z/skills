@@ -142,8 +142,10 @@ about formatting.
 - Principle: how hard the model thinks is set by the host's effort setting, never by prose. A
   current model calls independent tools in parallel unprompted, and a request to write out its
   reasoning in the answer can be refused.
-- Violation: "think carefully", "plan before acting", "show your reasoning", a required reasoning
-  field in an output, "use tools only when necessary", "run these calls in parallel".
+- Violation: "think carefully", "plan before acting", "show your reasoning", "think less" or
+  "answer without deliberating" (neither reliably changes how long the newest models think), a
+  required reasoning field in an output, "use tools only when necessary", "run these calls in
+  parallel".
 - Better form: the line is removed; where a skill needs deeper thinking it sets the effort its
   host's frontmatter supports, inside a scoped compatibility section.
 - Firmness: stated.
@@ -182,13 +184,20 @@ about formatting.
 ### Description As The Trigger
 
 - Principle: the description decides whether the skill loads. It says what the skill does and
-  the kinds of situation that reach it, in the third person, main use first.
+  the kinds of situation that reach it, in the third person or the imperative, never the first or
+  second person, main use first; where a neighboring skill or a look-alike request would fire it
+  wrongly, one clause names the nearest case it leaves to another.
 - Violation: a description past the open specification's 1,024 characters; a growing list of
-  near-synonymous trigger phrases; procedure the body should hold; urgency in the body.
-- Better form: what it does, then the categories of situation. The authoring reference's
-  **Descriptions** holds the repository's criteria.
-- Firmness: stated for the limit and the third person; the sources disagree on urgency, as the
-  table below records.
+  near-synonymous trigger phrases; procedure the body should hold; urgency in the body; a
+  description that shares its vocabulary with a neighbor and never says which situations are the
+  neighbor's.
+- Better form: what it does, then the categories of situation, then, where a host asks for it or
+  a neighbor overlaps, the nearest case it does not cover, as in "Not for invoice edits, which the
+  billing skill handles." The authoring reference's **Descriptions** holds the repository's
+  criteria.
+- Firmness: stated for the limit and the voice; one source each for the boundary clause (the
+  Codex skills page and the open specification's description guide); the sources disagree on
+  urgency and on voice, as the table below records.
 
 ### Progressive Disclosure And Size
 
@@ -211,10 +220,11 @@ about formatting.
   becomes the rule.
 - Violation: one "such as" per rule, each the incident that prompted it; a quoted string a reader
   may reuse word for word; an example of a judgment the model already makes.
-- Better form: two illustrations of different kinds, marked as illustrations, or none where the
-  rule is clear without one.
-- Firmness: stated for the risk. The same pages still recommend examples, so the direction is
-  fewer and varied, never none.
+- Better form: two illustrations of different kinds, marked as illustrations, only where they
+  explain a distinction the rule cannot state; none where the rule is clear without one.
+- Firmness: stated for the risk, and one source says the newest models are constrained to the
+  space their examples show. The pages disagree on whether to use examples, so the direction is
+  as few and as varied as the rule needs, as the table below records.
 
 ### One Owner
 
@@ -251,15 +261,17 @@ about formatting.
 | Topic | One reading | The other | This repository's choice, and why |
 |---|---|---|---|
 | Giving the reason | The prompting pages and the skill-writing skill: explain why | The coding agent's skills page: state what to do without narrating how or why | A reason clause on the requirement and no history, since a reason generalizes and a narrative only dates |
-| Urgent descriptions | The skill-writing skill: make descriptions a little pushy, because skills under-trigger | The general prompting page: text written to fix under-triggering now over-triggers | Urgency only in a description and only where a trigger test shows the skill under-fires; none in a body |
+| Urgent descriptions | The skill-writing skill and the open specification's description guide: make descriptions a little pushy, because skills under-trigger; the guide pairs this with a trigger test | The general prompting page: text written to fix under-triggering now over-triggers | Urgency only in a description and only where a trigger test shows the skill under-fires; none in a body |
 | Strong words | The skill best-practices page shows capitalized "must" and "always" | The coding agent's pages, the skill-writing skill and the prompt audit: emphasis over-applies | Plain weight, since the best-practices page predates the newest models on this point |
 | Lists of things to avoid | The prompting pages and the prompt audit: say what to do | The per-model page for design work: named defaults to avoid work | Positive by default; a list of named defaults stays in design guidance |
 | Lists of gotchas | The open skill-writing guide: add each correction to a gotchas list | The prompt audit and the newest per-model page: cautions pile up | Environment facts accumulate; behavioral cautions are generalized into their principle |
+| Examples | The prompt audit and the skill best-practices page: use several varied examples | The context-engineering post: examples constrain the newest models; put the effort into tools, scripts and files | Two varied illustrations only where they explain a non-obvious distinction, none where the rule is clear, never an example of a judgment the model already makes, as authoring **Writing** says |
 | Checklists and steps | The skill pages: checklists for multistep work | The prompt audit: choreography degrades judgment work | Steps where order is the point, as **Steps Matched To Fragility** says |
-| Delegation | The general prompting page: the model delegates well unprompted | The newest per-model page: remove lines that push delegation | The newer page, with a stated count and cap wherever a skill starts agents |
+| Delegation | The general prompting page: the model delegates well unprompted | The newest per-model page: remove lines that push delegation. The Codex subagents page: Codex spawns subagents only after a direct request or a project or skill instruction | The newer page for a standing push to delegate, which goes; a launch the skill needs, such as a fresh reviewer or independent parallel work, stays on every host with a stated count and cap, since Codex starts nothing it is not told to |
 | Finishing | The coding agent's page: "keep going" lines cause over-work | The newest per-model page: the model can stop early, so add finishing text | Keep text that finishes authorized work and forbids ending on a promise; cut general encouragement |
 | Contents list threshold | The skill best-practices page: past 100 lines | The skill-writing skill: past 300 | 100, the published platform figure |
 | Size of a rules file | The coding agent's memory page: under 200 lines per always-loaded file | The skill pages: under 500 lines for a skill body | Both, by how the file loads, as the authoring reference's **Writing** sets out |
+| Description voice | Anthropic: always the third person | The open specification: imperative, "Use this skill when ..." | The third person or the imperative, for what the skill does and for the trigger; never "I", "we" or "you"; reported once as a convention, never per file |
 | What a description carries | The prompt audit: a description routes and does not instruct | This repository's **Descriptions**: it also carries a rule that binds before the body is read | The repository's, because a reader often acts on the description alone; such a rule is kept to one clause |
 
 ## Cutting A Passage

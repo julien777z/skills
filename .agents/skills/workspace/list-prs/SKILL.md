@@ -1,6 +1,6 @@
 ---
 name: list-prs
-description: Before a repository-wide pull-request query, use when a user asks to list, show, or link pull requests — including "list the open PRs", "open PRs", "current PRs", and "what PRs are open". By default, reconcile the task ledger and list open PRs created or worked on for the ongoing task, including handoff PRs and drafts across its chats. Honor explicit scope and state requests.
+description: Before a repository-wide pull-request query, use when a user asks to list, show or link pull requests. By default, reconcile the task ledger and list open PRs created or worked on for the ongoing task, including handoff PRs and drafts across its chats. Honor explicit scope and state requests.
 short_description: 'List the ongoing task’s open PRs.'
 ---
 

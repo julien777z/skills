@@ -29,24 +29,25 @@ paths:
 - **One shared page section owns initial loading and the content it reveals.** Its single
   noninteractive skeleton stays visible until every request needed for the initially visible
   heading, counts, controls and content resolves; a consumer cannot add a second loader or reveal
-  structural content afterward. A settled result includes populated content, an empty result, and
-  an initial error. Keep that view, its controls, and its layout mounted while automatic refresh,
+  structural content afterward. A settled result includes populated content, an empty result, and an
+  initial error. Keep that view, its controls, and its layout mounted while automatic refresh,
   revalidation, pagination, or a retry is pending; update it when the result actually changes,
-  including the whole-page failure presentation below when the page's subject becomes unavailable. A request
-  becoming pending again never makes a settled view an initial load, and absent data alone cannot
-  distinguish a first load from a retry after failure. Present a required request's error through
-  the failure owner below, retaining undismissed feedback during retries rather than alternating it
-  with a skeleton or empty state. Background retries never redisplay the same dismissed failure or
-  reopen its dismissed surface; present a materially changed failure as a new result through that
-  owner. Background activity alone never replaces content, pulses the page,
-  changes action labels, or disables unrelated controls; preserve automatic refresh instead of
-  stopping it to hide flicker. These settled-view requirements apply to every data-dependent
-  component, including one outside a shared page section.
-  Validate each affected component through a cold load and repeated slow refreshes of populated, empty,
-  and failed results, including recovery after an initial failure and dismissal followed by the same
-  and a changed failure. The cold load changes directly from one complete skeleton to the settled
-  section or the failure presentation below; later requests
-  keep the settled structure and undismissed feedback visible while pending and apply only the new result.
+  including the whole-page failure presentation below when the page's subject becomes unavailable.
+  - A request becoming pending again never makes a settled view an initial load, and absent data
+    alone cannot distinguish a first load from a retry after failure. Present a required request's
+    error through the failure owner below, retaining undismissed feedback during retries rather than
+    alternating it with a skeleton or empty state.
+  - Background retries never redisplay the same dismissed failure or reopen its dismissed surface;
+    present a materially changed failure as a new result through that owner. Background activity
+    alone never replaces content, pulses the page, changes action labels, or disables unrelated
+    controls; preserve automatic refresh instead of stopping it to hide flicker. These settled-view
+    requirements apply to every data-dependent component, including one outside a shared page
+    section.
+  - Validate each affected component through a cold load and repeated slow refreshes of
+    populated, empty, and failed results, including recovery after an initial failure and dismissal
+    followed by the same and a changed failure. The cold load changes directly from one complete
+    skeleton to the settled section or the failure presentation below; later requests keep the
+    settled structure and undismissed feedback visible while pending and apply only the new result.
 - **Load available tabs, disclosures, and row actions with the page.** Start authorized display
   reads on page entry as soon as their prerequisites are met, including for inactive tabs and
   shared or inexpensive data needed by their row actions. Use the navigation rule below for
@@ -64,16 +65,17 @@ paths:
 - **A click that navigates shows the destination at once, finished where the data could be loaded
   ahead.** Load a destination's data before the click whenever the reader signals where they are
   going: a pointer resting on a row or link, keyboard focus on it, or a link in view whose
-  destination is cheap to load. Where each destination costs several requests, as a detail page
-  opened from a list does, load it on that signal for the one row in question, never for every row
-  on screen. The skeleton is the fallback for data that has not arrived by the click: once a
-  short pending delay of about 200 ms passes without the destination arriving, its frame and
-  skeleton replace the current page, so a destination loaded ahead never flashes a skeleton and
-  the old page never stays on screen past that delay while the next one's requests run. Each
-  route segment that waits on data owns its own loading boundary, so the fallback shows wherever
-  the navigation diverges, and the destination starts its independent requests together rather
-  than one after another. Validate it by timing a click to content after resting on the row, and a
-  cold click to the skeleton and to the content, against a deliberately slowed backend.
+  destination is cheap to load.
+  - Where each destination costs several requests, as a detail page opened from a list does, load it
+    on that signal for the one row in question, never for every row on screen.
+  - The skeleton is the fallback for data that has not arrived by the click: once a short pending
+    delay of about 200 ms passes without the destination arriving, its frame and skeleton replace
+    the current page, so a destination loaded ahead never flashes a skeleton and the old page never
+    stays on screen past that delay while the next one's requests run. Each route segment that waits
+    on data owns its own loading boundary, so the fallback shows wherever the navigation diverges,
+    and the destination starts its independent requests together rather than one after another.
+  - Validate it by timing a click to content after resting on the row, and a cold click to the
+    skeleton and to the content, against a deliberately slowed backend.
 
 - **A change to a shared mechanism is applied everywhere that mechanism appears, and on every
   sibling surface, in the same change.** A widget grid, a list row, a dialog shell, an edit-mode
@@ -130,23 +132,23 @@ paths:
 - **A surface is as tall as its content, never taller.** A card, panel, section or widget showing a
   large empty area — below its content, or between the content and the control that acts on it —
   reads as unfinished. Content flows from the top; artificial filler never pushes a control to the
-  bottom of a stretched container or the far edge of an otherwise empty row or footer. Surfaces the
-  established layout already pairs in a row split its width evenly, unless
-  one is a main area beside a narrow side rail. They end on the same line, and they get there by
-  balancing what they hold — cutting a
-  line that earns no place, moving a control, re-pairing the surfaces — never by stretching the
-  shorter one; where content cannot be balanced, the shorter keeps its own height. An empty state is
-  sized like any other content. Content that can outgrow its surface scrolls inside a
-  maximum height, so the surface stays as tall as its content until it reaches the cap. A height set
-  from outside the content belongs only to a surface whose content fills the space it is given — a
-  chart, a map, media — to one the reader sized, or to a section deliberately sized to the viewport.
+  bottom of a stretched container or the far edge of an otherwise empty row or footer.
+  - Surfaces the established layout already pairs in a row split its width evenly, unless one is a
+    main area beside a narrow side rail. They end on the same line, and they get there by balancing
+    what they hold — cutting a line that earns no place, moving a control, re-pairing the surfaces —
+    never by stretching the shorter one; where content cannot be balanced, the shorter keeps its own
+    height. An empty state is sized like any other content.
+  - Content that can outgrow its surface scrolls inside a maximum height, so the surface stays as
+    tall as its content until it reaches the cap. A height set from outside the content belongs only
+    to a surface whose content fills the space it is given — a chart, a map, media — to one the
+    reader sized, or to a section deliberately sized to the viewport.
 - **Size interactive content for its values, relationships and task, not a fixed fraction of the
   page.** Keep a page section's structural frame, heading, description and dividers at the width its
   page layout assigns. Bound simple control groups inside that frame so short values and their
   actions stay together; give structured content the room its columns and relationships need.
   Content that cannot get that room at some width never gets it by squeezing values until they
   wrap, truncate or shrink; which of it to remove or hide below that width is the user's choice,
-  since it changes what information the product shows, unless a skill in use settles it. Compact controls do not require a narrow
+  since it changes what information the product shows. Compact controls do not require a narrow
   container, and a wide container does not require stretched controls. Use the product's
   established layout and control sizes, preserving comparable widths under the React copy and forms rule's **Forms**, rather than
   shrinking the section or creating a new peer-section row.
@@ -293,17 +295,18 @@ paths:
   own once the action finishes takes the reader somewhere they did not ask to go.
 - **Every page renders in the product's page layout, including a page that reports a state** — a
   confirmation, such as the return page a flow finished outside the product lands on, or an expired
-  link — with its content in sections, each headed and described as the React copy and forms rule's **Interface Copy** says. A
-  section carries what the reader needs next — the record the state concerns, its status, the action
-  that moves on, in that section's footer. A confirmation also thanks the reader, marks the success,
-  and says what they now have and what happens next — never a neutral status panel, nor a
-  placeholder for something the reader does not have yet such as "appears here". It ends on one
-  action, which returns the reader to the page they left to start the flow, or to their home when
-  that is unknown. A label and a button centered in an otherwise empty page is the defect, and so is
-  a small card left under chrome that no longer applies, such as tabs or a form header. The page for
-  an address that does not exist is the exception: a full-page message centered in the screen,
-  outside the navigation, with one action home. A notice that the page is for somebody else, and a
-  status page standing in a finished flow's place, are deleted as the bullets above say.
+  link — with its content in sections, each headed and described as the React copy and forms rule's
+  **Interface Copy** says. A section carries what the reader needs next — the record the state
+  concerns, its status, the action that moves on, in that section's footer.
+  - A confirmation also thanks the reader, marks the success, and says what they now have and what
+    happens next — never a neutral status panel, nor a placeholder for something the reader does not
+    have yet such as "appears here". It ends on one action, which returns the reader to the page
+    they left to start the flow, or to their home when that is unknown.
+  - A label and a button centered in an otherwise empty page is the defect, and so is a small card
+    left under chrome that no longer applies, such as tabs or a form header. The page for an address
+    that does not exist is the exception: a full-page message centered in the screen, outside the
+    navigation, with one action home. A notice that the page is for somebody else, and a status page
+    standing in a finished flow's place, are deleted as the bullets above say.
 - **A boxed banner appears only when the reader has something to do, something is wrong, or
   something they submitted is waiting on a decision** — terms to accept, a verification to finish,
   a load that failed, a blocking state to resolve, a submission under review, worded from the
@@ -341,27 +344,27 @@ paths:
   to its state owner, writers and prerequisites. If they cannot legitimately coexist, fix the state
   or transition that produced them; a display selector does not repair it. If more than two legitimate
   non-error conditions require banners, surface the product or flow conflict and the concrete alternatives
-  that would resolve it for the user's decision, unless a skill in use settles it. Preserve established banner
+  that would resolve it for the user's decision. Preserve established banner
   rendering while that decision waits; combining messages, changing presentation, prioritizing,
   capping, hiding or dismissing an unresolved condition is not a repair. Continue independent
   authorized work. Verify an approved state or flow remedy at its producing transitions and on the
   whole resulting surface.
 - **A refused or failed user action reports its reason beside what the reader is acting on, or
-  through the existing bottom notification system.** A refusal that concerns what the reader
-  entered or chose in a field or control — a choice the field cannot take, an amount over its limit
-  — is that field's or control's inline error, in the page or dialog where they acted, and clears
-  when they change it. Every other failed or refused save, submission, download or requested
-  action, including one refused because of the account's or record's state or one taken from a
-  status or error notice, reports its human-readable reason through the shared notification owner. Never add a page or dialog error
-  banner or an error modal for a user-action failure, or create another notification stack.
-  Locally known prerequisites checked before an action starts follow the React copy and forms
-  rule's **Forms**.
-  Classify the operation by its intent, not its status code, HTTP method or whether a button started
-  it: loading or retrying the data a surface needs follows the resource-load rule below. Preserve
-  entered values, the original notice and its state and remedy, and independent resource errors;
-  the report neither clears nor replaces them. Release pending protection when the action
-  settles and restore native retry controls according to their prerequisites. Keep the API's safe
-  human reason, with the established generic fallback only when no safe reason is available.
+  through the existing bottom notification system.** A refusal that concerns what the reader entered
+  or chose in a field or control — a choice the field cannot take, an amount over its limit — is
+  that field's or control's inline error, in the page or dialog where they acted, and clears when
+  they change it. Every other failed or refused save, submission, download or requested action,
+  including one refused because of the account's or record's state or one taken from a status or
+  error notice, reports its human-readable reason through the shared notification owner. Never add a
+  page or dialog error banner or an error modal for a user-action failure, or create another
+  notification stack. Locally known prerequisites checked before an action starts follow the React
+  copy and forms rule's **Forms**.
+  - Classify the operation by its intent, not its status code, HTTP method or whether a button
+    started it: loading or retrying the data a surface needs follows the resource-load rule below.
+  - Preserve entered values, the original notice and its state and remedy, and independent resource
+    errors; the report neither clears nor replaces them. Release pending protection when the action
+    settles and restore native retry controls according to their prerequisites. Keep the API's safe
+    human reason, with the established generic fallback only when no safe reason is available.
 - **One message carries one error.** A banner, an inline error and a notification each state a
   single problem; several problems are never joined into one string, list or summary in one
   surface. A field or control shows at most one inline error at a time — the first, when one action
@@ -382,23 +385,25 @@ paths:
 - **Resource and data load failures on otherwise usable surfaces keep a persistent native error
   banner with retry, using the standard shared component's frame and error visual tone.** On a page,
   each failed resource appears in a dismissible banner in the page's shared error area at the top,
-  outside its structural content. No feature-local or embedded partial surface renders error text, a banner or a
-  terminal-error placeholder. Moving a native shared banner outside a panel while keeping it inside
-  that feature's section, row or grid cell still violates this placement rule. Route every partial
-  failure through the page's shared failure owner, preserve
-  unrelated usable content, and identify the failed content and recovery action in that banner.
-  Never substitute field error messages, a toast or an unframed row, or put the banner in a card,
-  table row, field, footer, submit row or floating save panel. A dialog's data-load failure uses the
-  native shared banner at the top of the dialog, above its fields, rather than moving it to the page
-  behind the dialog. A dialog that only exists to say what an action needs first never opens on data
-  it could not load: the load failure reports as a page resource failure, in the page's shared error
-  banner, worded as an error rather than as the dialog's usual explanation. The banner
-  never replaces the surface's own heading or description, which keep saying
-  what the surface is while the banner says what went wrong.
-  When a load failure appears or changes, keep entered values and reveal its banner through the
-  existing shared failure owner if it is outside the visible scroll area, including inside a dialog. Do not
-  scroll on ordinary edits or unrelated status changes. Verify the reader can see the explanation
-  and recovery controls in the actual viewport; DOM presence or an alert role alone is not proof.
+  outside its structural content.
+  - No feature-local or embedded partial surface renders error text, a banner or a terminal-error
+    placeholder. Moving a native shared banner outside a panel while keeping it inside that
+    feature's section, row or grid cell still violates this placement rule. Route every partial
+    failure through the page's shared failure owner, preserve unrelated usable content, and identify
+    the failed content and recovery action in that banner. Never substitute field error messages, a
+    toast or an unframed row, or put the banner in a card, table row, field, footer, submit row or
+    floating save panel.
+  - A dialog's data-load failure uses the native shared banner at the top of the dialog, above its
+    fields, rather than moving it to the page behind the dialog. A dialog that only exists to say
+    what an action needs first never opens on data it could not load: the load failure reports as a
+    page resource failure, in the page's shared error banner, worded as an error rather than as the
+    dialog's usual explanation. The banner never replaces the surface's own heading or description,
+    which keep saying what the surface is while the banner says what went wrong.
+  - When a load failure appears or changes, keep entered values and reveal its banner through the
+    existing shared failure owner if it is outside the visible scroll area, including inside a
+    dialog. Do not scroll on ordinary edits or unrelated status changes. Verify the reader can see
+    the explanation and recovery controls in the actual viewport; DOM presence or an alert role
+    alone is not proof.
 - **A state of the whole page's subject shows once, as a persistent banner at the top of the page.**
   An account, workspace or project that is suspended, archived or read-only is not a failure of any
   one section: no section repeats the state itself, and each shows what it still can. An actual

@@ -1,6 +1,6 @@
 ---
 name: test-fixture
-description: Must be used before creating, moving, renaming, editing, reviewing, or generating any test, fixture, factory, test data, test support, or test configuration in any language, and before executing tests after such a change. Rejects hard-coded domain test data when a canonical fixture or factory owns it, and enforces existing-coverage reuse before new tests, one class per file with small cases folded into existing owning classes, concise parametrized cases, honest doubles, and regression validation through existing tools. Use before choosing or adding a test suite or classification, setting a test time budget, or weighing a test's cost or the evidence for deleting one. Its rubric owns what makes a test worth keeping, changing or removing, and its Sweep applies that to a finished change's tests and their neighbors.
+description: Must be used before creating, moving, renaming, editing, reviewing, or generating any test, fixture, factory, test data, test support, or test configuration in any language, and before executing tests after such a change. Rejects hard-coded domain test data when a canonical fixture or factory owns it, and enforces existing-coverage reuse before new tests, one class per file with small cases folded into existing owning classes, concise parametrized cases, honest doubles, and regression validation through existing tools. Use before choosing or adding a test suite or classification, setting a test time budget, or weighing a test's cost or the evidence for deleting one. Its rubric owns what makes a test worth keeping, changing or removing, and its Sweep applies that to a finished change's tests and their neighbors. A skill's YAML regression scenarios belong to test-skill, not here.
 short_description: 'Check test data and fixtures before changing tests or running tests after a fixture change.'
 ---
 
@@ -24,7 +24,8 @@ Apply `pre-production` to the scope of issues encountered while tracing a test s
    files or test infrastructure. Where tests are allowed, compare existing patterns with the
    applicable guidance; do not adopt a conflicting pattern merely because it already exists or
    matches the source language. The runtime under test and the assertion framework are separate
-   choices. Read the complete [rubric](references/rubric.md) and the
+   choices. Read the complete [rubric](references/rubric.md), the language reference the
+   **Language Router** selects, and the
    [suites reference](references/suites.md), which holds suite, module, configuration and
    time-budget conventions, before inspecting, reviewing, changing,
    or executing any covered test surface. Discover the repository's test roots, distribution and build
@@ -89,13 +90,24 @@ Apply `pre-production` to the scope of issues encountered while tracing a test s
    missing attribution unmeasured. Do not add reporting infrastructure or withhold an ordinary
    repair's completion because that attribution is unavailable.
 
+## Language Router
+
+The task's value is the language and runner of the tests it creates, changes or runs.
+
+| Value | Read |
+| ----- | ---- |
+| Python (pytest) | [Python tests](references/languages/python.md) |
+
+When no row matches, follow this file and the rubric alone; when the task spans languages, read
+each matching row.
+
 ## Mutation Proof
 
 Mutation experiments are temporary diagnostic work, not a maintained validation system. Reuse
 existing tools and native test selections; do not turn an experiment into committed runners,
 registries, workflow inputs, CI jobs, or recurring gates, including steps hidden inside an existing
-job. Such infrastructure requires a separate explicit user request; approval of a test-repair plan
-or a CI-only execution constraint does not supply it. When the existing route cannot perform the
+job. Such infrastructure requires its own explicit user request, which approving a plan or an execution
+constraint does not supply. When the existing route cannot perform the
 experiment, record the limitation and validate the repair with the ordinary existing checks rather
 than building tooling or withholding completion for its absence.
 
@@ -136,8 +148,9 @@ Run once a change is otherwise finished, over a scope fixed before it starts:
 - the adjacent test files: the other test modules in each such file's test package that mirror the
   same source package. One hop only: a file the sweep edits brings no further neighbors in.
 
-Apply the complete rubric to every test in that scope — **Test Value And Retention** with its
-dispositions, the **Mirror Source Ownership** test-module check, the **Naming Checks**, **Factory Contents**, **Auditing Existing Doubles**, and the
+Apply the complete rubric, and the language reference the **Language Router** selects, to every test
+in that scope — **Test Value And Retention** with its dispositions, the **Mirror Source Ownership**
+test-module check, the **Naming Checks**, **Factory Contents**, **Auditing Existing Doubles**, and the
 **Literal Sweep** — and fix what it finds: repair or rewrite a weak test, fold a duplicate into its
 keeper, and delete one that proves nothing once the rubric's deletion evidence is recorded. A
 repaired or strengthened guarantee follows the existing-check validation procedure above. A fix that repairs a defect —
@@ -160,6 +173,21 @@ into an unrelated repository-wide audit.
 Run the locally available targets the final diff reaches. That is this skill's own check of the
 tests it changed; it never narrows which suites verify a change as a whole.
 
-Report source-to-test placement, sibling conventions checked, fixture and factory owners reused or
-extended, parametrized cases reused, encountered corrections, literal-sweep corrections, any mutation
-experiments, and final affected targets.
+Report as **Output** sets.
+
+## Output
+
+Return one block per change, leaving out a line that has nothing to report:
+
+- **Placement:** <each test module -> its source file, and the sibling conventions checked>
+- **Owners:** <fixture and factory owners reused or extended, parametrized cases reused>
+- **Boundary matrix:** <safe rows (field names, shape, outcome) -> exercising test cases, with the
+  private ledger entry that established them>
+- **Literals:** <each changed literal family with its rubric disposition>
+- **Tests in scope:** <test -> retain | repair | consolidate | delete, with the deletion evidence for
+  each delete>
+- **Mutation experiments:** <each mutation, the regression failure it showed, the restored passing
+  run>
+- **Corrections:** <encountered and literal-sweep corrections made>
+- **Cost:** <test, module and suite durations, or `unmeasured`>
+- **Targets run:** <the final affected targets and their result>

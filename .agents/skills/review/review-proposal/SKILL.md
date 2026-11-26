@@ -1,6 +1,6 @@
 ---
 name: review-proposal
-description: "Prepare an implementation plan before the user sees it, a proposed change for an existing user-approval boundary, or a directly requested proposal review. Challenge the whole proposal with three fresh standard reviewers per round, count nit-only rounds as clean, and obtain independent Proposal acceptance after two substantive clean rounds or a council ruling once two rounds pass without them. Technical readiness never grants user approval, and a plan it accepts is shown, not approved."
+description: "Prepare an implementation plan before the user sees it, a proposed change for an existing user-approval boundary, or a directly requested proposal review, and obtain independent Proposal acceptance. Technical readiness never grants user approval, and a plan it accepts is shown, not approved."
 short_description: 'Challenge a proposal and obtain independent acceptance before the user sees it.'
 ---
 
@@ -28,6 +28,11 @@ new approval requirement.
 Factual questions, status reports, routine authorized actions and a platform's separate action-time
 confirmation do not enter this workflow. Optional factual discovery is not an attack slot.
 
+A plan confined to one owner with no shared contract, no retained data and no user choice in it
+takes one fresh reviewer for one round, then the gate, in place of steps 2 and 3's three reviewers
+and two clean rounds; a material finding moves it to the route below, and any other plan takes the
+route below.
+
 When a reader cannot launch, apply `subagent-matrix`'s launch fallback; never count an in-process result as a fresh independent reader. An explicit
 user requirement for independent reviewers or a selected model remains unmet without that evidence.
 Follow the dependency's fallback procedure without inventing a compliant launch or ready receipt.
@@ -43,55 +48,64 @@ Follow the dependency's fallback procedure without inventing a compliant launch 
    with its source and next action. Do not load unrelated rules or invent facts. Explicit alternatives
    can be reviewed without choosing for the user; incomplete evidence cannot be treated as a choice.
 2. **Attack the whole proposal.** Dispatch three fresh read-only standard reviewers per round using
-   subagent-matrix. Give them different emphases: requirements/authority, ownership/design and
-   verification/cost/recovery. Each still applies every criterion to the whole proposal and receives
-   the complete pre-production guidance. Keep peer reports out of the round. Run ready slots in
-   parallel when capacity permits; queue unstarted slots otherwise. Follow the selector's original
-   result and producer-recovery contract, replacing only stopped or unproven slots, never live workers
-   or valid siblings. Count only verified compliant launches, identical inputs and complete originals.
-3. **Resolve findings and count rounds.** Read every original and consolidate duplicates. Before
-   updating the streak, classify each reported item as material, nit or refuted against the criteria
-   and record its evidence-backed disposition. An attacker's `CHANGES_REQUIRED` label alone never
-   makes a round unclean; retain that label separately for the gate. Investigate concrete material
-   objections and apply justified remedies. A clean round has
-   three complete reports and no unresolved material finding under the criteria; nit-only rounds
-   count clean. Normally obtain two consecutive substantively clean rounds with fresh cohorts.
-   Material changes to approach, scope, ownership, verification, intent or supporting facts invalidate
-   affected evidence and restart the streak. Avoid applying optional polish during attacks. For a
-   byte-changing clarification without those effects, retain both identities and the comparison
-   supporting carry-forward; never claim the old report reviewed new bytes.
+   `subagent-matrix`.
+   - Give them different emphases: requirements/authority, ownership/design and
+     verification/cost/recovery. Each still applies every criterion to the whole proposal and
+     receives the complete pre-production guidance. Keep peer reports out of the round.
+   - Run ready slots in parallel when capacity permits; queue unstarted slots otherwise.
+   - Follow the launch result and recovery procedure `subagent-matrix` states, replacing only
+     stopped or unproven slots, never live workers or valid siblings.
+   - Count only launches verified compliant, with identical inputs and complete original reports.
+3. **Resolve findings and count rounds.** Read every original and consolidate duplicates.
+   - Before updating the streak, classify each reported item as material, nit or refuted against the
+     criteria and record its evidence-backed disposition. An attacker's `CHANGES_REQUIRED` label
+     alone never makes a round unclean; retain that label separately for the gate. Investigate
+     concrete material objections and apply justified remedies.
+   - A clean round has three complete reports and no unresolved material finding under the
+     criteria; nit-only rounds count clean. Normally obtain two consecutive substantively clean
+     rounds with fresh cohorts.
+   - Material changes to approach, scope, ownership, verification, intent or supporting facts
+     invalidate affected evidence and restart the streak. Avoid applying optional polish during
+     attacks. For a byte-changing clarification without those effects, retain both identities and
+     the comparison supporting carry-forward; never claim the old report reviewed new bytes.
 4. **Obtain independent acceptance.** After two clean rounds, send the current proposal to
-   acceptance-gate. After two attack rounds without the streak, put the same packet to `council` in
-   **Ask** mode instead of dispatching another cohort: each member returns accept or flag, the
-   proposal is accepted only when all three accept, and every flag goes to step 5 as a gate flag.
-   This alternate route never claims two clean rounds occurred. Supply its five native inputs and exactly `Proposal — should this be
-   written?`. The proposal item includes the actual round history, every substantive finding or
-   material alternative verbatim with evidence, benefit, tradeoff and disposition, coverage receipts,
-   and locators/content identities for the directly available originals. An index is navigation,
-   never a substitute for originals. Retain each original and its digest/readback receipt through
-   session-ledger; verify its bytes again before dispatch and deliver frozen content through the
-   native content-or-file route. An ordinary path or digest alone does not freeze a file. Use direct
-   content where the file boundary cannot be preserved, or hold for the actual delivery limitation.
-   Do not add a snapshot platform or truncate evidence. Verify the separate fresh gate's compliant
-   dispatch, exact packet and complete original verdict before counting it.
-5. **Repair and return.** Admit each flag under `acceptance-gate`'s **Bounds** (a settled,
+   `acceptance-gate`.
+   - After two attack rounds without the streak, put the same packet to `council` in **Ask** mode
+     instead of dispatching another cohort: each member returns accept or flag, the proposal is
+     accepted only when all three accept, and every flag goes to step 5 as a gate flag. This
+     alternate route never claims two clean rounds occurred.
+   - Supply the five items `acceptance-gate`'s **The Gate Subagent** lists and exactly `Proposal —
+     should this be written?`. The proposal item includes the actual round history, every
+     substantive finding or material alternative verbatim with evidence, benefit, tradeoff and
+     disposition, coverage receipts, and locators/content identities for the directly available
+     originals. An index is navigation, never a substitute for originals.
+   - Retain each original and its digest/readback receipt through `session-ledger`; verify its bytes
+     again before dispatch and deliver frozen content whole by pasting the content or writing it to
+     a file the gate's prompt names, as `acceptance-gate` requires. An ordinary path or digest alone
+     does not freeze a file. Use direct content where the file boundary cannot be preserved, or hold
+     for the actual delivery limitation.
+   - Verify the separate fresh gate's compliant dispatch, exact packet and complete original verdict
+     before counting it.
+5. **Repair and return.** Admit each flag under `acceptance-gate`'s **Bounds**: a settled,
    out-of-scope or user-owned item is answered as those Bounds say, and an evidence gap keeps its
-   handling there), then apply every admitted flag of a verdict in one pass, preserving its
-   objection and remedy; an admitted flag is fixed, never dropped. A verdict whose only flags are
-   style flags returns ready once the author fixes them, with those fixes in `last_fixes`. Any
-   other flagged verdict gets one final ruling over the repaired proposal, the fix diff and each
-   settled or out-of-scope answer with its evidence, whatever the repairs changed, and no further
-   review round: after the council, from the same members, resumed by the route council's
-   **Harness Compatibility** names, a member who has ended replaced as its **Members** says; after
-   an acceptance-gate verdict, from `council` in **Ask** mode with the packet step 4 describes;
-   either way accepted only when all three accept. A flag that final ruling raises is admitted and
-   fixed the same way, and the proposal returns ready with those fixes in `last_fixes`. Renaming or
-   caller re-entry cannot erase objections or start the same proposal's review again. Missing or
-   lost output follows subagent-matrix recovery without redoing valid attacker evidence. Return the
-   result to the caller. Do not present the proposal or request approval here, or recursively review
-   the gate itself.
+   handling there. Then apply every admitted flag of a verdict in one pass, preserving its objection
+   and remedy; an admitted flag is fixed, never dropped.
+   - A verdict whose only flags are style flags returns ready once the author fixes them, with
+     those fixes in `last_fixes`.
+   - Any other flagged verdict gets one final ruling over the repaired proposal, the fix diff and
+     each settled or out-of-scope answer with its evidence, whatever the repairs changed, and no
+     further review round: after the council, from the same members, resumed by the route council's
+     **Harness Compatibility** names, a member who has ended replaced as its **Members** says; after
+     an acceptance-gate verdict, from `council` in **Ask** mode with the packet step 4 describes;
+     either way accepted only when all three accept. A flag that final ruling raises is admitted and
+     fixed the same way, and the proposal returns ready with those fixes in `last_fixes`.
+   - Renaming or caller re-entry cannot erase objections or start the same proposal's review again.
+   - Missing or lost output follows `subagent-matrix` recovery without redoing valid attacker
+     evidence.
+   - Return the result to the caller. Do not present the proposal or request approval here, or
+     recursively review the gate itself.
 
-Reuse a ready receipt only for its exact proposal, reviewed inputs and affected-owner map. A changed
+Reuse a ready receipt only for its exact proposal, reviewed inputs and affected-repository map. A changed
 item invalidates that acceptance receipt even when earlier attack evidence can be carried forward.
 The caller consumes the ready receipt once, when it shows the plan or asks for the approval; encountering it
 again is not a reason to rerun the workflow. Keep unresolved user choices separate from technical
@@ -104,7 +118,7 @@ Return this record through session-ledger, with detailed evidence at private loc
 ```yaml
 status: ready | held | needs-evidence
 proposal: <locator and exact content identity>
-inputs: <reviewed input identities and affected-owner map>
+inputs: <reviewed input identities and affected-repository map>
 rounds: <actual history, clean streak and normal/adjudication route>
 evidence: <original report identities, coverage and alternative dispositions>
 gate: <exact packet, dispatch and original verdict, or missing evidence>

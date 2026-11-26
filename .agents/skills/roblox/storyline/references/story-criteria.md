@@ -1,5 +1,7 @@
 # Story quality criteria
 
+Contents: the quality bar (the opening paragraphs), **Dialogue**, **Progression and reward cadence**, **Critique checks**, **Opening, onboarding, and character appearance**, **Character staging and encounters**, **Proposal evaluation**.
+
 A strong story has a clear initial desire, a disruption the player understands, escalating consequences, a midpoint that changes interpretation, a costly or revealing choice, and a resolved climax followed by a visible aftermath. The player causes the decisive outcome through the game's verbs. Character motives exist before the player arrives and change under pressure.
 
 Characters have distinct voices, wants, needs, fears, limitations, secrets, relationships, and reasons to help or oppose one another. Opposition has understandable motives without requiring moral equivalence. Reveals have observable setup and later payoff; a twist must explain prior evidence rather than contradict it. NPCs contribute actions and consequences, not only exposition. Dialogue is concise enough to play, with deeper optional material where appropriate.

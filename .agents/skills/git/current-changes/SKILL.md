@@ -1,6 +1,6 @@
 ---
 name: current-changes
-description: Summarize what the current branch changes against the default branch as one paragraph and one sentence per material change, each linked to the code that makes it, with test changes folded into a single line. Use when asked what the branch or its pull request changes.
+description: Summarize what the current branch changes against the default branch, each material change linked to the code that makes it. Use when asked what the branch or its pull request changes.
 short_description: 'Summarize the branch''s changes against the default branch with links to the code.'
 ---
 
@@ -42,7 +42,7 @@ makes it.
    - When the branch is not yours to rewrite, link the diff of the one file that implements the heart
      of the change, through the pull request's files view anchored at that file,
      `<pull request url>/files#diff-<anchor>` where the anchor is the SHA-256 hex digest of the file's
-     repository path, named by the file's basename. Never list every file a change touches.
+     repository path, named by the file's basename.
    - The `Tests:` line links its commit the same way, or the test file that carries the most of it.
    - With no pull request open, link commits on the remote branch; with nothing pushed, say the code
      is local and name the commit or file instead of linking.

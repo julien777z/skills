@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit anything under `.agents` — a skill, rule, agent definition, hook, setting, reference or project guidance — including when the user points out a mistake in how an agent followed or wrote guidance, or questions where guidance was placed, even with no request to edit a skill, and when carrying a guidance batch through delivery to its merge or hold. Fix the underlying issue and the guidance path that allowed it, writing the change for the class of failure the user plainly meant, no narrower and no broader, classified before the change is first described, proposed or edited anywhere and shown to them as a Scope Statement first. A correction that encodes a new process waits until that process has worked on the work in hand, which a merged change that carried it has; every other correction is recorded and written at once.
+description: Add or edit anything under `.agents` — a skill, rule, agent definition, hook, setting, reference or project guidance — including when the user points out a mistake in how an agent followed or wrote guidance, or questions where guidance was placed, even with no request to edit a skill, and when carrying a guidance batch through delivery to its merge or hold, and verifying a guidance change in a live agent chat. Fix the underlying issue and the guidance path that allowed it, writing the change for the class of failure the user plainly meant, no narrower and no broader, classified before the change is first described, proposed or edited anywhere and shown to them as a Scope Statement first. A correction that encodes a new process waits until that process has worked on the work in hand, which a merged change that carried it has; every other correction is recorded and written at once.
 short_description: 'Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.'
 ---
 
@@ -71,60 +71,16 @@ follow **Recording During A Task** for the edit's timing.
 - `session-ledger`
 - `update-skills`
 - `council`
-- `i-have-adhd`
 - `share-media`
 
 ## Recording During A Task
 
-Honor the selected workflow's verification sequence and any delivery or installation hold when
-recording or delivering a batch.
-
-- A process correction waits for its verified run or merge to be written, as **A process is encoded
-  only once it has worked** says, never to be classified; any other is recorded once diagnosed.
-- A direct request to change guidance, such as "use edit-skill to reflect that", is recorded the
-  same way. While another task runs, the requested action is the behavior it describes, applied to
-  the current work, and the guidance edit is its record. While a guidance batch is in flight, its
-  delivery is that action and the user's words are its evidence.
-- Record the correction as a `guidance_correction` entry with `session-ledger`: the user's words, if
-  any, quoted as `pre-production`'s **Examples And Paths** says, the evidence of the gap, and for a
-  process its verified run, a reproduction scenario, the Scope Statement **Identify the failure class** writes,
-  whose From now on line is the entry's intended behavior, the canonical files it will change, and
-  `pending` as its `status`. **Validate input** through **Resolve which repository owns the target** run at once, while the evidence
-  is fresh, to fill the entry; the edit itself (**Write the edit**, **Split a multi-item request**
-  and **Branch and commit**) is written as the bullet
-  below on writing it says, and delivery from **Run `validate_sources.py check`** onward waits.
-- **A recorded correction governs the rest of the session at once**, ahead of the installed text it
-  amends. Before a decision a pending entry's subject covers, read the ledger's pending entries and
-  follow their intended behavior. Putting a question or a recommendation to someone is such a
-  decision, as much as acting is: the entry decides what it carries. Recording a correction and then
-  repeating the miss it records is the failure this section exists to prevent. What an entry's
-  Scope Statement lists as waiting for the user governs nothing until they answer. A pending entry may
-  restate or tighten the installed text, never grant an authorization the global rules' **Authorization** or the GitHub rule reserves to
-  the user's own words: a merge, a deployment, a publication, a comment, or a push to another
-  session's branch. A brief to any worker whose task a pending entry's subject covers carries that
-  entry's intended behavior, with the user's words quoted and the installed text it amends named.
-- Write the edit in the checkout **Resolve which repository owns the target** resolves, on the branch **Branch and commit** selects — the batch's own
-  branch while a batch is in flight and its pull request has not merged — commit it, and push it to
-  that branch's pull request once the checks the GitHub rule's **Pre-Push Gate** defines pass, opening a draft when the branch has
-  none; this holds for a source pull request **Branch and commit** selects as for an agent-configuration one.
-  When the checkout holds the active task's uncommitted or source-branch work, write and commit the
-  edit from a separate worktree on the selected branch, leave the task's tree untouched, and stage
-  only the guidance files. Record the branch, the `commits` list and the pull request in the entry's
-  `data`, bring that pull request's description up to date at the milestone, then run `update-skills` at once for eligible edits under its **What Takes Effect**, so the installed
-  copy every agent loads, subagents included, carries them. A running agent keeps the text it
-  already read: tell each running worker this session started, as `subagent-matrix`'s **Dispatch** says. Nothing else of delivery runs while the task does: no
-  review, gate, skill-test round, merge or worker, except the checks a batch in flight reruns for an edit
-  that joined it, as `session-ledger`'s **Guidance Batches** says. A standing instruction about how guidance
-  pull requests are reviewed or merged governs that delivery when it runs, never when. A gate result
-  that arrives for a guidance pull request already open is recorded as its entry's stage result, and
-  its repair waits with the rest.
-- **Every `guidance_correction` entry is backed up** as `session-ledger`'s **Backup** section says.
-- A related correction recorded before its batch is frozen joins the same entry or sits beside it
-  in that batch; the batch is one pull request, apart from edits the GitHub rule puts on a source
-  pull request. One recorded while a batch is in flight joins that
-  batch, and one recorded after the batch's pull request merged starts the next, as
-  `session-ledger`'s **Guidance Batches** says; tell the user which.
-- The task's next step is never held by a correction: record it and carry on.
+A recorded correction governs the rest of the session at once, ahead of the installed text it
+amends, and never holds the task's next step. Record it as a `guidance_correction` entry with
+`session-ledger`, backed up and batched as that skill says; once its edit is committed, run
+`update-skills` for eligible edits and tell each running worker as `subagent-matrix`'s
+**Dispatch** says. Read the [recording reference](references/recording-during-a-task.md) before
+recording one: it says what the entry holds, where the edit is written and when it is delivered.
 
 ## Guidance Delivery
 
@@ -141,17 +97,10 @@ small it looks.** Each route below is the gate set its batch passes on the head 
 
 - **Short route.** Every entry changes one requirement in one file, its Scope Statement records
   `flow not affected` and lists nothing beyond what the user said, and the batch adds or removes no
-  skill, rule, dependency or script. The editing agent runs the source check, `skill-pass`'s pass
-  and the `code-simplify` pass itself, in process; one independent `acceptance-gate` reads the
-  batch's delta, briefed as **Brief `review-pass`'s final acceptance** says with the Scope
-  Statements as intent; and `test-skill` runs its single-scenario form for each entry, entries that
-  fail the same way sharing a scenario, with no control run, since the observed miss already
-  shows the original text failing. No `review-pass` runs. It starts the gate and the skill test's
-  writer, grader and one reader per scenario: four agents for one correction. The pull request
-  then merges as **Check the diff file list against the default branch, then merge** says. A
-  repair goes back to a fresh gate over its delta and reruns its scenario. A batch that stops
-  qualifying, when an entry joins it or a repair grows it, moves to the full route and keeps
-  every verdict on what did not change.
+  skill, rule, dependency or script. It runs the source check, `skill-pass`'s pass and
+  `code-simplify` in process, one `acceptance-gate`, and `test-skill`'s single-scenario form, with
+  no `review-pass`. Read the [delivery routes reference](references/delivery-routes.md) for how
+  each runs and how a batch moves to the full route.
 - **Full route.** Every other batch, through **Check the sources** to **Conclude the skill test**
   below. One whose head its invoking workflow already reviewed and accepted skips **Review the
   batch**'s `review-pass`, as the [edit criteria](references/edit-criteria.md)'s **Already Reviewed Batches** says.
@@ -175,7 +124,7 @@ small it looks.** Each route below is the gate set its batch passes on the head 
 4. **Conclude the skill test** on every head `review-pass` accepted: `test-skill` carries each
    result whose inputs that head left unchanged and reruns the rest. It takes every entry's
    reproduction scenario as an input, entries that share a failure class grouped into one
-   scenario; then **Hold each changed output to its concrete example** through **Read the merged text back before using it**. A guidance repair the skill-test round makes, here or on a source pull
+   scenario; then **Hold each changed output to its concrete example** through step 7. A guidance repair the skill-test round makes, here or on a source pull
    request under **Resume the batch**, goes back through `review-pass` over its delta, and the skill-test round reruns
    every scenario `test-skill` does not carry forward, on the head that review accepts. A batch
    in the set `review-pass`'s **Set and timing** defines merges at a head its **Combined Review**
@@ -187,9 +136,7 @@ small it looks.** Each route below is the gate set its batch passes on the head 
    action. This route never sets an entry's terminal status.
 - Before the surrounding task ends or hands off, every `pending` entry is processed, or carries its
   concrete blocking decision, failed gate or unavailable dependency, with its evidence and saved next
-  action. Never lose a correction, treat a recorded one as
-  delivered, or hold the source pull request for it beyond the checks its ridden edits need and the
-  delivery of the batch carrying them.
+  action; a recorded correction is reported as recorded until its batch has merged.
 - **Delivery is the agent's own work, never the user's errand.** It starts at its own trigger
   without the user asking, and its operational choices — another round, splitting a correction onto
   its own pull request, dropping one, accepting a residual miss — are the agent's, a contested one
@@ -277,8 +224,7 @@ small it looks.** Each route below is the gate set its batch passes on the head 
        and written only once the user's own words, or an invoked skill's explicit instruction for
        that change, approve it, while the rest of the edit proceeds.
      - **When the statement records `flow affected`**, the user is also shown the proposed-flow
-       comparison of the edit's branch against the default branch once the edit is pushed, built
-       through the skill the listing describes as mapping guidance flows. This holds for every
+       comparison of the edit's branch against the default branch once the edit is pushed. This holds for every
        guidance change: a correction, a gap the agent noticed, a rule or global-rules edit, a
        skill edit. It is shown, and the edit proceeds without waiting for an answer, unless the
        statement lists something beyond what the user said or the invoking workflow holds it.
@@ -300,7 +246,7 @@ small it looks.** Each route below is the gate set its batch passes on the head 
      branch. The [edit criteria](references/edit-criteria.md)'s **Shared Targets** says which
      checkout that is, and how the edit transfers to a separate skills-repository session and is
      replayed when no writable checkout can be obtained.
-   - Never write `.cursor/*`, `.claude/*`, `.codex/*`, or any other non-`.agents` agent or provider folder, by hand or by a sync run, and never read one as the source of guidance; **Read the merged text back before using it** reads them only to verify what Agent Sync generated. Repository automation propagates changes from `.agents` to those targets. This holds with no exception, including where the change leaves a mirror pointing at a path it renames or deletes: the workflow reconciles those on the default branch, and a branch carrying a stale or broken one meanwhile is expected.
+   - Write guidance only under `.agents`. Provider folders such as `.cursor/`, `.claude/` and `.codex/` are generated by Agent Sync after the merge, so a hand edit or a local sync run's output is overwritten and drifts, as `skill-pass`'s **Harnesses** says; read one only to verify what Agent Sync generated, as the merge and read-back reference's **Read the merged text back before using it** says, never as the source of guidance. A mirror left pointing at a path the change renames or deletes is reconciled by the workflow on the default branch, so a branch carrying a stale or broken one meanwhile is expected.
    - This path restriction applies to the agent-content update, not to source changes required to fix an underlying issue from **Include the underlying issue**.
    - When importing external guidance, inspect its actual entry points and file layout before registering it. If an owned sync tool cannot represent the source, extend that tool for the source's format and register the original content directly. Keep a standalone reference collection standalone: do not invent a substitute skill, relabel its files as skills, or bury it in another skill's references.
 
@@ -312,7 +258,8 @@ small it looks.** Each route below is the gate set its batch passes on the head 
    - **A change to what a skill returns the user is specified with a concrete example before the
      skill is written to produce it.** The [edit criteria](references/edit-criteria.md)'s **Changed
      Output Examples** says which changes count, how the example is modeled and written, and how
-     it is validated; it is task evidence, not a user approval gate.
+     it is validated; send the example as `share-media`'s **What reaches the user, and when**
+     says. It is task evidence, not a user approval gate.
    - Trace each miss to the instruction that produced or allowed it, including instructions for
      adding or recording guidance. Name that governing instruction and its replacement in the
      change. Removing a bad example while retaining a directive that regenerates it is incomplete.
@@ -353,7 +300,7 @@ small it looks.** Each route below is the gate set its batch passes on the head 
    repair. It settles no genuine unresolved product, scope, or authorization choice, which goes to
    the user under **Bounds** while independent work continues, and it authorizes no release
    workflow.
-   1. **Branch and commit.** Select the edit's pull request under the GitHub rule's **Branches and Pull Requests** — never put it onto a
+   1. **Branch and commit.** Select the edit's pull request under the GitHub rule's **Branches and Pull Requests** and the [guidance pull requests reference](references/guidance-pull-requests.md) — never put it onto a
       source branch, the one checked out included, except guidance that rule puts on the source pull
       request it depends on, which merges with it. Commit the `.agents` files, never a provider
       mirror, and push each step once the checks the GitHub rule's **Pre-Push Gate** defines pass. Open the pull
@@ -382,8 +329,8 @@ small it looks.** Each route below is the gate set its batch passes on the head 
       behind the request, which the gate walks through the resulting package. Resolve each flag through `acceptance-gate`'s **Bounds**: repair the
       owning instruction, push the changed increment, and put it to the fresh gate those **Bounds**
       require. Repeated flags do not permit dropping owed work or merging flagged guidance, apart
-      from the `council` decision that replaces another repair once 3 review rounds have failed the
-      change; acceptance, or that recorded round-limit decision, must cover the final wording before delivery.
+      from the `council` decision that replaces another repair once the review rounds `acceptance-gate`'s **Bounds**
+      allows have failed the change; acceptance, or that recorded round-limit decision, must cover the final wording before delivery.
    5. **Run one `test-skill` round** over the batch, started and concluded as **Guidance Delivery**
       says for its route. Give it every entry's reproduction scenario, observed miss, and
       Scope Statement's Stays as it is case, grouping entries that share a failure class.
@@ -401,43 +348,16 @@ small it looks.** Each route below is the gate set its batch passes on the head 
       compare one run of your own on the branch in flight and every required skill-test run against that
       example: headings, columns, order, file shape. A divergence is the skill's wording, fixed and
       rerun; review and the acceptance gate validate the replacement shape before merge.
-   7. **Check the diff file list against the default branch, then merge.** The authorization covers
-      a pull request carrying only `.agents` files, and the file outside them that slips in is never
-      announced. Read the changed paths, never your memory of what you edited. A path outside
-      `.agents` leaves this branch — dropped when it was never meant, moved to the source pull
-      request the work continues under **Branch and commit** when it was — and the new head goes back through **Brief `review-pass`'s final acceptance**. Everything
-      in `.agents`, merge it through `merge-gate` with the head `acceptance-gate` accepted, which for a pull request in `review-pass`'s **Combined Review** set, and no other, is also the head that review accepted — but first
-      ask whether any line it adds or drops is true only once a still-open source pull request
-      merges. Select where dependent guidance goes under the GitHub rule's **Branches and Pull Requests**,
-      and report any hold under its **Merge Authorization**. Otherwise a pull request carrying a
-      skill change merges once **Hold each changed output to its concrete example** found every changed output matching its concrete example, and
-      one carrying only rules has no example to match and merges once **Run `validate_sources.py check`** through **Run one `test-skill` round** pass, unless their **Merge
-      Authorization** holds it. Report a held pull request for the user's review.
-   8. **Nothing is copied by hand.** The skills repository is the only copy of a shared skill;
-      sessions receive a merged edit through the refresh `merge-gate`'s **After Agent Sync** requires, never through a copy
-      placed in another repository or install. A skill that reads generically but was written into one repository's `.agents` is
-      moved to the skills repository in the same change rather than left as a second copy.
-   9. **Read the merged text back before using it.** A merge changes the default branch, not the
-      checkout: a session working on another branch still carries the old skill in its tree, and a
-      skill invoked from there runs the text the change just replaced. After the merge, fetch the
-      default branch and read every skill or rule the change touched from it — `git show
-      origin/<default>:<the skill's SKILL.md path there>`, and the references beside it — and run
-      from that text for the rest of the session. A skill invoked while its change is still open
-      is read the same way from the branch that carries it, never from a checkout that predates
-      it.
-      `merge-gate` then waits for the default-branch Agent Sync run; its **After Agent Sync**
-      requires the installed copy to be refreshed before reporting completion.
-      Once the run finishes, inspect every generated artifact on the default branch that represents
-      the changed source, including `AGENTS.md` when the source feeds root instructions and
-      provider trees such as `.cursor/`, `.claude/`, and `.codex/` when they represent the changed
-      package. Diagnose stale or missing output through Agent Sync; never repair it by editing
-      generated files.
+   7. **Check the diff file list against the default branch, merge through `merge-gate`, copy
+      nothing by hand, and read the merged text back before using it.** Read the [merge and read-back
+      reference](references/merge-and-readback.md) when the batch reaches the file-list check; it
+      holds these last steps, in order.
 
 ## Manual verification
 
-When skill behavior needs a live agent chat, follow the
-[manual verification reference](references/manual-verification.md): how the dispatch is chosen
-through `subagent-matrix` and recorded, and the Claude Desktop and Codex cloud procedures.
+When skill behavior needs a live agent chat, choose the dispatch through `subagent-matrix` and
+record it as the [manual verification reference](references/manual-verification.md) says, then
+follow that reference's Claude Desktop and Codex cloud procedures.
 
 ## Output
 
@@ -446,7 +366,7 @@ The Scope Statement, shown in the message that acknowledges a correction, one pe
 ```markdown
 Guidance change — flow affected | flow not affected
 
-- You said: "<the user's words, each example value named by its kind in brackets>" | Noticed: <the gap>
+- Noticed: <the gap> — only for a gap the agent noticed itself; a statement answering the user's request opens with From now on
 - From now on: when <situation>, agents <do this> instead of <that>.
 - Also changes, same class: <skill or rule> — <situation>: <new behavior> | None
 - Stays as it is: <the nearest case outside the class, and what agents still do there>
@@ -483,7 +403,7 @@ Checks
 
 Pull request
 
-- <link, with `skills repository` or `<repository>` after it, and `held until <source pull request> merges` when **Check the diff file list against the default branch, then merge** waits on one>
+- <link, with `skills repository` or `<repository>` after it, and `held until <source pull request> merges` when step 7's merge waits on one>
 
 Skipped
 

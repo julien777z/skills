@@ -39,9 +39,10 @@ packages, read build or release provenance linking the artifact to its source re
 label alone cannot establish that a testing artifact is deliverable. Missing access or provenance
 is an unresolved dependency, never a clean inventory.
 
-While a dependency holds the merge, disclose each unresolved provider change, its direct PR link when
-available, the consumed reference and resolved revision, delivery impact and required transition
-in user chat and private task evidence. The consumer body describes its own interface requirement
+While a dependency holds the merge, the merge is reported as held, never as a request for the
+dependency's merge, and the report discloses each unresolved provider change, its direct PR link
+when available, the consumed reference and resolved revision, delivery impact and required
+transition in user chat and private task evidence. The consumer body describes its own interface requirement
 and delivery limitation without foreign repository or PR references, under the GitHub rule's
 independent publishing context. Once the transition finishes, retain provenance and validation
 evidence in the private record and remove obsolete blocker wording from the consumer body.

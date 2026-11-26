@@ -89,15 +89,18 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   repository only when it reads generically without losing required behavior. If making it
   generic would remove or misstate guidance it needs to give, put it in the repository it
   describes under `.agents/skills/`, at any depth; move a misplaced existing skill there.
-  **Guidance whose correctness depends on a current repository's product, resources, topology, contracts, configuration, or relationships is project guidance.** It belongs in that repository's `.agents/project.md` or a repository-specific skill, regardless of the subject that exposed the gap. A shared skill may teach the classification procedure, but never carry a current repository's facts or boundaries.
   An agent definition that a shared skill runs on goes with that skill; every other agent, and
   every rule, is repository-owned.
+- **Guidance whose correctness depends on a current repository's product, resources, topology, contracts, configuration, or relationships is project guidance.** It belongs in that repository's `.agents/project.md` or a repository-specific skill, regardless of the subject that exposed the gap. A shared skill may teach the classification procedure, but never carry a current repository's facts or boundaries.
 - **Hooks belong in the repository that owns their behavior.** Keep their implementation and
   source registration under that repository's `.agents/`: repository-managed hooks go in
   `.agents/hooks/`, and hooks shipped with a skill stay in its package. A hook shared across
   repositories belongs in the shared skills repository; a hook that depends on one repository's
   behavior belongs there. Installed copies and native registrations consume that source.
-- **A skill that reads generically belongs to every repository, so write it that way and put it in the skills repository.** Repository paths, product names, and domain nouns turn a reusable workflow into one repository's copy of it; keep them out unless the skill's correctness depends on that local contract, and where a skill genuinely needs one local fact — a command, an identity, a host, a package, a fixture — read it from the repository's tooling, configuration and README, as the tooling bullet above says, or from a setting, rather than baking it in. Live file paths and copied application code go stale when files move or refactors land; use generic placeholders such as `services/<name>/...`, short pattern descriptions, or minimal invented examples instead. Where a shared skill needs a repository-specific collaborator — a migrations skill, a finalization skill, a deployment skill, a deferral label — it names the role and finds the skill by its description in the skill listing, and the repository's `project.md` **Repository Skills** table says which local skill fills the role.
+- **A skill that reads generically belongs to every repository, so write it that way and put it in the skills repository.** Repository paths, product names, and domain nouns turn a reusable workflow into one repository's copy of it; keep them out unless the skill's correctness depends on that local contract.
+  - Where a skill genuinely needs one local fact — a command, an identity, a host, a package, a fixture — it reads it from the repository's tooling, configuration and README, as the tooling bullet above says, or from a setting, rather than baking it in.
+  - Live file paths and copied application code go stale when files move or refactors land; use generic placeholders such as `services/<name>/...`, short pattern descriptions, or minimal invented examples instead.
+  - Where a shared skill needs a repository-specific collaborator — a migrations skill, a finalization skill, a deployment skill, a deferral label — it names the role and finds the skill by its description in the skill listing, and the repository's `project.md` **Repository Skills** table says which local skill fills the role.
 - **What a skill builds on in the repository it runs in is looked up there, never written into the
   skill.** A structure the skill reads — how skills or files are grouped, which folders exist, which
   skill a workflow starts from, what a page or section is called — comes from the repository when it
@@ -147,8 +150,8 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   and their records — and leaves finding them to the agent in whichever harness runs it; outside
   such a compatibility section, a script or instruction that finds those session facts through one
   harness's files, environment variables or record layout is a defect, never a convenience.
-- Never stage generated provider output manually. Only the repository's Agent Sync workflow may
-  generate and commit provider mirrors.
+- Provider mirrors are generated from `.agents`, so a hand-staged copy is overwritten and drifts:
+  only the repository's Agent Sync workflow generates and commits them.
 
 ## Rules
 
@@ -221,12 +224,16 @@ Judge a description by substitution: read it without knowing which skill it belo
 says which situations fire the skill, it works. If the remainder names no situation, it was never a
 trigger.
 
-A description is written in the third person and stays within 1,024 characters, the limit the open
-skill specification sets and a vendor's upload refuses past. Its main use comes first, because a
-host's listing truncates a long description at its own cap and drops whole descriptions when the
+A description says what the skill does and when to use it, in the third person or the imperative
+(for both the work and the "Use when ..." trigger), never speaking as "I" or "we" or addressing the
+reader as "you", and stays
+within 1,024 characters, the limit the open skill specification sets and a vendor's upload refuses
+past. A doctor run reports a departure shared by every description once, as a convention, never per file. Its main use comes first, because a host's
+listing truncates a long description at its own cap and drops whole descriptions when the
 listing passes its budget. It names kinds of situation, never a list of near-synonymous phrases
-that grows by one with each missed trigger. A rule it carries because the rule must bind before
-the body is read takes one clause; procedure stays in the body.
+that grows by one with each missed trigger. Where a neighboring skill or a look-alike request
+would fire it wrongly, one clause names the nearest case it leaves to another. A rule it carries
+because the rule must bind before the body is read takes one clause; procedure stays in the body.
 
 **A skill that runs only at the user's request says so in its description, never by hiding itself.**
 A frontmatter flag that keeps a skill out of the agent's skill listing, such as
@@ -290,8 +297,8 @@ restriction. Gate a single user-only workflow inside an otherwise usable skill i
   call a workflow's own checks cannot settle — a disputed finding, a flag that survives its
   repairs, a stuck review, the disposition of a change that keeps failing — goes to `council` in
   **Ask** mode, and its ruling, by majority unless the skill sets a stricter threshold, is followed and named in the skill's result. A skill whose
-  workflow does this declares `council`. A ruling never accepts a confirmed defect, an exploitable
-  vulnerability or a failing required check.
+  workflow does this declares `council`. A ruling stays within what `council`'s **Ask** mode
+  allows.
 - **A stop for the user that guidance could settle is a defect in that guidance.** A workflow
   pauses for the user only at a decision the bullet above makes theirs. An approval step reached
   with no open decision, a question a standing rule already answers and a confirmation of work the
@@ -430,7 +437,7 @@ a template where correct results genuinely vary in shape.
   command, a flag and what a command prints each exist under that name in the file or tool named.
   Cite a section by its name, never by a step number, which moves with the next edit, and resolve a
   skill's own script from the skill's directory, never from a repository path.
-- Normalize the touched file's nearby structure when needed: combine narrow sections and remove redundant wording.
+- Normalize the touched file's nearby structure when needed: combine narrow sections and remove redundant wording. Lines an edit writes keep the wrap of the paragraph they sit in, so a repair never leaves an uneven paragraph for the next round to flag.
 - **State the class the user plainly meant, no narrower and no broader; the request's shape is
   its example.** A request arrives as one symptom, and the rule it needs names the class that
   symptom belongs to, with the symptom's shape kept as one illustration of it.
@@ -494,7 +501,10 @@ a template where correct results genuinely vary in shape.
 ## Scripts
 
 - Write new or substantially rewritten skill helper scripts in Python by default. Use another language when the execution platform requires it, such as browser JavaScript, and state that constraint. Keep executable helpers inside the owning skill's `scripts/` directory, resolve supporting files relative to the skill package, and take private endpoints, credentials, and environment-specific values from private configuration rather than committed source.
-- Do not add committed tests for skills or their helper scripts, inside or outside the skill directory. Keep any needed execution checks temporary and untracked.
+- **A skill and its helper scripts carry no committed test code**, inside or outside the skill
+  directory, so keep any needed execution check temporary and untracked. The one committed test
+  material is a skill's pinned regression scenarios: YAML directly in its top-level `tests/` folder,
+  carrying its fixture as data and no code.
 
 ## Validation
 

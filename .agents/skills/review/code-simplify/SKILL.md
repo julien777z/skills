@@ -68,12 +68,13 @@ proposed mechanism.
   decision.
 - Fix a `nit` only when it is a one-line change in a line the change already touches; otherwise
   list it as declined.
-- Outside the change, fix every bug under `pre-production`'s **Scope Follows The Defect, Not The
-  Request**. Apply its size budget to cleanup and return deferred work to the caller.
+- Outside the change, the rubric's **Scope** says what is fixed and where; what it defers returns to
+  the caller to record as deferred work.
 - Check each remedy against the language and layout rules for its file before applying it.
 - After fixing, rescan only when the fixes added, moved, merged or deleted a module or changed an
   interface other code reads: a fresh reviewer gets the earlier findings, the fix diff and the files
-  it touches. Fixes applied in place need no rescan.
+  it touches. Fixes applied in place need no rescan. One rescan per pass; a finding it raises that
+  the rescan's own fixes would again reshape goes to the caller as open.
 - If the pass grew the diff past what the intent needs, cut first.
 
 ## Output

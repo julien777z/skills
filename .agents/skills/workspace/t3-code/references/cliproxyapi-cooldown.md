@@ -22,8 +22,9 @@
    for the running version. Use the credential for that instance's management API through its
    existing authorized route. Keep the key and account identifiers out of logs and reports.
    If authentication is temporarily locked, wait for the reported expiry before retrying with
-   the verified key. Do not restart the proxy, change its routing settings, or spend a second
-   allowance reset to clear this state.
+   the verified key. Clear the cooldown through the reset call alone, leaving the proxy running
+   with its routing settings and allowance as they are: a restart, a settings change or a second
+   allowance reset is a different operation that this recovery does not cover.
 4. Read back the credential's routing state and verify the blocking cooldown is gone. If the
    separate test chat is still snoozed, use **Wake now** there and send a short prompt using the
    same model and provider instance on the affected T3 environment. A completed model reply

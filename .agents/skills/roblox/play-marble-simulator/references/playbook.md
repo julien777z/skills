@@ -14,14 +14,13 @@ adds what it verifies, as `play-roblox-protocol`'s **Record What A Session Learn
 - **Joining the main place** lands in a random lobby, which moves you into a match within
   seconds. It reaches the named player only by chance.
 - **Following the player works, even into a match in progress**, with the follow link
-  `roblox-studio`'s testing reference's **Play a published experience** section gives. Joining
+  `roblox-studio`'s runner reference's **Play a published experience** section gives. Joining
   mid-match counts the marble as eliminated ("Eliminated! Waiting for party."), so it watches until
   the match ends and then goes to the same lobby and the next match with the player.
-- **Elimination moves you on unless you are in the player's party.** Eliminated alone, the game
-  sent the marble to a new lobby and into a new match without the player. Once the marble was in
-  the player's match, every elimination showed "Waiting for party" and kept it there, and when the
-  match ended the game moved both into the same lobby and then the same new match, with no
-  further follow needed.
+- **Elimination moves you on unless you are in the player's party.** A marble eliminated alone goes
+  to a new lobby and into a new match without the player. A marble in the player's match shows
+  "Waiting for party" at every elimination and stays there; when the match ends the game moves both
+  into the same lobby and then the same new match, with no further follow needed.
 - Presence (`presence.roblox.com/v1/presence/users`) shows the player's current place and server
   ID; while they are in a match, the server ID is the match's.
 
@@ -30,8 +29,8 @@ adds what it verifies, as `play-roblox-protocol`'s **Record What A Session Learn
 | Input | Effect | Status |
 |---|---|---|
 | none | The marble drops from the red arrow and falls on its own, but on water and open levels it hangs near the top while others finish | confirmed |
-| hold W | Moves the marble down through water and open levels; alone it still finished near the back on several levels | confirmed that it helps, not enough alone |
-| hold W + tap Space | Finished first or in the front group on most levels across two matches, though near last on a few | unconfirmed: Space not yet tested on its own |
+| hold W | Moves the marble down through water and open levels; alone it can still finish near the back | confirmed that it helps, not enough alone |
+| hold W + tap Space | Finishes first or in the front group on most levels, though near last on a few | unconfirmed: Space not yet tested on its own |
 | A / D | No visible effect: the marble's sideways drift did not follow the keys over 8 seconds | ruled out |
 | Esc | Roblox menu with the People list, Leave and Respawn | confirmed |
 | Tab | Shows no player list | confirmed |
@@ -64,8 +63,8 @@ adds what it verifies, as `play-roblox-protocol`'s **Record What A Session Learn
   without input drifts and finishes last.
 - **Spiky mine levels** place black spiked mines along the ramps; whether touching one costs the
   marble anything is not yet recorded.
-- The pinball-table level is mostly luck: finishes there ranged from second to near last.
-- The power-up row level is high risk: a marble that survived on luck there finished last.
+- The pinball-table level is mostly luck: finishing places there vary from second to near last.
+- The power-up row level is high risk: a marble can survive it on luck and still finish last.
 
 ## Pitfalls
 

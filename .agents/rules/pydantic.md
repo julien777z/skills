@@ -9,7 +9,7 @@ paths:
 
 ## Model Design
 
-- Keep each `config.py` lean: it contains only the one Pydantic settings class for that configuration owner, not its runtime instance, registry schemas, provider payloads, response models, or other data models. A repository may have distinct application, worker, or script configuration owners; do not collapse their unrelated settings into one class. Instantiate each settings class at its application, worker, or script composition boundary. Put other models in concept-specific files under `models/`; never place settings in `models.py`, `models/`, `settings.py`, an executable, or an operational module.
+- Keep each `config.py` as the Python boundaries rule's **Configuration** states: only that owner's one settings class lives there, and every other model lives in a concept-specific file under `models/`, never in `models.py`, `settings.py`, an executable or an operational module.
 
 - Never use `@dataclass` decorator from `dataclasses` module.
 - Use Pydantic `BaseModel` for all class definitions that hold data.
@@ -45,8 +45,7 @@ if not policy.can_access_admin:
 - Use `model_validator` decorator for custom validation.
 - Do not add `field_validator` or `model_validator` just to coerce enum strings that should be represented by the enum itself; update the enum values to match the real contract instead.
 - Do not define `__init__` on `BaseModel` subclasses; use fields, validators, `model_post_init`, or factory/class methods instead.
-- Never use `pydantic.create_model`; define an explicit `BaseModel` subclass instead.
-  If `create_model` feels necessary, the design is probably too dynamic or too clever; refactor toward a named model class.
+- Never call `pydantic.create_model`; define an explicit `BaseModel` subclass instead: a named class is what type checkers, `model_config` and readers can see, and a need for a dynamically built model usually means the design should move toward a named one.
 
 ```python
 from enum import StrEnum

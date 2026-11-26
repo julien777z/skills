@@ -1,5 +1,7 @@
 # Verification
 
+Contents: **Verification Cadence**, **Pre-Push Checks**, **Suites And Failures**, **Environments**.
+
 When tests, builds, browser verification and reviews run during a task, which suites a run covers,
 how a run and its failures are read, and the environment each runs in. What makes a test worth
 writing, keeping or removing, and how suites are laid out, configured and budgeted, is
@@ -75,6 +77,10 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
   `scripts/python_rule_findings.py` lists the candidate pairs. Fix every listed boundary in the
   lines the change writes or edits, and elsewhere in the changed files within `pre-production`'s
   incidental size budget; an unrelated bug or a passing formatter does not satisfy this check.
+  Before pushing, record the checked revision and file list, the check output (including an empty
+  result), and the disposition of any candidate kept together. When edits follow the check, rerun it
+  on the revision being pushed. A push, review handoff, or completion report with no matching
+  evidence is still waiting on this check, including after a narrow follow-up or repair round.
 - **A coherent step** is a function and its callers updated, a test brought to pass or one finding
   fixed, judged against `pre-production`'s complete target boundary, not the latest edited files:
   required consumer updates, superseded owners and declarations, generated contracts and
@@ -94,9 +100,6 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
 - **Delegated edits** take `subagent-matrix`'s worker brief, which carries this cadence, the exact
   files to change and the branch the worker pushes to, with the worker's head read under
   [reported outcomes](outcomes.md) before any dependent work starts.
-- **The holds the rule excepts** are commits an invoked skill holds local until the user releases
-  them, such as locked database revisions, and the fixes of a review the user asked for without a
-  push, which stay local until they ask.
 - **A simplification pass and a gate** run when `SKILL.md`'s **Ongoing Simplification** and
   **Completion** say, never per push, with a gate's flag closed by the fresh gate
   `acceptance-gate`'s **Bounds** requires.
@@ -127,13 +130,11 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
   or identity created per test though nothing per-test lives on it, and a stack torn down and
   rebuilt each run though its inputs have not changed. What the read finds is handled as
   `test-fixture`'s **Test Cost** decides.
-- **Hosted test jobs are required at the merge, not before it.** A pull request leaves draft only
-  as the last step before an authorized merge, and a draft starts no test jobs. With no merge
-  authorized, delivery is complete at the reviewable draft, and the task's test evidence is the
-  local runs of CI's commands the GitHub rule's **Pre-Push Gate** requires. At an authorized merge,
-  `merge-gate`'s **Check Gate** drives every test job to a terminal result and fixes each failure
-  within the pull request's scope, apart from a baseline failure, which is recorded and left as
-  `pre-production`'s **Encountered Issues** says.
+- **At an authorized merge**, `merge-gate`'s **Check Gate** drives every test job to a terminal
+  result and fixes each failure within the pull request's scope, apart from a baseline failure,
+  which is recorded and left as `pre-production`'s **Encountered Issues** says. With no merge
+  authorized, the task's test evidence is the local runs of CI's commands the GitHub rule's
+  **Pre-Push Gate** requires.
 - When CI tests fail, read the job logs by whichever route reaches them, such as the hosting
   service's API, CLI or connector. Ask the user for the failure output only once the reach check in
   [authorization](authorization.md)'s **Steps Only The User Can Take** finds no route.
@@ -168,22 +169,6 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
   explain the specific interruption and ask for explicit permission before that part runs. Continue
   independent checks through nondisruptive routes and report what still lacks verification.
 - A cloud workspace snapshot restores files, not running processes. A failing `docker info` at session start means the daemon may need to be started; it does not by itself prove Docker is unavailable.
-- On macOS, select and start the container runtime as `run-site`'s **Start and verify the stack**
-  says of OrbStack, then wait for `docker info` to succeed.
-- On Linux, prefer the repository's service-startup helper or skill. Otherwise start the daemon
-  explicitly and wait for `docker info` to succeed:
-
-```bash
-mkdir -p .agent_sources/logs
-sudo systemctl start docker 2>/dev/null \
-  || sudo service docker start 2>/dev/null \
-  || (sudo dockerd > .agent_sources/logs/dockerd.log 2>&1 & disown)
-
-for attempt in $(seq 1 15); do
-  docker info > /dev/null 2>&1 && break
-  sleep 1
-done
-```
-
-- Report Docker as unavailable only when the CLI is missing or `docker info` still fails after the explicit start attempt, and include the daemon log in that report.
+- Start the container runtime and report Docker unavailable as `run-site`'s **Start and verify the
+  stack** says.
 - Browser-automation daemons may start browsers with fresh temporary profiles. Save authenticated session state explicitly and restore it after a daemon restart instead of assuming cookies survive.

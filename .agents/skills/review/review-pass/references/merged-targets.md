@@ -2,8 +2,8 @@
 
 Verify the delegated repository, original pull-request URL, actual merge commit, and its first
 parent. Bind `first-parent..merge-commit` as the immutable review target. Read the original pull
-request's description and discussions as evidence; never refresh its description, reopen it,
-amend its merge, or substitute the current branch for this range.
+request's description and discussions as evidence only: its description, state and merge stay as
+delivered, and the range, not the current branch, is the target.
 
 Initially there is no working pull request. Inspect and validate findings against the complete
 delivered range and its repository context. Read existing source-check and deployment evidence;

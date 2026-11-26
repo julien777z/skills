@@ -1,14 +1,14 @@
 ---
 name: security-doctor
-description: Find and fix the exploitable vulnerabilities in a codebase — injection, broken access control, unsafe file and resource handling, weak cryptography and leaked secrets, business-logic and feature abuse, chained trust gaps, and code built without the guard its siblings carry — each proven with a concrete attack and closed with the smallest fix and a regression test. Use to audit, pen-test or repair a codebase's security, or to fix the findings of a security review. Run only when the user asks for it.
+description: Find and fix the exploitable vulnerabilities in a codebase — injection, broken access control, unsafe file and resource handling, weak cryptography and leaked secrets, business-logic and feature abuse, chained trust gaps, exposed defaults such as debug modes and open administrative endpoints, and code built without the guard its siblings carry — each proven with a concrete attack and closed with the smallest fix and a regression check; a construction a rule names as a defect is fixed without an attack. Use to audit, pen-test or repair a codebase's security, or to fix the findings of a security review. Run only when the user asks for it.
 short_description: 'Find and fix the exploitable vulnerabilities in a codebase, each proven by a concrete attack.'
 ---
 
 # Security Doctor
 
 Every vulnerability names an attacker, what they send and what they get, and every fix is the
-smallest one that makes that attack fail and a test that proves it does; a construction a rule
-names is proven by the rule and the source that holds it.
+smallest one that makes that attack fail and a regression check that proves it does; a construction
+a rule names is proven by the rule and the source that holds it.
 
 ## Dependencies
 - `doctor-protocol`
@@ -21,7 +21,8 @@ names is proven by the rule and the source that holds it.
 ## Inventory
 
 Run `doctor-protocol` with specialist capability for its audit, cross-cutting, and final
-reviewers, setting their Claude fallback tier to `advanced`. Its implementation workers retain the protocol default.
+reviewers, setting their Claude fallback capability level to `advanced`. Its implementation workers retain
+the protocol default.
 
 Reconnaissance, taken once before fan-out as the doctor's
 [reconnaissance](references/reconnaissance.md) reference maps it: what the application is and
@@ -84,13 +85,15 @@ the run is finished.
 ## Lenses
 
 Each lens runs the checks its section of `security-audit`'s attack-class catalog lists, check by
-check. Evidence is the rubric's **What A Surviving Finding Has Been Put Through**, traced as file
+check. This doctor audits the whole codebase, so the catalog's **Wildcard** and **Obvious things**
+classes run at the whole-codebase reach their text gives them, the repository, its history and its
+test coverage included, where `security-audit` bounds them to the change it reviews. Evidence is the rubric's **What A Surviving Finding Has Been Put Through**, traced as file
 and line, the remedy is its smallest-fix order, and what a lens leaves alone is what the rubric's
 **Precedents** reject.
 
 Every finding is recorded in `doctor-protocol`'s finding shape: its evidence is the attack, who
 sends what and what they get, with the rubric's severity rating; its fix is the smallest one that makes
-the attack fail; and its proving check is the regression test that performs the attack. A finding
+the attack fail; and its proving check is the regression check that performs the attack. A finding
 of **Unsafe Construction A Rule Names** carries the rule it cites and the source lines instead of
 an attack, and its proving check fails while the construction stands.
 
@@ -249,8 +252,10 @@ hunt followed by **Validation**. Reconnaissance runs once, before the first.
    the product already intends, as `pre-production`'s security bullet says. A change that
    widens access or changes who may see a record is a reserved decision, asked as
    `doctor-protocol`'s **Gate And Show The Plan** says.
-3. **Each fix carries a regression test**, built under `test-fixture`, that fails without the fix
-   and passes with it: for a vulnerability it performs the attack, and for a construction a rule
+3. **Each fix carries a regression check**: built under `test-fixture` where the repository keeps
+   tests, a test that fails without the fix and passes with it; where its guidance keeps no
+   committed tests, a temporary, untracked run taken before and after the fix, with nothing
+   committed. For a vulnerability the check performs the attack, and for a construction a rule
    names it fails while the construction stands.
 4. **A hardening note is reported, never changed** in this run, apart from one a rule file names
    as a defect, which **Unsafe Construction A Rule Names** fixes.

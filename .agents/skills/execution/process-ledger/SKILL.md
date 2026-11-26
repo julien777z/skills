@@ -93,7 +93,7 @@ comments `session-ledger`'s **Backup** section keeps.
 
 - Process every entry through its owning workflow; a ledger is an index of evidence, not authority
   to invent a new delivery or modify a different record kind.
-- Never turn a failed attempt, proposed workaround, or unavailable environment into permanent
-  guidance.
-- Never retain a terminal or invalid entry. Never remove an entry whose validity remains plausible
-  but cannot be resolved because of a concrete environment or evidence limitation.
+- Remove a terminal or invalid entry. Keep an entry of a recognized kind whose validity remains
+  plausible but cannot be resolved because of a concrete environment or evidence limitation, with
+  that limitation as its hold; an unrecognized kind is kept only as **Workflow**'s classification
+  step says.

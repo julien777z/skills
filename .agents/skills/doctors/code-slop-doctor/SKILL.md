@@ -1,6 +1,6 @@
 ---
 name: code-slop-doctor
-description: Strip the complexity a codebase does not need and the code a reviewer reads as generated slop — pass-through layers and wrapper components, one-case abstractions, use cases split across many calls or left unbounded, duplicates, divergent siblings, legacy paths, dead code, suppressions, censored logs and deprecated usage, hand-written styling in apps, tangled or padded code, names that do not say their subject, prompts held in code, and surplus or outdated migrations, build and workflow files, configuration names and dependencies. Use to deslop a whole repository or one of its areas, lenses or paths. Run only when the user asks for it.
+description: Strip the complexity a codebase does not need and the code a reviewer reads as generated slop — pass-through layers and wrapper components, one-case abstractions, use cases split across many calls or left unbounded, duplicates, divergent siblings, legacy paths, dead code, suppressions, censored logs and deprecated usage, hand-written styling in apps, tangled or padded code, names that do not say their subject, prompts held in code, tests that cost reading time and prove nothing, and surplus or outdated migrations, build and workflow files, configuration names and dependencies. Use to deslop a whole repository or one of its areas, lenses or paths. Run only when the user asks for it.
 short_description: 'Remove unneeded layers, wrappers, abstractions, duplicates, legacy paths, dead and suppressed code, hand-written styling, code that reads as slop, and stale configuration, workflows and dependencies.'
 ---
 
@@ -193,7 +193,10 @@ checks that find every instance, the remedy, and what is left alone so a reviewe
 hunting. Its **Behavior Kept** section binds every lens that removes or rewrites executable code.
 Every lens applies in every area, read in that area's language; **Hand-Written Styling** belongs to
 the frontend area, **Migration Chain** to the migrations area, **Build And Root**, **Configuration
-Drift** and **Dependency Drift** to the build area, and **Test Slop** to the tests area.
+Drift** and **Dependency Drift** to the build area, and **Test Slop** to the tests area. Test Slop
+runs `test-fixture`'s **Test Value And Retention**, **Naming Checks** and **Auditing Existing
+Doubles** over every test module mirroring code a finding in another lens changes; a migration-test
+deferral record whose path no longer exists is reported to `defer-scope`.
 
 | Lens | Flags | Reach |
 | --- | --- | --- |
@@ -219,7 +222,7 @@ each caller or importer that moves and what is deleted; its proving check is the
 
 ## Reviewers
 
-Reviewers are capped as `doctor-protocol`'s **Launches** sets; this doctor sets no lower cap. The
+Reviewers are capped as `doctor-protocol`'s **Launches** sets. The
 areas dictate the partition cut: a partition never spans two areas, and inside an area it follows
 the repository's ownership boundaries. The lens catalog a reviewer is given is the lens criteria
 reference together with the **Lenses** table.
@@ -261,11 +264,13 @@ confirms it reads zero, and re-runs each rewrite's covering check.
 - Data a removal leaves in the old shape — a flag whose retirement backfill has not run, a chain to
   collapse — follows `pre-production`'s **Product State** and **Target Contract** and the
   repository's database-migration skill, never a question.
-- A product or scope choice a remedy makes is this run's, decided as `doctor-protocol`'s **Gate And
-  Show The Plan** says. A contract a consumer outside the user's control speaks stays as it is and
+- A product or scope choice a remedy makes goes to the user as a reserved entry, as
+  `doctor-protocol`'s **Gate And Show The Plan** says; the rest of a remedy's calls are this run's.
+  A contract a consumer outside the user's control speaks stays as it is and
   is reported, under `pre-production`'s **Target Contract**.
-- Fix the reader or the writer, never both. A tolerance that hides a wiring defect is a confirmed
-  defect and is fixed. An unsupported historical record is never a finding and never receives a
+- Fix the side that is wrong and delete the tolerance on the other, so one shape remains; a
+  fallback that keeps both shapes working is the slop this doctor removes. A tolerance that hides a
+  wiring defect is a confirmed defect and is fixed. An unsupported historical record is never a finding and never receives a
   fallback.
 - A migration correction follows the migration skill's **Applied Is What Makes History**, stacked
   when applied state cannot be established; a data-loss path with no recovery is a blocker to

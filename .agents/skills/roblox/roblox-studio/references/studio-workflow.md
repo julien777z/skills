@@ -1,5 +1,7 @@
 # Source, editor, and publication constraints
 
+Contents: **Identity, source, and assets**, **Project layout** (with **Converting an older pipeline**), **Multiple maps and persistence**, **Editor automation**, **Studio's interface and native UI fallback**, **Delivery** (with **Spatial queries in larger maps**), **Explicit lighting in generated places**, **Saving files through MCP**.
+
 ## Identity, source, and assets
 
 Record the intended experience (universe), place IDs, owner, local file, and build paths. Verify the active Studio title and place ID before writing or publishing from Studio. Create a new experience when requested; never copy an excluded recent project. An update loses no saved progress or authored artwork.
@@ -22,7 +24,7 @@ Fully managed Rojo leaves several choices open; settle them this way:
 - **Area files live outside the code tree**, such as `world/<map>/<area>.rbxm` beside it, because the linters, the type checker and the Rojo sourcemap own the code tree.
 - **Every object is filed by one deterministic rule**, most specific region first: the interior a door leads into, then a named area, then a district, then the map's base area. An object named for a world point, such as an NPC's post or an encounter's arena, files at that point; any other model files at its bounding-box center. An object no area holds is refused with its name and position and the map volume widened, never silently dropped.
 - **A builder change reaches a level only once that level is rebuilt, or edited and saved.** Changing a builder changes no saved area file. Apply it by running the builder over the affected pieces in an editor opened on the built place and saving their areas as [saving files through MCP](#saving-files-through-mcp) says, so the diff holds only the builder's change.
-- **`rbx-merge`** is pinned with the project's tools (`rokit add kennethloeffler/rbx-merge`). One person runs `rbx-merge install --write-gitattributes` once and commits the `.gitattributes` block; every clone runs `rbx-merge install`, which belongs in the project's install recipe. In a git worktree it writes to the main clone's `.git/info/attributes`, which covers every worktree. Where no prebuilt binary exists, such as Linux arm64, the bootstrap builds it with `cargo install --git <rbx-merge repository> --tag <pinned tag> rbx_merge_cli`, which needs Rust 1.85 or newer. `git diff` on an area file then shows a readable instance tree.
+- **`rbx-merge`** is pinned with the project's tools (`rokit add kennethloeffler/rbx-merge`). One person runs `rbx-merge install --write-gitattributes` once and commits the `.gitattributes` block; every clone runs `rbx-merge install`, which belongs in the project's install recipe. In a git worktree it writes to the main clone's `.git/info/attributes`, which covers every worktree. Where no prebuilt binary exists, such as Linux arm64, the bootstrap builds it with `cargo install --git <rbx-merge repository> --tag <pinned tag> rbx_merge_cli`, which needs the Rust toolchain version the crate's manifest requires. `git diff` on an area file then shows a readable instance tree.
 
 ### Converting an older pipeline
 
@@ -39,7 +41,7 @@ A pipeline that keeps whole-world archives, splices parts of them in place or ex
 
 A Roblox experience is a universe containing one or more places. When using separate places in one experience for large independent maps, their DataStores are shared. If the game calls for a loader, make the start place a small loader that reads the durable profile and uses server-side `TeleportService:TeleportAsync()` to send the player to the saved map's entrance. Keep a validated map ID to place ID registry. Do not treat untrusted teleport data as inventory or progression authority.
 
-Persist map identity rather than an arbitrary exact position when entrance-based resume is intended. Save and safely release session ownership before another place acquires the profile; freeze mutations during handoff. Handle both thrown errors and `TeleportInitFailed`, bounded retries, and recovery without dropping progress or duplicating grants. A failed load must never route using a default profile that overwrites real progress. Studio cannot execute actual cross-place teleports. Report them as unverified unless a live-client test was explicitly requested or needed to investigate a reported live-only defect; do not make that test a routine delivery gate.
+Persist map identity rather than an arbitrary exact position when entrance-based resume is intended. Save and safely release session ownership before another place acquires the profile; freeze mutations during handoff. Handle both thrown errors and `TeleportInitFailed`, bounded retries, and recovery without dropping progress or duplicating grants. A failed load follows `luau`'s **Data compatibility** rule. Studio cannot execute actual cross-place teleports. Report them as unverified under [the live-only investigation criteria](testing.md#evidence-types-not-sequential-delivery-gates).
 
 Read current official guidance before relying on changing platform behavior:
 
@@ -49,17 +51,17 @@ Read current official guidance before relying on changing platform behavior:
 
 ## Editor automation
 
-Use Studio's MCP server for editor operations and for bringing files back from Studio. A receiver listening on the host's loopback never reaches a Studio running inside the runner, so do not build one; never add a code-execution endpoint or extract account cookies to work around UI limitations. Editor code runs against the editable DataModel, not the separate running server/client DataModels. Inject isolated test fixtures, keep them out of every built place, and clean them up after termination.
+Use Studio's MCP server for editor operations and for bringing files back from Studio. A receiver listening on the host's loopback never reaches a Studio running inside the runner, so do not build one; never add a code-execution endpoint to work around UI limitations. Editor code runs against the editable DataModel, not the separate running server/client DataModels. Inject isolated test fixtures, keep them out of every built place as [source and place delivery](source-delivery.md) requires, and clean them up after termination.
 
 Editor `require()` caches ModuleScript values even after source synchronization. Recreate or clone the relevant module instances before relying on changed content in an editor build operation; do not mistake stale cached values for a failed source update.
 
 ## Studio's interface and native UI fallback
 
-**Anything chosen through Studio's interface is chosen from fresh accessibility state and a fresh screenshot, never from a position remembered from an earlier run**: an experience tile, a place row, an asset, a menu item or a dialog button. Studio reorders its lists by recent use, so the spot that held one game's experience last time can hold another's now. After each click, capture again and confirm that the item Studio now shows selected or opened is the intended one before the next click: Studio can register a click on a neighboring row, or move the cursor without delivering the click, so neither the coordinates sent nor the tool's success status shows what was chosen. On macOS, before the first click in Studio's main window, set and check its origin as [direct VM control](testing.md#direct-vm-control) describes. Before a destructive confirmation such as Overwrite, capture the dialog again and check that it names the intended experience and place. Native menus often expose a `Cancel` secondary action that works when a generic Escape keystroke does not.
+**Anything chosen through Studio's interface is chosen from fresh accessibility state and a fresh screenshot, never from a position remembered from an earlier run**: an experience tile, a place row, an asset, a menu item or a dialog button. Studio reorders its lists by recent use, so the spot that held one game's experience last time can hold another's now. After each click, capture again and confirm that the item Studio now shows selected or opened is the intended one before the next click: Studio can register a click on a neighboring row, or move the cursor without delivering the click, so neither the coordinates sent nor the tool's success status shows what was chosen. On macOS, before the first click in Studio's main window, set and check its origin as [direct VM control](runner.md#direct-vm-control) describes. Before a destructive confirmation such as Overwrite, capture the dialog again and check that it names the intended experience and place. Native menus often expose a `Cancel` secondary action that works when a generic Escape keystroke does not.
 
-Input posted inside the runner needs no authorization, as [direct VM control](testing.md#direct-vm-control) says. On the user's own desktop, which applies only when they chose host Studio, use AppleScript/System Events or another native route only within the user's authorization and active tool policy. Before sending native input anywhere, activate and verify the exact target process immediately before sending input. Release all held keys/buttons. Identify the named main window: window 1 can be a tooltip or tiny auxiliary window. Convert downscaled screenshot coordinates to the actual window bounds before clicking. A PID-targeted event may behave differently from a foreground HID event.
+Input posted inside the runner needs no authorization, as [direct VM control](runner.md#direct-vm-control) says. On the user's own desktop, which applies only when they chose host Studio, use AppleScript/System Events or another native route only within the user's authorization and active tool policy. Before sending native input anywhere, activate and verify the exact target process immediately before sending input. Release all held keys/buttons. Identify the named main window: window 1 can be a tooltip or tiny auxiliary window. Convert downscaled screenshot coordinates to the actual window bounds before clicking. A PID-targeted event may behave differently from a foreground HID event.
 
-Opening a local place can launch a separate Studio process. An existing app-control handle may remain attached to the old DataModel. Verify the new file and process before editing. Close each task-owned editor other than [the game's warm editors](testing.md#keep-the-games-editors-warm) once its changes are saved and any publication confirmed, before opening the next place, as [leaving the shared runner as you found it](testing.md#leave-the-shared-runner-as-you-found-it) describes. Preserve unrelated user-owned instances.
+Opening a local place can launch a separate Studio process. An existing app-control handle may remain attached to the old DataModel. Verify the new file and process before editing. Close each task-owned editor other than [the game's warm editors](runner.md#keep-the-games-editors-warm) once its changes are saved and any publication confirmed, before opening the next place, as [leaving the shared runner as you found it](runner.md#leave-the-shared-runner-as-you-found-it) describes. Preserve unrelated user-owned instances.
 
 Multiple browser processes can have different tabs/accounts. An AppleScript browser query may reach a separate automation instance rather than the signed-in visible browser. Verify the actual page/account through the chosen surface. Do not browse unrelated user tabs to compensate.
 
@@ -85,7 +87,7 @@ a per-project subfolder there, such as `~/Roblox/Uploads/<project>/`, and upload
 repository keeps the editable source and export. Approve the directory as the setting paragraph
 above says.
 
-A locked desktop affects operations that depend on that desktop. Independent VM access follows the [testing reference](testing.md); independent file, build, and API work can continue.
+A locked desktop affects operations that depend on that desktop. Independent VM access follows the [runner reference](runner.md); independent file, build, and API work can continue.
 
 ## Delivery
 
@@ -94,12 +96,12 @@ A locked desktop affects operations that depend on that desktop. Independent VM 
 - **Triggers.** A push to the default branch publishes to staging; a manual dispatch takes an environment input and publishes the dispatched branch. The job runs under that GitHub environment, runs the project's tests and integrity check, builds every place with `rojo build` as a binary `.rbxl`, and calls one checked-in script.
 - **The script** reads the universe and place IDs from the project's own configuration, and stops with a clear message for an environment that names no universe. It publishes each place, maps before the start place, with `POST https://apis.roblox.com/universes/v1/{universeId}/places/{placeId}/versions?versionType=Published`, the place file as the body and the key in the `x-api-key` header. It then reads each place's update time back through Open Cloud v2 `GetPlace` and writes a table of places and times to the run's summary.
 - **Binary builds.** The endpoint refuses a place over 10 MiB, and an XML `.rbxlx` of the same place is far larger.
-- **Key scope.** The project's Open Cloud key gets `universe-places` write on each experience the workflow publishes to, added in the Creator Dashboard. Adding a permission keeps the key's secret, so the stored secret keeps working. The Assets API's place route is never used: its key permission covers every asset the account can reach.
+- **Key scope.** The project's Open Cloud key gets `universe-places` write on each experience the workflow publishes to, added in the Creator Dashboard. Adding a permission keeps the key's secret, so the stored secret keeps working. The deploy workflow's key never calls the Assets API's place route, because that route's key permission covers every asset the account can reach; setting a place's icon and previews takes its own key, kept apart from the deploy workflow's.
 - **Setting it up.** A project without the workflow gets it as source work, in the two pull requests the `github-workflows` rule's **Branch Runs And Dispatch** sets for a new workflow with a manual dispatch: a placeholder on the default branch first, then the real workflow tested by dispatching it on its branch.
 
 Choose the experience, place and confirmation in Studio's publish dialogs as [Studio's interface and native UI fallback](#studios-interface-and-native-ui-fallback) says. To add a newly built map to an existing experience, use Studio’s Publish to Roblox As, select the verified experience, then Add as a new place. The dashboard’s Add A Place flow may list existing places to move instead. A Rojo project name does not guarantee the published place name; inspect and update the child place’s metadata after creation.
 
-Build the place from the delivery head with `rojo build`, compare expected source revisions, and confirm temporary fixtures are absent. Retain a reproducible build and editable asset originals. Publish only to the verified place, owner, and visibility. Inspect terminal publication success, destination, and version. Do not routinely launch the published client; use the narrow live-test criteria in [testing guidance](testing.md). A saved file, successful upload, Studio test, and live-client test are distinct evidence.
+Build the place from the delivery head with `rojo build`, compare expected source revisions, and confirm temporary fixtures are absent. Retain a reproducible build and editable asset originals. Publish only to the verified place, owner, and visibility. Inspect terminal publication success, destination, and version. Launch the published client only under [the live-only investigation criteria](testing.md#evidence-types-not-sequential-delivery-gates). A saved file, successful upload, Studio test, and live-client test are distinct evidence.
 
 ### Spatial queries in larger maps
 
@@ -107,10 +109,9 @@ Repeated queries with thousands of individual instances in `FilterDescendantsIns
 
 ## Explicit lighting in generated places
 
-Set the intended lighting properties explicitly in generated places using the current serializer
-and Studio API. For example, a Rojo 7.7 build serialized `LightingStyle: Realistic` and
-`PrioritizeLightingQuality: true`; omitting them changed the reopened scene's lighting. Inspect
-the reopened place's `LightingStyle` and visually compare it with the authored scene.
+Set the intended lighting properties, including `LightingStyle` and `PrioritizeLightingQuality`, explicitly
+in generated places: the serializer writes them only when set, and omitting them changes the reopened scene's
+lighting. Inspect the reopened place's `LightingStyle` and visually compare it with the authored scene.
 Do not use the deprecated `Technology` property's ordinary command-context readback as proof of
 the active style. Keep ambient/exposure choices consistent with the art direction and test affected
 device behavior. See the [Lighting reference](https://create.roblox.com/docs/reference/engine/classes/Lighting).

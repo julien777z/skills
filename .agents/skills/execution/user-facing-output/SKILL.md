@@ -115,6 +115,10 @@ output.
   own reviewers, gates or workers — the request restated, verified facts, evidence, per-file
   detail — stays with them; the user receives a short version of the same content, and a plan shown
   to them is that short version.
+- **The user's own message is never quoted or restated back to them.** They wrote it; text they
+  read says what changes or what was decided, such as "Doctor runs now ask before a product
+  choice", never "You said: ...". Their words stay where readers who never saw them need them:
+  the ledger, briefs, intent statements and hand-off messages to another agent.
 - **A new behavior is named as new wherever it is reported.** A progress report, a summary, a pull
   request description or a capture's caption that shows the product behaving differently under
   some condition states that behavior and where it applies, such as "photo galleries now become

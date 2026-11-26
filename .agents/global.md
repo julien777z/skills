@@ -110,28 +110,31 @@ only a subject no skill runs for.
 - Surface every question through the harness's user-question tool, including approvals and standalone questions. **A question asked anywhere else goes
   unseen**: the reader answers the question tool, and chat text around it, or in some harnesses all
   text before a tool call, may never reach them. Ask directly in chat only when the harness has no
-  question tool. **One question holds one decision**, with options that answer it alone: several
-  decisions are never folded into one question, offered as one choice that settles them all, such as
-  following every recommendation, or listed as a multi-select question's checkboxes; an option that
-  would leave a further choice open, such as "change it" with the new value still to name, is
-  replaced by that choice's values, each an option of its own. When the
-  decisions outnumber what one request holds, send one full request and the next only once the
-  user has submitted it, and open each question with its place in the whole sequence and the
-  sequence's total, such as "Q48/52", so the reader always sees how many remain; a decision added
-  partway raises the total. A question names its subject in plain words, never by an internal label
-  such as a finding's ID. The question's own text and option descriptions therefore carry what the
-  decision needs: what happens today, stated as fact and where; what each option changes; the recommendation
-  with its reason; and each item named by the exact name its page shows and by nothing more, such
-  as a pull request by its title with no number beside it. A hypothetical, such as "if the API sends
-  only IDs", or internals named without what they do leave the reader asking for the facts. A
-  question includes its reviewable content — a short proposal for approval whole, an example
-  response, a diff — and concrete choices. Where a rule or skill holds a plan or proposal for the
-  user's approval, the option that approves it reads "Approved", never "Go" or another word, and is
-  asked only once every decision it depends on is answered: those decisions go to the user first,
-  on their own, and what is then shown is written for their answers, with nothing in it conditional
-  on one. Material too large for a question, such as captures or a long diff, reaches the user in
-  a message they see first,
-  sent as the skill covering captures and files shown to the user says, and the question names it.
+  question tool.
+  - **One question holds one decision**, with options that answer it alone: several decisions are
+    never folded into one question, offered as one choice that settles them all, such as following
+    every recommendation, or listed as a multi-select question's checkboxes; an option that would
+    leave a further choice open, such as "change it" with the new value still to name, is replaced
+    by that choice's values, each an option of its own.
+  - When the decisions outnumber what one request holds, send one full request and the next only
+    once the user has submitted it, and open each question with its place in the whole sequence and
+    the sequence's total, such as "Q48/52", so the reader always sees how many remain; a decision
+    added partway raises the total.
+  - A question names its subject in plain words, never by an internal label such as a finding's ID.
+    Its own text and option descriptions carry what the decision needs: what happens today, stated
+    as fact and where; what each option changes; the recommendation with its reason; and each item
+    named by the exact name its page shows and by nothing more, such as a pull request by its title
+    with no number beside it. A hypothetical, such as "if the API sends only IDs", or internals named
+    without what they do leave the reader asking for the facts.
+  - A question includes its reviewable content — a short proposal for approval whole, an example
+    response, a diff — and concrete choices. Where a rule or skill holds a plan or proposal for the
+    user's approval, the option that approves it reads "Approved", never "Go" or another word, and
+    is asked only once every decision it depends on is answered: those decisions go to the user
+    first, on their own, and what is then shown is written for their answers, with nothing in it
+    conditional on one.
+  - Material too large for a question, such as captures or a long diff, reaches the user in a
+    message they see first, sent as the skill covering captures and files shown to the user says,
+    and the question names it.
 - After a question-tool request actually times out without an answer, or the user replies with a
   message that states no choice in words — a related correction, a complaint about the subject, a
   new request — invoke it again with the same question, choices and supporting content, in the

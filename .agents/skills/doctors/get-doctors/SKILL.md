@@ -15,8 +15,8 @@ several of them in a row, and nothing else.
 ## Workflow
 
 1. Search, never read whole, the `SKILL.md` files of the skills the host's skill listing
-   declares, shared and repository-owned alike, for the ones that declare `doctor-protocol` as a
-   dependency: in a frontmatter dependency field or as an entry of the `## Dependencies` section.
+   declares, shared and repository-owned alike, for the ones that list `doctor-protocol` as an
+   entry of the `## Dependencies` section.
 2. A doctor is one of those matches whose body runs the protocol. Search the matches for the
    protocol's name and read only the matching lines: a doctor carries the instruction to run it.
    The protocol itself, a skill that declares the protocol to read it without running on it, and
