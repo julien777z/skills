@@ -1,12 +1,12 @@
 text,file,line,slot,reader
-Order,src/components/OrdersTable.tsx,5,column header,end user
-Customer,src/components/OrdersTable.tsx,5,column header,end user
-Email,src/components/OrdersTable.tsx,5,column header,end user
-Ship to,src/components/OrdersTable.tsx,5,column header,end user
-Total,src/components/OrdersTable.tsx,5,column header,end user
-Status,src/components/OrdersTable.tsx,5,column header,end user
+Order,src/components/OrdersTable.tsx,5,label,end user
+Customer,src/components/OrdersTable.tsx,5,label,end user
+Email,src/components/OrdersTable.tsx,5,label,end user
+Ship to,src/components/OrdersTable.tsx,5,label,end user
+Total,src/components/OrdersTable.tsx,5,label,end user
+Status,src/components/OrdersTable.tsx,5,label,end user
 Client details,src/pages/OrderDetail.tsx,4,heading,end user
-Invoice,src/pages/Invoices.tsx,5,column header,end user
-Client,src/pages/Invoices.tsx,5,column header,end user
-Amount,src/pages/Invoices.tsx,5,column header,end user
+Invoice,src/pages/Invoices.tsx,5,label,end user
+Client,src/pages/Invoices.tsx,5,label,end user
+Amount,src/pages/Invoices.tsx,5,label,end user
 Save order,src/components/OrderForm.tsx,6,button,end user

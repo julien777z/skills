@@ -39,9 +39,10 @@ history:
   - date: "2026-11-26"
     route: test-cause
     reason: opened by a Diff gate's flag that the outcome check asked for the grader's impression; the
-      subagent-matrix stalled-launch rule honors a required provider and never moves its launch, so the outcome check reads
-      the final reply for a claude-provider result and for the sol-5 outcome; provider and level folded into
-      the reviewer role; reviewed by the gate that accepts this pull request's scenario batch
+      subagent-matrix stalled-launch rule honors a required provider and never moves its launch, so the
+      outcome check reads the final reply for a claude-provider result and for the sol-5 outcome; provider
+      and level folded into the reviewer role; reviewed by the gate that accepts this pull request's
+      scenario batch
   - date: "2026-11-26"
     route: test-cause
     reason: opened by the user's direction on the scenario format, one folder per scenario with a real

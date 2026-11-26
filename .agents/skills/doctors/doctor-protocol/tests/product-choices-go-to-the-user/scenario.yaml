@@ -93,3 +93,8 @@ history:
       as one of 14 pages that say "Customer"; it now counts 14 places, names the one in this directory as
       the Orders table component's column header and the other 13 as places outside it, and counts the 2
       "Client" places as before, keeping the 14-to-2 scale and F3 as the run's own decision
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a Diff gate's flag on the fixture's text; copy-table.csv gave the nine table header
+      cells the slot "column header", which interface-doctor's Copy table does not list; each now reads
+      label, the listed slot a column header fills, and findings.md keeps its prose

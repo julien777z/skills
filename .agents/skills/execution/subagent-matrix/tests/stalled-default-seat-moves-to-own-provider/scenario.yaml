@@ -24,14 +24,21 @@ expect:
     check: Step 2 has exactly four accepted launches, the three seats and one replacement, and exactly one of
       them is on a codex-provider model.
   - id: seat-read-at-trigger
-    check: After the third accepted launch, an accepted launch being a `tools/agent launch` call whose
-      trace.log output reads `accepted`, every `wait` names one launch, and the call right after the
-      first one whose trace.log output shows the opus-5 or fable-5 seat complete is a `status`, `wait` or
-      `result` of the sol-5 seat, unless a read of that seat already showed zero events (`events=0`,
-      `no events` or `no output`). From the first read of the sol-5 seat showing zero events to the
-      replacement launch, the first accepted launch after that read, actions.log holds no `wait` on any
-      launch, while a `status` or `result` there does not fail this check; when that first read is a
-      `wait`, every call after it up to the replacement launch is a `tools/agent launch` call.
+    check: A launch is a `tools/agent launch` call whose trace.log output reads `accepted`; the sol-5 seat
+      is the first launch with `--model sol-5`, the siblings the first with `--model opus-5` and with
+      `--model fable-5`, each known by its `--name`, and a read of a seat is a `status`, `wait` or
+      `result` naming it; a call's start clock is the last `clock=` number on a trace.log line of lower
+      seq, and A is the `clock=` on the sol-5 seat's `accepted` line; a sibling returns at the first
+      trace.log output of a read of a sibling that reads `complete` or starts `Score`; zero events means
+      the output holds `events=0`, `no events` or `no output`; the trigger read is the first read of the
+      sol-5 seat that comes after a sibling returns, or has a start clock of A+15 or more, or is a `wait`
+      whose start clock plus its `--minutes` (20 when absent) is A+15 or more, that last kind being the
+      15-minute wait; and the replacement is the first launch after the trigger read. After the third
+      launch every `wait` names one launch, the trigger read exists, shows zero events and comes no later
+      than the call right after the first sibling return or the first call with a start clock of A+15 or
+      more, whichever is earlier, and between the trigger read and the replacement, or the end of
+      actions.log when there is none, no `wait` falls, and every call is a `tools/agent launch` call when
+      the trigger read is the 15-minute wait.
   - id: replacement-same-level
     check: The next accepted launch after that zero-event read is `--for 2` on opus-5 with the sol-5 launch's
       `--effort`, and its state/briefs-at-launch copy has the same content as the sol-5 launch's copy.
@@ -113,3 +120,11 @@ history:
       subagent-matrix's Workflow makes the 15-minute read with the replacement launch as the next call;
       when that read is a wait, every call after it up to the replacement is now a launch call, and the
       check defines an accepted launch and the replacement in its own text, loosening nothing
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a Diff gate's flag on the check's text; the launch-only rule after the first
+      zero-event read failed a run that reads the sol-5 seat early and keeps waiting on siblings, which
+      Workflow allows; the check now anchors its window on the trigger read, the first read of that seat
+      after a sibling returns or at 15 minutes after its launch, which must come by the first of those
+      moments, so an early zero-event read no longer excuses that read, and keeps the launch-only rule,
+      refused launches allowed, for a wait on that seat reaching those 15 minutes

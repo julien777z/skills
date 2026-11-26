@@ -39,10 +39,11 @@ history:
     reason: added with the first pinned set
   - date: "2026-11-26"
     route: test-cause
-    reason: opened by a Diff gate's flag that the checks did not measure what the subagent-matrix stalled-launch rule already
-      required, the stalled launch's cancel once the replacement is accepted and the ladder's same-provider
-      step first; the cancel must exist and only sonnet-5 passes, and the reviewer count split into the
-      reviewer and its replacement; reviewed by the gate that accepts this pull request's scenario batch
+    reason: opened by a Diff gate's flag that the checks did not measure what the subagent-matrix
+      stalled-launch rule already required, the stalled launch's cancel once the replacement is accepted
+      and the ladder's same-provider step first; the cancel must exist and only sonnet-5 passes, and the
+      reviewer count split into the reviewer and its replacement; reviewed by the gate that accepts this
+      pull request's scenario batch
   - date: "2026-11-26"
     route: test-cause
     reason: opened by the user's direction on the scenario format, one folder per scenario with a real
