@@ -38,10 +38,10 @@ The statement is written before the edit, in the shape `SKILL.md`'s
 **Output** gives, and revised when the written text turns out to change more or less than it says.
 
 - **Each line says one thing the user can check against what they meant.**
-  - *You said* quotes the user's words, each example value named by its kind in brackets as
-    `pre-production`'s **Examples And Paths** says, in the ledger entry and every reviewer brief,
-    never in the statement shown to the user, who wrote them; for a gap the agent noticed itself
-    the shown statement opens with `Noticed:` and states the gap.
+  - The statement never repeats the user's own words back to them; they know what they said. The
+    ledger entry and every reviewer brief keep the quote, each example value named by its kind in
+    brackets as `pre-production`'s **Examples And Paths** says. For a gap the agent noticed itself,
+    a *Noticed* line opens the statement and states the gap.
   - *From now on* names the situation, what agents do there and what they did before.
   - *Also changes, same class* lists every other situation of that class the edit changes, by the
     skill or rule that governs it.
@@ -49,7 +49,7 @@ The statement is written before the edit, in the shape `SKILL.md`'s
     user's words would have changed, and what agents still do there.
   - *Inherited without an edit* lists each skill, rule and flow that reads the changed text and is
     not itself edited, with what changes for it or `no change`.
-  - *Beyond what you said, waiting for you* lists each change the edit does not make until the
+  - *Beyond what you asked, waiting for you* lists each change the edit does not make until the
     user answers.
 - **Narrow probe.** Test the draft against the original decision path as **Causal Diagnosis**
   says: could a reader follow the text and still repeat the miss? Then test one further case of
@@ -61,7 +61,7 @@ The statement is written before the edit, in the shape `SKILL.md`'s
   it is narrowed until it does not, and the case is the *Stays as it is* line. Then ask of every
   item under *Also changes*, and every behavior change under *Inherited*, whether the user,
   reading only their own words, would expect it. An item that fails leaves the draft, moves to
-  *Beyond what you said* and takes the policy-change route, while the rest proceeds.
+  *Beyond what you asked* and takes the policy-change route, while the rest proceeds.
 - **Transfer evidence.** For a correction to a recurring failure class, run edited guidance on
   a task with a different surface and vocabulary that still reaches the same decision. Also
   exercise the closest legitimate case outside the class. Renaming the original example can

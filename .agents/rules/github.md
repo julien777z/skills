@@ -145,20 +145,21 @@ Every push, on a draft and on a ready pull request alike, goes out once the chec
 nothing outside the change holds committed work on one machine, as the **Nothing outside the
 change** bullet below sets out. The exceptions are commits an invoked skill states it holds local
 until the user releases them, such as locked database revisions, and the fixes of a review the
-user asked for without a push, which stay local until they ask. A fix for a flag a review or gate raised is pushed
-once the agent that made it has re-read the changed lines against the flag and rerun the checks
-covering that code; that recorded check is the increment's **Pre-Push Gate** verdict, and it never
-closes the flag, which the review's next round or a fresh gate does.
+user asked for without a push, which stay local until they ask. A fix for a flag a review or gate
+raised is pushed once its author's re-read and checks pass, as the skill that gates changes sets
+out; that push never closes the flag.
 
 - **Required checks use CI’s commands and scope.** Read the workflow files that trigger on a pull
-  request and run every checking job that can run locally — lint, format, type checks, build,
-  tests, generated-output drift, docs or coverage checks — with the job's own command, scope, mode,
-  tool version and configuration, plus any check a skill in use requires. A variant scoped to the
-  changed files, run in write mode, or left out because the diff looks unrelated is not that
-  check. Project guidance that lists the commands is a shortcut to the workflows, which are right
-  where the two disagree. An explicitly selected workflow's declared check sequence and delivery
-  constraints set when the batch runs and which results stay valid; a job is left to its hosted run
-  only for a hosted service or credentials the session itself found absent, or runner behavior.
+  request and run every fast checking job that can run locally — lint, format, type checks, build,
+  generated-output drift, docs checks — with the job's own command, scope, mode, tool version and
+  configuration, plus any check a skill in use requires. Test suites of every kind, unit through
+  end-to-end, and coverage runs are not push checks: they run once, the same way, as the slow
+  verification below. A variant scoped to the changed files, run in write mode, or left out because
+  the diff looks unrelated is not that check. Project guidance that lists the commands is a shortcut
+  to the workflows, which are right where the two disagree. An explicitly selected workflow's
+  declared check sequence and delivery constraints set when the batch runs and which results stay
+  valid; a job is left to its hosted run only for a hosted service or credentials the session
+  itself found absent, or runner behavior.
 - **Commit each small coherent step and push it as soon as its checks pass**, at least every five
   minutes of work and before any long wait, never at the end of a unit or task. A delegated worker
   pushes to the pull request's branch at the same cadence. A push is what lets the user review and
@@ -174,6 +175,7 @@ closes the flag, which the review's next round or a fresh gate does.
   the change did not write or a deploy workflow, is repaired in that pull request itself, even
   when a sibling pull request already carries a repair, never by consuming, stacking on or
   waiting for that sibling or the default branch.
-- **The order is change, checks, push, then the slow verification**: a browser walkthrough, a full
-  or end-to-end suite, anything slow or needing a running stack, whose findings go out as fix
-  pushes. **Pushed is not done**: a change is reported done only once that verification has passed.
+- **The order is change, checks, push, then the slow verification**: once the task's changes are
+  complete, its test suites, a browser walkthrough, anything slow or needing a running stack, whose
+  findings go out as fix pushes; a fix reruns only the suites covering it. **Pushed is not done**:
+  a change is reported done only once that verification has passed.
