@@ -6,8 +6,7 @@ from typing import Final
 
 import yaml
 
-from models import ScenarioKind, ScenarioRoute
-from validate_sources import (
+from guidance_files import (
     SCENARIOS_DIRNAME,
     SKILLS_DIRNAME,
     guidance_prose,
@@ -16,6 +15,7 @@ from validate_sources import (
     skill_packages,
     source_files,
 )
+from models import ScenarioKind, ScenarioRoute
 
 SCENARIO_FILENAME: Final[str] = "scenario.yaml"
 FIXTURE_DIRNAME: Final[str] = "fixture"

@@ -9,6 +9,20 @@ from pathlib import Path
 from typing import Final
 from urllib.parse import unquote
 
+from guidance_files import (
+    BOLD_LEAD_PATTERN,
+    FENCED_BLOCK_PATTERN,
+    HEADING_PATTERN,
+    SKILLS_DIRNAME,
+    SKILL_ENTRY_FILENAME,
+    blank_matches,
+    guidance_prose,
+    heading_titles,
+    normalized_section_name,
+    section_names,
+    skill_packages,
+    source_files,
+)
 from models import ExternalResource, SourceCommand, SyncOutcome
 from sync_tool import (
     EXTERNAL_RESOURCES_FILENAME,
@@ -24,8 +38,6 @@ from sync_tool import (
 logger = logging.getLogger(__name__)
 
 MINIMUM_PYTHON: Final[tuple[int, int]] = (3, 12)
-SKILLS_DIRNAME: Final[str] = "skills"
-SKILL_ENTRY_FILENAME: Final[str] = "SKILL.md"
 DEPENDENCIES_SECTION_PATTERN: Final[re.Pattern[str]] = re.compile(
     r"^## Dependencies\n(.*?)(?=^## |\Z)", re.MULTILINE | re.DOTALL
 )
@@ -44,24 +56,12 @@ SKILL_CONTEXT_AFTER_PATTERN: Final[re.Pattern[str]] = re.compile(
 CONTEXT_BEFORE_CHARS: Final[int] = 30
 CONTEXT_AFTER_CHARS: Final[int] = 10
 SKILL_RESOURCE_KIND: Final[str] = "skill"
-INSTALLED_PACKAGES_DIRNAME: Final[str] = "node_modules"
-SCENARIOS_DIRNAME: Final[str] = "tests"
 GENERATED_DIRNAME: Final[str] = ".auto_generated"
 RULES_DIRNAME: Final[str] = "rules"
 REFERENCES_DIRNAME: Final[str] = "references"
 GLOBAL_RULES_FILENAME: Final[str] = "global.md"
 GLOBAL_RULES_NAME: Final[str] = "global"
-FENCED_BLOCK_PATTERN: Final[re.Pattern[str]] = re.compile(
-    r"^[ \t]*(?P<fence>```+|~~~+).*?^[ \t]*(?P=fence)[ \t]*$", re.MULTILINE | re.DOTALL
-)
 INLINE_CODE_PATTERN: Final[re.Pattern[str]] = re.compile(r"`[^`\n]*`")
-HEADING_PATTERN: Final[re.Pattern[str]] = re.compile(
-    r"^ {0,3}#{1,6}[ \t]+(?P<title>.+?)[ \t]*#*[ \t]*$", re.MULTILINE
-)
-BOLD_LEAD_PATTERN: Final[re.Pattern[str]] = re.compile(
-    r"^[ \t]*(?:>[ \t]*)?(?:(?:[-*+]|\d+[.)])[ \t]+)?(?:\[[ xX]\][ \t]+)?\*\*(?P<lead>[^*]+)\*\*",
-    re.MULTILINE,
-)
 HTML_ANCHOR_PATTERN: Final[re.Pattern[str]] = re.compile(
     r"<a\s[^>]*?\b(?:id|name)=[\"'](?P<anchor>[^\"']+)[\"']", re.IGNORECASE
 )
@@ -88,7 +88,6 @@ RULE_MENTION_PATTERN: Final[re.Pattern[str]] = re.compile(
 ALWAYS_LOADED_PATTERN: Final[re.Pattern[str]] = re.compile(
     r"\A---\n.*?^alwaysApply:\s*true\s*$.*?^---$", re.MULTILINE | re.DOTALL
 )
-SECTION_TRAILING_PUNCTUATION: Final[str] = ".:,;!?"
 SECTION_START_PATTERN: Final[re.Pattern[str]] = re.compile(r"$|\W")
 FRONTMATTER_PATTERN: Final[re.Pattern[str]] = re.compile(
     r"\A---\n.*?^---[ \t]*$", re.MULTILINE | re.DOTALL
@@ -209,33 +208,6 @@ def third_party_skill_names(skills_dir: Path) -> set[str]:
     }
 
 
-def in_regression_scenarios(path: Path) -> bool:
-    """Return whether a path lies in a skill's top-level `tests` folder."""
-
-    return any(
-        parent.name == SCENARIOS_DIRNAME and (parent.parent / SKILL_ENTRY_FILENAME).is_file()
-        for parent in path.parents
-    )
-
-
-def source_files(directory: Path, pattern: str) -> list[Path]:
-    """Return the guidance files under a directory that match a pattern."""
-
-    return sorted(
-        path
-        for path in directory.rglob(pattern)
-        if INSTALLED_PACKAGES_DIRNAME not in path.parts and not in_regression_scenarios(path)
-    )
-
-
-def skill_packages(skills_dir: Path) -> dict[str, Path]:
-    """Return each skill's package folder by skill name."""
-
-    entries = source_files(skills_dir, SKILL_ENTRY_FILENAME)
-
-    return {entry.parent.name: entry.parent for entry in entries}
-
-
 def rule_files(agents_dir: Path) -> dict[str, Path]:
     """Return each rule file by its casefolded name, the global rules under `global`."""
 
@@ -293,30 +265,10 @@ def find_dependency_problems(skills_dir: Path) -> list[str]:
     return problems
 
 
-def blank_matches(text: str, pattern: re.Pattern[str]) -> str:
-    """Replace every match of a pattern with spaces, keeping each line and offset where it was."""
-
-    return pattern.sub(lambda match: re.sub(r"[^\n]", " ", match.group(0)), text)
-
-
 def line_number(text: str, offset: int) -> int:
     """Return the one-based line an offset of a text falls on."""
 
     return text.count("\n", 0, offset) + 1
-
-
-def normalized_section_name(name: str) -> str:
-    """Return a heading or bold lead in the form two spellings of it are compared in."""
-
-    words = " ".join(name.replace("`", "").replace("’", "'").split())
-
-    return words.rstrip(SECTION_TRAILING_PUNCTUATION).casefold()
-
-
-def heading_titles(prose: str) -> list[str]:
-    """Return a document's headings in order, given its text without code blocks."""
-
-    return [match.group("title") for match in HEADING_PATTERN.finditer(prose)]
 
 
 def heading_anchors(prose: str) -> set[str]:
@@ -335,25 +287,6 @@ def heading_anchors(prose: str) -> set[str]:
         anchors.add(slug if count == 0 else f"{slug}-{count}")
 
     return anchors
-
-
-def section_names(prose: str) -> tuple[set[str], set[str]]:
-    """Return a document's normalized headings and the bold leads of its bullets and paragraphs."""
-
-    headings = {normalized_section_name(title) for title in heading_titles(prose)}
-    leads = {
-        normalized_section_name(match.group("lead"))
-        for match in BOLD_LEAD_PATTERN.finditer(prose)
-        if "\n\n" not in match.group("lead")
-    }
-
-    return headings, leads
-
-
-def guidance_prose(path: Path) -> str:
-    """Return a guidance file's text with its fenced code blocks blanked out."""
-
-    return blank_matches(path.read_text(encoding="utf-8"), FENCED_BLOCK_PATTERN)
 
 
 def owned_guidance_files(agents_dir: Path) -> list[Path]:
