@@ -353,9 +353,8 @@ during cutover remains a finding while the older writer still exists.
 - **Runtime cutover behavior** — checks for which owned version is deployed, runtime repair of a
   partly migrated shape, or branches reachable only while a release is changing the contract.
   Trace each to the rollout or migration that owns it. Remove the runtime path and any tests that
-  exist solely to exercise it, as `pre-production`'s **Product State** requires. Keep versioned
-  conversion of retained data, recovery reachable in ordinary operation, and compatibility within
-  the scope and period the user expressly authorized under `pre-production`'s **Target Contract**.
+  exist solely to exercise it, as `pre-production`'s **Product State** requires. Use versioned
+  migrations to convert retained data and handle ordinary recovery under the current contract.
 - **Silent tolerance** — every catch that returns a default, passes or logs and continues; the
   pre-pass's suppression list, every suppression comment and type-ignore read against the
   measurement with it removed, and every escape hatch that does a suppression's job, an annotation
