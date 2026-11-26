@@ -149,7 +149,10 @@ cross-cutting reviewer.
 
 The measure is the `wording` command's rows before and after: prohibiting units, how many hold a
 reason, the counts of each absolute, capital emphasis and descriptions past a limit. The counts
-trace the work and are never its aim: no passage is reworded to move a number.
+trace the work and are never its aim: no passage is reworded to move a number. They do show what
+was judged: each prohibiting unit the rerun still counts is a passage with a recorded keep verdict
+and its reason, and one with none was never judged, so it is judged and given its verdict in this
+run, never left for a later one.
 
 ## Authoring Sections
 

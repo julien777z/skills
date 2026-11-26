@@ -183,9 +183,9 @@ reports which checks.
   uniquely says; and, when any survive, the result of a bounded task run at `subagent-matrix`'s
   standard capability level without the file, judged against the file's own stated outcomes. **A
   cut is made only on a repeatable result**: the task runs twice without the file, a third time
-  when the two disagree, and a single run that did well without it recommends nothing. At most five
-  files are tried in a run, the ones with the fewest surviving sentences first, and the rest are
-  reported as untried candidates. No surviving sentence is the ground to cut; surviving sentences
+  when the two disagree, and a single run that did well without it recommends nothing. Every
+  candidate file is tried in the run, the ones with the fewest surviving sentences first, so none
+  is left for a later run. No surviving sentence is the ground to cut; surviving sentences
   with no usage is the ground to fix the trigger first. Age, size, and a
   reference count on their own never cut a file.
 - **A passage is cut for restating the model only on a repeatable result**, as `skill-pass`'s
@@ -222,7 +222,7 @@ reports which checks.
 - the `wording` total row before and after, the files whose counts changed most, and the passages
   kept, reworded, merged and cut, each kept one with its reason;
 - each passage trial with its runs and outcome, and each untried candidate;
-- each whole-file cut made or kept, its trial runs and its outcome, and each untried candidate;
+- each whole-file cut made or kept, its trial runs and its outcome;
 - each installed copy reported;
 - what the lenses met inside registered external skills, listed as upstream;
 - each hook, description clause, or guard added;

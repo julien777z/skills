@@ -1,7 +1,7 @@
 # Doctor Delivery
 
 Contents: **Implement In Waves**, **Run Repository-Native Checks**, **Review The Result**, **Accept
-The Complete Diff**, **Defer Leftovers**, **Deliver**, **Report**.
+The Complete Diff**, **Record What Stays Open**, **Deliver**, **Report**.
 
 The stages a doctor run applies once its plan is shown, which `SKILL.md`'s **Gate And Show The Plan**
 hands to this file.
@@ -45,6 +45,13 @@ resource.
 A decision discovered during implementation is settled as **Gate And Show The Plan** settles one and
 added to the plan as an amendment; do not silently narrow the correction.
 
+**The parent re-plans an entry that falls short**, as `SKILL.md`'s **Leave Nothing Open** says:
+one whose proving check or measure still misses once its fix lands, a finding the work meets more
+instances of than the plan holds, and a remedy the work shows to be wrong. It writes the new remedy
+as an amendment, gates it as the plan was gated, shows it, and assigns it to the group that owns
+its files or to a later wave. The plan in force is the latest amendment, never the plan as first
+shown.
+
 The plan is implemented to its last entry in one continuous run, into the branch in flight.
 A finished wave is not a finished plan, and neither is a pushed commit or a green suite; start the
 next wave in the same turn. A genuine gate holds only its dependent work.
@@ -58,9 +65,12 @@ analysis, tests, builds, code generation, and contract checks. Report a check ca
 configured rather than inventing one.
 
 Then take every measure again and rerun the mechanical pre-pass. Each instance a measure of defect
-candidates still counts is matched to a ledger entry that retains it: kept with a reason, declined, deferred or
-waiting on a reserved user decision or held on a rule change's merge. An instance with no such
-entry is a missed fix and goes back out as a fix step. Inventory totals, such as files, symbols,
+candidates still counts is matched to a ledger entry that retains it: kept with a reason, declined,
+held on a rule change's merge, or open for a reserved user decision or an external blocker as
+`SKILL.md`'s **Leave Nothing Open** allows. An instance with no such entry, and an entry marked
+fixed whose measure still misses its target, is a missed fix: it is re-planned as **Implement In
+Waves** says and goes back out as a fix step, and the run moves to **Review The Result** only once
+none remains. Inventory totals, such as files, symbols,
 dependencies, documents and strings, and performance measures are compared before and after, never
 reconciled item by item.
 
@@ -106,22 +116,24 @@ requirements checked and the base revision of the governing guidance where the d
 configuration. A later review asked for the whole pull request then measures only what changed
 after that head.
 
-## Defer Leftovers
+## Record What Stays Open
 
-Nothing the run leaves unfixed lives only in chat, the plan or the report.
+The run leaves open only what `SKILL.md`'s **Leave Nothing Open** allows, and nothing it leaves
+lives only in chat, the plan or the report.
 
 - **A confirmed defect or vulnerability is fixed in this run**, whatever its size or area, as
   **Resolve The Scope** says, and is never deferred.
-- **Cleanup the run cannot finish is recorded through `defer-scope`** at the moment that is
-  decided: an entry left unresolved for missing evidence or an external blocker, a decision the
-  user has not answered when the run ends, and cleanup that fixes no defect found outside the
-  doctor's boundary, subject to its reporting disposition. A refused admission means in-boundary
-  work is done in this run, unless the refusal names close, which is recorded canceled with its
-  reason and reconsideration criterion.
+- **Each item that stays open is recorded through `defer-scope`** once it is known to stay: a
+  reserved decision the user has not answered when the run ends, and an external blocker, with
+  what removes it. Cleanup that fixes no defect found outside the doctor's boundary is recorded the
+  same way, subject to its reporting disposition. A refused admission means the work is done in
+  this run, unless the refusal names close, which is recorded canceled with its reason and
+  reconsideration criterion.
 - **A decision the user declined is recorded the same way**, so a later run reads it under
   **Resolve The Scope** and skips the finding.
-- **A path no reviewer read is not a finding.** It stays marked unread in the manifest and is
-  named in the report with the count.
+- **A path no reviewer read is not a finding.** This run reads it as `SKILL.md`'s **Delegate The
+  Audit** says; one the run cannot open stays marked unread in the manifest and is named in the
+  report with the count and what would let it be read.
 
 ## Deliver
 
@@ -160,7 +172,8 @@ The final report names:
 - every decision the run made, each council ruling, and each reserved decision with the user's
   answer or as still open;
 - each source entry held on a rule change's merge, with that pull request;
-- remaining external blockers.
+- each item still open as **Record What Stays Open** records it: the reserved decision as asked,
+  or the external blocker with what removes it; nothing else is reported as open.
 
 Per-entry detail, each applied correction with its evidence and commit, goes in a file sent with
 the report once the run holds more than five entries. Each doctor appends its own rows.

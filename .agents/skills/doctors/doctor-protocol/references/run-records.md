@@ -34,7 +34,7 @@ run:
   route: "<small | whole>"
   plan_shown: "<time the plan was shown, with `no open decision` or the decisions open then>"
   stages:
-    - name: "<scope | prepass | manifest | audit | verify | plan | implement | checks | review | accept | leftovers | report>"
+    - name: "<scope | prepass | manifest | audit | verify | plan | implement | checks | review | accept | open items | report>"
       status: "<pending | running | done>"
       finished: "<time, when done>"
       head: "<branch head when the stage finished>"
@@ -134,9 +134,10 @@ entry:
   finding: "<the finding, as above>"
   disposition: "<fix | keep | council ruling | reserved user decision | declined | deferred |
     unresolved>"
-  reason: "<for keep: the distinction that retains it; for unresolved: the missing evidence;
-    for declined or deferred: the record; for council ruling: the question, the options and the
-    ruling; for reserved user decision: the options, each consequence, the recommendation and the
+  reason: "<for keep: the distinction that retains it; for unresolved: the missing evidence and
+    the step gathering it; for declined: the record; for deferred: the record and the reserved
+    decision or external blocker that keeps it open, with what removes it; for council ruling:
+    the question, the options and the ruling; for reserved user decision: the options, each consequence, the recommendation and the
     answer once given>"
   group: "<the worker group that owns its files>"
   status: "<open | waiting on decision | assigned | fixed | recorded>"
