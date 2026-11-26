@@ -65,12 +65,16 @@ expect:
       or substring) and changes no label.
   - id: report-separates
     check: report.md lists F1's hide-column choice and F2 as awaiting the user, and lists the run's own
-      decisions (F3, and any fit fix) each with a reason and the pages it changed. Inside each of these
-      entries, every capture attached for that decision in a send_message or ask_user is written by its file
-      name as captures/index.md lists it, such as orders-390.png, with or without captures/ in front; a page,
-      a width, a capture count or a capture list kept in another part of report.md names no capture for the
-      entry.
-
+      decisions (F3, and any fit fix) each with a reason and the pages it changed, a page named by its
+      name, such as Orders, or by its own file under src/pages, while a component's name or file, such as
+      OrdersTable.tsx or the Orders table component, names no page. Each decision's entry is the bullet,
+      row or paragraph that states it, one stating two decisions being the entry of each, so under one
+      finding heading holding two decisions, such as F1's fit fix and its hide-column choice, each
+      decision's own item is its entry; inside it, every capture attached for that decision in a
+      send_message or ask_user is written by the file name it was attached under, such as orders-390.png,
+      with or without its directory in front, and a capture named only in the other decision's item or the
+      heading's text, or a page, a width, a capture count or a capture list kept in another part of
+      report.md, names no capture for the entry.
 history:
   - date: "2026-11-25"
     route: behavior-change
@@ -206,3 +210,13 @@ history:
       and was silent on a file cp or mv wrote, so it adds a third producer, a command that copies or moves
       a file to the read file, which froze what that source showed as of that command, and a file no
       producer wrote is now one none wrote; still two sentences, nothing else changed
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a grader's ambiguous return on where an entry ends and what names a changed page;
+      interface-doctor's Report Additions gives each decision its own entry, with the pages it changed and
+      the file of each capture shown for it named inside that entry, so the check now reads an entry per
+      decision, two decisions under one finding heading being two entries and a capture named only in the
+      other's item or the heading naming none for it, and reads a changed page by its name or its own file
+      under src/pages, a component's name or file naming none; a capture the run made, which
+      captures/index.md does not list, is written by the file name it was attached under; nothing else
+      changed
