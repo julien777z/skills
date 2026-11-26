@@ -1,6 +1,6 @@
 ---
 name: subagent-matrix
-description: Apply when deciding whether to delegate work to a subagent at all, and before every subagent launch, including a workflow coordinator or nested reviewer, when selecting a live skill-verification model, and when resuming workers stopped by a rate limit or quota. Default reasoning effort to medium unless the user or invoking skill explicitly specifies another effort. Resolve the assignment role and verify the actual model, reasoning and history arguments before dispatch, including a fresh independent or read-only gate, reviewer, validator, or skill-test reader. Resolve cheap, standard, advanced, frontier, and specialist capability levels from the host catalog and current official provider sources. Attempt the assigned work with a catalog-hidden candidate before reporting unavailability or proposing a substitution, select the model explicitly, route independent steps through a subagent of the running session, and give the user complete direct-dispatch diagnostics when the launch cannot start.
+description: Apply when deciding whether to delegate work to a subagent at all, and before every subagent launch, including a workflow coordinator or nested reviewer, when selecting a live skill-verification model, and when resuming workers stopped by a rate limit or quota. Default reasoning effort to medium unless the user or invoking skill explicitly specifies another effort. Resolve the assignment role and verify the actual model, reasoning and history arguments before dispatch, including a fresh independent or read-only gate, reviewer, validator, or skill-test reader. Resolve cheap, standard, advanced, and specialist capability levels from the host catalog and current official provider sources. Attempt the assigned work with a catalog-hidden candidate before reporting unavailability or proposing a substitution, select the model explicitly, route independent steps through a subagent of the running session, and give the user complete direct-dispatch diagnostics when the launch cannot start.
 short_description: 'Select a model capability level for live verification chats or subagent delegation.'
 ---
 
@@ -77,7 +77,7 @@ agent; the calling agent launches the actual assignment with the selected model.
    the accepted selection. Availability is not permission to change repository or global settings, such as a
    model policy or a provider's configuration.
 4. For a specialist assignment, after step 3 establishes that Claude Mythos is unsupported or
-   denied, launch the same assignment directly on the latest Claude family at the `frontier` tier, unless
+   denied, launch the same assignment directly on the latest Claude family at the `advanced` tier, unless
    the calling skill explicitly selects a different ordinary fallback tier. Resolve its latest Claude family
    through steps 2 and 3 and apply that fallback only if it respects the user's
    explicit model or capability constraint; otherwise hold the assignment. Do not try older Mythos,
@@ -108,8 +108,8 @@ agent; the calling agent launches the actual assignment with the selected model.
    skill-verification chat, choose the least-capable suitable mapped family, resolve its exact candidate, and
    launch the actual chat assignment; never skip that family because the catalog omits it. Advance to another
    family only after an explicit unsupported receipt and only as the caller's fallback policy permits. Otherwise
-   use the task criteria in the table, with **standard** as the default. Reserve frontier for the most demanding
-   assignments unless specifically required. Select specialist only when the calling skill explicitly
+   use the task criteria in the table, with **standard** as the default. Reserve advanced for the assignments the
+   table gives it unless specifically required. Select specialist only when the calling skill explicitly
    selects it for that assignment; neither task difficulty nor a generic fallback enters that tier. Default reasoning effort to **medium** for every
    assignment, including complex work, independent reviews, coordinators, and higher-capability
    models. Use another effort only when the user or invoking skill explicitly specifies it for
@@ -308,7 +308,6 @@ Selected dispatch: <exact identifier> / <reasoning effort> / <history mode>
 | cheap | catalog-confirmed or catalog-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, unavailable: <reason>, or denied: <host receipt> |
 | standard | catalog-confirmed or catalog-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, unavailable: <reason>, or denied: <host receipt> |
 | advanced | catalog-confirmed or catalog-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, unavailable: <reason>, or denied: <host receipt> |
-| frontier | catalog-confirmed or catalog-hidden | <identifier or identifier required> | not requested, dispatch required, identifier required, accepted, unavailable: <reason>, or denied: <host receipt> |
 | specialist | catalog-confirmed or catalog-hidden | <original candidate or identifier required> | not requested, dispatch required, identifier required, accepted, unavailable: <reason>, or denied: <host receipt> |
 ```
 
