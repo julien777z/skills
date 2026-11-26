@@ -13,9 +13,11 @@ from validate_sources import (
     normalized_section_name,
     section_names,
     skill_packages,
+    source_files,
 )
 
 SCENARIO_FILENAME: Final[str] = "scenario.yaml"
+FIXTURE_DIRNAME: Final[str] = "fixture"
 SCENARIO_KEYS: Final[tuple[str, ...]] = ("title", "kind", "covers", "prompt", "expect", "history")
 EXPECT_KEYS: Final[tuple[str, ...]] = ("id", "check")
 ADDING_ENTRY_KEYS: Final[tuple[str, ...]] = ("date", "route", "pull_request", "reason")
@@ -31,14 +33,32 @@ BEHAVIOR_CHANGE_ENTRY_KEYS: Final[tuple[str, ...]] = (
 TEST_CAUSE_ENTRY_KEYS: Final[tuple[str, ...]] = ("date", "route", "reason")
 
 
-def scenario_paths(skills_dir: Path) -> list[Path]:
-    """Return every scenario file in a skill's top-level folder of regression scenarios."""
+def scenario_folders(skills_dir: Path) -> list[tuple[Path, Path]]:
+    """Return each entry of a skill's top-level tests folder with the skill package it sits in."""
 
     return sorted(
-        path
+        (folder, package)
         for package in skill_packages(skills_dir).values()
-        for path in (package / SCENARIOS_DIRNAME).glob(f"*/{SCENARIO_FILENAME}")
+        if (package / SCENARIOS_DIRNAME).is_dir()
+        for folder in (package / SCENARIOS_DIRNAME).iterdir()
     )
+
+
+def folder_problems(folder: Path) -> list[str]:
+    """Report a scenario folder that does not hold exactly its scenario file and fixture folder."""
+
+    if not folder.is_dir():
+        return ["is not a scenario folder"]
+
+    entries = {entry.name for entry in folder.iterdir()}
+    expected = {SCENARIO_FILENAME, FIXTURE_DIRNAME}
+
+    if entries == expected and (folder / FIXTURE_DIRNAME).is_dir():
+        return []
+
+    held = ", ".join(sorted(entries)) or "nothing"
+
+    return [f"holds {held}; a scenario folder holds {', '.join(sorted(expected))}"]
 
 
 def mapping_entries(value: object, field: str) -> list[dict[object, object]] | str:
@@ -53,14 +73,15 @@ def mapping_entries(value: object, field: str) -> list[dict[object, object]] | s
     return value
 
 
-def covers_problems(covers: object, agents_dir: Path) -> list[str]:
-    """Report covers entries whose file or section heading does not exist."""
+def covers_problems(covers: object, agents_dir: Path, package: Path) -> list[str]:
+    """Report covers entries whose guidance file or section heading does not exist."""
 
     entries = mapping_entries(covers, "covers")
 
     if isinstance(entries, str):
         return [entries]
 
+    guidance = {path.resolve() for path in source_files(agents_dir, "*.md")}
     problems: list[str] = []
 
     for number, entry in enumerate(entries, start=1):
@@ -74,12 +95,22 @@ def covers_problems(covers: object, agents_dir: Path) -> list[str]:
 
         target = (agents_dir / file).resolve()
 
-        if not target.is_relative_to(agents_dir.resolve()) or not target.is_file():
-            problems.append(f"covers entry {number}: `{file}` is not a file under {agents_dir.name}/")
+        if target not in guidance:
+            problems.append(
+                f"covers entry {number}: `{file}` is not a guidance file under {agents_dir.name}/"
+            )
 
             continue
 
-        headings, _ = section_names(guidance_prose(target))
+        if number == 1 and not target.is_relative_to(package.resolve()):
+            problems.append(f"covers entry 1: `{file}` is not in the skill the scenario sits in")
+
+        try:
+            headings, _ = section_names(guidance_prose(target))
+        except UnicodeDecodeError:
+            problems.append(f"covers entry {number}: `{file}` is not UTF-8 text")
+
+            continue
 
         if normalized_section_name(section) not in headings:
             problems.append(f"covers entry {number}: `{file}` has no heading **{section}**")
@@ -128,7 +159,8 @@ def history_problems(history: object) -> list[str]:
 
     if entries[0].get("route") != ScenarioRoute.BEHAVIOR_CHANGE:
         problems.append(
-            f"history entry 1, which adds the scenario, is not on the {ScenarioRoute.BEHAVIOR_CHANGE} route"
+            "history entry 1, which adds the scenario, is not on the"
+            f" {ScenarioRoute.BEHAVIOR_CHANGE} route"
         )
 
     for number, entry in enumerate(entries, start=1):
@@ -153,13 +185,19 @@ def history_problems(history: object) -> list[str]:
     return problems
 
 
-def scenario_problems(path: Path, agents_dir: Path) -> list[str]:
-    """Report every way one scenario file breaks the regression-scenario format."""
+def scenario_problems(folder: Path, package: Path, agents_dir: Path) -> list[str]:
+    """Report every way one scenario folder breaks the regression-scenario format."""
 
-    label = path.relative_to(agents_dir.parent).as_posix()
+    label = folder.relative_to(agents_dir.parent).as_posix()
+    layout = folder_problems(folder)
+
+    if layout:
+        return [f"{label}: {problem}" for problem in layout]
 
     try:
-        scenario = yaml.safe_load(path.read_text(encoding="utf-8"))
+        scenario = yaml.safe_load((folder / SCENARIO_FILENAME).read_text(encoding="utf-8"))
+    except UnicodeDecodeError:
+        return [f"{label}: {SCENARIO_FILENAME} is not UTF-8 text"]
     except yaml.YAMLError as exc:
         return [f"{label}: does not parse with safe YAML loading: {' '.join(str(exc).split())}"]
 
@@ -175,7 +213,7 @@ def scenario_problems(path: Path, agents_dir: Path) -> list[str]:
     kinds = ", ".join(kind.value for kind in ScenarioKind)
     problems = [] if scenario["kind"] in ScenarioKind else [f"`kind` is not one of {kinds}"]
 
-    problems += covers_problems(scenario["covers"], agents_dir)
+    problems += covers_problems(scenario["covers"], agents_dir, package)
     problems += expect_problems(scenario["expect"])
     problems += history_problems(scenario["history"])
 
@@ -194,8 +232,8 @@ def main() -> None:
     agents_dir: Path = parser.parse_args().agents_dir.resolve()
     problems = [
         problem
-        for path in scenario_paths(agents_dir / SKILLS_DIRNAME)
-        for problem in scenario_problems(path, agents_dir)
+        for folder, package in scenario_folders(agents_dir / SKILLS_DIRNAME)
+        for problem in scenario_problems(folder, package, agents_dir)
     ]
 
     print(json.dumps(problems))

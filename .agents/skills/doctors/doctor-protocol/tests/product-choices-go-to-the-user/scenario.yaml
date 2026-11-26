@@ -52,11 +52,11 @@ history:
       change-check rounds of the interface-doctor change added
   - date: "2026-11-25"
     route: test-cause
-    reason: the report check did not say whether a capture named by its width counts; interface-doctor's
-      Report Additions asks for the captures shown, so each must be named by file name or by a page and width
-      that pick out one capture, and the run's decisions carry the pages changed; F2's old and new text stays
-      measured by shown-first, since Report Additions asks the report for old and new wording only for text
-      the run changed
+    reason: opened by a grader's ambiguous return; the report check did not say whether a capture named by
+      its width counts; interface-doctor's Report Additions asks for the captures shown, so each must be
+      named by file name or by a page and width that pick out one capture, and the run's decisions carry
+      the pages changed; F2's old and new text stays measured by shown-first, since Report Additions asks
+      the report for old and new wording only for text the run changed
   - date: "2026-11-26"
     route: behavior-change
     pull_request: "440"

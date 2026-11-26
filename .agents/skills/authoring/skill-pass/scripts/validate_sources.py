@@ -210,7 +210,7 @@ def third_party_skill_names(skills_dir: Path) -> set[str]:
 
 
 def in_regression_scenarios(path: Path) -> bool:
-    """Return whether a path lies in a skill's top-level folder of regression scenarios."""
+    """Return whether a path lies in a skill's top-level `tests` folder."""
 
     return any(
         parent.name == SCENARIOS_DIRNAME and (parent.parent / SKILL_ENTRY_FILENAME).is_file()
@@ -495,7 +495,7 @@ def find_citation_problems(agents_dir: Path) -> list[str]:
 
 
 def find_scenario_problems(python: Path, agents_dir: Path) -> list[str]:
-    """Report regression scenario files that break the scenario format, using a YAML interpreter."""
+    """Return the problems the scenario check script reports when run with a YAML interpreter."""
 
     run = subprocess.run(
         [str(python), str(SCENARIO_CHECK_SCRIPT), str(agents_dir)],

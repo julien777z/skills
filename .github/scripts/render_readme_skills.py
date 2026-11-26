@@ -66,7 +66,7 @@ def parse_front_matter(path: Path) -> dict[str, str]:
 
 
 def in_regression_scenarios(path: Path) -> bool:
-    """Return whether a path lies in a skill's top-level folder of regression scenarios."""
+    """Return whether a path lies in a skill's top-level `tests` folder."""
 
     return any(
         parent.name == SCENARIOS_DIRNAME and (parent.parent / SKILL_ENTRY_FILENAME).is_file()

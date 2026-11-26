@@ -15,9 +15,8 @@ Rules: <rule files whose patterns match those paths; the repository's `.agents/t
 Reuse: <one receipt per addition the plan names: what it does · searched · found · reuse | extend | new: why>
 Push checks: <each fast check command with its scope; never a test suite>
 Suites: <each test suite command with its scope, run once at the end | none: a later assignment ends the task>
-Result: <abs path the complete report is written to; where the worker's isolation cannot write
-there, it returns the report as its final message and the coordinator writes that message to the
-path before reading it>
+Result: <abs path the complete report is written to, or returned as **Dispatch** says when the
+worker's isolation cannot write there>
 Findings (fix only): <each finding verbatim with its id, severity and the reviewer's remedy · remedies
 already tried and why each failed · round <n> of 3>
 

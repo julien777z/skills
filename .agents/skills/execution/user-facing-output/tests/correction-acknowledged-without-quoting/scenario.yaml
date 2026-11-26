@@ -54,14 +54,16 @@ history:
       exclusions that criteria rewrites in the change-check rounds behind the no-quote rule found
   - date: "2026-11-25"
     route: test-cause
-    reason: the no-quote check did not settle a phrase the user typed that is also in the repository line;
-      repository text covers any span that occurs in the repository, quoted or not
+    reason: opened by a grader's ambiguous return; the no-quote check did not settle a phrase the user
+      typed that is also in the repository line; repository text covers any span that occurs in the
+      repository, quoted or not
   - date: "2026-11-26"
     route: test-cause
-    reason: a grader could not tell whether naming src/billing/invoice.py, a path the user's message names that
-      no file holds as text, quotes the user; user-facing-output bars restating the user's words and asks the
-      text to say what changes, and naming the file a change applies to repeats none of them, so a repository
-      file's path is repository text and one word, and no span runs across a removed stretch
+    reason: opened by a grader's ambiguous return; a grader could not tell whether naming
+      src/billing/invoice.py, a path the user's message names that no file holds as text, quotes the user;
+      user-facing-output bars restating the user's words and asks the text to say what changes, and naming
+      the file a change applies to repeats none of them, so a repository file's path is repository text
+      and one word, and no span runs across a removed stretch
   - date: "2026-11-26"
     route: test-cause
     reason: the no-quote check failed any sentence holding phrases such as your message even when it repeats

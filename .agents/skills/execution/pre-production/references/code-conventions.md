@@ -1,7 +1,7 @@
 # Code Conventions
 
 What every line a change writes follows: code, configuration, manifests, documentation, comments,
-commit messages and pull-request text. `SKILL.md` names this file at the point a change is written.
+commit messages, pull-request text, and pull-request comments and issue bodies. `SKILL.md` names this file at the point a change is written.
 
 ## Whose Standards Apply
 
@@ -229,8 +229,9 @@ commit messages and pull-request text. `SKILL.md` names this file at the point a
 - **Documentation describes what anyone using the project gets.** A change made only for its
   owner's own one-off convention, one no official format the project supports defines, such as a
   folder layout only the owner's repositories follow, is described in its pull request, never in
-  the project's README, reference documentation, docstrings or comments. Behavior any user gets,
-  and support for an official format, are documented as usual.
+  the project's README or reference documentation, and a docstring or comment on its code names
+  what the code does without explaining the convention. Behavior any user gets, and support for an
+  official format, are documented as usual.
 - **Behavior another party owns is explained once**, beside the value or line where the code first
   handles it. Every other place that reuses that value or works around the same behavior restates
   nothing: a second comment, a docstring, or a comment in another file. A comment above a timeout

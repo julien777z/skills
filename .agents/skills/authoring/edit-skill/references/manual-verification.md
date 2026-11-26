@@ -36,7 +36,9 @@ fresh setup run.
    installer. Set its maintenance script to invoke the same installer on a resumed container. Keep
    the network access needed by the test.
 2. Start a fresh task on the pull-request branch. Verify the installed skill and shared rule links,
-   and Codex's global `AGENTS.md`, resolve into the installed checkout at the intended commit.
+   and Codex's global `AGENTS.md`, resolve into the installed checkout at the intended commit; a
+   skill with a top-level `tests/` folder is a directory whose entries link there and whose copied
+   `SKILL.md` matches the source.
    Run the installer again and verify it succeeds without changing unrelated content.
 3. Resume a cached container and verify the maintenance script ran and the same links still resolve.
    Distinguish this result from a fresh setup result.

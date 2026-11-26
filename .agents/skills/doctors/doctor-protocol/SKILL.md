@@ -131,8 +131,10 @@ inside its boundary before it reports.
   joins it, one that predates the run is fixed like any other, and size only sequences an entry
   late, as **Gate And Show The Plan** says.
 - **A round limit ends an approach, never a finding.** Where a review or gate loop reaches its
-  limit on an in-boundary entry, the council's ruling picks the approach the entry is then fixed
-  by; reverting the fix or accepting it with the finding recorded would leave it open.
+  limit on an in-boundary entry, `council` is asked what should happen next, this section given as
+  evidence, and its ruling is followed. A ruling that leaves the finding unfixed, such as a revert
+  or an acceptance with the finding recorded, makes the entry a decision reserved to the user,
+  asked with the ruling as **Gate And Show The Plan** says.
 - **Only two kinds of item stay open:** a decision reserved to the user, asked as **Gate And Show
   The Plan** says, and a genuine external blocker the run cannot remove, such as access it lacks or
   a release another owner holds. Each is recorded as **Record What Stays Open** says, the blocker
@@ -179,7 +181,7 @@ folder. Every reviewer reads the same results and repeats none of them.
   **Pre-Push Gate** finds them, its push checks and test suites alike, run once on the base, so
   the run knows which failures predate it; each is a defect it fixes, as **Resolve The Scope**
   says. They run once more on the final head under **Run Repository-Native Checks**, and in
-  between only where a group's own files need one.
+  between only the push checks a group's own files need, never a test suite.
 - **Mechanical pre-pass.** Each command the doctor declares runs in its read-only mode over the
   scope, and its output is saved as the candidate list for the lens it serves. A reviewer judges
   each candidate in its partition, confirming or rejecting it with a reason, and reads for what no
@@ -264,14 +266,15 @@ Otherwise write a decision-complete remediation plan from the ledger.
 - **The doctor decides, and every decision is in the report.** The owner invokes a doctor to have
   its class corrected, and a run that stops for approvals returns a plan where a fix was wanted. So
   the run decides and makes every change its findings call for but the reserved entries below, a
-  rewording of guidance text and a rewording across the tree included; a call its own checks cannot
+  rewording of guidance text, across the tree included; a call its own checks cannot
   settle goes to `council` in **Ask** mode, and the ruling is followed. Each decision goes in the
   plan file and the report with its reason.
   - **Reserved to the user's own words**: a merge, deployment, publication or release; a security,
     disclosure or authorization choice, such as who may see a record; and a product or scope
-    choice a remedy makes, as `pre-production`'s **Product Choices** defines one, removing a feature
-    and rewording correct text already in a product included. A routine presentation detail stays the run's, and so
-    does fixing a vulnerability so the product enforces the access it already intends.
+    choice a remedy makes, as `pre-production`'s **Product Choices** defines one, removing a
+    feature and rewording correct text already in a product included. A routine presentation
+    detail stays the run's, and so does fixing a vulnerability so the product enforces the access
+    it already intends.
   - **How reserved entries are asked.** Together, through the global rules' question procedure,
     each as options with each consequence and a recommendation, and a visible choice with its
     captures and its old and new text in a message the user sees first; only the entries that
@@ -323,7 +326,8 @@ resource.
   finishes, the next group in the wave starts.
 - **The brief is `subagent-matrix`'s worker brief form with every field filled.** Its scope is the
   group's ledger entries, each with its fix and proving check; its files are the group's files; its
-  checks are those proving checks and the checks covering those files; its branch is the run's.
+  checks are those proving checks and the push checks covering those files, its suites `none`,
+  since the run's end runs them; its branch is the run's.
   Two lines of the form are filled for a doctor run: every entry in the group is in scope whatever
   its size, since the size budget does not apply, and a defect the worker meets outside its files
   is handed up in its report, never edited, so two workers never edit one file.
@@ -458,10 +462,12 @@ readers. Hand that route the accepted head as already reviewed: it adds the sour
 skill-test round for the guidance the fixes changed, and starts no second review or acceptance.
 
 **Behavioral verification runs once, at the run's end.** The skill-test round, the regression
-scenarios it selects, a walkthrough and any end-to-end suite start only once every entry has landed
-and **Accept The Complete Diff** has passed. None starts while a finding is open, and a guidance
-correction recorded during the run joins that one round rather than starting its own. A check that
-guards one edit, such as the source check or a worker's own checks, runs where its step puts it.
+scenarios it selects, a walkthrough and every test suite start only once every entry the run can
+land has landed and **Accept The Complete Diff** has passed. None starts while a finding the run can
+fix is open; an entry that lands after a reserved decision's answer reruns only the verification
+covering it. A guidance correction recorded during the run joins that one round rather than
+starting its own. A push check that guards one edit, such as the source check, runs where its step
+puts it.
 
 ## Report
 

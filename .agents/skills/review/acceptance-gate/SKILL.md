@@ -379,15 +379,15 @@ it proposed itself.
   mode is asked what should happen next, as its **Ask** says of a disposition, with your
   candidates, a different approach among them. Its ruling, such as a different or simpler
   approach, a revert or an acceptance with the remaining findings recorded, stays within the limit
-  `council`'s **Ask** sets on what a ruling accepts. That decision
-  replaces another repair, and an acceptance with recorded findings it makes is the one exception
-  to the rules below on flagged diffs.
+  `council`'s **Ask** sets on what a ruling accepts. That decision replaces another repair, and an
+  acceptance with recorded findings it makes is the one exception to the rules below on flagged
+  diffs.
 - **Per flag:** while the change is under that limit, a flag gets at most two repair rounds of its
   own, and one a fresh gate raises for the first time starts at zero. A flag the gate still raises
   after its own second repair, with the change still under the limit, goes to `council` in **Ask**
-  mode as a disposition, with the open flag, and as your candidates the gate's proposed remedy
-  and the different approach the reconsideration above found. Its ruling decides the remedy, which is applied and checked as any repair is, and
-  the caller's result names the flag and the ruling. The verdict's other flags go on to their fresh
+  mode as a disposition, with the open flag, and as your candidates the gate's proposed remedy and
+  an approach that departs from both repairs tried. Its ruling decides the remedy, which is applied
+  and checked as any repair is, and the caller's result names the flag and the ruling. The verdict's other flags go on to their fresh
   gate meanwhile.
 - A flag the council returns as the user's choice goes to the user, as a report of those facts with
   a recommended next step, never as a choice about whether to fix it or leave it in place.

@@ -1,6 +1,6 @@
 ---
 name: defer-scope
-description: Record deferred work in the repository it affects, using Linear or that repository's ledger as an availability fallback; with no scope, read its active records, or for a caller's scope read every record that covers it, declined and canceled ones included. Use when work is consciously left undone, when a change would take a recorded deferral out of the active set, or when asked what is deferred, outstanding, or still open.
+description: Record deferred work in the repository it affects, using Linear or that repository's ledger as an availability fallback; with no scope, read its active records, or for a caller's scope read every record that covers it, declined and canceled ones included. Use when work is consciously left undone, when a pull request holding only deferral records is to merge, when a change would take a recorded deferral out of the active set, or when asked what is deferred, outstanding, or still open.
 short_description: 'Record unfinished work in the repository it affects, or read its active records.'
 ---
 

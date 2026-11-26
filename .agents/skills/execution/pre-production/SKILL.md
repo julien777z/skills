@@ -14,7 +14,8 @@ Read each reference at the point a change reaches its subject, and apply it to e
 change writes:
 
 - [The code-conventions reference](references/code-conventions.md), before writing or editing
-  code, configuration, a manifest, documentation, a comment, a commit message or pull-request text:
+  code, configuration, a manifest, documentation, a code comment, a commit message, pull-request
+  text, or a pull-request comment or issue body:
   whose standards apply, code layout, configuration values, logging, versions, naming and language,
   example values and paths, documentation, and repository text.
 - [The product-copy reference](references/product-copy.md), before writing or changing text or a

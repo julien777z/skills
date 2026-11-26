@@ -128,8 +128,9 @@ and after on the same stack, and a merge that makes it wait longer for its first
 not the remedy. Two cases are decided case by case, never merged or left alone silently: an
 operation another use case also calls on its own, where the use case may gain a merged operation
 while the other keeps its own; and a read only some runs of the use case need, which a merged
-operation may still carry. The run decides each that leaves what every caller sees unchanged; a
-merge that changes what a caller sees is put to the user as a reserved entry. Either way its record
+operation may still carry. The run decides each that leaves what the product shows or offers
+unchanged; a merge that changes it, a product choice as `pre-production`'s **Product Choices**
+defines one, is put to the user as a reserved entry. Either way its record
 lets a reader check the decision without opening the code: the operations it would combine, by
 method and path or RPC name; the proposed operation's method, path, parameters and response fields;
 every other caller of each of those operations, found in the code by page, job or service, with what

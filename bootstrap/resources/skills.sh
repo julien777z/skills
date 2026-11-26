@@ -135,9 +135,8 @@ reconcile_skill_links() {
   done
 }
 
-# A skill's top-level `tests/` holds regression scenarios with their expected answers, so the
-# installed skill is a directory linking every other top-level entry. Codex skips a `SKILL.md` that
-# is a symlink, so that file is copied.
+# The installed skill is a directory linking every top-level entry but `tests/`. Codex skips a
+# `SKILL.md` that is a symlink, so that file is copied.
 link_skill_without_scenarios() {
   local source="$1" entry="$2" item name
   local expected=()

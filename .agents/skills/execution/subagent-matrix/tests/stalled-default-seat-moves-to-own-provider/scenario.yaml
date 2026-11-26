@@ -58,11 +58,12 @@ history:
       no wait falls between the idle read and the relaunch
   - date: "2026-11-26"
     route: test-cause
-    reason: a grader could not tell whether a launch the tool refused counts toward the panel; subagent-matrix's
-      Workflow makes a call with a missing or mismatched argument an invalid dispatch corrected before
-      launching, and council's panel is three launched seats, so only an accepted launch counts, a refused
-      call is neither a launch nor a read, and the codex limit and the over-15-minute wait are read from
-      accepted launches and each wait's minutes
+    reason: opened by a grader's two readings, returned as a pass with a note; a grader could not tell
+      whether a launch the tool refused counts toward the panel; subagent-matrix's Workflow makes a call
+      with a missing or mismatched argument an invalid dispatch corrected before launching, and council's
+      panel is three launched seats, so only an accepted launch counts, a refused call is neither a launch
+      nor a read, and the codex limit and the over-15-minute wait are read from accepted launches and each
+      wait's minutes
   - date: "2026-11-26"
     route: test-cause
     reason: opened by the user's direction on the scenario format, one folder per scenario with a real

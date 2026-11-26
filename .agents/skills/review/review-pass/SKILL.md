@@ -180,8 +180,9 @@ validation exclusion is recorded with its evidence and not repaired, rerun or wa
    - cryptography, hashing or randomness used for security, or security configuration such as
      cross-origin or content-security settings.
 5. **Review the delta.** Run **Review Loop** once over the delta, with the intent statement, the merge-base diff and the
-   full touched files as context. Push each fix as its own commit once the checks the
-   GitHub rule's **Pre-Push Gate** defines pass. A finding that is the user's decision holds the pass: put it to the user
+   full touched files as context. Push each fix as its own commit once you have re-read its
+   changed lines against the finding and rerun the checks covering that code, which is that push's
+   **Pre-Push Gate** verdict under the GitHub rule; the push never closes the finding. A finding that is the user's decision holds the pass: put it to the user
    with both sides, and continue independent work.
 6. **Recheck the base.** When the base moved again, run **Base** and recompute **Range**. If the incorporation introduced
    a delta or changed governing guidance, return to **Resolve the range** for the affected review and checks.

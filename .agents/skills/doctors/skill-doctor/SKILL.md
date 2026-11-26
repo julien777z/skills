@@ -424,7 +424,8 @@ reads the whole **Lenses** section; the grouping says who reports which checks.
   with no usage is the ground to fix the trigger first. Age, size, and a
   reference count on their own never cut a file.
 - **A passage is cut for restating the model only on a repeatable result**, through the trial
-  `skill-pass`'s **Cutting A Passage** sets out, with its level, repeats and bound.
+  `skill-pass`'s **Cutting A Passage** sets out, at its level and with its repeats. The run tries
+  every passage candidate, so its bound does not apply here.
 - **A rewording is ordinary work however many files it reaches.** Because a rewording across the
   tree changes how the guidance reads everywhere, the report shows the `wording` counts for the
   tree and for the ten highest-ranked files, the number of passages under each verdict, and three
@@ -456,7 +457,7 @@ reads the whole **Lenses** section; the grouping says who reports which checks.
 - each URL fetched, with its date and any redirect;
 - the `wording` total row before and after, the files whose counts changed most, and the passages
   kept, reworded, merged and cut, each kept one with its reason;
-- each passage trial with its runs and outcome, and each untried candidate;
+- each passage trial with its runs and outcome;
 - each whole-file cut made or kept, its trial runs and its outcome;
 - each installed copy reported;
 - what the lenses met inside registered external skills, listed as upstream;

@@ -74,6 +74,8 @@ confuse those conclusions.
   and carry it, with no rerun, when every pair matches:
   - by content digest, each guidance file on its reading list, or, for a file every reader loads
     whole, such as the global rules, the sections its criteria cite; its fixture; its criteria;
+    for a regression scenario, whose reader has no reading list, the installed package, its
+    `scenario.yaml` and its fixture;
   - the model and reasoning effort **Reviewer selection** resolves for a rerun now, such as the
     standard capability level's current identifier, never one the catalog merely still lists; the harness and
     the guidance it loads; the tools and fixture interface the scenario uses.

@@ -177,8 +177,9 @@ tools:
     guidance whose hunk there changes what the edited check or fixture measures, and gives the
     reason. Deleting a scenario folder takes this route, in the pull request that removes the
     behavior it holds.
-  - **Test cause.** A fresh writer's rewrite, whose entry claims no change of behavior and carries
-    no `pull_request`, `file` or `section`.
+  - **Test cause.** A fresh writer's rewrite, whose entry claims no change of behavior, carries
+    no `pull_request`, `file` or `section`, and names in its `reason` which opener below opened
+    the route.
 - **The test-cause route opens on three things, and never on a run's miss**:
   - a grader's "ambiguous" return, as **Checks** says; a "pass (note)" verdict, a pass carrying a
     reservation about the check, counts as one;

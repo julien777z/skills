@@ -43,7 +43,7 @@ alwaysApply: true
   installers. A change to execution, timing, installation, discovery, permissions or mutation
   scope is source work, as is everything else. The one exception is guidance true only once a
   still-open source pull request merges, which rides that pull request when this session opened it
-  or the user directs its continuation, and is otherwise held for it. The skill that edits guidance
+  or the user explicitly directs its continuation, and is otherwise held for it. The skill that edits guidance
   sets out how a pull request is selected, opened and consolidated, and where that guidance goes.
 - **Every worker pushes to the branch of the pull request the work continues**, fetching and
   rebasing its unpushed commits onto the remote branch before each push. A branch per worker,
@@ -146,8 +146,8 @@ nothing outside the change holds committed work on one machine, as the **Nothing
 change** bullet below sets out. The exceptions are commits an invoked skill states it holds local
 until the user releases them, such as locked database revisions, and the fixes of a review the
 user asked for without a push, which stay local until they ask. A fix for a flag a review or gate
-raised is pushed once its author's re-read and checks pass, as the skill that gates changes sets
-out; that push never closes the flag.
+raised is pushed once its author's re-read and checks pass, as the review or gate skill that raised
+it sets out; that push never closes the flag.
 
 - **Required checks use CI’s commands and scope.** Read the workflow files that trigger on a pull
   request and run every fast checking job that can run locally — lint, format, type checks, build,
@@ -170,11 +170,11 @@ out; that push never closes the flag.
   Where a dependency is still in review, unreleased or unmerged, the branch consumes that
   dependency's pull-request branch in its manifest, lockfile and workflow checkouts, or builds on a
   same-repository sibling's branch, and pushes; never ask for the dependency's merge or report the
-  consumer blocked on it. That route is only for what the change uses that the
-  dependency adds: a defect in the pull request's own checks or delivery, such as a CI setup step
-  the change did not write or a deploy workflow, is repaired in that pull request itself, even
-  when a sibling pull request already carries a repair, never by consuming, stacking on or
-  waiting for that sibling or the default branch.
+  consumer blocked on it. That route is only for what the change uses that the dependency adds: a
+  defect in the pull request's own checks or delivery, such as a CI setup step the change did not
+  write or a deploy workflow, is repaired in that pull request itself, even when a sibling pull
+  request already carries a repair, never by consuming, stacking on or waiting for that sibling or
+  the default branch.
 - **The order is change, checks, push, then the slow verification**: once the task's changes are
   complete, its test suites, a browser walkthrough, anything slow or needing a running stack, whose
   findings go out as fix pushes; a fix reruns only the suites covering it. **Pushed is not done**:

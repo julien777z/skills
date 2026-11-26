@@ -1,6 +1,6 @@
 ---
 name: subagent-matrix
-description: Apply when deciding whether to delegate work to a subagent at all, before every subagent launch through the harness's agent tool or a launcher the project or session supplies (a workflow coordinator, a nested reviewer, or a fresh independent or read-only gate, reviewer, validator or skill-test reader included), when selecting a model for live skill verification, and when resuming workers stopped by a rate limit or quota. Resolve cheap, standard, advanced, frontier and specialist capability levels from the host catalog and current official provider sources, default reasoning effort to medium unless the user or invoking skill specifies another, verify the actual model, reasoning and history arguments before dispatch, try a catalog-hidden candidate before reporting any model unavailable, route independent steps through a subagent of the running session, and give the user complete diagnostics when a launch cannot start.
+description: Apply when deciding whether to delegate work to a subagent at all, before every subagent launch through the harness's agent tool or a launcher the project or session supplies (a workflow coordinator, a nested reviewer, or a fresh independent or read-only gate, reviewer, validator or skill-test reader included), when selecting a model for live skill verification, and when resuming workers stopped by a rate limit or quota. Resolve cheap, standard, advanced, frontier and specialist capability levels from the host catalog and current official provider sources, default reasoning effort to medium unless the user or invoking skill explicitly specifies another, select the model explicitly, verify the actual model, reasoning and history arguments before dispatch, try a catalog-hidden candidate before reporting any model unavailable, route independent steps through a subagent of the running session, and give the user complete diagnostics when a launch cannot start.
 short_description: 'Select a model capability level for live verification chats or subagent delegation.'
 ---
 
@@ -104,7 +104,7 @@ agent; the calling agent launches the actual assignment with the selected model.
    - A capacity relaunch onto the other provider that stalls goes back to the session's own
      provider, which refused it, only once that provider has cleared, as the capacity rule above
      reads it; otherwise it relaunches on whichever permitted model the request path shows cleared
-     first, never moving between the two.
+     first, never alternating between the two providers.
 4. For a specialist assignment, after step 3 establishes that Claude Mythos is unsupported or
    denied, launch the same assignment directly on the latest Claude family at the `frontier` tier, unless
    the calling skill explicitly selects a different ordinary fallback tier. Resolve its latest Claude family
@@ -220,7 +220,9 @@ context and returns its verdict into the step waiting on it; nothing else does b
   withdraw the user's authority, and neither a completed job nor a running one is repeated merely
   because its coordinator ended.
 - **The producer retains its complete result before handing it up.** Give it a durable private
-  destination and the owning workflow's required result contract in the brief. The parent reads
+  destination and the owning workflow's required result contract in the brief. One whose
+  isolation cannot write there returns the result as its final message, and the parent writes that
+  message to the destination before reading it. The parent reads
   that original and checks its target and required coverage before counting completion; a short
   original can be complete, while a rewritten summary cannot replace missing evidence. Recover
   an original from retained host output when available; otherwise repeat only the unproven step,
