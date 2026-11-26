@@ -395,6 +395,9 @@ second warehouse or a third courier, form one ordinal sequence: `first_`, `secon
   incidental cleanup under `pre-production`'s size budget, whatever the number of consumers. A
   word coined to leave the family as it was, such as a synonym for one more of the kind, is a
   finding like `alternate_`.
+
+For every fixture, in a numbered family or not:
+
 - A fixture's name carries no `test_` prefix that only marks it as test support, which repeats
   where it lives; the word stays where it names what the fixture provides, such as a test run in a
   product that manages them.
