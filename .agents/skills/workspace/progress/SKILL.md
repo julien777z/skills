@@ -69,7 +69,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   status, "~<n> min estimated", then "took <n> min" once done or "<done> of <n> parts done" for a
   step with parts, such as ["Done", "~18 min estimated", "took 21 min"],
   `weight` that work in minutes, toned `good` when done, `accent` when active, `critical` when
-  blocked, and neutral otherwise. A step neither done nor skipped with done parts takes them as a
+  blocked, and `next` when not yet started. A step neither done nor skipped with done parts takes them as a
   first segment, toned `good`, then its remaining work as a second, toned by the step's status as
   above, when any remains, so the bar fills as the percentage does.
 - **Metrics,** in this order: **Time remaining**, the work not yet finished, totaled as
@@ -117,7 +117,7 @@ and deliver the same dashboard again on every request so the user keeps one page
   progress segment is, `meta` "~<n> min" while it is not done or its measured duration once it is,
   and `figure` "<done> of <n> parts" for a step with parts, counting parts not skipped; and under
   such a step one entry per part, `label` its title and `status` its status, toned `good` when done,
-  `accent` when active, `critical` when blocked and neutral otherwise.
+  `accent` when active, `critical` when blocked and `next` when not yet started.
 - **Plan write-up**: the plan as a reader who missed the conversation needs it, from the ledger's
   `plan` entry: an `outline` with `expanded` and `stacked` set, `title` the plan's title and `description` its
   goal, then "Shown · ~<total> min" for a plan shown with no open decision, "Approved · ~<total> min" only for one the user's words approved, or "Proposed · ~<total> min" for one still waiting on a decision or an approval. Its groups, each only when it has something in it:
@@ -137,7 +137,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 | Column | `tone` | Cards |
 | --- | --- | --- |
 | In progress | `accent` | Active and blocked steps: `detail` what the step changes, from its ledger entry, `tag` the plan's title when the task has several plans, `status` "Blocked" toned `critical` when blocked, `meta` its estimate, adding "· <done> of <n> parts" for a step with parts, counting parts not skipped. Each question whose evidence is still owed: `title` the question, `detail` the evidence being gathered, `tag` "Question". |
-| Up next | — | Steps not started, in plan order, with `meta` as above and `tag` the plan's title when the task has several plans. |
+| Up next | `next` | Steps not started, in plan order, with `meta` as above and `tag` the plan's title when the task has several plans. |
 | Done | `good` | Finished steps, `meta` their measured duration. |
 
 - **`diagram` "Architecture diagram"**: one diagram covering every pull request the page covers, so
