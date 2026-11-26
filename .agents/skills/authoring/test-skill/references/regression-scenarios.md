@@ -69,9 +69,10 @@ The top-level keys appear in this order:
 
   `expected: []` when nothing launches.
 - `definitions`: a term each criterion uses, and each exclusion a measure applies.
-- `expected`: the criteria. Each entry has an `id`, a `claim`, and a `measure` or a `measure_ref`
-  naming another criterion's measure. Each may carry `on_fail: void` when a miss means the run tested
-  nothing else.
+- `expected`: the criteria. Each entry has an `id`, a `claim`, and a `measure`, a `measure_ref` or
+  both. A `measure_ref` is a mapping of `scenario` and `criterion` naming another criterion's
+  measure, and a `measure` beside it says how that measure applies to this run. Each may carry
+  `on_fail: void` when a miss means the run tested nothing else.
 - `history`: one flow mapping per change, each with these keys:
   - `date`: quoted;
   - `change`;
@@ -79,8 +80,8 @@ The top-level keys appear in this order:
   - `reason`, quoted when it holds a colon or a comma;
   - `cause` and `pull_request`, where **Changing An Expectation** asks for them.
 
-This example is the trial's stalled-seat scenario. Its fixture spec, prompt, actions and criteria are
-cut for space, and every key is kept:
+This example is cut from `subagent-matrix/tests/stalled-default-seat-moves-to-own-provider.yaml`. Its
+fixture spec, prompt, actions and criteria are shortened, and every key is kept:
 
 ```yaml
 schema: pinned-scenario/2
@@ -151,8 +152,8 @@ definitions:
 expected:
   - id: replace-then-cancel
     claim: The stalled launch is cancelled only once the replacement is accepted.
-    measure: A `cancel` on the Sol seat comes after the replacement launch whose trace.log output
-      reads accepted, and no cancel on the Sol seat precedes that acceptance.
+    measure: A `cancel` on the Sol seat exists and comes after the replacement launch whose trace.log
+      output reads accepted. No cancel on the Sol seat precedes that acceptance.
 
 history:
   - {date: "2026-11-25", change: added, by: pinned-scenario trial, reason: first pinned set}
@@ -179,15 +180,25 @@ history:
 ## Changing An Expectation
 
 - **Adding a scenario needs nothing more** than its `history` line.
-- **An `expected` entry or a `kind` changes or goes only in the pull request whose guidance diff
-  changes that behavior.** Its `history` line names that pull request in `pull_request` and gives the
-  reason, so a later reader can tell an intended change of behavior from a drifted test.
-- **A criterion found ambiguous or unworkable is rewritten by a fresh writer**, launched as
-  `subagent-matrix` says, one for every criterion awaiting a rewrite at that point.
-  - The writer reads the criterion and the guidance it tests, and never a reader's report or a grade,
-    so the new text measures the guidance rather than one run's answer.
-  - The `history` line carries `cause: test cause`.
-  - Every scenario the rewrite governs reruns fresh, and its earlier results are kept for the record.
+- **Every key but `history` changes by one of two routes, and by no other**, `expected` and `kind`
+  as much as `pins`, `reading_list`, `prompt`, `fixture`, `actions`, `subagents` and `definitions`.
+  Each change adds a `history` line on its route, so a later reader can tell an intended change of
+  behavior from a drifted test.
+  - **Behavior changed.** The change is made in the pull request whose guidance diff changes that
+    behavior, and its `history` line names that pull request in `pull_request` and gives the reason,
+    with no `cause`. Deleting a scenario file takes this route, in the pull request that removes the
+    behavior it holds.
+  - **Test cause.** A fresh writer's rewrite, whose `history` line carries `cause: test cause` and
+    claims no change of behavior.
+- **The test-cause route opens only on a grader's "ambiguous" return**, as **Criteria** says; a
+  "pass (note)" verdict, a pass carrying a reservation about the measure, counts as one.
+  - The writer, launched as `subagent-matrix` says, one for every criterion awaiting a rewrite at
+    that point, gets the criterion, the guidance it tests and the grader's two readings, and no
+    transcript text, so the new text measures the guidance rather than one run's answer.
+  - The rewritten criterion goes to an independent Diff gate, through `acceptance-gate`, before any
+    rerun.
+  - Every scenario the rewrite governs then reruns fresh, and its earlier results are kept for the
+    record.
 - **A measure is never loosened so that a run passes.** A miss the guidance caused is repaired in the
   guidance. A rewrite answers an ambiguity in what the measure says, never the verdict it gave.
 
@@ -213,5 +224,5 @@ history:
   text that also occurs in the fixture, or fixed template labels, so two graders apply it the same
   way.
 - **A grader that finds a measure admitting two readings returns "ambiguous" with both readings and
-  the verdict each gives**, and never chooses one. The criterion then goes to the fresh-writer
-  rewrite above.
+  the verdict each gives**, and never chooses one. The criterion then takes the test-cause route
+  in **Changing An Expectation**.

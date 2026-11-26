@@ -78,17 +78,18 @@ blocker, and its repair never holds the step. While such a launch is pending, th
 waits on one launch at a time and reads it 15 minutes after its brief; that read sets no limit on
 how long its siblings run. Once any sibling returns, the coordinator's very next call reads the
 other-provider launch's activity, before any wait on another launch. The replacement launches
-first: the stalled launch is cancelled only once the replacement is accepted, and left running if
-the replacement is refused.
+first. Once it is accepted, the stalled launch is cancelled. If the replacement is refused, the
+stalled launch is left running.
 
 - A provider or exact model the user or calling skill requires is honored: its launch is repaired
   or rerun within that requirement as the sections above say, never moved.
 - Inside **Ordinary Fallbacks** below, where the ladder reached the other provider because the
   session's own family at that level was refused as unsupported, a launch there that does not start
   goes on to the ladder's next step instead.
-- A capacity relaunch onto the other provider that stalls goes back to its own provider only if
-  that provider has cleared, as **A Capacity Refusal** reads it; otherwise it waits on whichever
-  permitted model the request path shows cleared first, never looping between the two.
+- A capacity relaunch onto the other provider that stalls goes back to the session's own provider,
+  which refused it, only once that provider has cleared, as **A Capacity Refusal** reads it;
+  otherwise it relaunches on whichever permitted model the request path shows cleared first, never
+  moving between the two.
 
 ## The Accepted Worker
 

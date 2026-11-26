@@ -48,8 +48,8 @@ alwaysApply: true
   installers. A change to execution, timing, installation, discovery, permissions or mutation
   scope is source work, as is everything else. The one exception is guidance true only once a
   still-open source pull request merges, which rides that pull request when this session opened it
-  and is otherwise held for it. The skill that edits guidance sets out how a pull request is
-  selected, opened and consolidated, and where that guidance goes.
+  or the user directs its continuation, and is otherwise held for it. The skill that edits guidance
+  sets out how a pull request is selected, opened and consolidated, and where that guidance goes.
 - **Every worker pushes to the branch of the pull request the work continues**, fetching and
   rebasing its unpushed commits onto the remote branch before each push. A branch per worker,
   integrated later, is the same split with the integration deferred.
@@ -63,10 +63,9 @@ alwaysApply: true
   request. Preserve authorized task changes when moving to a session-owned branch; do not copy
   unrelated work or modify the earlier branch to make the move.
 - **Never commit or push agent-authored changes directly to the default branch.** Select the pull
-  request as these bullets and the skill that edits guidance set out before keeping a checkout's
-  branch; when the checkout is on the default branch, detached, of the other kind, or owned by
-  another session without a continuation instruction, move to the selected branch or create a
-  descriptive non-default branch.
+  request as above before keeping a checkout's branch; when the checkout is on the default branch,
+  detached, of the other kind, or owned by another session without a continuation instruction, move
+  to the selected branch or create a descriptive non-default branch.
 - **Work is delivered only once the default branch holds it.** Before a pull request is called
   superseded, stale or done because another carries its change, or is recommended for closing or
   closed, read the base and commits of every open pull request in the repository: one whose base is

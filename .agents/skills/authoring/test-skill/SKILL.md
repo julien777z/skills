@@ -25,8 +25,9 @@ confuse those conclusions.
   pinned YAML scenarios in each skill's `tests/` folder that the diff touches, run beside the change
   check and never in place of it. The [regression scenarios reference](references/regression-scenarios.md)
   holds their format, which ones a diff selects, who may change an expectation, and their isolation
-  and criteria; read it when a round selects one, or when one is written or changed. The bullets below
-  set when a round runs and how a change check is sized.
+  and criteria. Run every regression scenario the diff selects, reading the reference's **When They
+  Run** in every round to select them, and the rest of it when one runs, is written or changes. The
+  bullets below set when a round runs and how a change check is sized.
 - **Run before merge for every behavior-changing skill, rule, or agent edit**, however it was
   made. A rule is reader guidance, so its source type never
   exempts it. An edit that changes what the skill returns the user runs against the concrete example
