@@ -809,6 +809,7 @@ CHART_ITEM_SHAPE: Final[ObjectShape] = ObjectShape(
         "figure": TEXT,
         "detail": TEXT,
         "tone": TONE,
+        "details": Field(check=check_section, typescript="Section"),
     },
     required=frozenset({"label", "value", "figure"}),
 )

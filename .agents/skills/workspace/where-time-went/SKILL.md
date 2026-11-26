@@ -66,13 +66,16 @@ pages, in order:
   as the detail. A `table` of where the time went: one row per top-level workflow, with its time and
   assessment, each row opening a short write-up of that workflow in a dialog: what it did, its
   outcome and its largest stages, as **What happened** names them.
-  A `chart` pie of working time by top-level workflow, a `tone` of `warning` on rework and detours.
+  A `chart` of working time by top-level workflow, a `tone` of `warning` on rework and detours,
+  each item opening the same write-up as its table row through `details`.
   Then **Observations**: an `outline` of what the agent concludes from every page, each item a
   headline with the figures behind it — where effort was wasted or repeated, what ran longer than
   its result needed, work outside what was asked, and a verdict on whether the time was justified
   for the task, said plainly, with the change that would have saved the most time. Each observation
   is the agent's judgment of the evidence, never a restatement of a figure, and names the page that
-  shows it.
+  shows it. A cause an observation states is traced, as the global rules require: one that says the
+  agents ignored guidance first reads when that guidance took effect, since a rule merged late in
+  the session governed only the work after it.
 - **Activity** (`activity`). Charts of the same working time cut other ways, each a whole as a pie
   or a comparison as bars: time by kind of activity — the model thinking and writing, running
   tests, waiting on other commands, Git and the hosting service, lint and type checks, reading
@@ -81,12 +84,19 @@ pages, in order:
   test, with each role's agent count as its `detail`; how many times each gate, review or council
   ran, as bars; and agents per exact model and version. A summed figure says in the chart's
   `description` that it is agent time, which runs past clock time where agents worked in parallel.
+  Every item opens what it sums through `details`: an activity its split by role and the agents
+  that spent the most on it, running tests also its whole-suite against targeted runs, its time
+  before and after any guidance change about when tests run, and its longest commands; a role its
+  launches with model and time; a model its launches by role.
 - **Scope** (`data`). What the work touched against what was asked. Per pull request, the concerns
   its commits carry, read from their messages and files, each with its file and line counts and
   whether the request, a standing requirement the user set, guidance the agents applied on their
-  own, or nothing asked for put it there; a `chart` of files changed per concern, the last two
-  kinds in `warning`; and a `table` of the commits outside what was asked, each opening its
-  write-up. Then what the agents read: files read per agent, as its median and its largest with
+  own, or nothing asked for put it there. A commit belongs to the concern its files serve, never
+  to its kind of edit alone: formatting or a lint fix on files the requested work wrote, or required
+  by a standing requirement, is that work. Each concern also counts its files that no requested
+  work touched, since that count, not the commit count, is how much it widened a review. A `chart`
+  of files changed per concern, the last two kinds in `warning`, each item opening its commits; and
+  a `table` of the concerns with both counts, each row opening its commits. Then what the agents read: files read per agent, as its median and its largest with
   who read it, and reads by repository and by area as charts, so a reader sees whether reviewers
   read the change or the whole tree.
 - **Loops** (`list`). One `tree`: each workflow, then its rounds or groups, then the agents or

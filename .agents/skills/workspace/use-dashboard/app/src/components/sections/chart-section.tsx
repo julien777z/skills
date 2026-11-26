@@ -1,15 +1,26 @@
-import type { ReactNode } from 'react';
+import { type KeyboardEvent, type ReactNode, useId, useRef, useState } from 'react';
 
+import { DialogOpener } from '@/components';
 import { Stack, Text } from '@/components/primitives';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { TONES } from '@/lib/tone';
-import { withKeys } from '@/lib/utils';
-import { type ChartItem, ChartKind, type ChartSection as ChartSectionSpec } from '@/spec';
+import { cn, withKeys } from '@/lib/utils';
+import { type ChartItem, ChartKind, type ChartSection as ChartSectionSpec, type Tone } from '@/spec';
 import { SectionCard } from './section-card';
+import { SectionDialog } from './section-dialog';
 
-const SERIES_COUNT = 8;
-const MUTED_COUNT = 4;
+/** The hue of each `--series-<n>` color, in order, so a chart can skip those close to a tone it uses. */
+const SERIES_HUES: readonly number[] = [235, 50, 170, 345, 205, 95, 15, 130];
+
+const TONE_HUES: Record<Tone, number> = { good: 152, warning: 75, critical: 22, accent: 250, done: 300 };
+
+const NEAR_TONE_DEGREES = 30;
+
 const RING_RADIUS = 15.9155;
+
 const RING_WIDTH = 5;
+
+const DIMMED = 'opacity-35';
 
 interface Slice {
   key: string;
@@ -18,21 +29,34 @@ interface Slice {
   share: number;
 }
 
+function hueDistance(first: number, second: number): number {
+  const distance = Math.abs(first - second) % 360;
+
+  return Math.min(distance, 360 - distance);
+}
+
+/** Series colors whose hue stays clear of every tone the chart uses, so a toned item stands out. */
+function seriesColorsFor(items: ChartItem[]): string[] {
+  const toneHues = items.flatMap((item) => (item.tone ? [TONE_HUES[item.tone]] : []));
+  const clear = SERIES_HUES.flatMap((hue, index) =>
+    toneHues.every((toneHue) => hueDistance(hue, toneHue) > NEAR_TONE_DEGREES) ? [`var(--series-${index + 1})`] : [],
+  );
+
+  return clear.length > 0 ? clear : ['var(--series-1)'];
+}
+
 function slicesOf(items: ChartItem[], kind: ChartKind): Slice[] {
   const total = items.reduce((sum, item) => sum + item.value, 0);
-  const toned = items.some((item) => item.tone);
-  let series = 0;
+  const series = seriesColorsFor(items);
+  let next = 0;
 
   return withKeys(items, (item) => item.label).map(({ key, item }) => {
-    const index = (series++ % SERIES_COUNT) + 1;
-    let color = `var(--series-${index})`;
+    let color = series[0];
 
     if (item.tone) {
       color = `var(--${TONES[item.tone].color})`;
-    } else if (kind === ChartKind.BAR) {
-      color = 'var(--series-1)';
-    } else if (toned) {
-      color = `var(--series-muted-${((index - 1) % MUTED_COUNT) + 1})`;
+    } else if (kind === ChartKind.PIE) {
+      color = series[next++ % series.length];
     }
 
     return { key, item, color, share: total > 0 ? item.value / total : 0 };
@@ -49,24 +73,78 @@ function Swatch({ color }: { color: string }): ReactNode {
   return <span aria-hidden className="mt-1 size-2.5 shrink-0 rounded-sm" style={{ backgroundColor: color }} />;
 }
 
-function Legend({ slices }: { slices: Slice[] }): ReactNode {
+interface Selection {
+  active: string | null;
+  setActive: (key: string | null) => void;
+  open: (slice: Slice, opener: HTMLOrSVGElement) => void;
+}
+
+function hoverProps(key: string, { setActive }: Selection) {
+  return {
+    onPointerEnter: () => setActive(key),
+    onPointerLeave: () => setActive(null),
+    onFocus: () => setActive(key),
+    onBlur: () => setActive(null),
+  };
+}
+
+function ItemLabel({ slice, selection }: { slice: Slice; selection: Selection }): ReactNode {
+  const label = (
+    <Text size="sm" weight="medium">
+      {slice.item.label}
+    </Text>
+  );
+
+  if (!slice.item.details) {
+    return label;
+  }
+
+  return (
+    <DialogOpener onOpen={(button) => selection.open(slice, button)} className="text-left hover:underline">
+      {label}
+    </DialogOpener>
+  );
+}
+
+function SliceTip({ slice, showShare }: { slice: Slice; showShare: boolean }): ReactNode {
+  return (
+    <TooltipContent>
+      <Stack gap="xs">
+        <Text size="sm" weight="medium">
+          {slice.item.label}
+        </Text>
+        <Text size="xs" numeric>
+          {showShare ? `${slice.item.figure} · ${percentOf(slice.share)}` : slice.item.figure}
+        </Text>
+        {slice.item.details && <Text size="xs">Click for details</Text>}
+      </Stack>
+    </TooltipContent>
+  );
+}
+
+function Legend({ slices, selection }: { slices: Slice[]; selection: Selection }): ReactNode {
   return (
     <ul className="grid min-w-0 flex-1 gap-2">
-      {slices.map(({ key, item, color, share }) => (
-        <li key={key} className="flex min-w-0 items-start gap-2">
-          <Swatch color={color} />
+      {slices.map((slice) => (
+        <li
+          key={slice.key}
+          {...hoverProps(slice.key, selection)}
+          className={cn(
+            'flex min-w-0 items-start gap-2 transition-opacity',
+            selection.active && selection.active !== slice.key && DIMMED,
+          )}
+        >
+          <Swatch color={slice.color} />
           <Stack gap="none">
             <span className="flex flex-wrap items-baseline gap-x-2">
-              <Text size="sm" weight="medium">
-                {item.label}
-              </Text>
+              <ItemLabel slice={slice} selection={selection} />
               <Text size="xs" tone="muted" numeric>
-                {item.figure} · {percentOf(share)}
+                {slice.item.figure} · {percentOf(slice.share)}
               </Text>
             </span>
-            {item.detail && (
+            {slice.item.detail && (
               <Text size="xs" tone="muted">
-                {item.detail}
+                {slice.item.detail}
               </Text>
             )}
           </Stack>
@@ -76,80 +154,161 @@ function Legend({ slices }: { slices: Slice[] }): ReactNode {
   );
 }
 
-function Pie({ slices, total }: { slices: Slice[]; total?: string }): ReactNode {
+function Pie({ slices, total, selection }: { slices: Slice[]; total?: string; selection: Selection }): ReactNode {
+  const hovered = slices.find(({ key }) => key === selection.active);
+  const ringId = useId();
+  const sliceAt = (target: EventTarget): Slice | undefined =>
+    target instanceof Element ? slices.find(({ key }) => key === target.getAttribute('data-slice')) : undefined;
+
+  /** Arrow keys walk the ring's slices, as the pointer does, and Enter opens the one selected. */
+  function handleKey(event: KeyboardEvent<HTMLDivElement>): void {
+    const index = slices.findIndex(({ key }) => key === selection.active);
+    const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[event.key];
+
+    if (step) {
+      event.preventDefault();
+      selection.setActive(slices[(index + step + slices.length) % slices.length].key);
+    } else if ((event.key === 'Enter' || event.key === ' ') && hovered?.item.details) {
+      event.preventDefault();
+      selection.open(hovered, event.currentTarget);
+    }
+  }
+
   let offset = 25;
 
   return (
     <div className="flex flex-col items-center gap-5 @md/card:flex-row @md/card:items-start">
-      <div className="relative size-40 shrink-0">
-        <svg
-          viewBox="0 0 42 42"
-          className="size-full"
-          role="img"
-          aria-label={slices.map(({ item }) => `${item.label} ${item.figure}`).join(', ')}
-        >
+      <div
+        className="relative size-40 shrink-0 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        role="listbox"
+        aria-label="Chart items"
+        aria-activedescendant={hovered ? `${ringId}-${slices.indexOf(hovered)}` : undefined}
+        tabIndex={0}
+        onKeyDown={handleKey}
+        onBlur={() => selection.setActive(null)}
+        onPointerOver={(event) => selection.setActive(sliceAt(event.target)?.key ?? null)}
+        onPointerLeave={() => selection.setActive(null)}
+        onClick={(event) => {
+          const slice = sliceAt(event.target);
+
+          if (slice?.item.details) {
+            selection.open(slice, event.currentTarget);
+          }
+        }}
+      >
+        <div className="sr-only">
+          {slices.map((slice, index) => (
+            <div
+              key={slice.key}
+              id={`${ringId}-${index}`}
+              role="option"
+              tabIndex={-1}
+              aria-selected={hovered?.key === slice.key}
+            >
+              {`${slice.item.label}: ${slice.item.figure}, ${percentOf(slice.share)}`}
+            </div>
+          ))}
+        </div>
+        <svg viewBox="0 0 42 42" className="size-full" aria-hidden>
           <circle cx="21" cy="21" r={RING_RADIUS} fill="none" stroke="var(--muted)" strokeWidth={RING_WIDTH} />
-          {slices.map(({ key, item, color, share }) => {
-            const length = share * 100;
-            const dash = `${length} ${100 - length}`;
+          {slices.map((slice) => {
+            const length = slice.share * 100;
             const dashOffset = offset;
 
             offset = (offset - length + 100) % 100;
 
             return (
-              <circle
-                key={key}
-                cx="21"
-                cy="21"
-                r={RING_RADIUS}
-                fill="none"
-                stroke={color}
-                strokeWidth={RING_WIDTH}
-                strokeDasharray={dash}
-                strokeDashoffset={dashOffset}
-              >
-                <title>{`${item.label}: ${item.figure} (${percentOf(share)})`}</title>
-              </circle>
+              <Tooltip key={slice.key}>
+                <TooltipTrigger asChild>
+                  <circle
+                    data-slice={slice.key}
+                    cx="21"
+                    cy="21"
+                    r={RING_RADIUS}
+                    fill="none"
+                    stroke={slice.color}
+                    strokeWidth={hovered?.key === slice.key ? RING_WIDTH + 1.5 : RING_WIDTH}
+                    strokeDasharray={`${length} ${100 - length}`}
+                    strokeDashoffset={dashOffset}
+                    className={cn(
+                      'transition-[opacity,stroke-width]',
+                      slice.item.details && 'cursor-pointer',
+                      hovered && hovered.key !== slice.key && DIMMED,
+                    )}
+                  />
+                </TooltipTrigger>
+                <SliceTip slice={slice} showShare />
+              </Tooltip>
             );
           })}
         </svg>
-        {total && (
-          <span className="absolute inset-0 flex items-center justify-center px-8 text-center">
-            <Text size="sm" weight="semibold" numeric>
-              {total}
-            </Text>
-          </span>
-        )}
+        <span className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-8 text-center">
+          {hovered ? (
+            <>
+              <Text size="xs" tone="muted">
+                {hovered.item.label}
+              </Text>
+              <Text size="sm" weight="semibold" numeric>
+                {percentOf(hovered.share)}
+              </Text>
+            </>
+          ) : (
+            total && (
+              <Text size="sm" weight="semibold" numeric>
+                {total}
+              </Text>
+            )
+          )}
+        </span>
       </div>
-      <Legend slices={slices} />
+      <Legend slices={slices} selection={selection} />
     </div>
   );
 }
 
-function Bars({ slices }: { slices: Slice[] }): ReactNode {
+function Bars({ slices, selection }: { slices: Slice[]; selection: Selection }): ReactNode {
   const largest = Math.max(...slices.map(({ item }) => item.value));
 
   return (
     <ul className="grid gap-3">
-      {slices.map(({ key, item, color }) => (
-        <li key={key} className="grid gap-1">
+      {slices.map((slice) => (
+        <li
+          key={slice.key}
+          {...hoverProps(slice.key, selection)}
+          className={cn('grid gap-1 transition-opacity', selection.active && selection.active !== slice.key && DIMMED)}
+        >
           <span className="flex min-w-0 items-baseline justify-between gap-3">
-            <Text size="sm" weight="medium">
-              {item.label}
-            </Text>
+            <ItemLabel slice={slice} selection={selection} />
             <Text size="xs" tone="muted" numeric>
-              {item.figure}
+              {slice.item.figure}
             </Text>
           </span>
-          <span className="block h-2 w-full overflow-hidden rounded-full bg-muted">
-            <span
-              className="block h-full rounded-full"
-              style={{ width: `${largest > 0 ? (item.value / largest) * 100 : 0}%`, backgroundColor: color }}
-            />
-          </span>
-          {item.detail && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                type="button"
+                tabIndex={-1}
+                aria-hidden
+                onClick={(event) => slice.item.details && selection.open(slice, event.currentTarget)}
+                className={cn(
+                  'block h-2 w-full overflow-hidden rounded-full bg-muted',
+                  slice.item.details ? 'cursor-pointer' : 'cursor-default',
+                )}
+              >
+                <span
+                  className="block h-full rounded-full"
+                  style={{
+                    width: `${largest > 0 ? (slice.item.value / largest) * 100 : 0}%`,
+                    backgroundColor: slice.color,
+                  }}
+                />
+              </button>
+            </TooltipTrigger>
+            <SliceTip slice={slice} showShare={false} />
+          </Tooltip>
+          {slice.item.detail && (
             <Text size="xs" tone="muted">
-              {item.detail}
+              {slice.item.detail}
             </Text>
           )}
         </li>
@@ -160,10 +319,33 @@ function Bars({ slices }: { slices: Slice[] }): ReactNode {
 
 export function ChartSection({ section }: { section: ChartSectionSpec }): ReactNode {
   const slices = slicesOf(section.items, section.kind);
+  const [active, setActive] = useState<string | null>(null);
+  const [opened, setOpened] = useState<Slice | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const opener = useRef<HTMLOrSVGElement | null>(null);
+  const selection: Selection = {
+    active,
+    setActive,
+    open: (slice, element) => {
+      opener.current = element;
+
+      setOpened(slice);
+      setDialogOpen(true);
+    },
+  };
 
   return (
     <SectionCard title={section.title} description={section.description}>
-      {section.kind === ChartKind.PIE ? <Pie slices={slices} total={section.total} /> : <Bars slices={slices} />}
+      <TooltipProvider>
+        {section.kind === ChartKind.PIE ? (
+          <Pie slices={slices} total={section.total} selection={selection} />
+        ) : (
+          <Bars slices={slices} selection={selection} />
+        )}
+      </TooltipProvider>
+      {opened?.item.details && (
+        <SectionDialog section={opened.item.details} open={dialogOpen} onOpenChange={setDialogOpen} opener={opener} />
+      )}
     </SectionCard>
   );
 }
