@@ -77,7 +77,9 @@ Shared tooling lives in the project's shared migration package (runner, revision
   and place substantial revision-specific logic in the project's revision-owned backfill package.
 - Generic backfill and rollback mechanics that know no project's schema, such as paging, measured
   progress, resumable checkpoints and running asynchronous code inside a revision, belong to the
-  schema-independent migration library **Migration Support Packages** defines. Keep one-off
+  schema-independent migration library **Migration Support Packages** defines. A mechanic that
+  reads the project's own models or catalogs moves from the revision-owned backfill package to the
+  project's shared backfill runtime package only when a second revision needs it. Keep one-off
   migration behavior in the revision-owned backfill package, never in that library or the
   project's shared backfill runtime package, since shared code outlives every revision.
 - **Data work is registered inside the revision that owns it**, the pull request's one unlocked
@@ -214,8 +216,9 @@ When a revision transforms values retained under **Data Scope**, read
 
 ## Migration Support Packages
 
-When placing a helper, fixture or temporary table, read [support packages](references/support-packages.md):
-it holds **Migration Support Packages**, **Where A Revision's Test Scaffolding Lives** and
+When placing a helper, fixture or temporary table, or deleting revision-owned code in a rebaseline,
+read [support packages](references/support-packages.md): it holds **Migration Support Packages**,
+including what a rebaseline keeps, **Where A Revision's Test Scaffolding Lives** and
 **Temporary Backfill Tables**.
 
 ## The Branched Migration Graph Problem

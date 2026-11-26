@@ -438,18 +438,18 @@ A chain, its registries and its tooling, held to one shape and no more machinery
   is corrected in place or by stacking; a create-then-rename across unapplied revisions collapses; a
   merge-of-main revision carrying unrelated operations is split or rebaselined; a hand edit to a
   generated revision is stated in the change.
-- **Tooling** — each piece of repository tooling around the migration library is weighed against
-  what the library already does and what its extension points can do: a rewriter, renderer or
-  post-processing pass is a finding when it restates the library's own output, or when the library's
+- **Tooling** — each piece of repository tooling around the migration framework is weighed against
+  what the framework already does and what its extension points can do: a rewriter, renderer or
+  post-processing pass is a finding when it restates the framework's own output, or when the framework's
   generation hooks — a render hook, a revision-directive hook, a custom template — can emit the same
   result as the revision is written. Read those hooks' documentation and the repository's current
-  use of them before keeping the pass. A runner that wraps the library's command with nothing added
+  use of them before keeping the pass. A runner that wraps the framework's command with nothing added
   is a finding too.
 
 The remedy is the one shape: re-pointed parents, regenerated headers and the shared helper in place
 of per-revision idioms, each only where **Applied Is What Makes History** allows editing that
-revision; the missing policy, hook or downgrade added; code moved to its owner, tooling the library
-makes redundant deleted with its callers switched to the library, and the repository's migration
+revision; the missing policy, hook or downgrade added; code moved to its owner, tooling the framework
+makes redundant deleted with its callers switched to the framework, and the repository's migration
 skill followed for every correction. Where project guidance says no environment keeps data, a chain
 grown long is collapsed into one baseline revision. Left alone: an applied revision's body, which
 is corrected only by stacking; and the schema the chain produces — its nullability, keys and
