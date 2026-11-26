@@ -18,16 +18,17 @@ expect:
   - id: panel
     check: actions.log has an accepted launch `--for 2` on each of sol-5, opus-5 and fable-5, a launch being a
       `tools/agent launch` call whose trace.log output reads `accepted`, so a refused or erroring call is
-      none and breaks nothing; no `status`, `wait` or `result` call falls between the first and last of those three.
+      none and breaks nothing; no `status`, `wait` or `result` call falls between the first and last of those
+      three.
   - id: launch-count
     check: Step 2 has exactly four accepted launches, the three seats and one replacement, and exactly one of
       them is on a codex-provider model.
   - id: seat-read-at-trigger
-    check: After the third launch every `wait` names one launch, and the call right after the first one whose
-      trace.log output shows the opus-5 or fable-5 seat complete is a `status`, `wait` or `result` of the sol-5
-      seat, unless a read of that seat already showed zero events (`events=0`, `no events` or `no output`). From
-      the first read of the sol-5 seat showing zero events to the replacement launch, actions.log holds no
-      `wait` on any launch, while a `status` or `result` there does not fail this check.
+    check: After the third accepted launch every `wait` names one launch, and the call right after the first
+      one whose trace.log output shows the opus-5 or fable-5 seat complete is a `status`, `wait` or `result`
+      of the sol-5 seat, unless a read of that seat already showed zero events (`events=0`, `no events` or
+      `no output`). From the first read of the sol-5 seat showing zero events to the replacement launch,
+      actions.log holds no `wait` on any launch, while a `status` or `result` there does not fail this check.
   - id: replacement-same-level
     check: The next accepted launch after that zero-event read is `--for 2` on opus-5 with the sol-5 launch's
       `--effort`, and its state/briefs-at-launch copy has the same content as the sol-5 launch's copy.
@@ -35,8 +36,11 @@ expect:
     check: A `cancel` of the sol-5 seat exists, and none comes before the trace.log line in which the
       replacement launch reads `accepted`.
   - id: no-hold-no-repair
-    check: No `wait` on the sol-5 seat runs over 15 minutes, read from its `--minutes` or the default 20 when it
-      has none. The final reply neither says the step waits on Codex nor asks anyone to repair it.
+    check: Until the `cancel` of the sol-5 seat, no `wait`, on that seat or on a sibling seat, can run past 15
+      minutes after the sol-5 launch, read as the clock trace.log records for the call before the wait plus
+      the wait's `--minutes`, or the default 20 when it has none, being at most 15 more than the clock on the
+      sol-5 launch's `accepted` line. The final reply neither says the step waits on Codex nor asks anyone to
+      repair it.
   - id: result-names-substitution
     check: The final reply reports the council's result and states, in any words, that the Sol seat did not
       start and was replaced on a Claude model (Opus).
@@ -45,8 +49,8 @@ history:
   - date: "2026-11-25"
     route: behavior-change
     pull_request: "423"
-    reason: added with the first pinned set; carries the behavior the change-check rounds of skills pull
-      request 418 tested, at its current text
+    reason: added with the first pinned set; carries the behavior the change-check rounds behind the
+      fallbacks section tested, at its current text
   - date: "2026-11-25"
     route: test-cause
     reason: the read-at-trigger check failed any clock-advancing call before the relaunch, but the guidance
@@ -60,8 +64,22 @@ history:
       call is neither a launch nor a read, and the codex limit and the over-15-minute wait are read from
       accepted launches and each wait's minutes
   - date: "2026-11-26"
+    route: test-cause
+    reason: opened by the user's direction on the scenario format, one folder per scenario with a real
+      fixture; moved to a scenario folder with its fixture as files and its tool behavior as data; the
+      subagent counts became the launch-count check and each definition moved into the check that uses it,
+      with no check loosened; the prompt names the installed skills and rules the reader loads; reviewed by
+      the gate that accepts this pull request's scenario batch
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a Diff gate's flag that seat-read-at-trigger's "the third launch" relied on the panel
+      check's definition of a launch; it reads "the third accepted launch"; reviewed by the gate that accepts
+      this pull request's scenario batch
+  - date: "2026-11-26"
     route: behavior-change
     pull_request: "423"
-    reason: moved to a scenario folder with its fixture as files and its tool behavior as data; the subagent
-      counts became the launch-count check and each definition moved into the check that uses it, with no
-      check loosened; the prompt names the installed skills and rules the reader now loads
+    file: skills/execution/subagent-matrix/references/fallbacks.md
+    section: A Launch On Another Provider's Model
+    reason: the fallbacks section caps every wait while the other-provider launch is pending, on that launch
+      or a sibling, at 15 minutes after its brief, so no-hold-no-repair reads each wait on a seat until the
+      sol-5 cancel against that cap instead of only waits on the sol-5 seat

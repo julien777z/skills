@@ -36,17 +36,9 @@ expect:
       `# TODO: remove after launch`, which is also a line of repo/src/billing/invoice.py.
   - id: user-text-still-clean
     check: >-
-      Let U be the user's message in the prompt and T every send_message text plus the final reply, never a
-      reviewer_brief or ledger text, a word being a whitespace-separated token compared case-insensitively with
-      punctuation stripped from its two ends only (so src/billing/invoice.py is one word); first remove from T
-      each stretch of consecutive words that also occurs in a file under repo/ as the fixture holds it, each
-      repo/ file's path written with or without repo/ in front, and the Scope Statement's fixed labels as
-      edit-skill's Output spells them (such as "Beyond what you said, waiting for you:"), splitting T where
-      each stood. Then no run of four or more consecutive words of U remains in T; no quotation marks in T
-      enclose words of U outside what was removed; and no sentence of T names the user or their message as the
-      source of a statement and states what it said, by a that-clause, a colon, a quotation or a paraphrase,
-      as "you said TODO comments should never be committed" does and "I read your message before drafting the
-      rule below" does not.
+      This run passes the no-quote check of
+      user-facing-output/tests/correction-acknowledged-without-quoting, applied as written there to this
+      run's records, with one difference: no reviewer_brief or ledger text is part of T.
 
 history:
   - date: "2026-11-25"
@@ -54,9 +46,16 @@ history:
     pull_request: "423"
     reason: added with the first pinned set
   - date: "2026-11-26"
-    route: behavior-change
-    pull_request: "423"
-    reason: moved to a scenario folder with its fixture as files and its tool behavior as data; the U, span and
-      repository-line definitions moved into the checks that use them, the user-text check states in full the
-      no-quote check it pointed at in the correction scenario, and the empty subagent list became the
-      no-launch check, with no check loosened
+    route: test-cause
+    reason: opened by the user's direction on the scenario format, one folder per scenario with a real
+      fixture; moved to a scenario folder with its fixture as files and its tool behavior as data; the U, span
+      and repository-line definitions moved into the checks that use them, the user-text check states in full
+      the no-quote check it pointed at in the correction scenario, and the empty subagent list became the
+      no-launch check, with no check loosened; reviewed by the gate that accepts this pull request's scenario
+      batch
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a Diff gate's flag that the user-text check kept a copy of the correction scenario's
+      no-quote check that would drift from it; it names that check as its measure and states only that
+      reviewer_brief and ledger texts stay outside T; reviewed by the gate that accepts this pull request's
+      scenario batch

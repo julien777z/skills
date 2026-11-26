@@ -40,7 +40,8 @@ expect:
       what it said, by a that-clause, a colon, a quotation or a paraphrase, as "you said TODO comments should
       never be committed" does and "I read your message before drafting the rule below" does not.
   - id: says-what-changes
-    check: T names a rule against committing TODO comments and the guidance file or section it goes in.
+    check: A send_message text or the final reply names a rule against committing TODO comments and the
+      guidance file or section it goes in.
   - id: no-edit-no-question
     check: repo/src/billing/invoice.py is byte-identical to the fixture's copy, and no ask_user call asks which
       file or rule to change.
@@ -50,7 +51,7 @@ history:
     route: behavior-change
     pull_request: "423"
     reason: added with the first pinned set; the checks carry the repository-text and template-label
-      exclusions the round 2 and 3 rewrites of skills pull request 418 found
+      exclusions that criteria rewrites in the change-check rounds behind the no-quote rule found
   - date: "2026-11-25"
     route: test-cause
     reason: the no-quote check did not settle a phrase the user typed that is also in the repository line;
@@ -72,9 +73,15 @@ history:
       ruling on that run; the new example states none of the message's content and was written from the
       check and the guidance alone
   - date: "2026-11-26"
-    route: behavior-change
-    pull_request: "423"
-    reason: moved to a scenario folder with its fixture as files and its tool behavior as data; the U, T, word,
-      span, repository-text, removal, template-label and attribution definitions moved into the no-quote check,
-      the empty subagent list became the no-launch check and the checksummed file is read against the
-      fixture's copy, with no check loosened
+    route: test-cause
+    reason: opened by the user's direction on the scenario format, one folder per scenario with a real
+      fixture; moved to a scenario folder with its fixture as files and its tool behavior as data; the U, T,
+      word, span, repository-text, removal, template-label and attribution definitions moved into the no-quote
+      check, the empty subagent list became the no-launch check and the checksummed file is read against the
+      fixture's copy, with no check loosened; reviewed by the gate that accepts this pull request's scenario
+      batch
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a Diff gate's flag that says-what-changes used T, a term only the no-quote check
+      defines; it names the send_message texts and the final reply itself; reviewed by the gate that accepts
+      this pull request's scenario batch

@@ -35,8 +35,8 @@ reader here when a round selects them, and when one is written or changed.
     lists as `tools/<name>` and leaves `behavior.yaml` out of the agent's working directory.
   - The harness, every transcript and every grade stay private and untracked, because the
     repository keeps no test code.
-- **`scenario.yaml` parses with safe YAML loading and holds only the keys **Format** lists**, in
-  that order. Its `kind` is `happy`, `edge` or `negative`, and each `covers` entry names a file that
+- **`scenario.yaml` parses with safe YAML loading and holds only the keys Format lists**, in that
+  order. Its `kind` is `happy`, `edge` or `negative`, and each `covers` entry names a file that
   exists under `.agents/` and a section that file holds. Every date is quoted, so safe loading reads
   it as a string. A value holding a colon followed by a space, or a ` #`, goes in a block scalar or
   quotes.
@@ -50,10 +50,13 @@ reader here when a round selects them, and when one is written or changed.
 - `prompt`: the exact message the agent receives.
 - `expect`: the checks, each an `id` and a `check`. A check is one or two sentences measurable
   against what the run leaves behind: the tool log, the files written, the final reply. A term it
-  needs is defined inside the check that uses it, and how many subagents launch is a check like any
-  other.
+  needs is defined inside the check that uses it, or in another scenario's check the check names as
+  its measure, as **Checks** says, and how many subagents launch is a check like any other.
 - `history`: one entry per change, each a quoted `date`, a `route` of `behavior-change` or
-  `test-cause`, the `pull_request` for a behavior change only, and a `reason`.
+  `test-cause`, and a `reason`. A behavior-change entry also carries the `pull_request`, and, unless
+  it adds the scenario, the guidance `file` under `.agents/` and the `section` whose hunk in that
+  pull request changes what the edited check or fixture measures, in that order between `route`
+  and `reason`.
 
 This is one full scenario folder, invented for the example:
 
@@ -144,10 +147,12 @@ tools:
 ## When They Run
 
 - **A round runs every regression scenario its diff touches, beside the change check and never
-  instead of it.** A scenario is selected when either holds:
+  instead of it.** A scenario is selected when any of these holds:
   - a `covers` entry names a changed file;
   - it belongs to a skill that reads a changed skill: one that declares the changed skill or cites
-    it, as `skill-pass`'s **Source Check** lists readers.
+    it, as `skill-pass`'s **Source Check** lists readers;
+  - a changed file is guidance every session loads, `.agents/global.md` or a rule with
+    `alwaysApply: true`, which selects every scenario.
 - **Each selected scenario gets one reader and runs with no control**, since it asks only whether
   the skill still does what its scenario says. The scenarios join the round's grader batches of up
   to eight. So a round adds one reader per selected scenario and no writer, and its count grows only
@@ -167,22 +172,30 @@ tools:
   `behavior.yaml` included. Each change adds a `history` entry on its route, so a later reader can
   tell an intended change of behavior from a drifted test.
   - **Behavior change.** The change is made in the pull request whose guidance diff changes that
-    behavior, and its entry names that pull request in `pull_request` and gives the reason.
-    Deleting a scenario folder takes this route, in the pull request that removes the behavior it
-    holds.
+    behavior. Its entry names that pull request in `pull_request`, and in `file` and `section` the
+    guidance whose hunk there changes what the edited check or fixture measures, and gives the
+    reason. Deleting a scenario folder takes this route, in the pull request that removes the
+    behavior it holds.
   - **Test cause.** A fresh writer's rewrite, whose entry claims no change of behavior and carries
-    no `pull_request`.
-- **The test-cause route opens only on a grader's "ambiguous" return**, as **Checks** says; a
-  "pass (note)" verdict, a pass carrying a reservation about the check, counts as one.
-  - The writer, launched as `subagent-matrix` says, one for every check awaiting a rewrite at that
-    point, gets the check, the guidance it tests and the grader's two readings, and no transcript
-    text, so the new text measures the guidance rather than one run's answer.
-  - The rewritten check goes to an independent Diff gate, through `acceptance-gate`, before any
-    rerun.
-  - Every scenario the rewrite governs then reruns fresh, and its earlier results are kept for the
-    record.
+    no `pull_request`, `file` or `section`.
+- **The test-cause route opens on three things, and never on a run's miss**:
+  - a grader's "ambiguous" return, as **Checks** says; a "pass (note)" verdict, a pass carrying a
+    reservation about the check, counts as one;
+  - a review's or gate's flag on the check's or fixture's text;
+  - the user's direction about the scenario format.
+- **Every change to a check or fixture, on either route, goes to an independent Diff gate before
+  any rerun**, through `acceptance-gate`. For a behavior-change entry the gate confirms that the
+  named `file` and `section` have a hunk in that pull request changing what the edited check
+  measures; an entry it cannot confirm takes the test-cause route or is undone.
+- **A test-cause writer**, launched as `subagent-matrix` says, one for every check awaiting a
+  rewrite at that point, gets the check, the guidance it tests and what opened the route — the
+  grader's two readings, the flag, or the user's direction — and no transcript text, so the new text
+  measures the guidance rather than one run's answer.
+- **Every scenario a change governs then reruns fresh**, every scenario whose check names a
+  rewritten check as its measure included, and its earlier results are kept for the record.
 - **A check is never loosened so that a run passes.** A miss the guidance caused is repaired in the
-  guidance. A rewrite answers an ambiguity in what the check says, never the verdict it gave.
+  guidance. A rewrite answers what opened its route in what the check says, never the verdict a run
+  got.
 
 ## Isolation
 
@@ -207,8 +220,13 @@ tools:
 - **A check reads recorded artifacts**: the tool log, the tool outputs, the resulting files against
   the fixture's copies, a sent message, the transcript's launches, the final reply. It never asks for
   the grader's impression of what the reader meant.
-- **Every term and exclusion a check applies is settled inside that check**, such as text that also
-  occurs in the fixture, or fixed template labels, so two graders apply it the same way.
+- **Every term and exclusion a check applies is settled inside that check**, or in the check it
+  names as its measure, such as text that also occurs in the fixture, or fixed template labels, so
+  two graders apply it the same way.
+- **A check may name another scenario's check as its measure**, by the scenario's id and the check's
+  `id`, and state only how its own text differs, so one measure is never kept as two copies that
+  drift. The grader of the naming scenario receives the named `scenario.yaml` too, and a rewrite of
+  the named check reruns every scenario that names it.
 - **A grader that finds a check admitting two readings returns "ambiguous" with both readings and
   the verdict each gives**, and never chooses one. The check then takes the test-cause route in
   **Changing A Scenario**.

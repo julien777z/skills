@@ -27,23 +27,30 @@ expect:
       after the span are allowed.
   - id: outcome-within-requirement
     check: The final reply names no claude-provider model's output as the check's result, and states either
-      the sol-5 reviewers' findings or that they showed no activity and the check is incomplete.
+      the sol-5 reviewers' findings or that they showed no activity and the check is incomplete or its
+      requirement unmet.
 
 history:
   - date: "2026-11-25"
     route: behavior-change
     pull_request: "423"
-    reason: added with the first pinned set; the fixture refuses a missing brief file, which round 3 of the
-      change check of skills pull request 418 found it accepting
+    reason: added with the first pinned set; the fixture refuses a missing brief file, which a round of the
+      change check behind the fallbacks section found it accepting
   - date: "2026-11-26"
-    route: behavior-change
-    pull_request: "423"
-    reason: the fallbacks section this pull request adds honors a required provider and never moves its
-      launch, so the outcome check reads the final reply for a claude-provider result and for the sol-5
-      outcome instead of the grader's impression; provider and level folded into the reviewer role
+    route: test-cause
+    reason: opened by a Diff gate's flag that the outcome check asked for the grader's impression; the
+      fallbacks section honors a required provider and never moves its launch, so the outcome check reads
+      the final reply for a claude-provider result and for the sol-5 outcome; provider and level folded into
+      the reviewer role; reviewed by the gate that accepts this pull request's scenario batch
   - date: "2026-11-26"
-    route: behavior-change
-    pull_request: "423"
-    reason: moved to a scenario folder with its fixture as files and its tool behavior as data; the subagent
-      count and the zero-Claude limit were already the panel-on-codex and never-moved checks, with no check
-      loosened; the prompt names the installed skills and rules the reader now loads
+    route: test-cause
+    reason: opened by the user's direction on the scenario format, one folder per scenario with a real
+      fixture; moved to a scenario folder with its fixture as files and its tool behavior as data; the
+      subagent count and the zero-Claude limit were already the panel-on-codex and never-moved checks, with
+      no check loosened; the prompt names the installed skills and rules the reader loads; reviewed by the
+      gate that accepts this pull request's scenario batch
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a Diff gate's flag that the outcome check had become narrower, failing a reply that
+      states the check's requirement unmet rather than the check incomplete; it accepts either statement;
+      reviewed by the gate that accepts this pull request's scenario batch

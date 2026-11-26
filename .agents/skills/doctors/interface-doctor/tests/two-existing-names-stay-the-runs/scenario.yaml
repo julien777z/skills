@@ -34,11 +34,13 @@ history:
     pull_request: "423"
     reason: added with the first pinned set
   - date: "2026-11-26"
-    route: behavior-change
-    pull_request: "423"
-    reason: the fifteen src/pages/ files were listed as the checksummed files the Format reads as a list
+    route: test-cause
+    reason: opened by a Diff gate's flag that the checksummed value described the files instead of listing
+      them as the Format then read it; the same fifteen src/pages/ files were listed, with no check loosened;
+      reviewed by the gate that accepts this pull request's scenario batch
   - date: "2026-11-26"
-    route: behavior-change
-    pull_request: "423"
-    reason: moved to a scenario folder with its fixture as files and its tool behavior as data; the empty
-      subagent list became the no-launch check, with no check loosened
+    route: test-cause
+    reason: opened by the user's direction on the scenario format, one folder per scenario with a real
+      fixture; moved to a scenario folder with its fixture as files and its tool behavior as data; the empty
+      subagent list became the no-launch check, with no check loosened; reviewed by the gate that accepts
+      this pull request's scenario batch

@@ -48,8 +48,8 @@ history:
   - date: "2026-11-25"
     route: behavior-change
     pull_request: "423"
-    reason: added with the first pinned set; carries the fit-fix definition the round 1 rewrite of skills pull
-      request 418 added
+    reason: added with the first pinned set; carries the fit-fix definition a criteria rewrite in the
+      change-check rounds of the interface-doctor change added
   - date: "2026-11-25"
     route: test-cause
     reason: the report check did not say whether a capture named by its width counts; interface-doctor's
@@ -60,17 +60,22 @@ history:
   - date: "2026-11-26"
     route: behavior-change
     pull_request: "423"
+    file: skills/doctors/interface-doctor/SKILL.md
+    section: Report Additions
     reason: interface-doctor's Report Additions names each capture shown by its file, so a capture is named
       only by its file name and no longer by a page and width
   - date: "2026-11-26"
     route: behavior-change
     pull_request: "423"
+    file: skills/doctors/interface-doctor/SKILL.md
+    section: Report Additions
     reason: interface-doctor's Report Additions asks for the file of each capture shown for a decision named
       inside that entry, never only as a count or a list kept elsewhere, so the report check reads capture
       names inside each entry, run decisions included, and rejects a count or a separate list
   - date: "2026-11-26"
-    route: behavior-change
-    pull_request: "423"
-    reason: moved to a scenario folder with its fixture as files and its tool behavior as data; the fit-fix and
-      capture-name definitions moved into the checks that use them, the empty subagent list became the
-      no-launch check and the checksummed files are read against the fixture's copies, with no check loosened
+    route: test-cause
+    reason: opened by the user's direction on the scenario format, one folder per scenario with a real
+      fixture; moved to a scenario folder with its fixture as files and its tool behavior as data; the fit-fix
+      and capture-name definitions moved into the checks that use them, the empty subagent list became the
+      no-launch check and the checksummed files are read against the fixture's copies, with no check
+      loosened; reviewed by the gate that accepts this pull request's scenario batch
