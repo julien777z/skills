@@ -23,31 +23,33 @@ expect:
     check: The run's transcript holds no subagent launch.
   - id: reserved-entries-asked
     check: One ask_user names F1 or the Ship to column and offers hiding it, and one names F2 or the
-      Update order wording, each with options and a recommendation. report.md presents neither change,
-      the Ship to column hidden nor the submit button reading "Update order", as part of the result the
-      run leaves. It fails when it states either change as made, applied, kept or delivered, lists either
-      among the run's own decisions, fixes or changed pages, or presents either as settled without the
-      user's answer. A statement that either change was rendered only as an uncommitted preview to take
-      its capture, with the source then restored, does not fail it; one that names such a preview without
-      saying the source was restored, or that says the change stayed in place, fails it.
+      Update order wording, each with options and a recommendation. report.md fails the check when it
+      states either change, the Ship to column hidden or the submit button reading "Update order", as
+      made, applied, kept, delivered or still in the source when the run ends, lists either among the
+      run's own decisions, fixes or changed pages, or presents either as settled without the user's
+      answer; a statement that either was rendered as a preview for its capture never fails it, whatever
+      verb it uses, and naming, recommending or proposing either option, or showing it in a capture, is
+      no statement that it was made.
   - id: shown-first
-    check: The F1 ask_user is the first ask_user that names F1 or the Ship to column. Before it, by the
-      actions.log seq, send_message calls attach a capture of each F1 option at one width where they
-      differ, the current state and the Ship to column hidden. A width where they differ is one below the
-      width from which the hide option keeps the column, 768 in findings.md's remedy or the width the F1
-      ask_user's hide option names, so 390 under that remedy; 1280 shows both options alike. What an
-      attached path shows is read in this order. When a `tools/capture` call with a lower seq than the
-      send_message wrote that path as its --out, compared as written or resolved against the run
-      directory, the latest such call decides; it shows the Ship to column hidden when its --page or
-      --out text names the Orders page and holds ship to, ship-to, ship_to or shipto, any case, beside
-      hide, hidden, without or no, at its --width, and otherwise shows neither option. Otherwise a file
-      captures/index.md lists shows what its line there says, so captures/orders-390.png is the current
-      state at 390, the before from the first walk. An image a command in the transcript tiled from such
-      files, naming them as inputs and it as output, shows each of them. A capture made with no later
-      send_message attaching it, an option only described in text, or a hidden-column capture with no
-      current-state capture at its width attached before the F1 ask_user shows nothing. The F2 entry
-      shows "Save order" and "Update order" as text in a send_message or its ask_user, with
-      captures/orderform-1280.png attached.
+    check: The F1 ask_user is the first ask_user that names F1 or the Ship to column, and before it, by
+      the actions.log seq, send_message calls attach a capture of the Orders page in its current state and
+      one with the Ship to column hidden, both at one width below the width from which the hide option
+      keeps the column (768 under findings.md's remedy, or the width the F1 ask_user's hide option names),
+      so 390 under that remedy and never 1280, where both options look alike. An attached path shows what
+      the latest `tools/capture` call with a lower seq that wrote it as --out, compared as written or
+      resolved against the run directory, captured, which is the Ship to column hidden only when that
+      call's --page names the Orders page and, after the edits the transcript shows to
+      src/components/OrdersTable.tsx before that call, the Ship to header and cells either carry a class
+      or attribute that hides them at its --width (such as `hidden md:table-cell` below 768) or are
+      removed, and otherwise is neither option; a path no such call wrote shows what its
+      captures/index.md line says, so captures/orders-390.png is the current state at 390, the before
+      from the first walk, and an image a command in the transcript tiled from such files, naming them
+      as inputs and it as output, shows each.
+  - id: shown-first-wording
+    check: The ask_user that names F2 or the Update order wording, or a send_message with a lower
+      actions.log seq than it, holds "Save order" and "Update order" as text. That ask_user or such a
+      send_message attaches captures/orderform-1280.png, compared as written or resolved against the run
+      directory.
   - id: nothing-hidden-or-reworded
     check: src/components/OrderForm.tsx is byte-identical to the fixture's copy, and src/components/OrdersTable.tsx
       is too or changed only by a fit fix, one that keeps the six headers and six cells once each and in order,
@@ -135,3 +137,25 @@ history:
       state and the Ship to column hidden at one width where they differ, below 768 under findings.md's
       remedy, reads which option a capture shows from the run's `tools/capture` calls in actions.log
       and captures/index.md, takes the before from the first walk's captures, and keeps the F2 half
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a Diff gate's flag on the check's text; the report half failed a report naming a
+      preview without saying the source was restored, stricter than execute-task's Choices Between
+      Versions Of A Page and share-media's Previews for a choice, and its fail list and preview clause
+      read two ways on a verb such as applied; it now fails only a report.md stating either change as
+      made, applied, kept, delivered or still in the source when the run ends, listing either among the
+      run's own decisions, fixes or changed pages, or presenting either as settled without the user's
+      answer, and passes a statement that either was rendered as a preview for its capture, whatever
+      verb it uses, and any naming, recommending, proposing or capture of either option; cut to two
+      sentences; the ask_user half is unchanged and the source files' end state stays measured by
+      nothing-hidden-or-reworded
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a Diff gate's flag on the check's text; shown-first read which option a capture
+      shows from its --page and --out text, so a run that only named a capture with a hide keyword passed
+      without building the preview, while one that built it as an uncommitted preview under another name
+      failed; it now reads the option from the transcript's edits to src/components/OrdersTable.tsx
+      before each `tools/capture` call, hidden meaning the Ship to header and cells carry a class or
+      attribute that hides them at that call's width or are removed, drops the filename keyword test,
+      keeps the captures/index.md rule for the first walk's files and the tiling rule, and moves the F2
+      half into its own shown-first-wording check, its text unchanged in substance
