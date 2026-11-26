@@ -389,8 +389,8 @@ as **Scattered Structure**'s renumbering is, and delete a symbol only tests
 consume together with those tests, as the `python-boundaries.md` rule says of dead code. Left
 alone: a genuinely optional third-party field; failover between live providers; a non-temporal
 second strategy; a catch that compensates and re-raises; a cancellation carve-out; a pattern the
-repository's rules prescribe by name; a member a stored row or a third-party producer can still
-supply; a branch a caller outside the audited scope still reaches; a check after a lock, a
+repository's rules prescribe by name; a member or branch required by the current owned or
+third-party contract; a check after a lock, a
 transaction start or an `await`, where the value can change in that window; a guard on a
 data-fetching library's loading slot; a component primitive that works controlled or uncontrolled;
 a name a framework prescribes; a symbol tests call as support, which another doctor moves to test
