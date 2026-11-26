@@ -365,10 +365,11 @@ next wave in the same turn. A genuine gate holds only its dependent work.
 ## Run Repository-Native Checks
 
 Once the last group lands, run on the final head, once: the pre-push checks the GitHub rule's
-**Pre-Push Gate** defines, the baseline checks from **Measure Before Fan-Out**, and any further
-repository-native check applicable to the changed files and their consumers: formatting, static
-analysis, tests, builds, code generation, and contract checks. Report a check category that is not
-configured rather than inventing one.
+**Pre-Push Gate** defines, the baseline push checks from **Measure Before Fan-Out**, and any further
+repository-native push check applicable to the changed files and their consumers: formatting,
+static analysis, builds, code generation, and contract checks. Test suites wait for the run's end,
+after **Accept The Complete Diff**, as **Behavioral verification runs once** says. Report a check
+category that is not configured rather than inventing one.
 
 Then take every measure again and rerun the mechanical pre-pass. Each instance a measure of defect
 candidates still counts is matched to a ledger entry that retains it: kept with a reason, declined,

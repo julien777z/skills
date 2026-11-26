@@ -20,6 +20,7 @@ from validate_sources import (
 SCENARIO_FILENAME: Final[str] = "scenario.yaml"
 FIXTURE_DIRNAME: Final[str] = "fixture"
 SCENARIO_KEYS: Final[tuple[str, ...]] = ("title", "kind", "covers", "prompt", "expect", "history")
+TEXT_KEYS: Final[tuple[str, ...]] = ("title", "prompt")
 EXPECT_KEYS: Final[tuple[str, ...]] = ("id", "check")
 ADDING_ENTRY_KEYS: Final[tuple[str, ...]] = ("date", "route", "pull_request", "reason")
 BEHAVIOR_CHANGE_ENTRY_KEYS: Final[tuple[str, ...]] = (
@@ -38,7 +39,16 @@ def listed_files(agents_dir: Path) -> set[Path]:
     """Return the files Git tracks or would track under a directory, leaving out ignored ones."""
 
     listing = subprocess.run(
-        ["git", "-C", str(agents_dir), "ls-files", "-z", "--cached", "--others", "--exclude-standard"],
+        [
+            "git",
+            "-C",
+            str(agents_dir),
+            "ls-files",
+            "-z",
+            "--cached",
+            "--others",
+            "--exclude-standard",
+        ],
         check=True,
         stdout=subprocess.PIPE,
         text=True,
@@ -241,6 +251,12 @@ def scenario_problems(folder: Path, package: Path, agents_dir: Path, files: set[
 
     kinds = ", ".join(kind.value for kind in ScenarioKind)
     problems = [] if scenario["kind"] in ScenarioKind else [f"`kind` is not one of {kinds}"]
+
+    problems += [
+        f"`{field}` is not nonempty text"
+        for field in TEXT_KEYS
+        if not isinstance(scenario[field], str) or not scenario[field].strip()
+    ]
 
     problems += covers_problems(scenario["covers"], agents_dir, package)
     problems += expect_problems(scenario["expect"])

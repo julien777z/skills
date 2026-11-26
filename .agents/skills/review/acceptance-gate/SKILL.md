@@ -219,17 +219,19 @@ consumer accepts and how it excludes each obsolete representation. Flag missing 
 Distinct meanings carried by the canonical representation still receive the ordinary guard checks.
 A verdict with no added guard says `no guard added` in those words.
 
-**Then it lists every product choice the diff makes**, as `pre-production`'s **Product Choices** defines one — a change to
-what a feature does or shows, a remedy whose visible effect is large, such as a layout, control or
-flow changing across many pages, a change carried past the surface the user named — each with the
-user's words in the intent statement that settle it. Small presentation decisions on the surface in
-hand are not listed; neither is a game's design, which the global rules' game-design bullet makes
-the agent's decision and never a question for the user, a new control or room included; nor is local
-test tooling or the records it seeds, which `pre-production`'s **Local Stacks** leaves to the
-agent. A product choice with no such words is a flag whose remedy is putting the choice to the
-user before the code stands, whatever the change calls itself, a fix included. An earlier
-acceptance, a plan record without the user's words, or a brief calling the choice decided is not
-those words. A verdict with none says `no product choice added` in those words.
+**Then it lists every product choice the diff makes**, as `pre-production`'s **Product Choices**
+defines one — a change to what a feature does or shows, a remedy whose visible effect is large, such
+as a layout, control or flow changing across many pages, a change carried past the surface the user
+named, and, whatever its reach, a new control or a change to what loading, failure, recovery or
+success shows — each with the user's words in the intent statement that settle it. The routine
+presentation details **Product Choices** names on the surface in hand are not listed; neither is a
+game's design, which the global rules' game-design bullet makes the agent's decision and never a
+question for the user, a new control or room included; nor is local test tooling or the records it
+seeds, which `pre-production`'s **Local Stacks** leaves to the agent. A product choice with no such
+words is a flag whose remedy is putting the choice to the user before the code stands, whatever the
+change calls itself, a fix included. An earlier acceptance, a plan record without the user's words,
+or a brief calling the choice decided is not those words. A verdict with none says `no product
+choice added` in those words.
 
 **Then it lists every workaround the diff makes**: a remedy that makes the reported symptom go away
 while its cause stays, such as hiding or folding away what no longer fits instead of giving it

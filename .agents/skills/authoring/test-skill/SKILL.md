@@ -132,25 +132,26 @@ Run after `code-simplify` completes its pass.
    reach the intended records. This checks the fixture contract, not the reader's decisions or the
    comparison's expected result. Reuse that receipt while its implementation and interface inputs
    remain unchanged; repair and recheck a changed contract before spending reader runs on it.
-3. **Freeze the inputs and criteria.** Save the scenario, environment baseline, reading list,
-   edited guidance, any required original guidance, and the observable pass criteria needed to judge
-   each scenario in private task evidence storage through `session-ledger` before dispatch. Criteria measure actions, resulting state or
-   substantiated findings, not recitation of new wording, and name each step the workflow under
-   test requires: a run that compressed, merged or skipped one misses it however right its end
-   result looks. **The frozen scenario and criteria text is the writer's output as it stands**,
-   with at most a line naming the file, scenario or digest: the coordinator never shortens,
-   restates, completes, reorders, drops or adds a scenario line or criterion, however unworkable
-   one looks. Criteria are never amended once a result is seen; a criterion found ambiguous or
-   unworkable, by anyone and whenever, is rewritten by one fresh scenario writer launched for every
-   criterion awaiting a rewrite at that point, given step 1's inputs and those criteria, never a
-   reader's report or a grade. A grader's ambiguity verdict starts that rewrite even when an earlier
-   one ran, and a replacement still unworkable goes back the same way with what is wrong, within
-   step 7's round limit; until a valid one arrives the criterion stays frozen as written. Every
-   scenario a replacement governs reruns fresh, its earlier results kept for the record and never
-   rescored. Use the branch copy and, when required,
-   the original from the freshly fetched default branch. Record their revisions or content digests. Give every
-   required control an equivalent independent environment so neither run inherits the other's
-   mutations or reports.
+3. **Freeze the inputs and criteria.** Save the scenario, environment baseline, reading list, edited
+   guidance, any required original guidance, and the observable pass criteria needed to judge each
+   scenario in private task evidence storage through `session-ledger` before dispatch. Criteria
+   measure actions, resulting state or substantiated findings, not recitation of new wording, and
+   name each step the workflow under test requires: a run that compressed, merged or skipped one
+   misses it however right its end result looks. **The frozen scenario and criteria text is the
+   writer's output as it stands**, with at most a line naming the file, scenario or digest: the
+   coordinator never shortens, restates, completes, reorders, drops or adds a scenario line or
+   criterion, however unworkable one looks. Criteria are never amended once a result is seen; a
+   change check's criterion found ambiguous or unworkable, by anyone and whenever, is rewritten by
+   one fresh scenario writer launched for every criterion awaiting a rewrite at that point, given
+   step 1's inputs and those criteria, never a reader's report or a grade. A grader's ambiguity
+   verdict starts that rewrite even when an earlier one ran, and a replacement still unworkable goes
+   back the same way with what is wrong, within step 7's round limit; until a valid one arrives the
+   criterion stays frozen as written. Every scenario a replacement governs reruns fresh, its earlier
+   results kept for the record and never rescored. A pinned regression scenario's check or fixture
+   changes only as the regression scenarios reference's **Changing A Scenario** says. Use the branch
+   copy and, when required, the original from the freshly fetched default branch. Record their
+   revisions or content digests. Give every required control an equivalent independent environment
+   so neither run inherits the other's mutations or reports.
 4. **Run the task.** Launch each scenario's edited-guidance reader in isolated resources and, when
    required above, its original-guidance control with identical instructions and independent
    resources. Agents perform the bounded task, including mutations inside their
@@ -204,7 +205,8 @@ Run after `code-simplify` completes its pass.
    active.
 8. **Report the verified result.** Send the tables and one evidence file in the **Output** shape.
    Describe the behavior verified in the pull request; claim improved behavior only where the
-   comparison demonstrates it. Scenario packages and raw evidence remain private, never committed.
+   comparison demonstrates it. Change-check scenario packages and raw evidence remain private,
+   never committed; a pinned regression scenario is committed beside its skill.
 
 ## Reviewer selection
 
