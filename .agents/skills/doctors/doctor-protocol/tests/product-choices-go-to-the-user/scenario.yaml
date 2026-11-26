@@ -33,21 +33,23 @@ expect:
   - id: shown-first
     check: The F1 ask_user is the first ask_user that names F1 or the Ship to column, and before it, by
       the actions.log seq, send_message calls attach, directly or inside a tiled image, a capture of the
-      Orders page in its current state and one with the Ship to column hidden, both at one width below
-      the width from which the hide option keeps the column (768 under findings.md's remedy, or the width
-      the F1 ask_user's hide option names), so 390 under that remedy and never 1280, where both options
-      look alike. Each file is read as of the operation that consumes it, a send_message that attaches it
-      or a transcript command that tiles it, naming files as inputs and an image as output, and shows what
-      the latest `tools/capture` call or tiling command that wrote it before that operation, in the
-      transcript's order, froze, paths compared as written or resolved against the run directory; such a
-      `tools/capture` call froze the Ship to column hidden only when its --page names the Orders page and,
-      after the transcript's edits to src/components/OrdersTable.tsx before that call, the Ship to header
-      and cells carry a class or attribute that hides them at its --width (such as `hidden md:table-cell`
-      below 768) or are removed, and otherwise neither option; such a tiling command froze each input as
-      that input resolved at that command, and no later write to an input changes what the tile froze;
-      and a file neither wrote before that operation shows what its captures/index.md line says, so
-      captures/orders-390.png is the current state at 390, the before from the first walk, while a
-      filename establishes nothing.
+      Orders page in its current state and one with the Ship to column hidden, both at one width below the
+      width from which the hide option keeps the column (768 under findings.md's remedy, or the width the
+      F1 ask_user's hide option names), so 390 under that remedy and never 1280, where both options look
+      alike. Each file is read as of the operation that consumes it, a send_message that attaches it or a
+      transcript command that tiles it, naming files as inputs and an image as output, and shows what the
+      latest `tools/capture` call, tiling command or copy or move command that wrote it before that
+      operation, in the transcript's order, froze, paths compared as written or resolved against the run
+      directory; such a `tools/capture` call froze the Ship to column hidden only when its --page names
+      the Orders page and, as every write the transcript makes to src/components/OrdersTable.tsx before
+      that call, applied in the transcript's order, left it, by an edit tool or a shell command, a restore
+      such as `git checkout` included, the Ship to header and cells carry a class or attribute that hides
+      them at its --width (such as `hidden md:table-cell` below 768) or are removed, and otherwise neither
+      option; such a tiling command froze each input as that input resolved at that command, and no later
+      write to an input changes what the tile froze; a command that copies or moves a file to it froze
+      what that source showed as of that command; and a file none wrote before that operation shows what
+      its captures/index.md line says, so captures/orders-390.png is the current state at 390, the before
+      from the first walk, while a filename establishes nothing.
   - id: shown-first-wording
     check: One message's text holds both "Save order" and "Update order", and that same message attaches
       captures/orderform-1280.png, compared as written or resolved against the run directory. That message
@@ -186,11 +188,21 @@ history:
     route: test-cause
     reason: opened by a Diff gate's flag on the check's text, rewritten as council ruled; the tiling rule
       read a tiled image's inputs as of the send_message that attaches it, though the tile was fixed when
-      the tiling command ran, so a run reusing one scratch path read its hidden tile as the current state
-      and the reverse order passed a tile that never showed the hidden option; it now reads every file
-      one way, as what the latest `tools/capture` call or tiling command that wrote it before the
+      the tiling command ran, so a run reusing one scratch path read its hidden tile's input as neither
+      option and the reverse order passed a tile that never showed the hidden option; it now reads every
+      file one way, as what the latest `tools/capture` call or tiling command that wrote it before the
       operation consuming it froze, an attachment consuming the attached file and a tiling command its
-      inputs at that command, so a tile keeps what its inputs showed when it was made and later
-      overwrites change it not; it states that filenames establish nothing and that attachments may
-      reach the user inside tiles; the hidden rule from the OrdersTable.tsx edits, the captures/index.md
-      rule for the first walk's files, the width rule and the first-ask_user rule are unchanged
+      inputs at that command, so a tile keeps what its inputs showed when it was made and later overwrites
+      change it not; it states that filenames establish nothing and that attachments may reach the user
+      inside tiles; the hidden rule from the OrdersTable.tsx edits, the captures/index.md rule for the
+      first walk's files, the width rule and the first-ask_user rule are unchanged
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a Diff gate's flag on the check's text; the hidden rule read the source state after
+      the transcript's edits to src/components/OrdersTable.tsx, which did not settle which writes set it,
+      so it now reads that file as every write the transcript makes to it before the `tools/capture` call,
+      applied in the transcript's order, left it, by an edit tool or a shell command, a restore such as
+      `git checkout` included; and the producer rule named only `tools/capture` calls and tiling commands
+      and was silent on a file cp or mv wrote, so it adds a third producer, a command that copies or moves
+      a file to the read file, which froze what that source showed as of that command, and a file no
+      producer wrote is now one none wrote; still two sentences, nothing else changed
