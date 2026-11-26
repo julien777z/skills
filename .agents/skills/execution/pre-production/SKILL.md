@@ -293,6 +293,11 @@ make the implementation fit. Keep the valid issue open while its decision waits,
 authorized work continuing as **Trade-Offs Are Surfaced, Never Enforced** says; never ask whether
 the issue should be ignored.
 
+- **Preserve established behavior outside a focused request.** Check the neighboring steps for
+  visible effects the user did not request, including what loads on open, what an explicit action
+  does, and how much information is available. Use the existing behavior and the user's examples
+  to resolve what should carry forward. If the request would require an unresolved product choice
+  about those steps, explain the visible effect and apply the decision rule above.
 - **What a product choice is.** It changes what the product does or offers: what a feature does or
   what information it shows, who a surface serves, the steps of a workflow or a quantity the reader
   meets, a new layout, control or surface, scope, a workaround for a constraint the user set, and
