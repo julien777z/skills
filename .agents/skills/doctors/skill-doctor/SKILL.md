@@ -423,11 +423,8 @@ reads the whole **Lenses** section; the grouping says who reports which checks.
   is left for a later run. No surviving sentence is the ground to cut; surviving sentences
   with no usage is the ground to fix the trigger first. Age, size, and a
   reference count on their own never cut a file.
-- **A passage is cut for restating the model only on a repeatable result**, as `skill-pass`'s
-  **Cutting A Passage** sets out. The trial runs at `subagent-matrix`'s standard capability level,
-  as that section says, with the bound the whole-file trial has: twice with the passage removed, a third time when the two disagree, and at
-  most five passages in a run. An untried candidate is reported and stays as written or is
-  reworded.
+- **A passage is cut for restating the model only on a repeatable result**, through the trial
+  `skill-pass`'s **Cutting A Passage** sets out, with its level, repeats and bound.
 - **A rewording is ordinary work however many files it reaches.** Because a rewording across the
   tree changes how the guidance reads everywhere, the report shows the `wording` counts for the
   tree and for the ten highest-ranked files, the number of passages under each verdict, and three

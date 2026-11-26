@@ -1,24 +1,24 @@
 # Regression Scenarios
 
-Contents: **The Two Kinds**, **Where They Live**, **Format** (with one full example), **When They
-Run**, **Changing A Scenario**, **Isolation**, **Checks**.
+Contents: **What A Scenario Holds**, **Where They Live**, **Format** (with one full example),
+**When They Run**, **Changing A Scenario**, **Isolation**, **Checks**.
 
 This reference is the skill test's rulebook for pinned regression scenarios. `SKILL.md` sends a
-reader here when a round selects them, and when one is written or changed.
+reader to **When They Run** every round, and to the rest when a scenario runs, is written or
+changes.
 
-## The Two Kinds
+## What A Scenario Holds
 
-- **A change check** asks whether a new guidance change holds up. Its scenarios are written fresh for
-  the change's failure classes, as **Workflow** in `SKILL.md` sets out, and stay in private task
-  evidence.
-- **A regression scenario** asks whether a skill still does what it did. It is committed beside the
-  skill, it must always pass, and it covers the skill's happy, edge and negative paths:
-  - an example execution;
-  - which subagents launch, and how many;
-  - what the run should find.
+`SKILL.md`'s **When It Runs** sets the change check beside the regression scenario. A regression
+scenario is committed beside its skill, must always pass, and covers the skill's happy, edge and
+negative paths:
 
-  The agent adds a regression scenario when a skill gains a behavior worth holding in place, and
-  changes one as **Changing A Scenario** allows.
+- an example execution;
+- which subagents launch, and how many;
+- what the run should find.
+
+The agent adds a regression scenario when a skill gains a behavior worth holding in place, and
+changes one as **Changing A Scenario** allows.
 
 ## Where They Live
 
@@ -41,11 +41,8 @@ reader here when a round selects them, and when one is written or changed.
   it as a string. A value holding a colon followed by a space, or a ` #`, goes in a block scalar or
   quotes.
 - **The source check enforces these rules.** `skill-pass`'s **Source Check** refuses a
-  `scenario.yaml` that breaks them or the history keys **Format** sets: a file that does not parse, a key missing, extra or out of order, a
-  `kind` outside the three, a `covers` file or heading that does not exist, an `expect` entry
-  without an `id` and a `check`, and a `history` entry whose date is not a string, whose route is
-  neither route, or whose keys do not match its route. The first entry is the one that adds the
-  scenario, on the behavior-change route with no `file` or `section`.
+  `scenario.yaml` that breaks them or **Format**'s, the first `history` entry included, which is
+  the one that adds the scenario, on the behavior-change route with no `file` or `section`.
 
 ## Format
 
@@ -152,17 +149,15 @@ tools:
 
 ## When They Run
 
-- **A round runs every regression scenario its diff touches, beside the change check and never
-  instead of it.** A scenario is selected when any of these holds:
+- **A round runs every regression scenario its diff touches.** A scenario is selected when any of
+  these holds:
   - a `covers` entry names a changed file;
   - it belongs to a skill that reads a changed skill: one that declares the changed skill or cites
     it, as `skill-pass`'s **Source Check** lists readers;
   - a changed file is guidance every session loads, `.agents/global.md` or a rule with `alwaysApply:
     true`, or a skill `global.md` **Skills that always run** starts, which selects every scenario.
 - **Each selected scenario gets one reader and runs with no control**, since it asks only whether
-  the skill still does what its scenario says. The scenarios join the round's grader batches of up
-  to eight. So a round adds one reader per selected scenario and no writer, and its count grows only
-  with the scenarios the diff selects.
+  the skill still does what its scenario says, and joins the round's grader batches.
 - **Each scenario passes or fails as a whole**, and passes only when every check passes.
 - **A miss blocks like a failing edited run.** It is diagnosed at its owner, repaired and rerun
   within **Repair and rerun until verified** in `SKILL.md`. A miss caused by the guidance is

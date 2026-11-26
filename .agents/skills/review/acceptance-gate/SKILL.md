@@ -376,19 +376,17 @@ it proposed itself.
   rule into the entry point every reader loads. Make the repair that reconsideration picks, and
   record why the earlier one could not hold.
 - **At the limit:** once 3 rounds have failed a change, whatever each raised, `council` in **Ask**
-  mode is asked what should happen next, as its **Ask** says of a disposition, with the change,
-  each round's findings, every repair tried with its evidence, and your candidates labelled as
-  yours, a different approach among them with how it departs from the repairs tried. Its ruling,
-  such as a different or simpler approach, a revert or an acceptance with the remaining findings
-  recorded, stays within the limit `council`'s **Ask** sets on what a ruling accepts. That decision
+  mode is asked what should happen next, as its **Ask** says of a disposition, with your
+  candidates, a different approach among them. Its ruling, such as a different or simpler
+  approach, a revert or an acceptance with the remaining findings recorded, stays within the limit
+  `council`'s **Ask** sets on what a ruling accepts. That decision
   replaces another repair, and an acceptance with recorded findings it makes is the one exception
   to the rules below on flagged diffs.
 - **Per flag:** while the change is under that limit, a flag gets at most two repair rounds of its
   own, and one a fresh gate raises for the first time starts at zero. A flag the gate still raises
   after its own second repair, with the change still under the limit, goes to `council` in **Ask**
-  mode, asked what should happen next with the open flag, each remedy tried and its evidence, and
-  as labelled candidates the gate's proposed remedy and the different approach the reconsideration
-  above found. Its ruling decides the remedy, which is applied and checked as any repair is, and
+  mode as a disposition, with the open flag, and as your candidates the gate's proposed remedy
+  and the different approach the reconsideration above found. Its ruling decides the remedy, which is applied and checked as any repair is, and
   the caller's result names the flag and the ruling. The verdict's other flags go on to their fresh
   gate meanwhile.
 - A flag the council returns as the user's choice goes to the user, as a report of those facts with

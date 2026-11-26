@@ -79,8 +79,9 @@ head before the gate repeats.
 
 ## Validation Exclusions
 
-An authorized merge is not held for an excluded check, as the GitHub rule's **Merge Authorization**
-says, and exclusions are applied before any failure is repaired.
+An authorized merge is not held for an excluded check, and none is rerun or waited on to get a
+green result. Each exclusion below is recorded with its evidence and applied before any failure is
+repaired.
 
 - **Waived, baseline and non-essential checks.** A failing check the current user explicitly
   waives, an established baseline exclusion, and a non-essential check left red on findings the

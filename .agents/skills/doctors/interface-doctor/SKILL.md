@@ -214,8 +214,7 @@ Apply `pre-production` to every correction.
    says of one, and a detail the user already decided on a page is followed.
 6. **A product or scope choice goes to the user, and the rest of these calls stay the run's.**
    These are reserved entries, asked with the run's other reserved entries as `doctor-protocol`'s
-   **Gate And Show The Plan** says, each with its captures and its old and new text in a message
-   the user sees first:
+   **Gate And Show The Plan** says, and shown as item 7 says:
    - **Removing or hiding content.** Where content cannot get the room its values need at some
      width, which column, field or item goes or is hidden there.
    - **A remedy the run designed whose visible effect is large**: one no rule states, that changes

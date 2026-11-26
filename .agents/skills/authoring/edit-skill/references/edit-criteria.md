@@ -38,10 +38,10 @@ The statement is written before the edit, in the shape `SKILL.md`'s
 **Output** gives, and revised when the written text turns out to change more or less than it says.
 
 - **Each line says one thing the user can check against what they meant.**
-  - The statement never repeats the user's own words back to them; they know what they said. The
-    ledger entry and every reviewer brief keep the quote, each example value named by its kind in
-    brackets as `pre-production`'s **Examples And Paths** says. For a gap the agent noticed itself,
-    a *Noticed* line opens the statement and states the gap.
+  - The statement quotes none of the user's words, as `user-facing-output`'s **What The Text
+    Says** sets out; the quote kept in the ledger entry and every reviewer brief names each example
+    value by its kind in brackets, as `pre-production`'s **Examples And Paths** says. For a gap the
+    agent noticed itself, a *Noticed* line opens the statement and states the gap.
   - *From now on* names the situation, what agents do there and what they did before.
   - *Also changes, same class* lists every other situation of that class the edit changes, by the
     skill or rule that governs it.

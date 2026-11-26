@@ -73,6 +73,7 @@ follow **Recording During A Task** for the edit's timing.
 - `council`
 - `i-have-adhd`
 - `share-media`
+- `user-facing-output`
 
 ## Recording During A Task
 
@@ -115,8 +116,9 @@ recording or delivering a batch.
   already read: tell each running worker this session started, as `subagent-matrix`'s **Dispatch** says.
 - **Delivery starts at the next milestone of the work in hand and Completion delivers whatever is left**, never later: a
   finished plan step or worker task whose checks pass, a round of fixes the user asked for, or a
-  publish. For a batch on a pull request a doctor run is driving, the milestone is that run's end,
-  where its review, gates and skill-test round join the run's own. It then runs as **Guidance
+  publish. For a batch on a pull request a workflow holding verification to its own end is
+  driving, such as a doctor run, the milestone is that end, where its review, gates and skill-test
+  round join the workflow's own. It then runs as **Guidance
   Delivery** says, beside the ongoing work and without the user asking, however long the surrounding
   task goes on; a session whose requests keep arriving never holds a recorded correction for the
   task's end. Until that milestone nothing else of delivery runs: no review, gate, skill-test round,
@@ -178,8 +180,7 @@ small it looks.** Each route below is the gate set its batch passes on the head 
    prose duplication**'s checks for its simplification pass. Once that simplification pass is
    done, start **Run one `test-skill` round** on the pushed head, beside review round 1 and never
    behind it: its scenario writing, environment and readers need the failure class and the diff,
-   not the accepted head. A batch on a pull request that a workflow holding verification to its
-   own end is still fixing, such as a doctor run, starts it only at that end.
+   not the accepted head.
 4. **Conclude the skill test** on every head `review-pass` accepted: `test-skill` carries each
    result whose inputs that head left unchanged and reruns the rest. It takes every entry's
    reproduction scenario as an input, entries that share a failure class grouped into one

@@ -269,9 +269,8 @@ Otherwise write a decision-complete remediation plan from the ledger.
   plan file and the report with its reason.
   - **Reserved to the user's own words**: a merge, deployment, publication or release; a security,
     disclosure or authorization choice, such as who may see a record; and a product or scope
-    choice a remedy makes, as `pre-production`'s **Product Choices** defines one — removing or
-    hiding content or a feature, a remedy whose visible effect is large, a new surface, a rewording
-    of correct text already in a product. A routine presentation detail stays the run's, and so
+    choice a remedy makes, as `pre-production`'s **Product Choices** defines one, removing a feature
+    and rewording correct text already in a product included. A routine presentation detail stays the run's, and so
     does fixing a vulnerability so the product enforces the access it already intends.
   - **How reserved entries are asked.** Together, through the global rules' question procedure,
     each as options with each consequence and a recommendation, and a visible choice with its

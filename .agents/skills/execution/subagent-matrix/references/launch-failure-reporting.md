@@ -6,7 +6,9 @@ below cite.
 
 When a required direct subagent dispatch cannot start, preserve its exact attempted dispatch.
 Handle capacity refusals under Workflow step 3 and other launch failures under **Dispatch**.
-Use the native launcher's availability to judge whether it could start the assignment.
+Use the native launcher's availability to judge whether it could start the assignment. A launch
+on another provider's model that **Workflow** relaunches on the session's own provider is no
+launch failure: it is recorded there, with both launches, and not reported in this shape.
 
 - Attempt the selected native dispatch once whenever its direct tool is exposed. Never claim an
   attempted invocation when the tool was not exposed.
