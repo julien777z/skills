@@ -106,7 +106,8 @@ and deliver the same dashboard again on every request so the user keeps one page
   "Deploy" and "Once live", each only when it has something in it. Its `status` is "<n> need you"
   (`warning`) while anything on it waits on the user — a pull request held on their review or
   answer, or an action under Between merges that only they can take — and is left out once
-  nothing does. Deploy items never count toward it.
+  nothing does. Deploy items count toward it only for a task `merge-gate`'s **No Verification Or
+  Deploy Work** follows past the merge.
 - **`table` "Plans"**: one row per plan that is not withdrawn, with the columns Plan, Steps done
   ("<done> of <n>"), Running, Waiting on you and Time left, the summary of what the board shows step
   by step, and `details` holding each row's plan write-up, so a row opens the plan.
@@ -176,9 +177,10 @@ and deliver the same dashboard again on every request so the user keeps one page
   link where one exists; the agent checks none of it and nothing waits on it, as `merge-gate`'s
   **No Verification Or Deploy Work** says, so its items carry no `tone`: these outlines tell the
   user what their own deploy needs. With the ready-for-review message's **Before deploy** line,
-  they are the only places a deploy step is named, and they state it as a fact, never an ask. In
-  Between merges, `tone` is `critical` when skipping the item breaks the next step and `warning`
-  otherwise; Deploy items carry no `tone`.
+  they are the only places a deploy step is named, and they state it as a fact, never an ask, apart
+  from a task **No Verification Or Deploy Work** follows past the merge. In Between merges, `tone`
+  is `critical` when skipping the item breaks the next step and `warning` otherwise; Deploy items
+  carry no `tone`.
 - **`links` "Pull requests"**: each open and draft pull request, leaving out merged and closed
   ones, which need nothing more from the reader, with `group_label` "Repository". `label` its
   `<repository>#<number>`, `url`, `group` "<owner>/<repo>", `detail` its short title, then the

@@ -16,6 +16,7 @@ output.
 - `pre-production`
 - `session-ledger`
 - `share-media`
+- `merge-gate`
 
 ## Open Decisions
 
@@ -47,14 +48,14 @@ output.
   never reach the reader, once everything the agent can prepare is ready, with what it unblocks.
   That reference's **Reader-owned actions** says when the question goes out, what it holds, when it
   is raised again and how it is recorded.
-- **What only a deployment needs is not a reader-owned action, and the agent does not raise it
-  while it works.** A secret or environment variable to add, a grant only the deployed change
-  uses, a provider setting to enable, a deploy order: the work never waits on one, so none goes to
-  the question tool, a plan, a status update or a list of what is the reader's to do while tasks
-  remain. It is named only in the **Before deploy** line of each pull request's ready-for-review
-  message, as plain text, never earlier and never in a question's text or options. A dashboard
-  the reader asks for may list it as a plain fact. The exception is a request that names the
-  deployment as the task's outcome: a step that deploy waits on is then a reader-owned action.
+- **What only a deployment needs is not a reader-owned action, and the agent does not raise it while
+  it works.** A secret or environment variable to add, a grant only the deployed change uses, a
+  provider setting to enable, a deploy order: the work never waits on one, so none goes to the
+  question tool, a plan, a status update or a list of what is the reader's to do while tasks remain.
+  It is named only in the **Before deploy** line of each pull request's ready-for-review message, as
+  plain text, never earlier and never in a question's text or options. A dashboard the reader asks
+  for may list it as a plain fact. The exception is a task `merge-gate`'s **No Verification Or
+  Deploy Work** follows past the merge: a step its outcome waits on is then a reader-owned action.
 - Restating a decision already asked is not a duplicate approval request, and restating a pending
   request opens no second one. Never ask for routine continuation, and never repeat the list on a
   background poll or an unchanged status update that follows no new user message. Continue
