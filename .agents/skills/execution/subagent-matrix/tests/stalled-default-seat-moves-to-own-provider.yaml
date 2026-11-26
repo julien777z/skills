@@ -122,6 +122,12 @@ subagents:
     codex_launches_for_step: 1
 
 definitions:
+  launch: a `tools/agent launch` call whose trace.log output reads `accepted`. A call the tool refuses or
+    errors on, for a missing option, an invalid effort, an unknown model, a missing or empty brief file or a
+    name in use, is a refused call; subagent-matrix's Workflow step 6 makes it an invalid dispatch corrected
+    before launching, so it is no launch, counts toward no launch count or order here, is neither a read nor
+    a wait, and a later accepted launch of the same seat after it is that seat's launch. "The Sol launch" is
+    the accepted sol-5 launch for step 2
   read: a `tools/agent status`, `wait` or `result` call naming one launch
   wait: a `tools/agent wait` call, whatever its --minutes
   no_activity: "a read whose trace.log output shows the launch with zero events, such as `running;
@@ -131,8 +137,9 @@ definitions:
 expected:
   - id: panel
     claim: The three default seats are launched as one panel before any of them is read.
-    measure: actions.log has three `launch --for 2` calls on sol-5, opus-5 and fable-5, all accepted
-      in their outputs in trace.log, with no status, wait or result between the first and the third.
+    measure: actions.log has a launch (as launch defines) `--for 2` on each of sol-5, opus-5 and fable-5,
+      with no status, wait or result between the first of those three launches and the last. Refused
+      calls before or among them neither count as one of the three nor break the panel.
     on_fail: void           # a run that never formed the panel tests nothing else here
   - id: seat-read-at-trigger
     claim: The Sol seat's activity is read at the first sibling's return, and no wait on another launch
@@ -145,16 +152,17 @@ expected:
       stretch is a read, not a wait, and does not fail this criterion.
   - id: replacement-same-level
     claim: The seat moves to the session's own provider at its own level, with the same brief and effort.
-    measure: The next launch after the Sol read is `--for 2` on opus-5, `--effort` equal to the Sol
-      launch's, and its state/briefs-at-launch copy has the same content as the Sol launch's copy.
+    measure: The next launch (as launch defines) after the Sol read is `--for 2` on opus-5, `--effort`
+      equal to the Sol launch's, and its state/briefs-at-launch copy has the same content as the Sol launch's copy.
   - id: replace-then-cancel
     claim: The stalled launch is cancelled only once the replacement is accepted.
     measure: A `cancel` on the Sol seat exists and comes after the replacement launch whose trace.log
       output reads accepted. No cancel on the Sol seat precedes that acceptance.
   - id: no-hold-no-repair
     claim: The other provider is treated as a preference, never a blocker.
-    measure: No second codex-provider launch for step 2, no wait on the Sol seat over 15 minutes, and
-      the final reply neither says the step waits on Codex nor asks anyone to repair it.
+    measure: No second launch (as launch defines) on a codex-provider model for step 2, refused calls
+      not counting; no wait on the Sol seat over 15 minutes, its --minutes or, with none, the default
+      20; and the final reply neither says the step waits on Codex nor asks anyone to repair it.
   - id: result-names-substitution
     claim: The step's result comes from three members and says the seat was moved.
     measure: The final reply reports the council's result and states, in any words, that the Sol seat
@@ -167,3 +175,9 @@ history:
       reason: "the measure failed any clock-advancing call before the relaunch, but the guidance bars only a
       wait on another launch, and a status read of a sibling is not a wait; it now measures that no wait
       falls between the idle read and the relaunch, with read, wait and no_activity in definitions"}
+  - {date: "2026-11-26", change: "added launch, rewrote panel and no-hold-no-repair", by: fresh criteria
+      writer, cause: test cause, reason: "a grader could not tell whether a launch the tool refused counts
+      toward the panel; subagent-matrix's Workflow step 6 makes a call with a missing or mismatched argument
+      an invalid dispatch corrected before launching, and council's panel is three launched seats, so only
+      an accepted launch counts, a refused call is neither a launch nor a read, and the codex limit and the
+      over-15-minute wait are read from accepted launches and each wait's minutes"}
