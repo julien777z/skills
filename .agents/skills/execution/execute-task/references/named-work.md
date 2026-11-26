@@ -120,6 +120,11 @@ nor touches the files or resources the awaited work is changing.
     **Dispatch**, with its brief plus what stalled it, such as a failed command it never
     recovered from, input it waits on that nobody sees, or a provider error it never reported. One
     that finished without its completion arriving has its result collected.
+  - **Rate-limited:** a worker a rate limit or quota stopped is resumed at once, in its own thread
+    so it keeps its context, under `subagent-matrix`'s capacity rule, never scheduled for the
+    reset time the refusal names. The coordinator answering at all, a notice of the stop
+    included, shows capacity has cleared; only a refused resume shows it still holds, and that
+    one is resumed at the next check.
   - **Scope:** the check reads workers only: a pull request is still waited on by delivered
     activity, and a question put to the user is not a worker.
 - **A status report is not a stopping point.** A message sent while authorized work or a wait
