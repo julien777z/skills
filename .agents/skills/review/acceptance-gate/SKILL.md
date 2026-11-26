@@ -339,10 +339,13 @@ a repair re-reads the changed lines against the flag's objection and remedy and 
 covering that code. Then the repairs of every flag one verdict raised, and each settled,
 out-of-scope or council-dropped answer with its evidence, go together to one fresh gate under the
 Diff question, following `subagent-matrix`'s **Dispatch**; it answers each flag separately, and
-only its acceptance closes a flag. That gate is one of the change's re-reviews under the limit of 3
-review rounds per change, and one of the repair rounds below for each flag it reads a repair of. The exceptions are a style flag and a flag naming only missing evidence, each
-closed as its paragraph below says, the decision `council` makes once 3 review rounds have failed the change, which settles its flags as it rules,
-and a proposal whose calling workflow states how its repairs are judged.
+only its acceptance closes a flag. Its brief carries each flag in the verdict's own words, the
+repair and the output of the checks the repair reran, so it reads them without an evidence round.
+That gate is one of the change's re-reviews under the limit of 3 review rounds per change, and one
+of the repair rounds below for each flag it reads a repair of. The exceptions are a style flag and a
+flag naming only missing evidence, each closed as its paragraph below says, the decision `council`
+makes once 3 review rounds have failed the change, which settles its flags as it rules, and a
+proposal whose calling workflow states how its repairs are judged.
 
 **Each flag carries its severity, `defect` or `style`.** A style flag concerns only the form of
 lines whose behavior, structure and contract stand: a docstring's or comment's length, a missing
