@@ -144,7 +144,7 @@ repaired or strengthened guarantee follows the existing-check validation procedu
 a test that cannot fail, guards the wrong behavior or breaks in a fresh checkout — is always made,
 with placement under `pre-production`, apart from a test already failing on the default branch,
 which the rubric records and leaves. Apply `pre-production`'s size budget to other cleanup and
-return deferred work to the caller. Apply the cost-reporting procedure above to the run that verified the
+return to the caller only what that budget reserves a record for. Apply the cost-reporting procedure above to the run that verified the
 change. A disproportionate test, parametrized family or module in scope is made cheap or removed
 as the rubric's **Test Cost** decides.
 
