@@ -164,7 +164,19 @@ it.
 
 ## Report
 
-The final report names:
+**The report opens with What changed**, written for the user at a level they can review without
+opening the diff, in three parts:
+
+- **Skills, rules and files:** each one the run changed, and in each, what logic changed, stated
+  as what a reader or the code now does or decides and what it did before, never as a count of
+  edits.
+- **Between skills:** each dependency added or removed, each owner a requirement moved to, each
+  citation route changed, each flow or order of steps changed, and each launch count before and
+  after, or between the components a source run changed; a part with nothing to list says none.
+- **New behavior:** each behavior change stated as new, with where it applies, kept apart from
+  the repairs that restore intended behavior.
+
+Then the final report names:
 
 - the resolved scope, the route taken, and the inventory counts;
 - each draft pull request the run opened and what it carries;
