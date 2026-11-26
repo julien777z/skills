@@ -33,8 +33,7 @@ keeps lives in the original and on the remote. The report names each one deleted
 ## Browser Access
 
 - Run browser work in the browser and session `use-browser` selects, and apply its **Selecting And
-  Binding A Tab** before any page read or action. When a CLI attaches to the user's browser, a
-  named CLI session alone does not establish control of the selected tab.
+  Binding A Tab** before any page read or action.
 - Continue through an appropriate API or CLI when that is more direct. Report a browser-specific
   blocker only when the selected browser's normal recovery paths cannot complete the required
   interaction.

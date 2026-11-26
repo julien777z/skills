@@ -168,13 +168,11 @@ component's own behavior is the exception **Principles** names: its rendered pag
 sign-in genuinely cannot complete for a change that needs the real screen, report the walkthrough as
 not done.
 Sign in in the browser `use-browser` selected, keeping passwords and one-time tokens out of
-command arguments and transcripts. In the agent's headless browser, open the repository's one-time
-sign-in link, where it provides one, from standard input with `agent-browser batch`, discarding the
-output. Otherwise sign in as the test identity with its password from the source `proton-pass`
-names for it, passed on standard input (`agent-browser auth save <name> --url <login URL>
---username <user> --password-stdin`, then `agent-browser auth login <name>`, and `agent-browser
-auth delete <name>` when the task ends). A signed-in session to reuse is the task's own headless
-session. In the user's browser, use the
+command arguments and transcripts. In the agent's headless browser, send each step that carries a
+secret to `agent-browser batch` as JSON on standard input and discard its output: an `open` of the
+repository's one-time sign-in link or a `fill` of its token, where it provides one, and otherwise a
+`fill` of the test identity's password from the source `proton-pass` names for it. A signed-in
+session to reuse is the task's own headless session. In the user's browser, use the
 harness's credential entry or handoff route, and reuse an available signed-in session of the
 required identity. Never read saved passwords, cookies, local storage or session files.
 

@@ -41,7 +41,8 @@ extracting data, testing and QA, signing in, Electron desktop apps and Slack.
   them, and attaches the CLI with `agent-browser connect <port>`, as `agent-browser skills get
   electron` describes. Where no such place exists, the step is blocked as below. Launching it on
   the user's desktop, or attaching to an instance they already run, such as their signed-in Slack,
-  is the user's-browser route and needs their request.
+  needs their request, and is then bound as the task's named session below, attached with
+  `agent-browser --session <name> connect <port>`.
 - **The harness's browser control or an MCP browser is used only when the user asks for it, or
   gives a specific URL to inspect or debug.** Then connect to their existing browser and the
   relevant profile, as **Selecting And Binding A Tab** says for the user's browser.
@@ -68,9 +69,10 @@ In the user's browser:
   that group, in the background when supported. Keep navigation, debugging, screenshots, sign-in,
   and verification in those tabs. Work with one tab when it suffices.
 - Record the group and each tab's stable IDs. Bind each action and observation to the intended
-  task tab, verifying the binding after reconnecting or switching. Keep the task group when
-  replacing a closed tab. If the harness cannot create or bind a grouped tab, use its supported
-  recovery or report the browser step as blocked.
+  task tab, verifying the binding after reconnecting or switching. A CLI attached to their browser
+  acts on the task tab only once bound to its ID; its named session alone selects no tab. Keep the
+  task group when replacing a closed tab. If the harness cannot create or bind a grouped tab, use
+  its supported recovery or report the browser step as blocked.
 
 In either browser:
 
