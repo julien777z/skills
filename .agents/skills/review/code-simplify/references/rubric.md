@@ -19,9 +19,8 @@ Changed Flows**, **Remedies**, **Guidance Prose**.
   commit, another slice or a file it moved, copied or recreated at a new path alike. Check a
   finding's place against the pull request's file list, never the reviewed delta or a move's label.
 - **Outside the change:** a bug it meets is always fixed, where
-  `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places it. Non-bug cleanup outside the change follows
-  `pre-production`'s size budget: what it places in the change is done there, what it sends to
-  another pull request goes there, and only what it reserves a record for is deferred.
+  `pre-production`'s **Scope Follows The Defect, Not The Request** places it. Non-bug cleanup outside
+  the change follows that skill's size budget for admission, placement and deferral.
 - **Contracts.** Preserve what a consumer outside the user's control observes: public routes and
   their shapes, durable identifiers, persisted and wire formats. A contract whose every consumer the
   user controls may change, with every consumer updated in the same change, in any repository, never

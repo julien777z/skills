@@ -53,9 +53,9 @@ step is a new approval boundary, and how a step or choice reaches the user.
 - **A plan shown to the user, and a proposed change presented at a user-approval boundary, each
   carry `review-proposal`'s ready receipt.** First check for its valid ready receipt for the exact
   proposal and reviewed inputs; when present, show the plan, or present the supporting content and
-  ask, without re-entering it. Otherwise prepare that receipt first. This applies to plans and to
-  approval-requiring change proposals, not
-  factual questions, routine authorized work or a platform's separate action-time confirmation.
+  ask, without re-entering it, with each item of the receipt's `last_fixes` listed beside it.
+  Otherwise prepare that receipt first. This applies to plans and to approval-requiring change
+  proposals, not factual questions, routine authorized work or a platform's separate action-time confirmation.
   `acceptance-gate`'s technical verdict is not a user-approval request and never recursively
   enters this procedure.
 - **A question the guidance already answers is not the user's to answer.** Before a question goes

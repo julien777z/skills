@@ -42,9 +42,9 @@ output.
   reference's **Evidence-pending decisions** says how.
 - **An action the reader owns is not a decision and never joins the list**: renewing a certificate,
   granting a permission, signing in or approving a sign-in on their phone, running a command that
-  needs their password, a manual step outside the session. When the work waits on it, ask for it
-  through the question tool, never in chat, once everything the agent can prepare is ready, with
-  what it unblocks; otherwise name it once, when it arises, with what it unblocks. That reference's
+  needs their password, a manual step outside the session, reviewing a pull request handed to them.
+  Ask for it through the question tool, never in chat text alone, since chat may never reach the
+  reader, once everything the agent can prepare is ready, with what it unblocks. That reference's
   **Reader-owned actions** says when the question goes out, what it holds, when it is raised again
   and how it is recorded.
 - Restating a decision already asked is not a duplicate approval request, and restating a pending

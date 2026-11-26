@@ -1,13 +1,12 @@
 ---
 name: finish-pr
-description: Review and fix the whole of each task pull request, then merge it at its accepted head. Use when the user asks to finish the task's pull requests. Run only when the user asks for it.
+description: Review and fix the whole of each selected pull request, then merge it at its accepted head. Use when the user asks to finish pull requests. Run only when the user asks for it.
 short_description: 'Review and fix the whole pull request, then merge it.'
 ---
 
 # Finish PR
 
-Review, fix, and merge every open pull request for the active task unless the user names a
-specific set.
+Review, fix, and merge the pull requests selected under **Targets**.
 
 ## Authorization
 
@@ -48,9 +47,12 @@ specific set.
   mentioned earlier as awaiting merge, not the dependency a held unit waits on, and not one a bare
   "yes" beside the request might answer. Such a dependency stays a gate under **Dependent Pull
   Requests**.
-- Otherwise run `list-prs` before starting any individual review, even when the current branch
-  already has a pull request or the request uses the singular. Use its full task-wide result,
-  including work in other repositories.
+- With no explicit target, ask `list-prs` for all open pull requests created in the current
+  session before starting any individual review. Reconcile creation receipts across the whole
+  session through `session-ledger`, including earlier tasks and other repositories. A current
+  checkout, recently discussed pull request, or singular wording does not narrow the set.
+  A pre-existing pull request the session only touched needs an explicit target unless it
+  qualifies under the deferral exception above.
 - When that list is empty, inspect every repository carrying reviewable task-local changes, commit
   each one's task changes to a branch under the GitHub rules' branch rules, create one draft pull
   request per repository, and record every returned canonical URL with `session-ledger`. An empty
@@ -62,12 +64,10 @@ specific set.
 - Verify each target's branch, head and state on the host. A target stays draft through its work
   and review: `merge-gate` marks it ready, as the last step before the merge, once `review-pass`
   has accepted its head.
-- **Each target merges as the change it was opened for.** A fix its review, checks or gates find
-  stays on it only where `pre-production`'s **Scope Follows The Defect, Not The Request** keeps a
-  fix with the change; a larger one, or one in another repository, goes on a pull request of its
-  own, which this run does not merge and the target does not consume. A fix past that reach an
-  earlier pass already put on the target moves to its own pull request the same way before the
-  target's review, leaving the target its requested change.
+- Apply the GitHub rule's **Branches and Pull Requests** to source follow-ups, review fixes and
+  check fixes. When an addition changes a selected target, refresh that pull request's intent
+  before reviewing its resulting head. The **Targets** above still determine which pull requests
+  this invocation may merge.
 - **Open recorded work `review-pass` returns is built on the target before its review starts**;
   review, merge and a dependency-held repoint keep their own order under **Workflow** and
   **Dependent Pull Requests**.
@@ -131,7 +131,8 @@ Follow the active task's recorded priorities when choosing the next eligible uni
    - that this caller owns the primary checkout refresh after applicable CI writes and Agent Sync;
    - every exclusion it returned, with its evidence;
    - the fix rule for every fix `merge-gate` makes — a check fix, a conflict resolution, a commit
-     someone else pushed: `review-pass` runs again over that fix's delta, and the fix is pushed through
+     someone else pushed: refresh the target's intent if its scope changed, then `review-pass`
+     runs again over the fix's delta. The fix is pushed through
      the GitHub rule's **Pre-Push Gate**, whose verdict is its gate. A fix counts only once both have
      passed.
 4. **Refresh the checkout.** After a verified merge, run **Local Checkout**. Record the merge and checkout outcome, or the

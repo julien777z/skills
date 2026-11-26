@@ -299,10 +299,8 @@ ends the question.
    live run — a rate, a duration, a memory trail, a kill — is evidence of a defect the way a
    confirmed review finding is: the gate takes it as given and never re-derives the defect from the
    tree, because a tree read alone cannot see a rate. A defect is fixed whatever shape its fix takes, whether the
-   change introduced it, the task asked for it, or the work only ran into it, on the change or its
-   own pull request as `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places it
-   by size, or on a branch off the default when nothing is in flight; a defect is never deferred
-   for its size. A migration is how a fix is written, never a reason to record it instead. A check that
+   change introduced it, the task asked for it, or the work only ran into it. Use the placement
+   that `pre-production`'s **Scope Follows The Defect, Not The Request** requires. A migration is how a fix is written, never a reason to record it instead. A check that
    would rediscover the defect does not soften this: rediscovery excuses the record, never the fix.
    Product state never softens it either: broken is broken for one admin as for a thousand users.
    A missing safeguard that definition leaves out goes on to the tests below, its exploitability
@@ -345,8 +343,8 @@ ends the question.
    the recommendation — which the caller puts to the user now; it is built only at the scope the
    user approves, never returned as do. Incidental cleanup past `pre-production`'s size budget is
    defer without the arguability test only where that budget reserves a record for it. Cleanup the
-   budget places in the change, or sends to another repository's pull request, is do, whatever its
-   file count, as the budget in force for the scope the intent statement records says. A finding
+   active budget admits, in this change or placed in another repository, is do, whatever its file
+   count, as the budget in force for the scope the intent statement records says. A finding
    inside the change, as `code-simplify`'s rubric **Scope** defines it, is do, never defer. Nor are
    the size, shape and place of the work inputs the gate may take on trust: "large", "not
    mechanical", "each site needs its own judgment", "it spans suites the change does not touch" and
@@ -358,8 +356,7 @@ ends the question.
    and the diff can. A defer names which of the grounds above holds and the evidence for it; any
    other ground is a refusal.
 4. **do** — none of the above: the item is worth doing and its cleanest fix is within reach, so it is
-   done where `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places a fix of its size, or on a branch off the default when nothing is in
-   flight.
+   done where `pre-production`'s **Scope Follows The Defect, Not The Request** places the work.
 
 **Admission — may this work be deferred?** The triage question asked of a proposed record. The
 answer is accept when triage's disposition is defer, and otherwise a refusal naming the disposition

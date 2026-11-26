@@ -11,7 +11,8 @@ state and the change's intent, applies the repository's rubric, and answers one 
 once over a pull request's complete diff, before its merge, and otherwise only for the questions
 below that a caller cannot settle alone. A plan step or worker task is gated only when later steps
 build on it; every other step, and every fix to a review finding, gets its author's own checks,
-while a gate's flag is closed only by a fresh gate under **Bounds**.
+while a gate's flag is closed only by a fresh gate under **Bounds**, apart from a proposal whose
+calling workflow states how its repairs are judged.
 `references/rubric.md` holds what it judges by; this file holds how it is run.
 
 ## Dependencies
@@ -52,6 +53,12 @@ establishes capability, not that process's route. A name,
 alias, package move, permission grant or test fixture repeating the implementation's assumption
 does not prove ownership or isolation. Missing evidence holds a clean verdict; it does not turn
 the implementation into the specification.
+
+Apply `pre-production`'s **Target Contract** to the resolved values themselves. Flag fabricated
+ownership or scope even when callers agree, tests pass, or an older path already used it.
+Trace affected reads and writes to the boundary that enforces their scope. At each distinct
+boundary, verify that the eligible scope can act and that missing required scope and unrelated
+scope cannot access or change the scoped data. Cite the evidence in the verdict.
 
 For every changed or newly resolved dependency, provider, generated contract, shared package, or
 other boundary owner, complete the dependency-authority receipt in `references/rubric.md` before a
@@ -230,6 +237,13 @@ room, moving a failing path behind a control, a flag, a fallback or a retry, cat
 an error, special-casing the one reported value, or loosening a check until it passes. Each is a
 flag whose remedy is fixing the cause, whatever the change calls itself and however small; a
 workaround the user's words in the intent statement explicitly ask for is the only one that stands.
+For a repair, inspect the governing code or schema even if the diff leaves it untouched. State
+what caused the problem and where the repaired design now enforces the intended behavior. Flag a
+consumer-side fix when an owned design still admits the invalid state or forces the special case.
+Passing checks verify the behavior they exercise and do not establish that the design was fixed.
+Flag unsupported paths that exist only to bridge an owned cutover under `pre-production`'s **Product State**.
+Trace the case to a real writer and the target contract before treating a rollout sequence or
+synthetic migration fixture as proof that runtime code needs it.
 A verdict with none says `no workaround added` in those words.
 
 For a diff question, also apply the `code-simplify` rubric’s **Trace Changed Flows** to the supplied
@@ -327,7 +341,8 @@ out-of-scope or council-dropped answer with its evidence, go together to one fre
 Diff question, following `subagent-matrix`'s **Dispatch**; it answers each flag separately, and
 only its acceptance closes a flag. That gate is one of the change's re-reviews under the limit of 3
 review rounds per change, and one of the repair rounds below for each flag it reads a repair of. The exceptions are a style flag and a flag naming only missing evidence, each
-closed as its paragraph below says, and the decision `council` makes once 3 review rounds have failed the change, which settles its flags as it rules.
+closed as its paragraph below says, the decision `council` makes once 3 review rounds have failed the change, which settles its flags as it rules,
+and a proposal whose calling workflow states how its repairs are judged.
 
 **Each flag carries its severity, `defect` or `style`.** A style flag concerns only the form of
 lines whose behavior, structure and contract stand: a docstring's or comment's length, a missing

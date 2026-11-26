@@ -1,6 +1,6 @@
 ---
 name: review-pass
-description: Review a change and fix what the review finds, through an independent reviewer on another provider's model in a short loop, and, when a task or run covers more than one open pull request whose changes meet, review them together for flaws only the combination has before any of them merges. Use when the user asks for a code review, a review loop or "sol loop", or to watch, monitor or babysit a pull request for review feedback, or as a step of a workflow that finishes a pull request before its merge. Never merges.
+description: Review a change and fix what the review finds, through an independent reviewer in a short loop, and, when a task or run covers more than one open pull request whose changes meet, review them together for flaws only the combination has before any of them merges. Use when the user asks for a code review, a review loop or "sol loop", or to watch, monitor or babysit a pull request for review feedback, or as a step of a workflow that finishes a pull request before its merge. Never merges.
 short_description: 'Review and fix what a pull request has not had reviewed yet, then record the reviewed head.'
 ---
 
@@ -214,6 +214,10 @@ These run in the order below, in process unless a pass says otherwise.
 - **Python rules:** for the delta's changed Python files, run `acceptance-gate`'s
   `scripts/python_rule_findings.py` over them; each finding it lists gets its fix, and each
   paragraph candidate `pre-production`'s **Code Layout** makes a boundary gets its blank line.
+  Read the comments added by the delta even when the script finds nothing. For each, identify the
+  external constraint it explains or refactor the owned code so its intent is visible. For owned
+  behavior described in a comment, point to an assertion on the observed result that fails when
+  the behavior regresses.
 - **Simplification:** run `code-simplify` over every delta that holds executable lines or changes
   guidance under `.agents`, with the intent statement, whatever the delta looks like to its author:
   in process when one reader can hold the delta, its touched files and their siblings, and by slice
@@ -233,13 +237,11 @@ changed. Make the smallest changes that answer real findings, and push back on t
   when a round returns only nits; a declined nit or an edit that changes only wording or formatting
   needs no new round. These rounds count the pull request's review loop; one finding's fix still
   follows the limit of 3 review rounds per change, as `acceptance-gate`'s **Bounds** counts them.
-- **Reviewer:** a model of a different provider from the author when one is reachable, so it does
-  not share the author's blind spots; the user may name another. Resolve it through
-  `subagent-matrix` at the advanced level of that provider's families and medium effort, applying
-  its launch fallback, and start it on that provider's model where the harness offers one, as
-  **Harness Compatibility** says for the harnesses that need it, otherwise as a fresh subagent at
-  the advanced level. One reviewer carries every round of a pass where the host can continue an
-  agent, so it re-reads nothing it already holds; a later round starts a new one only where the
+- **Reviewer:** dispatch an independent reviewer on the running session's provider through
+  `subagent-matrix` at the advanced tier and medium effort. Pass the running provider as a
+  requirement in briefs to `council` and other independent review steps this pass starts.
+  Use **Harness Compatibility** where it applies. One reviewer carries every round of a pass
+  where the host can continue an agent, so it re-reads nothing it already holds; a later round starts a new one only where the
   host cannot continue it. A split or panel round 1 is the exception, and no reviewer starts
   subagents of its own. Do not edit the reviewed files while a round runs; a timeout, an error or
   no reply is not approval.
@@ -269,13 +271,13 @@ changed. Make the smallest changes that answer real findings, and push back on t
     the loop;
   - nit: fix it when it is a one-line change in a line the change already touches, otherwise decline
     it in one line;
-  - outside the change: fix every bug, on the change or its own pull request as
-    `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places it by size, and place other
-    cleanup as `pre-production`'s size budget does: done in the change, on its own pull request, or,
-    only on a ground it reserves a record for, a record with `defer-scope`.
+  - outside the change: fix every bug as `pre-production`'s **Scope Follows The Defect, Not The Request**
+    requires. Use its size budget and `defer-scope` for cleanup.
 - **Next round** only while budget remains and a blocker or should is open, or code or guidance
   behavior changed since the last approval. Run the checks covering the fix and `git diff --shortstat <base>` first; if
-  review grew the diff past what the intent needs, cut it first. Never agree just to end the loop.
+  an addition belongs to the pull request under the GitHub rule's **Branches and Pull Requests**,
+  refresh the intent before judging growth. Cut growth beyond the refreshed intent and honor the
+  user's explicit scope limits. Never agree just to end the loop.
 - **Stop** when the reviewer approves the current diff with no blocker or should open and no concern
   of your own. A spent budget is not approval.
 - **A finding still disputed after two replies** goes to the user when it is the user's decision,
@@ -325,8 +327,8 @@ review.
 
 ## Harness Compatibility
 
-- **T3 Code:** call `orchestrator_capabilities` once, pick that provider's advanced-level model at
-  medium effort, and start round 1 with a new `delegate_task` (`role: "review"`). Send each later
+- **T3 Code:** call `orchestrator_capabilities` once to resolve a model for the reviewer selection
+  above. Start round 1 with a new `delegate_task` (`role: "review"`). Send each later
   round to that reviewer's thread; start a new `delegate_task` only when the thread cannot be
   continued.
 
