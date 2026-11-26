@@ -496,6 +496,5 @@ the issue should be ignored.
   staying exempt from a new check, closed to a new path, or treated as the old kind, is a legacy
   fallback written into data. So is a branch on a creation date or a stored version that does the
   same. Where the new field records a fact, such as who did something or when, backfill that fact
-  from its authoritative source. The tell is a description or comment saying that rows from before
-  the change keep the old behavior; keeping it needs the user's approval, as any legacy support
-  does.
+  from its authoritative source. A description or comment saying earlier rows keep the old
+  behavior identifies a fallback the migration or runtime must remove.
