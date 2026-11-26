@@ -398,7 +398,8 @@ of one family, named so that a reader tells from the names alone how they relate
   fixture, the side's whole name comes first and the sibling's own ordinal sits directly before
   its noun, so neither ordinal is read as the other: with depots `first_depot` and `second_depot`,
   two drivers of one and the only driver of the other are `first_depot_first_driver`,
-  `first_depot_second_driver` and `second_depot_driver`.
+  `first_depot_second_driver` and `second_depot_driver`. A leading ordinal numbers the side only
+  where a fixture of that name exists.
 - No word that says only that there is one more of the kind, such as `alternate_`, `other_` or
   `another_`, stands in for a relation's side or an ordinal: it tells a reader nothing about how
   the fixture differs from its sibling.
@@ -415,7 +416,7 @@ For every fixture, in a family or not, the name is what a reader takes the value
 - A name carries no role its value does not carry: a plain account is not `admin` or `owner` until
   something gives it that role.
 - One value is not offered under two fixture names: a fixture that returns another fixture's value
-  unchanged is removed, and its consumers use the one name.
+  unchanged and adds no setup of its own is removed, and its consumers use the one name.
 
 The fixture listing finds every instance of the above. It runs over fixture definitions, in each
 fixture package a change adds, renames or removes a fixture in and in the fixture packages of a
@@ -427,12 +428,12 @@ scope a caller names:
   a word that is neither a relation's side nor an ordinal, a gap, or a lone ordinal;
 - list every fixture whose name holds `alternate`, `other` or `another` as a word standing in for
   a side or an ordinal, every one whose first word is `test` and only marks test support, every
-  fixture that returns another fixture's value unchanged, and every fixture named for a role
-  nothing gives its value; report every row.
+  fixture that returns another fixture's value unchanged and adds no setup of its own, and every
+  fixture named for a role nothing gives its value; report every row.
 
 A change that adds, renames or removes a fixture reports those rows before it is finished, rows
-in families it did not add to included, and fixes each one in that change, the rows of other
-families unless `pre-production`'s size budget reserves a record for them.
+in families it did not add to included, and fixes each one in that change: every row outside the
+family it adds to, unless `pre-production`'s size budget reserves a record for it.
 
 Name several results in one test for their scenario or domain role, such as
 `invited_member_response` and `created_member_response`, never with a letter or a number, such as
