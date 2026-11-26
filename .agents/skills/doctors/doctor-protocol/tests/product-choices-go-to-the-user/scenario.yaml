@@ -79,3 +79,11 @@ history:
       and capture-name definitions moved into the checks that use them, the empty subagent list became the
       no-launch check and the checksummed files are read against the fixture's copies, with no check
       loosened; reviewed by the gate that accepts this pull request's scenario batch
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a review round's flag on the fixture's text; copy-table.csv now holds rows only for
+      the fixture's own source files at their real lines, the Orders table's Customer header in
+      OrdersTable.tsx included and the Invoices Client cell's slot read as a column header; findings.md
+      gives each quote its real line and states that the other 13 Customer pages lie outside the
+      fixture, so F3 keeps its 14-to-2 scale and stays the run's decision with every location it cites
+      present in the files
