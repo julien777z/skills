@@ -46,28 +46,6 @@ commit messages and pull-request text. `SKILL.md` names this file at the point a
 - In every language, use blank lines to separate setup, validation, transformations, side effects, and returns. Keep adjacent statements together only when they form one small operation; do not turn a function into an uninterrupted paragraph merely because a formatter permits it. Apply this to every line you write or edit, and elsewhere in a file you change within this skill's incidental size budget.
 - Use current language syntax for simple operations. For one-off Python interpolation, use f-strings instead of string concatenation or `.format()`, and keep spacing in the final string rather than a fragment with a hidden leading space. Follow the Python rule for reusable structured templates.
 
-```python
-# Good: each phase is visible.
-records = load_records()
-
-if not records:
-    return []
-
-normalized = [normalize(record) for record in records]
-
-save_records(normalized)
-
-return normalized
-
-# Bad: unrelated phases run together.
-records = load_records()
-if not records:
-    return []
-normalized = [normalize(record) for record in records]
-save_records(normalized)
-return normalized
-```
-
 - **A new file is the last resort.** Before creating one, find the existing file that already owns
   the concern, or an existing file a broader name would make its owner, and put the code there,
   renaming that file and updating every reference when the broader name is needed. Create a file
