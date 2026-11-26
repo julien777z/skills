@@ -27,8 +27,8 @@ or extend it with the one parameter or condition it lacks; write new code only w
 that found no owner, and add no parameter, option or branch for a condition nothing uses.
 Fix every defect you meet where `pre-production`'s **Scope Follows The Defect, Not The Request**
 places it. Hand up work outside your assignment so the coordinator can apply that placement rule. Leave alone
-only cleanup past the repository's incidental size budget and a choice that is the user's, and
-report each.
+only cleanup `pre-production`'s size budget reserves a record for, and a choice that is the
+user's, and report each with its ground.
 Push: commit each coherent step and push it once the Checks covering it pass, at least every five
 minutes of work. Fetch and rebase unpushed commits onto the remote branch before each push; never
 amend or rebase a pushed commit. End with nothing uncommitted and nothing unpushed.

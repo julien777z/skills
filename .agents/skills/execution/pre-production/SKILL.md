@@ -1,6 +1,6 @@
 ---
 name: pre-production
-description: Apply target-contract and product-state constraints to implementation, review, and operational data tasks, including cleanup, tooling and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update owned consumers and migrate retained data instead. Apply to CI failures after classification, to a non-essential check left red on code the change did not write, and to deprecated usage, warnings and defects the work notices. Also use when telling a product choice from a routine detail, placing or laying out code, declaring configuration, logging, naming or choosing American English, choosing versions or dependency releases, writing documentation, comments, commit or pull-request text, example values or paths, writing product copy or forms, requiring fields or backfilling data, repairing a local stack or development data, experimenting against shared state, rebuilding an artifact, or mutating a live deployment.
+description: Apply target-contract and product-state constraints to implementation, review, and operational data tasks, including cleanup, tooling and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update owned consumers and migrate retained data instead. Apply to CI failures after classification, to a non-essential check left red on code the change did not write, and to deprecated usage, warnings and defects the work notices. Also use when telling a product choice from a routine detail, placing or laying out code, declaring configuration, logging, naming or choosing American English, choosing dependency versions, writing documentation, comments, commit, pull-request or issue text, example values or paths, writing product copy or forms, requiring fields or backfilling data, repairing a local stack or development data, experimenting against shared state, rebuilding an artifact, or mutating a live deployment.
 short_description: 'Apply target-contract constraints to implementation and review tasks.'
 ---
 
@@ -109,8 +109,8 @@ with an obsolete owned contract or revision.
 - **A hosted check a runner or provider interrupted is an excluded attempt, never a pipeline
   defect to fix.** A package index serving no candidates, a registry or network timeout, a runner
   fault: where the logs establish the interruption without a validation failure, the attempt
-  supplies no validation result and is excluded as the GitHub rule's validation-exclusion bullet
-  says, with the run, the interruption evidence and the matching local commands and results
+  supplies no validation result and is excluded as the validation exclusions of the skill that runs a
+  merge say, with the run, the interruption evidence and the matching local commands and results
   recorded. The pipeline is not changed to survive it, and the job is not rerun or waited on merely
   to get a green hosted result. A recorded validation failure stays a failure, such as a test that
   passes only on a second try: it is classified as the first bullet above says, and re-running the

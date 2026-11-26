@@ -117,6 +117,9 @@ A pull request leaves draft only here, as the last step before its authorized me
 this skill implements the draft bullet of the GitHub rule's **Branches and Pull Requests**: its
 test jobs run once, on the head about to merge.
 
+- A pull request labeled `on trial` is merged only on the user's explicit authorization naming
+  that merge, never under a standing permission or auto-merge, as the GitHub rule's **Merge
+  Authorization** holds it; read its labels before marking it ready.
 - The caller's review has accepted the head in **Inputs** before this skill is invoked. No caller
   runs this step on its own, ahead of that acceptance, to start tests, or to hand the pull request
   to the user.

@@ -25,7 +25,7 @@ alwaysApply: true
   requirement in this repository's own terms. Cross-repository links, identities, implementation
   details, coordination, merge order and combined status go in user chat and private task evidence.
 - **Text handed to Git or the hosting service is staged where only its author writes and read back
-  once published**, as the skill covering commit and pull-request text sets out.
+  once published**, as the skill covering commit, comment and issue text sets out.
 - **Follow-up source work goes on the session's in-progress source pull request for that
   repository.** Before proposing a branch, assigning a worker or starting edits, resolve that pull
   request from its creation or authorized-continuation receipt, carried forward when a follow-up
@@ -84,8 +84,8 @@ alwaysApply: true
   request a directly user-invoked skill's authorization names, once that skill's merge gates pass,
   until its run ends.
 - **A hold comes before every standing permission.** A pull request the selected workflow holds for
-  user review, or one carrying guidance the user says is on trial, uses none of them and no
-  auto-merge; the skill that edits guidance sets out the trial hold.
+  user review, or one labeled `on trial` or carrying guidance the user says is on trial, uses none
+  of them and no auto-merge, as the skill that edits guidance sets out.
 - **Classify the complete actual diff against the standing permissions** before reporting a pull
   request whose merge no instruction authorizes, by what it changes, never by a filename,
   extension, line count or change label, and never remove genuine edits to qualify. Each

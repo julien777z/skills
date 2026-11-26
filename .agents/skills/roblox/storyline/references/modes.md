@@ -2,7 +2,7 @@
 
 ## Direction first
 
-Every mode starts a new or changed direction as pitches, as the story criteria's **Direction pitch** says, and develops one only after the user approves it. An audit's findings stand on their own; a rewrite it proposes is put as a pitch first.
+Every mode starts a new or changed direction as pitches, as the story criteria's **Direction pitch** says, and develops one only after the user approves it. An audit's findings stand on their own; a rewrite it proposes that chooses a premise, a central conflict or an ending is put as a pitch first, and a beat repair inside the existing premise goes straight to the critic, as the workflow's pitch step says.
 
 ## Create
 
