@@ -451,12 +451,12 @@ The Scope Statement, shown in the message that acknowledges a correction, one pe
 ```markdown
 Guidance change — flow affected | flow not affected
 
-- You said: "<the user's words, each example value named by its kind in brackets>" | Noticed: <the gap>
+- Noticed: <the gap> (only for a gap the agent noticed itself)
 - From now on: when <situation>, agents <do this> instead of <that>.
 - Also changes, same class: <skill or rule> — <situation>: <new behavior> | None
 - Stays as it is: <the nearest case outside the class, and what agents still do there>
 - Inherited without an edit: <skill, rule or flow that reads the changed text> — <what changes for it | no change> | None
-- Beyond what you said, waiting for you: <change, the standing text it would alter, why it seems needed> | None
+- Beyond what you asked, waiting for you: <change, the standing text it would alter, why it seems needed> | None
 ```
 
 The delivery report, filled in; keep every heading, write `None` under one with nothing to list,
