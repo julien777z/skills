@@ -39,9 +39,10 @@ and judge the item on product state and the rubric.
 
 When work changes an owned boundary, the statement quotes the applicable target-contract instruction,
 names the one canonical representation, and identifies every retained or candidate representation of
-that boundary. The gate cannot accept an abstract summary in place of that receipt; a second consumer
-layout, branch, probe, fallback, or compatibility helper is a flag unless the user explicitly approved
-retaining it.
+that boundary. The gate requires that evidence before it can accept the change. Always flag support
+for an obsolete owned contract, including a second consumer layout, branch, probe, fallback, or
+compatibility helper. When a finding identifies in-flight work or retained data that still uses the
+old contract, require a release sequence or migration that puts the work on the target contract.
 
 The owned-boundary receipt distinguishes the actor or execution owner from its destination and
 names the permitted resources and prohibited placements, disclosures or writes. Trace the actual
@@ -73,11 +74,11 @@ unless the user explicitly makes it a dependency.
 Once the resolved sources agree, compare consumer migration with changing the owner before accepting
 either. Broadening an owner, adapter, generic bound, schema, or validation solely so an owned
 consumer's previous input still passes is compatibility even when it adds no branch or fallback.
-Flag it unless the evidence establishes that broader input is the owner's independent target
-contract or the user explicitly authorized the retained compatibility. Matching runtime behavior
-does not establish that a consumer satisfies a type, API, or generated-contract constraint. The
-ordinary remedy corrects dependency selection or, when the resolved target contract is current,
-updates every owned consumer and removes its obsolete representation.
+Flag it unless the evidence establishes that broader input belongs to the owner's independent
+target contract. Matching runtime behavior does not establish that a consumer satisfies a type,
+API, or generated-contract constraint. The remedy corrects dependency selection or, when the
+resolved target contract is current, updates every owned consumer and removes its obsolete
+representation.
 
 `references/rubric.md` states what the statement names and how its inputs are reconciled. Read product
 state from the target repository's project guidance; never import another repository's assumptions.

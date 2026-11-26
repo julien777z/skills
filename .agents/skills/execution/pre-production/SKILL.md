@@ -1,6 +1,6 @@
 ---
 name: pre-production
-description: Apply target-contract and product-state constraints to implementation, review, and operational data tasks, including maintenance, cleanup, tooling, and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update its owned consumers and migrate retained data instead. Apply to relevant CI failures after validation classification, and whenever a lint, formatting or other non-essential check is red on code the change did not write. Also use when telling a product choice from a routine detail, placing or laying out code, declaring configuration, logging, naming or choosing American English, choosing versions or dependency releases, writing documentation, comments, commit or pull-request text, example values or paths, writing product copy or forms, repairing a local stack or development data, experimenting against shared state, rebuilding an artifact, or mutating a live deployment.
+description: Apply target-contract and product-state constraints to implementation, review, and operational data tasks, including maintenance, cleanup, tooling, and CI repairs. Never add a compatibility shim or retain support for an obsolete owned contract or revision. Update its owned consumers and migrate retained data. Apply to relevant CI failures after validation classification, and whenever a lint, formatting or other non-essential check is red on code the change did not write. Also use when telling a product choice from a routine detail, placing or laying out code, declaring configuration, logging, naming or choosing American English, choosing versions or dependency releases, writing documentation, comments, commit or pull-request text, example values or paths, writing product copy or forms, repairing a local stack or development data, experimenting against shared state, rebuilding an artifact, or mutating a live deployment.
 short_description: 'Apply target-contract constraints to implementation and review tasks.'
 ---
 
@@ -43,7 +43,7 @@ change writes:
 - Keep owned cutover sequencing in the release procedure. Move affected users to the target
   contract and convert retained data in versioned migrations. Do not add runtime behavior for
   mixed owned versions, half-applied transitions, or an in-flight state the work has established
-  is absent. Ordinary recovery and any compatibility explicitly authorized under **Target Contract** belong to the supported product for the scope and period they govern.
+  is absent. Ordinary recovery uses the current contract.
 
 ## Encountered Issues
 
@@ -405,15 +405,12 @@ the issue should be ignored.
 
 ## Target Contract
 
-- Implement the contract the released product should have. Never add or retain support for an
-  obsolete owned contract or revision by any mechanism without explicit user approval for that
-  retention before implementation. When a request replaces a route, API contract or behavior,
-  remove the prior alias or fallback; legacy compatibility stays only when the user explicitly
-  authorizes it in the current request, and unclear retention is asked about before it is added.
-  This governs code, configuration, tooling, CI, data handling,
-  documentation, and instructions as well as runtime paths. An old owned consumer failing against
-  the current contract is a reason to update it, not an exception; update affected owned consumers
-  and migrate retained data onto the target contract instead.
+- **Implement only the target contract.** Never add a compatibility shim or retain support for an
+  obsolete owned contract or revision. This includes temporary bridges during rollout and fallbacks
+  for in-flight work. Update affected owned consumers, convert retained data through the migration
+  path, and remove the previous alias, branch, or fallback. Keep any sequencing the cutover needs in
+  the release procedure. This governs runtime code, configuration, tooling, CI, data handling,
+  documentation, and instructions.
 - **Repair the design that causes the defect.** Trace the operation from its entry point to the
   component that decides the outcome. Check which constraints are real product or external
   requirements and which are choices the repository already made. If an owned contract, model,
@@ -441,8 +438,8 @@ the issue should be ignored.
   per-environment names is a defect, moved onto the one name.
 - Keep resilience within the current supported contract: error handling, browser support, empty
   states, and provider-failure behavior the released product needs. Supporting an obsolete owned
-  contract or revision is compatibility, even when described as resilience or repair; it requires
-  the approval above. Third-party contracts remain governed by **Owned And Third-Party Contracts**.
+  contract or revision is a compatibility shim even when described as resilience or repair.
+  Third-party contracts remain governed by **Owned And Third-Party Contracts**.
 - Prefer a deliberate break to an owned API, wire, schema, payload, or stored shape when it
   materially simplifies the result. Update affected consumers and migrate retained data, then remove
   the old shape; update every consumer and generated contract in the same change. A break the
