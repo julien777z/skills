@@ -120,7 +120,9 @@ plan of its own; only an edit that adds nothing skips it.
 - **An estimate is the executing agent's own wall-clock, never the effort the same work would
   take a person.** Build each step's from [plan estimates](references/plan-estimates.md), and list
   what the plan needs from the user — a review, a merge, a manual action — separately and
-  outside the total, with no time, since the agent cannot know how long the user takes.
+  outside the total, with no time, since the agent cannot know how long the user takes; never a
+  step only a deployment needs, which waits for the ready-for-review message's **Before deploy**
+  line.
 - Schedule steps by `subagent-matrix`'s **Dispatch**: coupled work stays sequential, and
   independent scopes with separate owners, files and resources overlap once their inputs are
   settled. Estimate the elapsed time with that overlap, totaled as `session-ledger` totals a plan.
@@ -484,9 +486,9 @@ Review** once each has its accepted head.
 
 The ready-for-review message takes exactly this shape, one message per pull request, leaving out
 **Deferred** when nothing was deferred and **Before deploy** when the change needs nothing outside
-the code to deploy. Its **Next:** review is an action the reader owns: the
-message is the material the question tool request for that review shows, as `user-facing-output`
-says:
+the code to deploy. Its **Next:** review is an action the reader owns: the message is the material
+the question tool request for that review shows, as `user-facing-output` says. The question asks
+for the review alone; **Before deploy** is never in its text or options:
 
 ```markdown
 **Ready for review:** <pull request URL>
