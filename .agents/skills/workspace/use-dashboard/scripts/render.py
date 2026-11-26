@@ -19,6 +19,7 @@ from typing import Final, cast
 from xml.etree.ElementTree import ParseError, fromstring
 
 from models import (
+    ChartKind,
     Change,
     Field,
     ObjectShape,
@@ -174,6 +175,20 @@ def check_fraction(value: object, path: str) -> None:
         or not 0 <= value <= 1
     ):
         raise DashboardSpecError(f"{path} must be a number from 0 to 1")
+
+
+def check_amount(value: object, path: str) -> None:
+    """Require a number of at least 0."""
+
+    if isinstance(value, bool) or not isinstance(value, int | float) or value < 0:
+        raise DashboardSpecError(f"{path} must be a number of at least 0")
+
+
+def check_chart(chart: dict[str, object], path: str) -> None:
+    """Require a chart to hold some amount to draw."""
+
+    if not any(cast(dict[str, float], item)["value"] > 0 for item in cast(list[object], chart["items"])):
+        raise DashboardSpecError(f"{path}.items must hold a value above 0")
 
 
 def check_whole_number(value: object, path: str) -> None:
@@ -515,6 +530,7 @@ TIMESTAMP: Final[Field] = Field(check=check_timestamp, typescript="string")
 FRACTION: Final[Field] = Field(check=check_fraction, typescript="number")
 WHOLE_NUMBER: Final[Field] = Field(check=check_whole_number, typescript="number")
 FLAG: Final[Field] = Field(check=check_flag, typescript="boolean")
+AMOUNT: Final[Field] = Field(check=check_amount, typescript="number")
 SECTIONS: Final[Field] = Field(check=check_sections, typescript="Section[]")
 TONE: Final[Field] = Field(
     check=partial(check_choice, choices=Tone), typescript=Tone.__name__, choices=Tone
@@ -785,6 +801,17 @@ FIGURE_SHAPE: Final[ObjectShape] = ObjectShape(
     },
     required=frozenset({"image", "alt"}),
 )
+CHART_ITEM_SHAPE: Final[ObjectShape] = ObjectShape(
+    name="ChartItem",
+    fields={
+        "label": TEXT,
+        "value": AMOUNT,
+        "figure": TEXT,
+        "detail": TEXT,
+        "tone": TONE,
+    },
+    required=frozenset({"label", "value", "figure"}),
+)
 TAB_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Tab",
     fields={"label": TEXT, "sections": SECTIONS},
@@ -903,6 +930,24 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
             "stacked": FLAG,
         },
         frozenset({"items"}),
+    ),
+    SectionType.CHART: section_shape(
+        SectionType.CHART,
+        {
+            "kind": Field(
+                check=partial(check_choice, choices=ChartKind),
+                typescript=ChartKind.__name__,
+                choices=ChartKind,
+            ),
+            "items": Field(
+                check=partial(check_objects, shape=CHART_ITEM_SHAPE, unique="label"),
+                typescript="ChartItem[]",
+                shape=CHART_ITEM_SHAPE,
+            ),
+            "total": TEXT,
+        },
+        frozenset({"kind", "items"}),
+        check_chart,
     ),
     SectionType.TABLE: section_shape(
         SectionType.TABLE,

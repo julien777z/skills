@@ -1,5 +1,6 @@
 export { BoardSection } from './board-section';
 export { ChangesSection } from './changes-section';
+export { ChartSection } from './chart-section';
 export { DashboardSection } from './dashboard-section';
 export { DiagramSection } from './diagram-section';
 export { FiguresSection } from './figures-section';

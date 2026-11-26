@@ -29,6 +29,20 @@
   --critical: var(--destructive);
   --info: oklch(0.7 0.14 250);
   --done: oklch(0.7 0.16 300);
+  /* Series colors a chart gives values that carry no tone, in order. */
+  --series-1: oklch(0.72 0.13 250);
+  --series-2: oklch(0.78 0.13 75);
+  --series-3: oklch(0.7 0.13 170);
+  --series-4: oklch(0.7 0.15 25);
+  --series-5: oklch(0.72 0.12 300);
+  --series-6: oklch(0.8 0.12 120);
+  --series-7: oklch(0.72 0.1 210);
+  --series-8: oklch(0.7 0.05 286);
+  /* Shades a pie gives untoned values beside toned ones, so the toned ones stand out. */
+  --series-muted-1: oklch(0.62 0.02 286);
+  --series-muted-2: oklch(0.5 0.02 286);
+  --series-muted-3: oklch(0.72 0.02 286);
+  --series-muted-4: oklch(0.42 0.02 286);
   /* GitHub's pull-request state colors: each state's foreground, and the emphasis its state label fills with. */
   --pr-open: #3fb950;
   --pr-open-emphasis: #238636;
@@ -65,6 +79,18 @@
   --critical: var(--destructive);
   --info: oklch(0.55 0.16 255);
   --done: oklch(0.52 0.2 300);
+  --series-1: oklch(0.55 0.15 250);
+  --series-2: oklch(0.62 0.14 70);
+  --series-3: oklch(0.55 0.12 170);
+  --series-4: oklch(0.56 0.17 25);
+  --series-5: oklch(0.52 0.15 300);
+  --series-6: oklch(0.58 0.13 125);
+  --series-7: oklch(0.55 0.11 215);
+  --series-8: oklch(0.55 0.03 286);
+  --series-muted-1: oklch(0.62 0.02 286);
+  --series-muted-2: oklch(0.75 0.02 286);
+  --series-muted-3: oklch(0.52 0.02 286);
+  --series-muted-4: oklch(0.85 0.01 286);
   --pr-open: #1a7f37;
   --pr-open-emphasis: #1f883d;
   --pr-draft: #59636e;
