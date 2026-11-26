@@ -38,11 +38,11 @@ extracting data, testing and QA, signing in, Electron desktop apps and Slack.
 - **Electron desktop apps and Slack**: the agent launches the app itself where it opens no window
   on the user's desktop, such as an isolated runner or a virtual display, with a DevTools port on
   127.0.0.1 (`--remote-debugging-port=<port>`) and a test profile and test data where the app takes
-  them, and attaches the CLI with `agent-browser connect <port>`, as `agent-browser skills get
-  electron` describes. Where no such place exists, the step is blocked as below. Launching it on
-  the user's desktop, or attaching to an instance they already run, such as their signed-in Slack,
-  needs their request, and is then bound as the task's named session below, attached with
-  `agent-browser --session <name> connect <port>`.
+  them, and binds it as the task's named session below with
+  `agent-browser --session <name> connect <port>`, as `agent-browser skills get electron`
+  describes. Where no such place exists, the step is blocked as below. Launching it on the user's
+  desktop, or attaching to an instance they already run, such as their signed-in Slack, needs their
+  request, and is then attached the same way.
 - **The harness's browser control or an MCP browser is used only when the user asks for it, or
   gives a specific URL to inspect or debug.** Then connect to their existing browser and the
   relevant profile, as **Selecting And Binding A Tab** says for the user's browser.
