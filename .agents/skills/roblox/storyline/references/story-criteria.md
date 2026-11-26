@@ -8,6 +8,11 @@ The first quality bar, ahead of everything below. A story's core is concrete and
 
 A direction is proposed as a short pitch of plain prose with no beats, no quoted dialogue, no art and no schema, not a full story: its hook, the idea in a sentence or two, what the player does, the first world in a few lines, what keeps it going and the next worlds, why it is engaging, and its biggest risk. It meets the bar above, with who or what the player acts against or toward named, and the stakes and how the pressure escalates stated in the pitch. Beats, dialogue, art, consistency checks, critic rounds, dashboards and implementation come only after the user approves a direction.
 
+Two more gates stand beside the **Concrete core** bar, and a pitch passes all of them before the user sees it. A pitch that fails one is replaced and never shown with a note about it.
+
+- **Fits the game's systems.** The writer reads what the game sells and which systems it already has before pitching. A pitch never gives away free what players pay for, never adds a parallel version of a system the game already has, and states any mechanic or reward it adds, such as a follower, a pet, a mount, a currency or an item. A grant made per world is checked for what it adds up to after many worlds, and one that piles up is dropped or changed. A fix a reviewer suggests is held to the same gate, so a repair never introduces it.
+- **Original and in the game's genre.** A pitch stays in the game's genre and setting, and is checked against well-known games in that space before it is shown. A premise or setting that closely matches a known game, above all one in the same space or from the same company as a game the user names, or that leaves the game's own genre and setting, is replaced and never pitched. This holds beside the **Concrete core** line against copying an existing game's story, names or characters.
+
 ## Story structure
 
 A strong story has a clear initial desire, a disruption the player understands, escalating consequences, a midpoint that changes interpretation, a costly or revealing choice, and a resolved climax followed by a visible aftermath. The player causes the decisive outcome through the game's verbs. Character motives exist before the player arrives and change under pressure.
