@@ -52,7 +52,10 @@ globs:
   when credentials are absent, or a second path for CI: one layout every job shares costs less than
   a matrix of variants, so a job that does not need the package still gets it. A `use-<capability>`
   toggle is for a capability that genuinely varies between jobs, never for the repository's own
-  dependencies.
+  dependencies. Agent configuration is never such a package: no job, build step or manifest
+  places, installs or imports a skill, rule or agent definition, apart from the workflow that syncs
+  or validates the agent configuration itself, as the guidance on where agent configuration lives
+  says.
 - Do not add glue steps that only read versions or forward setup data. Pass repository-owned
   version files and inputs directly to the action that uses them whenever supported.
 - Keep workflow files concise: merge related setup and dependency commands into one clearly named

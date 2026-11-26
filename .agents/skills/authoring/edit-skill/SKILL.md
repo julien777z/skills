@@ -112,12 +112,17 @@ recording or delivering a batch.
   only the guidance files. Record the branch, the `commits` list and the pull request in the entry's
   `data`, bring that pull request's description up to date at the milestone, then run `update-skills` at once for eligible edits under its **What Takes Effect**, so the installed
   copy every agent loads, subagents included, carries them. A running agent keeps the text it
-  already read: tell each running worker this session started, as `subagent-matrix`'s **Dispatch** says. Nothing else of delivery runs while the task does: no
-  review, gate, skill-test round, merge or worker, except the checks a batch in flight reruns for an edit
-  that joined it, as `session-ledger`'s **Guidance Batches** says. A standing instruction about how guidance
-  pull requests are reviewed or merged governs that delivery when it runs, never when. A gate result
-  that arrives for a guidance pull request already open is recorded as its entry's stage result, and
-  its repair waits with the rest.
+  already read: tell each running worker this session started, as `subagent-matrix`'s **Dispatch** says.
+- **Delivery starts at the next milestone of the work in hand and Completion delivers whatever is left**, never later: a
+  finished plan step or worker task whose checks pass, a round of fixes the user asked for, or a
+  publish. It then runs as **Guidance Delivery** says, beside the ongoing work and without the user
+  asking, however long the surrounding task goes on; a session whose requests keep arriving never
+  holds a recorded correction for the task's end. Until that milestone nothing else of delivery
+  runs: no review, gate, skill-test round, merge or worker, except the checks a batch in flight
+  reruns for an edit that joined it, as `session-ledger`'s **Guidance Batches** says. A standing
+  instruction about how guidance pull requests are reviewed or merged governs that delivery when it
+  runs, never when. A gate result that arrives for a guidance pull request already open is recorded
+  as its entry's stage result, and its repair waits with the rest.
 - **Every `guidance_correction` entry is backed up** as `session-ledger`'s **Backup** section says.
 - A related correction recorded before its batch is frozen joins the same entry or sits beside it
   in that batch; the batch is one pull request, apart from edits the GitHub rule puts on a source
@@ -140,7 +145,7 @@ worker start subagents of its own.
 small it looks.** Each route below is the gate set its batch passes on the head that merges.
 
 - **Short route.** Every entry changes one requirement in one file, its Scope Statement records
-  `flow not affected` and lists nothing beyond what the user said, and the batch adds or removes no
+  `flow not affected` and lists nothing beyond what the user asked, and the batch adds or removes no
   skill, rule, dependency or script. The editing agent runs the source check, `skill-pass`'s pass
   and the `code-simplify` pass itself, in process; one independent `acceptance-gate` reads the
   batch's delta, briefed as **Brief `review-pass`'s final acceptance** says with the Scope
@@ -269,7 +274,7 @@ small it looks.** Each route below is the gate set its batch passes on the head 
      plainly meant, no narrower and no broader. It costs no subagent and holds nothing.
      - What the statement lists inside that class is written at once, with no question; product
        choices still follow `pre-production`'s **Product Choices**.
-     - **Beyond what the user said is a policy change**: a requirement neither the request nor its
+     - **Beyond what the user asked is a policy change**: a requirement neither the request nor its
        failure needs, such as a step, a routing rule or a hold the request never named; any
        exception to, or change of, standing guidance the user did not ask to change, however
        necessary the repair makes it look; and any other change they would not expect from their
@@ -281,7 +286,7 @@ small it looks.** Each route below is the gate set its batch passes on the head 
        through the skill the listing describes as mapping guidance flows. This holds for every
        guidance change: a correction, a gap the agent noticed, a rule or global-rules edit, a
        skill edit. It is shown, and the edit proceeds without waiting for an answer, unless the
-       statement lists something beyond what the user said or the invoking workflow holds it.
+       statement lists something beyond what the user asked or the invoking workflow holds it.
    - **When no existing file of the inferred or selected type governs the subject, create the new
      owner under Guidance Changes Proceed Automatically.** Record its recommended name, scope, and
      behavior in the correction evidence; do not ask for approval. An existing file of that type
@@ -446,12 +451,12 @@ The Scope Statement, shown in the message that acknowledges a correction, one pe
 ```markdown
 Guidance change — flow affected | flow not affected
 
-- You said: "<the user's words, each example value named by its kind in brackets>" | Noticed: <the gap>
+- Noticed: <the gap> (only for a gap the agent noticed itself)
 - From now on: when <situation>, agents <do this> instead of <that>.
 - Also changes, same class: <skill or rule> — <situation>: <new behavior> | None
 - Stays as it is: <the nearest case outside the class, and what agents still do there>
 - Inherited without an edit: <skill, rule or flow that reads the changed text> — <what changes for it | no change> | None
-- Beyond what you said, waiting for you: <change, the standing text it would alter, why it seems needed> | None
+- Beyond what you asked, waiting for you: <change, the standing text it would alter, why it seems needed> | None
 ```
 
 The delivery report, filled in; keep every heading, write `None` under one with nothing to list,

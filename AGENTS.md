@@ -31,6 +31,10 @@ only a subject no skill runs for.
 
 ## Skills that always run
 
+- Apply `use-browser` before any browser operation, including one performed by an imported skill,
+  hook, script or worker. Skip browser steps that conflict with it. If loading a skill registers
+  a hook that can launch a separate browser, leave that skill inactive and use any relevant
+  browser-independent reference material.
 - The skill whose description says it applies before the first user-facing response, and the
   output skill it builds on, apply from the first response a user reads in the session, whether or
   not the user invoked them or the running skill names them; a session that did not start with them
@@ -76,10 +80,13 @@ only a subject no skill runs for.
   - A rule about how the product looks or reads is the one kind a recommendation may depart from:
     it is a default that records earlier design judgment, and the departure is recommended on its
     merits and proposed to the user, never made silently.
-  - A brief, correction, review finding, gate's fix step or continuation note never outranks the
-    guidance governing its subject or the scope the user last set: an item outside that scope is
-    answered as out of scope, never relayed as a fix, unless the change itself introduced a defect,
-    which remains a required fix, or the item is a game's design the user's words did not cut.
+  - A carried instruction — a brief, correction, review finding, gate's bar or fix step, plan step,
+    record's criteria or continuation note — never outranks the guidance governing its subject or
+    the scope the user last set, and binds only what its problem needs: an item outside that scope,
+    ruled out by that guidance or testing what the problem does not touch is answered as such,
+    never carried out, relayed as a fix or put to the user, unless the change itself introduced a
+    defect, which remains a required fix, or the item is a game's design the user's words did not
+    cut.
   - **Nor does a label make an item the user's:** before a question goes to the user, whether it is
     theirs is read from the game-design bullet below and from what the skill covering product
     choices leaves to the user, a routine presentation detail being the agent's, never from a gate,
@@ -105,6 +112,12 @@ only a subject no skill runs for.
   or offering it back instead is the miss. This is the user's word wherever a rule or skill asks
   first, keeps what is built or defers an improvement. Only the core loop or genre, what players
   pay for, security, disclosure, authorization and what the user's words decided stay with the user.
+- **How much a design takes to build is the user's call, never the agent's objection.** A proposal,
+  recommendation, review or selection judges a design, in a game or any product, by what it does for
+  the product and the people who use it. The work, time or cost of building it is never a weakness,
+  a risk, a score, a blocker, or a reason to shrink, defer or choose a smaller option. What a design
+  requires may be listed as fact; whether it is worth building is the user's to say. The scope
+  rules for incidental cleanup inside a change are separate.
 
 ## Asking the user
 
@@ -148,6 +161,10 @@ only a subject no skill runs for.
   an arrow pointing below the toolbar beside the words "above the toolbar", neither reading is
   chosen silently: ask, stating both readings in words, before building either. The question is not
   held for a capture of each option.
+- **No reading of a request is narrowed silently.** Where the words could name more than one thing
+  in a capture or the product, such as "this" over a page holding two related controls, ask with
+  each reading stated, or take the reading that covers every candidate the words fit, never one
+  of them left for a later follow-up, and say which was taken.
 
 ## Outcomes, irreversible steps and waits
 
@@ -176,7 +193,10 @@ holds its procedure.
   passed, so its test jobs run once, on the head about to merge. Never mark one ready to start its
   tests, to show it finished, or to hand it to the user. With no merge authorized, a pull request
   is complete as a reviewable draft whose local checks under **Pre-Push Gate** and completion review
-  have passed; its hosted test jobs are required only at the merge.
+  have passed; its hosted test jobs are required only at the merge. A check that does run on a
+  draft is read whenever the pull request's state is reported, its own or a worker's push alike,
+  and one that fails is fixed in that pull request at once like any defect, a failure in setup the
+  change did not write included, never set aside because the draft's tests run only at the merge.
 - **Each repository is an independent publishing context.** Pull-request titles, descriptions,
   comments, issue text, branch names and commit messages use the target repository's domain,
   contracts, changes and validation, and never reference another repository's pull request or
@@ -347,14 +367,17 @@ covering that code; that recorded check is the increment's **Pre-Push Gate** ver
 closes the flag, which the review's next round or a fresh gate does.
 
 - **Required checks use CI’s commands and scope.** Read the workflow files that trigger on a pull
-  request and run every checking job that can run locally — lint, format, type checks, build,
-  tests, generated-output drift, docs or coverage checks — with the job's own command, scope, mode,
-  tool version and configuration, plus any check a skill in use requires. A variant scoped to the
-  changed files, run in write mode, or left out because the diff looks unrelated is not that
-  check. Project guidance that lists the commands is a shortcut to the workflows, which are right
-  where the two disagree. An explicitly selected workflow's declared check sequence and delivery
-  constraints set when the batch runs and which results stay valid; a job is left to its hosted run
-  only for a hosted service or credentials the session itself found absent, or runner behavior.
+  request and run every fast checking job that can run locally — lint, format, type checks, build,
+  generated-output drift, docs checks — with the job's own command, scope, mode, tool version and
+  configuration, plus any check a skill in use requires. Test suites of every kind, unit through
+  end-to-end, and coverage runs are not push checks: they run once, with each test job's own
+  command, scope, mode, tool version and configuration, when the task's changes are complete, as
+  the slow verification below. A variant scoped to the changed files, run in write mode, or left out
+  because the diff looks unrelated is not that check. Project guidance that lists the commands is a
+  shortcut to the workflows, which are right where the two disagree. An explicitly selected
+  workflow's declared check sequence and delivery constraints set when the batch runs and which
+  results stay valid; a job is left to its hosted run only for a hosted service or credentials the
+  session itself found absent, or runner behavior.
 - **Commit each small coherent step and push it as soon as its checks pass**, at least every five
   minutes of work and before any long wait, never at the end of a unit or task. A delegated worker
   pushes to the pull request's branch at the same cadence. A push is what lets the user review and
@@ -363,10 +386,15 @@ closes the flag, which the review's next round or a fresh gate does.
   pushing or merging.** Where a dependency is still in review, unreleased or unmerged, the branch
   consumes that dependency's pull-request branch in its manifest, lockfile and workflow checkouts,
   or builds on a same-repository sibling's branch, and pushes; never ask for the dependency's merge
-  or report the consumer blocked on it.
-- **The order is change, checks, push, then the slow verification**: a browser walkthrough, a full
-  or end-to-end suite, anything slow or needing a running stack, whose findings go out as fix
-  pushes. **Pushed is not done**: a change is reported done only once that verification has passed.
+  or report the consumer blocked on it. That route is only for what the change uses that the
+  dependency adds: a defect in the pull request's own checks or delivery, such as a CI setup step
+  the change did not write or a deploy workflow, is repaired in that pull request itself, even
+  when a sibling pull request already carries a repair, never by consuming, stacking on or
+  waiting for that sibling or the default branch.
+- **The order is change, checks, push, then the slow verification**: once the task's changes are
+  complete, its test suites, a browser walkthrough, anything slow or needing a running stack, whose
+  findings go out as fix pushes; a fix reruns only the suites covering it. **Pushed is not done**:
+  a change is reported done only once that verification has passed.
 
 # Shared Rules
 

@@ -4,6 +4,13 @@ Apply these criteria to every test, test-data, test-support, and test-configurat
 suites reference beside this file holds the conventions for suites, test modules, test
 configuration and time budgets.
 
+Contents: **Test Value And Retention** (**Test Deletion Evidence**, **Test Cost**, **Dispositions
+For Existing Tests**), **Find The Canonical Test Data** (**Boundary Representations And Decision
+Matrices**), **Mirror Source Ownership**, **Prefer Parametrized Cases** (**Naming Checks**),
+**Place Construction Outside Tests** (**Factory Contents**), **Choose Test Doubles** (**Auditing
+Existing Doubles**), **Third-Party Calls Use Documented Doubles**, **A Missing Credential Leaves
+The Test Alone**, **Literal Sweep**.
+
 ## Test Value And Retention
 
 **A test is never redundant with a test of another classification — unit, integration, smoke, or
@@ -246,8 +253,8 @@ that file gets a file of its own instead of joining the others. Check it mechani
 test module in scope and compare its name, without the test-file marker, with the source file at the mirrored
 path. A test module named for a function or class inside a source file is a finding; its tests fold
 into that source file's test module, organized as this section's class rule and **Prefer
-Parametrized Cases** say, within `pre-production`'s size budget, the rest going where that budget
-sends it.
+Parametrized Cases** say, within `pre-production`'s size budget, the rest handled as that budget
+says.
 
 Before placing or moving a test, compare analogous sibling service tests and their corresponding
 source owners. Apply explicit repository guidance first. Otherwise prefer the layout that most
@@ -382,6 +389,58 @@ A fixture or factory is named for the domain role or state it provides, as **Pla
 Outside Tests** below sets out. A name coined from an abstraction or an adjective — an `-less` word,
 a mechanism, a synonym for the thing — where the concrete thing it provides or lacks would name it is a finding,
 renamed for that thing.
+
+Fixtures that provide more instances of one kind, which no role or state tells apart, are siblings
+of one family, named so that a reader tells from the names alone how they relate:
+
+- A relation a test relies on, such as which organization a user belongs to, tells siblings apart
+  and names them, every member of the family naming its side of that relation so none stays bare
+  beside a qualified sibling, and ordinals number only the siblings that share every such
+  relation, such as `first_org_member` and `second_org_member`, never a synonym for one more of
+  the kind.
+- An ordinal sequence runs `first_`, `second_`, `third_` and onward, from `first_` without a gap,
+  and numbers every sibling that shares those relations. A fixture with no such sibling takes no
+  ordinal, and neither does a factory.
+- An ordinal leads the name it numbers. Where the side a sibling names is itself a numbered
+  fixture, the side's whole name comes first and the sibling's own ordinal sits directly before
+  its noun, so neither ordinal is read as the other: with depots `first_depot` and `second_depot`,
+  two drivers of one and the only driver of the other are `first_depot_first_driver`,
+  `first_depot_second_driver` and `second_depot_driver`. A leading ordinal numbers the side only
+  where a fixture of that name exists.
+- No word that says only that there is one more of the kind, such as `alternate_`, `other_` or
+  `another_`, stands in for a relation's side or an ordinal: it tells a reader nothing about how
+  the fixture differs from its sibling.
+- A change that adds a sibling names it this way and renames the family's other members to match
+  in that change, with every consumer: a qualified or numbered name means nothing beside a bare
+  sibling, so the rename is part of naming the fixture the change adds, never incidental cleanup
+  under `pre-production`'s size budget, whatever the number of consumers.
+
+For every fixture, in a family or not, the name is what a reader takes the value to be:
+
+- A fixture's name carries no `test_` prefix that only marks it as test support, which repeats
+  where it lives; the word stays where it names what the fixture provides, such as a test run in a
+  product that manages them.
+- A name carries no role its value does not carry: a plain account is not `admin` or `owner` until
+  something gives it that role.
+- One value is not offered under two fixture names: a fixture that returns another fixture's value
+  unchanged and adds no setup of its own is removed, and its consumers use the one name.
+
+The fixture listing finds every instance of the above. It runs over fixture definitions, in each
+fixture package a change adds, renames or removes a fixture in and in the fixture packages of a
+scope a caller names:
+
+- list every family of fixtures of one kind with each member's name, the side of each relation it
+  names and its ordinal, and report every family with a member left bare beside a qualified or
+  numbered sibling, members that share every relation without an ordinal, a member told apart by
+  a word that is neither a relation's side nor an ordinal, a gap, or a lone ordinal;
+- list every fixture whose name holds `alternate`, `other` or `another` as a word standing in for
+  a side or an ordinal, every one whose first word is `test` and only marks test support, every
+  fixture that returns another fixture's value unchanged and adds no setup of its own, and every
+  fixture named for a role nothing gives its value; report every row.
+
+A change that adds, renames or removes a fixture runs the listing before it is finished and
+fixes every row it reports, rows in families it did not add to included, unless
+`pre-production`'s size budget reserves a record for a row outside the family it adds to.
 
 Name several results in one test for their scenario or domain role, such as
 `invited_member_response` and `created_member_response`, never with a letter or a number, such as

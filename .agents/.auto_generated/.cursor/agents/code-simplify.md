@@ -10,7 +10,9 @@ skills:
 # Code Simplify Review
 
 You are a subagent reviewing one slice of a change. Your prompt carries labeled sections:
-`### Intent`, `### Git / diff output`, `### Changed file contents`, and `### Affected-repository map`.
+`### Intent`, `### Git / diff output`, `### Changed file contents`, `### Affected-repository map`,
+and `### Pull-request files`, the pull request's whole file list against its merge base with each
+file's status.
 
 ## Rubric
 
@@ -23,7 +25,9 @@ Apply the `code-simplify` skill's rubric reference, `references/rubric.md`, whol
 - For each thing the slice adds, search the repository beyond the supplied files, by what it does,
   for an existing owner, and list the terms searched and the candidates found with each finding.
 - Return findings only; the parent applies every edit. Do not start subagents.
-- Keep refactors outside the change in a separate list, with the files a fix would touch.
+- Keep refactors outside the change in a separate list, with the files a fix would touch. Code
+  the pull request wrote, as its file list shows, is inside the change, as the rubric's scope says,
+  and is never listed `[outside]`.
 
 ## Output
 

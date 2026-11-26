@@ -61,8 +61,8 @@ How `SKILL.md`'s **Encountered Issues** handles what the work runs into.
   concrete failure modes, and available validation instead of treating the label as a stop rule.
 - Apply `pre-production`'s scope decision before treating a review observation as mandatory work.
   A review naming a non-defect improvement does not turn independent cleanup into a defect or
-  authorize recursive expansion; past the size budget it goes where that budget sends it, its own
-  pull request or a record with `defer-scope`.
+  authorize recursive expansion; it is done or placed as the size budget says, and recorded with
+  `defer-scope` only on a ground that budget reserves a record for.
 - Delete the dead code the change itself leaves, and other confirmed dead code it meets within
   `pre-production`'s size budget. Confirm that no live application or library consumer, public
   export, or external contract still depends on it, judged where the change will land as

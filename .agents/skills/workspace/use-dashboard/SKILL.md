@@ -52,7 +52,7 @@ An `icon` is one of `overview`, `proposals`, `progress`, `board`, `checklist`, `
 `pull-request`, `settings`, `alert`, `check` or `calendar`. The dashboard's icon and each page's icon
 all differ, so no glyph appears twice in the navbar.
 
-`tone` is `good`, `warning`, `critical`, `accent` or `done`, as **Making A Dashboard** defines
+`tone` is `good`, `warning`, `critical`, `accent` or `next`, as **Making A Dashboard** defines
 them; omit it for neutral. `links` is `[{kind, label, url, state?}]`: pills under the item that open its sources,
 each led by its `kind` — `doc`, `code`, `diff`, `spec`, `config`, `test`, `page` or `data`, shown as
 Doc, Code, Diff, Spec, Config, Test, Page or Data — and labeled briefly, such as
@@ -219,9 +219,9 @@ Dashboards look alike because they are built alike:
 - **Labels and headings are written in sentence case and shown as written.** The dashboard's
   `title` and the preview `topic` `Synthetic Preview` are names, in title case.
 - **Tone means the same everywhere.** `good` is fine, matches or finished, `warning` needs the
-  reader's look or action, `critical` is wrong or blocking, `accent` is in progress or
-  informational, and `done`, a purple, is finished work that must read apart from what is merely
-  fine, such as a merged pull request beside open ones. Leave it out for neutral; never tone an item only to decorate it.
+  reader's look or action, `critical` is wrong or blocking, `accent`, a blue, is running now or
+  informational, and `next`, a purple, is up next or still to do. Leave it out for neutral; never
+  tone an item only to decorate it.
 - **Blue text is a link.** A reader clicks blue text, so only links take it, and a tone colors a
   dot, border, line or bar, never text. A figure, number or label meant to stand out sits in a
   neutral badge rather than taking a color or the weight its neighboring names already use.
@@ -346,10 +346,10 @@ harness, so one file applies.
 | Codex | [references/harnesses/codex.md](references/harnesses/codex.md) |
 
 **The user's own browser is every harness's last route**: open the full page through `use-browser`'s
-**Showing A Local Page**, which refreshes it on every later render. A harness takes it when the
-routes its file lists are unavailable or refuse the session, or beside them where its file says so,
-and a harness no row names takes it alone. Where that route does not apply, send the full page with
-a tool that sends a file to the user, or, with none, give its absolute path.
+**Showing A Local Page**, which refreshes it on every later render. A harness takes it only when
+the routes its file lists are unavailable or refuse the session, never beside a route that showed
+the page, and a harness no row names takes it alone. Where that route does not apply, send the full
+page with a tool that sends a file to the user, or, with none, give its absolute path.
 
 ## Guardrails
 

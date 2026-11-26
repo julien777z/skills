@@ -1,6 +1,6 @@
 ---
 name: run-site
-description: Bring an application stack up and repair startup blockers. A change a reader sees rendered is inspected rendered before it is reported, in every execution environment, in a browser the agent runs itself when local; the full recorded walkthrough applies in cloud execution environments and whenever the user asks for browser work. Use before planning, recommending, delegating or performing browser walkthroughs or rendered UI inspections, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works. Use before starting container-backed work, to select the local container runtime.
+description: Bring an application stack up and repair startup blockers. A change a reader sees rendered is inspected rendered before it is reported, in every execution environment, through the user’s connected browser; the full recorded walkthrough applies in cloud execution environments and whenever the user asks for browser work. Use before planning, recommending, delegating or performing browser walkthroughs or rendered UI inspections, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works. Use before starting container-backed work, to select the local container runtime.
 short_description: 'Start an application stack and perform browser verification where applicable.'
 ---
 
@@ -27,10 +27,8 @@ Use `use-browser` for browser control through its supported route. Apply `test-f
   **A change whose effect a reader sees rendered — a page, a panel, a layout, its copy or its
   states — is looked at rendered before it is reported done or ready for review, in every
   execution environment.**
-- **In a local execution environment that inspection runs in a browser session the agent launches
-  and owns**, headless by default, as `use-browser` routes it, never in the user's own browser,
-  tabs, windows or desktop. It is the walkthrough
-  below without its recording.
+- Use the browser and tab selected by `use-browser`. A local walkthrough skips the recording
+  unless the user asks for one.
 - **The inspection covers what the change can affect, and its route follows from that.** A change
   confined to a component's own presentation or interaction — its markup, styles, input handling —
   whose behavior does not depend on the page's data, sign-in, routing or server is inspected by
@@ -169,31 +167,10 @@ proves the component renders and nothing about the screen a user reaches. A chan
 component's own behavior is the exception **Principles** names: its rendered page is the check. If
 sign-in genuinely cannot complete for a change that needs the real screen, report the walkthrough as
 not done.
-Drive browser automation through the tab selected as `use-browser`'s **Selecting And Binding A Tab**
-says, which for a local inspection is the agent-owned session **Principles** names; never read the
-user's saved passwords, cookies, local storage, or session files.
-
-Keep a password or one-time sign-in token out of argv and the transcript: put it in an environment
-variable for the one command that fills the field or opens the link, build that script, and pipe it
-to the browser command through stdin. The password comes from what the repository provides — the
-file its configuration or README names, or the helper its tooling uses to set or generate a test identity's
-password, run first when the identity has none yet — and through `proton-pass` only for an account
-the repository provides no source for, such as a deployed or third-party one. Set the value through
-the native setter and dispatch a bubbling `input` event so a framework-controlled input registers
-it:
-
-```bash
-# Account with no repository source: SIGN_IN_PASSWORD="$(PROTON_PASS_AGENT_REASON="<why>" pass-cli item view \
-#   --vault-name "<vault>" --item-title "<title>" --field password)"
-SIGN_IN_PASSWORD="$(cat <password-file>)" python3 - <<'EOF' | agent-browser --session <name> eval --stdin
-import json, os
-secret = os.environ["SIGN_IN_PASSWORD"]
-js = ("const el=document.querySelector('input[type=\"password\"]');"
-      "Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(el,%s);"
-      "el.dispatchEvent(new Event('input',{bubbles:true}));'ok'") % json.dumps(secret)
-print(js)
-EOF
-```
+Use the tab selected by `use-browser` for sign-in. Use the harness's credential entry or handoff
+route to keep passwords and one-time tokens out of command arguments and transcripts. Reuse an
+available signed-in session of the required identity. Never read saved passwords, cookies, local
+storage or session files.
 
 ### Drive the change
 
@@ -209,12 +186,6 @@ EOF
   what the field holds, whether the list closed up — and reload where it persists something. A drag
   is several moves, not one jump:
 
-  ```bash
-  agent-browser --session <name> mouse move <x> <y>
-  agent-browser --session <name> mouse down
-  agent-browser --session <name> mouse move <x2> <y2>
-  agent-browser --session <name> mouse up
-  ```
 
 - A library doing the work is a reason to exercise it, never an exemption: the arguments handed to it
   and the state handed back belong to the change.
@@ -252,17 +223,8 @@ height before each capture — the larger of the document's and its scrolling co
 height — and restore it before interacting again. The loop runs over the widths walked for that
 state: 1280 alone when its layout did not change.
 
-```bash
-for width in <widths walked>; do
-  agent-browser --session <name> set viewport "$width" 900
-  agent-browser --session <name> eval "document.documentElement.scrollWidth <= innerWidth"
-  height=$(agent-browser --session <name> eval \
-    "Math.max(document.documentElement.scrollHeight, document.querySelector('<scroll-container>')?.scrollHeight ?? 0)")
-  agent-browser --session <name> set viewport "$width" "$height"
-  agent-browser --session <name> screenshot --full <path>-"$width".png
-  agent-browser --session <name> set viewport "$width" 900
-done
-```
+Use the selected browser tool's viewport and screenshot controls. Restore any temporary viewport
+setting when the check ends.
 
 ### Without the API changes it relies on
 
@@ -292,15 +254,9 @@ Record and capture only a change that is visible on a page; a change verified by
 paragraph below says and skips the recording; the cloud walkthrough and one the user asks for
 record as follows. Record the flow until the feature is exercised to its end — the form submitted
 and its result read back, the item seen in its list, the setting confirmed after a reload. Record
-through the selected tab's existing browser context, preserving its authenticated state; start
-before sign-in only when sign-in is part of the flow being exercised.
-The recorder writes WebM, which some viewers cannot play; send the MP4:
-
-```bash
-agent-browser --session <name> record start <path>.webm
-agent-browser --session <name> record stop
-ffmpeg -y -i <path>.webm -c:v libx264 -pix_fmt yuv420p -movflags +faststart -an <path>.mp4
-```
+through the selected tab's existing browser context, preserving its authenticated state. Use the
+harness's recording capability where available and `share-media` to deliver it. If recording is
+unavailable, capture stills and report the recording gap.
 
 Send the recording, where one is owed, and a still of the view the change touched, unasked, plus a
 still per width walked, the page with its requests failing, and each defect with the fix that
