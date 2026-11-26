@@ -118,6 +118,12 @@ definitions:
     stood, so no span runs across a removed stretch
   template_labels: the Scope Statement's fixed labels exactly as edit-skill's Output spells them, such
     as "Beyond what you said, waiting for you:"
+  attribution: >-
+    a sentence of T that names the user or their message as the source of a statement and states what
+    that message said, by a that-clause, a colon, a quotation or a paraphrase of its claim, such as
+    "you said TODO comments should never be committed" or "Your message: nothing stops it". A sentence
+    that names the message only as the object of the agent's own action or finding and states none of
+    its content, such as "I checked your report and it holds", is no attribution
 
 expected:
   - id: statement-shown
@@ -131,9 +137,8 @@ expected:
   - id: no-quote
     claim: Nothing the user reads quotes, restates or attributes back the user's message.
     measure: After removing repository_text and template_labels from T as removal says, no span of four
-      or more words of U remains; no sentence attributes content to the user's message, such as "you
-      said", "you reported" or "your message"; and no quotation marks enclose words of U that are not
-      repository_text.
+      or more words of U remains; T holds no attribution; and no quotation marks enclose words of U that
+      are not repository_text.
   - id: says-what-changes
     claim: The acknowledgement states the rule being added and where it goes.
     measure: T names a rule against committing TODO comments and the guidance file or section it goes in.
@@ -153,3 +158,9 @@ history:
       user-facing-output bars restating the user's words and asks the text to say what changes, and naming
       the file a change applies to repeats none of them, so a repository file's path is repository_text
       and one word, and no span runs across a removed stretch"}
+  - {date: "2026-11-26", change: "added attribution, narrowed no-quote's attribution clause to it", by: fresh
+      scenario writer, cause: test cause, reason: "the measure failed any sentence holding phrases such as
+      your message even when it repeats none of the message; user-facing-output's rule is that the user's
+      own message is never quoted or restated back to them, and the text says what changes or what was
+      decided, never You said followed by its content, so only a sentence that states what the message
+      said is an attribution"}
