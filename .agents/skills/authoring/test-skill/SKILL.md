@@ -1,6 +1,6 @@
 ---
 name: test-skill
-description: "Validate behavior-changing skill, rule, and agent edits before merge through realistic tasks with edited guidance and risk-based original controls. Choose isolated environments for actions, retain observed results, and repair guidance or defective tests until the required behavior is verified."
+description: "Validate behavior-changing skill, rule and agent edits before merge by having agents do the work the edited guidance governs, against risk-based original controls, and run the pinned regression scenarios each skill keeps in its tests folder. Choose isolated environments for actions, retain observed results, and repair guidance or defective tests until the required behavior is verified. Use when a guidance edit changes what a reader does, when asked to test or exercise a skill, or when writing or changing a regression scenario."
 short_description: 'Exercise guidance safely, compare behavior, and repair failing tests.'
 ---
 
@@ -17,9 +17,19 @@ confuse those conclusions.
 - `session-ledger`
 - `council`
 - `acceptance-gate`
+- `skill-pass`
 
 ## When It Runs
 
+- **A round runs two kinds of test.** A change check asks whether the new change holds up, through
+  the scenarios **Workflow** writes for it. Regression scenarios ask whether a skill regresses: the
+  pinned scenario folders in each skill's `tests/` folder that the diff touches, run beside the
+  change check and never in place of it. The
+  [regression scenarios reference](references/regression-scenarios.md) holds their format, which
+  ones a diff selects, who may change an expectation, and their isolation and criteria. Run every
+  regression scenario the diff selects, reading the reference's **When They Run** in every round to
+  select them, and the rest of it when one runs, is written or changes. The bullets below set when
+  a round runs and how a change check is sized.
 - **Run before merge for every behavior-changing skill, rule, or agent edit**, however it was
   made. A rule is reader guidance, so its source type never
   exempts it. An edit that changes what the skill returns the user runs against the concrete example
@@ -44,8 +54,9 @@ confuse those conclusions.
 - **Each scenario gets its own reader for each variant it runs**, so its context holds that one
   task: one edited reader per scenario step 1 writes, plus its original control where the next
   bullet requires one. Add readers only for a distinct named risk. A round starts one scenario
-  writer, one reader per scenario, a second per scenario that runs a control, and one grader per
-  eight scenarios; the count grows only with the failure classes the batch holds.
+  writer, one reader per scenario, a second per scenario that runs a control, one reader per
+  regression scenario the diff selects, and one grader per eight scenarios of either kind; the count
+  grows only with the failure classes the batch holds and the regression scenarios it selects.
 - **An original control runs only where the comparison has nothing else to stand on.** It is
   required for a new skill, as the last bullet here says; where two instructions conflict and the
   comparison decides between them; and for an edit with no observed miss under the original text
@@ -107,7 +118,9 @@ Run after `code-simplify` completes its pass.
    directory, an appended system prompt or an input file the run reads. An option that sets where
    the harness reads user-level skills or rules is a user-level root whatever folder it names, so
    the variant never goes in one, in a folder one points at, or in any folder searched by default.
-   A subagent of the running session stands in only when its loaded guidance lists no copy of a
+   A regression scenario's reader is the exception: its user-level root is a fresh scratch home
+   holding only the installer's install of the branch under test, as the regression scenarios
+   reference's **Isolation** says. A subagent of the running session stands in only when its loaded guidance lists no copy of a
    skill or rule under test, with the variant in its brief. Record the route, the command, the
    scratch root's file list with digests, and the harness's record of the guidance it loaded. With
    neither route, the round is a concrete gate, surfaced with its evidence and saved next action;

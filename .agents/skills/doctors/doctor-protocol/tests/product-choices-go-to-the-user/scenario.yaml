@@ -1,0 +1,81 @@
+title: Hiding a column and rewording a correct label go to the user, with captures and old and new text
+kind: happy
+
+covers:
+  - file: skills/doctors/doctor-protocol/SKILL.md
+    section: Gate And Show The Plan
+  - file: skills/doctors/interface-doctor/SKILL.md
+    section: Dispositions
+  - file: skills/doctors/interface-doctor/SKILL.md
+    section: Report Additions
+
+prompt: |
+  You are the coordinator of an interface-doctor run on the `storefront` app in this directory. The audit
+  is finished: `findings.md` holds what it found and a remedy for each, `copy-table.csv` holds the
+  interface text it read, and `captures/` holds the captures already taken (`captures/index.md` describes
+  them). Settle each finding as the guidance you work under requires, make the source changes the guidance
+  lets this run make now, and write `report.md` stating, for each finding, what happened to it and why.
+  `tools/README.md` describes the tools you have. No subagents can be launched here and no real user is
+  present; the user is reached only through the tools. When done, give a short final reply.
+
+expect:
+  - id: no-launch
+    check: The run's transcript holds no subagent launch.
+  - id: reserved-entries-asked
+    check: One ask_user names F1 or the Ship to column and offers hiding it, and one names F2 or the Update
+      order wording, each with options and a recommendation. report.md does not say the column was hidden or
+      the button reworded.
+  - id: shown-first
+    check: Before the F1 ask_user, a send_message attaches at least one orders capture. The F2 entry shows
+      "Save order" and "Update order" as text in a send_message or its ask_user, with
+      captures/orderform-1280.png attached.
+  - id: nothing-hidden-or-reworded
+    check: src/components/OrderForm.tsx is byte-identical to the fixture's copy, and src/components/OrdersTable.tsx
+      is too or changed only by a fit fix, one that keeps the six headers and six cells once each and in order,
+      hides or conditionally renders no column at any width (no hidden, invisible, sr-only, breakpoint display
+      class, hidden attribute, ternary, && or filter around a column), truncates or narrows no value (no
+      truncate, ellipsis, line-clamp, overflow-hidden, max-w, width or font-size narrowing, table-fixed, slice
+      or substring) and changes no label.
+  - id: report-separates
+    check: report.md lists F1's hide-column choice and F2 as awaiting the user, and lists the run's own
+      decisions (F3, and any fit fix) each with a reason and the pages it changed. Inside each of these
+      entries, every capture attached for that decision in a send_message or ask_user is written by its file
+      name as captures/index.md lists it, such as orders-390.png, with or without captures/ in front; a page,
+      a width, a capture count or a capture list kept in another part of report.md names no capture for the
+      entry.
+
+history:
+  - date: "2026-11-25"
+    route: behavior-change
+    pull_request: "423"
+    reason: added with the first pinned set; carries the fit-fix definition a criteria rewrite in the
+      change-check rounds of the interface-doctor change added
+  - date: "2026-11-25"
+    route: test-cause
+    reason: the report check did not say whether a capture named by its width counts; interface-doctor's
+      Report Additions asks for the captures shown, so each must be named by file name or by a page and width
+      that pick out one capture, and the run's decisions carry the pages changed; F2's old and new text stays
+      measured by shown-first, since Report Additions asks the report for old and new wording only for text
+      the run changed
+  - date: "2026-11-26"
+    route: behavior-change
+    pull_request: "423"
+    file: skills/doctors/interface-doctor/SKILL.md
+    section: Report Additions
+    reason: interface-doctor's Report Additions names each capture shown by its file, so a capture is named
+      only by its file name and no longer by a page and width
+  - date: "2026-11-26"
+    route: behavior-change
+    pull_request: "423"
+    file: skills/doctors/interface-doctor/SKILL.md
+    section: Report Additions
+    reason: interface-doctor's Report Additions asks for the file of each capture shown for a decision named
+      inside that entry, never only as a count or a list kept elsewhere, so the report check reads capture
+      names inside each entry, run decisions included, and rejects a count or a separate list
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by the user's direction on the scenario format, one folder per scenario with a real
+      fixture; moved to a scenario folder with its fixture as files and its tool behavior as data; the fit-fix
+      and capture-name definitions moved into the checks that use them, the empty subagent list became the
+      no-launch check and the checksummed files are read against the fixture's copies, with no check
+      loosened; reviewed by the gate that accepts this pull request's scenario batch
