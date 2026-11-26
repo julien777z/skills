@@ -147,11 +147,13 @@ plan of its own; only an edit that adds nothing skips it.
 2. <step> (~<n> min)
 
 **Total: ~<n> min.** Then <what the user does next, such as review or merge; never a deploy the request does not name>. Interrupt to change any of it.
+
+<**Fixed after the final review:** one line per `last_fixes` item, only when there are any>
 ```
 
 ### Showing The Plan
 
-- **The user sees a plan once `review-proposal` has accepted it, or, where the running workflow
+- **The user sees a plan once `review-proposal` returns it ready, or, where the running workflow
   states a plan route straight to the Proposal gate, once that gate has, and never before.** A plan
   still being drafted or reviewed stays with the run: nothing the user reads — a report, a summary,
   a status line, a task list, a dashboard or a question — shows its steps, estimates or an outline
@@ -166,7 +168,7 @@ plan of its own; only an edit that adds nothing skips it.
   is a product, scope, security, disclosure or authorization choice that is the user's and that
   they have not answered. A plan holding one sends those decisions first and starts only
   independent authorized work until they are answered. Once they are, or when the plan never held
-  one, the accepted plan goes to the user as a message with no approval question, **Execution**
+  one, the ready plan goes to the user as a message with no approval question, **Execution**
   starts without waiting for a reply, and the user can interrupt at any point.
 - **A plan shown this way is never called approved**: every record, report,
   dashboard and brief says it was shown with no open decision, and when.
@@ -198,6 +200,15 @@ This order grants no deployment or merge authority: **Task Authorization** still
 
 ### Follow-Ups
 
+**Source or product work that adds to what the task delivers is never parked.** A request, a
+discussion or an answered decision that extends the task's own outcome, such as a check the user
+designs mid-task through answered questions, becomes a step of the active plan record in the turn
+it is requested or its last open decision is answered, and starts in that turn unless **Priority**
+holds it behind higher-ranked work, its line then recording the holding work and saved next action
+as **Work You Have Already Named** says. It lands on the task's pull request and is never reported
+as next. Whether the amended plan is shown first follows **When A Plan Is Needed** and **Showing
+The Plan**.
+
 Classify each source or product follow-up under **When A Plan Is Needed** before preparing a plan. A small, clearly specified follow-up executes on the user's request; only a follow-up outside that exception needs its own plan. A canonical guidance correction follows **When A Plan Is Needed** and waits for no plan; while a guidance batch is in flight it joins that batch, as `edit-skill`'s **Recording During A Task** says. **Priority** decides when other follow-ups run and whether affected work pauses now; none of the routes below makes arrival order a reason to preempt active recovery.
 
 - **One that touches nothing in flight** — other files, another outcome — leaves the running work
@@ -216,9 +227,9 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
   work and its saved next step under **Work You Have Already Named**, then updates the active
   plan record. Show an amended plan, as **Showing The Plan** says, only when **When A Plan Is
   Needed** requires one; a small, clearly specified follow-up starts without one.
-  Pause affected work when **Priority** brings the amendment into execution; otherwise retain it
-  for after the active work. Resume once any decision it opens is answered and its priority permits. Unaffected work keeps
-  running while the user decides.
+  Pause the in-flight step it affects when **Priority** permits, fold the amendment into that step
+  or its worker's brief, and resume the step with it once any decision it opens is answered.
+  Unaffected work keeps running while the user decides.
 - **One that narrows scope reaches the work already in flight, at once.** Message every running
   worker to stop the work the cut removes and has not yet done, keeping what it already finished,
   and record the cut in the intent statement every later gate and review receives. A finding in
@@ -230,7 +241,7 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
 ### Progress Record
 
 - **The ledger holds the plan's current state, so nothing about progress depends on what the chat
-  still remembers.** When an accepted plan goes to the user, record it with `session-ledger` as a
+  still remembers.** When a ready plan goes to the user, record it with `session-ledger` as a
   `plan` entry holding the fields `session-ledger` names for one, its status `shown` with that time,
   filled from the planning work even where the plan shown to the user leaves them out. Work the user
   adds to an active task, with or without a plan of its own, becomes a step on that plan or a plan
