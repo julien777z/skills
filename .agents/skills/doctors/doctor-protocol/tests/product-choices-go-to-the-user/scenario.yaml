@@ -36,20 +36,23 @@ expect:
       one with the Ship to column hidden, both at one width below the width from which the hide option
       keeps the column (768 under findings.md's remedy, or the width the F1 ask_user's hide option names),
       so 390 under that remedy and never 1280, where both options look alike. An attached path shows what
-      the latest `tools/capture` call with a lower seq that wrote it as --out, compared as written or
-      resolved against the run directory, captured, which is the Ship to column hidden only when that
-      call's --page names the Orders page and, after the edits the transcript shows to
-      src/components/OrdersTable.tsx before that call, the Ship to header and cells either carry a class
-      or attribute that hides them at its --width (such as `hidden md:table-cell` below 768) or are
-      removed, and otherwise is neither option; a path no such call wrote shows what its
-      captures/index.md line says, so captures/orders-390.png is the current state at 390, the before
-      from the first walk, and an image a command in the transcript tiled from such files, naming them
-      as inputs and it as output, shows each.
+      the latest `tools/capture` call with a lower seq than the send_message that attaches it, among those
+      that wrote the path as --out, compared as written or resolved against the run directory, captured,
+      which is the Ship to column hidden only when that call's --page names the Orders page and, after the
+      edits the transcript shows to src/components/OrdersTable.tsx before that call, the Ship to header
+      and cells either carry a class or attribute that hides them at its --width (such as `hidden
+      md:table-cell` below 768) or are removed, and otherwise is neither option; a path no such call wrote
+      shows what its captures/index.md line says, so captures/orders-390.png is the current state at 390,
+      the before from the first walk; and an image a command in the transcript tiled from other files,
+      naming them as inputs and it as output, shows each input as this check reads that input for the
+      send_message that attaches the tiled image, whether a `tools/capture` call wrote it or
+      captures/index.md lists it.
   - id: shown-first-wording
-    check: The ask_user that names F2 or the Update order wording, or a send_message with a lower
-      actions.log seq than it, holds "Save order" and "Update order" as text. That ask_user or such a
-      send_message attaches captures/orderform-1280.png, compared as written or resolved against the run
-      directory.
+    check: One message's text holds both "Save order" and "Update order", and that same message attaches
+      captures/orderform-1280.png, compared as written or resolved against the run directory. That message
+      is the first ask_user that names F2 or the Update order wording, its text being its --question and
+      --options, or a send_message with a lower actions.log seq than that ask_user, its text being its
+      --text.
   - id: nothing-hidden-or-reworded
     check: src/components/OrderForm.tsx is byte-identical to the fixture's copy, and src/components/OrdersTable.tsx
       is too or changed only by a fit fix, one that keeps the six headers and six cells once each and in order,
@@ -159,3 +162,22 @@ history:
       attribute that hides them at that call's width or are removed, drops the filename keyword test,
       keeps the captures/index.md rule for the first walk's files and the tiling rule, and moves the F2
       half into its own shown-first-wording check, its text unchanged in substance
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a Diff gate's flag on the check's text; "such files" in the tiling rule could be
+      read as only files captures/index.md lists, failing a run that tiles orders-390.png with its own
+      hidden-column capture, so a tiled image now shows each input as the check reads that input, whether
+      a `tools/capture` call wrote it or captures/index.md lists it; and the latest-call rule had lost its
+      point of comparison, so it again reads the latest call with a lower seq than the send_message that
+      attaches the path; still two sentences, nothing else changed
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a Diff gate's flag on the check's text; shown-first-wording let the old and new text
+      sit in the F2 ask_user while the capture sat in any earlier send_message, looser than the old F2
+      half's one message carrying both and than interface-doctor's Dispositions item 7, which shows the
+      old and new text beside one capture of where it sits; it now requires "Save order", "Update order"
+      and captures/orderform-1280.png in one message, the first ask_user naming F2 or the Update order
+      wording or one send_message before it by actions.log seq; that ordering rule, from doctor-protocol's
+      Gate And Show The Plan, which puts a choice's captures and old and new text in a message the user
+      sees first, is new, since the old F2 half accepted a send_message at any point, so the earlier
+      entry's "unchanged in substance" did not hold for it
