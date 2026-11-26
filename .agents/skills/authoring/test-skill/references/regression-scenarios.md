@@ -151,8 +151,9 @@ tools:
   - a `covers` entry names a changed file;
   - it belongs to a skill that reads a changed skill: one that declares the changed skill or cites
     it, as `skill-pass`'s **Source Check** lists readers;
-  - a changed file is guidance every session loads, `.agents/global.md` or a rule with
-    `alwaysApply: true`, which selects every scenario.
+  - a changed file is guidance every session loads, `.agents/global.md` or a rule with `alwaysApply:
+    true`, or a skill `global.md` **Skills that always run** loads before the first response, which
+    selects every scenario.
 - **Each selected scenario gets one reader and runs with no control**, since it asks only whether
   the skill still does what its scenario says. The scenarios join the round's grader batches of up
   to eight. So a round adds one reader per selected scenario and no writer, and its count grows only
@@ -183,10 +184,11 @@ tools:
     reservation about the check, counts as one;
   - a review's or gate's flag on the check's or fixture's text;
   - the user's direction about the scenario format.
-- **Every change to a check or fixture, on either route, goes to an independent Diff gate before
-  any rerun**, through `acceptance-gate`. For a behavior-change entry the gate confirms that the
-  named `file` and `section` have a hunk in that pull request changing what the edited check
-  measures; an entry it cannot confirm takes the test-cause route or is undone.
+- **Every change to a check or fixture, on either route, goes to an independent Diff gate before any
+  rerun**, through `acceptance-gate`. For a behavior-change entry the gate confirms that the named
+  `file` and `section` have a hunk in that pull request changing what the edited check measures; an
+  entry it cannot confirm is undone; a test-cause rewrite of that check follows only when one of the
+  three openers above holds, by a fresh writer as below.
 - **A test-cause writer**, launched as `subagent-matrix` says, one for every check awaiting a
   rewrite at that point, gets the check, the guidance it tests and what opened the route — the
   grader's two readings, the flag, or the user's direction — and no transcript text, so the new text

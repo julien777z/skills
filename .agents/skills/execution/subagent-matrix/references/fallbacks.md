@@ -75,8 +75,8 @@ its brief (with no siblings, the 15 minutes alone) — relaunch the same assignm
 brief and effort, on the session's own provider at the same capability level, record both
 launches, and carry on: the other provider is a preference that improves independence, never a
 blocker, and its repair never holds the step. While such a launch is pending, the coordinator
-waits on one launch at a time, and no wait, on that launch or a sibling, runs past 15 minutes
-after its brief; it reads the launch then. A wait on it that ends there with no events is that
+waits on one launch at a time, and until its 15-minute read no wait, on that launch or a sibling,
+runs past 15 minutes after its brief; it reads the launch then. A wait on it that ends there with no events is that
 read, so no second read follows it. That read sets no limit on how long its siblings run. Once any
 sibling returns, the coordinator's very next call reads the other-provider launch's activity,
 before any wait on another launch. The replacement launches first. Once it is accepted, the
@@ -86,8 +86,8 @@ stalled launch is cancelled. If the replacement is refused, the stalled launch i
   or rerun within that requirement as the sections above say, never moved.
 - Inside **Ordinary Fallbacks** below, where the ladder reached the other provider because the
   session's own family at that level was refused as unsupported, a launch there that does not start
-  goes on to the ladder's next step instead, taken straight after the one read above that found no
-  activity, with no second read to confirm it.
+  goes on to the ladder's next step instead; for a launch showing no activity, that step follows the
+  one read above that found none, with no second read.
 - A capacity relaunch onto the other provider that stalls goes back to the session's own provider,
   which refused it, only once that provider has cleared, as **A Capacity Refusal** reads it;
   otherwise it relaunches on whichever permitted model the request path shows cleared first, never
