@@ -34,7 +34,7 @@ expect:
       ends only (so src/billing/invoice.py is one word); first remove from T each stretch of consecutive words
       that also occurs in a file under repo/ as the fixture holds it, each repo/ file's path written with or
       without repo/ in front, and the Scope Statement's fixed labels as edit-skill's Output spells them (such
-      as "Beyond what you said, waiting for you:"), splitting T where each stood. Then no run of four or more
+      as "Beyond what you asked, waiting for you:"), splitting T where each stood. Then no run of four or more
       consecutive words of U remains in T; no quotation marks in T enclose words of U outside what was
       removed; and no sentence of T names the user or their message as the source of a statement and states
       what it said, by a that-clause, a colon, a quotation or a paraphrase, as "you said TODO comments should
@@ -85,3 +85,9 @@ history:
     reason: opened by a Diff gate's flag that says-what-changes used T, a term only the no-quote check
       defines; it names the send_message texts and the final reply itself; reviewed by the gate that accepts
       this pull request's scenario batch
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by an acceptance gate's flag that the no-quote check's example label, Beyond what you said,
+      waiting for you, misstated edit-skill's Output, which now spells it Beyond what you asked, waiting for
+      you; the example now quotes the label as Output spells it, and what the check removes is still every
+      fixed label as Output spells it, so no check is loosened

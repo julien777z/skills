@@ -46,7 +46,7 @@ the subject, creates its new owner under **Guidance Changes Proceed Automaticall
 ## Guidance Changes Proceed Automatically
 
 A user request or an encountered guidance gap, once **Validate input** confirms its premise,
-authorizes the canonical `.agents` correction its Scope Statement lists inside what the user said;
+authorizes the canonical `.agents` correction its Scope Statement lists inside what the user asked;
 a policy change, which that statement lists as beyond it, waits for the user as **Identify the failure class**
 says. The statement is shown, never asked: do not ask for a plan, or for approval of the statement,
 of a guidance-output example, of a proposed flow or of the pull request. **Apart from a policy
