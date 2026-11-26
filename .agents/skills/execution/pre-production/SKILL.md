@@ -406,11 +406,10 @@ the issue should be ignored.
 ## Target Contract
 
 - **Implement only the target contract.** Never add a compatibility shim or retain support for an
-  obsolete owned contract or revision. This includes temporary bridges during rollout and fallbacks
-  for in-flight work. Update affected owned consumers, convert retained data through the migration
-  path, and remove the previous alias, branch, or fallback. Keep any sequencing the cutover needs in
-  the release procedure. This governs runtime code, configuration, tooling, CI, data handling,
-  documentation, and instructions.
+  obsolete owned contract or revision, even temporarily. This governs runtime code, configuration,
+  tooling, CI, data handling, documentation, and instructions. Update affected owned consumers,
+  convert retained data through versioned migrations, and remove obsolete paths. Put any cutover
+  sequencing in the release procedure.
 - **Repair the design that causes the defect.** Trace the operation from its entry point to the
   component that decides the outcome. Check which constraints are real product or external
   requirements and which are choices the repository already made. If an owned contract, model,

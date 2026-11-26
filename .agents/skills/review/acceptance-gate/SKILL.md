@@ -41,8 +41,10 @@ When work changes an owned boundary, the statement quotes the applicable target-
 names the one canonical representation, and identifies every retained or candidate representation of
 that boundary. The gate requires that evidence before it can accept the change. Always flag support
 for an obsolete owned contract, including a second consumer layout, branch, probe, fallback, or
-compatibility helper. When a finding identifies in-flight work or retained data that still uses the
-old contract, require a release sequence or migration that puts the work on the target contract.
+compatibility helper. Apply this across runtime code, configuration, tooling, CI, data handling,
+documentation, and instructions. Require the change to remove obsolete paths, update owned
+consumers, migrate retained data, and handle cutover sequencing in the release procedure wherever
+those steps apply.
 
 The owned-boundary receipt distinguishes the actor or execution owner from its destination and
 names the permitted resources and prohibited placements, disclosures or writes. Trace the actual
