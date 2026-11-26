@@ -10,5 +10,5 @@ to the largest value the tool accepts; the frame fits the page's content up to t
 reader can switch pages and open entries inside it. Show every later render the same way, after its
 re-render, so the conversation holds the current page.
 
-A publishing tool the agent runtime brings into the session, such as Claude's Artifact tool, is used only
-when the user asks for a published link.
+A publishing tool the agent runtime brings into the session, such as Claude's Artifact tool, is used
+only when the user asks for a published link.
