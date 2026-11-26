@@ -36,7 +36,7 @@ expect:
     check: A `cancel` of the sol-5 seat exists, and none comes before the trace.log line in which the
       replacement launch reads `accepted`.
   - id: no-hold-no-repair
-    check: Until the first read of the sol-5 seat showing zero events, no `wait`, on that seat or on a sibling seat, can run past 15
+    check: Up to and including the first `status`, `wait` or `result` of the sol-5 seat whose trace.log output shows zero events (`events=0`, `no events` or `no output`), no `wait`, on that seat or on a sibling seat, can run past 15
       minutes after the sol-5 launch, read as the clock trace.log records for the call before the wait plus
       the wait's `--minutes`, or the default 20 when it has none, being at most 15 more than the clock on the
       sol-5 launch's `accepted` line. The final reply neither says the step waits on Codex nor asks anyone to
@@ -89,3 +89,6 @@ history:
     file: skills/execution/subagent-matrix/references/fallbacks.md
     section: A Launch On Another Provider's Model
     reason: "The 15-minute cap on waits now ends at the launch's 15-minute read, so no-hold-no-repair measures waits until the first read of the sol-5 seat showing zero events."
+  - date: "2026-11-26"
+    route: test-cause
+    reason: "Opened by council's at-limit ruling on this batch (a seat's flag on the check's text): the window's opening clause had two readings for a wait on the sol-5 seat that is itself the first zero-event read, and relied on a term defined in another check; it now includes that read and names the zero-event outputs, tightening the check and loosening nothing."

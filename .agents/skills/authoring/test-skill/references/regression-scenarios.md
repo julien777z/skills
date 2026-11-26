@@ -152,8 +152,7 @@ tools:
   - it belongs to a skill that reads a changed skill: one that declares the changed skill or cites
     it, as `skill-pass`'s **Source Check** lists readers;
   - a changed file is guidance every session loads, `.agents/global.md` or a rule with `alwaysApply:
-    true`, or a skill `global.md` **Skills that always run** loads before the first response, which
-    selects every scenario.
+    true`, or a skill `global.md` **Skills that always run** starts, which selects every scenario.
 - **Each selected scenario gets one reader and runs with no control**, since it asks only whether
   the skill still does what its scenario says. The scenarios join the round's grader batches of up
   to eight. So a round adds one reader per selected scenario and no writer, and its count grows only
