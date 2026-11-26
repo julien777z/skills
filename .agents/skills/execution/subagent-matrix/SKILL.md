@@ -1,6 +1,6 @@
 ---
 name: subagent-matrix
-description: Apply when deciding whether to delegate work to a subagent at all, before every subagent launch (a workflow coordinator, a nested reviewer, or a fresh independent or read-only gate, reviewer, validator or skill-test reader included), when selecting a model for live skill verification, and when resuming workers stopped by a rate limit or quota. Resolve cheap, standard, advanced, frontier and specialist capability levels from the host catalog and current official provider sources, default reasoning effort to medium unless the user or invoking skill specifies another, try a catalog-hidden candidate before reporting any model unavailable, launch independent steps only through the running session's own agent tool, and give the user complete diagnostics when a launch cannot start.
+description: Apply when deciding whether to delegate work to a subagent at all, before every subagent launch, through the harness's agent tool or a launcher the project or session supplies (a workflow coordinator, a nested reviewer, or a fresh independent or read-only gate, reviewer, validator or skill-test reader included), when selecting a model for live skill verification, and when resuming workers stopped by a rate limit or quota. Resolve cheap, standard, advanced, frontier and specialist capability levels from the host catalog and current official provider sources, default reasoning effort to medium unless the user or invoking skill specifies another, try a catalog-hidden candidate before reporting any model unavailable, launch independent steps only through the running session's own agent tool, and give the user complete diagnostics when a launch cannot start.
 short_description: 'Select a model capability level for live verification chats or subagent delegation.'
 ---
 
@@ -45,7 +45,8 @@ agent; the calling agent launches the actual assignment with the selected model.
    harness's matching model at the same capability level. The rules for each refusal, a launch on
    another provider's model, a specialist assignment and the ordinary fallback ladder are in
    [fallbacks](references/fallbacks.md), read when a dispatch is refused or a model is reported
-   unavailable.
+   unavailable, and before the first wait on an accepted launch on another provider's model, which
+   that reference bounds.
 4. The calling agent chooses a capability level for each role or chat. Honor the user's
    explicit model or capability-level constraint first, then the calling skill's capability level or
    named family. For a live
@@ -203,37 +204,9 @@ context and returns its verdict into the step waiting on it; nothing else does b
 
 ## Launch Failure Reporting
 
-When a required direct subagent dispatch cannot start, preserve its exact attempted dispatch and
-record it. Handle a capacity refusal as the fallbacks reference's **A Capacity Refusal** says,
-never through the launch fallback, and other launch failures under **Dispatch**. Judge whether the
-native launcher could start the assignment from that launcher's own availability, never from a
-tool inventory a nested bridge or an unrelated agent tool reports.
-
-- Attempt the selected native dispatch once whenever its direct tool is exposed. Never claim an
-  attempted invocation when the tool was not exposed.
-- State the native tool's exact name, the assignment role and gated work, selected model, reasoning
-  effort, history mode, and every argument sent to the host. Preserve argument names and values;
-  omit only typed credentials or other secret values, retaining their field names and shapes.
-- State the complete host receipt exactly when one exists. When no invocation was possible, say
-  which direct tool surface was inspected and that there is no host receipt.
-- Classify the outcome as one of: native tool not exposed, no resolved dispatch identifier, explicit
-  unsupported-model receipt, rejected dispatch, capacity refusal, or accepted dispatch whose worker
-  later failed. Do not collapse these into a generic unavailable-agent claim.
-- Name the fallback taken, with its loss of independence when it ran in process; do not substitute an unrelated agent or claim it performed the assignment.
-
-Use this user-facing shape whenever a launch failure is material to the task:
-
-```markdown
-## Subagent launch fallback
-
-- **Assignment:** <required independent step>
-- **Native tool:** `<exact direct tool name>` — <attempted or not exposed>
-- **Selected dispatch:** `<model>` / `<reasoning effort>` / `<history mode>`
-- **Arguments:** `<complete argument names and safe values>`
-- **Host receipt:** <verbatim receipt, or `none — <why no invocation was possible>`>
-- **Classification:** <one permitted classification and its evidence>
-- **Fallback:** <assignment held, handed up to the delegating agent, or top-level in-process work and its loss of independence>
-```
+When a required direct subagent dispatch cannot start, record and report it as [the launch failure
+reporting reference](references/launch-failure-reporting.md) says, before taking a fallback: it
+lists what to state, how the outcome is classified and the user-facing shape.
 
 ## Output
 
