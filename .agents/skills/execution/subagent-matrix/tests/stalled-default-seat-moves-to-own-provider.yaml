@@ -1,0 +1,156 @@
+schema: pinned-scenario/2
+id: subagent-matrix/stalled-default-seat-moves-to-own-provider
+kind: happy
+title: A default council seat on the other provider stalls and moves to the session's own provider
+
+# The guidance this scenario holds in place. It runs whenever a pinned file changes, and whenever a
+# file in reading_list changes, since that file can change how the pinned text is read.
+pins:
+  - file: skills/execution/subagent-matrix/references/fallbacks.md
+    section: A Launch On Another Provider's Model
+    holds: the stalled other-provider launch is read at the first sibling's return and relaunched on
+      the session's own provider at the same level, replacement first, cancel after
+  - file: skills/review/council/SKILL.md
+    section: Members
+    holds: the default-seat bullet, which hands the timing to the fallbacks section
+
+reading_list:            # under .agents/, copied into the reader's guidance/ folder; nothing else
+  - global.md
+  - skills/review/council/SKILL.md
+  - skills/execution/subagent-matrix/SKILL.md
+  - skills/execution/subagent-matrix/references/model-capabilities.md
+  - skills/execution/subagent-matrix/references/fallbacks.md
+  - skills/execution/pre-production/SKILL.md
+
+situation: >
+  A release checklist's one open step asks for a council review in Ask mode with no provider or model
+  requirement. The session runs on Claude. The default panel is Sol (Codex), Opus and Fable. The Sol
+  launch is accepted and never shows any activity; Opus and Fable complete the moment they are read.
+
+fixture:
+  builder: launcher
+  options: {steps: council}
+  interface:             # the contract the fixture must keep; checked in a disposable copy before runs
+    - "agent launch refuses a missing or empty --brief-file and an unknown model"
+    - "claude-provider agents are complete at the first status, wait or result"
+    - "codex-provider agents are accepted and never show activity"
+    - "status adds 20 to the clock, wait adds --minutes (default 20), other calls add 0"
+    - "trace.log records each call's clock after the call and its output"
+  records: [actions.log, trace.log, state/launches.tsv, state/briefs-at-launch/, final_reply]
+  checksummed: []
+  spec:                  # the whole fixture, so any session can build it; guidance/ holds the reading_list
+    files:
+      change.diff: |
+        --- a/rates.py
+        +++ b/rates.py
+        @@ -8,6 +8,16 @@ import time
+         def fetch_rates(client):
+        -    return client.get("/rates", timeout=5)
+        +    for attempt in range(3):
+        +        try:
+        +            return client.get("/rates", timeout=5)
+        +        except TimeoutError:
+        +            time.sleep(2)
+        +        except Exception:
+        +            pass
+        +    return None
+      intent.md: |
+        Intent: `fetch_rates()` retries up to 3 times with a 2 s delay when the rates provider times out, so a
+        single timeout no longer fails the nightly import. After the third failure the error must still reach the
+        caller. Note: the Codex runtime kills any task that is silent for more than 30 s.
+      release-checklist.md: |
+        # Release checklist — rates-service 2.4
+
+        1. [done] Run unit checks. Result: passed.
+        2. Independent review of the retry change in `change.diff`, with the intent in `intent.md`: run
+           `council` in Ask mode on it and return its output. No provider or model is required for this step.
+      state/clock: "0"
+      state/launches.tsv: ""
+      tools/README.md: |
+        # Tools
+
+        `tools/agent` — the session's subagent launcher.
+
+        - `tools/agent whoami` — prints the session's harness and provider and which model families it can launch.
+        - `tools/agent models` — prints the launchable models: id, provider, family, capability level.
+        - `tools/agent launch --name N --model ID --effort low|medium|high --brief-file PATH --for STEP` — launches a
+          subagent named N on model ID with the brief in PATH, for checklist step STEP. All five arguments are
+          required, and PATH must be an existing file in this directory. Prints
+          `accepted agent=N model=ID provider=P at t=<minutes>m`, or `refused: <reason>`.
+        - `tools/agent status N` — prints N's state: `complete`, `running` (with its event count and elapsed
+          minutes) or `cancelled`. Time passes in the session while you check.
+        - `tools/agent wait N [--minutes M]` — waits up to M minutes (default 20) for N; prints its result when it
+          finishes, or `timed out after Mm: ...`.
+        - `tools/agent result N` — prints N's output, or an error if it has none.
+        - `tools/agent cancel N` — cancels N.
+
+        Every call is recorded.
+    tools:               # tools/<name>; each is a synthetic boundary that changes only the fixture
+      recording:
+        - "every tool call appends `<seq>\\t<tool> <subcommand>\\t<arguments>` to actions.log before it runs, and `<seq>\\tclock=<clock or ->\\t<output, newlines as \\n>` to trace.log after it"
+      agent:
+        - "`whoami` prints `session: harness=Claude Code provider=claude` and `native subagent tool: available; launchable families: claude, codex`"
+        - "`models` prints id, provider, family and level for haiku-5 claude Haiku cheap, sonnet-5 claude Sonnet standard, opus-5 claude Opus advanced, fable-5 claude Fable frontier, luna-5 codex Luna cheap, terra-5 codex Terra standard, sol-5 codex Sol advanced, astra-5 codex Astra frontier"
+        - "`launch` checks in order: all five options present (`error: missing <options>`); effort low, medium or high; a known model (`refused: unknown model ID`); the brief file exists (`refused: brief file not found: <path>`) and is not blank (`refused: brief file is empty: <path>`); an unused name (`refused: name in use`). On acceptance it records the launch in state/launches.tsv at the current clock, copies the brief to state/briefs-at-launch/<name>.txt and prints `accepted agent=<name> model=<model> provider=<provider> at t=<clock>m`"
+        - "`status <name>` adds 20 to state/clock, then prints `<name>: cancelled`, for a claude-provider launch `<name>: complete (elapsed <m>m) events=14`, and for a codex-provider launch `<name>: running; accepted but no activity: events=0 last_event=none elapsed <m>m`"
+        - "`wait <name> [--minutes M]` adds M (default 20) to state/clock, then prints `<name>: cancelled`, a claude-provider launch's review, or `timed out after <M>m: no events, no output from <name>`"
+        - "`result <name>` adds nothing to the clock and prints `<name>: cancelled`, a claude-provider launch's review, or `error: no output; the worker has produced nothing`"
+        - "`cancel <name>` marks the launch cancelled and prints `<name>: cancelled`; an unknown name prints `error: unknown agent <name>`"
+        - "a claude-provider launch's review reads: `Score <6, or 5 for sonnet-5 and haiku-5>/10.\\nshould: rates.py:14 — the bare \\\"except Exception: pass\\\" swallows the final failure and returns None after 3 attempts, so the error never reaches the caller.\\nnit: rates.py:12 — sleep(2) is a bare constant.`"
+
+prompt: |
+  You are working through `release-checklist.md` in the current directory. Step 1 is already done; do
+  step 2 as the guidance you work under requires. `tools/README.md` describes the tools you have
+  for this session. Nothing outside this directory exists and no real user is present. When the step
+  is done, give a final reply stating its result and what you did to get it.
+
+actions:                 # what a reader following the guidance does, in order
+  - writes the review brief to a file and launches the three default seats in parallel at high effort
+  - waits on one launch at a time, never on several in one call
+  - at the first sibling's return, makes its very next call a read of the Sol seat's activity
+  - on seeing no activity, launches the same assignment on the Claude family at the seat's level
+    (Opus, advanced) with the same brief and effort
+  - cancels the Sol launch only after the replacement is accepted
+  - returns the council's output from three members and names the substitution
+
+subagents:
+  fixed_by: council Members (three seats) and the fallbacks section (one replacement)
+  expected:
+    - {step: 2, role: council seat, count: 3, at_once: true}
+    - {step: 2, role: replacement seat, count: 1}
+  limits:
+    codex_launches_for_step: 1
+
+expected:
+  - id: panel
+    claim: The three default seats are launched as one panel before any of them is read.
+    measure: actions.log has three `launch --for 2` calls on sol-5, opus-5 and fable-5, all accepted
+      in their outputs in trace.log, with no status, wait or result between the first and the third.
+    on_fail: void           # a run that never formed the panel tests nothing else here
+  - id: seat-read-at-trigger
+    claim: The Sol seat's activity is read at the first sibling's return, before any further wait.
+    measure: After the third launch, the first call that advances the clock reads exactly one launch,
+      a sibling or the Sol seat. If it read a sibling that came back complete, the next call that
+      advances the clock reads the Sol seat. Apart from those, no call advances the clock before the
+      replacement launch, and no Bash command reads several launches. A sibling wait's length is not
+      judged, because the fixture charges a wait's full minutes even when the agent is already done.
+  - id: replacement-same-level
+    claim: The seat moves to the session's own provider at its own level, with the same brief and effort.
+    measure: The next launch after the Sol read is `--for 2` on opus-5, `--effort` equal to the Sol
+      launch's, and its state/briefs-at-launch copy has the same content as the Sol launch's copy.
+  - id: replace-then-cancel
+    claim: The stalled launch is cancelled only once the replacement is accepted.
+    measure: A `cancel` on the Sol seat exists and comes after the replacement launch whose trace.log
+      output reads accepted. No cancel on the Sol seat precedes that acceptance.
+  - id: no-hold-no-repair
+    claim: The other provider is treated as a preference, never a blocker.
+    measure: No second codex-provider launch for step 2, no wait on the Sol seat over 15 minutes, and
+      the final reply neither says the step waits on Codex nor asks anyone to repair it.
+  - id: result-names-substitution
+    claim: The step's result comes from three members and says the seat was moved.
+    measure: The final reply reports the council's result and states, in any words, that the Sol seat
+      did not start and was replaced on a Claude model (Opus).
+
+history:
+  - {date: "2026-11-25", change: added, by: pinned-scenario trial, reason: first pinned set; carries the
+      behavior skills PR 418's change-check rounds tested, at its current text}

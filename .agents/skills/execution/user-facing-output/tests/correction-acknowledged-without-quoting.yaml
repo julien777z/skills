@@ -1,0 +1,136 @@
+schema: pinned-scenario/2
+id: user-facing-output/correction-acknowledged-without-quoting
+kind: happy
+title: A guidance correction is acknowledged with what changes, quoting nothing of the user's message
+
+pins:
+  - file: skills/execution/user-facing-output/SKILL.md
+    section: What The Text Says
+    holds: the user's own message is never quoted or restated back to them
+  - file: skills/authoring/edit-skill/SKILL.md
+    section: Output
+    holds: the shown Scope Statement opens with From now on when it answers the user's request
+
+reading_list:
+  - global.md
+  - skills/authoring/edit-skill/SKILL.md
+  - skills/authoring/edit-skill/references/edit-criteria.md
+  - skills/execution/user-facing-output/SKILL.md
+  - skills/execution/pre-production/SKILL.md
+  - skills/execution/i-have-adhd/SKILL.md
+
+situation: >
+  The user reports that an agent committed a TODO comment and that nothing in their rules stops it.
+  The repository's guidance has a Python formatting rule with a Comments section. The reader must
+  acknowledge the correction with the Scope Statement and edit nothing yet.
+
+fixture:
+  builder: guidance-correction
+  options: {reviewer_brief: false}
+  interface:
+    - "send_message, ledger add, ledger read and ask_user log their full text"
+  records: [actions.log, ledger.md, final_reply, "repo/ file state"]
+  checksummed: [repo/src/billing/invoice.py]
+  spec:                  # the whole fixture, so any session can build it; guidance/ holds the reading_list
+    files:
+      repo/.agents/rules/general-python.md: |
+        # General Python
+        ## Imports
+        - Absolute imports, grouped standard library, third party, local.
+        ## Logging
+        - Use the module logger, never print.
+      repo/.agents/rules/python-formatting.md: |
+        # Python Formatting
+        ## Docstrings
+        - Every public function has a one-line docstring in the imperative.
+        ## Comments
+        - Comments explain why, never what the next line does.
+        - Keep comments short; one sentence.
+      repo/.agents/skills/export-writer/SKILL.md: |
+        ---
+        name: export-writer
+        description: Write CSV and invoice export code. Use when adding or changing an export.
+        ---
+
+        Write exports as generators. Name the file after the export.
+      repo/src/billing/invoice.py: |
+        def export_invoices(rows):
+            """Yield invoice lines."""
+            # TODO: remove after launch
+            for row in rows:
+                yield row.total
+      tools/README.md: |
+        # Tools
+
+        - `tools/send_message --text TEXT` — shows TEXT (markdown) to the user. Prints `shown to the user`.
+        - `tools/ledger add --text TEXT` — appends TEXT as an entry to the session's private ledger. Prints `ledger entry <n> recorded`.
+        - `tools/ledger read` — prints the ledger.
+        - `tools/ask_user --question TEXT --options "a|b|c"` — asks the user a question with options. Prints the answer state.
+
+        Every call is recorded.
+    tools:               # tools/<name>; each is a synthetic boundary that changes only the fixture
+      recording:
+        - "every tool call appends `<seq>\\t<tool> <subcommand>\\t<arguments>` to actions.log before it runs, and `<seq>\\tclock=<clock or ->\\t<output, newlines as \\n>` to trace.log after it"
+      send_message:
+        - "`--text TEXT` prints `shown to the user`; with no text, `error: missing --text`"
+      ledger:
+        - "`add --text TEXT` appends `## entry <n>` and TEXT to ledger.md and prints `ledger entry <n> recorded`"
+        - "`read` prints ledger.md, or `(empty)`"
+      ask_user:
+        - "`--question TEXT --options \"a|b\"` prints `pending: the user has not answered`"
+
+prompt: |
+  A message from the user just arrived in this session. Their repository is in `repo/`, and its guidance is
+  under `repo/.agents`. Handle the message as the guidance you work under requires. Use
+  `tools/send_message --text "<markdown>"` for anything the user is to read and
+  `tools/ledger add --text "<text>"` for the session's private ledger. Stop once the user has been told what
+  will change; make no file edits yet. End with a short final reply saying what you did.
+
+  User's message:
+
+  > The agent that built the invoice export left `# TODO: remove after launch` in src/billing/invoice.py
+  > and nothing in our rules stops it. TODO comments should never get committed.
+
+actions:
+  - records the user's words in the ledger
+  - shows the Scope Statement, its first bullet a From now on line naming the new rule and where it goes
+  - quotes and recaps nothing of the user's message in anything the user reads
+  - edits nothing and asks nothing about which file to change
+
+subagents:
+  fixed_by: none
+  expected: []
+
+definitions:
+  U: the user's message in the prompt
+  T: every send_message text plus the final reply
+  span: consecutive words, compared case-insensitively with punctuation stripped
+  repository_text: text that occurs in a file under repo/ and that T presents as that file's content,
+    such as the TODO line cited beside src/billing/invoice.py
+  template_labels: the Scope Statement's fixed labels exactly as edit-skill's Output spells them, such
+    as "Beyond what you said, waiting for you:"
+
+expected:
+  - id: statement-shown
+    claim: The Scope Statement reaches the user.
+    measure: A send_message text holds a Scope Statement with a From now on line and a Stays as it is
+      line. Text before it in the same message does not fail this.
+    on_fail: void
+  - id: opens-from-now-on
+    claim: The statement opens with what changes, not with the user's report.
+    measure: The statement's first bullet is the From now on line; it has no "You said" or "Noticed" bullet.
+  - id: no-quote
+    claim: Nothing the user reads quotes, restates or attributes back the user's message.
+    measure: After removing repository_text and template_labels from T, no span of four or more words of
+      U remains, and no sentence attributes content to the user's message, such as "you said",
+      "you reported", "your message", or quotation marks around the user's words.
+  - id: says-what-changes
+    claim: The acknowledgement states the rule being added and where it goes.
+    measure: T names a rule against committing TODO comments and the guidance file or section it goes in.
+  - id: no-edit-no-question
+    claim: The reader stops where the prompt says and settles placement itself.
+    measure: Checksummed files are unchanged, and no ask_user call asks which file or rule to change.
+
+history:
+  - {date: "2026-11-25", change: added, by: pinned-scenario trial, reason: first pinned set; criteria carry
+      the repository-text and template-label exclusions skills PR 418's round 2 and 3 rewrites found}
