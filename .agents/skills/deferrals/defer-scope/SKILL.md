@@ -33,7 +33,10 @@ writes nothing.
 Fix work instead of recording it whenever one focused pass can finish it within `pre-production`'s size budget, and a defect whatever its size, as below. A stale reference, rename, wrong path,
 missing assertion, lint or type finding, or small extraction costs less to fix than to record.
 Attempt the fix before concluding that work is deferrable; `acceptance-gate`'s admission question
-lists the only justifications for a record, and a flagged attempt is one of them.
+lists the only justifications for a record, and a flagged attempt is one of them. Work in lines or
+files the change in flight wrote, as its pull request's diff against the merge base shows, is that
+change's own and is fixed there, never recorded; an admission that turns on where the work sits
+carries the gate the file list and diff `acceptance-gate` requires for it.
 
 Nothing is written before `acceptance-gate` admits the record, and a refusal is carried out as its
 disposition says: fix and do send the work into the change in flight, and close is recorded as a
@@ -49,13 +52,16 @@ authorization boundary, rather than deferring the fact that the old mechanism di
 deferral requires genuinely unfinished work after this reconciliation, not merely a changed design.
 What counts as an external blocker is `acceptance-gate`'s defer test, owned libraries included.
 
-Record work that is genuinely larger than the change in flight and whose need is arguable — a
-redesign, a broad sweep somebody could reasonably decline — or that is blocked externally, or that
-awaits a decision already put to its owner and still open, or one the user declined in the current
-request; a question nobody has asked yet is asked, not recorded. **A defect is never recorded**, a defect as `pre-production`'s **Scope
+Record only work on a ground `acceptance-gate`'s defer test names, such as work comparable in
+size to the change in flight — a redesign or a broad sweep somebody could reasonably decline, its
+need arguable, unless it is incidental cleanup — work an external blocker holds, and
+work that awaits a decision already put to its owner and still open, or one the user declined in
+the current request; a question nobody has asked yet is asked, not recorded. **A defect is never
+recorded**, a defect as `pre-production`'s **Scope
 Follows The Defect, Not The Request** defines one, whether the change introduced it, the task asked
-to fix it or the work only ran into it. Fix it now where `pre-production` places it. Only cleanup
-that fixes no defect follows `pre-production`'s size budget, and only what that budget defers is recorded here.
+to fix it or the work only ran into it. Fix it now where `pre-production` places it, and investigate a
+suspected one whose confirmation is in reach there, as that section says. Only cleanup that fixes
+no defect follows `pre-production`'s size budget.
 Never offer the user the choice between fixing and recording. When part of a cleanup is small, fix
 that part and record only the remainder. Record consciously deferred work immediately, at the
 moment it is left undone, in the repository that owns it as **Ownership And Identity** resolves; no
@@ -95,7 +101,8 @@ the canonical repository identity and the current change's pull-request number w
 5. Create one issue when no match exists. State what is deferred, why it remains open, the scope of
    picking it up, supporting evidence by durable link or concise excerpt, and concrete resolution
    criteria. Use the metadata contract from `linear` with `Source: defer-scope` and the stable key. Write
-   the resolution criteria as the end state the codebase reaches, and name the intent a fix has to
+   the resolution criteria as the end state the codebase reaches, naming checks only of what the
+   problem affects, each within the guidance that governs it, and name the intent a fix has to
    preserve when the record comes out of a change that is removing a shape. A criterion phrased as
    a mechanical condition — a symbol gone, a file absent — can be satisfied by putting that shape
    back somewhere else, and the record then closes on a regression. Write the admission verdict in
@@ -127,8 +134,12 @@ write:
    `acceptance-gate`'s final-acceptance question, one gate per such pull request, then invoke
    `merge-gate` under the GitHub rule's **Merge Authorization** with the accepted head, no local
    test coverage, and the rule that a fix it makes goes back to final acceptance over that fix's
-   delta, one more gate per fix, within the review-round limit `acceptance-gate`'s **Bounds** sets. It is never left
-   open, and no report or next action leaves its merge to the user.
+   delta, one more gate per fix, within the review-round limit `acceptance-gate`'s **Bounds** sets. It merges through
+   `merge-gate` without a separate request as soon as its records are written, since a record left
+   on an open branch is lost to every later session. It is never left open, held for a later
+   finishing run, or reported as waiting on the user, and no report or next action leaves its merge
+   to the user. A record that rides a source pull request merges with that pull request under that
+   pull request's own authority.
 
 Never mix Linear and repository records for one deferral. Existing repository records remain in
 place until separately migrated or resolved.

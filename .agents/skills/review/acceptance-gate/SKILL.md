@@ -100,10 +100,14 @@ invocation that cannot launch agents, with no delegated agents; take its exploit
 the verdict. Where the item carries that skill's result for the same range, read the result
 against the diff in place of that pass.
 
-**The gate has no shell, so every diff reaches it as content, never as a reference.** The caller
-pastes the originating diff and a diff item into the prompt, or writes each to a file the prompt
-names, with deletions intact; a commit range, a branch name, or a `git` command leaves the gate
-judging a working tree that other edits may have moved, or nothing at all. Its selector receipt is the
+**The gate has no shell, so every diff and every piece of history reaches it as content, never as a
+reference.** The caller pastes the originating diff and a diff item into the prompt, or writes each
+to a file the prompt names, with deletions intact; a commit range, a branch name, or a `git` command
+leaves the gate judging a working tree that other edits may have moved, or nothing at all. A triage
+or admission whose ground is that the work sits outside the change or past the size budget carries
+the pull request's complete file list against its merge base, each file marked added, modified or
+renamed, and the diff of the files the item concerns. A prompt never asks the gate to run Git or to
+settle a question only history answers; the caller supplies that history. Its selector receipt is the
 model-dispatch record; never replace it with a generic “largest model” label.
 
 **A diff review judges the code as it stands, not only the lines that changed.**
@@ -201,7 +205,9 @@ question never lets an author judge their own work or collapse distinct verdicts
 
 Exactly one per gate, each decided by the tests in `references/rubric.md`, with nothing appended.
 Whether an item is the change's doing or predates it is never asked to soften a defect; it bears
-only on scope, as **The Intent Statement** says. The question sets the gate's capability level, at `subagent-matrix`'s default effort: Proposal,
+only on scope, as **The Intent Statement** says. Whether the pull request wrote the code a cleanup
+finding sits in does decide the finding, as the rubric's defer test says, and is read from the file
+list and diff the item carries. The question sets the gate's capability level, at `subagent-matrix`'s default effort: Proposal,
 Diff and Final acceptance run at advanced, and Triage, Admission and Base incorporation, whose
 packets are small and whose answers accept no diff for merge, run at standard. A caller names the
 question and never a level of its own:

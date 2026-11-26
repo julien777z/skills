@@ -51,7 +51,9 @@ proposed mechanism.
 - **Larger scopes by slice.** Partition by app, service or package into at most five slices,
   grouping neighboring areas when there are more, and launch one read-only `code-simplify` agent
   per slice through `subagent-matrix` at its advanced capability level, each with the rubric, its
-  slice's diff and file contents, the intent and the affected-repository map. Add one cross-cutting
+  slice's diff and file contents, the intent, the affected-repository map and the pull request's
+  complete file list against its merge base with each file's added, modified or renamed status, so
+  a slice can tell the change's own code from older code. Add one cross-cutting
   reviewer, within those five, only when parallel implementations across slices will not fit in one
   slice's context. Apply `subagent-matrix`'s launch fallback when a worker cannot start.
 - **Subagents review; the parent applies.** Each returns findings anchored to path and line with
@@ -68,8 +70,9 @@ proposed mechanism.
   decision.
 - Fix a `nit` only when it is a one-line change in a line the change already touches; otherwise
   list it as declined.
-- Outside the change, the rubric's **Scope** says what is fixed and where; what it defers returns to
-  the caller to record as deferred work.
+- Outside the change, the rubric's **Scope** says what is fixed and where; of the cleanup
+  `pre-production`'s size budget leaves undone, only what that budget reserves a record for returns
+  to the caller to record as deferred work.
 - Check each remedy against the language and layout rules for its file before applying it.
 - After fixing, rescan only when the fixes added, moved, merged or deleted a module or changed an
   interface other code reads: a fresh reviewer gets the earlier findings, the fix diff and the files

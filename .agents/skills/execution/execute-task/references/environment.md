@@ -1,7 +1,7 @@
 # Working environment
 
 What `SKILL.md`'s **Working Environment** applies to the files a run writes, the browser it drives,
-what the environment refuses, and the steps it cannot take back.
+the installed apps it inspects, what the environment refuses, and the steps it cannot take back.
 
 ## Working Files
 
@@ -69,6 +69,15 @@ keeps lives in the original and on the remote. The report names each one deleted
   allowed — "The permission check blocked `<command>`; it runs once you allow it, and everything
   else is done." Whether the action is wanted was settled by the guidance before the check ran, so
   the report never asks it or offers options: "Delete X? Yes or no" is the defect.
+
+## Installed Apps
+
+**What an installed app is, is read from its files, never by running it.** Its version, build or
+other metadata comes from its bundle or package files, such as a macOS bundle's `Info.plist` or the
+package manager's record. Running its binary, passing it a version flag, querying it through a
+scripting bridge or opening its About window can each open a window on the user's desktop, and
+whether one does changes between releases. Where only running it can tell, run it in an isolated
+runner, never on the user's desktop.
 
 ## Steps That Cannot Be Taken Back
 

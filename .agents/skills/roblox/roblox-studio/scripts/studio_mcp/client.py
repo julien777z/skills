@@ -10,6 +10,7 @@ import select
 import shlex
 import subprocess
 import tempfile
+import threading
 import time
 from collections.abc import Callable, Collection, Mapping, Sequence
 from datetime import timedelta
@@ -168,12 +169,39 @@ class StudioMcpConnection:
         """Create the connection."""
 
         self.session: StudioMcpSession | None = None
+        self.turn = threading.RLock()
 
         atexit.register(self.close)
 
     def request(self, method: str, params: Mapping[str, JsonValue], timeout: timedelta,
                 config: RunnerConfig) -> JsonRpcMessage:
-        """Send a request over the session to the configured runner, unless a renewal has found a lock on it lost."""
+        """Send a request over the session to the configured runner, waiting for its turn within the timeout."""
+
+        remaining = self.take_turn(timeout, method)
+
+        try:
+            return self.session_request(method, params, remaining, config)
+        finally:
+            self.turn.release()
+
+    def take_turn(self, timeout: timedelta, operation: str) -> timedelta:
+        """Wait for this connection's turn."""
+
+        started = time.monotonic()
+
+        if self.turn.acquire(timeout=max(timeout.total_seconds(), 0)):
+            remaining = timeout - timedelta(seconds=time.monotonic() - started)
+
+            if remaining > timedelta():
+                return remaining
+
+            self.turn.release()
+
+        raise TimeoutError(f"Studio MCP timed out waiting for another request on the connection: {operation}")
+
+    def session_request(self, method: str, params: Mapping[str, JsonValue], timeout: timedelta,
+                        config: RunnerConfig) -> JsonRpcMessage:
+        """Send a request while holding the connection's turn."""
 
         assert_runner_locks_kept(config)
 
@@ -201,9 +229,11 @@ class StudioMcpConnection:
     def close(self) -> None:
         """Close the open session."""
 
-        if self.session is not None:
-            self.session.close()
-            self.session = None
+        with self.turn:
+            if self.session is not None:
+                self.session.close()
+
+                self.session = None
 
 
 class StudioToolError(RuntimeError):
@@ -381,14 +411,19 @@ class Studio:
 
         arguments = {**arguments, "studio_id": self.studio_id}
 
-        if self.connection.session is not None:
-            return call_studio_tool(self.connection, name, arguments, self.lock_receipt, timeout)
+        remaining = self.connection.take_turn(timeout, name)
 
-        config = assert_runner_lock_held(self.lock_receipt)
+        try:
+            if self.connection.session is not None:
+                return call_studio_tool(self.connection, name, arguments, self.lock_receipt, remaining)
 
-        self.await_listing(config)
+            config = assert_runner_lock_held(self.lock_receipt)
 
-        return studio_tool_reply(self.connection, name, arguments, config, timeout)
+            self.await_listing(config)
+
+            return studio_tool_reply(self.connection, name, arguments, config, remaining)
+        finally:
+            self.connection.turn.release()
 
     def execute(self, code: str, data_model: str = "Client",
                 timeout: timedelta = OPERATION_TIMEOUTS[RunnerOperation.TOOL_CALL]) -> str:

@@ -69,9 +69,11 @@ one resolution that addresses their shared cause.
 
 **Its resolution criteria describe the end state, never a license to reach it.** They were written
 when the problem was found, by someone who had not yet written the fix, so they bind what the
-codebase must end up like and nothing about what may be written to get there. Every rule the
-repository states holds inside a resolution exactly as it holds anywhere else, and so does the
-intent of the change the record came out of.
+codebase must end up like and nothing about what may be written to get there. Every rule and
+skill governing the work holds inside a resolution exactly as it holds anywhere else, and so does
+the intent of the change the record came out of. A check the criteria name binds only where it
+tests what the problem affects: one that governing guidance rules out, or that tests something the
+defect does not touch, is re-scoped in the record, never run or put to the user.
 
 Read that originating change before writing the fix — the record names it — and treat what it
 removed as removed. A resolution that satisfies the sentence by encoding what that change deleted

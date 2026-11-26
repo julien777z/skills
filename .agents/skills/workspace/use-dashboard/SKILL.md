@@ -185,7 +185,7 @@ harness, so one file applies.
 | Codex | [references/harnesses/codex.md](references/harnesses/codex.md) |
 
 **The user's own browser is every harness's last route**: open the full page through `use-browser`'s
-**Showing A Local Page**, which refreshes it on every later render. A harness takes it when the
-routes its file lists are unavailable or refuse the session, or beside them where its file says so,
-and a harness no row names takes it alone. Where that route does not apply, send the full page with
-a tool that sends a file to the user, or, with none, give its absolute path.
+**Showing A Local Page**, which refreshes it on every later render. A harness takes it only when
+the routes its file lists are unavailable or refuse the session, never beside a route that showed
+the page, and a harness no row names takes it alone. Where that route does not apply, send the full
+page with a tool that sends a file to the user, or, with none, give its absolute path.

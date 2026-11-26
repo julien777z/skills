@@ -50,28 +50,6 @@ commit messages and pull-request text. `SKILL.md` names this file at the point a
 - In every language, use blank lines to separate setup, validation, transformations, side effects, and returns. Keep adjacent statements together only when they form one small operation; do not turn a function into an uninterrupted paragraph merely because a formatter permits it. Apply this to every line you write or edit, and elsewhere in a file you change within this skill's incidental size budget.
 - Use current language syntax for simple operations. For one-off Python interpolation, use f-strings instead of string concatenation or `.format()`, and keep spacing in the final string rather than a fragment with a hidden leading space. Follow the Python rule for reusable structured templates.
 
-```python
-# Good: each phase is visible.
-records = load_records()
-
-if not records:
-    return []
-
-normalized = [normalize(record) for record in records]
-
-save_records(normalized)
-
-return normalized
-
-# Bad: unrelated phases run together.
-records = load_records()
-if not records:
-    return []
-normalized = [normalize(record) for record in records]
-save_records(normalized)
-return normalized
-```
-
 - **A new file is the last resort.** Before creating one, find the existing file that already owns
   the concern, or an existing file a broader name would make its owner, and put the code there,
   renaming that file and updating every reference when the broader name is needed. Create a file
@@ -282,6 +260,16 @@ return normalized
   `(generate only)`: the code already shows how the value is passed and who reads it, and a list of
   users goes stale with the next change to the code. Where a value is one of a fixed set, the
   sentence says what each one does.
+- **Text handed to Git or the hosting service is staged where only its author writes and read back
+  once published.** A commit message, title, description, comment or issue body goes inline, on
+  standard input, or from a file whose path was generated for that one text, such as one `mktemp`
+  creates, never from a name another session or worker could also choose in any directory. Once it
+  is accepted, read the stored text back, with `git log -1` for a commit, compare it with the text
+  the author wrote, never with the staging file, which may have been overwritten, and correct a
+  difference at once under the authorization the original post had; a commit message is read back
+  before its push and amended only while unpushed. Earlier revisions in the edit history are left
+  alone and never raised with the user, unless one holds a credential that evidence shows reached
+  an unauthorized recipient, a public surface or a compromised destination.
 - Write commit messages in the conventional-commit form when the repository's existing history or
   tooling uses it, and keep each commit atomic and focused.
 - Name what a branch, commit or pull request changes by its category of change, in generic nouns

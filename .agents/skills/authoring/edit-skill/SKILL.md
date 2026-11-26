@@ -300,7 +300,7 @@ small it looks.** Each route below is the gate set its batch passes on the head 
    repair. It settles no genuine unresolved product, scope, or authorization choice, which goes to
    the user under **Bounds** while independent work continues, and it authorizes no release
    workflow.
-   1. **Branch and commit.** Select the edit's pull request under the GitHub rule's **Branches and Pull Requests** and the [guidance pull requests reference](references/guidance-pull-requests.md) — never put it onto a
+   1. **Branch and commit.** Select the edit's pull request under the GitHub rule's **Branches and Pull Requests** and the [guidance pull requests reference](references/guidance-pull-requests.md), which also holds a trial's hold — never put it onto a
       source branch, the one checked out included, except guidance that rule puts on the source pull
       request it depends on, which merges with it. Commit the `.agents` files, never a provider
       mirror, and push each step once the checks the GitHub rule's **Pre-Push Gate** defines pass. Open the pull

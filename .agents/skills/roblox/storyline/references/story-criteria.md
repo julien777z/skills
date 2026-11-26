@@ -1,6 +1,21 @@
 # Story quality criteria
 
-Contents: the quality bar (the opening paragraphs), **Dialogue**, **Progression and reward cadence**, **Critique checks**, **Opening, onboarding, and character appearance**, **Character staging and encounters**, **Proposal evaluation**.
+Contents: **Concrete core**, **Direction pitch**, **Story structure**, **Room to continue**, **Dialogue**, **Progression and reward cadence**, **Critique checks**, **Opening, onboarding, and character appearance**, **Character staging and encounters**, **Proposal evaluation**.
+
+## Concrete core
+
+The first quality bar, ahead of everything below. A story's core is concrete and active, never a mood, a metaphor or an abstract idea. There is someone or something the player can name and act against or toward — an antagonist, a rival, a disaster, a contest, a mystery with a culprit, whatever fits the game — with a clear goal, plain stakes a child can repeat ("if nobody does X, Y happens"), pressure that escalates, and the game's own verbs aimed at it. When one conflict resolves, the next arises, which is how the story keeps going under **Room to continue**. A theme or a deeper mystery may sit underneath and is never the premise. The gate is the retell test: a ten-year-old can say who or what it is, what it is doing, what happens if nobody acts, and what the player does about it. A pitch that fails the test fails regardless of any score. A villain threatening a city passes, and so do a rival, a flood or a tournament; no one shape is the template, and the game decides which fits. Never copy an existing game's story, names or characters.
+
+## Direction pitch
+
+A direction is proposed as a short pitch of plain prose with no beats, no quoted dialogue, no art and no schema, not a full story: its hook, the idea in a sentence or two, what the player does, the first world in a few lines, what keeps it going and the next worlds, why it is engaging, and its biggest risk. It meets the bar above, with who or what the player acts against or toward named, and the stakes and how the pressure escalates stated in the pitch. Beats, dialogue, art, consistency checks, critic rounds, dashboards and implementation come only after the user approves a direction.
+
+Two more gates stand beside the **Concrete core** bar, and a pitch passes all of them before the user sees it. A pitch that fails one is handled as the storyline workflow's review step says and is never among the pitches put to the user.
+
+- **Fits the game's systems.** The writer reads what the game sells and which systems it already has before pitching. A pitch never gives away free what players pay for, never adds a parallel version of a system the game already has, and states any mechanic or reward it adds, such as a follower, a pet, a mount, a currency or an item. A grant made per world is checked for what it adds up to after many worlds, and one that piles up is dropped or changed. A fix a reviewer suggests is held to the same gate, so a repair never introduces it.
+- **Original and in the game's genre.** A pitch stays in the game's genre and setting, and is checked against well-known games in that space before it is shown. A premise or setting that closely matches a known game, above all one in the same space or from the same company as a game the user names, or that leaves the game's own genre and setting, fails this gate. This holds beside the **Concrete core** line against copying an existing game's story, names or characters.
+
+## Story structure
 
 A strong story has a clear initial desire, a disruption the player understands, escalating consequences, a midpoint that changes interpretation, a costly or revealing choice, and a resolved climax followed by a visible aftermath. The player causes the decisive outcome through the game's verbs. Character motives exist before the player arrives and change under pressure.
 
@@ -11,6 +26,22 @@ Each world has a local dramatic question, visual identity, inhabitants, playable
 The story web includes causal, relationship, knowledge, location, prerequisite, and setup/payoff edges. Dependencies have no impossible cycles; optional content is never required knowledge for a mandatory reveal. Co-op players and returning players can understand their own current objective. The journey starts at first launch: onboarding beats teach while advancing character or conflict, and crucial information survives skipped optional dialogue through readable objective/recap text.
 
 An opening fails when the player cannot explain the immediate stakes or when its actions have no visible consequence. Review onboarding placement, purposeful geography, first-use vocabulary, and concrete character visuals alongside the later plot. Functional quest progression alone does not establish an interesting story.
+
+## Room to continue
+
+A game's story is built to continue, because a game that ships more content needs somewhere for it
+to go. Each arc, whether a world, a chapter or a season, resolves its own dramatic question. A frame
+that outlives every arc holds them together: why the player keeps going, who and what carries from
+one arc to the next, and a larger question each arc moves forward without closing. No arc's ending
+closes that frame, unless the user says the game is finished. Endings that close it include:
+
+- defeating the only source of conflict for good;
+- finishing the player's role or sending them home for good;
+- shutting the way onward;
+- answering the larger question.
+
+A hook left as an optional extra is not a frame. A proposal shows the frame holds by outlining the
+next two arcs in it, each with its own question, place and reason the player goes there.
 
 ## Dialogue
 
@@ -43,7 +74,9 @@ are reachable by a player who does only the required beats.
 Run these against a selected story before implementing it:
 
 - **Skipping reader.** Read only each conversation's first line and the objective text: can the
-  player say what to do next and why it matters at every beat?
+  player say what to do next and why it matters at every beat, and does the story pass the retell
+  test of **Concrete core**: who or what it is, what it is doing, what happens if nobody acts and
+  what the player does about it?
 - **Knowledge timeline.** For each character and the player, list what they know and can name at
   each beat; a character who uses a name, place or fact before it could be known, or a reveal stated
   before its beat, or hinted so plainly that the player can no longer doubt it, is a defect; so is a
@@ -53,6 +86,8 @@ Run these against a selected story before implementing it:
 - **Setups and payoffs.** Every object, place or mechanism the climax relies on is set up earlier,
   and every setup pays off.
 - **Arithmetic.** Sum rewards per beat and check them against every threshold the design states.
+- **Game systems.** Every grant the developed story makes, a reward, a follower, an item or an unlock, meets
+  **Fits the game's systems** in **Direction pitch**, summed across every world it repeats in.
 - **Repetition.** No two consecutive beats share the same verb, enemy and purpose; a repeated
   character beat changes something each time.
 - **Choice and agency.** The decisive act is the player's, and where the climax is framed as a
@@ -110,4 +145,6 @@ story revisions preserve both the introduction and subsequent appearances.
 
 ## Proposal evaluation
 
-Score each candidate from 1 (absent/contradictory) to 5 (specific and convincing) on coherence, character agency, playable variety, emotional payoff, onboarding clarity, and feasibility. A candidate with an unresolved central ending, contradictory mandatory dependencies, or a passive player climax fails regardless of total score. Scores compare design judgment; they are not measured retention predictions.
+Pitches are judged before this scoring, for engagement and the main idea only. A pitch or candidate that fails the retell test of **Concrete core** fails regardless of any score below.
+
+Score each candidate from 1 (absent/contradictory) to 5 (specific and convincing) on coherence, character agency, playable variety, emotional payoff, onboarding clarity, and fit with the game's loop, which asks whether the story plays through the game's own verbs. How much a candidate takes to build is never scored or held against it; that is the user's call. A candidate with an unresolved central ending, an ending that closes the frame under **Room to continue**, contradictory mandatory dependencies, or a passive player climax fails regardless of total score. Scores compare design judgment; they are not measured retention predictions.

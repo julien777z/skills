@@ -12,7 +12,10 @@ alwaysApply: true
   passed, so its test jobs run once, on the head about to merge. Never mark one ready to start its
   tests, to show it finished, or to hand it to the user. With no merge authorized, a pull request
   is complete as a reviewable draft whose local checks under **Pre-Push Gate** and completion review
-  have passed; its hosted test jobs are required only at the merge.
+  have passed; its hosted test jobs are required only at the merge. A check that does run on a
+  draft is read whenever the pull request's state is reported, its own or a worker's push alike,
+  and one that fails is fixed in that pull request at once like any defect, a failure in setup the
+  change did not write included, never set aside because the draft's tests run only at the merge.
 - **Each repository is an independent publishing context.** Pull-request titles, descriptions,
   comments, issue text, branch names and commit messages use the target repository's domain,
   contracts, changes and validation, and never reference another repository's pull request or
@@ -22,15 +25,7 @@ alwaysApply: true
   requirement in this repository's own terms. Cross-repository links, identities, implementation
   details, coordination, merge order and combined status go in user chat and private task evidence.
 - **Text handed to Git or the hosting service is staged where only its author writes and read back
-  once published.** A commit message, title, description, comment or issue body goes inline, on
-  standard input, or from a file whose path was generated for that one text, such as one `mktemp`
-  creates, never from a name another session or worker could also choose in any directory. Once it
-  is accepted, read the stored text back, with `git log -1` for a commit, compare it with the text
-  the author wrote, never with the staging file, which may have been overwritten, and correct a
-  difference at once under the authorization the original post had; a commit message is read back
-  before its push and amended only while unpushed. Earlier revisions in the edit history are left
-  alone and never raised with the user, unless one holds a credential that evidence shows reached
-  an unauthorized recipient, a public surface or a compromised destination.
+  once published**, as the skill covering commit and pull-request text sets out.
 - **Follow-up source work goes on the session's in-progress source pull request for that
   repository.** Before proposing a branch, assigning a worker or starting edits, resolve that pull
   request from its creation or authorized-continuation receipt, carried forward when a follow-up
@@ -89,13 +84,8 @@ alwaysApply: true
   request a directly user-invoked skill's authorization names, once that skill's merge gates pass,
   until its run ends.
 - **A hold comes before every standing permission.** A pull request the selected workflow holds for
-  user review uses none of them and no auto-merge. So does one carrying guidance for a capability,
-  tool or way of working the user says is on trial, such as one they are still testing, may drop,
-  or want kept from merging for now: its review and checks still run, and it carries an `on trial`
-  label, so a session that never saw the conversation reads the hold. The trial is one decision:
-  every guidance edit the trial work makes rides that pull request, a rule governing the trial
-  itself included, and the user's word on the capability decides all of it. Keeping it ends the
-  hold and removes the label, and dropping it closes the pull request this session opened.
+  user review, or one carrying guidance the user says is on trial, uses none of them and no
+  auto-merge; the skill that edits guidance sets out the trial hold.
 - **Classify the complete actual diff against the standing permissions** before reporting a pull
   request whose merge no instruction authorizes, by what it changes, never by a filename,
   extension, line count or change label, and never remove genuine edits to qualify. Each
@@ -114,11 +104,8 @@ alwaysApply: true
     a skill's folder is source work when its execution changes, even under `.agents`;
   - the focused revert of a pull request an agent merged by mistake, which may auto-merge.
 - **A pull request confined to deferral records, active or declined, merges without a separate
-  request as soon as its records are written**, through the skill that runs a merge, with its required checks, once
-  its complete diff is confirmed to hold only deferral records: a record left on an open branch is
-  lost to every later session. It is never left open, held for a later finishing run, or reported
-  as waiting on the user. A record that rides a source pull request merges with that pull request
-  under that pull request's own authority.
+  request as soon as its records are written**, with its required checks, once its complete diff is
+  confirmed to hold only deferral records, as the skill that records deferrals sets out.
 - **An agent-configuration pull request whose guidance depends on a still-open source pull request
   is held until that merge**, whatever its other gates say, unless the guidance rides that pull
   request, as **Branches and Pull Requests** and the skill that edits guidance set out; guidance
@@ -132,11 +119,8 @@ alwaysApply: true
 - Carry every agent-configuration pull request this session selected through conflict resolution,
   validation, readiness and merge. Never close one or leave it open merely because it is draft or
   conflicts with the base, only because its change is superseded or no longer wanted.
-- **An authorized merge is not held for an excluded check**: one the current user explicitly
-  waives, an established baseline failure, a non-essential check left red on findings the change
-  did not write, or a hosted attempt a runner or provider interrupted with no validation failure
-  when equivalent local validation passed on the merge head. Each is recorded with its evidence,
-  and none is rerun or waited on to get a green result. Never bypass branch protection.
+- **An authorized merge is not held for an excluded check**, as the skill that runs a merge
+  defines one; none is rerun or waited on to get a green result. Never bypass branch protection.
 
 ## Comments
 
@@ -186,7 +170,11 @@ closes the flag, which the review's next round or a fresh gate does.
   consumes that dependency's pull-request branch in its manifest, lockfile and workflow checkouts,
   or builds on a same-repository sibling's branch, and pushes; never ask for the dependency's merge
   or report the push, checks or walkthrough as blocked on it; the consumer's merge waits for it as
-  the skill that runs a merge sets out, reported as held, never as a request.
+  the skill that runs a merge sets out, reported as held, never as a request. That route is only
+  for what the change uses that the dependency adds: a defect in the pull request's own checks or
+  delivery, such as a CI setup step the change did not write or a deploy workflow, is repaired in
+  that pull request itself, even when a sibling pull request already carries a repair, never by
+  consuming, stacking on or waiting for that sibling or the default branch.
 - **The order is change, checks, push, then the slow verification**: a browser walkthrough, a full
   or end-to-end suite, anything slow or needing a running stack, whose findings go out as fix
   pushes. **Pushed is not done**: a change is reported done only once that verification has passed.

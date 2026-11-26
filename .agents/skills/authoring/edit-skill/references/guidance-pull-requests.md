@@ -1,8 +1,8 @@
 # Guidance Pull Requests
 
 How a change to anything under `.agents` is delivered: which pull request it joins, why it never
-shares a branch with source work, and where guidance that depends on an open source pull request
-goes. What counts as agent configuration and what as source work is the GitHub rule's
+shares a branch with source work, where guidance that depends on an open source pull request
+goes, and how a guidance trial holds its pull request. What counts as agent configuration and what as source work is the GitHub rule's
 **Branches and Pull Requests**.
 
 - **Each session opens its own agent-configuration pull request in each repository.** Select an open
@@ -26,3 +26,10 @@ goes. What counts as agent configuration and what as source work is the GitHub r
   agent-configuration pull request and is held until the source pull request merges, in this
   repository or another. A dependency never authorizes continuing another session's pull request
   or opening a second agent-configuration one.
+- **A guidance trial holds its pull request.** A pull request carrying guidance for a capability,
+  tool or way of working the user says is on trial, such as one they are still testing, may drop,
+  or want kept from merging for now, uses no standing permission and no auto-merge: its review and checks still run, and it carries an `on trial`
+  label, so a session that never saw the conversation reads the hold. The trial is one decision:
+  every guidance edit the trial work makes rides that pull request, a rule governing the trial
+  itself included, and the user's word on the capability decides all of it. Keeping it ends the
+  hold and removes the label, and dropping it closes the pull request this session opened.

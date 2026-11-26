@@ -1,6 +1,6 @@
 ---
 name: execute-task
-description: "Run for reports of broken behavior and at the start of every task authorized to change files — including one whose edits sub-agents make or that starts because work turned up a defect — before recommending, delegating or making edits, and keep it active until verified completion or the user stops or hands it off. Never invoke it from inside a skill it runs. Its references also govern, in any task whether or not it changes files, what an invocation or authorization covers, approval boundaries, steps only the user can take, what to do when the environment or a permission check refuses an action, steps that cannot be taken back, reading state after a push or merge, checking a worker's claim and tracing a cause before reporting it, where working files go and which browser a task drives, deleting the copies a sync service leaves behind, waits and awaited results, and verification cadence, suite choice and tests that touch the user's desktop."
+description: "Run for reports of broken behavior and at the start of every task authorized to change files — including one whose edits sub-agents make or that starts because work turned up a defect — before recommending, delegating or making edits, and keep it active until verified completion or the user stops or hands it off. Never invoke it from inside a skill it runs. Its references also govern, in any task whether or not it changes files, what an invocation or authorization covers, approval boundaries, steps only the user can take, what to do when the environment or a permission check refuses an action, steps that cannot be taken back, reading state after a push or merge, checking a worker's claim and tracing a cause before reporting it, where working files go and which browser a task drives, deleting the copies a sync service leaves behind, reading an installed app's version or metadata, waits and awaited results, and verification cadence, suite choice and tests that touch the user's desktop."
 short_description: 'Plan source and product changes and show the plan; validate canonical guidance changes through their delivery gates.'
 ---
 
@@ -90,7 +90,7 @@ plan of its own; only an edit that adds nothing skips it.
   Automatically** says when one reaches the user.
 - Work a plan in execution already covers takes no new plan: an encountered issue, a gate's or a
   review's flag, a failing check, or a guidance correction discovered during the run. `edit-skill`
-  records verified guidance corrections and `process-ledger` processes them at **Completion**.
+  records verified guidance corrections for delivery from the next milestone and `process-ledger` processes the rest at **Completion**.
 
 ### What The Plan Holds
 
@@ -198,11 +198,8 @@ Before implementation and whenever new work is admitted, delegate the work `suba
 worktree of its own and `subagent-matrix`'s worker brief, filled with the plan's reuse receipts. Its
 report carries a receipt for each thing it added; one without them goes back to the worker before
 its head is built on. Before writing a script or doing a check by hand, the agent
-and every worker look in the repository's `.agents/tools/`. In a
-repository the owner runs, an operation the task will run more than once, or is about to run again,
-is first written as a helper there, created with its folder if missing, committed as source work on
-the pull request the GitHub rule selects for it, and run from there each time; a shell function,
-heredoc or temporary script is not a helper, though a skill's execution checks stay untracked.
+and every worker look in the repository's `.agents/tools/` and write, run and maintain helpers
+there as [repository helpers](references/repository-helpers.md) says.
 
 ### Task Authorization
 
@@ -226,8 +223,7 @@ guidance already answers.
 Apply [working environment](references/environment.md): its **Working Files** puts everything
 the run writes for itself or its workers in `.agent_sources/` at the worktree's root; its **Copies A
 Sync Service Left Behind** deletes each such copy before anything stages, stashes or snapshots the
-tree; its **Browser Access** selects the browser; its **Environment Refusals** treats an
-environment refusal as a route to find, and what a permission check refuses as not attempted again;
+tree; its **Browser Access** selects the browser; its **Installed Apps** reads an app's version from its files, never by running it; its **Environment Refusals** treats an environment refusal as a route to find, and what a permission check refuses as not attempted again;
 and its **Steps That Cannot Be Taken Back** runs a deletion, overwrite, push, merge or post only
 after its gating check has been read, outside the command, chain or batch that runs the check.
 
@@ -387,8 +383,8 @@ says:
 - **Review:** <full | delta `<reviewed head>..<head>` | nothing new> · review loop <n> round(s), <n> finding(s) fixed · acceptance passed on `<head>` — leave out each count `review-pass` did not run
 - **History:** <n> commits (<subject> · <subject> · …)
 - **Fixed on the way:** <each incidental fix, or none>
-- **Deferred** (over the size budget):
-  1. <item> — <record link>
+- **Deferred:**
+  1. <item> — <ground> — <record link>
 - **Still running:** <the authorized merge through `merge-gate` (CI ~<n> min) | the guidance fixes from this task that have their own pull request (<n> correction(s)) | nothing>
 
 **Next:** <review the pull request; send follow-ups here, `/finish-pr` to review what this pass has not and merge, or `/merge-now` to merge first and review after | review the pull request; it merges once its checks pass>
