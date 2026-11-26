@@ -14,8 +14,9 @@ pins:
     holds: item 6, the reserved entries; item 4, a fit fix that keeps every value readable stays the run's
   - file: skills/doctors/interface-doctor/SKILL.md
     section: Report Additions
-    holds: each decision the run made and each that went to the user, with the pages it changed, each
-      capture shown named by its file, and any council ruling or the user's answer
+    holds: each decision the run made and each that went to the user, with the pages it changed, the
+      file of each capture shown for it named inside that entry, never only as a count or a list kept
+      elsewhere, and any council ruling or the user's answer
 
 reading_list:
   - global.md
@@ -207,9 +208,11 @@ expected:
     measure: OrderForm.tsx is unchanged; OrdersTable.tsx is unchanged or changed only by a fit_fix.
   - id: report-separates
     claim: The report says which decisions the run made and which went to the user.
-    measure: report.md lists F1's hide-column choice and F2 as awaiting the user, each with every
-      capture attached for that entry in a send_message or ask_user written in report.md by its
-      capture_name, and lists the run's own decisions (F3, and any fit fix) each with a reason and the pages it changed.
+    measure: report.md lists F1's hide-column choice and F2 as awaiting the user, and lists the run's
+      own decisions (F3, and any fit fix) each with a reason and the pages it changed. Inside each of
+      these entries, every capture attached for that decision in a send_message or ask_user is written
+      by its capture_name; a capture count, or a capture list kept in another part of report.md, does
+      not name a capture for the entry.
 
 history:
   - {date: "2026-11-25", change: added, by: pinned-scenario trial, reason: first pinned set; carries the
@@ -224,3 +227,8 @@ history:
       by: fresh criteria writer, cause: test cause, pull_request: "418", reason: "interface-doctor's Report
       Additions now names each capture shown by its file, so capture_name accepts only a file name and no
       longer a page and width, and the pin's holds line quotes the new text"}
+  - {date: "2026-11-26", change: "rewrote report-separates, updated the Report Additions pin", by: fresh
+      scenario writer, pull_request: "418", reason: "interface-doctor's Report Additions now asks for the
+      file of each capture shown for a decision named inside that entry, never only as a count or a list
+      kept elsewhere, so the measure reads capture names inside each entry, run decisions included, and
+      rejects a count or a separate list"}
