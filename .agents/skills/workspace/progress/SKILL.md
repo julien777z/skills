@@ -16,6 +16,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 - `pre-production`
 - `execute-task`
 - `merge-gate`
+- `user-facing-output`
 
 ## Workflow
 
@@ -105,9 +106,9 @@ and deliver the same dashboard again on every request so the user keeps one page
   to merge", the `diagram` "Merge and deploy order", then the `outline` sections "Between merges",
   "Deploy" and "Once live", each only when it has something in it. Its `status` is "<n> need you"
   (`warning`) while anything on it waits on the user — a pull request held on their review or
-  answer, or an action under Between merges that only they can take — and is left out once
-  nothing does. Deploy items count toward it only for a task `merge-gate`'s **No Verification Or
-  Deploy Work** follows past the merge.
+  answer, an action under Between merges that only they can take, or a Deploy item that
+  `user-facing-output`'s rule for deploy-only steps makes a reader-owned action — and is left out
+  once nothing does.
 - **`table` "Plans"**: one row per plan that is not withdrawn, with the columns Plan, Steps done
   ("<done> of <n>"), Running, Waiting on you and Time left, the summary of what the board shows step
   by step, and `details` holding each row's plan write-up, so a row opens the plan.
@@ -174,13 +175,11 @@ and deliver the same dashboard again on every request so the user keeps one page
   what deploying sets off, such as a migration running.
 - **`outline` "Once live"**: per environment, what the user can check after it deploys to know the
   change works there, such as a page to open, a job to watch or a log line to look for, each with a
-  link where one exists; the agent checks none of it and nothing waits on it, as `merge-gate`'s
-  **No Verification Or Deploy Work** says, so its items carry no `tone`: these outlines tell the
-  user what their own deploy needs. With the ready-for-review message's **Before deploy** line,
-  they are the only places a deploy step is named, and they state it as a fact, never an ask, apart
-  from a task **No Verification Or Deploy Work** follows past the merge. In Between merges, `tone`
-  is `critical` when skipping the item breaks the next step and `warning` otherwise; Deploy items
-  carry no `tone`.
+  link where one exists; the agent checks none of it, as `merge-gate`'s **No Verification Or Deploy
+  Work** says, so its items carry no `tone`. Deploy items are presented as `user-facing-output`'s
+  rule for deploy-only steps says. In Between merges, and for a Deploy item that rule makes a
+  reader-owned action, `tone` is `critical` when skipping the item breaks the next step and
+  `warning` otherwise; every other Deploy item carries no `tone`.
 - **`links` "Pull requests"**: each open and draft pull request, leaving out merged and closed
   ones, which need nothing more from the reader, with `group_label` "Repository". `label` its
   `<repository>#<number>`, `url`, `group` "<owner>/<repo>", `detail` its short title, then the

@@ -487,7 +487,7 @@ The ready-for-review message takes exactly this shape, one message per pull requ
 **Deferred** when nothing was deferred and **Before deploy** when the change needs nothing outside
 the code to deploy. Its **Next:** review is an action the reader owns: the message is the material
 the question tool request for that review shows, as `user-facing-output` says. The question asks
-for the review alone; **Before deploy** is never in its text or options:
+for the review alone:
 
 ```markdown
 **Ready for review:** <pull request URL>
