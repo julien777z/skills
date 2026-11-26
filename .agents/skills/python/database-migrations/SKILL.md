@@ -78,7 +78,7 @@ Shared tooling lives in the project's shared migration package (runner, revision
 - Generic backfill and rollback mechanics that know no project's schema, such as paging, measured
   progress, resumable checkpoints and running asynchronous code inside a revision, belong to the
   schema-independent migration library **Migration Support Packages** defines. Do not promote
-  one-off migration behavior into it.
+  one-off migration behavior into that library or the project's shared backfill runtime package.
 - **Data work is registered inside the revision that owns it**, the pull request's one unlocked
   revision on that chain under **Applied Is What Makes History**, through the mechanism the
   project provides for running data work inside a revision, where it has one. An operation that
