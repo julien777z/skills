@@ -136,7 +136,8 @@ reconcile_skill_links() {
 }
 
 # A skill's top-level `tests/` holds regression scenarios with their expected answers, so the
-# installed skill is a directory linking every other top-level entry.
+# installed skill is a directory linking every other top-level entry. Codex skips a `SKILL.md` that
+# is a symlink, so that file is copied.
 link_skill_without_scenarios() {
   local source="$1" entry="$2" item name
   local expected=()
@@ -159,7 +160,11 @@ link_skill_without_scenarios() {
   mkdir "$entry" || return 1
 
   for name in ${expected[@]+"${expected[@]}"}; do
-    ln -s "$source/$name" "$entry/$name" || return 1
+    if [ "$name" = SKILL.md ]; then
+      cp -- "$source/$name" "$entry/$name" || return 1
+    else
+      ln -s "$source/$name" "$entry/$name" || return 1
+    fi
   done
 }
 
@@ -171,7 +176,11 @@ skill_links_match() {
   [ -d "$entry" ] && [ ! -L "$entry" ] || return 1
 
   for name in "$@"; do
-    [ -L "$entry/$name" ] && [ "$(readlink "$entry/$name")" = "$source/$name" ] || return 1
+    if [ "$name" = SKILL.md ]; then
+      [ -f "$entry/$name" ] && [ ! -L "$entry/$name" ] && cmp -s -- "$source/$name" "$entry/$name" || return 1
+    else
+      [ -L "$entry/$name" ] && [ "$(readlink "$entry/$name")" = "$source/$name" ] || return 1
+    fi
   done
 
   for item in "$entry"/* "$entry"/.[!.]* "$entry"/..?*; do
