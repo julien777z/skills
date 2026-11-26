@@ -4,6 +4,13 @@ Apply these criteria to every test, test-data, test-support, and test-configurat
 suites reference beside this file holds the conventions for suites, test modules, test
 configuration and time budgets.
 
+Contents: **Test Value And Retention** (**Test Deletion Evidence**, **Test Cost**, **Dispositions
+For Existing Tests**), **Find The Canonical Test Data** (**Boundary Representations And Decision
+Matrices**), **Mirror Source Ownership**, **Prefer Parametrized Cases** (**Naming Checks**),
+**Place Construction Outside Tests** (**Factory Contents**), **Choose Test Doubles** (**Auditing
+Existing Doubles**), **Third-Party Calls Use Documented Doubles**, **A Missing Credential Leaves
+The Test Alone**, **Literal Sweep**.
+
 ## Test Value And Retention
 
 **A test is never redundant with a test of another classification — unit, integration, smoke, or
@@ -431,9 +438,12 @@ scope a caller names:
   fixture that returns another fixture's value unchanged and adds no setup of its own, and every
   fixture named for a role nothing gives its value; report every row.
 
-A change that adds, renames or removes a fixture reports those rows before it is finished, rows
-in families it did not add to included, and fixes each one in that change: every row outside the
-family it adds to, unless `pre-production`'s size budget reserves a record for it.
+A change that adds, renames or removes a fixture runs the listing before it is finished and
+states every row in its report, rows in families it did not add to included: the name the fixture
+had, which of the above it breaks, and its fix. A row the change fixed is still reported that way,
+since a rename alone does not say what was wrong with the old name. The change fixes each row:
+every row outside the family it adds to, unless `pre-production`'s size budget reserves a record
+for it.
 
 Name several results in one test for their scenario or domain role, such as
 `invited_member_response` and `created_member_response`, never with a letter or a number, such as
