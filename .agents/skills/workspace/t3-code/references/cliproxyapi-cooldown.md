@@ -5,14 +5,21 @@
    proxy that serves it, using service routing, runtime identity, or a matching request log. A
    localhost listener, a matching service name, or an HTTP success from another proxy does not
    identify the request path. If needed, reproduce with a short prompt in a separate T3 chat.
-2. Check fresh provider quota and the proxy's routing state for the same account. Match the
-   provider account's identity, including its organization when relevant, to one entry in the
-   active proxy's credential list and resolve its `auth_index`. A pooled Usage total or a matching display name does not
-   identify the credential, and a quota refresh can show restored allowance while a routing
-   cooldown remains. An upstream quota rejection or a still-exhausted window does not justify
-   clearing the proxy's cooldown. Inspect the full cooldown list for the credential, including
-   model-specific blocks. The reset clears routing cooldowns for the entire credential. Use it
-   only when every active block it would clear is confirmed stale.
+2. Match the provider account's identity, including its organization when relevant, to one entry
+   in the active proxy's credential list and resolve its `auth_index`. A display name or pooled
+   usage total alone cannot identify the account. Read every active routing cooldown on that
+   credential, including model-specific blocks. Use the user's confirmed reset as evidence for
+   the matching account and allowance. If the user's instructions already identify the reset,
+   carry that evidence forward without asking them to repeat it. Compare the reset with the
+   proxy's recorded reason and timing to determine which blocks are stale. Keep a cooldown
+   supported by a newer provider rejection or a separate active limit.
+
+   Skip quota endpoint calls, including calls relayed through the proxy. A cached quota reading
+   from before the reset or a quota lookup's HTTP 429 does not establish an active inference
+   limit. If the account or an affected block remains unclear, continue with available account
+   and routing evidence and resolve the specific uncertainty before acting. The reset clears
+   the entire credential's routing cooldowns, so use it only when every active block it would
+   remove is stale.
 3. For a confirmed stale cooldown, use **Clear cooldown** on that credential in the active
    proxy's management page. For a supported CLIProxyAPI v8 installation, the management API
    lists credentials with `GET /v8/management/credentials` or the installed version's
