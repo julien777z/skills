@@ -135,6 +135,8 @@ WORDING_COLUMNS: Final[tuple[str, ...]] = (
 DESCRIPTION_FIELD: Final[str] = "description"
 DESCRIPTION_SPECIFICATION_CHARS: Final[int] = 1024
 DESCRIPTION_LISTING_CHARS: Final[int] = 1536
+INSTRUCTIONS_FILENAME: Final[str] = "AGENTS.md"
+CODEX_INSTRUCTIONS_CAP_BYTES: Final[int] = 32768
 
 YAML_REQUIREMENT: Final[str] = "PyYAML==6.0.3"
 YAML_ENVIRONMENT_DIRNAME: Final[str] = "validate-sources-yaml"
@@ -260,6 +262,25 @@ def run_sync_tool(python: Path, root: Path, agents_dirname: str, command: list[s
     return outcome
 
 
+def find_instructions_cap_problems(scratch: Path) -> list[str]:
+    """Report a generated instructions file past Codex's default size cap."""
+
+    instructions = scratch / INSTRUCTIONS_FILENAME
+
+    if not instructions.is_file():
+        return []
+
+    size = instructions.stat().st_size
+
+    if size <= CODEX_INSTRUCTIONS_CAP_BYTES:
+        return []
+
+    return [
+        f"the generated instructions file {INSTRUCTIONS_FILENAME} is {size} bytes, past the "
+        f"{CODEX_INSTRUCTIONS_CAP_BYTES}-byte default Codex reads"
+    ]
+
+
 def mirror_in_scratch(python: Path, root: Path, agents_dirname: str) -> SyncOutcome:
     """Validate external resources and mirror canonical sources in a scratch copy."""
 
@@ -278,6 +299,14 @@ def mirror_in_scratch(python: Path, root: Path, agents_dirname: str) -> SyncOutc
 
             if outcome is not SyncOutcome.VALID:
                 return outcome
+
+        cap_problems = find_instructions_cap_problems(Path(scratch))
+
+        for problem in cap_problems:
+            logger.error("Instructions size: %s", problem)
+
+        if cap_problems:
+            return SyncOutcome.INVALID
 
     return SyncOutcome.VALID
 

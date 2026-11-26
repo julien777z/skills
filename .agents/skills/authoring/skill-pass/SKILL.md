@@ -87,7 +87,8 @@ included, so a clean changed file does not make a failing tree pass.
   folder, whose `scenario.yaml` does not parse, holds other keys or another order than title, kind,
   covers, prompt, expect and history, covers a file or heading that does not exist, or breaks the
   rules for its expect and history entries, reading it with a pinned PyYAML it installs into an
-  environment of its own; it reads no other file there as guidance.
+  environment of its own; it reads no other file there as guidance. It refuses a generated
+  instructions file past the 32,768 bytes Codex reads by default.
 - **What it leaves to reading.** It matches name forms only, so a skill identified by a
   description, a declared edge that points back toward a caller, a cited path outside a link, a
   script, a command, a flag and what a command prints all pass it. For each file the pass covers,
