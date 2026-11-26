@@ -55,7 +55,9 @@ Use ordinary Studio profiles that cannot overwrite live player progress. When pe
 ## Keep the game's test helpers in its repository
 
 Every step a check repeats has one tested helper, committed in the game repository's test tooling
-area and built on the [studio_mcp](../scripts/studio_mcp/__init__.py) package for the transport:
+area and built on the [studio_mcp](../scripts/studio_mcp/__init__.py) package for the transport. The
+helpers load the package only when an agent runs them; their tests build the values it returns and
+double it where a helper calls it, so the game's CI runs them with no skills present. Helpers cover:
 
 - putting a disposable profile into a given state;
 - walking the character to an NPC, prompt or place through real movement around the collision
@@ -953,7 +955,7 @@ complete viewer/VM login yourself and sign in to Roblox as that section says.
 Use `list_roblox_studios`, verify the target file/place, and pass its explicit `studio_id` to every
 operation. Keep unrelated projects untouched. Use the installed Studio version's documented launch
 arguments and verify the resulting editor inventory, not merely process creation. Record the
-version in test evidence because it updates independently.
+version, read from the installed app's bundle, in test evidence because it updates independently.
 
 For a cloud-backed editor when isolated save/rejoin tests are required, the documented
 [Studio command-line interface](https://create.roblox.com/docs/studio/command-line-interface)

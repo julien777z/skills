@@ -1,12 +1,13 @@
 ---
 name: process-ledger
-description: Process a task's private ledger at task completion or when a user asks to process it. Reconcile verified records, route admitted guidance corrections, direct guidance requests included, into permanent guidance, and retain only entries with a concrete unresolved next action.
+description: Process a task's private ledger at each milestone of the work while guidance corrections are pending, at task completion, or when a user asks to process it. Reconcile verified records, route admitted guidance corrections, direct guidance requests included, into permanent guidance, and retain only entries with a concrete unresolved next action.
 short_description: 'Process verified private-ledger records into durable outcomes.'
 ---
 
 # Process Ledger
 
-Process the active task's private ledger as one completion workflow. Read and update the ledger only
+Process the active task's private ledger as one workflow: at completion for every entry, and at each
+milestone for the pending guidance batch alone, under **Batches**. Read and update the ledger only
 through `session-ledger`; it stays private task state, while permanent guidance and artifacts remain
 at their owners.
 

@@ -12,7 +12,10 @@ alwaysApply: true
   passed, so its test jobs run once, on the head about to merge. Never mark one ready to start its
   tests, to show it finished, or to hand it to the user. With no merge authorized, a pull request
   is complete as a reviewable draft whose local checks under **Pre-Push Gate** and completion review
-  have passed; its hosted test jobs are required only at the merge.
+  have passed; its hosted test jobs are required only at the merge. A check that does run on a
+  draft is read whenever the pull request's state is reported, its own or a worker's push alike,
+  and one that fails is fixed in that pull request at once like any defect, a failure in setup the
+  change did not write included, never set aside because the draft's tests run only at the merge.
 - **Each repository is an independent publishing context.** Pull-request titles, descriptions,
   comments, issue text, branch names and commit messages use the target repository's domain,
   contracts, changes and validation, and never reference another repository's pull request or
@@ -199,7 +202,11 @@ closes the flag, which the review's next round or a fresh gate does.
   pushing or merging.** Where a dependency is still in review, unreleased or unmerged, the branch
   consumes that dependency's pull-request branch in its manifest, lockfile and workflow checkouts,
   or builds on a same-repository sibling's branch, and pushes; never ask for the dependency's merge
-  or report the consumer blocked on it.
+  or report the consumer blocked on it. That route is only for what the change uses that the
+  dependency adds: a defect in the pull request's own checks or delivery, such as a CI setup step
+  the change did not write or a deploy workflow, is repaired in that pull request itself, even
+  when a sibling pull request already carries a repair, never by consuming, stacking on or
+  waiting for that sibling or the default branch.
 - **The order is change, checks, push, then the slow verification**: a browser walkthrough, a full
   or end-to-end suite, anything slow or needing a running stack, whose findings go out as fix
   pushes. **Pushed is not done**: a change is reported done only once that verification has passed.

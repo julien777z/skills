@@ -14,6 +14,10 @@ Changed Flows**, **Remedies**, **Guidance Prose**.
 - **The intent wins.** Never recommend removing, narrowing or reshaping something the change's
   stated intent asks for, such as a cache, a retry or a guard the request names. Where it looks
   wrong, say so as a question beside the finding, never as the fix.
+- **The change is the pull request's whole diff against its merge base**, whatever scope a pass or
+  slice reviews: a finding in lines or files the pull request wrote is inside it, in an earlier
+  commit, another slice or a file it moved, copied or recreated at a new path alike. Check a
+  finding's place against the pull request's file list, never the reviewed delta or a move's label.
 - **Outside the change:** a bug it meets is always fixed, where
   `pre-production`'s **Scope Follows The Defect, Not The Request** places it. Non-bug cleanup outside
   the change follows that skill's size budget for admission, placement and deferral.

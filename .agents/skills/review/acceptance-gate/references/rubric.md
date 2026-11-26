@@ -304,7 +304,8 @@ ends the question.
    would rediscover the defect does not soften this: rediscovery excuses the record, never the fix.
    Product state never softens it either: broken is broken for one admin as for a thousand users.
    A missing safeguard that definition leaves out goes on to the tests below, its exploitability
-   judged under **Exploitable Findings**.
+   judged under **Exploitable Findings**. A suspected defect whose confirmation the caller can
+   reach with its own tools is fix as well, as `pre-production`'s noticed-defect bullet says: investigated in the change and fixed if it confirms, never defer; one that does not confirm is closed with what the investigation showed.
 2. **close** — the item is real but not worth doing. Either the product state leaves it protecting or
    serving nobody — an access control between the one admin and the data only that admin can see, a
    hardening against users the product does not have, neither of which retires a finding an attacker
@@ -315,8 +316,8 @@ ends the question.
    and the reconsideration criterion: the product-state change that would make the work real, or the
    check that owns it.
 3. **defer** — the item is worth doing, and one of these holds: the gain today does not carry the
-   mechanisms the fix would add, priced by the rubric; the work is of genuine size and its need is
-   arguable — a redesign, a sweep across many files somebody could reasonably decline; an external
+   mechanisms the fix would add, priced by the rubric; the work is comparable in size to the change
+   in flight and, unless it is incidental cleanup, its need is arguable — a redesign, a sweep somebody could reasonably decline; an external
    blocker stands, which is something outside every repository the user owns that the fix cannot be
    written without — a credential nobody has issued, a vendor change, an answer only a third party
    can give; a decision that is somebody else's is already put to that person and still open, or the
@@ -341,14 +342,19 @@ ends the question.
    alone, naming the fork — the shape, every instance it would convert, the size of that change and
    the recommendation — which the caller puts to the user now; it is built only at the scope the
    user approves, never returned as do. Incidental cleanup past `pre-production`'s size budget is
-   defer without the arguability test, apart from broader cleanup the widened task takes up.
-   Incidental cleanup admitted by the active budget is do. Nor are the size
-   and shape of the work inputs the gate may take on trust: "large", "not mechanical", "each site
-   needs its own judgment" and "it spans suites the change does not touch" are the asker's
-   characterization of the asker's own record. Check the count against the tree and open enough of
-   the actual call sites to see whether the edit repeats. This is the inverse of the fix test's
-   treatment of a measured rate, which is taken as given precisely because reading the tree cannot
-   produce one — size is exactly what reading the tree can.
+   defer without the arguability test only where that budget reserves a record for it. Cleanup the
+   active budget admits, in this change or placed in another repository, is do, whatever its file
+   count, as the budget in force for the scope the intent statement records says. A finding
+   inside the change, as `code-simplify`'s rubric **Scope** defines it, is do, never defer. Nor are
+   the size, shape and place of the work inputs the gate may take on trust: "large", "not
+   mechanical", "each site needs its own judgment", "it spans suites the change does not touch" and
+   "outside the change" are the asker's characterization of the asker's own record. Check the count
+   against the tree and open enough of the actual call sites to see whether the edit repeats, and
+   check where the work sits against the pull request's file list and diff the item carries. This
+   is the inverse of the fix test's treatment of a measured rate, which is taken as given precisely
+   because reading the tree cannot produce one — size and place are exactly what reading the tree
+   and the diff can. A defer names which of the grounds above holds and the evidence for it; any
+   other ground is a refusal.
 4. **do** — none of the above: the item is worth doing and its cleanest fix is within reach, so it is
    done where `pre-production`'s **Scope Follows The Defect, Not The Request** places the work.
 

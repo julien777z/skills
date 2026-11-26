@@ -199,7 +199,9 @@ validation exclusion is recorded with its evidence and not repaired, rerun or wa
    pass to **Recheck the base**, and new commits return it to **Resolve the target**. When all inputs match, record the accepted
    head under **Range** and return its **Output**.
 
-A finding outside the change follows **Answer each finding**. A recorded deferral is discharged,
+A finding is outside the change only when it lies outside the pull request's whole diff against its
+merge base, as `code-simplify`'s rubric defines the change, never merely outside the delta a round
+or pass reviewed. A finding outside the change follows **Answer each finding**. A recorded deferral is discharged,
 never a gate on the review or the merge, and never covers a defect.
 
 Keep the session active until the pass reaches its result. A delegated reviewer is nonterminal
