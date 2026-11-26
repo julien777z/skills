@@ -261,9 +261,10 @@ confirms it reads zero, and re-runs each rewrite's covering check.
 - Data a removal leaves in the old shape — a flag whose retirement backfill has not run, a chain to
   collapse — follows `pre-production`'s **Product State** and **Target Contract** and the
   repository's database-migration skill, never a question.
-- A product or scope choice a remedy makes is this run's, decided as `doctor-protocol`'s **Gate And
-  Show The Plan** says. A contract a consumer outside the user's control speaks stays as it is and
-  is reported, under `pre-production`'s **Target Contract**.
+- A product or scope choice a remedy makes goes to the user as a reserved entry, as
+  `doctor-protocol`'s **Gate And Show The Plan** says; the rest of a remedy's calls are this run's.
+  A contract a consumer outside the user's control speaks stays as it is and is reported, under
+  `pre-production`'s **Target Contract**.
 - Fix the reader or the writer, never both. A tolerance that hides a wiring defect is a confirmed
   defect and is fixed. An unsupported historical record is never a finding and never receives a
   fallback.

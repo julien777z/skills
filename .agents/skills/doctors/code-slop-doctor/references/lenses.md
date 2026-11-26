@@ -121,26 +121,27 @@ they are independent; a batch operation taking the set in place of the per-item 
 calls that stay separate issued together rather than in turn; static data shipped with the client
 through its package or generated contract; a bounded, paginated read in place of the unbounded one,
 with the fetch-all helper deleted and each consumer that needs every page looping at its own call
-site; every caller moved, and each operation left with no caller deleted with its client. A batch
-or merged operation authorizes each item and each returned field as the operations it replaces did;
+site; every caller moved, and each operation left with no caller deleted with its client. A batch or
+merged operation authorizes each item and each returned field as the operations it replaces did;
 where it cannot, those operations stay separate, as Left alone says. The use case is timed before
 and after on the same stack, and a merge that makes it wait longer for its first useful content is
 not the remedy. Two cases are decided case by case, never merged or left alone silently: an
 operation another use case also calls on its own, where the use case may gain a merged operation
 while the other keeps its own; and a read only some runs of the use case need, which a merged
-operation may still carry. The run decides each, and its record lets a reader check the decision
-without opening the code: the operations it would combine, by method and path or RPC name; the proposed operation's method, path,
-parameters and response fields; every other caller of each of those operations, found in the code
-by page, job or service, with what it reads and whether it already shares the use case's read; what
-would become of each existing operation, kept for which caller or deleted; the current counts and
-timings, and the call count the proposed operation would leave; and the decision with its reason.
-The timings after are measured once the merge is made. Left alone: a call a later
-interaction makes — a tab opened, a page turned, a row expanded; reads under different
-authorization or caching that one response cannot carry, and any set of items one operation cannot
-authorize as the per-item calls did; a slow section kept apart so it does not hold a fast one, with
-the timing showing it; a third-party provider's operations, batched only where the provider offers
-it; and the one complete read of its own collection the FastAPI rules' **Pagination** allows a
-domain service.
+operation may still carry. The run decides each that leaves what every caller sees unchanged; a
+merge that changes what a caller sees is put to the user as a reserved entry. Either way its record
+lets a reader check the decision without opening the code: the operations it would combine, by
+method and path or RPC name; the proposed operation's method, path, parameters and response fields;
+every other caller of each of those operations, found in the code by page, job or service, with what
+it reads and whether it already shares the use case's read; what would become of each existing
+operation, kept for which caller or deleted; the current counts and timings, and the call count the
+proposed operation would leave; and the decision with its reason. The timings after are measured
+once the merge is made. Left alone: a call a later interaction makes — a tab opened, a page turned,
+a row expanded; reads under different authorization or caching that one response cannot carry, and
+any set of items one operation cannot authorize as the per-item calls did; a slow section kept apart
+so it does not hold a fast one, with the timing showing it; a third-party provider's operations,
+batched only where the provider offers it; and the one complete read of its own collection the
+FastAPI rules' **Pagination** allows a domain service.
 
 ## Divergent Siblings
 

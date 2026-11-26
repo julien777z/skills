@@ -42,7 +42,7 @@ run `doctor-protocol`, and supplies:
 4. **measures** — one or more counts those commands produce, taken before the audit and after the
    fixes;
 5. **dispositions** in order, declaring the permitted changes and evidence required for exceptions,
-   and the calls its domain raises, which the doctor decides as **Gate And Show The Plan** says;
+   and the calls its domain raises, the run's or the user's as **Gate And Show The Plan** says;
 6. what its **cross-cutting reviewer compares** and what its **final reviewer challenges**;
 7. **domain dependencies** — the skills whose policy it applies and never restates;
 8. **report additions** — the rows it appends to the skeleton below.
@@ -84,9 +84,8 @@ selects none, with any reviewer fallback the doctor specifies; workers run at st
   doctor adds beyond the table follow the counts the doctor states and stand outside this cap.
 - **What adds launches beyond the table:** one verifier for a partition whose reviewer returned
   findings unverified; `review-proposal`'s rounds when a whole-route plan holds a remedy the run
-  designed;
-  one Diff gate for a group later groups build on; a fresh gate for each flagged verdict, as
-  `acceptance-gate`'s **Bounds** says; and one fix worker per final-review round after the first.
+  designed; one Diff gate for a group later groups build on; a fresh gate for each flagged verdict,
+  as `acceptance-gate`'s **Bounds** says; and one fix worker per final-review round after the first.
 
 ## Resolve The Scope
 
@@ -215,20 +214,18 @@ of this section is the whole route.
    was not run. An instance of a whole-repository lens is returned as a candidate for the
    cross-cutting reviewer, never chased across partitions.
 3. **Launch one fresh cross-cutting reviewer** once the partition reviewers have returned their
-   final results. It is handed the manifest, the doctor's
-   whole-repository lenses, the pre-pass output, and every partition's findings and receipt. It
-   finds what no single partition shows, such as duplicates and divergent siblings in different
-   partitions and items that cross boundaries, compares what the doctor names, and challenges every
-   proposed disposition whose evidence does not establish the full picture. It opens source only to
-   confirm a candidate.
+   final results. It is handed the manifest, the doctor's whole-repository lenses, the pre-pass
+   output, and every partition's findings and receipt. It finds what no single partition shows, such
+   as duplicates and divergent siblings in different partitions and items that cross boundaries,
+   compares what the doctor names, and challenges every proposed disposition whose evidence does not
+   establish the full picture. It opens source only to confirm a candidate.
 4. **Every finding takes the one shape the reference gives:** location, lens, quoted evidence, the
    specific fix, reach, severity, confidence and the check that proves the fix.
-5. **Findings are verified by partition, never all in the parent's context.** As its last step,
-   each reviewer opens every finding's location again at the audited head, confirms the quote and
-   runs the proving check where that is read-only. A partition whose reviewer returned findings
-   unverified gets one verifier. A candidate subject to validation the doctor adds passes it
-   first. A finding without evidence, or whose quote the file does
-   not hold, is dropped and counted.
+5. **Findings are verified by partition, never all in the parent's context.** As its last step, each
+   reviewer opens every finding's location again at the audited head, confirms the quote and runs
+   the proving check where that is read-only. A partition whose reviewer returned findings
+   unverified gets one verifier. A candidate subject to validation the doctor adds passes it first.
+   A finding without evidence, or whose quote the file does not hold, is dropped and counted.
 6. **The parent reconciles from the returned records.** It merges duplicates, settles
    disagreements, rejects unsupported churn and records each entry's disposition in the ledger,
    reading source only to settle a disagreement.
@@ -266,15 +263,19 @@ Otherwise write a decision-complete remediation plan from the ledger.
   directly. Preserve objections and their dispositions through either route.
 - **The doctor decides, and every decision is in the report.** The owner invokes a doctor to have
   its class corrected, and a run that stops for approvals returns a plan where a fix was wanted. So
-  the run decides and makes every change its findings call for, including removing a feature, a
-  product or scope choice a remedy makes, a rewording of correct text and a rewording across the
-  tree; a call its own checks cannot settle goes to `council` in **Ask** mode, and the ruling is
-  followed. Each decision goes in the plan file and the report with its reason.
-  - **Reserved to the user's own words**: a merge, deployment, publication or release, and a
-    security, disclosure or authorization choice, such as who may see a record. Fixing a
-    vulnerability so the product enforces the access it already intends is not one, and the run
-    makes that fix. Ask the reserved entries together through the global rules' question
-    procedure, each as options with each consequence and a recommendation; only the entries that
+  the run decides and makes every change its findings call for but the reserved entries below, a
+  rewording of guidance text and a rewording across the tree included; a call its own checks cannot
+  settle goes to `council` in **Ask** mode, and the ruling is followed. Each decision goes in the
+  plan file and the report with its reason.
+  - **Reserved to the user's own words**: a merge, deployment, publication or release; a security,
+    disclosure or authorization choice, such as who may see a record; and a product or scope
+    choice a remedy makes, as `pre-production`'s **Product Choices** defines one — removing or
+    hiding content or a feature, a remedy whose visible effect is large, a new surface, a rewording
+    of correct text already in a product. A routine presentation detail stays the run's, and so
+    does fixing a vulnerability so the product enforces the access it already intends.
+  - **How reserved entries are asked.** Together, through the global rules' question procedure,
+    each as options with each consequence and a recommendation, and a visible choice with its
+    captures and its old and new text in a message the user sees first; only the entries that
     depend on an answer wait for it.
   - **A departure from a rule rides the rule change.** Where the run judges a shape a rule
     prescribes or exempts worse than the departure, as `pre-production`'s **Trade-Offs Are
@@ -371,10 +372,9 @@ candidates still counts is matched to a ledger entry that retains it: kept with 
 held on a rule change's merge, or open for a reserved user decision or an external blocker as
 **Leave Nothing Open** allows. An instance with no such entry, and an entry marked fixed whose
 measure still misses its target, is a missed fix: it is re-planned as **Implement In Waves** says
-and goes back out as a fix step, and the run moves to **Review The Result** only once none
-remains. Inventory totals, such as files, symbols,
-dependencies, documents and strings, and performance measures are compared before and after, never
-reconciled item by item.
+and goes back out as a fix step, and the run moves to **Review The Result** only once none remains.
+Inventory totals, such as files, symbols, dependencies, documents and strings, and performance
+measures are compared before and after, never reconciled item by item.
 
 ## Review The Result
 
