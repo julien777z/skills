@@ -29,22 +29,23 @@ expect:
       accepted launch with `--model sol-5`, the siblings the first with `--model opus-5` and the first
       with `--model fable-5`, each known by its `--name`; a read of a seat is a `status`, `wait` or
       `result` call whose N argument is that name. A call's completion clock is the `clock=` number on
-      its own trace.log line, the line of its own seq, or, where that line reads `clock=-`, the last
-      number on a line of lower seq; its start clock is the completion clock of the call of next-lower
-      seq; A is the `clock=` on the sol-5 seat's `accepted` line, and the deadline is A+15. A sibling
-      returns at a read of a sibling whose trace.log output holds `complete` or starts `Score`; a read
-      shows zero events when its output holds `events=0`, `no events` or `no output`. The trigger read
-      is the first read of the sol-5 seat that comes after a sibling return or itself completes at the
-      deadline or later, so an earlier read of that seat is not it, whatever it shows; the deadline wait
-      is a `wait` on the sol-5 seat whose start clock plus its `--minutes`, or 20 when it has none,
-      reaches the deadline; the replacement is the first accepted launch after the trigger read. After
-      the third accepted launch every `wait` names one launch; the trigger read exists and shows zero
-      events; when a sibling return, or a call other than a read of the sol-5 seat that completes at the
-      deadline or later, comes before the trigger read, the trigger read is the call right after the
-      first such call; between the trigger read and the replacement, or the end of actions.log when
-      there is none, no `wait` falls; and every call after a deadline wait up to the replacement is a
-      `tools/agent launch` call, refused ones allowed, while a `wait` on the sol-5 seat that is not a
-      deadline wait imposes no such limit.
+      its own trace.log line, the line of its own seq, or, where that line reads `clock=-`, the `clock=`
+      number on the trace.log line of highest lower seq whose `clock=` is a number, or 0 when there is
+      none; its start clock is the completion clock of the call of next-lower seq; A is the `clock=` on
+      the sol-5 seat's `accepted` line, and the deadline is A+15. A sibling returns at a read of a
+      sibling whose trace.log output holds `complete` or starts `Score`; a read shows zero events when
+      its output holds `events=0`, `no events` or `no output`. The trigger read is the first read of the
+      sol-5 seat that comes after a sibling return or itself completes at the deadline or later, so an
+      earlier read of that seat is not it, whatever it shows; the deadline wait is a `wait` on the sol-5
+      seat whose start clock plus its `--minutes`, or 20 when it has none, reaches the deadline; the
+      replacement is the first accepted launch after the trigger read. After the third accepted launch
+      every `wait` names one launch; the trigger read exists and shows zero events; when a sibling
+      return, or a call other than a read of the sol-5 seat that completes at the deadline or later,
+      comes before the trigger read, the trigger read is the call right after the first such call;
+      between the trigger read and the replacement, or the end of actions.log when there is none, no
+      `wait` falls; and every call after a deadline wait up to the replacement is a `tools/agent launch`
+      call, refused ones allowed, while a `wait` on the sol-5 seat that is not a deadline wait imposes no
+      such limit.
   - id: replacement-same-level
     check: The replacement, as subagent-matrix/tests/stalled-default-seat-moves-to-own-provider's
       `seat-read-at-trigger` defines it, is `--for 2` on opus-5 with the sol-5 seat's `--effort`, and
@@ -171,3 +172,11 @@ history:
       measure, runs its window through the trigger read inclusive, or to the end of actions.log when
       there is none, and measures each wait's reach by its start clock plus its requested minutes
       against the deadline, keeping the final-reply clause unchanged
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a Diff gate's flag on the check's text; the completion clock of a call whose
+      trace.log line reads `clock=-` was "the last number on a line of lower seq", which named no line
+      and could read a number from a call's output, so a refused launch could take a clock from a
+      review's `sleep(2)` and make a 13-minute wait a deadline wait; it is now the `clock=` number on
+      the trace.log line of highest lower seq whose `clock=` is a number, or 0 when there is none, read
+      only from `clock=` values, with the rest of the check unchanged and nothing loosened
