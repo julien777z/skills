@@ -8,11 +8,11 @@ import yaml
 from models import ScenarioKind, ScenarioRoute
 from validate_sources import (
     SCENARIOS_DIRNAME,
-    SKILL_ENTRY_FILENAME,
     SKILLS_DIRNAME,
     guidance_prose,
-    heading_titles,
     normalized_section_name,
+    section_names,
+    skill_packages,
 )
 
 SCENARIO_FILENAME: Final[str] = "scenario.yaml"
@@ -36,9 +36,8 @@ def scenario_paths(skills_dir: Path) -> list[Path]:
 
     return sorted(
         path
-        for path in skills_dir.rglob(SCENARIO_FILENAME)
-        if path.parent.parent.name == SCENARIOS_DIRNAME
-        and (path.parent.parent.parent / SKILL_ENTRY_FILENAME).is_file()
+        for package in skill_packages(skills_dir).values()
+        for path in (package / SCENARIOS_DIRNAME).glob(f"*/{SCENARIO_FILENAME}")
     )
 
 
@@ -49,7 +48,7 @@ def mapping_entries(value: object, field: str) -> list[dict[object, object]] | s
         return f"`{field}` is not a nonempty list"
 
     if not all(isinstance(entry, dict) for entry in value):
-        return f"every `{field}` entry is not a mapping"
+        return f"a `{field}` entry is not a mapping"
 
     return value
 
@@ -80,7 +79,7 @@ def covers_problems(covers: object, agents_dir: Path) -> list[str]:
 
             continue
 
-        headings = {normalized_section_name(title) for title in heading_titles(guidance_prose(target))}
+        headings, _ = section_names(guidance_prose(target))
 
         if normalized_section_name(section) not in headings:
             problems.append(f"covers entry {number}: `{file}` has no heading **{section}**")
@@ -128,7 +127,9 @@ def history_problems(history: object) -> list[str]:
     problems: list[str] = []
 
     if entries[0].get("route") != ScenarioRoute.BEHAVIOR_CHANGE:
-        problems.append("history entry 1, which adds the scenario, is not on the behavior-change route")
+        problems.append(
+            f"history entry 1, which adds the scenario, is not on the {ScenarioRoute.BEHAVIOR_CHANGE} route"
+        )
 
     for number, entry in enumerate(entries, start=1):
         if not isinstance(entry.get("date"), str):
@@ -172,7 +173,7 @@ def scenario_problems(path: Path, agents_dir: Path) -> list[str]:
         ]
 
     kinds = ", ".join(kind.value for kind in ScenarioKind)
-    problems = [] if scenario["kind"] in tuple(ScenarioKind) else [f"`kind` is not one of {kinds}"]
+    problems = [] if scenario["kind"] in ScenarioKind else [f"`kind` is not one of {kinds}"]
 
     problems += covers_problems(scenario["covers"], agents_dir)
     problems += expect_problems(scenario["expect"])
