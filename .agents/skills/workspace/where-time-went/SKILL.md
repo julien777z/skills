@@ -1,6 +1,6 @@
 ---
 name: where-time-went
-description: "Show where the current session's working time went as a dashboard: the main agent, subagents, loops and their rounds, and what happened inside each — its stages of work, check runs and the agents it started — as expandable trees. Run only when the user asks for it."
+description: "Show where the current session's working time went as a dashboard: the main agent, subagents, loops and their rounds, and what happened inside each — its stages of work, check runs and the agents it started — as expandable trees, beside what is running now and what is still to do. Run only when the user asks for it."
 short_description: 'Show where session working time went, as a dashboard.'
 ---
 
@@ -9,6 +9,7 @@ short_description: 'Show where session working time went, as a dashboard.'
 ## Dependencies
 
 - `use-dashboard`
+- `session-ledger`
 
 Explain where this session's agents spent their working time, and what came of it, from the
 session's own evidence. By default cover the whole current session through invocation, including
@@ -36,7 +37,7 @@ pending, by the agent that asked or by any other, still counts.
   a restart or a context summary joins the assignment it continues.
 - **The main agent's own work** is its busy time outside the spans it spent waiting on a foreground
   child.
-- An agent still running has no terminal record: count it through invocation and mark it running,
+- An agent still running has no terminal record: count it through invocation and show it Active,
   never failed. A start or end the records lack is left out of the figures, never counted as zero.
 
 ## Gather and attribute
@@ -51,25 +52,53 @@ of the same workflow; name its cause and outcome where recorded. When grouping i
 from the evidence; never make a loop from an inactivity gap. Launch order alone does not number
 rounds. Show every group in scope, not only the latest.
 
-Assess each top-level workflow as necessary, rework, detour or avoidable only where evidence supports
-it, otherwise unknown.
+Assess each top-level workflow as rework, detour or avoidable only where evidence supports it;
+anything else carries no assessment.
+
+### States
+
+Each workflow, agent, assignment and plan step is in one state, with its pill and tone: **Active**,
+`accent`, running now; **Blocked**, `critical`, started and waiting on something; **Up next**,
+`next`, not started yet; **Done**, `good`, finished. A reviewer's verdict, such as Approved, Changes
+or Flag, takes the place of Done on a review, and a finished workflow's Rework, Detour or Avoidable,
+`warning`, takes its place where the evidence supports one; finished work with nothing standing out
+shows Done, which the user keeps although it repeats, and an assessment that says nothing, such as
+necessary, is never shown. Read the plans of every ledger this session wrote through
+`session-ledger`, leaving out withdrawn and complete plans: a step or part `active` is Active,
+`blocked` is Blocked, `next` is Up next, `done` is Done and `skipped` is left out, and a step with
+parts is read part by part. A plan still waiting on a decision or approval keeps its steps, each
+tagged Proposed. Work not started goes under the workflow that ran its plan's earlier steps, or
+under an entry of its own named for the plan when none has run. Its estimate is shown in `meta`,
+marked `~`, never as a `figure`, and never counts toward working time or the longest workflow; a
+total of remaining work is totaled as `session-ledger` totals a plan. A ledger that cannot be read
+is a gap the dashboard names, never an empty plan.
 
 ## Dashboard
 
 Build a `use-dashboard` spec and deliver it through that skill as a dashboard of session work, so a
-later run in the same session updates the same page. `title` is `Where Time Went Dashboard`;
+later run in the same session updates the same page. `title` is `Where Time Went Dashboard` and
+its `icon` `activity`;
 `topic` names the session's work in a few words; `subtitle` says what the dashboard shows. Its
 pages, in order:
 
 - **Overview** (`overview`). Metrics: the session's working time, the number of agents with the
   split between workers and reviewers as its detail, and the longest workflow's time with its name
-  as the detail. A `table` of where the time went: one row per top-level workflow, with its time and
-  assessment, each row opening a short write-up of that workflow in a dialog: what it did, its
-  outcome and its largest stages, as **What happened** names them.
+  as the detail, and a fourth, Now and next, with "<n> active" from the Active column on the Now
+  and next page as its value and "<n> up next · ~<total>" from its Up next column as its
+  detail. A `table` of where the time went:
+  one row per top-level workflow, with its time and its state, as **States** names it — each row
+  opening a short write-up of that workflow in a dialog: what it did, its outcome and its largest
+  stages, as **What happened** names them.
+- **Now and next** (`board`). One `board` with the columns Active (`accent`) and Up next (`next`).
+  Each card is one plan step, or one part of a step with parts, or a running agent no plan step
+  holds, saying what the work does, in plan order. Active holds active and blocked ones, a blocked
+  card carrying `status` Blocked in `critical` and an active one no pill. Up next holds those not
+  started, with no pill, since the column says it, each with its estimate in `meta` and, when the
+  session has several plans, the plan it belongs to in `tag`.
 - **Loops** (`list`). One `tree`: each workflow, then its rounds or groups, then the agents or
   assignments inside them, each broken down as **What happened** says. Every entry's `figure` is its
-  time; its outcome is its `status` pill in the matching tone, such as Done, Running, Approved,
-  Changes or Flag; the model a reviewer ran on is its `tag`.
+  time, or for work up next its estimate in `meta`; its `status` is a pill as **States**
+  says, in the matching tone; the model a reviewer ran on is its `tag`.
 - **Timeline** (`calendar`). One `tree` of the session's phases in order, each labeled by the work
   done in it with its time as `figure`. Its children are the agents, assignments and reviewers that
   worked in that phase, in the order they started, each with its time in the phase, its `status` and
