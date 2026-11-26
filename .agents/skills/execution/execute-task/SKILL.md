@@ -120,9 +120,8 @@ plan of its own; only an edit that adds nothing skips it.
 - **An estimate is the executing agent's own wall-clock, never the effort the same work would
   take a person.** Build each step's from [plan estimates](references/plan-estimates.md), and list
   what the plan needs from the user — a review, a merge, a manual action — separately and
-  outside the total, with no time, since the agent cannot know how long the user takes; never a
-  step only a deployment needs, which waits for the ready-for-review message's **Before deploy**
-  line.
+  outside the total, with no time, since the agent cannot know how long the user takes; a step
+  only a deployment needs follows `user-facing-output`'s rule for it.
 - Schedule steps by `subagent-matrix`'s **Dispatch**: coupled work stays sequential, and
   independent scopes with separate owners, files and resources overlap once their inputs are
   settled. Estimate the elapsed time with that overlap, totaled as `session-ledger` totals a plan.
