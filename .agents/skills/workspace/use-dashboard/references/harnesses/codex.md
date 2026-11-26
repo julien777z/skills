@@ -29,6 +29,6 @@ destination, create a private Page. Keep the dashboard itself in this skill's sh
    create another Page or visualization to escape an uncertain result.
 5. Verify the saved visualization reference and, where `read_page_reference` supports its size,
    compare the saved file's byte size and SHA-256 with the rendered file. Inspect the rendered
-   dashboard when browser preview is available, checking page navigation and the controls the spec
-   includes. Return the Page link, distinguishing saved content from any digest, rendering or
+   dashboard in the browser `use-browser` selects, checking page navigation and the controls the
+   spec includes. Return the Page link, distinguishing saved content from any digest, rendering or
    interaction that could not be verified; reading HTML source does not establish that it rendered.

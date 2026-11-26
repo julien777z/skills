@@ -167,10 +167,15 @@ proves the component renders and nothing about the screen a user reaches. A chan
 component's own behavior is the exception **Principles** names: its rendered page is the check. If
 sign-in genuinely cannot complete for a change that needs the real screen, report the walkthrough as
 not done.
-Use the tab selected by `use-browser` for sign-in. Use the harness's credential entry or handoff
-route to keep passwords and one-time tokens out of command arguments and transcripts. Reuse an
-available signed-in session of the required identity. Never read saved passwords, cookies, local
-storage or session files.
+Sign in in the browser `use-browser` selected, keeping passwords and one-time tokens out of
+command arguments and transcripts. In the agent's headless browser, sign in as the repository's
+test identity with its password retrieved through `proton-pass` and passed on standard input
+(`agent-browser auth save <name> --url <login URL> --username <user> --password-stdin`, then
+`agent-browser auth login <name>`, and `agent-browser auth delete <name>` when the task ends), or
+open its one-time link from standard input with `agent-browser batch`, discarding the output; a
+signed-in session to reuse is the task's own headless session. In the user's browser, use the
+harness's credential entry or handoff route, and reuse an available signed-in session of the
+required identity. Never read saved passwords, cookies, local storage or session files.
 
 ### Drive the change
 
@@ -202,10 +207,10 @@ storage or session files.
   permits it. Where a departure would serve the reader better, recommend it, name the rule, and
   propose its change; keep the departure pending until the user agrees, as the global rules'
   standing-guidance bullet says of design rules.
-- A daemon restart can change which browser context a tool controls. Refresh inventory and rebind
-  the selected tab after reconnecting. Preserve task-owned context only through the
-  browser's native route when the flow requires it; never export user cookies, local storage, or
-  session files.
+- A daemon restart can change which browser context a tool controls. Rebind to the task's
+  selected browser session or tab through `use-browser` after reconnecting. Preserve task-owned
+  context only through the browser's native route when the flow requires it; never export user
+  cookies, local storage, or session files.
 
 ### Widths and full-page captures
 
@@ -254,9 +259,11 @@ Record and capture only a change that is visible on a page; a change verified by
 paragraph below says and skips the recording; the cloud walkthrough and one the user asks for
 record as follows. Record the flow until the feature is exercised to its end — the form submitted
 and its result read back, the item seen in its list, the setting confirmed after a reload. Record
-through the selected tab's existing browser context, preserving its authenticated state. Use the
-harness's recording capability where available and `share-media` to deliver it. If recording is
-unavailable, capture stills and report the recording gap.
+in the selected browser's existing session or tab, preserving its authenticated state, through
+that browser's own recording: the CLI's `agent-browser record start <path>` and `record stop` in
+the headless browser, and the harness's recording only when the walkthrough runs in the user's
+browser. Deliver it with `share-media`. If recording is unavailable, capture stills and report the
+recording gap.
 
 Send the recording, where one is owed, and a still of the view the change touched, unasked, plus a
 still per width walked, the page with its requests failing, and each defect with the fix that
