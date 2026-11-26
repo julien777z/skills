@@ -66,7 +66,7 @@ Shared tooling lives in the project's shared migration package (runner, revision
 - **Revisions use the project's shared revision utilities, never the raw operation a utility
   covers.** Tables, the standard entity columns, enums and backfills go through the utilities the
   project's revision contract names, and its structure check refuses the raw forms in every
-  revision, expand and contract alike, so two revisions never spell one operation two ways. A
+  revision of every chain, so two revisions never spell one operation two ways. A
   utility's output is frozen: a changed convention is a new versioned utility, never an edit to one
   revisions already call, since the edit would change what those revisions did.
 - Handwritten backfill and schema-repair migrations keep their Alembic entrypoints in `versions/`
@@ -75,9 +75,11 @@ Shared tooling lives in the project's shared migration package (runner, revision
   asynchronous code inside a revision, belong to the shared migration engine. The project's shared
   backfill runtime package holds only what reads the project's own models and catalogs. Do not
   promote one-off migration behavior into either.
-- **Data work runs in the contract chain.** Work that fits one revision uses the engine's atomic
-  registration, its pages committed inside that revision, which keeps the pull request's one
-  unlocked revision per chain; a resumable operation spans a preparation and a finalization revision.
+- **Data work goes into the pull request's one unlocked revision, never a second one added for
+  it.** Work that fits one revision uses the engine's atomic registration, its pages committed
+  inside that revision; a resumable operation runs between a preparation and a finalization
+  revision the engine registers. Where the engine splits a chain into expand and contract phases,
+  data work runs in the contract chain.
 - Revision IDs must be real hex strings, not placeholder values like `a1b2c3d4e5f6`.
 - A revision-specific helper under the project's revision-specific fixture package uses the migration filename with
   its leading revision hash and underscore removed. Its test module uses the same name prefixed
@@ -227,8 +229,11 @@ format transition or recovery mechanism for data explicitly declared disposable 
 - The project's shared migration runtime package contains the Alembic runtime and helpers with multiple migration-set
   consumers. Its chain-owner module owns everything a chain is addressed by: its target, the database
   URL it reads, and whether that database carries the revisions this code does.
-- The project's shared backfill runtime package contains generic backfill and rollback mechanics, grouped further by
-  database engine where their behavior is engine-specific.
+- The shared migration engine is the migration tooling the project consumes that knows no
+  project's schema; it contains the generic backfill and rollback mechanics.
+- The project's shared backfill runtime package contains the backfill mechanics that read the
+  project's own models and catalogs, grouped further by database engine where their behavior is
+  engine-specific.
 - The project's revision-owned backfill package contains behaviorally immutable implementation code owned
   by one logical handwritten migration set, including provider and database adapters used only by
   that backfill. Keep it for as long as any deployed database may replay that revision.

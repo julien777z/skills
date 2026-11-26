@@ -388,7 +388,7 @@ second user or a third organization, form one ordinal sequence: `first_`, `secon
 every member numbered, never one left bare beside numbered siblings, and never `alternate_`,
 `other_` or `another_` standing in for an ordinal. A fixture with no sibling of its kind takes no
 ordinal. A fixture's name carries no `test_` prefix, which only repeats where it lives, and no role
-its value does not carry: a plain user is not `contractor` or `business_owner` until something gives
+its value does not carry: a plain user is not `admin` or `account_owner` until something gives
 it that role, and one plain user is not offered under two names. List every fixture definition whose
 first word is `test`, `alternate`, `other` or `another`, and every ordinal-named fixture whose
 family has an unnumbered member; report every row.
