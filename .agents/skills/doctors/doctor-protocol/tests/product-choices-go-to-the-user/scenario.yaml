@@ -75,6 +75,7 @@ expect:
       with or without its directory in front, and a capture named only in the other decision's item or the
       heading's text, or a page, a width, a capture count or a capture list kept in another part of
       report.md, names no capture for the entry.
+
 history:
   - date: "2026-11-25"
     route: behavior-change
