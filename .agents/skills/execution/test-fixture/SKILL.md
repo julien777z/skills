@@ -161,5 +161,6 @@ Run the locally available targets the final diff reaches. That is this skill's o
 tests it changed; it never narrows which suites verify a change as a whole.
 
 Report source-to-test placement, sibling conventions checked, fixture and factory owners reused or
-extended, parametrized cases reused, encountered corrections, literal-sweep corrections, any mutation
-experiments, and final affected targets.
+extended, each row of the fixture listing as the rubric's **Naming Checks** says, parametrized
+cases reused, encountered corrections, literal-sweep corrections, any mutation experiments, and
+final affected targets.

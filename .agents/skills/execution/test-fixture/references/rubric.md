@@ -439,9 +439,10 @@ scope a caller names:
   fixture named for a role nothing gives its value; report every row.
 
 A change that adds, renames or removes a fixture runs the listing before it is finished and
-states every row in its report, rows in families it did not add to included: the name the fixture
-had, which of the above it breaks, and its fix. A row the change fixed is still reported that way,
-since a rename alone does not say what was wrong with the old name. The change fixes each row:
+states every row in its report, rows in families it did not add to included, one line per row:
+the name the fixture had, which of the above it breaks, and its fix, such as "`van`: bare beside
+`spare_van`; renamed `first_van`". A row the change fixed is still reported that way, since a
+rename alone does not say what was wrong with the old name. The change fixes each row:
 every row outside the family it adds to, unless `pre-production`'s size budget reserves a record
 for it.
 
