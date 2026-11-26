@@ -118,6 +118,11 @@ reconcile_skill_links() {
     source="$2"
     shift 2
 
+    if [ -e "$source/tests" ] || [ -L "$source/tests" ]; then
+      link_skill_without_scenarios "$source" "$entry" || return 1
+      continue
+    fi
+
     if [ -L "$entry" ] && [ "$(readlink "$entry")" = "$source" ]; then
       continue
     fi
@@ -128,4 +133,51 @@ reconcile_skill_links() {
 
     ln -s "$source" "$entry" || return 1
   done
+}
+
+# A skill's top-level `tests/` holds regression scenarios with their expected answers, so the
+# installed skill is a directory linking every other top-level entry.
+link_skill_without_scenarios() {
+  local source="$1" entry="$2" item name
+  local expected=()
+
+  for item in "$source"/* "$source"/.[!.]* "$source"/..?*; do
+    [ -e "$item" ] || [ -L "$item" ] || continue
+    name="${item##*/}"
+    [ "$name" = tests ] && continue
+    expected+=("$name")
+  done
+
+  if skill_links_match "$source" "$entry" ${expected[@]+"${expected[@]}"}; then
+    return 0
+  fi
+
+  if [ -L "$entry" ] || [ -e "$entry" ]; then
+    rm -rf -- "$entry" || return 1
+  fi
+
+  mkdir "$entry" || return 1
+
+  for name in ${expected[@]+"${expected[@]}"}; do
+    ln -s "$source/$name" "$entry/$name" || return 1
+  done
+}
+
+skill_links_match() {
+  local source="$1" entry="$2" item name count=0
+
+  shift 2
+
+  [ -d "$entry" ] && [ ! -L "$entry" ] || return 1
+
+  for name in "$@"; do
+    [ -L "$entry/$name" ] && [ "$(readlink "$entry/$name")" = "$source/$name" ] || return 1
+  done
+
+  for item in "$entry"/* "$entry"/.[!.]* "$entry"/..?*; do
+    [ -e "$item" ] || [ -L "$item" ] || continue
+    count=$((count + 1))
+  done
+
+  [ "$count" -eq "$#" ]
 }
