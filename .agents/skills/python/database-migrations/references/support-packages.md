@@ -7,8 +7,20 @@ Contents: **Migration Support Packages**, **Where A Revision's Test Scaffolding 
 - The project's shared migration runtime package contains the Alembic runtime and helpers with multiple migration-set
   consumers. Its chain-owner module owns everything a chain is addressed by: its target, the database
   URL it reads, and whether that database carries the revisions this code does.
-- The project's shared backfill runtime package contains generic backfill and rollback mechanics, grouped further by
-  database engine where their behavior is engine-specific.
+- The schema-independent migration library is a library the project's owner maintains and the
+  project consumes, never the third-party migration framework; it owns the migration mechanics
+  that know no project's schema. A project that consumes none keeps those mechanics in its shared
+  backfill runtime package.
+- The project's shared backfill runtime package contains the backfill and rollback mechanics that
+  read the project's own models and catalogs, grouped further by database engine where their
+  behavior is engine-specific.
+- **A rebaseline deletes revision-owned code with its revisions, never the shared procedure.**
+  Paging, progress, checkpoint and similar mechanics that name no table or revision are the
+  procedure the next data migration runs on, so a rebaseline that leaves one without a caller moves
+  it to the schema-independent migration library, or where the project consumes none to its
+  shared backfill runtime package, rather than deleting it. The shared Python boundaries rule's
+  deletion of code with no consumer still takes the helper written for one revision, which goes
+  with that revision.
 - The project's revision-owned backfill package contains behaviorally immutable implementation code owned
   by one logical handwritten migration set, including provider and database adapters used only by
   that backfill. Keep it for as long as any deployed database may replay that revision.

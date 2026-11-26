@@ -63,12 +63,28 @@ Shared tooling lives in the project's shared migration package (runner, revision
   new_column_name=new_name)`, which moves the values with the column, and mirror it in `downgrade()`.
   The project's revision-generation tooling refuses to emit the drop-plus-add shape, so this fails
   at generation rather than in production.
+- **Revisions use the project's shared revision utilities, never the raw operation a utility
+  covers.** Tables, the standard entity columns, enums and backfills go through the utilities the
+  project's revision contract names, so two revisions never spell one operation two ways, and the
+  project's structure check is what refuses the raw forms. A generated revision is emitted through
+  those utilities or rewritten onto them before it is accepted. Where the project has no utility
+  for one of those operations, or no check that refuses its raw form, the change whose revision
+  needs the operation adds both before the revision uses it. A revision an environment has applied
+  is converted only by the refactor **Applied Is What Makes History** allows. A utility an applied
+  revision calls is frozen: a changed convention is a new versioned utility, never an edit to that
+  one, since the edit would change what those revisions did.
 - Handwritten backfill and schema-repair migrations keep their Alembic entrypoints in `versions/`
   and place substantial revision-specific logic in the project's revision-owned backfill package.
-- Put generic backfill and rollback mechanics in the project's shared backfill runtime package, with
-  engine-specific helpers under that package's engine owner. Keep one-off migration behavior in the
-  revision-owned backfill package; promote mechanics to the shared package only when a second
-  revision needs them, since shared code outlives every revision.
+- Generic backfill and rollback mechanics that know no project's schema, such as paging, measured
+  progress, resumable checkpoints and running asynchronous code inside a revision, belong to the
+  schema-independent migration library **Migration Support Packages** defines. Keep one-off
+  migration behavior in the revision-owned backfill package, never in that library or the
+  project's shared backfill runtime package, since shared code outlives every revision.
+- **Data work is registered inside the revision that owns it**, the pull request's one unlocked
+  revision on that chain under **Applied Is What Makes History**, through the mechanism the
+  project provides for running data work inside a revision, where it has one. An operation that
+  mechanism spreads over several revisions is never a route to a second unlocked revision on one
+  chain.
 - Revision IDs must be real hex strings, not placeholder values like `a1b2c3d4e5f6`.
 - A revision-specific helper under the project's revision-specific fixture package uses the migration filename with
   its leading revision hash and underscore removed. Its test module uses the same name prefixed
