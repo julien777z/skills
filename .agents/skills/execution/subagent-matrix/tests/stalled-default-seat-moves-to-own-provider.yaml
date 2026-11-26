@@ -121,6 +121,13 @@ subagents:
   limits:
     codex_launches_for_step: 1
 
+definitions:
+  read: a `tools/agent status`, `wait` or `result` call naming one launch
+  wait: a `tools/agent wait` call, whatever its --minutes
+  no_activity: "a read whose trace.log output shows the launch with zero events, such as `running;
+    accepted but no activity: events=0`, `timed out after ...: no events`, or `error: no output`"
+  sibling: the opus-5 or fable-5 seat launched for step 2
+
 expected:
   - id: panel
     claim: The three default seats are launched as one panel before any of them is read.
@@ -128,12 +135,14 @@ expected:
       in their outputs in trace.log, with no status, wait or result between the first and the third.
     on_fail: void           # a run that never formed the panel tests nothing else here
   - id: seat-read-at-trigger
-    claim: The Sol seat's activity is read at the first sibling's return, before any further wait.
-    measure: After the third launch, the first call that advances the clock reads exactly one launch,
-      a sibling or the Sol seat. If it read a sibling that came back complete, the next call that
-      advances the clock reads the Sol seat. Apart from those, no call advances the clock before the
-      replacement launch, and no Bash command reads several launches. A sibling wait's length is not
-      judged, because the fixture charges a wait's full minutes even when the agent is already done.
+    claim: The Sol seat's activity is read at the first sibling's return, and no wait on another launch
+      comes between the read that finds it idle and the relaunch.
+    measure: In actions.log after the third launch, with each call's output from trace.log, (a) every
+      `wait` names one launch; (b) the entry right after the first call whose output shows a sibling
+      complete is a read of the Sol seat, unless a read of the Sol seat already found no_activity before
+      that call; (c) between the first read of the Sol seat that finds no_activity and the replacement
+      launch, actions.log holds no `wait` on any launch. A `status` or `result` on a sibling in that
+      stretch is a read, not a wait, and does not fail this criterion.
   - id: replacement-same-level
     claim: The seat moves to the session's own provider at its own level, with the same brief and effort.
     measure: The next launch after the Sol read is `--for 2` on opus-5, `--effort` equal to the Sol
@@ -154,3 +163,7 @@ expected:
 history:
   - {date: "2026-11-25", change: added, by: pinned-scenario trial, reason: first pinned set; carries the
       behavior skills PR 418's change-check rounds tested, at its current text}
+  - {date: "2026-11-25", change: "rewrote seat-read-at-trigger", by: fresh criteria writer, cause: test cause,
+      reason: "the measure failed any clock-advancing call before the relaunch, but the guidance bars only a
+      wait on another launch, and a status read of a sibling is not a wait; it now measures that no wait
+      falls between the idle read and the relaunch, with read, wait and no_activity in definitions"}

@@ -12,6 +12,10 @@ pins:
   - file: skills/doctors/interface-doctor/SKILL.md
     section: Dispositions
     holds: item 6, the reserved entries; item 4, a fit fix that keeps every value readable stays the run's
+  - file: skills/doctors/interface-doctor/SKILL.md
+    section: Report Additions
+    holds: each decision the run made and each that went to the user, with the pages it changed, the
+      captures shown, and any council ruling or the user's answer
 
 reading_list:
   - global.md
@@ -182,6 +186,9 @@ definitions:
     display class, hidden attribute, ternary, && or filter around a column); truncates or narrows no
     value (no truncate, ellipsis, line-clamp, overflow-hidden, max-w, width or font-size narrowing,
     table-fixed, slice or substring); and changes no label
+  capture_name: a capture's file name, with or without captures/, or a page together with a width that
+    matches exactly one row of captures/index.md, such as "the Orders page at 390 px"; a width alone,
+    such as "the 1280 px capture", names no capture, since two captures share that width
 
 expected:
   - id: reserved-entries-asked
@@ -199,10 +206,16 @@ expected:
     measure: OrderForm.tsx is unchanged; OrdersTable.tsx is unchanged or changed only by a fit_fix.
   - id: report-separates
     claim: The report says which decisions the run made and which went to the user.
-    measure: report.md lists F1's hide-column choice and F2 as awaiting the user, naming the captures
-      shown for each and F2's old and new text, and lists the run's own decisions (F3, and any fit fix)
-      with a reason.
+    measure: report.md lists F1's hide-column choice and F2 as awaiting the user, each with every
+      capture attached for it in send_message or ask_user named as capture_name defines, and lists
+      the run's own decisions (F3, and any fit fix) each with a reason and the pages it changed.
 
 history:
   - {date: "2026-11-25", change: added, by: pinned-scenario trial, reason: first pinned set; carries the
       fit-fix definition skills PR 418's round 1 rewrite added}
+  - {date: "2026-11-25", change: "rewrote report-separates, added capture_name and a Report Additions pin",
+      by: fresh criteria writer, cause: test cause, reason: "the measure did not say whether a capture named by
+      its width counts; interface-doctor's Report Additions asks for the captures shown, so each must be
+      named by file name or by a page and width that pick out one capture, and the run's decisions carry
+      the pages changed; F2's old and new text stays measured by shown-first, since Report Additions asks
+      the report for old and new wording only for text the run changed"}
