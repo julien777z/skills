@@ -121,7 +121,8 @@ nor touches the files or resources the awaited work is changing.
     recovered from, input it waits on that nobody sees, or a provider error it never reported. One
     that finished without its completion arriving has its result collected.
   - **Scope:** the check reads workers only: a pull request is still waited on by delivered
-    activity, and a question put to the user is not a worker.
+    activity, and a question put to the user is not a worker. A launch on another provider's model
+    is read, replaced and cancelled as `subagent-matrix`'s **Workflow** says instead.
 - **A status report is not a stopping point.** A message sent while authorized work or a wait
   remains goes out together with the next wait or action, never as the turn's last output, and is
   never the task's report. When every remaining item depends on an awaited result, keep the

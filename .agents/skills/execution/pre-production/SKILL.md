@@ -1,6 +1,6 @@
 ---
 name: pre-production
-description: Apply target-contract and product-state constraints to implementation, review, and operational data tasks, including maintenance, cleanup, tooling, and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update its owned consumers and migrate retained data instead. Apply to relevant CI failures after validation classification, and whenever a lint, formatting or other non-essential check is red on code the change did not write. Also use when telling a product choice from a routine detail, placing or laying out code, declaring configuration, logging, naming or choosing American English, choosing versions or dependency releases, writing documentation, comments, commit or pull-request text, example values or paths, writing product copy or forms, repairing a local stack or development data, experimenting against shared state, rebuilding an artifact, or mutating a live deployment.
+description: Apply target-contract and product-state constraints to implementation, review, and operational data tasks, including maintenance, cleanup, tooling, and CI repairs. Never add or retain support for an obsolete owned contract or revision by any mechanism without explicit user approval before implementation; update its owned consumers and migrate retained data instead. Apply to relevant CI failures after validation classification, and whenever a lint, formatting or other non-essential check is red on code the change did not write. Also use when telling a product choice from a routine detail, placing or laying out code, declaring configuration, logging, naming or choosing American English, choosing versions or dependency releases, writing documentation, comments, commit, pull-request, comment or issue text, example values or paths, writing product copy or forms, repairing a local stack or development data, experimenting against shared state, rebuilding an artifact, or mutating a live deployment.
 short_description: 'Apply target-contract constraints to implementation and review tasks.'
 ---
 
@@ -14,7 +14,8 @@ Read each reference at the point a change reaches its subject, and apply it to e
 change writes:
 
 - [The code-conventions reference](references/code-conventions.md), before writing or editing
-  code, configuration, a manifest, documentation, a comment, a commit message or pull-request text:
+  code, configuration, a manifest, documentation, a code comment, a commit message, pull-request
+  text, or a pull-request comment or issue body:
   whose standards apply, code layout, configuration values, logging, versions, naming and language,
   example values and paths, documentation, and repository text.
 - [The product-copy reference](references/product-copy.md), before writing or changing text or a
@@ -445,10 +446,14 @@ the issue should be ignored.
   shape would serve better, on a contract the work does not otherwise alter, is proposed to the user
   first, as the code-conventions reference's **A better shape is proposed, never swept in** says.
 - **An owned contract stays owned across repositories.** A consumer in a sibling repository the
-  user owns makes the break multi-repository work, never somebody else's decision; only a consumer
-  outside the user's control freezes a shape. **Scope Follows The Defect, Not The Request** holds for a break as for
-  a bug: the new shape reaches every site answering the same question, never only the one the work
-  started from.
+  user owns makes the break multi-repository work, never somebody else's decision. **Scope Follows
+  The Defect, Not The Request** holds for a break as for a bug: the new shape reaches every site
+  answering the same question, never only the one the work started from.
+  - **A tool, action or library the user owns has the user's repositories as its only consumers**,
+    published or not, so a change to it lands for them directly: no opt-in setting, compatibility
+    path or question is added to protect outside users nobody has named.
+  - Only a consumer outside the user's control freezes a shape: a third-party project, and one the
+    user says others consume, keep the care their consumers need.
 - Do not weaken a compatibility gate to hide an intentional break. Report the exact failure and the
   contract change it detected so a reviewer can distinguish intended from accidental breakage.
 - For disposable development records, follow the repository's stated policy: it decides which

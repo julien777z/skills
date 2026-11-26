@@ -1,6 +1,6 @@
 ---
 name: subagent-matrix
-description: Apply when deciding whether to delegate work to a subagent at all, and before every subagent launch, including a workflow coordinator or nested reviewer, when selecting a live skill-verification model, and when resuming workers stopped by a rate limit or quota. Default reasoning effort to medium unless the user or invoking skill explicitly specifies another effort. Resolve the assignment role and verify the actual model, reasoning and history arguments before dispatch, including a fresh independent or read-only gate, reviewer, validator, or skill-test reader. Resolve cheap, standard, advanced, frontier, and specialist capability levels from the host catalog and current official provider sources. Attempt the assigned work with a catalog-hidden candidate before reporting unavailability or proposing a substitution, select the model explicitly, route independent steps through a subagent of the running session, and give the user complete direct-dispatch diagnostics when the launch cannot start.
+description: Apply when deciding whether to delegate work to a subagent at all, before every subagent launch through the harness's agent tool or a launcher the project or session supplies (a workflow coordinator, a nested reviewer, or a fresh independent or read-only gate, reviewer, validator or skill-test reader included), when selecting a model for live skill verification, and when resuming workers stopped by a rate limit or quota. Resolve cheap, standard, advanced, frontier and specialist capability levels from the host catalog and current official provider sources, default reasoning effort to medium unless the user or invoking skill explicitly specifies another, select the model explicitly, verify the actual model, reasoning and history arguments before dispatch, try a catalog-hidden candidate before reporting any model unavailable, route independent steps through a subagent of the running session, and give the user complete diagnostics when a launch cannot start.
 short_description: 'Select a model capability level for live verification chats or subagent delegation.'
 ---
 
@@ -76,6 +76,35 @@ agent; the calling agent launches the actual assignment with the selected model.
    branding, a worker-reported label, or no runtime identifier is neither confirmation nor a contradiction of
    the accepted selection. Availability is not permission to change repository or global settings, such as a
    model policy or a provider's configuration.
+
+   **A launch on another provider's model that does not start moves to the session's own
+   provider.** Where a step calls for or prefers a model on a provider other than the running
+   session's, such as a default council seat or the capacity relaunch above, and that launch is
+   refused, never starts, or shows no activity after its brief at the first of two moments — a
+   sibling returning, or 15 minutes after its brief (with no siblings, the 15 minutes alone) —
+   relaunch the same assignment, with the same brief and effort, on the session's own provider at
+   the same capability level, record both launches, and carry on: the other provider is a
+   preference that improves independence, never a blocker, and its repair never holds the step.
+   - **The wait is capped until the read.** While such a launch is pending, the coordinator waits on
+     one launch at a time, and until its 15-minute read no wait, on that launch or a sibling, runs
+     past 15 minutes after its brief; it reads the launch then. The read sets no limit on how long
+     its siblings run. Once any sibling returns, the coordinator's very next call reads the
+     other-provider launch's activity, before any wait on another launch.
+   - **A wait on it that ends at the 15 minutes with no events is that read**: no status check,
+     second wait or other read of that launch follows it, and the coordinator's next call launches
+     the replacement.
+   - **The replacement launches first.** Once it is accepted, the stalled launch is cancelled; if
+     the replacement is refused, the stalled launch is left running.
+   - A provider or exact model the user or calling skill requires is honored: its launch is
+     repaired or rerun within that requirement as this step says, never moved.
+   - Inside step 4's ordinary fallback ladder, where the ladder reached the other provider because
+     the session's own family at that level was refused as unsupported, a launch there that does not
+     start goes on to the ladder's next step instead; for a launch showing no activity, that step
+     follows the one read above that found none, with no second read.
+   - A capacity relaunch onto the other provider that stalls goes back to the session's own
+     provider, which refused it, only once that provider has cleared, as the capacity rule above
+     reads it; otherwise it relaunches on whichever permitted model the request path shows cleared
+     first, never alternating between the two providers.
 4. For a specialist assignment, after step 3 establishes that Claude Mythos is unsupported or
    denied, launch the same assignment directly on the latest Claude family at the `frontier` tier, unless
    the calling skill explicitly selects a different ordinary fallback tier. Resolve its latest Claude family
@@ -191,7 +220,9 @@ context and returns its verdict into the step waiting on it; nothing else does b
   withdraw the user's authority, and neither a completed job nor a running one is repeated merely
   because its coordinator ended.
 - **The producer retains its complete result before handing it up.** Give it a durable private
-  destination and the owning workflow's required result contract in the brief. The parent reads
+  destination and the owning workflow's required result contract in the brief. One whose
+  isolation cannot write there returns the result as its final message, and the parent writes that
+  message to the destination before reading it. The parent reads
   that original and checks its target and required coverage before counting completion; a short
   original can be complete, while a rewritten summary cannot replace missing evidence. Recover
   an original from retained host output when available; otherwise repeat only the unproven step,
@@ -251,39 +282,14 @@ context and returns its verdict into the step waiting on it; nothing else does b
   definition changed, each section that changed, and what it says.
 - **An editing worker's own worktree** is the host's worktree isolation where it offers one,
   otherwise a worktree the brief names under the task's working-files folder, made from the branch
-  the worker pushes to.
+  the worker pushes to. The coordinator's checkout is read-only to it: it never switches, branches,
+  merges or commits there, since the coordinator's next step reads that tree as it left it.
 
 ## Launch Failure Reporting
 
-When a required direct subagent dispatch cannot start, preserve its exact attempted dispatch.
-Handle capacity refusals under Workflow step 3 and other launch failures under **Dispatch**.
-Use the native launcher's availability to judge whether it could start the assignment.
-
-- Attempt the selected native dispatch once whenever its direct tool is exposed. Never claim an
-  attempted invocation when the tool was not exposed.
-- State the native tool's exact name, the assignment role and gated work, selected model, reasoning
-  effort, history mode, and every argument sent to the host. Preserve argument names and values;
-  omit only typed credentials or other secret values, retaining their field names and shapes.
-- State the complete host receipt exactly when one exists. When no invocation was possible, say
-  which direct tool surface was inspected and that there is no host receipt.
-- Classify the outcome as one of: native tool not exposed, no resolved dispatch identifier, explicit
-  unsupported-model receipt, rejected dispatch, capacity refusal, or accepted dispatch whose worker
-  later failed. Do not collapse these into a generic unavailable-agent claim.
-- Name the fallback taken, with its loss of independence when it ran in process; do not substitute an unrelated agent or claim it performed the assignment.
-
-Use this user-facing shape whenever a launch failure is material to the task:
-
-```markdown
-## Subagent launch fallback
-
-- **Assignment:** <required independent step>
-- **Native tool:** `<exact direct tool name>` — <attempted or not exposed>
-- **Selected dispatch:** `<model>` / `<reasoning effort>` / `<history mode>`
-- **Arguments:** `<complete argument names and safe values>`
-- **Host receipt:** <verbatim receipt, or `none — <why no invocation was possible>`>
-- **Classification:** <one permitted classification and its evidence>
-- **Fallback:** <assignment held, handed up to the delegating agent, or top-level in-process work and its loss of independence>
-```
+When a required direct subagent dispatch cannot start, record and report it as [the launch failure
+reporting reference](references/launch-failure-reporting.md) says, before taking a fallback: it
+lists what to state, how the outcome is classified and the user-facing shape.
 
 ## Output
 

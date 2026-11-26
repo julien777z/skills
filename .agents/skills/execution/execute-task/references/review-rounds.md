@@ -14,8 +14,8 @@ exists to end wasted rounds, never to add questions, and the task stays active.
 
 ## Disposition At The Limit
 
-- Put the disposition to `council` in **Ask** mode as **Bounds** says, with the change and each
-  round's findings and remedies. Record its ruling and follow it.
+- Put the disposition to `council` in **Ask** mode as **Bounds** says, with the different approach
+  your reconsideration found among your candidates. Record its ruling and follow it.
 - If the authorized outcome still needs work, update the active plan and start the replacement, a
   new change with its own rounds, at its first step **Priority** permits, under the existing
   authorization and without a new plan. A different implementation idea is not a new

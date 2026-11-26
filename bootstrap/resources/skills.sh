@@ -118,6 +118,11 @@ reconcile_skill_links() {
     source="$2"
     shift 2
 
+    if [ -e "$source/tests" ] || [ -L "$source/tests" ]; then
+      link_skill_without_scenarios "$source" "$entry" || return 1
+      continue
+    fi
+
     if [ -L "$entry" ] && [ "$(readlink "$entry")" = "$source" ]; then
       continue
     fi
@@ -128,4 +133,59 @@ reconcile_skill_links() {
 
     ln -s "$source" "$entry" || return 1
   done
+}
+
+# The installed skill is a directory linking every top-level entry but `tests/`. Codex skips a
+# `SKILL.md` that is a symlink, so that file is copied.
+link_skill_without_scenarios() {
+  local source="$1" entry="$2" item name
+  local expected=()
+
+  for item in "$source"/* "$source"/.[!.]* "$source"/..?*; do
+    [ -e "$item" ] || [ -L "$item" ] || continue
+    name="${item##*/}"
+    [ "$name" = tests ] && continue
+    expected+=("$name")
+  done
+
+  if skill_links_match "$source" "$entry" ${expected[@]+"${expected[@]}"}; then
+    return 0
+  fi
+
+  if [ -L "$entry" ] || [ -e "$entry" ]; then
+    rm -rf -- "$entry" || return 1
+  fi
+
+  mkdir "$entry" || return 1
+
+  for name in ${expected[@]+"${expected[@]}"}; do
+    if [ "$name" = SKILL.md ]; then
+      cp -- "$source/$name" "$entry/$name" || return 1
+    else
+      ln -s "$source/$name" "$entry/$name" || return 1
+    fi
+  done
+}
+
+skill_links_match() {
+  local source="$1" entry="$2" item name count=0
+
+  shift 2
+
+  [ -d "$entry" ] && [ ! -L "$entry" ] || return 1
+
+  for name in "$@"; do
+    if [ "$name" = SKILL.md ]; then
+      [ -f "$entry/$name" ] && [ ! -L "$entry/$name" ] && cmp -s -- "$source/$name" "$entry/$name" || return 1
+    else
+      [ -L "$entry/$name" ] && [ "$(readlink "$entry/$name")" = "$source/$name" ] || return 1
+    fi
+  done
+
+  for item in "$entry"/* "$entry"/.[!.]* "$entry"/..?*; do
+    [ -e "$item" ] || [ -L "$item" ] || continue
+    count=$((count + 1))
+  done
+
+  [ "$count" -eq "$#" ]
 }

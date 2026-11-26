@@ -1,7 +1,8 @@
 # Code Conventions
 
 What every line a change writes follows: code, configuration, manifests, documentation, comments,
-commit messages and pull-request text. `SKILL.md` names this file at the point a change is written.
+commit messages, pull-request text, and pull-request comments and issue bodies. `SKILL.md` names
+this file at the point a change is written.
 
 ## Whose Standards Apply
 
@@ -226,6 +227,12 @@ commit messages and pull-request text. `SKILL.md` names this file at the point a
   record of what changed. Never describe what a symbol used to do, what was removed, renamed, or
   deprecated, and never write migration tables, upgrade notes, or "formerly", "replaces", or "kept
   for backwards compatibility" notes.
+- **Documentation describes what anyone using the project gets.** A change made only for its
+  owner's own one-off convention, one no official format the project supports defines, such as a
+  folder layout only the owner's repositories follow, is described in its pull request, never in
+  the project's README or reference documentation, and a docstring or comment on its code names
+  what the code does without explaining the convention. Behavior any user gets, and support for an
+  official format, are documented as usual.
 - **Behavior another party owns is explained once**, beside the value or line where the code first
   handles it. Every other place that reuses that value or works around the same behavior restates
   nothing: a second comment, a docstring, or a comment in another file. A comment above a timeout
@@ -247,6 +254,16 @@ commit messages and pull-request text. `SKILL.md` names this file at the point a
   `(generate only)`: the code already shows how the value is passed and who reads it, and a list of
   users goes stale with the next change to the code. Where a value is one of a fixed set, the
   sentence says what each one does.
+- **Text handed to Git or the hosting service is staged where only its author writes and read back
+  once published.** A commit message, title, description, comment or issue body goes inline, on
+  standard input, or from a file whose path was generated for that one text, such as one `mktemp`
+  creates, never from a name another session or worker could also choose in any directory. Once it
+  is accepted, read the stored text back, with `git log -1` for a commit, compare it with the text
+  the author wrote, never with the staging file, which may have been overwritten, and correct a
+  difference at once under the authorization the original post had; a commit message is read back
+  before its push and amended only while unpushed. Earlier revisions in the edit history are left
+  alone and never raised with the user, unless one holds a credential that evidence shows reached
+  an unauthorized recipient, a public surface or a compromised destination.
 - Use conventional commit messages when applicable and keep commits atomic and focused.
 - Name what a branch, commit or pull request changes by its category of change, in generic nouns
   such as page, request or button. A branch takes the repository's required prefix and a slug of

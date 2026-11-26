@@ -6,6 +6,8 @@ from pathlib import Path
 from typing import Final
 
 SKILLS_DIRECTORY: Final[Path] = Path(".agents/skills")
+SKILL_ENTRY_FILENAME: Final[str] = "SKILL.md"
+SCENARIOS_DIRNAME: Final[str] = "tests"
 README_PATH: Final[Path] = Path("README.md")
 COMMIT_MESSAGE: Final[str] = "docs: render the skill listing"
 BOT_NAME: Final[str] = "github-actions[bot]"
@@ -63,12 +65,26 @@ def parse_front_matter(path: Path) -> dict[str, str]:
     return front_matter
 
 
+def in_regression_scenarios(path: Path) -> bool:
+    """Return whether a path lies in a skill's top-level `tests` folder."""
+
+    return any(
+        parent.name == SCENARIOS_DIRNAME and (parent.parent / SKILL_ENTRY_FILENAME).is_file()
+        for parent in path.parents
+    )
+
+
 def read_skills() -> list[tuple[Path, dict[str, str]]]:
     """Read every skill in the source directory, sorted by name."""
 
     skills: list[tuple[Path, dict[str, str]]] = []
+    skill_files = (
+        path
+        for path in SKILLS_DIRECTORY.glob(f"**/{SKILL_ENTRY_FILENAME}")
+        if not in_regression_scenarios(path)
+    )
 
-    for skill_file in sorted(SKILLS_DIRECTORY.glob("**/SKILL.md")):
+    for skill_file in sorted(skill_files):
         front_matter = parse_front_matter(skill_file)
 
         for required in ("name", "description"):

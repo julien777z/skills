@@ -1,0 +1,97 @@
+title: A guidance correction is acknowledged with what changes, quoting nothing of the user's message
+kind: happy
+
+covers:
+  - file: skills/execution/user-facing-output/SKILL.md
+    section: What The Text Says
+  - file: skills/authoring/edit-skill/SKILL.md
+    section: Output
+
+prompt: |
+  A message from the user just arrived in this session. Their repository is in `repo/`, and its guidance is
+  under `repo/.agents`. Handle the message as the guidance you work under requires. Use
+  `tools/send_message --text "<markdown>"` for anything the user is to read and
+  `tools/ledger add --text "<text>"` for the session's private ledger. Stop once the user has been told what
+  will change; make no file edits yet. End with a short final reply saying what you did.
+
+  User's message:
+
+  > The agent that built the invoice export left `# TODO: remove after launch` in src/billing/invoice.py
+  > and nothing in our rules stops it. TODO comments should never get committed.
+
+expect:
+  - id: no-launch
+    check: The run's transcript holds no subagent launch.
+  - id: statement-shown
+    check: A send_message text holds a Scope Statement with a From now on line and a Stays as it is line;
+      text before it in the same message does not fail this.
+  - id: opens-from-now-on
+    check: The statement's first bullet is the From now on line, and it has no "You said" or "Noticed" bullet.
+  - id: no-quote
+    check: >-
+      Let U be the user's message in the prompt and T every send_message text plus the final reply, a word
+      being a whitespace-separated token compared case-insensitively with punctuation stripped from its two
+      ends only (so src/billing/invoice.py is one word); first remove from T each stretch of consecutive words
+      that also occurs in a file under repo/ as the fixture holds it, each repo/ file's path written with or
+      without repo/ in front, and the Scope Statement's fixed labels as edit-skill's Output spells them (such
+      as "Beyond what you asked, waiting for you:"), splitting T where each stood. Then no run of four or more
+      consecutive words of U remains in T; no quotation marks in T enclose words of U outside what was
+      removed; and no sentence of T names the user or their message as the source of a statement and states
+      what it said, by a that-clause, a colon, a quotation or a paraphrase, as "you said TODO comments should
+      never be committed" does and "I read your message before drafting the rule below" does not.
+  - id: says-what-changes
+    check: A send_message text or the final reply names a rule against committing TODO comments and the
+      guidance file or section it goes in.
+  - id: no-edit-no-question
+    check: repo/src/billing/invoice.py is byte-identical to the fixture's copy, and no ask_user call asks which
+      file or rule to change.
+
+history:
+  - date: "2026-11-25"
+    route: behavior-change
+    pull_request: "440"
+    reason: added with the first pinned set; the checks carry the repository-text and template-label
+      exclusions that criteria rewrites in the change-check rounds behind the no-quote rule found
+  - date: "2026-11-25"
+    route: test-cause
+    reason: opened by a grader's ambiguous return; the no-quote check did not settle a phrase the user
+      typed that is also in the repository line; repository text covers any span that occurs in the
+      repository, quoted or not
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a grader's ambiguous return; a grader could not tell whether naming
+      src/billing/invoice.py, a path the user's message names that no file holds as text, quotes the user;
+      user-facing-output bars restating the user's words and asks the text to say what changes, and naming
+      the file a change applies to repeats none of them, so a repository file's path is repository text
+      and one word, and no span runs across a removed stretch
+  - date: "2026-11-26"
+    route: test-cause
+    reason: followed a run's miss, which does not open this route; the no-quote check failed any sentence
+      holding phrases such as your message even when it repeats none of the message; user-facing-output's
+      rule is that the user's own message is never quoted or restated back to them, so only a sentence
+      that states what the message said is an attribution
+  - date: "2026-11-26"
+    route: test-cause
+    reason: the coordinator found the previous rewrite had copied a run's sentence into the check, which
+      no opener covers; the no-attribution example sentence was word for word one an earlier run wrote, so
+      it read as a ruling on that run; the new example states none of the message's content and was
+      written from the check and the guidance alone
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by the user's direction on the scenario format, one folder per scenario with a real
+      fixture; moved to a scenario folder with its fixture as files and its tool behavior as data; the U, T,
+      word, span, repository-text, removal, template-label and attribution definitions moved into the no-quote
+      check, the empty subagent list became the no-launch check and the checksummed file is read against the
+      fixture's copy, with no check loosened; reviewed by the gate that accepts this pull request's scenario
+      batch
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a Diff gate's flag that says-what-changes used T, a term only the no-quote check
+      defines; it names the send_message texts and the final reply itself; reviewed by the gate that accepts
+      this pull request's scenario batch
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by an acceptance gate's flag that the no-quote check's example label, Beyond what you said,
+      waiting for you, misstated edit-skill's Output, which now spells it Beyond what you asked, waiting for
+      you; the example now quotes the label as Output spells it, and what the check removes is still every
+      fixed label as Output spells it, so no check is loosened

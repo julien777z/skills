@@ -91,6 +91,10 @@ ALLOWED_STATES: Final[frozenset[str]] = frozenset({"ready", "complete"})
   outside revision files, and it permits no Args, Returns, or Raises sections.
 - Class docstrings go directly after the class definition.
 - Docstrings describe current behavior only — never reference what the code replaces, used to do, or PR/migration history. The docstring must read the same to a new reader who never saw the prior version.
+- A docstring or comment on code that exists only for the project owner's own one-off convention,
+  one no official format the project supports defines, names what the code does and never explains
+  or documents the convention; the pull request describes it. Behavior any caller gets, and support
+  for an official format, are described as usual.
 - **Ordinary docstrings name the thing; they do not inventory it.** Say what a symbol is in the shortest phrase
   that identifies it. It is not a summary of the fields the class holds, the branches the function
   takes, or the guarantees it upholds — a reader who needs those reads the code directly, and the

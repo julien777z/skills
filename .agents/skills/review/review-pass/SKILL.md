@@ -179,10 +179,12 @@ validation exclusion is recorded with its evidence and not repaired, rerun or wa
    - an outbound request whose host, URL or headers come from input, or a redirect target;
    - cryptography, hashing or randomness used for security, or security configuration such as
      cross-origin or content-security settings.
-5. **Review the delta.** Run **Review Loop** once over the delta, with the intent statement, the merge-base diff and the
-   full touched files as context. Push each fix as its own commit once the checks the
-   GitHub rule's **Pre-Push Gate** defines pass. A finding that is the user's decision holds the pass: put it to the user
-   with both sides, and continue independent work.
+5. **Review the delta.** Run **Review Loop** once over the delta, with the intent statement, the
+   merge-base diff and the full touched files as context. Push each fix as its own commit once you
+   have re-read its changed lines against the finding and rerun the checks covering that code, which
+   is that push's **Pre-Push Gate** verdict under the GitHub rule; the push never closes the
+   finding. A finding that is the user's decision holds the pass: put it to the user with both
+   sides, and continue independent work.
 6. **Recheck the base.** When the base moved again, run **Base** and recompute **Range**. If the incorporation introduced
    a delta or changed governing guidance, return to **Resolve the range** for the affected review and checks.
 7. **Accept the result.** With a working pull request, run **Description Refresh** once more, and complete **Checks**'
@@ -285,9 +287,9 @@ changed. Make the smallest changes that answer real findings, and push back on t
   lines each. Any other goes to `council` in **Ask** mode for a ruling, with the finding, the
   reviewer's case and yours with their evidence, and the code it concerns; its ruling settles it:
   fix it, or record it declined with the ruling. A spent budget with a blocker or should still open
-  goes to `council` in **Ask** mode, which decides between a simpler approach, reverting the
-  change and accepting it with the remaining findings recorded, within the limit its **Ask** sets
-  on what a ruling accepts.
+  goes to `council` in **Ask** mode, asked what should happen next as its **Ask** says of a
+  disposition, with your candidates, a different approach among them, labelled as yours; its
+  ruling stays within the limit its **Ask** sets on what a ruling accepts.
 
 ## Combined Review
 

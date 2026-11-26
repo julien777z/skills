@@ -275,9 +275,9 @@ its reason, and the workflow applying the pass runs the trial where it has the m
 - **At the standard capability level**, never cheap: the question is whether a current model of the
   strength that reads the guidance still needs the passage, and a cheaper model does worse than
   that reader, so it keeps text the reader no longer needs.
-- **Bounded.** At most five passages are tried in one audit or delivery, those in files loaded in
-  every session first, and the rest are reported as untried candidates and stay as written or are
-  reworded.
+- **Bounded.** Outside a doctor run, which tries every candidate, at most five passages are tried in
+  one audit or delivery, those in files loaded in every session first, and the rest are reported as
+  untried candidates and stay as written or are reworded.
 - **What needs no trial.** A restatement of another owner is settled by reading both passages,
   and a merge or a rewording keeps the substance. Only removing substance on the ground that the
   model already has it needs the trial.

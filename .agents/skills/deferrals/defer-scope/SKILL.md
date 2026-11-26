@@ -1,6 +1,6 @@
 ---
 name: defer-scope
-description: Record deferred work in the repository it affects, using Linear or that repository's ledger as an availability fallback; with no scope, read its active records, or for a caller's scope read every record that covers it, declined and canceled ones included. Use when work is consciously left undone, when a change would take a recorded deferral out of the active set, or when asked what is deferred, outstanding, or still open.
+description: Record deferred work in the repository it affects, using Linear or that repository's ledger as an availability fallback; with no scope, read its active records, or for a caller's scope read every record that covers it, declined and canceled ones included. Use when work is consciously left undone, when a pull request holding only deferral records is to merge, when a change would take a recorded deferral out of the active set, or when asked what is deferred, outstanding, or still open.
 short_description: 'Record unfinished work in the repository it affects, or read its active records.'
 ---
 
@@ -135,7 +135,8 @@ write:
    `merge-gate` under the GitHub rule's deferral-record permission with the accepted head, no local
    test coverage, and the rule that a fix it makes goes back to final acceptance over that fix's
    delta, one more gate per fix, within the limit of 3 review rounds per change. It is never left
-   open, and no report or next action leaves its merge to the user.
+   open or held for a later finishing run, since a record left on an open branch is lost to every
+   later session, and no report or next action leaves its merge to the user.
 
 Never mix Linear and repository records for one deferral. Existing repository records remain in
 place until separately migrated or resolved.

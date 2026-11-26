@@ -17,6 +17,9 @@ paths:
   `.agents/project.md`: an environment variable or credential an agent
   session reads, even one a person adds to a cloud environment for the agent; a tool installed for
   agents; a procedure only agents follow.
+- A README and reference documentation describe what anyone using the project gets; a change made
+  only for the owner's own one-off convention, one no official format the project supports defines,
+  is described in its pull request instead.
 - After drafting or editing READMEs and other reference documentation, compare each statement with
   the current capabilities and required steps. When their positive description already communicates
   the operation, delete corresponding claims about absent behavior or unneeded operations,

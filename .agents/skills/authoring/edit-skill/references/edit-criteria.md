@@ -38,9 +38,10 @@ The statement is written before the edit, in the shape `SKILL.md`'s
 **Output** gives, and revised when the written text turns out to change more or less than it says.
 
 - **Each line says one thing the user can check against what they meant.**
-  - The statement never repeats the user's own words back to them; they know what they said, and
-    the ledger entry keeps the quote. For a gap the agent noticed itself, a *Noticed* line opens
-    the statement and states the gap.
+  - The statement quotes none of the user's words, as `user-facing-output`'s **What The Text
+    Says** sets out. The ledger entry and every reviewer brief keep the quote, each example value
+    named by its kind in brackets, as `pre-production`'s **Examples And Paths** says. For a gap the
+    agent noticed itself, a *Noticed* line opens the statement and states the gap.
   - *From now on* names the situation, what agents do there and what they did before.
   - *Also changes, same class* lists every other situation of that class the edit changes, by the
     skill or rule that governs it.
@@ -151,14 +152,14 @@ When the sync tool cannot reach an imported skill's source repository, that is a
 refusal, not a blocker: attach or clone the repository, and when the tool
 fetches through a path the environment refuses, fix the tool to use one it serves.
 
-When the guidance needs a change in an unreleased tool owned by another repository, point
-the draft consuming workflow at that tool's active branch and validate against it, without
-waiting for the tool's review loop. That workflow change is source work under **Branch and commit**'s source
-route; its delivery follows `merge-gate`'s dependency gate rather than merging a testing reference.
-The guidance rides that workflow's source pull request, as the GitHub rule's **Branches and
-Pull Requests** says, and merges with it; that pull request waits for the tool through the
-same gate. After the tool merges, the consumer adopts and validates its maintained target under **Tools And
-Dependency References**. No merge here authorizes a release.
+When the guidance needs a change in an unreleased tool owned by another repository, point the draft
+consuming workflow at that tool's active branch and validate against it, without waiting for the
+tool's review loop. That workflow change is source work under **Branch and commit**'s source route;
+its delivery follows `merge-gate`'s dependency gate rather than merging a testing reference. The
+guidance rides that workflow's source pull request, as the [guidance pull requests
+reference](guidance-pull-requests.md) says, and merges with it; that pull request waits for the tool
+through the same gate. After the tool merges, the consumer adopts and validates its maintained
+target under **Tools And Dependency References**. No merge here authorizes a release.
 
 ## Already Reviewed Batches
 
@@ -189,7 +190,9 @@ diff the new file against every original line by line, and account for each line
 removes as either the same instruction in repository-neutral words or guidance relocated to a
 named home — the owning repository's project guidance for what only that repository can state.
 A line carrying an instruction no original carried is an edit riding along, and
-**Run one `test-skill` round**'s skill-test round decides it on its own terms.
+**Run one `test-skill` round**'s skill-test round decides it on its own terms. Once the relocation
+is established, its skill test is reported as `not run: relocation, guidance preserved`, naming
+where each original's specifics went.
 
 Where the originals disagreed, the disagreement is the thing to get right, and neither answer
 may be picked for both. Carry the shared guidance and hand the contested question back to each

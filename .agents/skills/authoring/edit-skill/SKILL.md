@@ -46,7 +46,7 @@ the subject, creates its new owner under **Guidance Changes Proceed Automaticall
 ## Guidance Changes Proceed Automatically
 
 A user request or an encountered guidance gap, once **Validate input** confirms its premise,
-authorizes the canonical `.agents` correction its Scope Statement lists inside what the user said;
+authorizes the canonical `.agents` correction its Scope Statement lists inside what the user asked;
 a policy change, which that statement lists as beyond it, waits for the user as **Identify the failure class**
 says. The statement is shown, never asked: do not ask for a plan, or for approval of the statement,
 of a guidance-output example, of a proposed flow or of the pull request. **Apart from a policy
@@ -73,6 +73,7 @@ follow **Recording During A Task** for the edit's timing.
 - `council`
 - `i-have-adhd`
 - `share-media`
+- `user-facing-output`
 
 ## Recording During A Task
 
@@ -115,20 +116,23 @@ recording or delivering a batch.
   already read: tell each running worker this session started, as `subagent-matrix`'s **Dispatch** says.
 - **Delivery starts at the next milestone of the work in hand and Completion delivers whatever is left**, never later: a
   finished plan step or worker task whose checks pass, a round of fixes the user asked for, or a
-  publish. It then runs as **Guidance Delivery** says, beside the ongoing work and without the user
-  asking, however long the surrounding task goes on; a session whose requests keep arriving never
-  holds a recorded correction for the task's end. Until that milestone nothing else of delivery
-  runs: no review, gate, skill-test round, merge or worker, except the checks a batch in flight
-  reruns for an edit that joined it, as `session-ledger`'s **Guidance Batches** says. A standing
-  instruction about how guidance pull requests are reviewed or merged governs that delivery when it
-  runs, never when. A gate result that arrives for a guidance pull request already open is recorded
-  as its entry's stage result, and its repair waits with the rest.
+  publish. For a batch on a pull request a workflow holding verification to its own end is
+  driving, such as a doctor run, the milestone is that end, where its review, gates and skill-test
+  round join the workflow's own. It then runs as **Guidance
+  Delivery** says, beside the ongoing work and without the user asking, however long the surrounding
+  task goes on; a session whose requests keep arriving never holds a recorded correction for the
+  task's end. Until that milestone nothing else of delivery runs: no review, gate, skill-test round,
+  merge or worker, except the checks a batch in flight reruns for an edit that joined it, as
+  `session-ledger`'s **Guidance Batches** says. A standing instruction about how guidance pull
+  requests are reviewed or merged governs that delivery when it runs, never when. A gate result that
+  arrives for a guidance pull request already open is recorded as its entry's stage result, and its
+  repair waits with the rest.
 - **Every `guidance_correction` entry is backed up** as `session-ledger`'s **Backup** section says.
-- A related correction recorded before its batch is frozen joins the same entry or sits beside it
-  in that batch; the batch is one pull request, apart from edits the GitHub rule puts on a source
-  pull request. One recorded while a batch is in flight joins that
-  batch, and one recorded after the batch's pull request merged starts the next, as
-  `session-ledger`'s **Guidance Batches** says; tell the user which.
+- A related correction recorded before its batch is frozen joins the same entry or sits beside it in
+  that batch; the batch is one pull request, apart from edits the [guidance pull requests
+  reference](references/guidance-pull-requests.md) puts on a source pull request. One recorded while
+  a batch is in flight joins that batch, and one recorded after the batch's pull request merged
+  starts the next, as `session-ledger`'s **Guidance Batches** says; tell the user which.
 - The task's next step is never held by a correction: record it and carry on.
 
 ## Guidance Delivery
@@ -358,13 +362,16 @@ small it looks.** Each route below is the gate set its batch passes on the head 
    repair. It settles no genuine unresolved product, scope, or authorization choice, which goes to
    the user under **Bounds** while independent work continues, and it authorizes no release
    workflow.
-   1. **Branch and commit.** Select the edit's pull request under the GitHub rule's **Branches and Pull Requests** — never put it onto a
-      source branch, the one checked out included, except guidance that rule puts on the source pull
-      request it depends on, which merges with it. Commit the `.agents` files, never a provider
-      mirror, and push each step once the checks the GitHub rule's **Pre-Push Gate** defines pass. Open the pull
-      request as a draft; it stays draft until `merge-gate` marks it ready as the last step before its merge. An
-      open pull request leaves the current guidance in use. A source fix **Include the underlying issue** requires is source work: it goes onto the source pull request
-      the work continues in its repository under the same rule and merges as that work does.
+   1. **Branch and commit.** Select the edit's pull request under the GitHub rule's **Branches and
+      Pull Requests** and the [guidance pull requests
+      reference](references/guidance-pull-requests.md) — never put it onto a source branch, the one
+      checked out included, except guidance that reference puts on the source pull request it
+      depends on, which merges with it. Commit the `.agents` files, never a provider mirror, and
+      push each step once the checks the GitHub rule's **Pre-Push Gate** defines pass. Open the pull
+      request as a draft; it stays draft until `merge-gate` marks it ready as the last step before
+      its merge. An open pull request leaves the current guidance in use. A source fix **Include the
+      underlying issue** requires is source work: it goes onto the source pull request the work
+      continues in its repository under the same rule and merges as that work does.
    2. **Run `validate_sources.py check`**, the source check `skill-pass`'s **Source Check**
       describes, before the pull request merges, and again whenever the branch changes after that
       run. Nothing on a pull request runs the sync: the workflow runs on the default branch after
@@ -399,9 +406,8 @@ small it looks.** Each route below is the gate set its batch passes on the head 
       Record an entry whose run `test-skill` does not require as `not run: <test-skill reason>`;
       the gate of its batch's route is its check.
 
-      **A skill that arrives by relocation is not a skill the change adds**: establish that as the
-      [edit criteria](references/edit-criteria.md)'s **Relocations** says, then report `not run:
-      relocation, guidance preserved` and name where each original's specifics went.
+      **A skill that arrives by relocation is not a skill the change adds**, and its test is
+      recorded as the [edit criteria](references/edit-criteria.md)'s **Relocations** says.
    6. **Hold each changed output to its concrete example.** For every skill whose output changed,
       compare one run of your own on the branch in flight and every required skill-test run against that
       example: headings, columns, order, file shape. A divergence is the skill's wording, fixed and
@@ -413,8 +419,9 @@ small it looks.** Each route below is the gate set its batch passes on the head 
       request the work continues under **Branch and commit** when it was — and the new head goes back through **Brief `review-pass`'s final acceptance**. Everything
       in `.agents`, merge it through `merge-gate` with the head `acceptance-gate` accepted, which for a pull request in `review-pass`'s **Combined Review** set, and no other, is also the head that review accepted — but first
       ask whether any line it adds or drops is true only once a still-open source pull request
-      merges. Select where dependent guidance goes under the GitHub rule's **Branches and Pull Requests**,
-      and report any hold under its **Merge Authorization**. Otherwise a pull request carrying a
+      merges. Select where dependent guidance goes, and hold a guidance trial's pull request, under
+      the [guidance pull requests reference](references/guidance-pull-requests.md), and report any
+      hold under the GitHub rule's **Merge Authorization**. Otherwise a pull request carrying a
       skill change merges once **Hold each changed output to its concrete example** found every changed output matching its concrete example, and
       one carrying only rules has no example to match and merges once **Run `validate_sources.py check`** through **Run one `test-skill` round** pass, unless their **Merge
       Authorization** holds it. Report a held pull request for the user's review.
@@ -451,7 +458,7 @@ The Scope Statement, shown in the message that acknowledges a correction, one pe
 ```markdown
 Guidance change — flow affected | flow not affected
 
-- Noticed: <the gap> (only for a gap the agent noticed itself)
+- Noticed: <the gap> (only for a gap the agent noticed itself; a statement answering the user's request opens with From now on)
 - From now on: when <situation>, agents <do this> instead of <that>.
 - Also changes, same class: <skill or rule> — <situation>: <new behavior> | None
 - Stays as it is: <the nearest case outside the class, and what agents still do there>

@@ -219,17 +219,19 @@ consumer accepts and how it excludes each obsolete representation. Flag missing 
 Distinct meanings carried by the canonical representation still receive the ordinary guard checks.
 A verdict with no added guard says `no guard added` in those words.
 
-**Then it lists every product choice the diff makes**, as `pre-production`'s **Product Choices** defines one — a change to
-what a feature does or shows, a remedy whose visible effect is large, such as a layout, control or
-flow changing across many pages, a change carried past the surface the user named — each with the
-user's words in the intent statement that settle it. Small presentation decisions on the surface in
-hand are not listed; neither is a game's design, which the global rules' game-design bullet makes
-the agent's decision and never a question for the user, a new control or room included; nor is local
-test tooling or the records it seeds, which `pre-production`'s **Local Stacks** leaves to the
-agent. A product choice with no such words is a flag whose remedy is putting the choice to the
-user before the code stands, whatever the change calls itself, a fix included. An earlier
-acceptance, a plan record without the user's words, or a brief calling the choice decided is not
-those words. A verdict with none says `no product choice added` in those words.
+**Then it lists every product choice the diff makes**, as `pre-production`'s **Product Choices**
+defines one — a change to what a feature does or shows, a remedy whose visible effect is large, such
+as a layout, control or flow changing across many pages, a change carried past the surface the user
+named, and, whatever its reach, a new control or a change to what loading, failure, recovery or
+success shows — each with the user's words in the intent statement that settle it. The routine
+presentation details **Product Choices** names on the surface in hand are not listed; neither is a
+game's design, which the global rules' game-design bullet makes the agent's decision and never a
+question for the user, a new control or room included; nor is local test tooling or the records it
+seeds, which `pre-production`'s **Local Stacks** leaves to the agent. A product choice with no such
+words is a flag whose remedy is putting the choice to the user before the code stands, whatever the
+change calls itself, a fix included. An earlier acceptance, a plan record without the user's words,
+or a brief calling the choice decided is not those words. A verdict with none says `no product
+choice added` in those words.
 
 **Then it lists every workaround the diff makes**: a remedy that makes the reported symptom go away
 while its cause stays, such as hiding or folding away what no longer fits instead of giving it
@@ -332,17 +334,21 @@ agent-written record holds without them is still open, and goes to the user. A c
 security vulnerability is never settled this way, whatever an
 earlier acceptance said: it is repaired as below.
 Read every other objection and remedy against the intent and standing guidance and make the
-smallest coherent repair using the existing owner or mechanism.
+smallest coherent repair using the existing owner or mechanism, until the same behavior misses a
+second time, as the repair-round bullets below say.
 
 **No flag is closed by the run that raised it or the agent that answered it.** The agent that made
 a repair re-reads the changed lines against the flag's objection and remedy and runs the checks
 covering that code. Then the repairs of every flag one verdict raised, and each settled,
 out-of-scope or council-dropped answer with its evidence, go together to one fresh gate under the
 Diff question, following `subagent-matrix`'s **Dispatch**; it answers each flag separately, and
-only its acceptance closes a flag. That gate is one of the change's re-reviews under the limit of 3
-review rounds per change, and one of the repair rounds below for each flag it reads a repair of. The exceptions are a style flag and a flag naming only missing evidence, each
-closed as its paragraph below says, the decision `council` makes once 3 review rounds have failed the change, which settles its flags as it rules,
-and a proposal whose calling workflow states how its repairs are judged.
+only its acceptance closes a flag. Its brief carries each flag in the verdict's own words, the
+repair and the output of the checks the repair reran, so it reads them without an evidence round.
+That gate is one of the change's re-reviews under the limit of 3 review rounds per change, and one
+of the repair rounds below for each flag it reads a repair of. The exceptions are a style flag and a
+flag naming only missing evidence, each closed as its paragraph below says, the decision `council`
+makes once 3 review rounds have failed the change, which settles its flags as it rules, and a
+proposal whose calling workflow states how its repairs are judged.
 
 **Each flag carries its severity, `defect` or `style`.** A style flag concerns only the form of
 lines whose behavior, structure and contract stand: a docstring's or comment's length, a missing
@@ -365,17 +371,26 @@ it proposed itself.
   after repairs. A round fails a change only when it raised a finding or flag on that change's
   lines. A round a broken runner, fixture or provider cut short before judging the change is not
   counted, and neither are a style flag and an evidence gap, as the paragraphs above say.
+- **A second miss on the same behavior ends small repairs.** When a round, of any check in any
+  repair loop, raises a finding on behavior an earlier repair already targeted, stop rewording or
+  patching those lines. Before the next repair, reconsider the approach: where the requirement
+  lives, which owner's reader meets it, and whether the structure has to change, such as moving a
+  rule into the entry point every reader loads. Make the repair that reconsideration picks, and
+  record why the earlier one could not hold.
 - **At the limit:** once 3 rounds have failed a change, whatever each raised, `council` in **Ask**
-  mode decides between a simpler approach, reverting the change and accepting it with the remaining
-  findings recorded, within the limit `council`'s **Ask** sets on what a ruling accepts. That
-  decision replaces another repair, and an acceptance with recorded findings it makes is the one
-  exception to the rules below on flagged diffs.
+  mode is asked what should happen next, as its **Ask** says of a disposition, with your
+  candidates, a different approach among them. Its ruling, such as a different or simpler
+  approach, a revert or an acceptance with the remaining findings recorded, stays within the limit
+  `council`'s **Ask** sets on what a ruling accepts. That decision replaces another repair, and an
+  acceptance with recorded findings it makes is the one exception to the rules below on flagged
+  diffs.
 - **Per flag:** while the change is under that limit, a flag gets at most two repair rounds of its
   own, and one a fresh gate raises for the first time starts at zero. A flag the gate still raises
   after its own second repair, with the change still under the limit, goes to `council` in **Ask**
-  mode with the open flag, each remedy tried and its evidence, and the gate's proposed remedy. Its
-  ruling decides the remedy, which is applied and checked as any repair is, and the caller's result
-  names the flag and the ruling. The verdict's other flags go on to their fresh gate meanwhile.
+  mode as a disposition, with the open flag, and as your candidates the gate's proposed remedy and
+  an approach that departs from both repairs tried. Its ruling decides the remedy, which is applied
+  and checked as any repair is, and the caller's result names the flag and the ruling. The verdict's
+  other flags go on to their fresh gate meanwhile.
 - A flag the council returns as the user's choice goes to the user, as a report of those facts with
   a recommended next step, never as a choice about whether to fix it or leave it in place.
 

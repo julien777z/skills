@@ -295,13 +295,15 @@ restriction. Gate a single user-only workflow inside an otherwise usable skill i
 
 ### Decisions
 
-- **A skill sends a decision to the user only when it is the user's**: a product, scope, security, disclosure or authorization choice, as
-  `pre-production`'s **Product Choices** defines one, or a step only the user can take. Every other contested
-  call a workflow's own checks cannot settle — a disputed finding, a flag that survives its
-  repairs, a stuck review, the disposition of a change that keeps failing — goes to `council` in
-  **Ask** mode, and its ruling, by majority unless the skill sets a stricter threshold, is followed and named in the skill's result. A skill whose
-  workflow does this declares `council`. A ruling never accepts a confirmed defect, an exploitable
-  vulnerability or a failing required check.
+- **A skill sends a decision to the user only when it is the user's**: a product, scope, security,
+  disclosure or authorization choice, as `pre-production`'s **Product Choices** defines one, or a
+  step only the user can take. Every other contested call a workflow's own checks cannot settle — a
+  disputed finding, a flag that survives its repairs, a stuck review, the disposition of a change
+  that keeps failing — goes to `council` in **Ask** mode, asked as an open question with the full
+  evidence where it decides what happens next, and its ruling, by majority unless the skill sets a
+  stricter threshold, is followed and named in the skill's result. A skill whose workflow does this
+  declares `council`. A ruling never accepts a confirmed defect, an exploitable vulnerability or a
+  failing required check.
 - **A stop for the user that guidance could settle is a defect in that guidance.** A workflow
   pauses for the user only at a decision the bullet above makes theirs. An approval step reached
   with no open decision, a question a standing rule already answers and a confirmation of work the
@@ -440,7 +442,9 @@ a template where correct results genuinely vary in shape.
   command, a flag and what a command prints each exist under that name in the file or tool named.
   Cite a section by its name, never by a step number, which moves with the next edit, and resolve a
   skill's own script from the skill's directory, never from a repository path.
-- Normalize the touched file's nearby structure when needed: combine narrow sections and remove redundant wording.
+- Normalize the touched file's nearby structure when needed: combine narrow sections and remove
+  redundant wording. Lines an edit writes keep the wrap of the paragraph they sit in, so a repair
+  never leaves an uneven paragraph for the next round to flag.
 - **State the class the user plainly meant, no narrower and no broader; the request's shape is
   its example.** A request arrives as one symptom, and the rule it needs names the class that
   symptom belongs to, with the symptom's shape kept as one illustration of it.
@@ -504,7 +508,10 @@ a template where correct results genuinely vary in shape.
 ## Scripts
 
 - Write new or substantially rewritten skill helper scripts in Python by default. Use another language when the execution platform requires it, such as browser JavaScript, and state that constraint. Keep executable helpers inside the owning skill's `scripts/` directory, resolve supporting files relative to the skill package, and take private endpoints, credentials, and environment-specific values from private configuration rather than committed source.
-- Do not add committed tests for skills or their helper scripts, inside or outside the skill directory. Keep any needed execution checks temporary and untracked.
+- **A skill and its helper scripts carry no committed test code**, inside or outside the skill
+  directory, so keep any needed execution check temporary and untracked. The one committed test
+  material is a skill's pinned regression scenarios: one folder per scenario in its top-level
+  `tests/` folder, holding a YAML file and the data files of its fixture, never code.
 
 ## Validation
 

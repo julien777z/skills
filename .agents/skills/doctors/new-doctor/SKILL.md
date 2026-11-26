@@ -41,8 +41,9 @@ does not start a doctor audit.
    - `## Reviewers`: one opening sentence citing the cap `doctor-protocol`'s **Launches** sets, a
      lower cap only where the domain needs one, and what dictates the partition cut, then what the
      cross-cutting reviewer compares and what the final reviewer challenges.
-   - `## Dispositions`, in order, naming the calls this domain raises, each decided by the run as
-     `doctor-protocol`'s **Gate And Show The Plan** says.
+   - `## Dispositions`, in order, naming which of the calls this domain raises are the run's to
+     decide and which are reserved to the user, as `doctor-protocol`'s **Gate And Show The Plan**
+     says.
    - `## Report Additions`.
 
    A decision a dependency already settles — breaking an owned contract, what stored data owes,
