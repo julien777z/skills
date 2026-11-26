@@ -180,8 +180,10 @@ folder. Every reviewer reads the same results and repeats none of them.
 - **Baseline checks.** The checks the repository's CI runs on a pull request, as the GitHub rule's
   **Pre-Push Gate** finds them, its push checks and test suites alike, run once on the base, so
   the run knows which failures predate it; each is a defect it fixes, as **Resolve The Scope**
-  says. They run once more on the final head under **Run Repository-Native Checks**, and in
-  between only the push checks a group's own files need, never a test suite.
+  says. This baseline measurement is the run's one test-suite run before its end. On the final
+  head the push checks run once more under **Run Repository-Native Checks**, and every test suite
+  runs once more with **Behavioral verification runs once**; in between run only the push checks a
+  group's own files need, never a test suite.
 - **Mechanical pre-pass.** Each command the doctor declares runs in its read-only mode over the
   scope, and its output is saved as the candidate list for the lens it serves. A reviewer judges
   each candidate in its partition, confirming or rejecting it with a reason, and reads for what no
@@ -463,12 +465,12 @@ readers. Hand that route the accepted head as already reviewed: it adds the sour
 skill-test round for the guidance the fixes changed, and starts no second review or acceptance.
 
 **Behavioral verification runs once, at the run's end.** The skill-test round, the regression
-scenarios it selects, a walkthrough and every test suite start only once every entry the run can
-land has landed and **Accept The Complete Diff** has passed. None starts while a finding the run can
-fix is open; an entry that lands after a reserved decision's answer reruns only the verification
-covering it. A guidance correction recorded during the run joins that one round rather than
-starting its own. A push check that guards one edit, such as the source check, runs where its step
-puts it.
+scenarios it selects, a walkthrough and every test suite, apart from the baseline measurement
+**Measure Before Fan-Out** takes on the base, start only once every entry the run can land has
+landed and **Accept The Complete Diff** has passed. None starts while a finding the run can fix is
+open; an entry that lands after a reserved decision's answer reruns only the verification covering
+it. A guidance correction recorded during the run joins that one round rather than starting its own.
+A push check that guards one edit, such as the source check, runs where its step puts it.
 
 ## Report
 
