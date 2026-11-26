@@ -1,8 +1,14 @@
 ---
 name: design-taste-frontend
-description: 'tasteskill 2.5.1, the anti-slop frontend skill. Builds professional company websites at the level of figma.com and x.ai: plain copy in a voice of its own, one system, one section per screen, equal edges, real photographs and real product UI (licensed stand-in photographs when the client has none; a product render only when the brief asks for 3D), a hero entrance and one or two dealt moments on every page, shader effects and scenes only on tech, gaming and software pages, quiet micro-interactions, and a finish check in the user’s browser. Use this whenever you build, design, redesign, restyle, polish or review a landing page, company, product, shop, cafe, hotel, studio, SaaS, AI, developer-tool or game site, as static HTML/CSS or inside an existing React, Next.js, Vue, Svelte, Astro or Tailwind project, or when the user says a page looks generic, templated or "AI-made".'
+description: 'tasteskill 2.5.1, the anti-slop frontend skill. Builds professional company websites at the level of figma.com and x.ai: plain copy in a voice of its own, one system, one section per screen, equal edges, real photographs and real product UI (licensed stand-in photographs when the client has none; a product render only when the brief asks for 3D), a hero entrance and one or two dealt moments on every page, shader effects and scenes only on tech, gaming and software pages, quiet micro-interactions, and a checker and finish gate that enforce it in a real browser. Use this whenever you build, design, redesign, restyle, polish or review a landing page, company, product, shop, cafe, hotel, studio, SaaS, AI, developer-tool or game site, as static HTML/CSS or inside an existing React, Next.js, Vue, Svelte, Astro or Tailwind project, or when the user says a page looks generic, templated or "AI-made".'
 metadata:
   source: https://github.com/Leonxlnx/taste-skill
+hooks:
+  Stop:
+  - hooks:
+    - type: command
+      command: 'for f in ${CLAUDE_SKILL_DIR:+"$CLAUDE_SKILL_DIR/scripts/gate.mjs"} ${CLAUDE_PLUGIN_ROOT:+"$CLAUDE_PLUGIN_ROOT/scripts/gate.mjs" "$CLAUDE_PLUGIN_ROOT/skills/taste-skill/scripts/gate.mjs"} ${CLAUDE_PROJECT_DIR:+"$CLAUDE_PROJECT_DIR/.claude/skills/design-taste-frontend/scripts/gate.mjs" "$CLAUDE_PROJECT_DIR/.agents/skills/design-taste-frontend/scripts/gate.mjs"} ${HOME:+"$HOME/.claude/skills/design-taste-frontend/scripts/gate.mjs" "$HOME/.agents/skills/design-taste-frontend/scripts/gate.mjs"}; do if [ -f "$f" ]; then exec node "$f" --hook claude; fi; done; if [ -d .taste-skill ]; then printf "%s gate.mjs not found; CLAUDE_PLUGIN_ROOT=%s CLAUDE_PROJECT_DIR=%s HOME=%s\n" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "${CLAUDE_PLUGIN_ROOT-}" "${CLAUDE_PROJECT_DIR-}" "${HOME-}" > .taste-skill/gate-hook-missing.txt 2>/dev/null; fi; for d in .taste-skill */.taste-skill; do if [ -f "$d/build.json" ]; then echo "tasteskill gate: gate.mjs not found (CLAUDE_PLUGIN_ROOT=${CLAUDE_PLUGIN_ROOT-}); the build in $d is not checked" >&2; break; fi; done; exit 0'
+      timeout: 600
 ---
 
 # tasteskill 2.5
@@ -11,7 +17,7 @@ Build the website a good company would ship: it says plainly what is sold, shows
 every screen, and looks made for this client, not from a template and not like an art piece.
 figma.com and x.ai are the bar (in words: `layout-v4.md` section 1).
 
-`<skill>` is this folder. It needs Node 22+ and browser access through `use-browser` (ffmpeg optional).
+`<skill>` is this folder. It needs Node 22+ and Chrome, Edge or Chromium (ffmpeg optional).
 
 ## House rules
 
@@ -154,9 +160,13 @@ Read `copy.md`, `copy-voice.md`, `system.md`, `layout-v4.md` and `sections.md` i
    Get directions) and the real material: logo, screens, photographs, prices, address, hours.
    Then arm the finish gate, before any page exists:
 
-   Serve the page or built site at a local URL the user's browser can open. Use `run-site` for the
-   application and `use-browser` to bind the preview tab.
+   ```bash
+   node <skill>/scripts/gate.mjs --start index.html --kind <kind> --category "<what is sold>" --primary "<main action>"
+   ```
 
+   A framework build names its dev server's URL (`--start http://localhost:5173/`) or its built page
+   (`--start dist/index.html --root dist`; a Next.js export: `out`) in place of `index.html`, and
+   rebuilds before every gate run.
 
 2. **Write all the copy first,** with the copy layer (`copy-voice.md`: the fact sheet, the voice
    card on the plan, the page's shape, the device budget; a register from `copy-registers.md`, the
@@ -186,7 +196,8 @@ Read `copy.md`, `copy-voice.md`, `system.md`, `layout-v4.md` and `sections.md` i
    node -e "for(const l of process.argv.slice(1)){const o=l.split('|');console.log(o[Math.floor(Math.random()*o.length)])}" <the kind's lists, below>
    ```
 
-   Run every command from the project folder. The
+   Run every command from the project folder (the deal arms the gate in the folder it runs in, or
+   joins the build already open one or two folders up). The
    lists, in order nav, footer, close, rhythm, buttons, mark (`sections.md` sections 2 and 3):
    - software: `"nav-mega|nav-cards|nav-centre" "footer-dark|footer-statement|footer-columns" "close-type|close-word" "dark-band|surface-pairs|space" "solid|pill|tonal|arrow" "wordmark|initial|arc|ring|stack|dots"`
    - gaming: `"nav-mega|nav-centre|nav-cards" "footer-dark|footer-statement" "close-word|close-type" "dark-band|media-band|space" "solid|pill|block" "wordmark|initial|arc|ring|stack|dots"`
@@ -226,20 +237,55 @@ Read `copy.md`, `copy-voice.md`, `system.md`, `layout-v4.md` and `sections.md` i
    `in-page-service.html` (pinned-chapters, picture-develops film); a moment's own `demo.html` shows
    it alone and is not a page model. A form is the starter's `booking-form` (`system.md`,
    Forms). Credits: the one footer line from `photos.mjs credits`, once the markup uses the
-   photographs (it reads the page). Capture the hero’s share image in the selected browser tab.
+   photographs (it reads the page). Copy the hero's tile from `shoot.mjs` beside the page as `share.jpg`.
 
-6. **Check and look.** Run the copy linter and review the page in the tab bound by `use-browser`.
+6. **Check and look.** Only the skill's scripts, each running one headless Chrome with WebGL on the
+   CPU, closed by its own PID, one at a time in the foreground with a 10-minute timeout; never in
+   the background, a windowed browser or a browser tool.
+   Each serves the page file itself over http on 127.0.0.1 (never `file://`), so no server is needed;
+   for a built page whose links start at the site root (`/_astro/page.css`), pass `--root` with the build folder (`dist`).
+   `--profile <dir>` is the Chrome profile: a folder of its own in the OS temp folder or in the
+   project's `.taste-skill` folder (`.taste-skill/chrome-check`), never outside the project (no
+   `../`); a relative one that leads out of it is replaced by `.taste-skill/chrome-<script>`. Then:
 
    ```bash
    node <skill>/scripts/copy-lint.mjs index.html --kind <kind>
+   node <skill>/scripts/consistency.mjs index.html --widths 1440,1024,820,768,390 --rhythm-widths 1440,820,768,390 --profile <dir> --page <kind> --category "<what is sold>" --primary "<main action>"
+   node <skill>/assets/layout/check.mjs --url index.html --profile <dir> --sizes 1440x900,1024x768,820x1180,768x1024,390x844 --shots shots/layout
+   node <skill>/scripts/shoot.mjs --url index.html --w 1440 --out shots/1440.png --profile <dir>
+   node <skill>/scripts/perf.mjs index.html --profile <dir>
    ```
 
-   Use the checklist below at 1440, 1024, 820, 768 and 390 pixels. Exercise the controls, check for
-   overflow at 320 pixels, capture the page and fix what fails. Run helpers only when they can use
-   the selected browser without starting a separate one. Report browser checks that could not run.
+   Shoot 1024, 820x1180, 768x1024 and 390 as well. Every `check.mjs` finding fails the page (no `--no-stress`).
+   copy-lint opens no browser and takes under a second. Fix every FAIL (a copy-lint WARN too, or say
+   why it stays) and read the copy aloud (`copy-voice.md` section 6); shoot again and read every
+   screenshot against the checklist. In the fix rounds run `consistency.mjs --quick --widths
+   1440,390`. Then the gate, which runs the checker at 1440 and 390 every time, walks the page at 320
+   for overflow, collide and tap-size, and runs copy-lint, whose FAILs block like the checker's:
 
-7. **Report.** Include the layouts checked, defects fixed, any remaining failures or warnings, the
-   voice card, and the photographs, art and copy the client still needs to supply.
+   ```bash
+   node <skill>/scripts/gate.mjs index.html
+   ```
+
+   Fix what it lists and run it again until its last line is `GATE: PASS` or `GATE: OPEN`, three
+   rounds at most (in Claude Code it also runs when you finish; a stop before your first gate run is
+   no round, and to ask the user something after a block, just stop again). When the user tells you
+   to stop, or to ship the page as it is, run `gate.mjs --done "<what they said>"` (`GATE: DONE`)
+   and report the open FAILs.
+   `GATE: SETUP` (no page yet, a framework's source shell, a page that is not local): arm what a
+   browser can open (step 1) and run it again. `GATE: ERROR` (the checks could not run) or
+   `GATE: OFF`: put the line in the report and finish; do not rerun. Never edit
+   the kit's files or hide anything from the checker. A FAIL you judge false is waived in
+   `.taste-skill/waivers.json` with its reason, never fixed by gaming the check (`references/gate.md`);
+   a word from the client's own copy that copy-lint FAILs is waived hit by hit, the brief as the reason
+   (a word inside the client's name, as the logo or the title writes it, is not counted: one WARN).
+
+7. **Report:** the `GATE:` line first, then every waiver with its reason and every open FAIL; the
+   kind, the deal (palette and why it fits, pairing, hero, grounds, effect, moments, scene); the
+   voice card in one line and every copy-lint WARN kept, with why; the checker, layout and perf
+   results; what you could not check; every assumed fact (the checker's `assumed` list) and the
+   coined name's search; the form's `.example` stand-in and the canonical domain still to come; the photographs and art the client must supply, every
+   stand-in frame among them (library and live search); every client slot, its file and its stand-in.
 
 ## 5. Checklist
 

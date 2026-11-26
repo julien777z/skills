@@ -30,6 +30,9 @@ only a subject no skill runs for.
 
 ## Skills that always run
 
+- Apply `use-browser` before any browser operation, including one performed by an imported skill,
+  hook, script or worker. Use browser-independent steps from workflows whose browser routes
+  conflict with it.
 - The skill whose description says it applies before the first user-facing response, and the
   output skill it builds on, apply from the first response a user reads in the session, whether or
   not the user invoked them or the running skill names them; a session that did not start with them
