@@ -161,8 +161,9 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
 - Before planning browser walkthroughs or rendered UI inspections, read `run-site`'s **Principles**
   and follow its environment selection: a change a reader sees rendered is inspected rendered in
   every environment. Required automated tests and builds still run.
-- **Tests leave the user's desktop undisturbed.** Before selecting or launching a test that uses
-  windows or apps, choose an isolated desktop, a headless runtime, or hidden test-owned windows.
+- **Tests leave the user's desktop undisturbed.** Route browser-driven checks through
+  `use-browser`. For other tests that use windows or apps, choose an isolated desktop,
+  a headless runtime or hidden test-owned windows.
   Suppress focus changes, app activation, taskbar or dock appearances, notifications, and sound;
   apply the same policy to child windows and anything the test launches. A hidden first window
   alone does not establish isolation. Verify the runtime's window and activation policy before
@@ -190,4 +191,4 @@ done
 ```
 
 - Report Docker as unavailable only when the CLI is missing or `docker info` still fails after the explicit start attempt, and include the daemon log in that report.
-- Browser-automation daemons may start browsers with fresh temporary profiles. Save authenticated session state explicitly and restore it after a daemon restart instead of assuming cookies survive.
+- After a browser-control restart, rebind to the existing profile and grouped task tab through `use-browser`.
