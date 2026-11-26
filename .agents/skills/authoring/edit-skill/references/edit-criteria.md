@@ -155,9 +155,9 @@ When the guidance needs a change in an unreleased tool owned by another reposito
 the draft consuming workflow at that tool's active branch and validate against it, without
 waiting for the tool's review loop. That workflow change is source work under **Branch and commit**'s source
 route; its delivery follows `merge-gate`'s dependency gate rather than merging a testing reference.
-The guidance rides that workflow's source pull request, as the GitHub rule's **Branches and
-Pull Requests** says, and merges with it; that pull request waits for the tool through the
-same gate. After the tool merges, the consumer adopts and validates its maintained target under **Tools And
+The guidance rides that workflow's source pull request, as the
+[guidance pull requests reference](guidance-pull-requests.md) says, and merges with it; that pull
+request waits for the tool through the same gate. After the tool merges, the consumer adopts and validates its maintained target under **Tools And
 Dependency References**. No merge here authorizes a release.
 
 ## Already Reviewed Batches

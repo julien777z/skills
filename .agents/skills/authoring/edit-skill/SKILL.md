@@ -358,9 +358,10 @@ small it looks.** Each route below is the gate set its batch passes on the head 
    repair. It settles no genuine unresolved product, scope, or authorization choice, which goes to
    the user under **Bounds** while independent work continues, and it authorizes no release
    workflow.
-   1. **Branch and commit.** Select the edit's pull request under the GitHub rule's **Branches and Pull Requests** — never put it onto a
-      source branch, the one checked out included, except guidance that rule puts on the source pull
-      request it depends on, which merges with it. Commit the `.agents` files, never a provider
+   1. **Branch and commit.** Select the edit's pull request under the GitHub rule's **Branches and
+      Pull Requests** and the [guidance pull requests reference](references/guidance-pull-requests.md)
+      — never put it onto a source branch, the one checked out included, except guidance that
+      reference puts on the source pull request it depends on, which merges with it. Commit the `.agents` files, never a provider
       mirror, and push each step once the checks the GitHub rule's **Pre-Push Gate** defines pass. Open the pull
       request as a draft; it stays draft until `merge-gate` marks it ready as the last step before its merge. An
       open pull request leaves the current guidance in use. A source fix **Include the underlying issue** requires is source work: it goes onto the source pull request
@@ -413,8 +414,9 @@ small it looks.** Each route below is the gate set its batch passes on the head 
       request the work continues under **Branch and commit** when it was — and the new head goes back through **Brief `review-pass`'s final acceptance**. Everything
       in `.agents`, merge it through `merge-gate` with the head `acceptance-gate` accepted, which for a pull request in `review-pass`'s **Combined Review** set, and no other, is also the head that review accepted — but first
       ask whether any line it adds or drops is true only once a still-open source pull request
-      merges. Select where dependent guidance goes under the GitHub rule's **Branches and Pull Requests**,
-      and report any hold under its **Merge Authorization**. Otherwise a pull request carrying a
+      merges. Select where dependent guidance goes, and hold a guidance trial's pull request, under
+      the [guidance pull requests reference](references/guidance-pull-requests.md), and report any
+      hold under the GitHub rule's **Merge Authorization**. Otherwise a pull request carrying a
       skill change merges once **Hold each changed output to its concrete example** found every changed output matching its concrete example, and
       one carrying only rules has no example to match and merges once **Run `validate_sources.py check`** through **Run one `test-skill` round** pass, unless their **Merge
       Authorization** holds it. Report a held pull request for the user's review.
