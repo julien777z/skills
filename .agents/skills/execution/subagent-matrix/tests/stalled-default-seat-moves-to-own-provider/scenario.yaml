@@ -24,33 +24,43 @@ expect:
     check: Step 2 has exactly four accepted launches, the three seats and one replacement, and exactly one of
       them is on a codex-provider model.
   - id: seat-read-at-trigger
-    check: A launch is a `tools/agent launch` call whose trace.log output reads `accepted`; the sol-5 seat
-      is the first launch with `--model sol-5`, the siblings the first with `--model opus-5` and with
-      `--model fable-5`, each known by its `--name`, and a read of a seat is a `status`, `wait` or
-      `result` naming it; a call's start clock is the last `clock=` number on a trace.log line of lower
-      seq, and A is the `clock=` on the sol-5 seat's `accepted` line; a sibling returns at the first
-      trace.log output of a read of a sibling that reads `complete` or starts `Score`; zero events means
-      the output holds `events=0`, `no events` or `no output`; the trigger read is the first read of the
-      sol-5 seat that comes after a sibling returns, or has a start clock of A+15 or more, or is a `wait`
-      whose start clock plus its `--minutes` (20 when absent) is A+15 or more, that last kind being the
-      15-minute wait; and the replacement is the first launch after the trigger read. After the third
-      launch every `wait` names one launch, the trigger read exists, shows zero events and comes no later
-      than the call right after the first sibling return or the first call with a start clock of A+15 or
-      more, whichever is earlier, and between the trigger read and the replacement, or the end of
-      actions.log when there is none, no `wait` falls, and every call is a `tools/agent launch` call when
-      the trigger read is the 15-minute wait.
+    check: This check defines the timing terms the scenario's checks use. An accepted launch is a
+      `tools/agent launch` call whose trace.log output reads `accepted`; the sol-5 seat is the first
+      accepted launch with `--model sol-5`, the siblings the first with `--model opus-5` and the first
+      with `--model fable-5`, each known by its `--name`; a read of a seat is a `status`, `wait` or
+      `result` call whose N argument is that name. A call's completion clock is the `clock=` number on
+      its own trace.log line, the line of its own seq, or, where that line reads `clock=-`, the last
+      number on a line of lower seq; its start clock is the completion clock of the call of next-lower
+      seq; A is the `clock=` on the sol-5 seat's `accepted` line, and the deadline is A+15. A sibling
+      returns at a read of a sibling whose trace.log output holds `complete` or starts `Score`; a read
+      shows zero events when its output holds `events=0`, `no events` or `no output`. The trigger read
+      is the first read of the sol-5 seat that comes after a sibling return or itself completes at the
+      deadline or later, so an earlier read of that seat is not it, whatever it shows; the deadline wait
+      is a `wait` on the sol-5 seat whose start clock plus its `--minutes`, or 20 when it has none,
+      reaches the deadline; the replacement is the first accepted launch after the trigger read. After
+      the third accepted launch every `wait` names one launch; the trigger read exists and shows zero
+      events; when a sibling return, or a call other than a read of the sol-5 seat that completes at the
+      deadline or later, comes before the trigger read, the trigger read is the call right after the
+      first such call; between the trigger read and the replacement, or the end of actions.log when
+      there is none, no `wait` falls; and every call after a deadline wait up to the replacement is a
+      `tools/agent launch` call, refused ones allowed, while a `wait` on the sol-5 seat that is not a
+      deadline wait imposes no such limit.
   - id: replacement-same-level
-    check: The next accepted launch after that zero-event read is `--for 2` on opus-5 with the sol-5 launch's
-      `--effort`, and its state/briefs-at-launch copy has the same content as the sol-5 launch's copy.
+    check: The replacement, as subagent-matrix/tests/stalled-default-seat-moves-to-own-provider's
+      `seat-read-at-trigger` defines it, is `--for 2` on opus-5 with the sol-5 seat's `--effort`, and
+      its state/briefs-at-launch copy has the same content as the sol-5 seat's copy.
   - id: replace-then-cancel
-    check: A `cancel` of the sol-5 seat exists, and none comes before the trace.log line in which the
-      replacement launch reads `accepted`.
+    check: Its measure is subagent-matrix/tests/stalled-default-seat-moves-to-own-provider's
+      `seat-read-at-trigger`, which defines the sol-5 seat and the replacement. A `cancel` of the
+      sol-5 seat exists, and none comes before the trace.log line in which the replacement reads
+      `accepted`.
   - id: no-hold-no-repair
-    check: Up to and including the first `status`, `wait` or `result` of the sol-5 seat whose trace.log output shows zero events (`events=0`, `no events` or `no output`), no `wait`, on that seat or on a sibling seat, can run past 15
-      minutes after the sol-5 launch, read as the clock trace.log records for the call before the wait plus
-      the wait's `--minutes`, or the default 20 when it has none, being at most 15 more than the clock on the
-      sol-5 launch's `accepted` line. The final reply neither says the step waits on Codex nor asks anyone to
-      repair it.
+    check: Its measure is `subagent-matrix/tests/stalled-default-seat-moves-to-own-provider`'s check
+      `seat-read-at-trigger`, whose terms it uses as defined there; it differs only in what it requires.
+      Up to and including the trigger read, or to the end of actions.log when there is none, no `wait`
+      that is a read of the sol-5 seat or of a sibling reaches past the deadline, a wait's reach being
+      its start clock plus its `--minutes`, or 20 when it has none. The final reply neither says the
+      step waits on Codex nor asks anyone to repair it.
   - id: result-names-substitution
     check: The final reply reports the council's result and states, in any words, that the Sol seat did not
       start and was replaced on a Claude model (Opus).
@@ -128,3 +138,36 @@ history:
       after a sibling returns or at 15 minutes after its launch, which must come by the first of those
       moments, so an early zero-event read no longer excuses that read, and keeps the launch-only rule,
       refused launches allowed, for a wait on that seat reaching those 15 minutes
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a Diff gate's flag on the check's text, repaired as council ruled; the check
+      timed a read by the clock before it, so a status read of the sol-5 seat charged past the
+      15 minutes counted as early; it now times each read by the `clock=` on its own trace.log line,
+      defines every timing term the scenario's checks use, so the others can name it as their measure,
+      makes the trigger read the first read of that seat after a sibling return or completing at the
+      15 minutes, and keeps the launch-only rule for the deadline wait alone, loosening nothing
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a Diff gate's flag on the check's text, repaired as council ruled; the check read
+      "the next accepted launch after that zero-event read", terms neither its own text defined nor a
+      check it named as its measure; it now names
+      subagent-matrix/tests/stalled-default-seat-moves-to-own-provider's `seat-read-at-trigger` as its
+      measure for the replacement and the sol-5 seat, and still measures opus-5 at `--for 2`, the sol-5
+      seat's `--effort` and the same briefs-at-launch copy, loosening nothing
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a Diff gate's flag on the check's text, repaired as council ruled;
+      replace-then-cancel read "the replacement launch" with no definition in its own text and no
+      check named as its measure; it now names
+      subagent-matrix/tests/stalled-default-seat-moves-to-own-provider's seat-read-at-trigger as its
+      measure for the replacement and the sol-5 seat, and measures the same order, a cancel of the sol-5
+      seat existing and none before the replacement's `accepted` line, loosening nothing
+  - date: "2026-11-26"
+    route: test-cause
+    reason: opened by a Diff gate's flag on the check's text, repaired as council ruled; the check
+      measured waits only up to the first zero-event read of the sol-5 seat, so an early 5-minute wait
+      on that seat let a later 60-minute wait on a sibling pass, though Workflow caps every wait at 15
+      minutes after the brief until the 15-minute read; it now names seat-read-at-trigger as its
+      measure, runs its window through the trigger read inclusive, or to the end of actions.log when
+      there is none, and measures each wait's reach by its start clock plus its requested minutes
+      against the deadline, keeping the final-reply clause unchanged
