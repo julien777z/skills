@@ -31,7 +31,7 @@ run:
   route: "<small | whole>"
   plan_shown: "<time the plan was shown, with `no open decision` or the decisions open then>"
   stages:
-    - name: "<scope | prepass | manifest | audit | verify | plan | implement | checks | review | accept | leftovers | report>"
+    - name: "<scope | prepass | manifest | audit | verify | plan | implement | checks | review | accept | open items | report>"
       status: "<pending | running | done>"
       finished: "<time, when done>"
       head: "<branch head when the stage finished>"
@@ -52,7 +52,20 @@ own `audit` and `verify` entries, named for the lenses it covers.
   <table key>.yaml          one further table a doctor writes
 ```
 
-`SKILL.md`'s **Share The Index** says who writes each file and when one is rebuilt.
+- **Where it lives.** `.agent_sources/doctor-index/<commit>/`, in the working-files folder of the
+  worktree the run works in, beside the run records and kept out of Git the same way. The commit
+  is the one its tables were built from. The tree above gives its files.
+- **What it holds.** The file inventory, the symbol table, the import table and the dependency
+  list with each manifest's declarations, and each further table a doctor says it writes.
+- **Who writes and reuses it.** The parent, before the mechanical pre-pass. It reads each table
+  the doctor says it reads where the folder for the audited commit holds it, builds only the ones
+  that are missing, and writes the tables the doctor says it writes. Reviewers and workers read
+  the index and never write it. A doctor states which tables it reads and which it writes, and
+  nothing else about the index.
+- **When it is stale.** A table serves only the commit its folder names, and only for files with
+  no uncommitted change. Once the head moves, by the run's own fix commits included, a table read
+  again is rebuilt in the new head's folder, and the folders of commits no branch of the worktree
+  points at are deleted.
 
 ## Manifest
 
@@ -131,10 +144,11 @@ entry:
   finding: "<the finding, as above>"
   disposition: "<fix | keep | council ruling | reserved user decision | declined | deferred |
     unresolved>"
-  reason: "<for keep: the distinction that retains it; for unresolved: the missing evidence;
-    for declined or deferred: the record; for council ruling: the question, the options and the
-    ruling; for reserved user decision: the options, each consequence, the recommendation and the
-    answer once given>"
+  reason: "<for keep: the distinction that retains it; for unresolved: the missing evidence and
+    the step gathering it; for declined: the record; for deferred: the record and the reserved
+    decision or external blocker that keeps it open, with what removes it; for council ruling: the
+    question, the candidates and the ruling; for reserved user decision: the options, each
+    consequence, the recommendation and the answer once given>"
   group: "<the worker group that owns its files>"
   status: "<open | waiting on decision | assigned | fixed | recorded>"
   commit: "<the commit that fixed it>"

@@ -115,20 +115,22 @@ recording or delivering a batch.
   already read: tell each running worker this session started, as `subagent-matrix`'s **Dispatch** says.
 - **Delivery starts at the next milestone of the work in hand and Completion delivers whatever is left**, never later: a
   finished plan step or worker task whose checks pass, a round of fixes the user asked for, or a
-  publish. It then runs as **Guidance Delivery** says, beside the ongoing work and without the user
-  asking, however long the surrounding task goes on; a session whose requests keep arriving never
-  holds a recorded correction for the task's end. Until that milestone nothing else of delivery
-  runs: no review, gate, skill-test round, merge or worker, except the checks a batch in flight
-  reruns for an edit that joined it, as `session-ledger`'s **Guidance Batches** says. A standing
-  instruction about how guidance pull requests are reviewed or merged governs that delivery when it
-  runs, never when. A gate result that arrives for a guidance pull request already open is recorded
-  as its entry's stage result, and its repair waits with the rest.
+  publish. For a batch on a pull request a doctor run is driving, the milestone is that run's end,
+  where its review, gates and skill-test round join the run's own. It then runs as **Guidance
+  Delivery** says, beside the ongoing work and without the user asking, however long the surrounding
+  task goes on; a session whose requests keep arriving never holds a recorded correction for the
+  task's end. Until that milestone nothing else of delivery runs: no review, gate, skill-test round,
+  merge or worker, except the checks a batch in flight reruns for an edit that joined it, as
+  `session-ledger`'s **Guidance Batches** says. A standing instruction about how guidance pull
+  requests are reviewed or merged governs that delivery when it runs, never when. A gate result that
+  arrives for a guidance pull request already open is recorded as its entry's stage result, and its
+  repair waits with the rest.
 - **Every `guidance_correction` entry is backed up** as `session-ledger`'s **Backup** section says.
-- A related correction recorded before its batch is frozen joins the same entry or sits beside it
-  in that batch; the batch is one pull request, apart from edits the GitHub rule puts on a source
-  pull request. One recorded while a batch is in flight joins that
-  batch, and one recorded after the batch's pull request merged starts the next, as
-  `session-ledger`'s **Guidance Batches** says; tell the user which.
+- A related correction recorded before its batch is frozen joins the same entry or sits beside it in
+  that batch; the batch is one pull request, apart from edits the [guidance pull requests
+  reference](references/guidance-pull-requests.md) puts on a source pull request. One recorded while
+  a batch is in flight joins that batch, and one recorded after the batch's pull request merged
+  starts the next, as `session-ledger`'s **Guidance Batches** says; tell the user which.
 - The task's next step is never held by a correction: record it and carry on.
 
 ## Guidance Delivery
@@ -176,7 +178,8 @@ small it looks.** Each route below is the gate set its batch passes on the head 
    prose duplication**'s checks for its simplification pass. Once that simplification pass is
    done, start **Run one `test-skill` round** on the pushed head, beside review round 1 and never
    behind it: its scenario writing, environment and readers need the failure class and the diff,
-   not the accepted head.
+   not the accepted head. A batch on a pull request that a workflow holding verification to its
+   own end is still fixing, such as a doctor run, starts it only at that end.
 4. **Conclude the skill test** on every head `review-pass` accepted: `test-skill` carries each
    result whose inputs that head left unchanged and reruns the rest. It takes every entry's
    reproduction scenario as an input, entries that share a failure class grouped into one
@@ -400,9 +403,8 @@ small it looks.** Each route below is the gate set its batch passes on the head 
       Record an entry whose run `test-skill` does not require as `not run: <test-skill reason>`;
       the gate of its batch's route is its check.
 
-      **A skill that arrives by relocation is not a skill the change adds**: establish that as the
-      [edit criteria](references/edit-criteria.md)'s **Relocations** says, then report `not run:
-      relocation, guidance preserved` and name where each original's specifics went.
+      **A skill that arrives by relocation is not a skill the change adds**, and its test is
+      recorded as the [edit criteria](references/edit-criteria.md)'s **Relocations** says.
    6. **Hold each changed output to its concrete example.** For every skill whose output changed,
       compare one run of your own on the branch in flight and every required skill-test run against that
       example: headings, columns, order, file shape. A divergence is the skill's wording, fixed and

@@ -190,7 +190,9 @@ diff the new file against every original line by line, and account for each line
 removes as either the same instruction in repository-neutral words or guidance relocated to a
 named home — the owning repository's project guidance for what only that repository can state.
 A line carrying an instruction no original carried is an edit riding along, and
-**Run one `test-skill` round**'s skill-test round decides it on its own terms.
+**Run one `test-skill` round**'s skill-test round decides it on its own terms. Once the relocation
+is established, its skill test is reported as `not run: relocation, guidance preserved`, naming
+where each original's specifics went.
 
 Where the originals disagreed, the disagreement is the thing to get right, and neither answer
 may be picked for both. Carry the shared guidance and hand the contested question back to each
