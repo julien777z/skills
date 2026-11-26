@@ -387,6 +387,9 @@ Fixtures that provide more instances of one kind, which no role or state tells a
 second warehouse or a third courier, form one ordinal sequence: `first_`, `second_`, `third_`,
 running from `first_` without a gap, with every member numbered, never one left bare beside
 numbered siblings, and never `alternate_`, `other_` or `another_` standing in for an ordinal. A
+change that adds a member to such a family gives it the next ordinal and renames the family's
+other members into the sequence in that change, with every consumer; a word coined to leave the
+family as it was, such as a synonym for one more of the kind, is the same finding. A
 fixture with no sibling of its kind takes no ordinal, and neither does a factory. A fixture's name
 carries no `test_` prefix that only marks it as test support, which repeats where it lives; the
 word stays where it names what the fixture provides, such as a test run in a product that manages
