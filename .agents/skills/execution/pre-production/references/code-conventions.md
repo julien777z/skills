@@ -25,8 +25,8 @@ commit messages and pull-request text. `SKILL.md` names this file at the point a
   Read the product name from its company or branding configuration when runtime text needs it,
   including metadata, accessibility labels, emails, and test expectations for that text. Keep
   literal names in their canonical sources, branded assets, company information and legal
-  documents. Preserve existing package, protocol, database, and deployed resource identifiers
-  when they are part of a compatibility contract.
+  documents. Keep package, protocol, database, and deployed resource identifiers that the current
+  contract requires.
 - A library owns the vocabulary of the protocol or provider it wraps. That protocol's field names
   and naming conventions, such as how it spells an event type or a scope, are the library's own,
   never a consumer's domain vocabulary: a helper encoding such a convention belongs in the library

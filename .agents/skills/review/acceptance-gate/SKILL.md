@@ -39,9 +39,12 @@ and judge the item on product state and the rubric.
 
 When work changes an owned boundary, the statement quotes the applicable target-contract instruction,
 names the one canonical representation, and identifies every retained or candidate representation of
-that boundary. The gate cannot accept an abstract summary in place of that receipt; a second consumer
-layout, branch, probe, fallback, or compatibility helper is a flag unless the user explicitly approved
-retaining it.
+that boundary. The gate requires that evidence before it can accept the change. Always flag support
+for an obsolete owned contract, including a second consumer layout, branch, probe, fallback, or
+compatibility helper. Apply this across runtime code, configuration, tooling, CI, data handling,
+documentation, and instructions. Require the change to remove obsolete paths, update owned
+consumers, migrate retained data, and handle cutover sequencing in the release procedure wherever
+those steps apply.
 
 The owned-boundary receipt distinguishes the actor or execution owner from its destination and
 names the permitted resources and prohibited placements, disclosures or writes. Trace the actual
@@ -73,11 +76,11 @@ unless the user explicitly makes it a dependency.
 Once the resolved sources agree, compare consumer migration with changing the owner before accepting
 either. Broadening an owner, adapter, generic bound, schema, or validation solely so an owned
 consumer's previous input still passes is compatibility even when it adds no branch or fallback.
-Flag it unless the evidence establishes that broader input is the owner's independent target
-contract or the user explicitly authorized the retained compatibility. Matching runtime behavior
-does not establish that a consumer satisfies a type, API, or generated-contract constraint. The
-ordinary remedy corrects dependency selection or, when the resolved target contract is current,
-updates every owned consumer and removes its obsolete representation.
+Flag it unless the evidence establishes that broader input belongs to the owner's independent
+target contract. Matching runtime behavior does not establish that a consumer satisfies a type,
+API, or generated-contract constraint. The remedy corrects dependency selection or, when the
+resolved target contract is current, updates every owned consumer and removes its obsolete
+representation.
 
 `references/rubric.md` states what the statement names and how its inputs are reconciled. Read product
 state from the target repository's project guidance; never import another repository's assumptions.
@@ -235,8 +238,9 @@ those words. A verdict with none says `no product choice added` in those words.
 while its cause stays, such as hiding or folding away what no longer fits instead of giving it
 room, moving a failing path behind a control, a flag, a fallback or a retry, catching and ignoring
 an error, special-casing the one reported value, or loosening a check until it passes. Each is a
-flag whose remedy is fixing the cause, whatever the change calls itself and however small; a
-workaround the user's words in the intent statement explicitly ask for is the only one that stands.
+flag whose remedy is fixing the cause, whatever the change calls itself and however small. A
+workaround stands only if the user explicitly requested it in the intent statement and it complies
+with the target contract. Always flag obsolete owned compatibility, even when a user requests it.
 For a repair, inspect the governing code or schema even if the diff leaves it untouched. State
 what caused the problem and where the repaired design now enforces the intended behavior. Flag a
 consumer-side fix when an owned design still admits the invalid state or forces the special case.
