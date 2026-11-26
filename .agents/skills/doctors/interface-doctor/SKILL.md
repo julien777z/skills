@@ -263,7 +263,7 @@ Apply `pre-production` to every correction.
 - each text changed, with its old and new wording and its slot, in the detail file;
 - each shape moved onto a shared component, with the pages moved and the variant or prop added;
 - each routine presentation detail decided, with its reason;
-- each decision the run made and each that went to the user, with the pages it changed, the
-  captures shown, and any council ruling or the user's answer;
+- each decision the run made and each that went to the user, with the pages it changed, each
+  capture shown named by its file, and any council ruling or the user's answer;
 - each rule departure made, with its rule change;
 - each finding another doctor owns, named with that doctor.
