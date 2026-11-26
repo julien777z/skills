@@ -21,6 +21,17 @@ short_description: 'Ask three strong models what they think, or review with them
   options, such as simplify, revert or accept, takes the option most members pick first; a
   three-way split takes the option the asker lists first. A ruling never accepts a confirmed
   defect, an exploitable vulnerability or a failing required check.
+- **A disposition is asked as an open question.** When an asker needs the council to say what to do
+  next, such as for a change at a review-round limit, a flag past its own repairs or a choice
+  between dispositions, every member is asked "what should happen next?" with the full evidence:
+  the change, each round's findings, every repair tried and why it fell short, and the check
+  results. The members are the run's strongest readers, consulted for their advice, never limited
+  to a list: the asker's own options, a different approach among them with how it departs from the
+  repairs tried, go in only labelled as the asker's candidates, and each member may advise any
+  course. A brief that hands the members options to choose from is rewritten this way before it is
+  sent. Two members advising the same course make it the ruling. With no two agreeing, each member
+  is sent the other two answers once; a split that remains takes the course the asker listed first
+  among those a member advised, or else the first seat's.
 - **Loop:** the user asks the council to review or give feedback on work, such as "council this
   pull request". Run **Rounds**, fixing between them.
 
@@ -44,7 +55,8 @@ of their own.
   that the ruling came from two members. Two who agree decide. On a split, use the option the
   asker lists first, as for a three-way split. With fewer than two available, report the panel as
   incomplete and return no ruling. Distinguish members by seat when model names repeat.
-- **Brief:** a brief the invocation supplies is sent as it stands to every member. Otherwise give
+- **Brief:** a brief the invocation supplies is sent as it stands to every member, rewritten only
+  as **Ask** says for a disposition. Otherwise give
   each the question or request, the intent, the material (a diff, files, a plan), and any check
   results. A review asks for findings, each with a file and line, rated `blocker` (the intended case
   is wrong), `should` (a real bug, an unsafe input or a workaround) or `nit`, and a score out of 10.

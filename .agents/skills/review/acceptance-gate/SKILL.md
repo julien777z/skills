@@ -332,7 +332,8 @@ agent-written record holds without them is still open, and goes to the user. A c
 security vulnerability is never settled this way, whatever an
 earlier acceptance said: it is repaired as below.
 Read every other objection and remedy against the intent and standing guidance and make the
-smallest coherent repair using the existing owner or mechanism.
+smallest coherent repair using the existing owner or mechanism, until the same behavior misses a
+second time, as the repair-round bullets below say.
 
 **No flag is closed by the run that raised it or the agent that answered it.** The agent that made
 a repair re-reads the changed lines against the flag's objection and remedy and runs the checks
@@ -368,17 +369,28 @@ it proposed itself.
   after repairs. A round fails a change only when it raised a finding or flag on that change's
   lines. A round a broken runner, fixture or provider cut short before judging the change is not
   counted, and neither are a style flag and an evidence gap, as the paragraphs above say.
+- **A second miss on the same behavior ends small repairs.** When a round, of any check in any
+  repair loop, raises a finding on behavior an earlier repair already targeted, stop rewording or
+  patching those lines. Before the next repair, reconsider the approach: where the requirement
+  lives, which owner's reader meets it, and whether the structure has to change, such as moving a
+  rule into the entry point every reader loads. Make the repair that reconsideration picks, and
+  record why the earlier one could not hold.
 - **At the limit:** once 3 rounds have failed a change, whatever each raised, `council` in **Ask**
-  mode decides between a simpler approach, reverting the change and accepting it with the remaining
-  findings recorded, within the limit `council`'s **Ask** sets on what a ruling accepts. That
-  decision replaces another repair, and an acceptance with recorded findings it makes is the one
-  exception to the rules below on flagged diffs.
+  mode is asked what should happen next, as its **Ask** says of a disposition, with the change,
+  each round's findings, every repair tried with its evidence, and your candidates labelled as
+  yours, a different approach among them with how it departs from the repairs tried. Its ruling,
+  such as a different or simpler approach, a revert or an acceptance with the remaining findings
+  recorded, stays within the limit `council`'s **Ask** sets on what a ruling accepts. That decision
+  replaces another repair, and an acceptance with recorded findings it makes is the one exception
+  to the rules below on flagged diffs.
 - **Per flag:** while the change is under that limit, a flag gets at most two repair rounds of its
   own, and one a fresh gate raises for the first time starts at zero. A flag the gate still raises
   after its own second repair, with the change still under the limit, goes to `council` in **Ask**
-  mode with the open flag, each remedy tried and its evidence, and the gate's proposed remedy. Its
-  ruling decides the remedy, which is applied and checked as any repair is, and the caller's result
-  names the flag and the ruling. The verdict's other flags go on to their fresh gate meanwhile.
+  mode, asked what should happen next with the open flag, each remedy tried and its evidence, and
+  as labelled candidates the gate's proposed remedy and the different approach the reconsideration
+  above found. Its ruling decides the remedy, which is applied and checked as any repair is, and
+  the caller's result names the flag and the ruling. The verdict's other flags go on to their fresh
+  gate meanwhile.
 - A flag the council returns as the user's choice goes to the user, as a report of those facts with
   a recommended next step, never as a choice about whether to fix it or leave it in place.
 

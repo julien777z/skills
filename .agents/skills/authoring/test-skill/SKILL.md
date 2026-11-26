@@ -16,6 +16,7 @@ confuse those conclusions.
 - `code-simplify`
 - `session-ledger`
 - `council`
+- `acceptance-gate`
 
 ## When It Runs
 
@@ -171,8 +172,12 @@ Run after `code-simplify` completes its pass.
    where authorized; keep coupled instructions and their required repairs together. This assessment
    recommends which changes should merge and decides no merge itself. A passing skill test alone
    never decides that a pull request should merge.
-7. **Repair and rerun until verified**, within the global rules' limit of 3 review rounds per
-   change, whose disposition goes to `council` in **Ask** mode. Diagnose each reported issue at its owner. Fix guidance that permits the wrong behavior;
+7. **Repair and rerun until verified**, within the limit of 3 review rounds per change that
+   `acceptance-gate`'s **Bounds** sets, whose disposition goes to `council` in **Ask** mode as
+   those **Bounds** say. Diagnose each reported issue at its owner. Fix guidance that permits the
+   wrong behavior; when a change check or regression scenario misses the same criterion again
+   after a guidance repair, reconsider where the instruction lives and which reader meets it before
+   the next repair, as those **Bounds** say of a second miss, never reword the same lines again;
    fix an invalid fixture, unavailable simulated operation, wrong reading list, ambiguous criterion
    or broken runner before judging guidance. Retain the diagnosis and earlier results. Recover
    missing evidence from the actual run or rerun the affected task; never reconstruct a result from
