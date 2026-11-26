@@ -165,9 +165,9 @@ Before any reviewer launches, the parent runs three things once and saves each r
 folder. Every reviewer reads the same results and repeats none of them.
 
 - **Baseline checks.** The checks the repository's CI runs on a pull request, as the GitHub rule's
-  **Pre-Push Gate** finds them, its push checks and test suites alike, run once on the base, so a failure that predates the run is known.
-  They run once more on the final head under **Run Repository-Native Checks**, and in between only
-  where a group's own files need one.
+  **Pre-Push Gate** finds them, its push checks and test suites alike, run once on the base, so a
+  failure that predates the run is known. They run once more on the final head under **Run
+  Repository-Native Checks**, and in between only where a group's own files need one.
 - **Mechanical pre-pass.** Each command the doctor declares runs in its read-only mode over the
   scope, and its output is saved as the candidate list for the lens it serves. A reviewer judges
   each candidate in its partition, confirming or rejecting it with a reason, and reads for what no

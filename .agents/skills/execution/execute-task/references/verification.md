@@ -18,11 +18,11 @@ writing, keeping or removing, and how suites are laid out, configured and budget
   browser verification and review once. Select browser verification under
   **Environments** before planning its prerequisites. Where it applies to a UI feature, inspect its
   rendered screen and comparable existing interactions at this checkpoint, and fix design or copy
-  defects before moving to unrelated work or the final combined checks. Take browser captures only of
-  a change that alters what a page shows; a change with no visible effect, a backend or test-only
-  repair included, gets no walkthrough capture unless the user asks for one. A task with several features
-  may verify each completed feature that way, its test suites excepted; an edit, file, commit, push,
-  handoff or plan step is not a feature boundary.
+  defects before moving to unrelated work or the final combined checks. Take browser captures only
+  of a change that alters what a page shows; a change with no visible effect, a backend or test-only
+  repair included, gets no walkthrough capture unless the user asks for one. A task with several
+  features may verify each completed feature that way, its test suites excepted; an edit, file,
+  commit, push, handoff or plan step is not a feature boundary.
 - Classify validation failures under `pre-production`'s **Encountered Issues** before expanding
   repair work. Fix a completed-feature batch's relevant failures together, then repeat only the
   checks the fixes affect. While repairing a failure or a review or gate finding, run only the tests
@@ -44,8 +44,9 @@ writing, keeping or removing, and how suites are laid out, configured and budget
   diff. Reuse still-valid completed-feature results; run the full required checks where the final
   repository state or integration needs them. This cadence changes when verification runs, never
   its required coverage or the exact-head evidence a delivery gate requires.
-- Apply the same cadence to the parent and delegated workers. The worker brief's checks field
-  carries the feature boundary and its planned verification batch. Cleanup follows the same completed-scope batch and affected-check
+- Apply the same cadence to the parent and delegated workers. The worker brief's Push checks
+  field carries the fast checks, and its Suites field the test suites only for the assignment that
+  completes the task's changes. Cleanup follows the same completed-scope batch and affected-check
   rerun rule; its presence does not add a test run per edit. Batch related guidance edits before
   their source validation, review and skill tests; verify the final wording rather than
   each intermediate revision.
@@ -57,15 +58,16 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
 - **When the checks run.** **Verification Cadence** above sets the checkpoints, and its
   superseded-run bullet says what happens to a suite still running. Deferred feature verification
   holds no intermediate push and stays required afterward: run the feature's browser verification
-  and review, never its test suites, once the feature is complete, then the required final checks before delivery, keeping evidence the change has not
-  invalidated rather than restarting the batch for each push.
+  and review, never its test suites, once the feature is complete, then the required final checks
+  before delivery, keeping evidence the change has not invalidated rather than restarting that
+  verification for each push.
 - **Which jobs run here.** A test suite, a job that needs a hosted service or a running stack, or
   one too slow to run before every push joins the slow verification at the end and is named in the
-  report. Room on this machine never leaves a job to its hosted run: a shortage of disk, memory or ports is recovered as
-  `pre-production`'s **Local Stacks** says, and the job runs here. **Suites And Failures**'
-  cannot-run bullet decides when a job may be left to its hosted run. A non-essential check left
-  red on findings the change did not write, as `pre-production`'s essential-checks bullet
-  classifies them, holds no push.
+  report. Room on this machine never leaves a job to its hosted run: a shortage of disk, memory or
+  ports is recovered as `pre-production`'s **Local Stacks** says, and the job runs here. **Suites
+  And Failures**' cannot-run bullet decides when a job may be left to its hosted run. A
+  non-essential check left red on findings the change did not write, as `pre-production`'s
+  essential-checks bullet classifies them, holds no push.
 - **A local variant of a CI check is not that check**, and each of these passes locally and fails
   in CI: lint or type checks scoped to the changed files, where CI's whole-tree run finds an
   untouched caller of a signature the change altered; a formatter or linter in write mode, which

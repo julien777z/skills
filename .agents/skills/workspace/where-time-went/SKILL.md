@@ -80,14 +80,14 @@ pages, in order:
 A tree entry with a time says what filled it. Its children, in order, are the stages of its work,
 each named by what it achieved from the entry's own evidence — its commits, the brief, its reports
 and command descriptions — such as a plan step built, a merge resolved, a failing test traced or a
-fix applied. Under each stage come its commands grouped by kind, check and test runs included, and
-every agent, gate, review round or loop it started, each broken down the same way; a stage with
-children accounts for its own time the same way. Commands are grouped, never listed one per entry: a stage's commands become one entry per kind of work, named by what it did and how
-often, such as running the records suite four times or reading and editing the gate code, and a
-single command stands alone only when it alone fills a large share of its stage. The children
-account for the entry's time: what no stage holds is one more child that says what it was, such as
-reading code or writing the report, never left out. A listing of an entry's longest single
-activities is not a breakdown.
+fix applied. Under each stage come its commands and every agent, gate, review round or loop it
+started, each broken down the same way. Commands are grouped, never listed one per entry: a stage's
+commands become one entry per kind of work, named by what it did and how often, such as running the
+records suite four times or reading and editing the gate code, and a single command stands alone
+only when it alone fills a large share of its stage. The children account for the entry's time: what
+no stage holds is one more child that says what it was, such as reading code or writing the report,
+never left out, and a stage with children is accounted for the same way. A listing of an entry's
+longest single activities is not a breakdown.
 
 Name agents by role or task, never by ID. A spec holds no raw transcript, credential or secret.
 After delivery, reply with one line: the session's working time and the largest workflow.
