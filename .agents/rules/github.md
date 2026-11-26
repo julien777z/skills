@@ -47,9 +47,9 @@ alwaysApply: true
   definitions, plus nonbehavioral text and guidance-reference corrections in agent hooks and
   installers. A change to execution, timing, installation, discovery, permissions or mutation
   scope is source work, as is everything else. The one exception is guidance true only once a
-  still-open source pull request merges, which rides that pull request or is held for it. The skill
-  that edits guidance sets out how a pull request is selected, opened and consolidated, and where
-  that guidance goes.
+  still-open source pull request merges, which rides that pull request when this session opened it
+  and is otherwise held for it. The skill that edits guidance sets out how a pull request is
+  selected, opened and consolidated, and where that guidance goes.
 - **Every worker pushes to the branch of the pull request the work continues**, fetching and
   rebasing its unpushed commits onto the remote branch before each push. A branch per worker,
   integrated later, is the same split with the integration deferred.
