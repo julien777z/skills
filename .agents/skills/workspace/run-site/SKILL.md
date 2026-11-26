@@ -1,6 +1,6 @@
 ---
 name: run-site
-description: Bring an application stack up and repair startup blockers. A change a reader sees rendered is inspected rendered before it is reported, in every execution environment, in the browser `use-browser` selects, a headless one the agent runs by default; the full recorded walkthrough applies in cloud execution environments and whenever the user asks for browser work. Use before planning, recommending, delegating or performing browser walkthroughs or rendered UI inspections, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works. Use before starting container-backed work, to select the local container runtime.
+description: Bring an application stack up and repair startup blockers. A change a reader sees rendered is inspected rendered before it is reported, in every execution environment, in the browser `use-browser` selects; the full recorded walkthrough applies in cloud execution environments and whenever the user asks for browser work. Use before planning, recommending, delegating or performing browser walkthroughs or rendered UI inspections, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works. Use before starting container-backed work, to select the local container runtime.
 short_description: 'Start an application stack and perform browser verification where applicable.'
 ---
 
@@ -168,12 +168,13 @@ component's own behavior is the exception **Principles** names: its rendered pag
 sign-in genuinely cannot complete for a change that needs the real screen, report the walkthrough as
 not done.
 Sign in in the browser `use-browser` selected, keeping passwords and one-time tokens out of
-command arguments and transcripts. In the agent's headless browser, sign in as the repository's
-test identity with its password retrieved through `proton-pass` and passed on standard input
-(`agent-browser auth save <name> --url <login URL> --username <user> --password-stdin`, then
-`agent-browser auth login <name>`, and `agent-browser auth delete <name>` when the task ends), or
-open its one-time link from standard input with `agent-browser batch`, discarding the output; a
-signed-in session to reuse is the task's own headless session. In the user's browser, use the
+command arguments and transcripts. In the agent's headless browser, open the repository's one-time
+sign-in link, where it provides one, from standard input with `agent-browser batch`, discarding the
+output. Otherwise sign in as the test identity with its password from the source `proton-pass`
+names for it, passed on standard input (`agent-browser auth save <name> --url <login URL>
+--username <user> --password-stdin`, then `agent-browser auth login <name>`, and `agent-browser
+auth delete <name>` when the task ends). A signed-in session to reuse is the task's own headless
+session. In the user's browser, use the
 harness's credential entry or handoff route, and reuse an available signed-in session of the
 required identity. Never read saved passwords, cookies, local storage or session files.
 

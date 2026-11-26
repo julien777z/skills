@@ -32,15 +32,12 @@ keeps lives in the original and on the remote. The report names each one deleted
 
 ## Browser Access
 
-- Run browser work in the browser `use-browser` selects: a headless browser the agent runs by
-  default, and the user's own browser only when the user asks for it or gives a specific URL to
-  inspect or debug. Apply its **Selecting And Binding A Tab** before any page read or action. When
-  a CLI attaches to the user's browser, a named CLI session alone does not establish control of the
-  selected tab.
+- Run browser work in the browser and session `use-browser` selects, and apply its **Selecting And
+  Binding A Tab** before any page read or action. When a CLI attaches to the user's browser, a
+  named CLI session alone does not establish control of the selected tab.
 - Continue through an appropriate API or CLI when that is more direct. Report a browser-specific
   blocker only when the selected browser's normal recovery paths cannot complete the required
-  interaction. A headless browser that cannot run is reported blocked, never moved to the user's
-  window.
+  interaction.
 
 ## Environment Refusals
 

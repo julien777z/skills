@@ -301,7 +301,7 @@ guidance already answers.
 Apply [working environment](references/environment.md): its **Working Files** puts everything
 the run writes for itself or its workers in `.agent_sources/` at the worktree's root; its **Copies A
 Sync Service Left Behind** deletes each such copy before anything stages, stashes or snapshots the
-tree; its **Browser Access** selects the browser; its **Installed Apps** reads an app's version from its files, never by running it; its **Environment Refusals** treats an environment refusal as a route to find, and what a permission check refuses as not attempted again;
+tree; its **Browser Access** runs browser work in the browser `use-browser` selects; its **Installed Apps** reads an app's version from its files, never by running it; its **Environment Refusals** treats an environment refusal as a route to find, and what a permission check refuses as not attempted again;
 and its **Steps That Cannot Be Taken Back** runs a deletion, overwrite, push, merge or post only
 after its gating check has been read, outside the command, chain or batch that runs the check.
 

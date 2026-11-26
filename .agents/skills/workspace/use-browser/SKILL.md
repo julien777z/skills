@@ -33,13 +33,15 @@ extracting data, testing and QA, signing in, Electron desktop apps and Slack.
   `npm i -g agent-browser && agent-browser install`, and before its first command load its guide
   from the CLI, which matches the installed version: `agent-browser skills get core`, adding
   `--full` for the command reference. The headless route takes nothing from the user's browser:
-  `--auto-connect`, `--profile`, and `connect` or `--cdp` aimed at a browser the user runs are the
-  user's-browser route below.
-- **Electron desktop apps and Slack**: the agent launches the app itself with a DevTools port on
-  127.0.0.1 (`--remote-debugging-port=<port>`), a test profile and test data where the app takes
+  `--auto-connect`, `--profile` naming one of the user's browser profiles, and `connect` or `--cdp`
+  aimed at a browser the user runs are the user's-browser route below.
+- **Electron desktop apps and Slack**: the agent launches the app itself where it opens no window
+  on the user's desktop, such as an isolated runner or a virtual display, with a DevTools port on
+  127.0.0.1 (`--remote-debugging-port=<port>`) and a test profile and test data where the app takes
   them, and attaches the CLI with `agent-browser connect <port>`, as `agent-browser skills get
-  electron` describes. Attaching to an instance the user is already running, such as their
-  signed-in Slack, is the user's-browser route and needs their request.
+  electron` describes. Where no such place exists, the step is blocked as below. Launching it on
+  the user's desktop, or attaching to an instance they already run, such as their signed-in Slack,
+  is the user's-browser route and needs their request.
 - **The harness's browser control or an MCP browser is used only when the user asks for it, or
   gives a specific URL to inspect or debug.** Then connect to their existing browser and the
   relevant profile, as **Selecting And Binding A Tab** says for the user's browser.
@@ -54,8 +56,9 @@ Bind the task's browser before reading, navigating or interacting.
 In the agent's headless browser:
 
 - Run one named session per task (`--session <name>`), record its name, and keep every action of
-  the task in it. After reconnecting or restarting browser control, verify the session name with
-  `agent-browser --session <name> session` before the next action, and keep every action in it.
+  the task in it. A restarted session keeps its name but loses its pages and sign-in, so after
+  reconnecting or restarting browser control, read `agent-browser --session <name> get url` and a
+  `snapshot` before the next action, then sign in again and return to the page when they were lost.
 
 In the user's browser:
 

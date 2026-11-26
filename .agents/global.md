@@ -32,10 +32,10 @@ only a subject no skill runs for.
 
 - Apply `use-browser` before any browser operation, including one performed by an imported skill,
   hook, script or worker. A step that names another browser, such as an imported skill's harness
-  browser or screenshot tool, runs in the browser `use-browser` selects, headless by default, and
-  one that cannot run there is skipped and reported. If loading a skill registers a hook that
-  launches a browser outside the route `use-browser` selects, leave that skill inactive and use any
-  relevant browser-independent reference material.
+  browser or screenshot tool, runs in the browser `use-browser` selects, and one that cannot run
+  there is skipped and reported. If loading a skill registers a hook that launches a browser
+  outside the route `use-browser` selects, leave that skill inactive and use any relevant
+  browser-independent reference material.
 - The skill whose description says it applies before the first user-facing response, and the
   output skill it builds on, apply from the first response a user reads in the session, whether or
   not the user invoked them or the running skill names them; a session that did not start with them
