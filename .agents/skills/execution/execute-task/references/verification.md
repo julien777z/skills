@@ -14,8 +14,8 @@ writing, keeping or removing, and how suites are laid out, configured and budget
   quick commands does not qualify.
 - **Test suites run once, when the task's changes are complete**, never before a push, after a plan
   step or worker task, or per feature; a failure that run finds reruns only the suites covering its
-  fix. Finish a feature, including its callers and necessary tests, before running its build,
-  applicable browser verification and review once. Select browser verification under
+  fix. Finish a feature, including its callers and necessary tests, before running its applicable
+  browser verification and review once. Select browser verification under
   **Environments** before planning its prerequisites. Where it applies to a UI feature, inspect its
   rendered screen and comparable existing interactions at this checkpoint, and fix design or copy
   defects before moving to unrelated work or the final combined checks. Take browser captures only of
@@ -26,8 +26,8 @@ writing, keeping or removing, and how suites are laid out, configured and budget
 - Classify validation failures under `pre-production`'s **Encountered Issues** before expanding
   repair work. Fix a completed-feature batch's relevant failures together, then repeat only the
   checks the fixes affect. While repairing a failure or a review or gate finding, run only the tests
-  that cover the changed code; a repository's full suites run once per pull request, on the head
-  delivery accepts, never once per repair.
+  that cover the changed code; the full suites run only in the one end-of-changes run above, never
+  once per repair.
   Reuse successful evidence for unchanged code and inputs. A new commit or reviewer is not itself
   a reason to repeat verification; a changed dependency, relevant input or unresolved concern is.
   Formatting, import ordering, comments, documentation, and an equivalent non-executable change
@@ -56,13 +56,12 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
 
 - **When the checks run.** **Verification Cadence** above sets the checkpoints, and its
   superseded-run bullet says what happens to a suite still running. Deferred feature verification
-  holds no intermediate push and stays required afterward: run the relevant batch once the feature
-  is complete, then the required final checks before delivery, keeping evidence the change has not
+  holds no intermediate push and stays required afterward: run the feature's browser verification
+  and review, never its test suites, once the feature is complete, then the required final checks before delivery, keeping evidence the change has not
   invalidated rather than restarting the batch for each push.
 - **Which jobs run here.** A test suite, a job that needs a hosted service or a running stack, or
-  one too slow to run before every push joins the slow verification at the end and is named in
-  the report. Room on this
-  machine never leaves a job to its hosted run: a shortage of disk, memory or ports is recovered as
+  one too slow to run before every push joins the slow verification at the end and is named in the
+  report. Room on this machine never leaves a job to its hosted run: a shortage of disk, memory or ports is recovered as
   `pre-production`'s **Local Stacks** says, and the job runs here. **Suites And Failures**'
   cannot-run bullet decides when a job may be left to its hosted run. A non-essential check left
   red on findings the change did not write, as `pre-production`'s essential-checks bullet
@@ -94,7 +93,8 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
   verification, a background worker, CI on the pushed head, or a question to the user, bring the
   work to a coherent step, commit it, and push it; the checks' own runs are part of the push, not
   such a wait.
-- **The slow verification** is a browser walkthrough, a full or end-to-end suite, a run against a
+- **The slow verification** is every test suite and coverage run, unit through end-to-end, run
+  once the task's changes are complete, a browser walkthrough, a run against a
   service without the change, root-causing a failure seen along the way: anything slow or needing a
   running stack. What it finds goes out as fix pushes, each once its checks pass.
 - **A dependency still in review** is consumed as
@@ -138,7 +138,8 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
 - **Hosted test jobs are required at the merge, not before it.** A pull request leaves draft only
   as the last step before an authorized merge, and a draft starts no test jobs. With no merge
   authorized, delivery is complete at the reviewable draft, and the task's test evidence is the
-  local runs of CI's commands the GitHub rule's **Pre-Push Gate** requires. At an authorized merge,
+  end-of-changes run of every test job with CI's own commands, which the GitHub rule's **Pre-Push
+  Gate** requires. At an authorized merge,
   `merge-gate`'s **Check Gate** drives every test job to a terminal result and fixes each failure
   within the pull request's scope, apart from a baseline failure, which is recorded and left as
   `pre-production`'s **Encountered Issues** says.

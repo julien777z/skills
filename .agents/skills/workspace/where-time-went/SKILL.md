@@ -65,7 +65,7 @@ pages, in order:
   split between workers and reviewers as its detail, and the longest workflow's time with its name
   as the detail. A `table` of where the time went: one row per top-level workflow, with its time and
   assessment, each row opening a short write-up of that workflow in a dialog: what it did, its
-  outcome and its longest activity.
+  outcome and its largest stages, as **What happened** names them.
 - **Loops** (`list`). One `tree`: each workflow, then its rounds or groups, then the agents or
   assignments inside them, each broken down as **What happened** says. Every entry's `figure` is its
   time; its outcome is its `status` pill in the matching tone, such as Done, Running, Approved,
@@ -80,9 +80,9 @@ pages, in order:
 A tree entry with a time says what filled it. Its children, in order, are the stages of its work,
 each named by what it achieved from the entry's own evidence — its commits, the brief, its reports
 and command descriptions — such as a plan step built, a merge resolved, a failing test traced or a
-fix applied. Under each stage come the check and test runs it waited on and every agent, gate,
-review round or loop it started, each broken down the same way. Commands are grouped, never listed
-one per entry: a stage's commands become one entry per kind of work, named by what it did and how
+fix applied. Under each stage come its commands grouped by kind, check and test runs included, and
+every agent, gate, review round or loop it started, each broken down the same way; a stage with
+children accounts for its own time the same way. Commands are grouped, never listed one per entry: a stage's commands become one entry per kind of work, named by what it did and how
 often, such as running the records suite four times or reading and editing the gate code, and a
 single command stands alone only when it alone fills a large share of its stage. The children
 account for the entry's time: what no stage holds is one more child that says what it was, such as

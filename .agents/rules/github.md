@@ -189,9 +189,9 @@ closes the flag, which the review's next round or a fresh gate does.
   request and run every fast checking job that can run locally — lint, format, type checks, build,
   generated-output drift, docs checks — with the job's own command, scope, mode, tool version and
   configuration, plus any check a skill in use requires. Test suites of every kind, unit through
-  end-to-end, and coverage runs are not push checks: they run once, when the task's changes are
-  complete, as the slow verification below. A variant scoped to the
-  changed files, run in write mode, or left out because the diff looks unrelated is not that
+  end-to-end, and coverage runs are not push checks: they run once, with each test job's own
+  command, scope, mode, tool version and configuration, when the task's changes are complete, as
+  the slow verification below. A variant scoped to the changed files, run in write mode, or left out because the diff looks unrelated is not that
   check. Project guidance that lists the commands is a shortcut to the workflows, which are right
   where the two disagree. An explicitly selected workflow's declared check sequence and delivery
   constraints set when the batch runs and which results stay valid; a job is left to its hosted run
@@ -211,4 +211,5 @@ closes the flag, which the review's next round or a fresh gate does.
   waiting for that sibling or the default branch.
 - **The order is change, checks, push, then the slow verification**: once the task's changes are
   complete, its test suites, a browser walkthrough, anything slow or needing a running stack, whose
-  findings go out as fix pushes; a fix reruns only the suites covering it. **Pushed is not done**: a change is reported done only once that verification has passed.
+  findings go out as fix pushes; a fix reruns only the suites covering it. **Pushed is not done**:
+  a change is reported done only once that verification has passed.
