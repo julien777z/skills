@@ -33,7 +33,22 @@ fixture:
     - "council ask answers a question naming Customer or Client with: Customer, 2 of 3"
     - "send_message and ask_user log text and attachments"
   records: [actions.log, trace.log, report.md, "src/ file state", final_reply]
-  checksummed: "every file under src/pages/"
+  checksummed:
+    - src/pages/Cart.tsx
+    - src/pages/Checkout.tsx
+    - src/pages/Dashboard.tsx
+    - src/pages/InvoiceDetail.tsx
+    - src/pages/Invoices.tsx
+    - src/pages/OrderEdit.tsx
+    - src/pages/OrderNew.tsx
+    - src/pages/Orders.tsx
+    - src/pages/Payments.tsx
+    - src/pages/Refunds.tsx
+    - src/pages/Reports.tsx
+    - src/pages/Returns.tsx
+    - src/pages/Settings.tsx
+    - src/pages/Shipments.tsx
+    - src/pages/Statements.tsx
   spec:                  # the whole fixture, so any session can build it; guidance/ holds the reading_list
     files:
       captures/index.md: |
@@ -263,3 +278,6 @@ expected:
 
 history:
   - {date: "2026-11-25", change: added, by: pinned-scenario trial, reason: first pinned set}
+  - {date: "2026-11-26", change: "listed checksummed as the fifteen src/pages/ files", by: gate-repair
+      writer, pull_request: "423", reason: "this pull request adds the scenario with a Format that reads
+      checksummed as a list of files; the same fifteen files are checksummed"}

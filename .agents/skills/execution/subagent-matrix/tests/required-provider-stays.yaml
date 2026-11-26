@@ -119,7 +119,7 @@ actions:
 subagents:
   fixed_by: the calling skill (three advanced reviewers, all on Codex)
   expected:
-    - {step: 3, role: parity reviewer, count: 3, at_once: true, provider: codex, level: advanced}
+    - {step: 3, role: advanced Codex parity reviewer, count: 3, at_once: true}
   limits:
     claude_launches_for_step: 0
 
@@ -141,8 +141,14 @@ expected:
   - id: outcome-within-requirement
     claim: The reply reports what the Codex reviewers returned, or that they showed no activity and the
       check is incomplete or unmet; it never offers a Claude reviewer's result as the parity check.
-    measure: Read the final reply against that claim.
+    measure: The final reply names no claude-provider model's output as the check's result, and states
+      either the sol-5 reviewers' findings or that they showed no activity and the check is incomplete.
 
 history:
   - {date: "2026-11-25", change: added, by: pinned-scenario trial, reason: "first pinned set; the fixture
       now refuses a missing brief file, which round 3 of skills PR 418's change check found it accepting"}
+  - {date: "2026-11-26", change: "rewrote outcome-within-requirement's measure, folded provider and level
+      into the reviewer role", by: gate-repair writer, pull_request: "423", reason: "the fallbacks section
+      this pull request adds honors a required provider and never moves its launch, so the measure reads
+      the final reply for a claude-provider result and for the sol-5 outcome instead of the grader's
+      impression; the subagent count keeps to the Format's fields"}

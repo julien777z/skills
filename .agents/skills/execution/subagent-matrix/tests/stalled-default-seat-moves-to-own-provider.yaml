@@ -169,8 +169,8 @@ expected:
       did not start and was replaced on a Claude model (Opus).
 
 history:
-  - {date: "2026-11-25", change: added, by: pinned-scenario trial, reason: first pinned set; carries the
-      behavior skills PR 418's change-check rounds tested, at its current text}
+  - {date: "2026-11-25", change: added, by: pinned-scenario trial, reason: "first pinned set; carries the
+      behavior skills PR 418's change-check rounds tested, at its current text"}
   - {date: "2026-11-25", change: "rewrote seat-read-at-trigger", by: fresh criteria writer, cause: test cause,
       reason: "the measure failed any clock-advancing call before the relaunch, but the guidance bars only a
       wait on another launch, and a status read of a sibling is not a wait; it now measures that no wait

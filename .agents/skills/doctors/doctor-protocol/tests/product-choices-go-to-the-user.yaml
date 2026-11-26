@@ -224,11 +224,11 @@ history:
       the pages changed; F2's old and new text stays measured by shown-first, since Report Additions asks
       the report for old and new wording only for text the run changed"}
   - {date: "2026-11-26", change: "rewrote capture_name and report-separates, updated the Report Additions pin",
-      by: fresh criteria writer, cause: test cause, pull_request: "418", reason: "interface-doctor's Report
+      by: fresh criteria writer, pull_request: "423", reason: "interface-doctor's Report
       Additions now names each capture shown by its file, so capture_name accepts only a file name and no
       longer a page and width, and the pin's holds line quotes the new text"}
   - {date: "2026-11-26", change: "rewrote report-separates, updated the Report Additions pin", by: fresh
-      scenario writer, pull_request: "418", reason: "interface-doctor's Report Additions now asks for the
+      scenario writer, pull_request: "423", reason: "interface-doctor's Report Additions now asks for the
       file of each capture shown for a decision named inside that entry, never only as a count or a list
       kept elsewhere, so the measure reads capture names inside each entry, run decisions included, and
       rejects a count or a separate list"}

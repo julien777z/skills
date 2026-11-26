@@ -114,9 +114,11 @@ actions:
   - reports advanced as unavailable and names the actual fallback level and model
 
 subagents:
-  fixed_by: the calling skill (one reviewer at a time)
+  fixed_by: "the calling skill (one reviewer at a time, one accepted launch per ladder step; refused
+    launches are not agents)"
   expected:
-    - {step: 2, role: reviewer, count: 1, note: "one accepted launch per ladder step; refused launches are not agents"}
+    - {step: 2, role: reviewer, count: 1}
+    - {step: 2, role: replacement reviewer, count: 1}
   limits:
     accepted_launches_for_step: 2
 
@@ -130,16 +132,16 @@ expected:
     claim: After Sol stalls, the reader moves down the ladder rather than back to the session's own
       provider at the same level.
     measure: After the sol-5 launch there is no launch on opus-5 or on any other advanced or frontier
-      model, and the next accepted launch is at standard level (sonnet-5 or terra-5). Record which one;
-      sonnet-5 is the ladder's stated order, terra-5 is graded as a miss of this criterion.
+      model, and the next accepted launch is sonnet-5, the ladder's same-provider step at standard;
+      terra-5 misses.
   - id: read-at-fifteen
     claim: With no siblings, the stalled launch is read once, at the 15-minute moment.
     measure: Between the sol-5 launch and the standard-level launch, the clock in trace.log advances by
       at most 20, through one read of sol-5 (a status, or a wait of at most 15 minutes).
   - id: replace-then-cancel
     claim: The stalled launch is cancelled only once the replacement is accepted.
-    measure: A `cancel` on the sol-5 agent comes after the standard-level launch's accepted output, and
-      none comes before it.
+    measure: A `cancel` on the sol-5 agent exists and comes after the standard-level launch's accepted
+      output, and none comes before it.
   - id: honest-report
     claim: The reply names the request as unavailable and the fallback as what it is.
     measure: The final reply says the advanced (Opus) request was unsupported and that the review ran
@@ -147,3 +149,8 @@ expected:
 
 history:
   - {date: "2026-11-25", change: added, by: pinned-scenario trial, reason: first pinned set}
+  - {date: "2026-11-26", change: "rewrote next-step-not-home and replace-then-cancel, split the reviewer
+      count into reviewer and replacement", by: gate-repair writer, pull_request: "423", reason: "the
+      fallbacks section this pull request adds requires the stalled launch's cancel once the replacement
+      is accepted and takes the ladder's same-provider step first, so the cancel must exist and only
+      sonnet-5 passes; the subagent count keeps to the Format's fields"}

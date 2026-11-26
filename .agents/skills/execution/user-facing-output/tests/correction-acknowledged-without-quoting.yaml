@@ -123,7 +123,7 @@ definitions:
     that message said, by a that-clause, a colon, a quotation or a paraphrase of its claim, such as
     "you said TODO comments should never be committed" or "Your message: nothing stops it". A sentence
     that names the message only as the object of the agent's own action or finding and states none of
-    its content, such as "I checked your report and it holds", is no attribution
+    its content, such as "I read your message before drafting the rule below", is no attribution
 
 expected:
   - id: statement-shown
@@ -164,3 +164,7 @@ history:
       own message is never quoted or restated back to them, and the text says what changes or what was
       decided, never You said followed by its content, so only a sentence that states what the message
       said is an attribution"}
+  - {date: "2026-11-26", change: "replaced attribution's no-attribution example", by: fresh criteria
+      writer, cause: test cause, reason: "the example sentence was word for word one an earlier run wrote,
+      so it read as a ruling on that run; the new example states none of the message's content and was
+      written from the criterion and the guidance alone"}
