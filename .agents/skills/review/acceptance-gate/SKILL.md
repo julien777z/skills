@@ -284,7 +284,10 @@ question and never a level of its own:
 - **Proposal — should this be written?**
 - **Diff — should this stand?** A finished plan step or worker task that later steps build on, a
   correction after base incorporation, or the repairs of and answers to a verdict's flags, read with the
-  whole branch diff as its originating diff.
+  whole branch diff as its originating diff. For repairs, the gate judges only the repair's changed
+  lines and the flags they answer, consulting the rest of the branch diff for what those lines touch
+  and never raising a new flag on lines the repair left alone: the whole change is judged once, by
+  final acceptance.
 - **Base incorporation — what did the base bring in that the change must refactor?** The procedure
   below.
 - **Final acceptance — may this merge?** The complete pull-request diff, read once after review is

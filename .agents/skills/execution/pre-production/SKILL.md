@@ -178,9 +178,9 @@ with an obsolete owned contract or revision.
   as that step.
 - **A defect the work notices is always fixed.** The hop limit above does not bound it, and neither
   does its home: a shared component, an owned library or another owned repository. Use the GitHub
-  rule's **Branches and Pull Requests** to place the fix in each affected repository. Keep distinct
-  concerns reviewable in separate commits. A defect the change introduced or the requested
-  behavior cannot work without stays part of the change at any size. Use the GitHub rule's
+  rule's **Branches and Pull Requests** to place the fix in each affected repository. A defect the
+  change introduced or the requested behavior cannot work without stays part of the change at any
+  size. **Every other noticed defect goes on the side pull request**, as the side-work bullet below says. Use the GitHub rule's
   **Pre-Push Gate** for a dependency it needs. A defect is never deferred, left as a note or offered
   to the user as a question. **A suspected defect whose confirmation is in the agent's reach** — a
   run, a walk through the product, a measurement with its own tools — is investigated now and, if
@@ -197,6 +197,15 @@ with an obsolete owned contract or revision.
   rotating a credential they hold, is reported as a gate with its owner and saved next action. It is never put to the user as something to
   consider or an option, recorded as deferred, left as a hardening note, or answered with a
   recommendation to run an audit of any kind later.
+- **Side work goes on its own pull request, so the change's reviews never read it.** A defect the
+  work notices that the change neither introduced nor needs, incidental cleanup outside the lines and
+  files the requested work edits, and maintenance a standing rule asks for that the change does not
+  need, such as a runtime or dependency upgrade, go on one side pull request per repository for the
+  task, in separate commits per concern. It starts from the freshly fetched default branch when it
+  does not need the change, or from the change's branch, stacked on it, when it does; a worker builds
+  it while the change goes on, and it is reviewed and gated on its own. The change's own pull
+  request keeps what the request asked for, what it cannot work without, and fixes to lines it
+  writes.
 - **Incidental cleanup has a size budget, measured against the scope the user set and the size of
   the change in flight**, never against a fixed file count or only the files the change happened to
   edit. Incidental cleanup is everything the request did not
