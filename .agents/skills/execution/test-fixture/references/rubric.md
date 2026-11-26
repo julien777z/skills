@@ -384,14 +384,18 @@ a mechanism, a synonym for the thing — where the concrete thing it provides or
 renamed for that thing.
 
 Fixtures that provide more instances of one kind, which no role or state tells apart, such as a
-second user or a third organization, form one ordinal sequence: `first_`, `second_`, `third_`, with
-every member numbered, never one left bare beside numbered siblings, and never `alternate_`,
-`other_` or `another_` standing in for an ordinal. A fixture with no sibling of its kind takes no
-ordinal. A fixture's name carries no `test_` prefix, which only repeats where it lives, and no role
-its value does not carry: a plain user is not `admin` or `account_owner` until something gives
-it that role, and one plain user is not offered under two names. List every fixture definition whose
-first word is `test`, `alternate`, `other` or `another`, and every ordinal-named fixture whose
-family has an unnumbered member; report every row.
+second warehouse or a third courier, form one ordinal sequence: `first_`, `second_`, `third_`,
+running from `first_` without a gap, with every member numbered, never one left bare beside
+numbered siblings, and never `alternate_`, `other_` or `another_` standing in for an ordinal. A
+fixture with no sibling of its kind takes no ordinal, and neither does a factory. A fixture's name
+carries no `test_` prefix that only marks it as test support, which repeats where it lives; the
+word stays where it names what the fixture provides, such as a test run in a product that manages
+them. Nor does a name carry a role its value does not carry: a plain account is not `admin` or
+`owner` until something gives it that role, and one value is not offered under two fixture names.
+In the fixture packages of the suites in scope, list every family of fixtures of one kind with
+each member's name and ordinal, and report every family with an unnumbered member, a gap or a lone
+ordinal; list every fixture definition whose first word is `test`, `alternate`, `other` or
+`another`, and every fixture that returns another fixture's value unchanged; report every row.
 
 Name several results in one test for their scenario or domain role, such as
 `invited_member_response` and `created_member_response`, never with a letter or a number, such as

@@ -65,21 +65,25 @@ Shared tooling lives in the project's shared migration package (runner, revision
   at generation rather than in production.
 - **Revisions use the project's shared revision utilities, never the raw operation a utility
   covers.** Tables, the standard entity columns, enums and backfills go through the utilities the
-  project's revision contract names, and its structure check refuses the raw forms in every
-  revision of every chain, so two revisions never spell one operation two ways. A
-  utility's output is frozen: a changed convention is a new versioned utility, never an edit to one
-  revisions already call, since the edit would change what those revisions did.
+  project's revision contract names, so two revisions never spell one operation two ways, and the
+  project's structure check is what refuses the raw forms. A generated revision is emitted through
+  those utilities or rewritten onto them before it is accepted. Where the project has no utility
+  for one of those operations, or no check that refuses its raw form, the change whose revision
+  needs the operation adds both before the revision uses it. A revision an environment has applied
+  is converted only by the refactor **Applied Is What Makes History** allows. A utility an applied
+  revision calls is frozen: a changed convention is a new versioned utility, never an edit to that
+  one, since the edit would change what those revisions did.
 - Handwritten backfill and schema-repair migrations keep their Alembic entrypoints in `versions/`
   and place substantial revision-specific logic in the project's revision-owned backfill package.
-- Generic backfill mechanics, such as paging, measured progress, resumable checkpoints and running
-  asynchronous code inside a revision, belong to the shared migration engine. The project's shared
-  backfill runtime package holds only what reads the project's own models and catalogs. Do not
-  promote one-off migration behavior into either.
-- **Data work goes into the pull request's one unlocked revision, never a second one added for
-  it.** Work that fits one revision uses the engine's atomic registration, its pages committed
-  inside that revision; a resumable operation runs between a preparation and a finalization
-  revision the engine registers. Where the engine splits a chain into expand and contract phases,
-  data work runs in the contract chain.
+- Generic backfill and rollback mechanics that know no project's schema, such as paging, measured
+  progress, resumable checkpoints and running asynchronous code inside a revision, belong to the
+  shared migration tooling **Migration Support Packages** defines. Do not promote one-off
+  migration behavior into it.
+- **Data work is registered inside the revision that owns it**, the pull request's one unlocked
+  revision on that chain under **Applied Is What Makes History**, through the mechanism the
+  project's migration tooling gives for running data work inside a revision, where it has one. An
+  operation that tooling spreads over several revisions is never a route to a second unlocked
+  revision on one chain.
 - Revision IDs must be real hex strings, not placeholder values like `a1b2c3d4e5f6`.
 - A revision-specific helper under the project's revision-specific fixture package uses the migration filename with
   its leading revision hash and underscore removed. Its test module uses the same name prefixed
@@ -229,11 +233,18 @@ format transition or recovery mechanism for data explicitly declared disposable 
 - The project's shared migration runtime package contains the Alembic runtime and helpers with multiple migration-set
   consumers. Its chain-owner module owns everything a chain is addressed by: its target, the database
   URL it reads, and whether that database carries the revisions this code does.
-- The shared migration engine is the migration tooling the project consumes that knows no
-  project's schema; it contains the generic backfill and rollback mechanics.
-- The project's shared backfill runtime package contains the backfill mechanics that read the
-  project's own models and catalogs, grouped further by database engine where their behavior is
-  engine-specific.
+- The shared migration tooling is the schema-independent owner of migration mechanics: the
+  migration library the project consumes where it has one, otherwise the project's shared backfill
+  runtime package.
+- The project's shared backfill runtime package contains the backfill and rollback mechanics that
+  read the project's own models and catalogs, and the generic ones too where the project consumes
+  no such library, grouped further by database engine where their behavior is engine-specific.
+- **A rebaseline deletes revision-owned code with its revisions, never the shared procedure.**
+  Paging, progress, checkpoint and similar mechanics that name no table or revision are the
+  procedure the next data migration runs on, so a rebaseline that leaves one without a caller moves
+  it to the shared migration tooling rather than deleting it. The shared Python boundaries rule's
+  deletion of code with no consumer still takes the helper written for one revision, which goes
+  with that revision.
 - The project's revision-owned backfill package contains behaviorally immutable implementation code owned
   by one logical handwritten migration set, including provider and database adapters used only by
   that backfill. Keep it for as long as any deployed database may replay that revision.
@@ -253,9 +264,6 @@ format transition or recovery mechanism for data explicitly declared disposable 
   expectations. Anything it points at that is specific to one revision — a row-transform verifier, a
   population value factory, a fixture arranging the rows a migration will rewrite — is imported from
   the revision-specific fixture package, never defined inline.
-- **A rebaseline deletes revision-owned code with its revisions, never the shared procedure.** A
-  generic helper the rebaseline leaves without a caller moves to the shared migration engine rather
-  than being deleted, since the next data migration needs it.
 - A rebaseline that drops the migration history is an ordinary possibility here rather than a remote
   one. Keeping the disposable half separable is what makes that a deletion instead of an audit.
 - **The project's durable migration-test helper package is for helpers that outlive every revision, and the test is whether a
