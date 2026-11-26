@@ -67,3 +67,9 @@ history:
     reason: the fallbacks section caps a wait on the stalled launch at 15 minutes after its brief, since a
       reader's 20-minute wait showed the moment was named but not capped; the read-at-fifteen check already
       measures that cap
+  - date: "2026-11-26"
+    route: behavior-change
+    pull_request: "423"
+    file: skills/execution/subagent-matrix/references/fallbacks.md
+    section: A Launch On Another Provider's Model
+    reason: "The ladder bullet now says its next step follows the one read that found no activity, with no second read; read-at-fifteen measures that."

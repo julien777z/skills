@@ -86,7 +86,8 @@ stalled launch is cancelled. If the replacement is refused, the stalled launch i
   or rerun within that requirement as the sections above say, never moved.
 - Inside **Ordinary Fallbacks** below, where the ladder reached the other provider because the
   session's own family at that level was refused as unsupported, a launch there that does not start
-  goes on to the ladder's next step instead.
+  goes on to the ladder's next step instead, taken straight after the one read above that found no
+  activity, with no second read to confirm it.
 - A capacity relaunch onto the other provider that stalls goes back to the session's own provider,
   which refused it, only once that provider has cleared, as **A Capacity Refusal** reads it;
   otherwise it relaunches on whichever permitted model the request path shows cleared first, never
