@@ -55,19 +55,20 @@ rounds. Show every group in scope, not only the latest.
 Assess each top-level workflow as rework, detour or avoidable only where evidence supports it;
 anything else carries no assessment.
 
-### Now and next
+### States
 
 Each workflow, agent, assignment and plan step is in one state, with its pill and tone: **Active**,
 `accent`, running now; **Blocked**, `critical`, started and waiting on something; **Up next**,
 `next`, not started yet; **Done**, `good`, finished. A reviewer's verdict, such as Approved,
 Changes or Flag, takes the place of Done on a review, and a workflow's Rework, Detour or Avoidable,
 `warning`, takes its place where the evidence supports one; finished work with nothing standing out
-shows Done alone, and an assessment that says nothing, such as necessary, is never shown. Read the
+shows Done alone, the one pill the user keeps on work where nothing stands out, and an assessment
+that says nothing, such as necessary, is never shown. Read the
 plans of every ledger this session wrote through `session-ledger`, leaving out withdrawn and
 complete plans: a step or part `active` is Active, `blocked` is Blocked, `next` is Up next with its
 estimate, `done` is Done and `skipped` is left out. Work not started goes under the workflow it
-continues, or under a workflow of its own when nothing has started it, whose time is the sum of its
-remaining estimates, marked `~`. A ledger that cannot be read is a gap the dashboard names, never
+continues, or under a workflow of its own when nothing has started it, whose time is its remaining
+work totaled as `session-ledger` totals a plan, marked `~`. A ledger that cannot be read is a gap the dashboard names, never
 an empty plan.
 
 ## Dashboard
@@ -79,17 +80,17 @@ pages, in order:
 
 - **Overview** (`overview`). Metrics: the session's working time, the number of agents with the
   split between workers and reviewers as its detail, and the longest workflow's time with its name
-  as the detail. A `board` "Now and next" with the columns Active (`accent`), holding active and
-  blocked work, and Up next (`next`), each card a summary saying what the work does and, for up
-  next, its estimate and the plan step it belongs to; the Loops page holds its entry. This board is
-  the one place the Overview lists items another page lists, because the user asked to see at a
-  glance what is running and what is still to do. A `table` of where the time went: one row per
-  top-level workflow, with its time and its State, as **Now and next** names it — each row
+  as the detail, and a fourth, Now and next, with the count of active and blocked work as its value
+  and the count and estimate of work up next as its detail. A `table` of where the time went: one
+  row per top-level workflow, with its time and its State, as **States** names it — each row
   opening a short write-up of that workflow in a dialog: what it did, its outcome and its largest
   stages, as **What happened** names them.
+- **Now and next** (`board`). One `board` with the columns Active (`accent`), holding active and
+  blocked work, and Up next (`next`), each card saying what the work does, its estimate for up
+  next, and, when the session has several plans, the plan it belongs to in `tag`.
 - **Loops** (`list`). One `tree`: each workflow, then its rounds or groups, then the agents or
   assignments inside them, each broken down as **What happened** says. Every entry's `figure` is its
-  time, or for work up next its estimate in `meta`; its `status` is a pill as **Now and next**
+  time, or for work up next its estimate in `meta`; its `status` is a pill as **States**
   says, in the matching tone; the model a reviewer ran on is its `tag`.
 - **Timeline** (`calendar`). One `tree` of the session's phases in order, each labeled by the work
   done in it with its time as `figure`. Its children are the agents, assignments and reviewers that
