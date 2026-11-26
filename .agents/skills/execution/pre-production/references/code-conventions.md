@@ -226,6 +226,11 @@ commit messages and pull-request text. `SKILL.md` names this file at the point a
   record of what changed. Never describe what a symbol used to do, what was removed, renamed, or
   deprecated, and never write migration tables, upgrade notes, or "formerly", "replaces", or "kept
   for backwards compatibility" notes.
+- **Documentation describes what anyone using the project gets.** A change made only for its
+  owner's own one-off convention, one no official format the project supports defines, such as a
+  folder layout only the owner's repositories follow, is described in its pull request, never in
+  the project's README, reference documentation, docstrings or comments. Behavior any user gets,
+  and support for an official format, are documented as usual.
 - **Behavior another party owns is explained once**, beside the value or line where the code first
   handles it. Every other place that reuses that value or works around the same behavior restates
   nothing: a second comment, a docstring, or a comment in another file. A comment above a timeout
