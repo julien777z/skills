@@ -1,4 +1,4 @@
-import { CircleAlert, CircleCheck, Info, type LucideIcon, TriangleAlert } from 'lucide-react';
+import { CircleAlert, CircleCheck, CircleDashed, Info, type LucideIcon, TriangleAlert } from 'lucide-react';
 
 import { Change, PullRequestState, Tone } from '@/spec';
 
@@ -72,14 +72,14 @@ export const TONES = {
     text: 'text-info',
     icon: Info,
   },
-  [Tone.DONE]: {
-    dot: 'bg-done',
-    badge: 'border-done/30 bg-done/15 text-done',
-    alert: 'border-done/40 bg-done/10 [&>svg]:text-done',
-    border: 'border-done',
-    color: 'done',
-    text: 'text-done',
-    icon: CircleCheck,
+  [Tone.NEXT]: {
+    dot: 'bg-next',
+    badge: 'border-next/30 bg-next/15 text-next',
+    alert: 'border-next/40 bg-next/10 [&>svg]:text-next',
+    border: 'border-next',
+    color: 'next',
+    text: 'text-next',
+    icon: CircleDashed,
   },
   [ToneName.NEUTRAL]: {
     dot: 'bg-muted-foreground',
