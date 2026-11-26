@@ -136,7 +136,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 
 | Column | `tone` | Cards |
 | --- | --- | --- |
-| In progress | `accent` | Active and blocked steps: `detail` what the step changes, from its ledger entry, `tag` the plan's title when the task has several plans, `status` "Blocked" toned `critical` when blocked, `meta` its estimate, adding "· <done> of <n> parts" for a step with parts, counting parts not skipped. Each question whose evidence is still owed: `title` the question, `detail` the evidence being gathered, `tag` "Question". |
+| Active | `accent` | Active and blocked steps: `detail` what the step changes, from its ledger entry, `tag` the plan's title when the task has several plans, `status` "Blocked" toned `critical` when blocked, `meta` its estimate, adding "· <done> of <n> parts" for a step with parts, counting parts not skipped. Each question whose evidence is still owed: `title` the question, `detail` the evidence being gathered, `tag` "Question". |
 | Up next | `next` | Steps not started, in plan order, with `meta` as above and `tag` the plan's title when the task has several plans. |
 | Done | `good` | Finished steps, `meta` their measured duration. |
 
