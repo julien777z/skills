@@ -44,7 +44,9 @@ def listed_files(agents_dir: Path) -> set[Path]:
         text=True,
     )
 
-    return {agents_dir / name for name in listing.stdout.split("\0") if name}
+    paths = (agents_dir / name for name in listing.stdout.split("\0") if name)
+
+    return {path for path in paths if path.is_file()}
 
 
 def folder_entries(directory: Path, files: set[Path]) -> dict[str, bool]:
@@ -53,7 +55,7 @@ def folder_entries(directory: Path, files: set[Path]) -> dict[str, bool]:
     entries: dict[str, bool] = {}
 
     for path in files:
-        if path.is_relative_to(directory):
+        if path != directory and path.is_relative_to(directory):
             parts = path.relative_to(directory).parts
             entries[parts[0]] = entries.get(parts[0], False) or len(parts) > 1
 

@@ -114,6 +114,7 @@ history:
 ```
 
 `fixture/service.diff`:
+
 ```diff
 --- a/app.py
 +++ b/app.py
@@ -221,8 +222,8 @@ tools:
 ## Checks
 
 - **A check reads recorded artifacts**: the tool log, the tool outputs, the resulting files against
-  the fixture's copies, a sent message, the transcript's launches, the final reply. It never asks for
-  the grader's impression of what the reader meant.
+  the fixture's copies, a sent message, the transcript's launches, the final reply. It never asks
+  for the grader's impression of what the reader meant.
 - **Every term and exclusion a check applies is settled inside that check**, or in the check it
   names as its measure, such as text that also occurs in the fixture, or fixed template labels, so
   two graders apply it the same way.
