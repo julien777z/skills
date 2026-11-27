@@ -1,6 +1,6 @@
 ---
 name: run-site
-description: Bring an application stack up and repair startup blockers. A change a reader sees rendered is inspected rendered before it is reported, in every execution environment, through the user’s connected browser; the full recorded walkthrough applies in cloud execution environments and whenever the user asks for browser work. Use before planning, recommending, delegating or performing browser walkthroughs or rendered UI inspections, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works. Use before starting container-backed work, to select the local container runtime, and before repairing, resetting or reseeding a local stack, its records or the development data of a disposable non-production deployment.
+description: Bring an application stack up and repair startup blockers. A change a reader sees rendered is inspected rendered before it is reported, in every execution environment, using the browser selected by use-browser; the full recorded walkthrough applies in cloud execution environments and whenever the user asks for browser work. Use before planning, recommending, delegating or performing browser walkthroughs or rendered UI inspections, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works. Use before starting container-backed work, to select the local container runtime, and before repairing, resetting or reseeding a local stack, its records or the development data of a disposable non-production deployment.
 short_description: 'Start an application stack and perform browser verification where applicable.'
 ---
 
@@ -200,8 +200,9 @@ proves the component renders and nothing about the screen a user reaches. A chan
 component's own behavior is the exception **Principles** names: its rendered page is the check. If
 sign-in genuinely cannot complete for a change that needs the real screen, report the walkthrough as
 not done.
-Use the tab selected by `use-browser` for sign-in. Use the harness's credential entry or handoff
-route to keep passwords and one-time tokens out of command arguments and transcripts. Reuse an
+Use the tab selected by `use-browser` for sign-in. Use the selected tool's credential-safe entry
+route, including harness handoff when available, to keep passwords and one-time tokens out of command
+arguments and transcripts. Reuse an
 available signed-in session of the required identity. Never read saved passwords, cookies, local
 storage or session files.
 
@@ -286,7 +287,7 @@ paragraph below says and skips the recording; the cloud walkthrough and one the 
 record as follows. Record the flow until the feature is exercised to its end — the form submitted
 and its result read back, the item seen in its list, the setting confirmed after a reload. Record
 through the selected tab's existing browser context, preserving its authenticated state. Use the
-harness's recording capability where available and `share-media` to deliver it. If recording is
+selected browser tool's recording capability where available and `share-media` to deliver it. If recording is
 unavailable, capture stills and report the recording gap.
 
 Send the recording, where one is owed, and a still of the view the change touched, unasked, plus a
