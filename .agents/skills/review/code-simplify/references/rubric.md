@@ -74,13 +74,13 @@ review against an independent search:
 - **New** names what each candidate found cannot do; with none found, the search terms are the
   evidence. A receipt that names no search is no receipt.
 
-Before creating any file, read the closest existing files and record where the addition belongs.
-Check whether it fits an existing file as named or whether a broader name would describe both
-the existing contents and the addition. Use the existing file when they share a responsibility,
-renaming it and updating its callers when its current name is too narrow. Create a separate file
-when the receipt identifies the responsibility or boundary the split preserves, such as a distinct
-UI component, a dependency boundary, or a path the framework requires. Keep model declarations
-with their models even when the operational module is small.
+Before creating any file, read the closest existing files and record the candidates and placement
+decision in the receipt. Check whether the addition fits an existing file as named or whether a
+broader name would describe both. Use the existing file when they share a responsibility, renaming
+it and updating its callers when needed. Create a separate file when the receipt names a distinct
+responsibility or boundary, such as a UI component, a dependency boundary, or a path the framework
+requires. Search within the file kind the repository's rules require, such as a model module for
+a model declaration.
 
 A workaround, or a design that changes a shared operation, guard, contract, subsystem, runtime
 boundary or independent consumer, also writes all three fields below, in the task record or
@@ -120,8 +120,9 @@ verdict, before deciding. Each field asks only for the facts the change has:
    - **Reachability is judged where the change will land**: the branch it merges into and the open
      branches it ships with, in every repository the user controls. "Set outside this repository"
      leaves the question open until those are read.
-2. **File ownership.** Verify each added file's placement under **Reuse And Removal**. A file
-   holding one public symbol is a cue to check its siblings for a shared responsibility.
+2. **A new module whose concern an existing module already owns** belongs there. Verify the
+   placement receipt for each added file against its actual siblings under **Reuse And Removal**.
+   A file holding one public symbol is a cue to check for a shared responsibility.
 3. **A new declaration that names what the repository already declares** is a second copy. Search for
    a new enum, constant set, mapping or model by its members or keys, never by its name. When the two
    answer the same question, the new values become properties of the existing declaration.
@@ -136,6 +137,10 @@ verdict, before deciding. Each field asks only for the facts the change has:
    interface or factory with one implementation, and the leftover a fresh extraction reduces to a
    forward are each deleted and their callers pointed at the real thing. An adapter stays only where
    a declared dependency boundary forbids either side from absorbing the mismatch.
+   Treat a side-effect-free callable that ignores its input and returns a fixed value the same
+   way. Use the data directly through the existing enum, constant or mapping. If an interface
+   the repository owns requires a callable for fixed data, let it accept the value directly.
+   A callable required by an external contract stays at that boundary.
 6. **Files over 1000 lines.** A file the change pushes past 1000 lines is decomposed into the modules
    that own its concepts. One already over the line is outside the change and follows **Scope**.
 7. **No new suppressions.** A `type: ignore`, `pyright: ignore`, `noqa`, lint disable, widened

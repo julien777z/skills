@@ -46,15 +46,6 @@ commit messages and pull-request text. `SKILL.md` names this file at the point a
 - In every language, use blank lines to separate setup, validation, transformations, side effects, and returns. Keep adjacent statements together only when they form one small operation; do not turn a function into an uninterrupted paragraph merely because a formatter permits it. Apply this to every line you write or edit, and elsewhere in a file you change within this skill's incidental size budget.
 - Use current language syntax for simple operations. For one-off Python interpolation, use f-strings instead of string concatenation or `.format()`, and keep spacing in the final string rather than a fragment with a hidden leading space. Follow the Python rule for reusable structured templates.
 
-- **A new file is the last resort.** Before creating one, find the existing file that already owns
-  the concern, or an existing file a broader name would make its owner, and put the code there,
-  renaming that file and updating every reference when the broader name is needed. Create a file
-  only when neither exists, and name the candidates checked in the report. Code the change already
-  wrote into a new file is moved the same way. Where another rule decides the kind of file, such as
-  models in a models module, that rule picks the kind and this search runs within it; a file a rule
-  or tool requires to stand alone — a component module, a migration revision, a page or workflow
-  found by its path — is not this case.
-
 - **The repository does one thing one way.** Before writing anything of a kind it already holds —
   a router, a client, a helper, a test, a fixture, a configuration entry, the way it raises and
   reports errors — read how the existing instances are written and follow that shape. A new pattern
