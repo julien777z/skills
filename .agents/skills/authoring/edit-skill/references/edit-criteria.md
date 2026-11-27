@@ -24,11 +24,6 @@ Reviewed Batches**, **Relocations**, **Resuming A Batch**.
   that make the same decision, and verify the repair on the original case and an adjacent route.
   Repair the description when discovery failed. When a caller or stopping clause skipped an
   applicable skill or check, repair that path.
-- Compare the user's proposed wording with the standing guidance before drafting. Use their
-  request to establish the desired behavior, and record which decision would actually change.
-  Broaden the owning instruction in place when adjacent cases escape it. Use the decision repair
-  above when the standing rule already covers the failure. Consolidate overlapping instructions
-  so each requirement has one owner and one statement.
 - Replay the original decision before proposing or writing the edit. If the draft still admits the
   miss, explain which instruction, condition or caller allows it and repair that path. Escalate
   genuine unresolved choices. In verification, show the different next action the correction
@@ -41,6 +36,14 @@ Reviewed Batches**, **Relocations**, **Resuming A Batch**.
 
 The statement is written before the edit, in the shape `SKILL.md`'s
 **Output** gives, and revised when the written text turns out to change more or less than it says.
+
+- Before drafting a behavior change, compare the user's suggested wording with the governing
+  text and the decisions it controls. Use their request to establish the desired outcome.
+  Inspect adjacent cases and record what the edit would change. Broaden the owning instruction
+  in place when related cases escape it. Use **Causal Diagnosis** when the standing rule already
+  covers an observed miss. Consolidate overlap into one statement at its owner. If the desired
+  behavior is already covered and inspection finds no gap, show the existing instruction and
+  the evidence for keeping it.
 
 - **Each line says one thing the user can check against what they meant.**
   - The statement never repeats the user's own words back to them; they know what they said, and
