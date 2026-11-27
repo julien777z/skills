@@ -180,27 +180,33 @@ def main() -> int:
             prune_ended_sessions()
 
         installed = git_output(["rev-parse", "HEAD"])
-        seen = saved["commit"] if saved is not None else None
 
-        if installed is None or seen == installed:
+        if installed is None:
             return 0
-
-        if seen is not None and event in SESSION_START_EVENTS | {SILENT_PROMPT_EVENT}:
-            return 0
-
-        changes = changed_guidance(seen, installed) if seen is not None else {}
-
-        if changes != {}:
-            sys.stdout.write(change_notice(changes))
 
         written = hook_input["transcript_path"]
         transcript_path = (
             written if written and Path(written).exists() else (saved["transcript_path"] if saved else None)
         )
 
+        seen = saved["commit"] if saved is not None else None
+        notify = seen not in (None, installed) and event not in SESSION_START_EVENTS | {SILENT_PROMPT_EVENT}
+
+        if seen is None or notify:
+            changes = changed_guidance(seen, installed) if notify and seen is not None else {}
+
+            if changes != {}:
+                sys.stdout.write(change_notice(changes))
+
+            commit = installed
+        elif saved is not None and transcript_path != saved["transcript_path"]:
+            commit = saved["commit"]
+        else:
+            return 0
+
         STATE_DIRECTORY.mkdir(parents=True, exist_ok=True)
         state_path.write_text(
-            json.dumps(SessionState(commit=installed, transcript_path=transcript_path)),
+            json.dumps(SessionState(commit=commit, transcript_path=transcript_path)),
             encoding="utf-8",
         )
     except Exception:
