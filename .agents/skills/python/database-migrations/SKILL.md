@@ -237,9 +237,9 @@ format transition or recovery mechanism for data explicitly declared disposable 
   project consumes, never the third-party migration framework; it owns the migration mechanics
   that know no project's schema. A project that consumes none keeps those mechanics in its shared
   backfill runtime package.
-- The project's shared backfill runtime package contains the backfill and rollback mechanics that
-  read the project's own models and catalogs, grouped further by database engine where their
-  behavior is engine-specific.
+- The project's shared backfill runtime package contains reusable backfill and rollback mechanics for
+  the project's schema, grouped by database engine where their behavior is engine-specific. When
+  those mechanics need a historical format or conversion, the revision supplies it.
 - **A rebaseline deletes revision-owned code with its revisions, never the shared procedure.**
   Paging, progress, checkpoint and similar mechanics that name no table or revision are the
   procedure the next data migration runs on, so a rebaseline that leaves one without a caller moves
@@ -250,6 +250,11 @@ format transition or recovery mechanism for data explicitly declared disposable 
 - The project's revision-owned backfill package contains behaviorally immutable implementation code owned
   by one logical handwritten migration set, including provider and database adapters used only by
   that backfill. Keep it for as long as any deployed database may replay that revision.
+- **A revision owns the data contracts it replays.** Keep the shapes it reads and writes and the
+  validation, serialization, and conversion behavior it relies on in revision-owned code. Use
+  those historical definitions throughout the revision's dependency chain, including through shared
+  helpers, so changing a live service model cannot change a replay. Generic migration mechanics
+  stay shared. Alembic reads current application metadata for schema comparison.
 - Revision files under `versions/` remain the Alembic entrypoints and call the owning backfill
   package when the migration is too substantial to keep inline.
 
