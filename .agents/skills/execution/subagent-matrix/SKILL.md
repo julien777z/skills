@@ -41,8 +41,9 @@ on the current host. Cheap through advanced form the ordinary ladder; specialist
 
 A dash means the provider has no family at that tier: an assignment at that tier on that provider
 runs on the nearest tier below it that has one, such as a Codex specialist assignment on Astra at
-`advanced`. That is the tier's mapping, not an unsupported-model fallback, and the report names
-the lower tier it ran at.
+`advanced`. That is the tier's mapping, not an unsupported-model fallback: the mapped tier counts
+as the requested one under the capacity rule, a specialist assignment keeps its own holding rule,
+and the dispatch line records the tier it ran at.
 
 A capture worker, mechanically capturing the pages and states a brief lists, takes `cheap`. It
 captures without judging; the delegating agent reads every image whole before relying on it or
