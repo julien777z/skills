@@ -293,8 +293,8 @@ question and never a level of its own:
   correction after base incorporation, or the repairs of and answers to a verdict's flags, read with the
   whole branch diff as its originating diff. For repairs, the gate judges only the repair's changed
   lines and the flags they answer, consulting the rest of the branch diff for what those lines touch
-  and never raising a new flag on lines the repair left alone: the whole change is judged once, by
-  final acceptance.
+  and never raising a flag on a defect the repair did not cause, one it causes elsewhere being
+  anchored on the repair's line: the whole change is judged once, by final acceptance.
 - **Base incorporation — what did the base bring in that the change must refactor?** The procedure
   below.
 - **Final acceptance — may this merge?** The complete pull-request diff, read once after review is
