@@ -63,7 +63,10 @@ sending it.
    catalog or release notes. An exact user override is used as given. **Never hard-code model IDs**
    in guidance, examples or fallback tables, and never guess one. When one launch route's model list
    lacks the family, check every launch route the host exposes, such as an orchestrator's delegate
-   tool and its capabilities listing, and launch through the one that offers the exact model. When
+   tool and its capabilities listing, and launch through the one that offers the exact model. On T3
+   Code, `delegate_task` launches a model the native agent tool omits, such as the specialist
+   family: search `orchestrator_capabilities` by family name for the exact provider and model ID to
+   put in its `target`. When
    no ID resolves on any route or the host has no model selector, take the launch fallback under
    **Dispatch**.
 3. **Launch the actual assignment with that ID.** A catalog that omits a family is no evidence it
