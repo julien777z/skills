@@ -24,7 +24,7 @@ for a condition no caller produces, or that every caller sets the same way.
 Read the code-simplify rubric for additions. For each added file, read its closest candidate
 owners and check placement under **Reuse And Removal**, including a broader rename. Report the paths read and the
 responsibility or boundary that decides placement. Apply code-simplify's **No forwarding layers**
-to added callables, including fixed values wrapped to fit an owned interface. Missing placement
+to callables the diff adds or changes, including fixed values in an owned interface. Missing placement
 evidence holds approval. Apply the simplification rubric's severity to a violated requirement.
 Flag a setting, env var, secret, config key or workflow input left optional or given an unsafe default, or
 code that skips or weakens its work when one is unset, unless its owner documents that absence
