@@ -117,17 +117,19 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   shared skills still name the shared skills they depend on.
 - **A file's name and description bound what it owns, and so do a reference's file name and a
   section's heading inside the skill chosen.** Before choosing a skill, rule, reference or section,
-  state the condition its name and description set — a release stage, a technology, a mode, a kind of
-  task — and ask whether the guidance would still be true where that condition does not hold. If
-  it would, that file, reference or section is too narrow, however close its neighbor: the
-  guidance goes to the one whose subject matches its own. Scope is judged by subject, never reach: guidance that
-  holds in every repository still goes to the skill or rule owning its subject, as the first bullet
-  places guidance about `.agents` content, and `.agents/global.md` takes only what the placement
-  bullet above leaves it. Use existing mentions and dependencies to find readers. Assign
-  ownership by the file's responsibility and when the guidance must apply. Move existing text
-  and update its readers when correcting its placement is in scope. When that relocation would
-  expand the request, explain the mismatch and ask whether to include it. Continue the work
-  already authorized.
+  state the condition its name and description set — a release stage, a technology, a mode, a kind
+  of task — and ask whether the guidance would still be true where that condition does not hold.
+  If it would, that file, reference or section is too narrow, however close its neighbor: the
+  guidance goes to the one whose subject matches its own.
+  - Scope is judged by subject, never reach: guidance that holds in every repository still goes to
+    the skill or rule owning its subject, as the first bullet places guidance about `.agents`
+    content, and `.agents/global.md` takes only what the placement bullet above leaves it. Assign
+    ownership by the file's responsibility and when the guidance must apply, and use existing
+    mentions and dependencies to find readers.
+  - **Text already misplaced in a file whose instructions the change adds to or alters moves in the
+    same change**, with its readers updated, as the pass's **Placement** step tests it: that file is
+    the change's scope. For a misplacement in a file the change does not touch, explain the
+    mismatch and ask whether to include the move, continuing the work already authorized.
 - Paths inside a repository's `.agents`:
   - `agent` -> `.agents/agents/<name>.md`
   - `rule` -> `.agents/rules/<name>.md`
