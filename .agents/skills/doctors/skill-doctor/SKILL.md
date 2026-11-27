@@ -208,7 +208,8 @@ sync log. Remedy: fix the reference, or cut what it anchored.
 
 A requirement in a file that `skill-pass`'s **Where Guidance Lives** does not make its owner:
 `.agents/global.md` holding what need not bind before a skill loads; a rule file holding what a
-skill runs for; a skill holding what its name and description do not bound; shared guidance
+skill runs for; a skill holding what its name and description do not bound, or a reference or
+section inside it holding what its file name or heading does not; shared guidance
 carrying one repository's facts, or a copy of how its tooling behaves today; guidance held in a
 harness's memory. And a rule file or `.agents/global.md` that names an individual skill, outside
 the one place that section allows, or that keeps an index of which skill owns which subject.
