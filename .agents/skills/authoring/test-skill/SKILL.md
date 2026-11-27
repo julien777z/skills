@@ -190,18 +190,13 @@ Run after `code-simplify` completes its pass.
 
 ## Reviewer selection
 
-Invoke `subagent-matrix` and request **standard** by default. Only after a host receipt explicitly
-rejects the standard capability level's exact identifier as unsupported, select the next permitted lower mapped capability,
-resolve its exact identifier, and launch the actual reader assignment. Advance again only after that candidate
-receives its own explicit unsupported receipt; never move upward or inherit the orchestrator's model. This
-fallback applies to this skill's default, never against the user's explicit model or capability constraint. When a
-required reader, scenario writer or grader cannot launch, apply `subagent-matrix`'s launch
-fallback for its assignment.
+Invoke `subagent-matrix` and request **standard** by default; never move upward or inherit the
+orchestrator's model. A refused reader dispatch is handled as `subagent-matrix`'s **Workflow** step 3
+says, with this skill's default as its declared fallback, never against the user's explicit model
+or capability constraint. When a required reader, scenario writer or grader cannot launch, apply
+`subagent-matrix`'s launch fallback for its assignment.
 
-Classify a rejected reader dispatch from the host receipt. Only a receipt establishing that the
-requested capability or model is unsupported makes it unavailable for that attempt and permits the
-fallback to a lower capability level. Retry a transient, concurrency, timeout, or unknown rejection once with the
-same resolved selection; do not lower the comparison's capability level. When no required reader launched, retry
+When no required reader launched, retry
 the required reader set. When one required reader launched, wait for its terminal report and retry
 only the rejected or unattempted required counterpart, never a duplicate of the accepted reader.
 When that retry cannot complete the required set, record its receipts and apply `subagent-matrix`'s
