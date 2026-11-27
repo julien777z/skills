@@ -82,8 +82,8 @@ decision in the receipt. Check whether the addition fits an existing file as nam
 broader name would describe both. Use the existing file when they share a responsibility, renaming
 it and updating its callers when needed. Create a separate file when the receipt names a distinct
 responsibility or boundary, such as a UI component, a dependency boundary, or a path the framework
-requires. Search within the file kind the repository's rules require, such as a model module for
-a model declaration.
+requires. When a new file is added, report the candidates and why the file stands alone. Search
+within the file kind the repository's rules require, such as a model module for a model declaration.
 
 A workaround, or a design that changes a shared operation, guard, contract, subsystem, runtime
 boundary or independent consumer, also writes all three fields below, in the task record or
