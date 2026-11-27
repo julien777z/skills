@@ -37,18 +37,22 @@ This is the user's standing instruction and holds over a harness default against
   should be another session's pull request carrying the session's commits. A miss goes to the
   running worker that made it, or the coordinator fixes its own, with the consolidation that rule
   requires. Like the look-over, this is a quick read, never a review pass.
-- **Finished:** a worker has finished once it reports its task done, even while its thread stays
-  open waiting on a review or a reply, as much as when the host shows it ended. It has its result
-  checked as [reported outcomes](outcomes.md) says, its captures held to its brief and design as
-  the look-over holds them, and its pull requests spot-checked, before its result is relayed. A miss it left goes to a fresh worker as
-  `subagent-matrix`'s **Dispatch** says for a follow-up, never back to the finished one.
+- **Finished:** a worker has finished once it reports its own task done and awaits nothing that
+  task needs, even while its thread stays open, as much as when the host shows it ended. One that
+  handed up a step its task needs, such as a review or gate it could not launch, waits for that
+  answer as `subagent-matrix`'s **Dispatch** says and is still running. A finished worker has its
+  result checked as [reported outcomes](outcomes.md) says, its captures held to its brief and
+  design as the look-over holds them, and its pull requests spot-checked, before its result is
+  relayed. A miss it left goes to a fresh worker as **Dispatch** says for a follow-up, never back
+  to the finished one.
 - **Rate-limited:** a worker a rate limit or quota stopped is not stalled. It is resumed at once
   as `subagent-matrix`'s capacity rule says for a running worker, never scheduled for the reset
   time the refusal names.
 - **Stalled:** at an early check, one with no activity at all since launch, or whose last step
   failed and nothing followed. At a later check, one with no activity for 30 minutes, counted
-  from its last activity and not before, unless a long command of its own is in progress;
-  waiting on anything else does not excuse it.
+  from its last activity and not before, unless a long command of its own is in progress or it
+  waits on a hand-up the coordinator has not answered; waiting on anything else does not excuse
+  it.
 - **Response:** a stalled worker is cancelled and relaunched, through `subagent-matrix`'s
   **Dispatch**, with its brief plus what stalled it, such as a failed command it never
   recovered from, input it waits on that nobody sees, or a provider error it never reported. One
