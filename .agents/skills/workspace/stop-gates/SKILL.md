@@ -25,7 +25,11 @@ Everything the session does on its task, so nothing builds on the state being co
 - merge gates, guidance delivery and ledger processing.
 
 Conversation with the user does not stop, and neither does the work they ask for during the pause:
-investigating, editing, committing and pushing a fix, with the fast checks a push needs.
+investigating, editing, committing and pushing a fix, with the fast checks a push needs. A guidance
+edit is the usual case: it is written, committed and pushed to its draft pull request and installed
+as usual, while its review, skill test and merge wait in the queue. That is the pause working as
+meant, so it raises no question; **Asking While Paused** applies only when the user asks to finish,
+merge or resume something.
 
 ## Procedure
 
@@ -41,6 +45,11 @@ investigating, editing, committing and pushing a fix, with the fast checks a pus
 3. **Report it**: one line per item stopped, then answer what the user raised.
 
 ## While Paused
+
+- **Answers explain more than usual.** The user paused because they noticed a problem, so each
+  answer about the work traces what led to it: the step or agent that made the decision, the
+  guidance or input it acted on, and the evidence for each link, before what to change. A short
+  answer that names only the outcome leaves them without what they paused to see.
 
 - **The pause holds until the user resumes it**, through **Asking While Paused** below, by asking
   to resume the gates, or in their own words. A context summary, a new message, a finished fix, a
