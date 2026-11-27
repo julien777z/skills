@@ -39,7 +39,12 @@ separate tier.
 | `cheap` | Terra | Sonnet | Lower-cost, bounded tasks and cheaper-model checks | Caller-authorized ordinary ladder |
 | `standard` | Sol | Opus | Balanced reviews, analysis, and substantive tasks, and a narrow independent judgment: a small packet whose answer accepts no diff for merge | Caller-authorized ordinary ladder |
 | `advanced` | Astra | Fable | Difficult and the most demanding tasks, and an independent judgment that accepts a diff for merge or a plan before it is built | Caller-authorized ordinary ladder |
-| `specialist` | Astra | Mythos | Only a calling skill explicitly selecting specialist | Claude: `advanced` by default, or caller-selected tier; Codex Astra holds |
+| `specialist` | — | Mythos | Only a calling skill explicitly selecting specialist | `advanced` by default, or caller-selected tier |
+
+A dash means the provider has no family at that tier: an assignment at that tier on that provider
+runs on the nearest tier below it that has one, such as a Codex specialist assignment on Astra at
+`advanced`. That is the tier's mapping, not an unsupported-model fallback, and the report names
+the lower tier it ran at.
 
 The labels describe selection policy, not identical capabilities across providers or guaranteed
 host availability. A catalog omission is not availability evidence; the workflow resolves an
@@ -128,8 +133,8 @@ so two seats may share a provider.
    through steps 2 and 3 and apply that fallback only if it respects the user's
    explicit model or capability constraint; otherwise hold the assignment. Do not try older Mythos,
    or another provider on an unsupported receipt. Apply step 3's repair, retry, and capacity rules to every attempt,
-   including the selected fallback and Codex Astra. Hold when the selected fallback or specialist Codex Astra is confirmed
-   unsupported or denied. Catalog omission, identifier-resolution failure, and operational or
+   including the selected fallback. Hold when the selected fallback is confirmed unsupported or
+   denied. Catalog omission, identifier-resolution failure, and operational or
    capacity failures do not establish Mythos unavailability or denial. No ordinary assignment may
    select specialist as a fallback.
 
