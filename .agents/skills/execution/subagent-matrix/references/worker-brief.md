@@ -19,9 +19,10 @@ Findings (fix only): <each finding verbatim with its id, severity and the review
 already tried and why each failed · round <n> of 3>
 
 A finding's remedy is the reviewer's proposal, never the fix itself. Before applying one, check it
-against every intent the brief names: a repair that removes a check, a behavior or a test case the
-base branch carries keeps that one beside the new one, unless the intent says it goes; when the
-remedy as written would drop it, apply the remedy beside it and say so in the report.
+against every intent the brief names: a repair that also removes a check, a behavior or a test case
+the base branch carries, one the finding does not name as its defect, keeps that one beside the new
+one, unless the intent says it goes; when the remedy as written would drop it, apply the remedy
+beside it and say so in the report.
 
 Before writing anything the Reuse lines do not cover (a function, component, hook, type, constant
 set, fixture, configuration entry or block of logic), search the repository and its shared
