@@ -71,10 +71,12 @@ agent; the calling agent launches the actual assignment with the selected model.
    cannot launch the other harness's models,
    relaunch on whichever permitted model the request path shows cleared first: the coordinator answering on that model, or a relaunch being accepted, shows it has cleared, and
    only a refused relaunch shows it still holds. **A running worker a capacity refusal stopped is
-   resumed, not relaunched**, in its own thread so it keeps its context, at once when the
-   coordinator answering on that worker's model shows the model has cleared, within the count
-   **Dispatch** allows; otherwise it moves as above. It is never scheduled for the reset time the
-   refusal names, and a refused resume is retried at the delegating agent's next check of it. The accepted worker
+   resumed, not relaunched**: at once, in its own thread so it keeps its context, within the count
+   **Dispatch** allows, whatever model the coordinator answers on. The coordinator answering at all
+   is the sign capacity has cleared, and an accepted resume shows it has; the resume is the
+   assigned work, never a probe. It is never scheduled for the reset time the refusal names, and a
+   refused resume is retried at the delegating agent's next check of it rather than moved, since
+   moving would lose that context. The accepted worker
    performs the assignment; never launch a throwaway availability probe. Record the runtime identifier only
    when the host exposes its exact value. Generic provider or product
    branding, a worker-reported label, or no runtime identifier is neither confirmation nor a contradiction of
