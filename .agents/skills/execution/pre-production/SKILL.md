@@ -1,6 +1,6 @@
 ---
 name: pre-production
-description: "The product state before it ships, applied to implementation, review and operational data tasks, maintenance, cleanup, tooling and CI repairs included: build only the target contract, never adding a compatibility shim or keeping support for an obsolete owned contract or revision; update its owned consumers and migrate retained data. Also covers which contracts, environments and records a project's guidance marks as having users or as disposable, what retained data obliges, configuration as an owned contract, deliberate breaks of owned contracts across repositories, adapting to a third-party provider's contract, what a requiredness change and a backfill owe retained data, and why the current deployment's size never sets the design."
+description: "The product state before it ships, applied to implementation, review and operational data tasks, maintenance, cleanup, tooling and CI repairs included: build only the target contract, never adding a compatibility shim or keeping support for an obsolete owned contract or revision; update its owned consumers and migrate retained data. Also covers which contracts, environments and records a project's guidance marks as having users or as disposable, what retained data obliges, configuration as an owned contract, deliberate breaks of owned contracts across repositories, adapting to a third-party provider's contract, and what a requiredness change and a backfill owe retained data."
 short_description: 'Build the target contract for the product before it ships, with no compatibility for obsolete owned shapes.'
 ---
 
@@ -19,38 +19,10 @@ Build the clean target contract instead of preserving transitional behavior.
   valuable stored evidence exist. Apply an explicit statement that affected data is nonexistent or
   disposable; ask only about a concrete conflicting fact or a genuinely unresolved retention choice.
   Do not invent a production environment or require queries against one to confirm that statement.
-- **Operational safeguards enforce evidenced requirements.** Before adding an execution limit,
-  preservation step, or restriction to authorized work, identify the user or repository requirement,
-  service contract, or observed resource risk it enforces. A remote environment, a large dataset, or
-  a hypothetical production concern alone supplies none. Do not invent a cutoff or reduce the
-  requested outcome on that basis; carry out the authorized work and verify it. Preserve limits
-  required by an established contract.
 - Keep owned cutover sequencing in the release procedure. Move affected users to the target
   contract and convert retained data in versioned migrations. Do not add runtime behavior for
   mixed owned versions, half-applied transitions, or an in-flight state the work has established
   is absent. Ordinary recovery uses the current contract.
-
-## The Deployment's Size Is Not The Design
-
-- **The deployment's current dimensions are facts about today, never constraints on the design.** How
-  few rows its database holds, how small its instance is, how little traffic it serves: those
-  describe what is deployed, not what the code has to be able to do. A mechanism that cannot grow past
-  one process, one core, or one container is a property of the mechanism, and it is still that on the
-  day the same code meets a hundred times the data.
-- **"It is small enough today" is the sentence that ships the ceiling.** It is true whenever it is
-  said and it is never true for long, and it sounds like an argument about the code while being an
-  argument about the environment. The same goes for every relative of it: the table is short, the
-  instance copes, the job finishes overnight, nobody has complained.
-- **Judge the mechanism, not the environment it currently runs in.** Ask whether the work grows with
-  the data and whether anything bounds it — not whether this month's instance survives it. Resizing is
-  a number somebody revisits under pressure; a design that scales with the work is not.
-- Where the environment genuinely limits what can be *demonstrated* — a single-node database that
-  cannot show contention, a dataset too small to produce a rate — say so plainly and build for the
-  target anyway. A design that cannot yet be proven here is still the right design; one that cannot
-  scale is not, and a measurement taken on a small deployment is evidence about that deployment only.
-- This is not a license for speculative distribution. The bar is unchanged: the cleanest result for
-  the contract the released product needs. It removes exactly one argument from the discussion — that
-  the current deployment is small — and settles nothing else about how much scale the work warrants.
 
 ## Target Contract
 
@@ -59,13 +31,6 @@ Build the clean target contract instead of preserving transitional behavior.
   tooling, CI, data handling, documentation, and instructions. Update affected owned consumers,
   convert retained data through versioned migrations, and remove obsolete paths. Put any cutover
   sequencing in the release procedure.
-- **Repair the design that causes the defect.** Trace the operation from its entry point to the
-  component that decides the outcome. Check which constraints are real product or external
-  requirements and which are choices the repository already made. If an owned contract, model,
-  or flow cannot express the intended behavior directly, change it and its callers. The number of
-  callers is a cost to verify, not a reason to preserve the old design. Never invent an entity,
-  identity, scope, or state to satisfy the old shape. A guard, fallback, or special case needs to
-  represent a supported case at the boundary that owns it.
 - Treat configuration inputs as owned contracts. Replace a stale deployed value at the existing
   setting and its deployment owner; do not add another file, environment key, or fallback path to
   override it.
@@ -115,9 +80,8 @@ Build the clean target contract instead of preserving transitional behavior.
   before deciding what its revision keeps or clears; required columns do not themselves create an
   obligation to preserve disposable or nonexistent rows.
 - For retained values, use the authoritative source where one exists and a type-valid placeholder
-  only where none exists and the placeholder expresses a legitimate domain state. The
-  **Target Contract** prohibition on invented identities, ownership, and scopes also applies during
-  migration. Never overwrite a known retained value, fabricate a placeholder in runtime code, or
+  only where none exists and the placeholder expresses a legitimate domain state. Never
+  invent an identity, ownership or scope to fill one. Never overwrite a known retained value, fabricate a placeholder in runtime code, or
   keep a permanent schema default solely to make a migration convenient.
 - **A backfill writes each row's value under the new contract, never one chosen so existing rows
   keep behaving as before.** A flag set on every pre-change row so it keeps the old outcome, such as

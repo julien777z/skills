@@ -1,6 +1,6 @@
 ---
 name: scope-of-change
-description: "What a change takes on: the problems it fixes, how far it reaches, the pull request it rides, and the decisions it makes itself rather than putting to the user. Read before planning, fixing, reviewing or gating any change, whenever a check fails or the work turns up a problem, and before putting a decision to the user. Covers classifying a validation failure against the default branch, which checks have to pass and a lint, formatting or other non-essential check red on code the change did not write, a hosted attempt a runner interrupted, what counts as a defect and how far its fix reaches, side work and the pull request that carries it, a package consumed through a branch reference, incidental cleanup's size budget and the grounds for a deferral record, a better shape than the repository's, a correction to one screen against a rule, telling a product choice from a routine detail, restoring intended behavior in a bug fix, and surfacing trade-offs rather than enforcing them."
+description: "What a change takes on: the problems it fixes, how far it reaches, the pull request it rides, and the decisions it makes itself rather than putting to the user. Read before planning, fixing, reviewing or gating a change, when a check fails or the work turns up a problem, and before putting a decision to the user. Covers classifying a failing check against the default branch, which checks must pass, a lint or formatting check red on code the change did not write, a hosted attempt a runner interrupted, what counts as a defect and how far its fix reaches, repairing the design behind a defect, a limit added with no evidenced requirement, why today's deployment size never sets the design, side work and its pull request, a package consumed through a branch reference, the cleanup size budget and deferral grounds, a better shape than the repository's, a correction to one screen against a rule, product choices against routine details, restoring intended behavior in a bug fix, and surfacing trade-offs."
 short_description: 'Decide what a change fixes, carries and leaves, and which of its choices go to the user.'
 ---
 
@@ -232,6 +232,19 @@ authorizes compatibility with an obsolete owned contract or revision.
   one in the same pass even though its look changes with it: it takes the look the rest of the
   product already has, which is no new choice about that page, unless the task's record or the
   conversation shows the user decided that page's look, in which case the move goes to the user.
+- **Repair the design that causes the defect.** Trace the operation from its entry point to the
+  component that decides the outcome. Check which constraints are real product or external
+  requirements and which are choices the repository already made. If an owned contract, model,
+  or flow cannot express the intended behavior directly, change it and its callers. The number of
+  callers is a cost to verify, not a reason to preserve the old design. Never invent an entity,
+  identity, scope, or state to satisfy the old shape. A guard, fallback, or special case needs to
+  represent a supported case at the boundary that owns it.
+- **Operational safeguards enforce evidenced requirements.** Before adding an execution limit,
+  preservation step, or restriction to authorized work, identify the user or repository requirement,
+  service contract, or observed resource risk it enforces. A remote environment, a large dataset, or
+  a hypothetical production concern alone supplies none. Do not invent a cutoff or reduce the
+  requested outcome on that basis; carry out the authorized work and verify it. Preserve limits
+  required by an established contract.
 - Inspect the complete mechanism before choosing its repair. Prefer the clean result that solves
   that defect throughout its affected paths; do not equate a broader cleanup with a better fix.
 - The bar is what the cleanest result requires, not what the smallest diff permits. Existing users
@@ -254,6 +267,28 @@ authorizes compatibility with an obsolete owned contract or revision.
   structure it points at: split the module, remove the unused export, move the import. A manifest
   key, a bundler or compiler option, an alias or an exclusion that stops the tool from seeing the
   problem leaves the structure as it was and hides it from the next reader.
+
+## The Deployment's Size Is Not The Design
+
+- **The deployment's current dimensions are facts about today, never constraints on the design.** How
+  few rows its database holds, how small its instance is, how little traffic it serves: those
+  describe what is deployed, not what the code has to be able to do. A mechanism that cannot grow past
+  one process, one core, or one container is a property of the mechanism, and it is still that on the
+  day the same code meets a hundred times the data.
+- **"It is small enough today" is the sentence that ships the ceiling.** It is true whenever it is
+  said and it is never true for long, and it sounds like an argument about the code while being an
+  argument about the environment. The same goes for every relative of it: the table is short, the
+  instance copes, the job finishes overnight, nobody has complained.
+- **Judge the mechanism, not the environment it currently runs in.** Ask whether the work grows with
+  the data and whether anything bounds it — not whether this month's instance survives it. Resizing is
+  a number somebody revisits under pressure; a design that scales with the work is not.
+- Where the environment genuinely limits what can be *demonstrated* — a single-node database that
+  cannot show contention, a dataset too small to produce a rate — say so plainly and build for the
+  target anyway. A design that cannot yet be proven here is still the right design; one that cannot
+  scale is not, and a measurement taken on a small deployment is evidence about that deployment only.
+- This is not a license for speculative distribution. The bar is unchanged: the cleanest result for
+  the contract the released product needs. It removes exactly one argument from the discussion — that
+  the current deployment is small — and settles nothing else about how much scale the work warrants.
 
 ## Product Choices
 
