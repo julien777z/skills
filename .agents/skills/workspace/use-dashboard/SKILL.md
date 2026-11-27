@@ -216,8 +216,8 @@ Dashboards look alike because they are built alike:
   earns its place by telling items apart: statuses that differ from item to item are worth a pill on
   every one, while a pill reading the same on most items has stopped meaning anything.
 - **A figure is a real quantity in a unit the reader knows.** A duration is clock time. It reads in
-  its two largest units, starting from the largest that is not zero, so `3d 4h`, `4h 19 min` and
-  `12 min`, never `72h` or `3d 4h 12 min`; a one-letter unit sits against its number and a longer
+  its two largest units, starting from the largest that is not zero, so `2d 7h`, `5h 42 min` and
+  `12 min`, never `55h` or `2d 7h 12 min`; a one-letter unit sits against its number and a longer
   one follows a space. A total over
   work that ran in parallel counts overlapping time once, so no total is longer than the clock time
   it spans. A figure summed over parallel work instead is agent time: its chart's `description`
@@ -238,7 +238,7 @@ Dashboards look alike because they are built alike:
   next or still to do. A status takes the tone its meaning carries on every dashboard, never a
   color picked for one page. Leave it out for neutral; never tone an item only to decorate it.
 - **A model is named exactly.** A label, tag or figure naming the model an agent ran on gives its
-  name and version as the session's records show it, such as Opus 5.5, never the family alone.
+  name and version as the session's records show it, such as Corvid 2.4, never the family alone.
 - **Blue text is a link.** A reader clicks blue text, so only links take it, and a tone colors a
   dot, border, line or bar, never text. A figure, number or label meant to stand out sits in a
   neutral badge rather than taking a color or the weight its neighboring names already use.
