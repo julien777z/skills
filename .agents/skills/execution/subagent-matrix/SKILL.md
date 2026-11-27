@@ -58,8 +58,9 @@ agent; the calling agent launches the actual assignment with the selected model.
    explicit receipt that the exact model is unsupported or, where step 4 allows it, denied.
    When the user or calling skill requires a provider or exact model, rerun within that
    requirement when capacity returns.
-   **For assignments with no provider or exact-model requirement, a capacity refusal moves the
-   assignment to the matching model on the other harness**: a
+   **For assignments with no provider or exact-model requirement, a capacity refusal of a launch
+   moves the assignment to the matching model on the other harness**, a running worker's stop
+   excepted below: a
    Codex model's refusal relaunches the same assignment, with the same brief and reasoning effort, on the
    Claude family at the same capability level in **model capabilities**, and a Claude model's refusal on the
    Codex family, because the refusal is one provider's capacity and the other's model at that level does the
@@ -73,7 +74,7 @@ agent; the calling agent launches the actual assignment with the selected model.
    only a refused relaunch shows it still holds. **A running worker a capacity refusal stopped is
    resumed, not relaunched**: at once, in its own thread so it keeps its context, within the count
    **Dispatch** allows, whatever model the coordinator answers on. The coordinator answering at all
-   is the sign capacity has cleared, and an accepted resume shows it has; the resume is the
+   is reason enough to resume, and an accepted resume shows capacity has cleared; the resume is the
    assigned work, never a probe. It is never scheduled for the reset time the refusal names, and a
    refused resume is retried at the delegating agent's next check of it rather than moved, since
    moving would lose that context. The accepted worker
