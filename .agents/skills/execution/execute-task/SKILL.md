@@ -127,8 +127,8 @@ plan of its own; only an edit that adds nothing skips it.
 - **Settle ownership before the plan is final.** When the design comparison for a shared operation,
   contract, subsystem, runtime boundary, or independent consumer spans subsystems, delegate its
   inventory to one read-only subagent. Invoke `subagent-matrix` at its standard
-  capability level for that reader, launch the exact resolved identifier, and retain catalog state,
-  identifier, assignment state and host receipt with the plan evidence. The plan states where common
+  capability level for that reader, launch the exact resolved model, and retain its `subagent-matrix`
+  **Output** dispatch line with the plan evidence. The plan states where common
   behavior will live and which policy or wiring stays consumer-specific; it never starts from a parallel
   structure and leaves ownership for implementation.
 - Send each message as `user-facing-output` and `share-media` require: any open decisions first,

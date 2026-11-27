@@ -194,8 +194,7 @@ Invoke `subagent-matrix` and request **standard** by default. Only after a host 
 rejects the standard capability level's exact identifier as unsupported, select the next permitted lower mapped capability,
 resolve its exact identifier, and launch the actual reader assignment. Advance again only after that candidate
 receives its own explicit unsupported receipt; never move upward or inherit the orchestrator's model. This
-fallback applies to this skill's default, never against the user's explicit model or capability constraint. A
-`dispatch required` result with an exact identifier launches the actual required reader set. When a
+fallback applies to this skill's default, never against the user's explicit model or capability constraint. When a
 required reader, scenario writer or grader cannot launch, apply `subagent-matrix`'s launch
 fallback for its assignment.
 
@@ -213,16 +212,8 @@ terminal report, record the incomplete attempt, then launch a fresh required set
 fallback for the missing assignment.
 
 Run each scenario's edited reader, and its original control only where **When It Runs** requires
-one, with the same resolved model and reasoning effort where both run. Record
-the catalog state, requested capability and family, exact dispatch identifier, resolved reasoning
-effort, selector resolution, and accepted actual-assignment dispatch receipt with those explicit
-parameters in each run's evidence entry. Record catalog state separately
-from assignment state: a catalog-hidden family is `dispatch required` until its exact identifier is resolved
-and the assigned worker accepts it, then it is `accepted`; a missing identifier triggers the launch
-fallback and is not an unsupported-model receipt. Selector resolution retains an explicit unsupported request,
-the exact fallback capability and dispatch identifier when one is permitted, why that fallback was selected,
-and any explicit user override. Record the runtime-identity and runtime-label evidence as
-`subagent-matrix`'s **Workflow** defines. Follow the selector's dispatch instructions.
+one, with the same resolved model and reasoning effort where both run. Each run's evidence entry
+records its `subagent-matrix` **Output** dispatch line, with any explicit user override.
 
 ## Output
 
@@ -284,15 +275,7 @@ evidence behind every cell, one section per skill:
 
 #### <run label> (<edited | original> text[, round <n>])
 
-- **Catalog state:** <capability> / <family> — <catalog-confirmed | catalog-hidden>
-- **Requested selection:** <capability> / <family>
-- **Dispatch identifier:** <exact identifier | identifier required>
-- **Assignment state:** <not requested | dispatch required | identifier required | accepted | unavailable: reason>
-- **Reasoning effort:** <requested and resolved effort>
-- **Selector resolution:** <accepted identifier | explicit unsupported receipt | same-selection retry | fallback or override>
-- **Actual-assignment dispatch, accepted:** <source>
-- **Runtime identity, <model | not exposed>:** <host evidence>
-- **Runtime label:** <verbatim generic label | not exposed>
+- **Dispatch:** <`subagent-matrix` Output line>
 - **Environment:** <baseline identity, isolated resources, and verified execution boundary>
 - **Retained results:** <raw report, dispatch receipt, action record, resulting-state and grader-receipt locators>
 - **<criterion>, <pass | miss>:** <artifact location or exact finding with supporting source>
@@ -301,12 +284,7 @@ evidence behind every cell, one section per skill:
 
 #### Dispatch attempt <n> (incomplete required reader set)
 
-- **Catalog state:** <capability> / <family> — <catalog-confirmed | catalog-hidden>
-- **Requested selection:** <capability> / <family>
-- **Dispatch identifier:** <exact identifier | identifier required>
-- **Assignment state:** <not requested | dispatch required | identifier required | accepted | unavailable: reason>
-- **Reasoning effort:** <requested and resolved effort>
-- **Selector resolution:** <rejection classification; retained exact identifier or exact selected fallback identifier>
+- **Dispatch:** <`subagent-matrix` Output line for each launch attempted, with its refusal classification>
 - **Edited reader dispatch, <accepted | rejected | not attempted>:** <receipt or reason>
 - **Required control dispatch, <accepted | rejected | not applicable>:** <receipt or reason>
 - **Outcome:** <same-selection set retried | missing reader retried | fresh fallback set launched | terminal hold>

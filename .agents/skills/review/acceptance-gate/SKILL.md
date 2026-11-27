@@ -92,8 +92,8 @@ pull-request context is a flag to obtain that context, not permission to assume 
 
 The gate is read-only and distinct from the author. If its reader cannot launch, apply
 `subagent-matrix`'s launch fallback. Invoke `subagent-matrix` at the capability level
-**Questions** gives the gate's question. Dispatch the gate with that exact identifier, and retain catalog state, identifier, assignment
-state and host receipt in the gate record. Its reader freshness follows `subagent-matrix`'s **Dispatch**. Its
+**Questions** gives the gate's question. Dispatch the gate with that exact model, and retain its `subagent-matrix` **Output** dispatch
+line in the gate record. Its reader freshness follows `subagent-matrix`'s **Dispatch**. Its
 prompt carries five things and nothing else; what it reads from the tree itself, the paragraphs
 after them say:
 
