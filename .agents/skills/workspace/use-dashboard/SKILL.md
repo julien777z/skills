@@ -85,7 +85,7 @@ of a process, carries no count. Section types:
 | `tree` | `title`, `items`, `open_depth?` (levels open on load, 1 by default) | `label`, `detail?`, `tag?`, `figure?`, `status?`, `meta?`, `tone?`, `children?`, `details?`: nested entries, each with children opening and closing from a chevron, `tag` a short label that tells otherwise alike entries apart, such as the warehouse each parcel left from, in a neutral pill beside its label, `figure` a short quantity, such as a count or a duration, in a neutral badge after that, `status` (`{label, tone?}`) the entry's state as a pill in its tone after the figure, its tone also coloring the entry's dot when the entry sets no `tone`, `meta` beside them, and `details`, one section, opening in a dialog from the entry's label, which then shows as a link with an open icon; for a whole made of parts made of parts |
 | `tabs` | `title`, `tabs: [{label, sections}]` | each tab a `label` and the `sections` it shows: a bar of tab labels, read with the arrow keys as well as the pointer, over the selected tab's sections, which render inside this card in order; a tab whose `sections` is `[]` is left off the bar, and with one tab left no bar shows, only its sections; for one subject split into kinds the reader looks at one at a time |
 | `figures` | `title`, `items`, `stacked?` (one figure per row, each followed by its caption, for pictures read in order) | `image`, `alt`, `caption?`: `image` a base64 data URI of an SVG, PNG, JPEG, WebP or GIF image, a single figure taking the card's width and several two side by side on a wide page, or one per row at a readable width with `stacked`, with `alt` read out in its place and `caption` under it; for what the reader needs to see rather than read, such as a map, a mock-up or a screenshot |
-| `chart` | `title`, `kind` (`pie`, `bar`), `items`, `total?` | `label`, `value`, `figure`, `detail?`, `tone?`, `details?`: `value` a number of at least 0 that sizes the item's slice or bar, at least one above 0; `figure` the value as the reader reads it, such as `3h 20 min`, shown beside the label with, in a pie, its share of the whole; `detail` a line under it; `tone` colors an item whose meaning is that tone's, such as rework in `warning`; `details`, one section, opens in a dialog when the item's label or its pie slice is clicked; a bar itself is not clickable, since its label beside it already opens the same dialog, for what lies behind that amount, such as the agents or runs it sums. Every untoned item in a pie takes the next series color, distinct hues that are never a gray, skipping any close to a tone the chart uses, and every untoned bar one color, so only a tone stands out. Pointing at an item, or walking a pie's ring with the arrow keys, dims the rest. A pie's slice shows its label, figure and share in a popup and its middle, so a reader reads it off the ring without matching colors; a bar, whose label and figure sit beside it, has no popup. A pie is a ring with `total` in its middle and a legend beside it; bars run one per item scaled to the largest; labels are unique |
+| `chart` | `title`, `kind` (`pie`, `bar`), `items`, `total?` | `label`, `value`, `figure`, `detail?`, `tone?`, `details?`: `value` a number of at least 0 that sizes the item's slice or bar, at least one above 0; `figure` the value as the reader reads it, such as `3h 20 min`, shown beside the label with, in a pie, its share of the whole; `detail` a line under it; `tone` colors an item whose meaning is that tone's, such as a late shipment in `warning`; `details`, one section, opens in a dialog when the item's label or its pie slice is clicked; a bar itself is not clickable, since its label beside it already opens the same dialog, for what lies behind that amount, such as the agents or runs it sums. Every untoned item in a pie takes the next series color, distinct hues that are never a gray, skipping any close to a tone the chart uses, and every untoned bar one color, so only a tone stands out. Pointing at an item, or walking a pie's ring with the arrow keys, dims the rest. A pie's slice shows its label, figure and share in a popup, and its label and share in the ring's middle, so a reader reads it off the ring without matching colors; a bar, whose label and figure sit beside it, has no popup. A pie is a ring with `total` in its middle and a legend beside it; bars run one per item scaled to the largest; labels are unique |
 | `diagram` | `title`, `nodes`, `edges`, `prs?`, `steps?`, `legend?` (`[{tone, label}]`, a line in each tone beside what it means) | node: `id`, `label`, `detail?`, `pr?`, `change?`, `tone?`, `details?`, `target?`; edge: `from`, `to`, `label?`, `step?`, `change?`, `tone?`, `details?`; pr: `ref`, `url`; each step a string |
 
 A diagram draws each node as a box inside a frame titled with the `ref` its `pr` names, and each
@@ -220,7 +220,9 @@ Dashboards look alike because they are built alike:
   `12 min`, never `72h` or `3d 4h 12 min`; a one-letter unit sits against its number and a longer
   one follows a space. A total over
   work that ran in parallel counts overlapping time once, so no total is longer than the clock time
-  it spans. A figure never carries a label for how it was computed.
+  it spans. A figure summed over parallel work instead is agent time: its chart's `description`
+  says so, and it sets no `total`. A pie's parts never overlap, so its shares add up to its whole.
+  A figure never carries a label for how it was computed.
 - **Text says what it means where it stands.** A line never sends the reader elsewhere to make
   sense of it, such as "at step 2" or "see above": it says what happens then, such as "after the
   batch is frozen". A numbered title keeps its number; the text about it never leans on one.
@@ -308,11 +310,12 @@ data exists, or a change to the app — runs on one made-up scenario, never on r
    never a subagent, views the rendered page itself, every page and the entries and dialogs that
    carry its content, and judges it as the user will: does each page make sense, is every color,
    pill and label the standard one for what it marks, are names exact and readable, and does
-   anything look wrong, repeated, raw or confusing, such as a command line or tool name as a label,
-   a model named in both a label and its tag, or a figure that contradicts another. These rules list
+   anything look wrong, repeated, raw or confusing, such as an internal identifier or file path as
+   a label, a name given in both a label and its tag, or a figure that contradicts another. These rules list
    what is already known; the look-over uses judgment for everything else. Fix what it finds in the
-   spec or in the caller's data, re-render, and look again; only a page with nothing left to fix is
-   delivered.
+   spec or in the caller's data, re-render, and look again. The look-over renders to a working copy
+   in the task's working-files folder, never to the delivered output path, whose open copy updates
+   in place; only a page with nothing left to fix is rendered to that path.
 
 Change a delivered dashboard only by re-rendering its whole spec, never by editing the page's
 HTML, which skips the renderer's validation. Everything the reader can click, a table row or tree
