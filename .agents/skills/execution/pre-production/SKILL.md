@@ -198,14 +198,16 @@ with an obsolete owned contract or revision.
   consider or an option, recorded as deferred, left as a hardening note, or answered with a
   recommendation to run an audit of any kind later.
 - **Side work goes on its own pull request, so the change's reviews never read it.** A defect the
-  work notices that the change neither introduced nor needs, incidental cleanup outside the lines and
-  files the requested work edits, a skill folder it edits counting as one file, and maintenance a standing rule asks for that the change does not
+  work notices that the change neither introduced nor needs, incidental cleanup outside the files
+  the requested work edits, a skill folder it edits counting as one file, and maintenance a standing rule asks for that the change does not
   need, such as a runtime or dependency upgrade, go on one side pull request per repository for the
   task, in separate commits per concern. It starts from the freshly fetched default branch when it
   does not need the change, or from the change's branch, stacked on it, when it does; a worker builds
   it while the change goes on, and it is reviewed and gated on its own. The change's own pull
   request keeps what the request asked for, what it cannot work without, and fixes to lines it
-  writes.
+  writes. Side work in agent configuration is the exception: it rides the session's one
+  agent-configuration pull request in its own commits, as the GitHub rule's **Branches and Pull
+  Requests** keeps one per repository.
 - **Incidental cleanup has a size budget, measured against the scope the user set and the size of
   the change in flight**, never against a fixed file count or only the files the change happened to
   edit. Incidental cleanup is everything the request did not
