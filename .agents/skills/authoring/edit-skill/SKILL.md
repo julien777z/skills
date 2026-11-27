@@ -289,12 +289,6 @@ small it looks.** Each route below is the gate set its batch passes on the head 
        guidance change: a correction, a gap the agent noticed, a rule or global-rules edit, a
        skill edit. It is shown, and the edit proceeds without waiting for an answer, unless the
        statement lists something beyond what the user asked or the invoking workflow holds it.
-   - **Count the run work a change starts before proposing or writing it**: the subagents, review
-     rounds or loops, gates and whole-file sweeps a realistic case runs, judged as `skill-pass`'s
-     **Budgets and flows** judges a flow. Where a likely case multiplies it past what the user's
-     words point to, such as a whole-file sweep of every file a repointed citation touches, ask
-     through the question tool first with the case, the count and the narrower version. This is
-     run-time work, never the cost of building a product design.
    - Place a required edit in the existing file that owns the subject. If no file of the selected
      type governs it, create the owner under **Guidance Changes Proceed Automatically** and record
      its recommended name, scope and behavior in the correction evidence.
