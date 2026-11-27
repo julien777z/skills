@@ -50,7 +50,8 @@ proposed mechanism.
   siblings at once, review in process and start no subagents.
 - **Larger scopes by slice.** Partition by app, service or package into at most five slices,
   grouping neighboring areas when there are more, and launch one read-only `code-simplify` agent
-  per slice through `subagent-matrix` at its advanced capability level, each with the rubric, its
+  per slice through `subagent-matrix`, at the cheap tier during implementation and the standard
+  tier in the final review of the whole pull request, each with the rubric, its
   slice's diff and file contents, the intent, the affected-repository map and the pull request's
   complete file list against its merge base with each file's added, modified or renamed status, so
   a slice can tell the change's own code from older code. Add one cross-cutting

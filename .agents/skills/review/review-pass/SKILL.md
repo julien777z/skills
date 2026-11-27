@@ -238,7 +238,9 @@ changed. Make the smallest changes that answer real findings, and push back on t
   needs no new round. These rounds count the pull request's review loop; one finding's fix still
   follows the limit of 3 review rounds per change, as `acceptance-gate`'s **Bounds** counts them.
 - **Reviewer:** dispatch an independent reviewer on the running session's provider through
-  `subagent-matrix` at the advanced tier and medium effort. Pass the running provider as a
+  `subagent-matrix` at medium effort: the cheap tier during implementation, and the standard tier
+  for the final review of the whole pull request once its implementation is complete, such as
+  `finish-pr`'s. Pass the running provider as a
   requirement in briefs to `council` and other independent review steps this pass starts.
   Use **Harness Compatibility** where it applies. One reviewer carries every round of a pass
   where the host can continue an agent, so it re-reads nothing it already holds; a later round starts a new one only where the

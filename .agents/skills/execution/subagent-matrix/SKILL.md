@@ -34,8 +34,8 @@ on the current host. Cheap through advanced form the ordinary ladder; specialist
 
 | Capability | Codex family | Claude family | Selection | Fallback |
 | ---------- | ------------ | ------------- | --------- | -------- |
-| `cheap` | Terra | Sonnet | Lower-cost, bounded tasks and cheaper-model checks | Caller-authorized ordinary ladder |
-| `standard` | Sol | Opus | Balanced reviews, analysis, and substantive tasks, and a narrow independent judgment: a small packet whose answer accepts no diff for merge | Caller-authorized ordinary ladder |
+| `cheap` | Terra | Sonnet | Lower-cost, bounded tasks and cheaper-model checks, and reviewers and simplification readers during implementation | Caller-authorized ordinary ladder |
+| `standard` | Sol | Opus | Balanced reviews, analysis, and substantive tasks, the final review of a whole pull request, and a narrow independent judgment: a small packet whose answer accepts no diff for merge | Caller-authorized ordinary ladder |
 | `advanced` | Astra | Fable | Difficult and the most demanding tasks, and an independent judgment that accepts a diff for merge or a plan before it is built | Caller-authorized ordinary ladder |
 | `specialist` | — | Mythos | Only a calling skill explicitly selecting specialist | `advanced` by default, or caller-selected tier |
 
