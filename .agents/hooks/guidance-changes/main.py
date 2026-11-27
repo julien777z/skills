@@ -6,7 +6,7 @@ import os
 import subprocess
 import sys
 from pathlib import Path
-from typing import Final
+from typing import Final, NotRequired, TypedDict, cast
 
 logger = logging.getLogger(__name__)
 
@@ -19,9 +19,16 @@ GUIDANCE_ROOT: Final[str] = ".agents"
 GENERATED_ROOT: Final[str] = ".agents/.auto_generated"
 SESSION_START_EVENTS: Final[frozenset[str]] = frozenset({"SessionStart", "sessionStart"})
 SILENT_PROMPT_EVENT: Final[str] = "beforeSubmitPrompt"
-SESSION_KEYS: Final[tuple[str, ...]] = ("session_id", "conversation_id")
 MAX_NAMES_PER_KIND: Final[int] = 12
 GIT_TIMEOUT_SECONDS: Final[int] = 5
+
+
+class HookPayload(TypedDict):
+    """The fields this hook reads from a harness's hook input."""
+
+    session_id: NotRequired[str]
+    conversation_id: NotRequired[str]
+    hook_event_name: NotRequired[str]
 
 
 def git_output(arguments: list[str]) -> str | None:
@@ -104,18 +111,19 @@ def main() -> int:
     """Record the install a session starts on, and note any later install on its next prompt."""
 
     try:
-        payload: object = json.load(sys.stdin)
+        raw: object = json.load(sys.stdin)
 
-        if not isinstance(payload, dict):
+        if not isinstance(raw, dict):
             return 0
 
-        session = next((str(payload[key]) for key in SESSION_KEYS if payload.get(key)), None)
+        payload = cast(HookPayload, raw)
+        session = payload.get("session_id") or payload.get("conversation_id")
         installed = git_output(["rev-parse", "HEAD"])
 
-        if session is None or installed is None:
+        if not session or installed is None:
             return 0
 
-        state = session_state_path(session)
+        state = session_state_path(str(session))
         seen = state.read_text(encoding="utf-8").strip() if state.is_file() else None
 
         event = payload.get("hook_event_name")
