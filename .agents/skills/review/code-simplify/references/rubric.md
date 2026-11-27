@@ -216,9 +216,8 @@ difference). A map listing only the current repository states the search that fo
 
 ## Guidance Prose
 
-The rubric applies to `.agents` rules and skills too, with one exception: **a shared skill
-restating a rule is never a finding**, because the skill is the copy read when the task starts; a
-repository's own skill follows the guidance criteria's rule that repository guidance keeps only
-its own facts. Duplication
+The rubric applies to `.agents` rules and skills too, with one exception: **a skill restating a
+rule is never a finding**, because the skill is the copy read when the task starts, apart from a
+repository's own skill restating a shared skill or rule. Duplication
 between two rules, two skills, two files of one skill, or within one file stays a finding, and a
 skill and rule that disagree are reconciled.

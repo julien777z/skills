@@ -441,10 +441,10 @@ a template where correct results genuinely vary in shape.
 
 ## Writing
 
-- A shared skill may restate an ambient rule when it helps the reader act at the point of use; this
-  does not license a second copy of a decision boundary owned by a skill that necessarily runs. A
-  repository's own skill restates none, as **A repository's own guidance holds only the facts that
-  repository owns** says.
+- A skill may restate an ambient rule when it helps the reader act at the point of use; this does
+  not license a second copy of a decision boundary owned by a skill that necessarily runs. A
+  repository's own skill restates none that a shared skill or rule states, as **A repository's own
+  guidance holds only the facts that repository owns** says.
 - If target file does not exist, create it with a concise structure matching existing style.
 - Group frontmatter fields by subject. Put a field that summarizes, qualifies, or overrides
   another immediately after the field it relates to, unless the format requires another order.
