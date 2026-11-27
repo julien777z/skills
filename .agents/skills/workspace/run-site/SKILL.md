@@ -1,6 +1,6 @@
 ---
 name: run-site
-description: Bring an application stack up and repair startup blockers. A change a reader sees rendered is inspected rendered before it is reported, in every execution environment, through the user’s connected browser; the full recorded walkthrough applies in cloud execution environments and whenever the user asks for browser work. Use before planning, recommending, delegating or performing browser walkthroughs or rendered UI inspections, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works. Use before starting container-backed work, to select the local container runtime.
+description: Bring an application stack up and repair startup blockers. A change a reader sees rendered is inspected rendered before it is reported, in every execution environment, using the browser selected by use-browser; the full recorded walkthrough applies in cloud execution environments and whenever the user asks for browser work. Use before planning, recommending, delegating or performing browser walkthroughs or rendered UI inspections, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works. Use before starting container-backed work, to select the local container runtime.
 short_description: 'Start an application stack and perform browser verification where applicable.'
 ---
 

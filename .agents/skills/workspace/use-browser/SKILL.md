@@ -6,7 +6,7 @@ short_description: 'Show a local page in the user''s browser, or operate a brows
 
 # Use Browser
 
-Show a page or operate the user's existing browser through the harness.
+Select a browser for the task, then show the page or operate it through its supported controls.
 
 ## Showing A Local Page
 
@@ -20,19 +20,21 @@ cannot load the file, use a local URL served to that browser or report the previ
 
 ## Operating A Browser
 
-For the agent's own work in a browser: visiting sites, filling forms, clicking, screenshots,
-extracting data, testing and QA, signing in, Electron desktop apps and Slack.
+For visits, forms, screenshots, testing, sign-in and other browser work, select by purpose:
 
-- Use the harness's browser control to connect to the user's existing browser and the relevant
-  profile. This applies to public pages, local previews, debugging, and verification alike.
-- Do not launch or attach to a separate Chrome test or debug browser, a headless session, or a
-  temporary browser profile. Apply this to browser tools, commands, helper scripts and delegated work.
-- If the harness cannot connect to the required browser or profile, report the blocked browser
-  step and continue any work that can be verified independently.
+- For local development and verification, use `agent-browser` or an isolated browser supplied by
+  the harness. Do not fall back to the user's personal browser if neither is available; report the
+  blocked browser step and continue independent work.
+- For a user-reported issue at a non-local URL, sign-in, account work, or another task that uses
+  the user's session, use the harness to connect to the user's existing browser and relevant profile.
+- Honor an explicitly requested browser. Showing a page to the user follows **Showing A Local Page**;
+  an agent's own inspection of that page follows the local verification route above.
 
 ## Selecting And Binding A Tab
 
-Bind a tab in the selected browser before reading, navigating or interacting.
+Bind a tab in the selected browser before reading, navigating or interacting. For an isolated
+browser, use its supported tab controls and keep the task's work in its own tab or session. For the
+user's browser, follow the steps below.
 
 - Inventory browser metadata and select the user's existing browser and the relevant profile. An
   open user tab can identify the URL and profile, but leave that tab and the user's groups alone.
