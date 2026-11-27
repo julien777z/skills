@@ -106,12 +106,22 @@ nor touches the files or resources the awaited work is changing.
   a delegate.
   - **Schedule:** 10 seconds, 30 seconds and 5 minutes after it starts, then every 30 minutes while
     it runs. A short background timer or the host's scheduler, such as a recurring scheduled
-    prompt, sets it, and a worker's checks end when it finishes. The scheduled check is removed
+    prompt, sets it, and a worker's checks end when it finishes. Each check ends by re-arming the
+    next: it confirms the timer is still scheduled and sets it again when it is gone, since a
+    session-only timer can lapse across a restart or compaction. The scheduled check is removed
     once no worker runs.
   - **Reading:** each check reads the worker's latest activity from whatever the host exposes for
     it: its thread items, the files it writes, the processes or background tasks it runs. A worker
     whose host shows nothing until it finishes is judged by those other signals before it is
     cancelled, never by the empty thread alone.
+  - **Look-over:** each 30-minute check also looks at what the worker produced since the last
+    one: its commits, its reported progress and every capture or other media it made, each read
+    whole, compared with its brief and the approved design. The early checks only read liveness.
+    The look-over is a coordinator's quick read, never a review pass, a gate, or a request that
+    the worker record or test more, since its own workflow runs those. Something wrong, odd or
+    unclear goes to the worker as a queued question or a request to look into it, and its answer is
+    read when it arrives. A worker that finishes is looked over the same way before its result is
+    relayed.
   - **Stalled:** at an early check, one with no activity at all since launch, or whose last step
     failed and nothing followed. At a later check, one with no activity for 30 minutes, counted
     from its last activity and not before, unless a long command of its own is in progress;
