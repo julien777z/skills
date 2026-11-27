@@ -53,8 +53,8 @@ deferral requires genuinely unfinished work after this reconciliation, not merel
 What counts as an external blocker is `acceptance-gate`'s defer test, owned libraries included.
 
 Record only work on a ground `acceptance-gate`'s defer test names, such as work comparable in
-size to the change in flight or larger, the two together too large for one careful read — a redesign or a
-broad sweep somebody could reasonably decline, its need arguable, unless it is incidental cleanup —
+size to the change in flight or larger, the two together too large for one careful read — a
+redesign or a broad sweep somebody could reasonably decline, its need arguable, unless it is incidental cleanup —
 work an external blocker holds, and
 work that awaits a decision already put to its owner and still open, or one the user declined in
 the current request; a question nobody has asked yet is asked, not recorded. **A defect is never

@@ -231,9 +231,8 @@ with an obsolete owned contract or revision.
     whatever its file count, bar the record grounds below, and the one-hop limit above does not
     bound it. Each such fix gets its own commit, named for what it repairs.
   - **A deferral record for incidental cleanup is reserved for three grounds:** cleanup comparable
-    in size to the change in flight or larger, the two together too large for one careful read, such as a
-    sweep as large again as a change of hundreds of files; work
-    an external blocker holds, something outside every repository the user owns that the fix cannot
+    in size to the change in flight or larger, the two together too large for one careful read,
+    such as a sweep as large again as a change of hundreds of files; work an external blocker holds, something outside every repository the user owns that the fix cannot
     be written without; and a decision that is the user's, such as a design choice or a change to
     what the product does: one nobody has asked about is put to them now as **Product Choices**
     says, and one already put and still unanswered, when the run ends included, or one they decline
