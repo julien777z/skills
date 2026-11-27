@@ -151,6 +151,11 @@ for these shapes:
 - a section grown around a second subject;
 - a heading named for a category with one member;
 - a rubric left inline that the authoring reference's skill shape sends to a reference;
+- one requirement restated in several places in one file, each in different words;
+- prose restating a table's or catalog's values, such as the names it maps, instead of naming the
+  table;
+- a vocabulary, record format or field list one skill defines spelled out again in its callers,
+  which name the owner's term for it instead;
 - a single bullet added to a file that does not own its subject, the duplication least likely to be
   looked at twice.
 

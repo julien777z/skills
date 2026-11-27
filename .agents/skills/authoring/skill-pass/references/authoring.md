@@ -187,7 +187,11 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   a protocol — and `SKILL.md` names the file at the point the workflow reads it. A skill with two
   routes through it (two modes, two kinds of target, two hosts) keeps the shared workflow in
   `SKILL.md` and gives each route its own reference, so the file a reader loads first stays within
-  the size budget under **Writing**. References may explain the technical steps for a route selected by the
+  the size budget under **Writing**. The exception is what the skill exists for: the table, catalog or
+  rubric its name or description centers on, which every run reads, stays in `SKILL.md` as one of its
+  first sections, so a reader meets it before the workflow that uses it; a reference holds what only
+  some routes, modes or readers need. Sections come in the order a run needs them: the first decision
+  before the procedure, and the common path before its edge cases. References may explain the technical steps for a route selected by the
   entry point. They do not select the top-level workflow, hide a decision gate, declare a dependency,
   or invoke another skill. Scripts the skill runs go under `scripts/`; supporting files may live
   under `assets/`, `resources/`, or another directory named for their role. Keep only files the skill
@@ -417,6 +421,9 @@ a template where correct results genuinely vary in shape.
     and an audit reports their total.
   - **A reference has no line budget.** One past 100 lines opens with a contents list, and
     `SKILL.md` says when to read it.
+  - **A budget is a ceiling, not a target.** A file under it is still too long when its length is out
+    of proportion to what it does: cut every sentence whose removal leaves a reader's actions
+    unchanged, however far under budget the file sits.
 - **A correction restructures the bullet it lands in, never appends to it.** A bullet that already
   carries an exception, or runs past about twelve lines, takes no further clause: state its rule in
   one sentence and move each condition and exception into a sub-bullet or a bullet of its own, so
