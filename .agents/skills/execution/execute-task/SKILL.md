@@ -274,7 +274,9 @@ worktree of its own and `subagent-matrix`'s worker brief, filled with the plan's
 report carries a receipt for each thing it added; one without them goes back to the worker before
 its head is built on. Before writing a script or doing a check by hand, the agent
 and every worker look in the repository's `.agents/tools/` and write, run and maintain helpers
-there as [repository helpers](references/repository-helpers.md) says.
+there as [repository helpers](references/repository-helpers.md) says. While a worker runs, it is
+checked on a schedule, its output looked over and its pull requests spot-checked, as
+[worker checks](references/worker-checks.md) says.
 
 ### Task Authorization
 
@@ -406,7 +408,7 @@ Apply [named work](references/named-work.md):
   with its next step before whatever displaced it starts, and resume it without waiting for
   "continue".
 - After a compaction or handoff, read each step's state from `session-ledger` and the repository,
-  never from the summary.
+  never from the summary, and confirm each running worker's check timer.
 - Before a report goes out, compare each outstanding item against the line the last report carried
   for it; an unchanged line means the item is finished in this turn when **Priority** permits it.
 - A wait blocks only the work that depends on what is awaited. Every wait applies that test to the

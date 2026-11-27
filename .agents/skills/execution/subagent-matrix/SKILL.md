@@ -72,12 +72,18 @@ sending it.
      refused value, found from the running request path, such as a proxy, rather than from the
      refusal's advice. Only a repair that needs the user's own identity, device or password goes to
      the user, as a question with the exact command.
-   - **A capacity refusal moves the assignment to the same tier on the other provider**, with the
-     same brief and effort, unless the user or calling skill requires a provider or exact model, in
-     which case it reruns there when capacity returns. When that also refuses, relaunch on whichever
-     permitted model clears first: an accepted launch, or the coordinator answering on that model,
-     shows it has cleared. Capacity is never unavailability: it allows no lower tier, no in-process
-     work and no hold.
+   - **A capacity refusal of a launch moves the assignment to the same tier on the other provider**,
+     with the same brief and effort, unless the user or calling skill requires a provider or exact
+     model, in which case it reruns there when capacity returns. When that also refuses, relaunch on
+     whichever permitted model clears first: an accepted launch, or the coordinator answering on that
+     model, shows it has cleared. Capacity is never unavailability: it allows no lower tier, no
+     in-process work and no hold.
+   - **A running worker a capacity refusal stopped is resumed, not relaunched**: at once, in its own
+     thread so it keeps its context, within the count **Dispatch** allows, whatever model the
+     coordinator answers on. The coordinator answering at all is reason enough, and an accepted
+     resume shows capacity has cleared; the resume is the assigned work, never a probe. It is never
+     scheduled for the reset time the refusal names, and a refused resume is retried at the
+     delegating agent's next check of it rather than moved, since moving would lose that context.
    - **An explicit unsupported receipt** allows a fallback only when the calling skill declares one
      and the candidate meets every provider, model or tier requirement; otherwise report the receipt
      and substitute nothing. A permitted fallback steps down as little as it can, launching the
