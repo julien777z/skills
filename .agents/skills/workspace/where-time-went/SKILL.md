@@ -72,7 +72,7 @@ pages, in order:
   headline with the figures behind it — where effort was wasted or repeated, what ran longer than
   its result needed, work outside what was asked, rework traced to the step that caused it, such as
   a review's suggested fix followed literally, reviewing set against building, runs lost to rate
-  limits or redone after a weaker model, what still stands between the work and done, and a verdict
+  limits or redone after a weaker model, and a verdict
   on whether the time was justified for the task, said plainly. Each waste names the guidance change
   that would prevent it, or the guidance that already does and when it took effect. Each observation
   is the agent's judgment of the evidence, never a restatement of a figure, and names the page that
