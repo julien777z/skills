@@ -275,7 +275,9 @@ worktree of its own and `subagent-matrix`'s worker brief, filled with the plan's
 report carries a receipt for each thing it added; one without them goes back to the worker before
 its head is built on. Before writing a script or doing a check by hand, the agent
 and every worker look in the repository's `.agents/tools/` and write, run and maintain helpers
-there as [repository helpers](references/repository-helpers.md) says.
+there as [repository helpers](references/repository-helpers.md) says. While a worker runs, it is
+checked on a schedule, its output looked over and its pull requests spot-checked, as
+[worker checks](references/worker-checks.md) says.
 
 ### Task Authorization
 
