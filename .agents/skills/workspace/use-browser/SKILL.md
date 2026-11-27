@@ -10,17 +10,18 @@ Select a browser for the task, then show the page or operate it through its supp
 
 ## Showing A Local Page
 
-For an HTML file the agent wrote, such as a rendered dashboard, that the user should look at. This
-route needs the user's browser on the machine that holds the file, since a `file://` address
-resolves there; when it is not, such as a cloud session, this route does not apply.
+For a local page the user should look at, including a served page or an HTML file the agent wrote,
+such as a rendered dashboard. A `file://` preview needs the user's browser on the machine that holds
+the file; when it is not, such as a cloud session, serve the page to that browser instead.
 
-Open the page in the task group selected below. If a task tab already shows it, reload that
+Open the page in a task group in the user's browser, bound as below. If a task tab already shows it, reload that
 tab. Bring the preview to the front only when the user asks to see it. If the selected browser
 cannot load the file, use a local URL served to that browser or report the preview blocker.
 
 ## Operating A Browser
 
-For visits, forms, screenshots, testing, sign-in and other browser work, select in this order:
+For each requested operation, select in this order. A browser named for an inspection does not carry
+over to a separate request to show the page in the user's browser.
 
 - Honor an explicitly requested browser. If it lacks the required account session, use its supported
   sign-in route or report that browser step blocked; do not silently switch browsers.
