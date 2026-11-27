@@ -11,7 +11,7 @@ a testing revision used to build, validate or package that delivery is.
 
 The consumer's proposed source and outputs built from that head are the review subject, not
 prerequisite provider inputs. This includes an earlier validated output of the same proposed change
-when equivalence to the accepted head is established under **Built Artifacts** below. Still
+when equivalence to the accepted head is established as `merge-gate`'s rule on a validated artifact says. Still
 inventory independent inputs inside those outputs, including separate prerequisite changes in the
 same repository.
 
@@ -53,12 +53,3 @@ An explicitly permitted nonexempt immutable reference still needs merged or rele
 merge does not authorize a release or make the consumer's old testing reference suitable for
 delivery. Before merging, verify all nonexempt consuming locations have moved, validate what they
 now resolve, and recheck mutable targets.
-
-## Built Artifacts
-
-- Do not rebuild, republish, or redeploy an already validated artifact solely because its source
-  head advanced. Compare the edits with the artifact's actual source: cleanup proven to preserve
-  runtime behavior, dependencies, configuration, and required artifact metadata needs no new
-  artifact. Keep required source checks, and report the deployed artifact's actual commit and
-  digest rather than claiming the cleaned-up head is deployed. A behavior change, an unproven
-  equivalence, or a requested release requiring a new artifact still needs the build and rollout.

@@ -58,6 +58,12 @@ for an agent-configuration change, Agent Sync handling before this skill finishe
   requires. Never add a temporary input, mode, wrapper or alternate workflow to bypass the failure,
   even with a promise to remove it; a genuinely missing durable capability is source work under
   the task's scope and authorization, never an incidental recovery allowance.
+- **A validated artifact is not rebuilt, republished or redeployed only because its source head
+  advanced.** Compare the edits with the artifact's actual source: cleanup proven to preserve
+  runtime behavior, dependencies, configuration, and required artifact metadata needs no new
+  artifact. Keep required source checks, and report the deployed artifact's actual commit and
+  digest rather than claiming the cleaned-up head is deployed. A behavior change, an unproven
+  equivalence, or a requested release requiring a new artifact still needs the build and rollout.
 
 ## Dependencies
 - `stop-gates`
