@@ -94,7 +94,7 @@ Use `use-browser` for browser control through its supported route. Apply `test-f
     reported as a gate, only once no route remains.
   - **Production data, and records real users or other people own, stay with the user.**
   - **Deployed and shared remote environments are otherwise not local**; `test-fixture`'s **Running
-    Tests Safely** governs a write sent to one.
+    Tests Safely** governs a verification or test write sent to one.
 
 ## Work out which repositories are present
 
@@ -217,9 +217,7 @@ storage or session files.
   every screen that mounts it, or on the page the agent builds for a change **Principles** confines
   to a component, then read the state it was meant to leave — where the element landed,
   what the field holds, whether the list closed up — and reload where it persists something. A drag
-  is several moves, not one jump:
-
-
+  is several moves, not one jump: press, move through the points between, release.
 - A library doing the work is a reason to exercise it, never an exemption: the arguments handed to it
   and the state handed back belong to the change.
 - Distinguish tool success from application success: confirm the intended request happened, then read
