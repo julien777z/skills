@@ -382,6 +382,19 @@ contents solely from its own perspective and in its own vocabulary, as
 [multi-repository delivery](references/multi-repository.md) says, and where the run touched more
 than one repository, run its sweep for borrowed names before delivering.
 
+### Resuming While Gates Are Paused
+
+When the user asks to resume the task itself — its execution or implementation, not a question
+about the change — read the task ledger through `session-ledger` for an open `hold` entry, the
+user's pause on reviews, gates, checks and workers. With one open, ask through the question tool
+whether resuming with gates still paused is intentional, saying when the pause started and what it
+holds:
+
+- **Yes** resumes the task at its saved step with the pause still in force, so the reviews, gates,
+  checks and workers it covers stay queued.
+- **No** keeps everything paused and tells the user that asking to resume the gates restarts the
+  task together with them.
+
 ### Work You Have Already Named
 
 **Priority** decides which named work runs now; lower-priority work retains its saved step and paused

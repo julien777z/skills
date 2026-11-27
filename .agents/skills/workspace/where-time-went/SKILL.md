@@ -80,7 +80,8 @@ pages, in order:
   or a comparison as bars: time by kind of activity — the model thinking and writing, running
   tests, waiting on other commands, Git and the hosting service, lint and type checks, reading
   files, editing — summed over every agent, with the main agent's waits on its children left out
-  so no time counts twice; time by role, such as implementation, review, gate, council and skill
+  so no time counts twice, and each command counted under the program it runs, never under a path
+  or word it names, so a lint run over test files is lint, not running tests; time by role, such as implementation, review, gate, council and skill
   test, with each role's agent count as its `detail`; how many times each gate, review or council
   ran, as bars; and agents per exact model and version. A summed figure says in the chart's
   `description` that it is agent time, which runs past clock time where agents worked in parallel.

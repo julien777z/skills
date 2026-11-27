@@ -44,6 +44,8 @@ investigating, editing, committing and pushing a fix, with the fast checks a pus
   no reply asks whether to resume.
 - **Before any launch, read the ledger for an open `hold`.** A review, gate, worker or check run
   it covers is not started; it is added to the entry's queue instead.
+- **Resuming the task asks first.** When the user asks to resume the task's execution with the
+  hold open, confirm that resuming with gates paused is intentional before continuing it.
 - **A merge asks first.** With the hold open, a merge, even one the user authorized, waits for
   the user to confirm that merging with gates paused is intentional.
 - Corrections and decisions made during the pause are recorded as usual, so the resumed work can
