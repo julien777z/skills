@@ -1,4 +1,4 @@
-import { type KeyboardEvent, type ReactNode, useId, useRef, useState } from 'react';
+import { type KeyboardEvent, type ReactNode, useId, useMemo, useRef, useState } from 'react';
 
 import { DialogOpener } from '@/components';
 import { Stack, Text } from '@/components/primitives';
@@ -330,7 +330,7 @@ function Bars({ slices, selection }: { slices: Slice[]; selection: Selection }):
 }
 
 export function ChartSection({ section }: { section: ChartSectionSpec }): ReactNode {
-  const slices = slicesOf(section.items, section.kind);
+  const slices = useMemo(() => slicesOf(section.items, section.kind), [section.items, section.kind]);
   const [active, setActive] = useState<string | null>(null);
   const [opened, setOpened] = useState<Slice | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
