@@ -1,6 +1,6 @@
 ---
 name: stop-gates
-description: Pause all of the current session's work on its task — the agent's own implementation, every worker, review, gate and check run — so the user and agent can correct a problem before any of it goes on, and keep the pause in force until the user resumes it. Use when the user asks to stop or hold the gates, reviews, checks, workers or the task. Run only when the user asks for it.
+description: Pause all of the current session's work on its task — the agent's own implementation, every worker, review, gate and check run — so the user and agent can correct a problem before any of it goes on, and keep the pause in force until the user resumes it; the pause itself starts only at the user's request. Use when the user asks to pause or hold the gates, reviews, checks or workers, and before starting work a pause may cover, such as finishing or merging a pull request or resuming the task, to ask the user whether to resume.
 short_description: 'Pause the task, its workers, reviews, gates and checks until the user resumes them.'
 ---
 
@@ -31,6 +31,9 @@ meant, so it raises no question; **Asking While Paused** applies only when the u
 merge or resume something.
 
 ## Procedure
+
+Run it only when the user asks for the pause in their own words; another skill reads the pause and
+runs **Asking While Paused**, never this procedure.
 
 1. **Stop each running item.** Stop your own work on the task at the next point it can be
    committed, and push it. Tell each worker to push what it has and stop, then end it; cancel
@@ -69,10 +72,13 @@ through the question tool before starting the work, naming it and when the pause
 request already asked about in this run is not asked again.
 
 - **Resume all gates**, listed first and recommended, since the user most often wants everything
-  back: lifts the whole pause, as resuming the gates does.
+  back: the answer is the user asking to resume the gates, so the full resume runs before the
+  requested work.
 - **Resume gates for this only**, offered only when the request covers one scope, one pull request
   or the task's execution: adds that scope to the entry's resumed scopes, and the work runs with its
   reviews, gates, checks and workers while every other scope stays paused.
 - **Continue with gates paused**: the work runs, what the pause covers stays queued, and a merge
-  goes ahead without those reviews, its report saying the gates were paused.
+  goes ahead without those reviews, its report saying the gates were paused. It still runs its own
+  merge checks, and one whose only authority is a standing permission that requires passed gates
+  stays queued.
 - **Stop**: nothing runs, and the reply says that asking to resume the gates restarts everything.
