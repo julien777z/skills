@@ -61,8 +61,11 @@ sending it.
 2. **Resolve the exact model ID** for that family: the latest matching identifier the host's model
    selector offers, or, when it offers none, the current ID in the provider's official model
    catalog or release notes. An exact user override is used as given. **Never hard-code model IDs**
-   in guidance, examples or fallback tables, and never guess one. When no ID resolves or the host
-   has no model selector, take the launch fallback under **Dispatch**.
+   in guidance, examples or fallback tables, and never guess one. When one launch route's model list
+   lacks the family, check every launch route the host exposes, such as an orchestrator's delegate
+   tool and its capabilities listing, and launch through the one that offers the exact model. When
+   no ID resolves on any route or the host has no model selector, take the launch fallback under
+   **Dispatch**.
 3. **Launch the actual assignment with that ID.** A catalog that omits a family is no evidence it
    is unavailable; only the host's explicit unsupported receipt for the launch is. Never launch a
    throwaway availability probe, and never change repository or global settings, such as a model
