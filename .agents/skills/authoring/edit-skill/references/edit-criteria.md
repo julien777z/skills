@@ -9,24 +9,19 @@ Reviewed Batches**, **Relocations**, **Resuming A Batch**.
 
 ## Causal Diagnosis
 
-- Before proposing a correction, read the available records of the run and name the first
-  decision where the actual path departed from the expected path. Record the action taken, the
-  instruction or evidence available at that point, and what should have happened. When a review
-  passed the work, compare its brief, the sources it inspected, the checks it performed, and the
-  verdict the editor accepted. Establish whether the decision was omitted, the rule was skipped,
-  or the check lacked evidence. Explain the verified divergence to the user with the correction.
-- Trace the actual path from the request to the missed behavior: whether the instruction was
-  absent, its skill loaded, its trigger or sequence kept it from the decision, a conflicting
-  instruction overrode it, or the agent failed to apply guidance it had. Read exceptions and
-  stopping clauses with its callers. When the substantive rule is already correct, inspect the
-  step that produced the rejected recommendation, triage, brief or action: what instruction and
-  review evidence it used, what next action those required, and how its chosen action differed.
-  Repair that decision step at its owner rather than restating the substantive rule or ending
-  with a noncompliance report. Remove conflicting permissions, check other routes for the same
-  failure, and replay the original decision under the repair before closing the issue.
-  Record missing historical evidence without inventing a cause; it does not prevent repairing
-  the observed decision path. When the owning skill was not invoked, harden its frontmatter
-  description first; body text cannot control a run that never loads the skill.
+- Before proposing a correction, trace the actual path from the request to the missed behavior.
+  Read records of the run and identify the first decision where the path diverged. Record the
+  action taken, the guidance or evidence available at that point, and the required next action.
+  If a review passed the work, compare its brief, the sources it inspected, the checks it
+  performed, and the verdict the editor accepted. Read relevant exceptions and stopping clauses
+  with their callers. Identify whether the rule was missing, the trigger or sequence kept it
+  from the decision, a conflict overrode it, or the agent skipped an applicable check. Explain
+  the verified divergence to the user with the correction. Record unavailable evidence and
+  proceed from the part of the path you can verify.
+- Repair the decision at its owner. When its rule is already correct, fix the step that let the
+  agent skip it or accept a result without the required evidence. Remove conflicting permissions,
+  check other routes for the same failure, and replay the original decision under the repair.
+  When the owning skill was skipped, repair its description first so the run loads it.
 - Test the proposed instruction against that original decision path before proposing or writing it. If a
   reader could follow it and still repeat the miss, explain the mismatch to the user, name the
   instruction that actually caused or allowed the decision, and correct that owning path and
