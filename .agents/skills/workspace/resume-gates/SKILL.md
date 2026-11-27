@@ -19,7 +19,7 @@ stopped from building on.
 ## Procedure
 
 1. **Read the pause.** Load the open `hold` entry from the task ledger through `session-ledger`,
-   its stopped and queued items, and every correction, decision and push recorded since it
+   its stopped and queued items, the scopes already resumed one at a time, which keep running, and every correction, decision and push recorded since it
    started. Read the conversation since the stop for what the user and agent agreed that the
    ledger does not yet hold, and record it. With no open `hold`, the items to restart are the
    reviews, gates, checks and workers the user's words or the ledger show stopped.

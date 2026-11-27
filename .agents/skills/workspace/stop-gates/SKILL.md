@@ -42,16 +42,32 @@ investigating, editing, committing and pushing a fix, with the fast checks a pus
 
 ## While Paused
 
-- **The pause holds until the user resumes it**, by asking to resume the gates or in their own words. A
-  context summary, a new message, a finished fix, a notification or a schedule never lifts it, and
-  no reply asks whether to resume.
+- **The pause holds until the user resumes it**, through **Asking While Paused** below, by asking
+  to resume the gates, or in their own words. A context summary, a new message, a finished fix, a
+  notification or a schedule never lifts it, and no reply asks whether to resume.
+- **The pause covers every scope except those resumed one at a time.** The `hold` entry lists each
+  resumed scope, a pull request or the task's execution; that scope's reviews, gates, checks and
+  workers run as normal while everything else stays paused.
 - **Before any launch, read the ledger for an open `hold`.** A review, gate, worker or check run
-  it covers is not started; it is added to the entry's queue instead.
+  in a scope it still covers is not started; it is added to the entry's queue instead.
 - **Named work stays named, not resumed.** Work the agent already said it would do is recorded in
   the entry and waits; the pause outranks any rule that resumes it without being asked.
-- **Resuming the task asks first.** When the user asks to resume the task's execution with the
-  hold open, confirm that resuming with gates paused is intentional before continuing it.
-- **A merge asks first.** With the hold open, a merge, even one the user authorized, waits for
-  the user to confirm that merging with gates paused is intentional.
 - Corrections and decisions made during the pause are recorded as usual, so the resumed work can
   act on them.
+
+## Asking While Paused
+
+When the user asks for work the pause still covers, such as finishing or merging a pull request or
+resuming the task's execution, ask through the question tool before starting it, naming the work
+and when the pause started. A request already asked about in this run is not asked again.
+
+- **Resume gates for this only**, offered only when the request covers one scope, one pull request
+  or the task's execution: adds that scope to the entry's resumed scopes, and the work runs with its
+  reviews, gates, checks and workers while every other scope stays paused.
+- **Resume all gates**: lifts the whole pause, as resuming the gates does.
+- **Continue with gates paused**: the work runs, what the pause covers stays queued, and a merge
+  goes ahead without those reviews, its report saying the gates were paused.
+- **Stop**: nothing runs, and the reply says that asking to resume the gates restarts everything.
+
+A request covering several pull requests or every scope has no "for this only" option, since it is
+already everything.

@@ -30,14 +30,10 @@ for an agent-configuration change, Agent Sync handling before this skill finishe
     naming what remains for the user and that skill, in a report or a plan's closing line, is how
     it is left to them, not an offer.
 - **A merge while gates are paused asks the user first, even with authorization.** Before step 1
-  of **Check Gate**, read the task ledger through `session-ledger` for an open `hold` entry, the
-  user's pause on reviews, gates, checks and workers. A pull request merged during one has skipped
-  the reviews its merge assumes, and the user may simply have forgotten to resume them. When one is
-  open, ask through the question tool whether merging with gates paused is intentional, naming the
-  pull request and when the pause started:
-  - **Yes** merges under the authorization already given, and the report says the gates were paused.
-  - **No** stops this skill there, merging nothing, and tells the user that asking to resume the
-    gates restarts them.
+  of **Check Gate**, read the task ledger through `session-ledger` for an open `hold` entry that
+  still covers this pull request; with one, follow `stop-gates`' **Asking While Paused**. A pull
+  request merged during a pause has skipped the reviews its merge assumes, and the user may simply
+  have forgotten to resume them.
 - This skill merges only a pull request whose merge its caller is authorized to perform: a user
   instruction naming the merge and the pull request, an invoked skill that states its invocation
   authorizes the merge, or a standing permission in the GitHub rule's **Merge Authorization**. It
@@ -66,6 +62,7 @@ for an agent-configuration change, Agent Sync handling before this skill finishe
 
 ## Dependencies
 - `session-ledger`
+- `stop-gates`
 - `merge-conflict`
 - `pre-production`
 - `update-skills`

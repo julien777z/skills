@@ -24,7 +24,8 @@ authorization or relax safety and sequencing requirements.
 
 **A paused session launches nothing.** Before any launch, read the task ledger through
 `session-ledger` for an open `hold` entry, the user's pause on automated work; a review, gate,
-worker or check run it covers waits in that entry's queue until the user resumes it.
+worker or check run in a scope it still covers, one the entry does not list as resumed, waits in
+that entry's queue until the user resumes it.
 
 ## Matrix
 
