@@ -189,17 +189,16 @@ def main() -> int:
             written if written and Path(written).exists() else (saved["transcript_path"] if saved else None)
         )
 
-        seen = saved["commit"] if saved is not None else None
-        notify = seen not in (None, installed) and event not in SESSION_START_EVENTS | {SILENT_PROMPT_EVENT}
-
-        if seen is None or notify:
-            changes = changed_guidance(seen, installed) if notify and seen is not None else {}
+        if saved is None:
+            commit = installed
+        elif saved["commit"] != installed and event not in SESSION_START_EVENTS | {SILENT_PROMPT_EVENT}:
+            changes = changed_guidance(saved["commit"], installed)
 
             if changes != {}:
                 sys.stdout.write(change_notice(changes))
 
             commit = installed
-        elif saved is not None and transcript_path != saved["transcript_path"]:
+        elif transcript_path != saved["transcript_path"]:
             commit = saved["commit"]
         else:
             return 0
