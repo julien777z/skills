@@ -106,7 +106,8 @@ function ItemLabel({ slice, selection }: { slice: Slice; selection: Selection })
   );
 }
 
-function SliceTip({ slice, showShare }: { slice: Slice; showShare: boolean }): ReactNode {
+/** A slice's popup, so a reader reads an item off the ring without matching colors to the legend. */
+function SliceTip({ slice }: { slice: Slice }): ReactNode {
   return (
     <TooltipContent>
       <Stack gap="xs">
@@ -114,7 +115,7 @@ function SliceTip({ slice, showShare }: { slice: Slice; showShare: boolean }): R
           {slice.item.label}
         </Text>
         <Text size="xs" numeric>
-          {showShare ? `${slice.item.figure} · ${percentOf(slice.share)}` : slice.item.figure}
+          {slice.item.figure} · {percentOf(slice.share)}
         </Text>
         {slice.item.details && <Text size="xs">Click for details</Text>}
       </Stack>
@@ -237,7 +238,7 @@ function Pie({ slices, total, selection }: { slices: Slice[]; total?: string; se
                     )}
                   />
                 </TooltipTrigger>
-                <SliceTip slice={slice} showShare />
+                <SliceTip slice={slice} />
               </Tooltip>
             );
           })}
@@ -266,6 +267,15 @@ function Pie({ slices, total, selection }: { slices: Slice[]; total?: string; se
   );
 }
 
+function BarFill({ slice, largest }: { slice: Slice; largest: number }): ReactNode {
+  return (
+    <span
+      className="block h-full rounded-full"
+      style={{ width: `${largest > 0 ? (slice.item.value / largest) * 100 : 0}%`, backgroundColor: slice.color }}
+    />
+  );
+}
+
 function Bars({ slices, selection }: { slices: Slice[]; selection: Selection }): ReactNode {
   const largest = Math.max(...slices.map(({ item }) => item.value));
 
@@ -283,29 +293,21 @@ function Bars({ slices, selection }: { slices: Slice[]; selection: Selection }):
               {slice.item.figure}
             </Text>
           </span>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button
-                type="button"
-                tabIndex={-1}
-                aria-hidden
-                onClick={(event) => slice.item.details && selection.open(slice, event.currentTarget)}
-                className={cn(
-                  'block h-2 w-full overflow-hidden rounded-full bg-muted',
-                  slice.item.details ? 'cursor-pointer' : 'cursor-default',
-                )}
-              >
-                <span
-                  className="block h-full rounded-full"
-                  style={{
-                    width: `${largest > 0 ? (slice.item.value / largest) * 100 : 0}%`,
-                    backgroundColor: slice.color,
-                  }}
-                />
-              </button>
-            </TooltipTrigger>
-            <SliceTip slice={slice} showShare={false} />
-          </Tooltip>
+          {slice.item.details ? (
+            <button
+              type="button"
+              tabIndex={-1}
+              aria-hidden
+              onClick={(event) => selection.open(slice, event.currentTarget)}
+              className="block h-2 w-full cursor-pointer overflow-hidden rounded-full bg-muted"
+            >
+              <BarFill slice={slice} largest={largest} />
+            </button>
+          ) : (
+            <span aria-hidden className="block h-2 w-full overflow-hidden rounded-full bg-muted">
+              <BarFill slice={slice} largest={largest} />
+            </span>
+          )}
           {slice.item.detail && (
             <Text size="xs" tone="muted">
               {slice.item.detail}
@@ -336,13 +338,13 @@ export function ChartSection({ section }: { section: ChartSectionSpec }): ReactN
 
   return (
     <SectionCard title={section.title} description={section.description}>
-      <TooltipProvider>
-        {section.kind === ChartKind.PIE ? (
+      {section.kind === ChartKind.PIE ? (
+        <TooltipProvider>
           <Pie slices={slices} total={section.total} selection={selection} />
-        ) : (
-          <Bars slices={slices} selection={selection} />
-        )}
-      </TooltipProvider>
+        </TooltipProvider>
+      ) : (
+        <Bars slices={slices} selection={selection} />
+      )}
       {opened?.item.details && (
         <SectionDialog section={opened.item.details} open={dialogOpen} onOpenChange={setDialogOpen} opener={opener} />
       )}
