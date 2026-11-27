@@ -116,7 +116,7 @@ pages, in order:
   so no time counts twice, and each command counted under the program it runs, never under a path
   or word it names, so a lint run over test files is lint, not running tests; time by role, such as implementation, review, gate, council and skill
   test, with each role's agent count as its `detail`; how many times each gate, review or council
-  ran, as bars; and agents per exact model and version. A summed chart says in its
+  ran, as bars; and agents per model. A summed chart says in its
   `description` that its figures are agent time, which runs past clock time where agents worked in parallel.
   Every item opens what it sums through `details`: an activity its split by role and the agents
   that spent the most on it, running tests also its whole-suite against targeted runs, its time
@@ -136,7 +136,7 @@ pages, in order:
 - **Loops** (`list`). One `tree`: each workflow, then its rounds or groups, then the agents or
   assignments inside them, each broken down as **What happened** says. Every entry's `figure` is its
   time, or for work up next its estimate in `meta`; its `status` is a pill as **States**
-  says, in the matching tone; the exact model and version a reviewer ran on, such as Opus 5.5, is its `tag`.
+  says, in the matching tone; the model a reviewer ran on is its `tag`.
 - **Timeline** (`calendar`). One `tree` of the session's phases in order, each labeled by the work
   done in it with its time as `figure`. Its children are the agents, assignments and reviewers that
   worked in that phase, in the order they started, each with its time in the phase, its `status` and
