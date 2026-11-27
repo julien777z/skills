@@ -25,7 +25,13 @@ Read the code-simplify rubric for additions. For each added file, read its close
 owners and check placement under **Reuse And Removal**, including a broader rename. Report the paths read and the
 responsibility or boundary that decides placement. Apply code-simplify's **No forwarding layers**
 to callables the diff adds or changes, including fixed values in an owned interface. Missing placement
-evidence holds approval. Apply the simplification rubric's severity to a violated requirement.
+evidence holds approval. List the direct filenames in each folder the reviewed delta touches,
+including folders where it adds no files. If similar names or responsibilities stand out, read
+only the likely overlapping files and the callers needed to confirm the overlap. Flag a confirmed
+ownership violation with the paths and the responsibility they share. Similar names alone are
+insufficient evidence. Leave unrelated siblings unread and classify findings already present
+outside the change as outside the diff. Report the folders scanned and the candidate files opened.
+Apply the simplification rubric's severity to a violated requirement.
 Flag a setting, env var, secret, config key or workflow input left optional or given an unsafe default, or
 code that skips or weakens its work when one is unset, unless its owner documents that absence
 ("tests lack it" does not). A default production gets the full behavior from is fine.
