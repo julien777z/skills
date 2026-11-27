@@ -29,7 +29,8 @@ pending, by the agent that asked or by any other, still counts.
   except a span that runs from a turn's last message to the next message from the user or the
   coordinator, and a span in which the agent's only activity is a pending user request. A tool call
   is busy from its call to its result.
-- **Every figure is clock time.** A single agent's or assignment's figure is the length of its busy
+- **Every figure is clock time**, apart from a chart summed over every agent, whose figures are
+  agent time and which sets no `total`. A single agent's or assignment's figure is the length of its busy
   intervals. A group's figure, whether a workflow, a round, a phase or the whole session, is the
   length of the union of its members' busy intervals.
 - **A worker that receives several assignments** over the session is one entry per assignment, each
@@ -115,8 +116,8 @@ pages, in order:
   so no time counts twice, and each command counted under the program it runs, never under a path
   or word it names, so a lint run over test files is lint, not running tests; time by role, such as implementation, review, gate, council and skill
   test, with each role's agent count as its `detail`; how many times each gate, review or council
-  ran, as bars; and agents per exact model and version. A summed figure says in the chart's
-  `description` that it is agent time, which runs past clock time where agents worked in parallel.
+  ran, as bars; and agents per exact model and version. A summed chart says in its
+  `description` that its figures are agent time, which runs past clock time where agents worked in parallel.
   Every item opens what it sums through `details`: an activity its split by role and the agents
   that spent the most on it, running tests also its whole-suite against targeted runs, its time
   before and after any guidance change about when tests run, and its longest commands; a role its
