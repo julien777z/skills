@@ -24,13 +24,10 @@ Reviewed Batches**, **Relocations**, **Resuming A Batch**.
   that make the same decision, and verify the repair on the original case and an adjacent route.
   Repair the description when discovery failed. When a caller or stopping clause skipped an
   applicable skill or check, repair that path.
-- Test the proposed instruction against that original decision path before proposing or writing it. If a
-  reader could follow it and still repeat the miss, explain the mismatch to the user, name the
-  instruction that actually caused or allowed the decision, and correct that owning path and
-  its conflicting callers. Escalate a genuine unresolved choice, not permission for an already
-  authorized repair. Do not mechanically apply a requested wording change or add a general
-  reminder beside a stop rule it cannot override. The original scenario must demonstrate that
-  the causal correction changes the reader's next action.
+- Replay the original decision before proposing or writing the edit. If the draft still admits the
+  miss, explain which instruction, condition or caller allows it and repair that path. Escalate
+  genuine unresolved choices. In verification, show the different next action the correction
+  produces.
 - When several reported problems come from the same decision, correct that decision once at its
   owner. Remove incident-specific rules that only restate the repair. Keep local details that
   still govern a distinct contract or operation.
@@ -39,6 +36,14 @@ Reviewed Batches**, **Relocations**, **Resuming A Batch**.
 
 The statement is written before the edit, in the shape `SKILL.md`'s
 **Output** gives, and revised when the written text turns out to change more or less than it says.
+
+- Before drafting a behavior change, compare the user's suggested wording with the governing
+  text and the decisions it controls. Use their request to establish the desired outcome.
+  Inspect adjacent cases and record what the edit would change. Broaden the owning instruction
+  in place when related cases escape it. Use **Causal Diagnosis** when the standing rule already
+  covers an observed miss. Consolidate overlap into one statement at its owner. If the desired
+  behavior is already covered and inspection finds no gap, show the existing instruction and
+  the evidence for keeping it.
 
 - **Each line says one thing the user can check against what they meant.**
   - The statement never repeats the user's own words back to them; they know what they said, and
