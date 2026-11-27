@@ -59,7 +59,7 @@ explore new ideas, skip fixes to code that is being replaced.
    disagree, and the next steps.
 2. Make the changes you agree with, and answer each finding: fixed, or declined with evidence. A
    defect outside the request is fixed where `pre-production` places it. Apply that skill's size
-   budget to cleanup and list deferred work for recording.
+   budget to cleanup and list for recording only what that budget reserves a record for.
 3. Send the next round to the same members, with those answers and the diff since the last round.
    Each full review pass is one round.
 4. Stop when every member is satisfied, or after three rounds. An open disagreement then is settled
