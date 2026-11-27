@@ -308,8 +308,8 @@ the departure as the rule change, as `doctor-protocol`'s **Gate And Show The Pla
   Layout** conventions.
 - **Defensive noise** — a try/except around code that cannot raise what it catches; catch, log and
   re-raise repeated at each layer.
-- **Names that do not say their subject** — every name, read against `pre-production`'s **Naming
-  And Language** conventions: a verb with no object; `data`, `result`, `temp`, `info`, `helper`,
+- **Names that do not say their subject** — every name, read against `banned-terminology`'s
+  **Naming** and `pre-production`'s **Language**: a verb with no object; `data`, `result`, `temp`, `info`, `helper`,
   `manager` or `handler` naming something specific; `_new`, `_v2`, `_final` or `_fixed` suffixes; a
   name saying how rather than what; a word right only in another field, or one thing called by two
   words; a name a reader cannot map to what it renders or holds; two exported names for one need,
