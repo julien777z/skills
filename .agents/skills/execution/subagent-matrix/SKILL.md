@@ -10,7 +10,7 @@ A skill that delegates declares this one in its dependencies; a missing declarat
 bypass it.
 
 ## Dependencies
-- `change-scope`
+- `scope-of-change`
 
 - `session-ledger`
 - `share-media`

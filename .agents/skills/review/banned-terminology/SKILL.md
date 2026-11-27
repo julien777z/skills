@@ -12,7 +12,7 @@ the term, what to use instead, why the term fails, and any replacement already r
 Never use vague, cute, or placeholder terminology in identifiers, docstrings, comments, or test
 names, or in any other surface an entry's `applies_to` names, such as pull requests and messages to
 the user. This holds for **new and pre-existing code** in every line a change writes or edits.
-Rename banned terms elsewhere in touched files within `change-scope`'s size budget.
+Rename banned terms elsewhere in touched files within `scope-of-change`'s size budget.
 
 **No name reads or sounds like a profane, sexual, slurring or otherwise inappropriate word.** That covers every name a person reads or hears: product and player-facing text, an item, character, place or creature, an asset, a file, an identifier and an object placed in a world. Before a name is used, say it aloud as a child would sound it out, and read it run together with its neighbor and shortened to its initials; a name that a listener would hear as such a word, or a reader would see as one at a glance, such as a tree whose spoken name differs from a curse by a sound few listeners catch, or a title whose initials spell one, is replaced with another word of the same kind. An everyday word that merely sits a letter away from one, such as a camera shot or a passing car, is its ordinary self to every reader and stays. Rename one already in the product on every surface it reaches, as **Adding or updating** does for a banned word.
 
@@ -21,7 +21,7 @@ Rename banned terms elsewhere in touched files within `change-scope`'s size budg
 Read [Naming](references/naming.md) before choosing, accepting or changing a name.
 
 ## Dependencies
-- `change-scope`
+- `scope-of-change`
 
 ## Enforcing the list
 

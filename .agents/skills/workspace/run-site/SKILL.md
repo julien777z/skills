@@ -12,7 +12,7 @@ functionality, and a local inspection delivers its captures; a change no page sh
 request checks, with no capture.
 
 ## Dependencies
-- `change-scope`
+- `scope-of-change`
 - `share-media`
 - `use-browser`
 - `proton-pass`
@@ -275,7 +275,7 @@ is a defect in the change.
 Anything the run shows that the product should not do — an error the run did not ask for (a
 failed request, an empty section, an error boundary, an unwritten redirect, a console error) or
 wrong behavior on screen (a value shown altered or lost, data in the wrong place, a broken
-layout) — is a defect the walkthrough found, and `change-scope`'s **Encountered Issues** decides
+layout) — is a defect the walkthrough found, and `scope-of-change`'s **Encountered Issues** decides
 what happens to it. Diagnose it to its cause through the service log, the network response, and the
 rendering code, fix it, and re-run the step. The one exception is the failure you induced on the
 run above; say which kind each capture shows, since the two look identical.

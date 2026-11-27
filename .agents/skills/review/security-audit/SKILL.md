@@ -14,7 +14,7 @@ reviewing and apply it throughout. This file holds how that judgment is applied 
 
 ## Dependencies
 - `subagent-matrix`
-- `change-scope`
+- `scope-of-change`
 - `writing-conventions`
 
 ## While Writing Code
@@ -67,7 +67,7 @@ codebase security audit the skill listing describes.
   trace does not hold.
 
 A finding in lines the running task wrote is fixed in that task's change. Any other finding is
-returned to the caller, who applies `change-scope`'s **Scope Follows The Defect, Not The
+returned to the caller, who applies `scope-of-change`'s **Scope Follows The Defect, Not The
 Request** to place the fix. No findings file is
 committed, and the review changes no code.
 

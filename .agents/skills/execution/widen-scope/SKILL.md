@@ -6,13 +6,13 @@ short_description: 'Turn on cleanup of the problems the work runs into for the r
 
 # Widen Scope
 
-This skill switches on `change-scope`'s widened cleanup budget as a session toggle: once the user
+This skill switches on `scope-of-change`'s widened cleanup budget as a session toggle: once the user
 turns it on, it holds for every task and follow-up in the session until the user says to stop. Bugs
-are fixed whatever their size either way, as `change-scope` says.
+are fixed whatever their size either way, as `scope-of-change` says.
 
 ## Dependencies
 - `acceptance-gate`
-- `change-scope`
+- `scope-of-change`
 - `session-ledger`
 
 ## Switching It On And Off

@@ -29,7 +29,7 @@ set, fixture, configuration entry or block of logic), search the repository and 
 packages by what it does and by its key operation, and write its receipt. Reuse an existing owner,
 or extend it with the one parameter or condition it lacks; write new code only with the search
 that found no owner, and add no parameter, option or branch for a condition nothing uses.
-Fix every defect you meet where `change-scope`'s **Scope Follows The Defect, Not The Request**
+Fix every defect you meet where `scope-of-change`'s **Scope Follows The Defect, Not The Request**
 places it. Hand up work outside your assignment so the coordinator can apply that placement rule. Leave alone
 only cleanup past the repository's incidental size budget and a choice that is the user's, and
 report each.

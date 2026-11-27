@@ -11,12 +11,12 @@ exercise, and prove that each test protects behavior or an independent contract.
 
 ## Dependencies
 - `session-ledger`
-- `change-scope`
+- `scope-of-change`
 - `writing-conventions`
 
 ## Workflow
 
-Apply `change-scope` to the scope of issues encountered while tracing a test surface.
+Apply `scope-of-change` to the scope of issues encountered while tracing a test surface.
 
 1. Read the repository’s test eligibility policy and applicable testing, framework, and organization
    guidance before selecting a test surface. Classify the proposed verification by what it does,
@@ -148,8 +148,8 @@ dispositions, the **Mirror Source Ownership** test-module check, the **Naming Ch
 keeper, and delete one that proves nothing once the rubric's deletion evidence is recorded. A
 repaired or strengthened guarantee follows the existing-check validation procedure above. A fix that repairs a defect —
 a test that cannot fail, guards the wrong behavior or breaks in a fresh checkout — is always made,
-with placement under `change-scope`, apart from a test already failing on the default branch,
-which the rubric records and leaves. Apply `change-scope`'s size budget to other cleanup and
+with placement under `scope-of-change`, apart from a test already failing on the default branch,
+which the rubric records and leaves. Apply `scope-of-change`'s size budget to other cleanup and
 return to the caller only what that budget reserves a record for. Apply the cost-reporting procedure above to the run that verified the
 change. A disproportionate test, parametrized family or module in scope is made cheap or removed
 as the rubric's **Test Cost** decides.
@@ -160,7 +160,7 @@ for.
 ## Completion
 
 Fix concrete violations encountered in the relevant tests, sibling tests, fixtures, factories, and
-shared utilities at the breadth `change-scope` sets. Do not turn a focused change
+shared utilities at the breadth `scope-of-change` sets. Do not turn a focused change
 into an unrelated repository-wide audit.
 
 Run the locally available targets the final diff reaches. That is this skill's own check of the

@@ -13,7 +13,7 @@ meets, also read [the product-copy reference](references/product-copy.md).
 
 ## Dependencies
 - `pre-production`
-- `change-scope`
+- `scope-of-change`
 
 ## Whose Standards Apply
 
@@ -22,7 +22,7 @@ meets, also read [the product-copy reference](references/product-copy.md).
   open a pull request to, is someone else's. There a change carries what the request asks for and
   the defects it meets — a bug, a vulnerability, behavior that breaks for that project's users —
   written in that repository's own conventions. The style, structure, naming, testing, tooling, CI,
-  runtime and documentation standards these rules and skills set, and `change-scope`'s incidental
+  runtime and documentation standards these rules and skills set, and `scope-of-change`'s incidental
   cleanup, are not applied there: an item only they would raise is left out, neither fixed nor
   recorded as deferred work in that repository, and named to the user in chat only when it bears on
   the request. The rules on how the agent acts hold in every repository: authorization, merging,
@@ -55,7 +55,7 @@ meets, also read [the product-copy reference](references/product-copy.md).
 
 ## Code Layout
 
-- In every language, use blank lines to separate setup, validation, transformations, side effects, and returns. Keep adjacent statements together only when they form one small operation; do not turn a function into an uninterrupted paragraph merely because a formatter permits it. Apply this to every line you write or edit, and elsewhere in a file you change within `change-scope`'s incidental size budget.
+- In every language, use blank lines to separate setup, validation, transformations, side effects, and returns. Keep adjacent statements together only when they form one small operation; do not turn a function into an uninterrupted paragraph merely because a formatter permits it. Apply this to every line you write or edit, and elsewhere in a file you change within `scope-of-change`'s incidental size budget.
 - Use current language syntax for simple operations. For one-off Python interpolation, use f-strings instead of string concatenation or `.format()`, and keep spacing in the final string rather than a fragment with a hidden leading space. Follow the Python rule for reusable structured templates.
 
 - **The repository does one thing one way.** Before writing anything of a kind it already holds —
@@ -63,9 +63,9 @@ meets, also read [the product-copy reference](references/product-copy.md).
   reports errors — read how the existing instances are written and follow that shape. A new pattern
   beside the old one reads as bespoke however good it is, and a reviewer meeting it has to learn two
   ways to do the same thing. Where a different shape would serve better, the change keeps the
-  existing one and proposes the conversion, as `change-scope`'s **A better shape is proposed, never
+  existing one and proposes the conversion, as `scope-of-change`'s **A better shape is proposed, never
   swept in** says. An existing shape a standing rule names a defect is not followed; it is repaired
-  on every instance as `change-scope`'s **Scope Follows The Defect, Not The Request** says. Only a
+  on every instance as `scope-of-change`'s **Scope Follows The Defect, Not The Request** says. Only a
   difference a contract the instance serves requires stays, with that contract named in the
   report.
 
@@ -133,7 +133,7 @@ meets, also read [the product-copy reference](references/product-copy.md).
   and dependency releases it works with.** Which release is newest is read from its publisher's
   release list at the time, such as the runtime's official release page or the package registry, never from
   memory or from a version the user names, which is checked the same way. A change made for that move — one the user asks for, or
-  the upgrade pull request a warning leads to, as `change-scope`'s **Scope Follows The Defect, Not
+  the upgrade pull request a warning leads to, as `scope-of-change`'s **Scope Follows The Defect, Not
   The Request** places it — moves what the project actually runs onto them: its version file,
   container images, CI and lockfile, with whatever code changes the new releases need, including in
   an owned package that only widened its range to let a consumer move. Neither of these is that

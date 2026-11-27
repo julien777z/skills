@@ -21,7 +21,7 @@ calling workflow states how its repairs are judged.
 - `code-simplify`
 - `security-audit`
 - `pre-production`
-- `change-scope`
+- `scope-of-change`
 - `writing-conventions`
 - `test-fixture`
 - `run-site`
@@ -136,7 +136,7 @@ after them say:
    verifies each reported shape against the source and rule;
 5. exactly one question from the list below.
 
-**The gate judges with its dependencies' criteria.** Apply `change-scope` to the scope decision,
+**The gate judges with its dependencies' criteria.** Apply `scope-of-change` to the scope decision,
 `test-fixture` to test costs and existing reporting evidence, and `run-site`'s **Scenarios** to
 changes that add or alter product states. Apply `security-audit`'s review in process, as an
 invocation that cannot launch agents, with no delegated agents; take its exploitable findings into
@@ -224,7 +224,7 @@ consumer accepts and how it excludes each obsolete representation. Flag missing 
 Distinct meanings carried by the canonical representation still receive the ordinary guard checks.
 A verdict with no added guard says `no guard added` in those words.
 
-**Then it lists every product choice the diff makes**, as `change-scope`'s **Product Choices** defines one — a change to
+**Then it lists every product choice the diff makes**, as `scope-of-change`'s **Product Choices** defines one — a change to
 what a feature does or shows, a remedy whose visible effect is large, such as a layout, control or
 flow changing across many pages, a change carried past the surface the user named — each with the
 user's words in the intent statement that settle it. Small presentation decisions on the surface in
@@ -409,7 +409,7 @@ including when its simplest compliant repair still requires substantial irreduci
 mechanisms its gain cannot carry. A confirmed defect remains owed under the fix test. A hypothetical
 safeguard or compatibility concern is judged against the target repository's product state and
 contract, not promoted to a defect merely because a reviewer flagged it. Deprecated usage and a
-warning a run prints are never hypothetical: they are defects under `change-scope`, and the gate
+warning a run prints are never hypothetical: they are defects under `scope-of-change`, and the gate
 flags each one it meets in the diff or in the verification output the caller supplies.
 
 Escalate only a genuine unresolved product, scope, security, disclosure or authorization choice, stating the concrete

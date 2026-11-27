@@ -48,7 +48,7 @@ For Python suites; another language keeps test configuration where its runner re
 - Do not hardcode configuration values in `conftest.py` files.
 - Access these values through the production typed settings object when one exists; otherwise use `os.environ` in test code.
 - **Test runs treat warnings as errors**, through the runner's own setting, such as pytest's
-  `filterwarnings = ["error"]`. Every warning is fixed as `change-scope`'s deprecated-usage bullet
+  `filterwarnings = ["error"]`. Every warning is fixed as `scope-of-change`'s deprecated-usage bullet
   says. The one ignore allowed is for a defect inside a third-party package that no release fixes,
   no replacement avoids, and nothing the repository passes or configures resolves: it matches that
   package's module and message alone, with a comment naming the package and the upstream fix it
@@ -71,10 +71,10 @@ For Python suites; another language keeps test configuration where its runner re
   - Splitting the suite across jobs only to stay under the budget, or giving any suite a timeout
     above 15 minutes, hides the same defect.
   - A suite stopped by its time limit, or past its budget, is a defect even when the default branch
-    overruns too, so the baseline exclusion in `change-scope`'s **Encountered Issues** never
+    overruns too, so the baseline exclusion in `scope-of-change`'s **Encountered Issues** never
     covers it. Where its fix goes follows who caused it, so the change stays reviewable as itself:
     - a suite the change made slower is fixed in the change, whatever the fix's size;
-    - a suite the change did not slow is a defect the work noticed, placed as `change-scope`'s
+    - a suite the change did not slow is a defect the work noticed, placed as `scope-of-change`'s
       **Scope Follows The Defect, Not The Request** says.
   - Every instruction about a suite's runtime — a worker's brief, a fix step, a gate's remedy —
     states the budget as its target, never only the timeout, since a suite that merely stays under

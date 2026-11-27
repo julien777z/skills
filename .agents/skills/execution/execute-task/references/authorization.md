@@ -68,11 +68,11 @@ step is a new approval boundary, and how a step or choice reaches the user.
   data change owes records already stored, which project guidance says; which of two
   implementation details to use where a rule picks one; how to remove duplication the guidance
   treats as a defect — which repository or package owns shared behavior and which mechanism replaces
-  parallel copies — which `change-scope` and `code-simplify` settle; and what configuration exists
+  parallel copies — which `scope-of-change` and `code-simplify` settle; and what configuration exists
   or how it is scoped, which is read where it lives. A permission denial leaves the decision where
   it was, as [working environment](environment.md)'s **Environment Refusals** says.
 - **An encountered issue's remedy passes the product-choice test before it is chosen**, as
-  `change-scope`'s **Product Choices** sets, including one proposed by a worker or reviewer. An
+  `scope-of-change`'s **Product Choices** sets, including one proposed by a worker or reviewer. An
   ambiguous instruction has no approved interpretation: name both concrete outcomes and build on
   the user's answer, quoting their words in a delegated brief. This decision wait holds only the dependent remedy, never the
   remaining authorized work.

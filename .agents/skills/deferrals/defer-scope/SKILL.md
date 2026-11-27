@@ -11,7 +11,7 @@ Keep a problem alive after the conversation ends without scheduling its implemen
 ## Dependencies
 - `linear`
 - `acceptance-gate`
-- `change-scope`
+- `scope-of-change`
 - `merge-gate`
 
 ## Modes
@@ -30,7 +30,7 @@ writes nothing.
 
 ## When Recording Runs
 
-Fix work instead of recording it whenever one focused pass can finish it within `change-scope`'s size budget, and a defect whatever its size, as below. A stale reference, rename, wrong path,
+Fix work instead of recording it whenever one focused pass can finish it within `scope-of-change`'s size budget, and a defect whatever its size, as below. A stale reference, rename, wrong path,
 missing assertion, lint or type finding, or small extraction costs less to fix than to record.
 Attempt the fix before concluding that work is deferrable; `acceptance-gate`'s admission question
 lists the only justifications for a record, and a flagged attempt is one of them. Work in lines or
@@ -57,11 +57,11 @@ to the change in flight or larger, the two together too large for one careful re
 broad sweep somebody could reasonably decline, its need arguable, unless it is incidental cleanup —
 work an external blocker holds, and work that awaits a decision already put to its owner and still
 open, or one the user declined in the current request; a question nobody has asked yet is asked, not
-recorded. **A defect is never recorded**, a defect as `change-scope`'s **Scope Follows The Defect,
+recorded. **A defect is never recorded**, a defect as `scope-of-change`'s **Scope Follows The Defect,
 Not The Request** defines one, whether the change introduced it, the task asked to fix it or the
-work only ran into it. Fix it now where `change-scope` places it, and investigate a suspected one
+work only ran into it. Fix it now where `scope-of-change` places it, and investigate a suspected one
 whose confirmation is in reach there, as that section says. Only cleanup that fixes no defect
-follows `change-scope`'s size budget. Never offer the user the choice between fixing and
+follows `scope-of-change`'s size budget. Never offer the user the choice between fixing and
 recording. When part of a cleanup is small, fix that part and record only the remainder. Record
 consciously deferred work immediately, at the moment it is left undone, in the repository that owns
 it as **Ownership And Identity** resolves; no separate invitation is needed, and a chat note or

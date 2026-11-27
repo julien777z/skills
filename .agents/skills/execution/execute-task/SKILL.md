@@ -14,7 +14,7 @@ agent-configuration pull request.
 ## Dependencies
 - `review-proposal`
 - `pre-production`
-- `change-scope`
+- `scope-of-change`
 - `writing-conventions`
 - `banned-terminology`
 - `run-site`
@@ -95,7 +95,7 @@ plan of its own; only an edit that adds nothing skips it.
 
 ### What The Plan Holds
 
-- For a bug, establish the intended behavior and apply `change-scope`'s **Trade-Offs Are
+- For a bug, establish the intended behavior and apply `scope-of-change`'s **Trade-Offs Are
   Surfaced, Never Enforced** before choosing the remedy or presenting an alternative. Use the
   same check when a worker, reviewer, or failed approach changes the proposed remedy.
 - Select verification before recommending it, putting it in a plan, or delegating it. Read
@@ -251,7 +251,7 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
   lives. A step the agent adds, or widens past what the user asked, is recorded as agent-originated,
   proceeds under the task's authorization like the work **When A Plan Is Needed** says a plan in
   execution covers, and is never shown as user-approved; one that is a product choice goes to the user
-  before it is built, as `change-scope`'s **Product Choices** says. Update it when the state
+  before it is built, as `scope-of-change`'s **Product Choices** says. Update it when the state
   changes, not when a report is due: the plan being shown, a step starting, finishing, blocking or being
   skipped, a follow-up's plan.
 - **A step that waits on other work records what it waits for**: the gate, merge or result whose
@@ -309,7 +309,7 @@ after its gating check has been read, outside the command, chain or batch that r
 
 ### Product Constraints
 
-`pre-production`, `change-scope` and `writing-conventions` are active in every change task: read
+`pre-production`, `scope-of-change` and `writing-conventions` are active in every change task: read
 each whole and invoke it before the first edit. Read the product state from project guidance
 before changing a contract or stored value.
 
@@ -326,7 +326,7 @@ Before an edit that crosses a trust boundary `security-audit` names, invoke it a
 
 ### Encountered Issues
 
-Apply `change-scope`'s **Encountered Issues** while making the change, as [encountered
+Apply `scope-of-change`'s **Encountered Issues** while making the change, as [encountered
 issues](references/encountered-issues.md) says: its **Disposition** says what is fixed in the change
 in flight and what is recorded with `defer-scope`, how an instruction one agent passes another is
 checked against the standing guidance before it is sent and before it is acted on, and when a

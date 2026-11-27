@@ -8,7 +8,7 @@ short_description: 'Ask three strong models what they think, or review with them
 
 ## Dependencies
 - `subagent-matrix`
-- `change-scope`
+- `scope-of-change`
 
 ## Modes
 
@@ -58,7 +58,7 @@ explore new ideas, skip fixes to code that is being replaced.
 1. Send each member the brief and collect the replies. Summarize the useful findings, where members
    disagree, and the next steps.
 2. Make the changes you agree with, and answer each finding: fixed, or declined with evidence. A
-   defect outside the request is fixed where `change-scope` places it. Apply that skill's size
+   defect outside the request is fixed where `scope-of-change` places it. Apply that skill's size
    budget to cleanup and list for recording only what that budget reserves a record for.
 3. Send the next round to the same members, with those answers and the diff since the last round.
    Each full review pass is one round.

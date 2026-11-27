@@ -12,7 +12,7 @@ user as speech.
 
 ## Dependencies
 - `session-ledger`
-- `change-scope`
+- `scope-of-change`
 
 ## What reaches the user, and when
 
@@ -29,7 +29,7 @@ user as speech.
 - **Fix what the reading finds before sending, then send the fixed capture.** A defect anywhere in
   it, in a region the message never mentions as much as the one it does — a state or error shown in
   a section it does not concern, a message repeated, a wrong value or tone — is named with the
-  capture and fixed rather than offered, as `change-scope`'s **Encountered Issues** says. A defect
+  capture and fixed rather than offered, as `scope-of-change`'s **Encountered Issues** says. A defect
   the work in hand can fix is fixed and captured again; the capture that showed it goes out only as
   the before half of that pair; a defect whose fix a named gate holds goes out with that gate named.
 - **A capture of a change reaches the user while the work is still running.** A screenshot, a

@@ -18,7 +18,7 @@ skill never readies, merges or deploys.
 - `security-audit`
 - `defer-scope`
 - `session-ledger`
-- `change-scope`
+- `scope-of-change`
 - `writing-conventions`
 - `council`
 - `subagent-matrix`
@@ -56,7 +56,7 @@ skill never readies, merges or deploys.
   runs `code-simplify` once over the pull request's whole diff, in process or by slice as **Local
   Passes** says; a fix that pass pushes is watched to the same end, and the watch then stops. The
   report names each exclusion, leaving out baseline failures and non-essential checks left red as
-  `change-scope`'s **Encountered Issues** says, and each thread waiting on the user. A draft runs no test jobs, so
+  `scope-of-change`'s **Encountered Issues** says, and each thread waiting on the user. A draft runs no test jobs, so
   its watch reports `draft: watch ended, tests not run`; this mode never readies or merges a pull
   request.
 - **Combined** (the invocation names more than one open pull request, each with its accepted head
@@ -280,7 +280,7 @@ changed. Make the smallest changes that answer real findings, and push back on t
     the loop;
   - nit: fix it when it is a one-line change in a line the change already touches, otherwise decline
     it in one line;
-  - outside the change: fix every bug as `change-scope`'s **Scope Follows The Defect, Not The Request**
+  - outside the change: fix every bug as `scope-of-change`'s **Scope Follows The Defect, Not The Request**
     requires. Use its size budget and `defer-scope` for cleanup.
 - **Next round** only while budget remains and a blocker or should is open, or code or guidance
   behavior changed since the last approval. Run the checks covering the fix and `git diff --shortstat <base>` first; if

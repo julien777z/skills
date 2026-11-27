@@ -1,10 +1,10 @@
 ---
-name: change-scope
+name: scope-of-change
 description: "What a change takes on and how far it reaches, and which of its decisions are the user's. Read before planning, fixing, reviewing or gating any change, whenever a check fails or the work turns up a problem, and before putting a decision to the user. Covers classifying a validation failure against the default branch, which checks have to pass and a lint, formatting or other non-essential check red on code the change did not write, a hosted attempt a runner interrupted, what counts as a defect and how far its fix reaches, side work and the pull request that carries it, a package consumed through a branch reference, incidental cleanup's size budget and the grounds for a deferral record, a better shape than the repository's, a correction to one screen against a rule, telling a product choice from a routine detail, restoring intended behavior in a bug fix, and surfacing trade-offs rather than enforcing them."
 short_description: 'Decide what a change fixes, carries and leaves, and which of its choices go to the user.'
 ---
 
-# Change Scope
+# Scope Of Change
 
 A change takes on the whole shape of the problem it repairs, fixes every defect it meets, carries
 its side work where one careful review can read it, and puts to the user only the choices that are

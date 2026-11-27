@@ -13,7 +13,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 - `session-ledger`
 - `list-prs`
 - `use-dashboard`
-- `change-scope`
+- `scope-of-change`
 - `execute-task`
 - `merge-gate`
 
@@ -155,7 +155,7 @@ or `~3h 10 min`.
 - **`table` "Ready to merge"**: one row per open or draft pull request, in merge order, with the
   columns Pull request, Checks, Conflicts, Open threads, Waits on and Ready. Checks is "Passing",
   "Failing: <check>" or "Running", over the checks the change answers for, leaving out a baseline
-  failure as `change-scope`'s **Encountered Issues** says; Conflicts "None" or "With <base>"; Open threads the count of
+  failure as `scope-of-change`'s **Encountered Issues** says; Conflicts "None" or "With <base>"; Open threads the count of
   unresolved review threads; Waits on the pull requests or actions it needs first, or "Nothing".
   Ready is "Yes" only when its checks pass, it has no conflict or open thread, and nothing it waits
   on is left; otherwise it names the first thing missing.

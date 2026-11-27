@@ -168,7 +168,7 @@ shell, and a title whose length the product's layout already holds whole.
 
 One thing called by two names, features offered side by side that a reader could mistake for each
 other, and one slot's capitalization broken, against **Interface Copy**'s bullets on capitalization,
-side-by-side names and status labels, and `change-scope`'s **Product Choices** on inconsistent
+side-by-side names and status labels, and `scope-of-change`'s **Product Choices** on inconsistent
 text. Whole repository: a name is wrong only beside the other name.
 
 Evidence: both rows, their slots, and what each refers to in the code — the model, route or
@@ -238,7 +238,7 @@ doctor `get-doctors` lists for code slop.
 
 Content squeezed, truncated, wrapped, clipped or hidden where it should be given room, against the
 React layout rule's **Layout And Spacing** bullets on sizing content for its values, padding and
-chrome, scrolling frames and stacked rows, and `change-scope`'s **Product Choices** on making
+chrome, scrolling frames and stacked rows, and `scope-of-change`'s **Product Choices** on making
 content fit.
 
 Evidence: the capture, its width and role, the region, the measurement row that lists the element,
@@ -412,7 +412,7 @@ the instance most pages use, and the list of every page on each drawing.
 Remedy: one owner. The shared component, or the instance that is right, becomes the shared
 primitive; every page that draws its own moves onto it in the same change and its copy is deleted,
 each difference a page still needs becoming a documented variant. A move that gives a page the look
-the rest of the product already has is a fix, as `change-scope`'s **Scope Follows The Defect, Not
+the rest of the product already has is a fix, as `scope-of-change`'s **Scope Follows The Defect, Not
 The Request** says; where the two drawings are evenly used and neither is the rule's, which one
 wins is the run's decision, as `SKILL.md`'s **Dispositions** says. Left alone: a difference the
 content each audience needs explains; a page whose look the task record shows the user decided; a

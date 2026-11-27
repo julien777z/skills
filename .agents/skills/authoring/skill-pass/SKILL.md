@@ -12,7 +12,7 @@ no pull request and delivers nothing. An invocation names what it covers — a d
 or the whole canonical tree — and the pass runs over that.
 
 ## Dependencies
-- `change-scope`
+- `scope-of-change`
 - `council`
 - `i-have-adhd`
 - `code-simplify`

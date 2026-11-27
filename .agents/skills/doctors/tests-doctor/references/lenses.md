@@ -230,7 +230,7 @@ when only one suite uses it. Fixture lifecycle wiring and scenario inputs stay i
 Inject application model types where a shared import would invert dependencies.
 Discover that owner from existing implementations and the repository's test-utilities package
 before relocating anything.
-Complete the ownership move as `change-scope`'s **Scope Follows The Defect, Not The Request**
+Complete the ownership move as `scope-of-change`'s **Scope Follows The Defect, Not The Request**
 says of a parallel copy: inspect every related implementation, move every consumer onto the one
 owner, and flag a partial move even when the factory left behind was already there. Generic
 lifecycle helpers retain their own owners; a shared word does not establish shared responsibility.

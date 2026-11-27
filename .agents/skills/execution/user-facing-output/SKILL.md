@@ -13,7 +13,7 @@ output.
 
 ## Dependencies
 - `i-have-adhd`
-- `change-scope`
+- `scope-of-change`
 - `writing-conventions`
 - `session-ledger`
 - `share-media`
@@ -75,7 +75,7 @@ output.
   instead of asking the reader to reproduce it, in its first line, its numbered steps and its
   closing action alike, over any `i-have-adhd` example that hands the reader such a step. The
   reader gets such steps only when they asked how to do something themselves.
-- **An issue the work met is fixed and named once as fixed**, as `change-scope`'s **Encountered
+- **An issue the work met is fixed and named once as fixed**, as `scope-of-change`'s **Encountered
   Issues** says, never offered as a follow-up: "Also fixed on the way: the stale dependency the
   build pulled in", never "there is also a stale dependency. Want me to handle that next?".
 - **Report work that is happening or affects the requested outcome.** A status such as “pending”

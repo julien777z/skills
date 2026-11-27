@@ -112,7 +112,7 @@ the list of operations alone.
 - static data the client can carry in its build — a published reference list, an owned enum and
   its labels — fetched at run time;
 - every list read that returns a collection with no bound, and every producer-side helper that
-  drains every page for its caller, as `change-scope`'s **Slow, unbounded or fragile work is a
+  drains every page for its caller, as `scope-of-change`'s **Slow, unbounded or fragile work is a
   defect too** and the FastAPI rules' **Pagination** say.
 
 The remedy is the operation shaped for its use case: one owned operation returning what that use
@@ -368,7 +368,7 @@ during cutover remains a finding while the older writer still exists.
   conventions: read every logging call inside a handler or beside a raise, and every redaction
   filter with what it matches.
 - **Deprecated usage** — every warning the pre-pass's list collected from the baseline checks, and
-  every call, setting, default or dependency its owner has deprecated, as `change-scope`'s
+  every call, setting, default or dependency its owner has deprecated, as `scope-of-change`'s
   **Deprecated usage and printed warnings are defects** says.
 - **Dead branch and dead entry** — every union member no caller passes and the arm handling it;
   every narrowing arm the module's own writer makes unreachable, and every guard for a state no
