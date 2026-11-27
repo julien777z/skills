@@ -9,7 +9,7 @@ Task: <implement | fix> <one line naming the outcome>
 Intent: <the user's words for this work, each decision recorded on it, and what is out of scope>
 Scope: <the plan step, or the coupled steps in order, with the invariant the work keeps>
 Files: <exact paths to change; they bound the scope, not the design>
-Repo: <abs path> Worktree: <abs path> Branch: <the pull request's branch> Head: <sha>
+Repo: <abs path> Worktree: <abs path> Branch: <the pull request's branch> Head: <sha> (one line per pull request of a bulk set)
 Rules: <rule files whose patterns match those paths; the repository's `.agents/tools/` folder>
 Reuse: <one receipt per addition the plan names: what it does · searched · found · reuse | extend | new: why>
 Push checks: <each fast check command with its scope; never a test suite>
