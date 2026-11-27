@@ -1,6 +1,6 @@
 ---
 name: pre-production
-description: "The product state before it ships, applied to implementation, review and operational data tasks, maintenance, cleanup, tooling and CI repairs included: build only the target contract, never adding a compatibility shim or keeping support for an obsolete owned contract or revision; update its owned consumers and migrate retained data. Also covers which contracts, environments and records a project's guidance marks as having users or as disposable, what retained data obliges, partial updates, configuration as an owned contract, deliberate breaks of owned contracts across repositories, adapting to a third-party provider's contract, required fields and backfills, and why the current deployment's size never sets the design."
+description: "The product state before it ships, applied to implementation, review and operational data tasks, maintenance, cleanup, tooling and CI repairs included: build only the target contract, never adding a compatibility shim or keeping support for an obsolete owned contract or revision; update its owned consumers and migrate retained data. Also covers which contracts, environments and records a project's guidance marks as having users or as disposable, what retained data obliges, configuration as an owned contract, deliberate breaks of owned contracts across repositories, adapting to a third-party provider's contract, what a requiredness change and a backfill owe retained data, and why the current deployment's size never sets the design."
 short_description: 'Build the target contract for the product before it ships, with no compatibility for obsolete owned shapes.'
 ---
 
@@ -66,10 +66,6 @@ Build the clean target contract instead of preserving transitional behavior.
   callers is a cost to verify, not a reason to preserve the old design. Never invent an entity,
   identity, scope, or state to satisfy the old shape. A guard, fallback, or special case needs to
   represent a supported case at the boundary that owns it.
-- **A partial update expresses intent through its existing field presence or field mask.** Apply
-  the fields that mechanism selects and leave every other field alone. Use the contract's own
-  representation for an explicit clear. A separate control earns a place only when it expresses
-  a distinct operation the update fields cannot represent.
 - Treat configuration inputs as owned contracts. Replace a stale deployed value at the existing
   setting and its deployment owner; do not add another file, environment key, or fallback path to
   override it.
@@ -113,16 +109,8 @@ Build the clean target contract instead of preserving transitional behavior.
   provider's shape never licenses it. Accept what it can send; require only what an owned validation
   or selection boundary proves is present.
 
-## Required Data
+## Retained Data
 
-- Make fields and columns required by default. Keep one nullable only when absence is a genuine
-  supported domain state.
-- An absent value on a read path is a schema question. First establish whether the domain requires
-  it. Represent legitimate absence at the operation that can return it. When one shape represents
-  both a present entity and no entity, give those states distinct representations so a present
-  entity requires its identity. If the domain and the column both require a field, align the wire
-  and model with the column. If the domain requires it and the column allows absence, align the
-  column too. Apply **Target Contract** when a shared shape is the cause of an impossible branch.
 - For a requiredness change, establish the affected data's retention scope under **Product State**
   before deciding what its revision keeps or clears; required columns do not themselves create an
   obligation to preserve disposable or nonexistent rows.
