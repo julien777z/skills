@@ -197,6 +197,14 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   or invoke another skill. Scripts the skill runs go under `scripts/`; supporting files may live
   under `assets/`, `resources/`, or another directory named for their role. Keep only files the skill
   needs.
+- **A skill keeps as few references as its routes need.** Each one earns its own file because some
+  route or reader skips it; a subject that fits an existing reference goes there, renaming that file
+  to the broader subject when the new text widens it, and a new file is added only for a subject
+  none covers. A name joining two subjects, such as `x-and-y`, signals two files' worth or a
+  broader name not yet found. Whenever a pass covers a skill, judge its references as a set:
+  - merge references on one subject, or always read together;
+  - move into `SKILL.md` a short one every run reads, when the body has room under its budget;
+  - delete one nothing links to, or whose content the body or another reference already states.
 - Never add `agents/openai.yaml` to a repository skill, and remove one found in a canonical
   package. Repository skills contain `SKILL.md` and only supporting files required by the skill;
   provider UI metadata stays outside repositories and is never propagated.
