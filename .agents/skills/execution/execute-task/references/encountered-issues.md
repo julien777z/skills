@@ -100,3 +100,9 @@ compatibility, generated-output drift.
   gate reported, so a reviewer can confirm nothing unintended is in the diff.
 - Do not let a green run drive design. Choosing a wider or additive shape so that a gate stays
   green is the same defect as suppressing the gate.
+
+## Widened Scope
+
+While `scope-of-change`'s widened budget holds for the session, the list of borderline items it
+returns once the task's own change is done goes to `acceptance-gate` in a single triage call; its
+answer decides fix or defer for each item.

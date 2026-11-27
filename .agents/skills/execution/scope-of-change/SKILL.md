@@ -1,6 +1,6 @@
 ---
 name: scope-of-change
-description: "What a change takes on: the problems it fixes, how far it reaches, the pull request it rides, and the decisions it makes itself rather than putting to the user. Read before planning, fixing, reviewing or gating a change, when a check fails or the work turns up a problem, and before putting a decision to the user. Covers classifying a failing check against the default branch, which checks must pass, a lint or formatting check red on code the change did not write, a hosted attempt a runner interrupted, what counts as a defect and how far its fix reaches, repairing the design behind a defect, a limit added with no evidenced requirement, why today's deployment size never sets the design, side work and its pull request, a package consumed through a branch reference, the cleanup size budget and deferral grounds, a better shape than the repository's, a correction to one screen against a rule, product choices against routine details, restoring intended behavior in a bug fix, and surfacing trade-offs."
+description: "What a change takes on: the problems it fixes, how far it reaches, the pull request it rides, and the decisions it makes rather than asks. Read before planning, fixing, reviewing or gating a change, when a check fails or work turns up a problem, and before putting a decision to the user. Covers classifying a failing check against the default branch, which checks must pass, a lint or formatting check red on unwritten code, a hosted attempt a runner interrupted, what a defect is and how far its fix reaches, repairing the design behind a defect, a limit with no evidenced requirement, why today's deployment size never sets the design, side work and its pull request, a package consumed through a branch reference, the cleanup size budget, deferral grounds and widening it when the user says \"widen scope\" or \"clean up what you find\", a better shape than the repository's, a correction to one screen against a rule, product choices against routine details, restoring intended behavior, and surfacing trade-offs."
 short_description: 'Decide what a change fixes, carries and leaves, and which of its choices go to the user.'
 ---
 
@@ -12,6 +12,7 @@ theirs.
 
 ## Dependencies
 - `pre-production`
+- `session-ledger`
 
 ## Encountered Issues
 
@@ -204,6 +205,14 @@ authorizes compatibility with an obsolete owned contract or revision.
     session widens it, until they withdraw it: every cleanup the work meets is in scope and done,
     whatever its file count, bar the record grounds below, and the one-hop limit above does not
     bound it. Each such fix gets its own commit, named for what it repairs.
+    - **The user widens the session in their own words, and only then**, such as "widen scope" or
+      "clean up what you find"; nothing else turns it on. Record that decision, and a later stop,
+      with `session-ledger` as one scoped to the whole session, so it reaches every later task,
+      context summary, handoff and worker brief.
+    - While it holds, collect the items you are unsure about instead of deciding each one, and
+      once the task's own change is done return them as one list for a single triage, whose
+      answer is final for each item. The task's report adds one line: `Widened scope: <n> fixed
+      (<one clause each>) · <n> deferred (<record links>)`.
   - **A deferral record for incidental cleanup is reserved for three grounds:** cleanup comparable
     in size to the change in flight or larger, the two together too large for one careful read, such
     as a sweep as large again as a change of hundreds of files; work an external blocker holds,

@@ -331,8 +331,8 @@ issues](references/encountered-issues.md) says: its **Disposition** says what is
 in flight and what is recorded with `defer-scope`, how an instruction one agent passes another is
 checked against the standing guidance before it is sent and before it is acted on, and when a
 correction is asked about, offering a fix to the user being no disposition; its **CI Gates And
-Deliberate Breaks** says how a required check that detects deliberate changes, red on an
-intentional break, is reported and never suppressed or designed around.
+Deliberate Breaks**, how a check that detects deliberate changes, red on an intentional break, is
+reported, never suppressed or designed around; its **Widened Scope**, the borderline-item triage.
 
 ### Ongoing Simplification
 
