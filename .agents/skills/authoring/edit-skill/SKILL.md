@@ -6,10 +6,9 @@ short_description: 'Edit a skill, rule, or agent file and fix the guidance gap t
 
 # Edit Skill
 
-Upsert `.agents` source-of-truth files for agents, skills, or rules based on user input, and carry
-every edit through the route **Guidance Delivery** selects for it, whether the user invoked this
-skill or the edit arose while doing other work. An edit that skipped this is unverified, and the
-report says so.
+Upsert `.agents` source-of-truth files for agents, skills, or rules from user input, and carry every
+edit through the route **Guidance Delivery** selects, whether the user invoked this skill or the edit
+arose during other work. An edit that skipped this is unverified, and the report says so.
 
 **A process is encoded only once it has worked, and only a new process waits.** A request to put a
 new process into guidance — a workflow, a procedure, a tool or route, a way of building or
@@ -245,8 +244,8 @@ small it looks.** Each route below is the gate set its batch passes on the head 
      never waits to classify. Keep the incident and these cases in the verification record; shared
      guidance states the invariant, not their identities. Classify before choosing the owner, since
      a component's owner can hide a broader failure.
-   - Supported types: every kind the description names. Use the type the user states; otherwise
-     the owner search below decides it, never a question to the user.
+   - Use the type the user states, of those the description names; otherwise the owner search
+     decides it, never a question to the user.
    - A file or skill the request names is a candidate, not proof of ownership. Compare it with its
      callers and dependencies before choosing the target. A condition governing a specific action
      belongs to that action's skill, even when a broader caller sequences the surrounding task.
@@ -290,14 +289,19 @@ small it looks.** Each route below is the gate set its batch passes on the head 
        guidance change: a correction, a gap the agent noticed, a rule or global-rules edit, a
        skill edit. It is shown, and the edit proceeds without waiting for an answer, unless the
        statement lists something beyond what the user asked or the invoking workflow holds it.
+   - **Count the run work a change starts before proposing or writing it**: the subagents, review
+     rounds or loops, gates and whole-file sweeps a realistic case runs, judged as `skill-pass`'s
+     **Budgets and flows** judges a flow. Where a likely case multiplies it past what the user's
+     words point to, such as a whole-file sweep of every file a repointed citation touches, ask
+     through the question tool first with the case, the count and the narrower version. This is
+     run-time work, never the cost of building a product design.
    - Place a required edit in the existing file that owns the subject. If no file of the selected
      type governs it, create the owner under **Guidance Changes Proceed Automatically** and record
      its recommended name, scope and behavior in the correction evidence.
 
-3. **Include the underlying issue.**
-   - When the user raises a concrete issue or provides evidence such as screenshots while requesting agent guidance, update the guidance and implement the underlying product or code fix in the same task.
-   - Treat the issue and evidence as requested scope, not merely as background for the `.agents` update.
-   - Skip the underlying fix only when the user explicitly requests an instruction-only change.
+3. **Include the underlying issue.** A concrete issue or evidence, such as screenshots, the user
+   raises with a guidance request is requested scope: fix the underlying product or code issue in
+   the same task, unless the user explicitly asks for an instruction-only change.
 
 4. **Resolve which repository owns the target, then its path inside that repository's `.agents`.**
    - Decide whether the target is shared or repository-owned, and its path for its type, as the
@@ -343,12 +347,10 @@ small it looks.** Each route below is the gate set its batch passes on the head 
    - **Moved text is added text**, merged and repaired as the
      [edit criteria](references/edit-criteria.md)'s **Moved Text** says.
 
-6. **Split a multi-item request.**
-   - Apply multi-target updates for `agents`, `skills`, and `rules`. When the inferred or selected
-     type is singular, map each distinct item of the request to the existing file of that type
-     that fits it, and create a new file only when none governs the item's subject, under
-     **Guidance Changes Proceed Automatically**.
-   - Ambiguous scope is settled by **Identify the failure class**'s Scope Statement, shown and never asked.
+6. **Split a multi-item request.** Apply multi-target updates for `agents`, `skills`, and `rules`;
+   where the type is singular, map each distinct item to the existing file of that type that fits
+   it, creating one only when none governs the item's subject, under **Guidance Changes Proceed
+   Automatically**. Ambiguous scope is settled by the Scope Statement, shown and never asked.
 
 7. **Deliver the batch.** **Guidance Delivery** delivers the batch in this order, on the full route with `review-pass`
    carrying **Check prose duplication** and **Brief `review-pass`'s final acceptance**. Ordinary
@@ -442,9 +444,9 @@ small it looks.** Each route below is the gate set its batch passes on the head 
 
 ## Manual verification
 
-When skill behavior needs a live agent chat, follow the
-[manual verification reference](references/manual-verification.md): how the dispatch is chosen
-through `subagent-matrix` and recorded, and the Claude Desktop and Codex cloud procedures.
+When skill behavior needs a live agent chat, follow the [manual verification
+reference](references/manual-verification.md): how the dispatch is chosen through `subagent-matrix`
+and recorded, and the Claude Desktop and Codex cloud procedures.
 
 ## Output
 
