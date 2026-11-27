@@ -40,13 +40,13 @@ alwaysApply: true
   starts a new task in the same session, and verify its owner, open state and scope. Distinct
   concerns and worker contributions stay on it, in separate commits where appropriate. Open another
   only when none is in progress, the user directs a split, `pre-production`'s side-work bullet
-  places side work on the task's side pull request, which later side work then joins, or a new
-  manually dispatched workflow needs its placeholder pull request. Continue another session's pull request only when the user,
-  an invoked skill or a repository rule explicitly directs it; a matching topic, existing branch,
-  open state or recorded touch does not. Other sessions' pull requests and branches stay untouched,
+  places work on the task's side pull request, or a new manually dispatched workflow needs its
+  placeholder pull request. Continue another session's pull request only when the user, an invoked
+  skill or a repository rule explicitly directs it; a matching topic, existing branch, open state
+  or recorded touch does not. Other sessions' pull requests and branches stay untouched,
   apart from damaged local Git state a skill installing shared guidance backs up and repairs.
 - **Each session keeps one open agent-configuration pull request per repository, and every guidance
-  change it makes there goes on it**, whatever its topic, a worker's repair or a hook included.
+  change it makes there goes on it**, whatever its topic, a worker's repair included.
   Agent configuration is the whole canonical `.agents` tree, hooks included; installers, workflows
   and tooling outside it are source work. Before committing a guidance edit, read this session's
   ledger for an open one with a creation receipt and verify it remotely; only when none is open,
@@ -128,8 +128,7 @@ alwaysApply: true
   - a pull request confined to agent configuration, static metadata included, once the gates its
     guidance-editing route requires have passed on the head that merges and its complete file list
     is confirmed confined. One that adds a doctor skill waits instead for the user's review
-    together with everything in its batch, and a workflow, installer or repository tooling outside
-    `.agents` is source work;
+    together with everything in its batch;
   - the focused revert of a pull request an agent merged by mistake, which may auto-merge.
 - **A pull request confined to deferral records, active or declined, merges without a separate
   request as soon as its records are written**, through the skill that runs a merge, with its required checks, once
