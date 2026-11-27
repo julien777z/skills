@@ -77,13 +77,15 @@ review against an independent search:
 - **New** names what each candidate found cannot do; with none found, the search terms are the
   evidence. A receipt that names no search is no receipt.
 
-Before creating any file, read the closest existing files and record the candidates and placement
-decision in the receipt. Check whether the addition fits an existing file as named or whether a
-broader name would describe both. Use the existing file when they share a responsibility, renaming
-it and updating its callers when needed. Create a separate file when the receipt names a distinct
-responsibility or boundary, such as a UI component, a dependency boundary, or a path the framework
-requires. When a new file is added, report the candidates and why the file stands alone. Search
-within the file kind the repository's rules require, such as a model module for a model declaration.
+Before creating any file, read the closest existing files and their callers. Treat similar names
+or overlapping responsibilities as a warning to check those files first. Record whether each
+candidate can take the addition as named or under a broader name that accurately describes both
+bodies of work. Extend the existing file when it owns the responsibility, renaming it and updating
+its callers when needed. Consolidate existing files that share that responsibility. Create a
+separate file only when the receipt names the distinct responsibility or boundary it serves, such
+as a UI component, dependency boundary, or framework-required path. Report the candidates and why
+the file stands alone. Search within the file kind the repository requires, such as a model module
+for a model declaration.
 
 A workaround, or a design that changes a shared operation, guard, contract, subsystem, runtime
 boundary or independent consumer, also writes all three fields below, in the task record or
