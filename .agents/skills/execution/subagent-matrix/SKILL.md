@@ -56,18 +56,6 @@ A capture worker, mechanically capturing the pages and states a brief lists, tak
 family on every host. It captures without judging; the delegating agent reads every image whole
 before relying on it or sending it.
 
-### Review panel
-
-A review panel's three seats take these families, each at its latest host version. A caller that
-asks for the panel names these families as its selection. A seat is a model family, not a provider,
-so two seats may share a provider.
-
-| Seat | Family |
-| --- | --- |
-| 1 | Sol |
-| 2 | Opus |
-| 3 | Fable |
-
 ## Workflow
 
 1. Identify the calling skill or direct task, its assigned roles or verification chat, and any

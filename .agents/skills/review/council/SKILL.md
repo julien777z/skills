@@ -28,9 +28,9 @@ short_description: 'Ask three strong models what they think, or review with them
 
 Use the members the user names. For an unnamed panel on a provider required by the calling
 skill, dispatch three independent reviewers at the advanced tier on that provider. When
-neither the user nor the calling skill sets the selection, use the three seats listed under
-**Review panel** in `subagent-matrix`'s **Matrix** section. Resolve each launch
-through that skill at high effort. Start the three in parallel, read-only, with no subagents
+neither the user nor the calling skill sets the selection, use the default seats: Sol, Opus
+and Fable, each at its latest host version. A seat is a model family, not a provider, so two seats
+may share one. Resolve each launch through `subagent-matrix` at high effort. Start the three in parallel, read-only, with no subagents
 of their own.
 
 - **Missing members.** Resolve an unavailable default seat through `subagent-matrix` down to
