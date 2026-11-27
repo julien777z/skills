@@ -192,8 +192,8 @@ Run after `code-simplify` completes its pass.
 
 Invoke `subagent-matrix` and request **standard** by default; never move upward or inherit the
 orchestrator's model. A refused reader dispatch is handled as `subagent-matrix`'s **Workflow** step 3
-says, with this skill's default as its declared fallback, never against the user's explicit model
-or capability constraint. When a required reader, scenario writer or grader cannot launch, apply
+says; for its default request this skill declares that step's step-down as its fallback, never for
+a model or capability the user set. When a required reader, scenario writer or grader cannot launch, apply
 `subagent-matrix`'s launch fallback for its assignment.
 
 When no required reader launched, retry
