@@ -117,7 +117,6 @@ function SliceTip({ slice }: { slice: Slice }): ReactNode {
         <Text size="xs" numeric>
           {slice.item.figure} · {percentOf(slice.share)}
         </Text>
-        {slice.item.details && <Text size="xs">Click for details</Text>}
       </Stack>
     </TooltipContent>
   );
@@ -293,21 +292,9 @@ function Bars({ slices, selection }: { slices: Slice[]; selection: Selection }):
               {slice.item.figure}
             </Text>
           </span>
-          {slice.item.details ? (
-            <button
-              type="button"
-              tabIndex={-1}
-              aria-hidden
-              onClick={(event) => selection.open(slice, event.currentTarget)}
-              className="block h-2 w-full cursor-pointer overflow-hidden rounded-full bg-muted"
-            >
-              <BarFill slice={slice} largest={largest} />
-            </button>
-          ) : (
-            <span aria-hidden className="block h-2 w-full overflow-hidden rounded-full bg-muted">
-              <BarFill slice={slice} largest={largest} />
-            </span>
-          )}
+          <span aria-hidden className="block h-2 w-full overflow-hidden rounded-full bg-muted">
+            <BarFill slice={slice} largest={largest} />
+          </span>
           {slice.item.detail && (
             <Text size="xs" tone="muted">
               {slice.item.detail}
