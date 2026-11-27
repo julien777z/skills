@@ -59,7 +59,7 @@ either this protocol restated, which is skill-to-skill duplication, or a rule th
 
 ## Launches
 
-Every subagent is resolved through `subagent-matrix` and recorded as its **Dispatch** says, in the
+Every subagent is resolved through `subagent-matrix` and recorded as its **Output** dispatch line says, in the
 run ledger. Reviewers run at the capability level the calling doctor selects, or standard when it
 selects none, with any reviewer fallback the doctor specifies; workers run at standard.
 
