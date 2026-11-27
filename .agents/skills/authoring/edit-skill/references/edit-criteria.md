@@ -9,6 +9,12 @@ Reviewed Batches**, **Relocations**, **Resuming A Batch**.
 
 ## Causal Diagnosis
 
+- Before proposing a correction, read the available records of the run and name the first
+  decision where the actual path departed from the expected path. Record the action taken, the
+  instruction or evidence available at that point, and what should have happened. When a review
+  passed the work, compare its brief, the sources it inspected, the checks it performed, and the
+  verdict the editor accepted. Establish whether the decision was omitted, the rule was skipped,
+  or the check lacked evidence. Explain the verified divergence to the user with the correction.
 - Trace the actual path from the request to the missed behavior: whether the instruction was
   absent, its skill loaded, its trigger or sequence kept it from the decision, a conflicting
   instruction overrode it, or the agent failed to apply guidance it had. Read exceptions and

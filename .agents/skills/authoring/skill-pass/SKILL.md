@@ -173,7 +173,10 @@ For a diff written to answer a request, the brief also carries the statement of 
 recorded — what the user said, what changes from now on and in the same class, the nearest case
 that stays as it is, what inherits the change, and what waits for the user — with the real case
 behind the request and the incident's vocabulary: the product, its record and page nouns, the
-labels the request quoted. Against that statement the reader flags, each as a finding:
+labels the request quoted. For a correction to a guidance failure, the brief includes the recorded
+decision that failed and its evidence. Flag an unsupported cause or a repair that leaves the
+traced decision able to repeat the miss. Against the scope statement the reader flags, each as a
+finding:
 
 - text narrower than what the statement says changes, including a rule the incident's route has
   narrowed to its own symptom;
