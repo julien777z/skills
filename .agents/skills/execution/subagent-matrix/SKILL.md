@@ -63,10 +63,8 @@ sending it.
    catalog or release notes. An exact user override is used as given. **Never hard-code model IDs**
    in guidance, examples or fallback tables, and never guess one. When one launch route's model list
    lacks the family, check every launch route the host exposes, such as an orchestrator's delegate
-   tool and its capabilities listing, and launch through the one that offers the exact model. On T3
-   Code, `delegate_task` launches a model the native agent tool omits, such as the specialist
-   family: search `orchestrator_capabilities` by family name for the exact provider and model ID to
-   put in its `target`. When
+   tool and its capabilities listing, and launch through the one that offers the exact model, as
+   **Harness Compatibility** says for a host that has one. When
    no ID resolves on any route or the host has no model selector, take the launch fallback under
    **Dispatch**.
 3. **Launch the actual assignment with that ID.** A catalog that omits a family is no evidence it
@@ -110,7 +108,9 @@ sending it.
 
 ## Dispatch
 
-**Launch every available subagent a skill calls for through the running session's agent tool.** It
+**Launch every available subagent a skill calls for through the running session's agent tool**,
+which includes a host orchestrator's child-agent tool the running session calls and whose result
+it reads back into the waiting step. It
 matters most for an independent step, one whose value is a judgment the author does not make about
 its own work: a subagent gives it a fresh context and returns its verdict into the step waiting on it.
 
@@ -179,6 +179,12 @@ its own work: a subagent gives it a fresh context and returns its verdict into t
 - **An editing worker's own worktree** is the host's worktree isolation where it offers one,
   otherwise a worktree the brief names under the task's working-files folder, made from the branch
   the worker pushes to.
+
+## Harness Compatibility
+
+- **T3 Code:** `delegate_task` launches a model the native agent tool omits; search
+  `orchestrator_capabilities` by the family name for the provider and model ID its `target` takes,
+  and pass the effort through its options.
 
 ## Launch Failure Reporting
 
