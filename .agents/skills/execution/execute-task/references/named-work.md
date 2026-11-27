@@ -99,9 +99,8 @@ nor touches the files or resources the awaited work is changing.
 - **Classify an awaited result from its observed state before treating it as a blocker.** Startup,
   recovery, a queued review or an unanswered request is pending until it has a terminal result;
   current unavailability, a quiet interval or a bounded wait yielding without a result is not
-  failure, and for a worker the session started the check below reads that quiet interval.
-- **A running worker is checked on a schedule until it reports**, as [worker checks](worker-checks.md)
-  says.
+  failure, and for a worker the session started the [worker checks](worker-checks.md) read that
+  quiet interval on a schedule until it reports.
 - **A status report is not a stopping point.** A message sent while authorized work or a wait
   remains goes out together with the next wait or action, never as the turn's last output, and is
   never the task's report. When every remaining item depends on an awaited result, keep the
