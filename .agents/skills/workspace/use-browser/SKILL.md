@@ -25,8 +25,10 @@ For visits, forms, screenshots, testing, sign-in and other browser work, select 
 - Honor an explicitly requested browser. For a task needing the user's account session, use the
   harness to connect to the user's existing browser and relevant profile.
 - Otherwise, for local development and verification, use an isolated `agent-browser` session or an
-  isolated browser supplied by the harness. Do not attach to the user's existing browser or profile,
-  or fall back to it if neither route is available; report the blocked step and continue independent work.
+  isolated browser supplied by the harness. Create a task-owned session without inherited browser
+  attachment, profile or saved-state settings. Do not attach to the user's existing browser or
+  profile, or fall back to it if neither route is available; report the blocked step and continue
+  independent work.
 - For other browser work, including a user-reported issue at a non-local URL, use the harness to
   connect to the user's existing browser and relevant profile.
 
