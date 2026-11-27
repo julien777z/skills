@@ -122,6 +122,14 @@ nor touches the files or resources the awaited work is changing.
     unclear goes to the worker as a queued question or a request to look into it, and its answer is
     read when it arrives. A worker that finishes is looked over the same way before its result is
     relayed.
+  - **Pull-request spot check:** each 30-minute check also lists the session's open pull requests in
+    every repository its workers push to, `list-prs` included. It spot-checks them against the
+    GitHub rule's **Branches and Pull Requests**. Each repository should have one open
+    agent-configuration pull request for the session, and no pull request that a worker opened.
+    No branch should mix guidance and source. No pull request should be outside its brief, and none
+    should be another session's pull request carrying the session's commits. A miss goes to the
+    worker that made it, or the coordinator fixes its own, with the consolidation that rule
+    requires. Like the look-over, this is a quick read, never a review pass.
   - **Stalled:** at an early check, one with no activity at all since launch, or whose last step
     failed and nothing followed. At a later check, one with no activity for 30 minutes, counted
     from its last activity and not before, unless a long command of its own is in progress;
@@ -135,8 +143,9 @@ nor touches the files or resources the awaited work is changing.
     reset time the refusal names. The coordinator answering at all, a notice of the stop
     included, shows capacity has cleared; only a refused resume shows it still holds, and that
     one is resumed at the next check.
-  - **Scope:** the check reads workers only: a pull request is still waited on by delivered
-    activity, and a question put to the user is not a worker.
+  - **Scope:** the check is scheduled for workers only. Its pull-request spot check reads
+    pull requests, but a pull request is still waited on by delivered activity. A question put to
+    the user is not a worker.
 - **A status report is not a stopping point.** A message sent while authorized work or a wait
   remains goes out together with the next wait or action, never as the turn's last output, and is
   never the task's report. When every remaining item depends on an awaited result, keep the
