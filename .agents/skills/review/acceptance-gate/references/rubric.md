@@ -317,7 +317,7 @@ ends the question.
    check that owns it.
 3. **defer** — the item is worth doing, and one of these holds: the gain today does not carry the
    mechanisms the fix would add, priced by the rubric; the work is comparable in size to the change
-   in flight and, unless it is incidental cleanup, its need is arguable — a redesign, a sweep somebody could reasonably decline; an external
+   in flight, the two together too large to read in one review, and, unless it is incidental cleanup, its need is arguable — a redesign, a sweep somebody could reasonably decline; an external
    blocker stands, which is something outside every repository the user owns that the fix cannot be
    written without — a credential nobody has issued, a vendor change, an answer only a third party
    can give; a decision that is somebody else's is already put to that person and still open, or the
