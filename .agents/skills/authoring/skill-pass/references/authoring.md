@@ -86,6 +86,15 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   today; a repository keeps no `.agents/references/` folder.
 - A rule that cannot be stated without naming something this repository owns belongs in
   `.agents/project.md`. Move it there rather than rewording it into something generic but untrue.
+- **A repository's own guidance holds only the facts that repository owns.** Outside the shared
+  skills repository, a passage of a repository's `.agents/project.md`, rules or repository skills
+  fails when a shared skill or rule already states its requirement, however it is worded, since a
+  wording difference only means the copy is stale, and when it copies how the repository's tooling
+  behaves, as the bullet on tooling above says. It is deleted rather than moved, because its owner
+  already holds it, and a fact only the repository owns, such as its own folder or command, stays.
+  The point-of-use allowance under **Writing** covers a skill's own text, not such a copy. The
+  name-bounds bullet's scope decides which files a change tests: a stale copy in a file the change
+  does not touch is raised as a misplacement there is.
 - **A new rule file is only ever a guidance correction**, written for a subject no skill runs
   for, as the placement bullet above says. A system an agent built, such as a booking
   service's flows, is documented in its code and README, never in guidance; repository guidance
