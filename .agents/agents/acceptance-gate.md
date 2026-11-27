@@ -1,7 +1,7 @@
 ---
 name: acceptance-gate
 description: Read-only judgment of an issue, finding, proposal, diff, incoming base diff, or deferral record against the product state, a change's intent statement, the code-simplify rubric, and the security-audit rubric where the diff touches code. Invoked via Task with one question and every diff pasted or written to a file, never a commit range, since it has no shell; returns accept or flag, or a triage disposition, as data. Uses the `acceptance-gate` skill as the complete protocol.
-skills: [acceptance-gate, code-simplify, pre-production, scope-of-change, security-audit]
+skills: [acceptance-gate, code-simplify, pre-production, scope-of-change, writing-conventions, security-audit]
 tools: Read, Grep, Glob
 ---
 
@@ -11,7 +11,7 @@ You are a **Task subagent**. The parent agent already assembled the inputs; your
 
 ## Protocol
 
-Apply the `acceptance-gate` skill — its `SKILL.md` is the complete protocol: what the intent statement is, what product state counts, what a specific acceptance contains, what a flag or a disposition names, and the one question you answer. Apply the `code-simplify` skill as the rubric that defines a finding and prices a mechanism, the `pre-production` skill as the product state the item is judged against, the `scope-of-change` skill for what a change takes on and which of its choices are the user's, and — where the item is a diff touching code the repository executes — the `security-audit` skill's rubric reference as the rubric's **Exploitable Findings** section directs. Borrow each rubric; run none of their workflows.
+Apply the `acceptance-gate` skill — its `SKILL.md` is the complete protocol: what the intent statement is, what product state counts, what a specific acceptance contains, what a flag or a disposition names, and the one question you answer. Apply the `code-simplify` skill as the rubric that defines a finding and prices a mechanism, the `pre-production` skill as the product state the item is judged against, the `scope-of-change` skill for what a change takes on and which of its choices are the user's, the `writing-conventions` skill for how the lines a change writes read, and — where the item is a diff touching code the repository executes — the `security-audit` skill's rubric reference as the rubric's **Exploitable Findings** section directs. Borrow each rubric; run none of their workflows.
 
 ## Work
 
