@@ -2,6 +2,7 @@
 import hashlib
 import json
 import logging
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -9,7 +10,9 @@ from typing import Final
 
 logger = logging.getLogger(__name__)
 
-STATE_DIRECTORY: Final[Path] = Path.home() / ".local" / "state" / "agent-guidance" / "sessions"
+STATE_DIRECTORY: Final[Path] = (
+    Path(os.environ.get("XDG_STATE_HOME") or Path.home() / ".local" / "state") / "agent-guidance" / "sessions"
+)
 PROMPT_PATH: Final[Path] = Path(__file__).resolve().parent / "prompts" / "guidance-changed.md"
 GUIDANCE_ROOT: Final[str] = ".agents"
 GENERATED_ROOT: Final[str] = ".agents/.auto_generated"
@@ -104,14 +107,19 @@ def main() -> int:
         state = session_state_path(session)
         seen = state.read_text(encoding="utf-8").strip() if state.is_file() else None
 
-        if seen != installed:
-            STATE_DIRECTORY.mkdir(parents=True, exist_ok=True)
-            state.write_text(installed, encoding="utf-8")
-
-        if seen is None or seen == installed or payload.get("hook_event_name") in SESSION_START_EVENTS:
+        if seen == installed or (seen is not None and payload.get("hook_event_name") in SESSION_START_EVENTS):
             return 0
 
-        sys.stdout.write(change_notice(changed_guidance(seen, installed)))
+        STATE_DIRECTORY.mkdir(parents=True, exist_ok=True)
+        state.write_text(installed, encoding="utf-8")
+
+        if seen is None:
+            return 0
+
+        changes = changed_guidance(seen, installed)
+
+        if changes != {}:
+            sys.stdout.write(change_notice(changes))
     except Exception:
         logger.exception("The guidance-change check could not run")
 
