@@ -213,6 +213,8 @@ meets, also read [the product-copy reference](references/product-copy.md).
 
 ## Repository Text
 
+- Say what changed for whom. "This is a change, not a refactor" belongs at the top of a pull
+  request's description, not buried among the mechanics.
 - Write repository artifact text for its reader: describe behavior, configuration, contracts and
   validation, without narrating the task that produced it. This includes action and workflow
   metadata, configuration descriptions, code comments, documentation, commit messages and
