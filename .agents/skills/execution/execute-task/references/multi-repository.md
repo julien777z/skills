@@ -34,7 +34,7 @@ Gate** says.
 ## Each Repository Speaks Only Its Own Vocabulary
 
 What goes inside a change keeps to its own repository's words in every repository the run
-touches, as `pre-production`'s **Whose Standards Apply** and **Naming And Language** say.
+touches. Apply `pre-production`'s **Whose Standards Apply** and `banned-terminology`'s **Naming**.
 
 Where this run touched more than one repository, sweep for borrowed words before delivering:
 search each repository for the distinctive nouns of the others it was worked on beside, and read

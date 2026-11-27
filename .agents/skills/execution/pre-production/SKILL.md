@@ -1,6 +1,6 @@
 ---
 name: pre-production
-description: Apply target-contract and product-state constraints to implementation, review, and operational data tasks, including maintenance, cleanup, tooling, and CI repairs. Never add a compatibility shim or retain support for an obsolete owned contract or revision. Update its owned consumers and migrate retained data. Apply to relevant CI failures after validation classification, and whenever a lint, formatting or other non-essential check is red on code the change did not write. Also use when telling a product choice from a routine detail, placing or laying out code, declaring configuration, logging, naming or choosing American English, choosing versions or dependency releases, writing documentation, comments, commit or pull-request text, example values or paths, writing product copy or forms, repairing a local stack or development data, experimenting against shared state, rebuilding an artifact, or mutating a live deployment.
+description: Apply target-contract and product-state constraints to implementation, review, and operational data tasks, including maintenance, cleanup, tooling, and CI repairs. Never add a compatibility shim or retain support for an obsolete owned contract or revision. Update its owned consumers and migrate retained data. Apply to relevant CI failures after validation classification, and whenever a lint, formatting or other non-essential check is red on code the change did not write. Also use when telling a product choice from a routine detail, placing or laying out code, declaring configuration, logging, choosing American English, choosing versions or dependency releases, writing documentation, comments, commit or pull-request text, example values or paths, writing product copy or forms, repairing a local stack or development data, experimenting against shared state, rebuilding an artifact, or mutating a live deployment.
 short_description: 'Apply target-contract constraints to implementation and review tasks.'
 ---
 
@@ -15,7 +15,7 @@ change writes:
 
 - [The code-conventions reference](references/code-conventions.md), before writing or editing
   code, configuration, a manifest, documentation, a comment, a commit message or pull-request text:
-  whose standards apply, code layout, configuration values, logging, versions, naming and language,
+  whose standards apply, code layout, configuration values, logging, versions, language,
   example values and paths, documentation, and repository text.
 - [The product-copy reference](references/product-copy.md), before writing or changing text or a
   form a product's reader meets.
