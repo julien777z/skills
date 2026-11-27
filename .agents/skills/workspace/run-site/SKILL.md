@@ -256,7 +256,7 @@ paragraph below says and skips the recording; the cloud walkthrough and one the 
 record as follows. Record the flow until the feature is exercised to its end — the form submitted
 and its result read back, the item seen in its list, the setting confirmed after a reload. Record
 through the selected tab's existing browser context, preserving its authenticated state. Use the
-harness's recording capability where available and `share-media` to deliver it. If recording is
+selected browser tool's recording capability where available and `share-media` to deliver it. If recording is
 unavailable, capture stills and report the recording gap.
 
 Send the recording, where one is owed, and a still of the view the change touched, unasked, plus a
