@@ -156,6 +156,11 @@ its own work: a subagent gives it a fresh context and returns its verdict into t
   integration, product decisions and orchestration. A follow-up after a worker's task ended, such as
   a gate's fix steps or a review's findings, goes to a fresh worker with the brief's fix form, never
   to the finished one. Read-only gates and reviews may run beside building as their skill sets.
+- **Bulk pull requests are one scope.** Pull requests opened together to make one similar change
+  across repositories get one worker that implements all of them, one reviewer that reads the whole
+  set in one pass and one gate that answers for the set, each at its usual tier and naming a verdict
+  per pull request, never one agent per pull request. A finding accepted on one is applied to every
+  other where the same case holds.
 - **Every implementation and fix worker gets the [worker brief](references/worker-brief.md) with
   every field filled.** A skill that delegates edits fills that form rather than writing its own.
 - **A running worker is told when guidance it works under changes**: which file, each section that
