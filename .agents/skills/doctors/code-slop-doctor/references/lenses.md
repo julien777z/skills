@@ -308,8 +308,8 @@ the departure as the rule change, as `doctor-protocol`'s **Gate And Show The Pla
   Layout** conventions.
 - **Defensive noise** — a try/except around code that cannot raise what it catches; catch, log and
   re-raise repeated at each layer.
-- **Names that do not say their subject** — every name, read against `pre-production`'s **Naming
-  And Language** conventions: a verb with no object; `data`, `result`, `temp`, `info`, `helper`,
+- **Names that do not say their subject** — every name, read against `banned-terminology`'s
+  **Naming** and `pre-production`'s **Language**: a verb with no object; `data`, `result`, `temp`, `info`, `helper`,
   `manager` or `handler` naming something specific; `_new`, `_v2`, `_final` or `_fixed` suffixes; a
   name saying how rather than what; a word right only in another field, or one thing called by two
   words; a name a reader cannot map to what it renders or holds; two exported names for one need,
@@ -353,9 +353,8 @@ during cutover remains a finding while the older writer still exists.
 - **Runtime cutover behavior** — checks for which owned version is deployed, runtime repair of a
   partly migrated shape, or branches reachable only while a release is changing the contract.
   Trace each to the rollout or migration that owns it. Remove the runtime path and any tests that
-  exist solely to exercise it, as `pre-production`'s **Product State** requires. Keep versioned
-  conversion of retained data, recovery reachable in ordinary operation, and compatibility within
-  the scope and period the user expressly authorized under `pre-production`'s **Target Contract**.
+  exist solely to exercise it, as `pre-production`'s **Product State** requires. Use versioned
+  migrations to convert retained data and handle ordinary recovery under the current contract.
 - **Silent tolerance** — every catch that returns a default, passes or logs and continues; the
   pre-pass's suppression list, every suppression comment and type-ignore read against the
   measurement with it removed, and every escape hatch that does a suppression's job, an annotation
@@ -390,8 +389,8 @@ as **Scattered Structure**'s renumbering is, and delete a symbol only tests
 consume together with those tests, as the `python-boundaries.md` rule says of dead code. Left
 alone: a genuinely optional third-party field; failover between live providers; a non-temporal
 second strategy; a catch that compensates and re-raises; a cancellation carve-out; a pattern the
-repository's rules prescribe by name; a member a stored row or a third-party producer can still
-supply; a branch a caller outside the audited scope still reaches; a check after a lock, a
+repository's rules prescribe by name; a member or branch required by the current owned or
+third-party contract; a check after a lock, a
 transaction start or an `await`, where the value can change in that window; a guard on a
 data-fetching library's loading slot; a component primitive that works controlled or uncontrolled;
 a name a framework prescribes; a symbol tests call as support, which another doctor moves to test

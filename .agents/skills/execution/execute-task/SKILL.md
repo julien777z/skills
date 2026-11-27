@@ -14,6 +14,7 @@ agent-configuration pull request.
 ## Dependencies
 - `review-proposal`
 - `pre-production`
+- `banned-terminology`
 - `run-site`
 - `code-simplify`
 - `review-pass`
@@ -51,11 +52,8 @@ the task. Where it owns a stage, return its result to this run rather than start
 - The session agent selects independently applicable specialized skills from their descriptions once.
   They return outcomes, pending decisions and required coordinator work to the caller.
 - A selected workflow presents its own plan through the route it declares, an approval it requires included.
-- A read-only task — a question answered from the code, a listing, a report with no edit — does
-  not run this skill, though it still reads the reference of this skill that governs a subject it
-  meets, as the description lists them; a task whose edits sub-agents make is not read-only for the
-  agent that delegated them. A read-only turn does not close an open run either: a run still holding named
-  work stays active through such a turn, and that turn moves its items.
+- A read-only task uses the relevant reference without running this skill. Delegating edits
+  counts as editing. A read-only turn keeps an open run active and advances its named work.
 
 ## Plan
 
@@ -490,9 +488,9 @@ Review** once each has its accepted head.
    request stays draft.
 
 The ready-for-review message takes exactly this shape, one message per pull request, leaving out
-**Deferred** when nothing was deferred. Its **Next:** review is an action the reader owns: the
-message is the material the question tool request for that review shows, as `user-facing-output`
-says:
+**Deferred** when nothing was deferred and **Still running** when no work is active. Its **Next:**
+review is an action the reader owns. Use the message as the material for the review request in
+the question tool, as `user-facing-output` directs:
 
 ```markdown
 **Ready for review:** <pull request URL>
@@ -503,7 +501,7 @@ says:
 - **Fixed on the way:** <each incidental fix, or none>
 - **Deferred:**
   1. <item> — <ground> — <record link>
-- **Still running:** <the authorized merge through `merge-gate` (CI ~<n> min) | the guidance fixes from this task that have their own pull request (<n> correction(s)) | nothing>
+- **Still running:** <the authorized merge through `merge-gate` (CI ~<n> min) | active validation or delivery of the guidance fixes from this task (<n> correction(s))>
 
 **Next:** <review the pull request; send follow-ups here, `/finish-pr` to review what this pass has not and merge, or `/merge-now` to merge first and review after | review the pull request; it merges once its checks pass>
 ```

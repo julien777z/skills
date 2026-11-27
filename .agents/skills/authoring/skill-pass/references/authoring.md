@@ -122,9 +122,11 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   the file whose subject matches its own. Scope is judged by subject, never reach: guidance that
   holds in every repository still goes to the skill or rule owning its subject, as the first bullet
   places guidance about `.agents` content, and `.agents/global.md` takes only what the placement
-  bullet above leaves it. Neither
-  running on every task nor already holding a related rule, such as one on required fields when
-  the guidance is about required settings, makes a narrower file the owner.
+  bullet above leaves it. Use existing mentions and dependencies to find readers. Assign
+  ownership by the file's responsibility and when the guidance must apply. Move existing text
+  and update its readers when correcting its placement is in scope. When that relocation would
+  expand the request, explain the mismatch and ask whether to include it. Continue the work
+  already authorized.
 - Paths inside a repository's `.agents`:
   - `agent` -> `.agents/agents/<name>.md`
   - `rule` -> `.agents/rules/<name>.md`

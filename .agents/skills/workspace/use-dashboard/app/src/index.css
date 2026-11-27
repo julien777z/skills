@@ -28,9 +28,9 @@
   --warning: oklch(0.8 0.15 80);
   --critical: var(--destructive);
   --info: oklch(0.7 0.14 250);
-  --done: oklch(0.7 0.16 300);
+  --next: oklch(0.7 0.16 300);
   /* Series colors a chart gives values that carry no tone, in order: distinct hues, never a gray and never
-     the purple merged pull requests own, lighter and darker by turns around the hue circle so neighboring
+     the purple of the `next` tone, lighter and darker by turns around the hue circle so neighboring
      hues still part. The chart skips any whose hue sits near a tone the same chart uses. */
   --series-1: oklch(0.8 0.14 235);
   --series-2: oklch(0.64 0.14 50);
@@ -75,7 +75,7 @@
   --warning: oklch(0.62 0.14 70);
   --critical: var(--destructive);
   --info: oklch(0.55 0.16 255);
-  --done: oklch(0.52 0.2 300);
+  --next: oklch(0.52 0.2 300);
   --series-1: oklch(0.62 0.14 235);
   --series-2: oklch(0.47 0.14 50);
   --series-3: oklch(0.62 0.14 170);
@@ -123,7 +123,7 @@
   --color-warning: var(--warning);
   --color-critical: var(--critical);
   --color-info: var(--info);
-  --color-done: var(--done);
+  --color-next: var(--next);
   --color-pr-open: var(--pr-open);
   --color-pr-open-emphasis: var(--pr-open-emphasis);
   --color-pr-draft: var(--pr-draft);

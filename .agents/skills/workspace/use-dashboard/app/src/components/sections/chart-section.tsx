@@ -12,7 +12,7 @@ import { SectionDialog } from './section-dialog';
 /** The hue of each `--series-<n>` color, in order, so a chart can skip those close to a tone it uses. */
 const SERIES_HUES: readonly number[] = [235, 50, 170, 345, 205, 95, 15, 130];
 
-const TONE_HUES: Record<Tone, number> = { good: 152, warning: 75, critical: 22, accent: 250, done: 300 };
+const TONE_HUES: Record<Tone, number> = { good: 152, warning: 75, critical: 22, accent: 250, next: 300 };
 
 const NEAR_TONE_DEGREES = 30;
 

@@ -1,7 +1,7 @@
 ---
 name: banned-terminology
 description: Owns the banned-terms list in resources/banned_words.json and enforces it. Use when naming anything — code, files, assets, and the items, characters, places and objects players or users meet — when writing a pull request or a message to the user, when reviewing a name, when the user says a name is unclear or asks for a word to be renamed across one codebase, when they ask for a word to be kept out wherever it appears, when they reject a replacement an entry recommends, when they lift a ban, or whenever the decision is about a word rather than one symbol.
-short_description: 'Owns the banned-terms list in resources/banned_words.json and enforces it.'
+short_description: 'Choose clear names and apply terminology rules.'
 ---
 
 # Banned Terminology
@@ -11,18 +11,14 @@ the term, what to use instead, why the term fails, and any replacement already r
 
 Never use vague, cute, or placeholder terminology in identifiers, docstrings, comments, or test
 names, or in any other surface an entry's `applies_to` names, such as pull requests and messages to
-the user. Name things for the behavior they actually have. This holds for **new and pre-existing
-code** in every line a change writes or edits; a banned term elsewhere in a file the change touches
-is renamed within `pre-production`'s size budget.
+the user. This holds for **new and pre-existing code** in every line a change writes or edits.
+Rename banned terms elsewhere in touched files within `pre-production`'s size budget.
 
 **No name reads or sounds like a profane, sexual, slurring or otherwise inappropriate word.** That covers every name a person reads or hears: product and player-facing text, an item, character, place or creature, an asset, a file, an identifier and an object placed in a world. Before a name is used, say it aloud as a child would sound it out, and read it run together with its neighbor and shortened to its initials; a name that a listener would hear as such a word, or a reader would see as one at a glance, such as a tree whose spoken name differs from a curse by a sound few listeners catch, or a title whose initials spell one, is replaced with another word of the same kind. An everyday word that merely sits a letter away from one, such as a camera shot or a passing car, is its ordinary self to every reader and stays. Rename one already in the product on every surface it reaches, as **Adding or updating** does for a banned word.
 
-If you reach for a placeholder-ish term a future reader could not decode from the name alone, pick a
-more intuitive name rather than adding it to the list. An abstraction coined one level above the
-concrete thing — an "entity" for a customer, a "target" for a server — is such a term even when it
-is accurate, because the reader has to be told what it stands for. Before a new package, module,
-type, step or document heading takes a name, ask whether the user would say that word for the thing;
-if they would say something more concrete, that is the name.
+## Naming
+
+Read [Naming](references/naming.md) before choosing, accepting or changing a name.
 
 ## Dependencies
 - `pre-production`
@@ -52,15 +48,15 @@ every name built on that word for that meaning.
   kept out.
 - **Renaming without an entry** — a complaint about a name — "I don't like X", "X is a bad name", "X
   is not intuitive" — or "rename X everywhere" in one codebase renames every name in that codebase
-  built on the word for that meaning, to the word its readers would use, as `pre-production`'s **Naming
-  And Language** says. It runs steps 2–5 below and writes no entry.
+  built on the word for that meaning, using the word its readers expect under **Naming**. It runs
+  steps 2–5 below and writes no entry.
 - **Updating** — the user rejects the replacement an entry recommends, or a better one is agreed.
   The entry changes, the old replacement moves to `rejected_replacements`, and every call site that
   took the old advice changes with it.
 - **Removing** — a ban is lifted, or an entry describes a distinction the codebase no longer makes.
 
-Renaming a single function, class, or variable for any other reason is an ordinary edit and does
-not run this skill.
+An isolated symbol rename follows **Naming**. Use the word-level procedure when the same objection
+applies to the term in that meaning throughout the codebase.
 
 **Only the user changes the list.** An entry is added, updated or removed only when the user's own
 words in the conversation ask for that word's ban, its replacement or its lifting. A brief, a

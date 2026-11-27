@@ -58,7 +58,7 @@ An `icon` is one of `overview`, `proposals`, `progress`, `board`, `checklist`, `
 `pull-request`, `settings`, `alert`, `check` or `calendar`. The dashboard's icon and each page's icon
 all differ, so no glyph appears twice in the navbar.
 
-`tone` is `good`, `warning`, `critical`, `accent` or `done`, as **Making A Dashboard** defines
+`tone` is `good`, `warning`, `critical`, `accent` or `next`, as **Making A Dashboard** defines
 them; omit it for neutral. `links` is `[{kind, label, url, state?}]`: pills under the item that open its sources,
 each led by its `kind` — `doc`, `code`, `diff`, `spec`, `config`, `test`, `page` or `data`, shown as
 Doc, Code, Diff, Spec, Config, Test, Page or Data — and labeled briefly, such as
@@ -232,10 +232,9 @@ Dashboards look alike because they are built alike:
   `title` and the preview `topic` `Synthetic Preview` are names, in title case.
 - **Tone means the same everywhere.** `good`, green, is fine, matches or finished: Done,
   Approved, Passed. `warning` needs the reader's look or action, `critical` is wrong or blocking,
-  and `accent` is in progress or informational, such as Running. `done`, a purple, is only a merged
-  pull request's color beside open ones, never a status reading Done or finished. A status takes
-  the tone its meaning carries on every dashboard, never a color picked for one page. Leave it out
-  for neutral; never tone an item only to decorate it.
+  `accent`, a blue, is running now or informational, such as Running, and `next`, a purple, is up
+  next or still to do. A status takes the tone its meaning carries on every dashboard, never a
+  color picked for one page. Leave it out for neutral; never tone an item only to decorate it.
 - **A model is named exactly.** A label, tag or figure naming the model an agent ran on gives its
   name and version as the session's records show it, such as Opus 5.5, never the family alone.
 - **Blue text is a link.** A reader clicks blue text, so only links take it, and a tone colors a

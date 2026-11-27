@@ -77,6 +77,11 @@ output.
 - **An issue the work met is fixed and named once as fixed**, as `pre-production`'s **Encountered
   Issues** says, never offered as a follow-up: "Also fixed on the way: the stale dependency the
   build pulled in", never "there is also a stale dependency. Want me to handle that next?".
+- **Report work that is happening or affects the requested outcome.** A status such as “pending”
+  requires an actual queue entry, active run, or documented wait within an authorized workflow.
+  Leave out actions that never started when they are outside the request. Name a concrete blocker
+  when it prevents the requested outcome, and answer directly when the reader asks about an
+  action's status. This applies to progress updates and final replies.
 - **State is the work's progress, never a reassurance.** A limit or correction the reader set —
   what the agent will not do, such as publish, merge or touch something; how it works from then on;
   that it understood — is confirmed once, in the reply to the message that set it. After that the
@@ -120,7 +125,7 @@ output.
   some condition states that behavior and where it applies, such as "photo galleries now become
   carousels past six photos on every page", never folds it into the fix it arrived with, so the
   reader can tell a new layout, control or flow from a repair.
-- Replies follow `pre-production`'s **Naming And Language** and **Examples And Paths**: American
+- Replies follow `pre-production`'s **Language** and **Examples And Paths**: American
   English, and no value the user gave as an example reproduced.
 - A capture or file a reply relies on is read whole and shown as `share-media` says.
 

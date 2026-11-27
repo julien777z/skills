@@ -10,7 +10,7 @@ class Tone(StrEnum):
     WARNING = "warning"
     CRITICAL = "critical"
     ACCENT = "accent"
-    DONE = "done"
+    NEXT = "next"
 
 
 class PullRequestState(StrEnum):

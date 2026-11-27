@@ -226,6 +226,9 @@ small it looks.** Each route below is the gate set its batch passes on the head 
      read its wording as naming something else. When only part of the premise holds, act on
      that part alone. This is different from a real miss that existing text already covers, which
      **Identify the failure class**'s causal diagnosis still repairs.
+   - Apply the standing-guidance comparison in the [edit criteria](references/edit-criteria.md)'s
+     **Scope Statement** before recording an edit. When the comparison finds the desired behavior
+     covered and working, report the evidence and end that item. Continue any other requested work.
 
 2. **Identify the failure class, then its target type and name.**
    - **Classify the moment the gap is noticed, before the change is first worded anywhere.** State
@@ -287,10 +290,9 @@ small it looks.** Each route below is the gate set its batch passes on the head 
        guidance change: a correction, a gap the agent noticed, a rule or global-rules edit, a
        skill edit. It is shown, and the edit proceeds without waiting for an answer, unless the
        statement lists something beyond what the user asked or the invoking workflow holds it.
-   - **When no existing file of the inferred or selected type governs the subject, create the new
-     owner under Guidance Changes Proceed Automatically.** Record its recommended name, scope, and
-     behavior in the correction evidence; do not ask for approval. An existing file of that type
-     that governs the subject is always edited instead, however thin its current text.
+   - Place a required edit in the existing file that owns the subject. If no file of the selected
+     type governs it, create the owner under **Guidance Changes Proceed Automatically** and record
+     its recommended name, scope and behavior in the correction evidence.
 
 3. **Include the underlying issue.**
    - When the user raises a concrete issue or provides evidence such as screenshots while requesting agent guidance, update the guidance and implement the underlying product or code fix in the same task.
