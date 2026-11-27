@@ -126,10 +126,18 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
     content, and `.agents/global.md` takes only what the placement bullet above leaves it. Assign
     ownership by the file's responsibility and when the guidance must apply, and use existing
     mentions and dependencies to find readers.
+  - Applied to a whole file, the test reads its **boundary**, the condition its name and
+    description set, such as "a mobile platform"; **each description clause**, every subject of
+    which falls inside that boundary; **each section and reference** by its heading or file name,
+    asking whether its guidance would still hold where the condition does not, as a section on
+    commit-message wording in a skill bounded by one mobile platform still holds on every other;
+    and **each bullet against its section's heading**.
   - **Text already misplaced in a file whose instructions the change adds to or alters moves in the
-    same change**, with its readers updated, as the pass's **Placement** step tests it: that file is
-    the change's scope. For a misplacement in a file the change does not touch, explain the
-    mismatch and ask whether to include the move, continuing the work already authorized.
+    same change** to the file, reference or section whose name covers it, with its readers updated,
+    when the pass's **Placement** step tests that file: that file is the change's scope. A receiver
+    of moved text is tested for what it receives, and its own other misplacements follow the
+    bullet below. For a misplacement in a file the change does not touch, explain the mismatch and
+    ask whether to include the move, continuing the work already authorized.
 - Paths inside a repository's `.agents`:
   - `agent` -> `.agents/agents/<name>.md`
   - `rule` -> `.agents/rules/<name>.md`
@@ -488,7 +496,8 @@ a template where correct results genuinely vary in shape.
     was: the `Final` rule reaches every module-level constant and stops before a function's local
     names, which nobody raised. A neighboring subject, a requirement the case never needed, and a
     change the user would not expect from their own words stay out of the draft and are put to
-    the user.
+    the user; a move the **Placement** step requires is inside the change and listed under *Also
+    changes*.
   - **Every instruction that does the same work, and none that does other work.** Apply the
     decision to each instruction in the file that does the same work: one section rewritten while
     a neighbor still does the narrow thing is the draft half done.

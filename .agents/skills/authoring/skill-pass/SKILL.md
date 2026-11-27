@@ -52,23 +52,12 @@ step naming the section it reads, the
    name the skill that runs when the requirement applies before accepting it in a rule file or
    `.agents/global.md`, and confirm no rule file or `.agents/global.md` names an individual skill
    outside the one place that reference allows. Then apply that reference's name-bounds test to the
-   whole of each skill or rule whose instructions the change adds to or alters, and of each file an
-   audit covers, never to the changed lines alone:
-   - **The boundary.** State the condition its name and description set, such as "the product
-     before it ships".
-   - **Each description clause.** Every subject it lists falls inside that boundary; a clause naming
-     another subject is the first sign of a misplaced section.
-   - **Each section and reference**, judged by its heading or file name: would its guidance still
-     hold where the condition does not? A section on naming log fields, in a skill bounded by a
-     release stage, still holds after release, so it fails.
-   - **Each bullet against its section's heading.** A bullet on another subject is misplaced even
-     in a file that is otherwise right.
-   - What fails moves in the same change to the file, reference or section whose name covers it,
-     with every reader updated.
-
-   A file touched only mechanically — a repointed citation or dependency, a rename, a link fix, or
-   wording that changes no instruction — keeps the test of the lines it changes and starts no
-   whole-file sweep.
+   whole of each file under `.agents` whose instructions the change adds to or alters, a skill
+   counted with its whole package, and of each file an audit covers, never to the changed lines
+   alone. A file touched only mechanically — a citation or dependency repointed at a moved or
+   renamed target, a link fix, or wording that changes no instruction — keeps the test of the lines
+   it changes and starts no whole-file sweep; a file or heading the change itself renames stays
+   under the test.
 7. **Description as the index.** For every subject a skill owns, confirm a clause of its frontmatter
    description names it, and judge the description as the authoring reference's **Descriptions**
    says. An index of owners kept in a rule file, `.agents/global.md` or a table is a finding.
