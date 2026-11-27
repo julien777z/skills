@@ -167,8 +167,9 @@ proves the component renders and nothing about the screen a user reaches. A chan
 component's own behavior is the exception **Principles** names: its rendered page is the check. If
 sign-in genuinely cannot complete for a change that needs the real screen, report the walkthrough as
 not done.
-Use the tab selected by `use-browser` for sign-in. Use the harness's credential entry or handoff
-route to keep passwords and one-time tokens out of command arguments and transcripts. Reuse an
+Use the tab selected by `use-browser` for sign-in. Use the selected tool's credential-safe entry
+route, including harness handoff when available, to keep passwords and one-time tokens out of command
+arguments and transcripts. Reuse an
 available signed-in session of the required identity. Never read saved passwords, cookies, local
 storage or session files.
 
