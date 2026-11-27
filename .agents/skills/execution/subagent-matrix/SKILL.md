@@ -11,7 +11,6 @@ bypass it.
 
 ## Dependencies
 - `scope-of-change`
-
 - `session-ledger`
 - `share-media`
 

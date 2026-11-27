@@ -32,7 +32,6 @@ Review, fix, and merge the pull requests selected under **Targets**.
 
 ## Dependencies
 - `list-prs`
-- `pre-production`
 - `review-pass`
 - `merge-gate`
 - `session-ledger`
