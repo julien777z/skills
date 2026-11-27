@@ -18,9 +18,10 @@ Reviewed Batches**, **Relocations**, **Resuming A Batch**.
   from the decision, a conflict overrode it, or the agent skipped an applicable check. Explain
   the verified divergence to the user with the correction. Record unavailable evidence and
   proceed from the part of the path you can verify.
-- Repair the decision at its owner. When its rule is already correct, fix the step that let the
-  agent skip it or accept a result without the required evidence. Remove conflicting permissions,
-  check other routes for the same failure, and replay the original decision under the repair.
+- Repair the first missed decision at its owner. For a skipped check, specify the evidence the
+  agent produces before taking the next action. When a later review also passed the miss,
+  require that review to verify the evidence. Remove conflicting permissions, identify other routes
+  that make the same decision, and verify the repair on the original case and an adjacent route.
   Repair the description when discovery failed. When a caller or stopping clause skipped an
   applicable skill or check, repair that path.
 - Test the proposed instruction against that original decision path before proposing or writing it. If a
