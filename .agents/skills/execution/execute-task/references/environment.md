@@ -32,8 +32,7 @@ keeps lives in the original and on the remote. The report names each one deleted
 
 ## Browser Access
 
-- Use the user's own browser for browser work unless the user names another browser, by the route
-  `use-browser` sets. Apply its **Selecting And Binding A Tab** before any page read or action,
+- Select the browser by the route `use-browser` sets. Apply its **Selecting And Binding A Tab** before any page read or action,
   including when attaching a CLI to an existing browser. A named CLI session alone does not
   establish control of the selected tab.
 - Continue through an appropriate API or CLI when that is more direct. Report a browser-specific
