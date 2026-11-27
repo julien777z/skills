@@ -204,9 +204,8 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
 - **A skill keeps as few references as its routes need.** Each one earns its own file because some
   route or reader skips it; a subject an existing reference's name already covers, by the
   name-bounds test above, goes there, a rename to a broader name that truly covers both is the
-  other way in, and a new file is added only for a subject no name covers. The right skill never
-  makes a reference or section named for another subject the place for text. A name joining two subjects, such as `x-and-y`, signals two files' worth or a
-  broader name not yet found. Whenever a pass covers a skill, judge its references as a set:
+  other way in, and a new file is added only for a subject no name covers. A name joining two
+  subjects, such as `x-and-y`, signals two files' worth or a broader name not yet found. Whenever a pass covers a skill, judge its references as a set:
   - merge references on one subject, or always read together;
   - move into `SKILL.md` a short one every run follows, or one holding the main idea above, when
     the body has room under its budget;
