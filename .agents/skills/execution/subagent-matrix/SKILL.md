@@ -16,15 +16,61 @@ agent; the calling agent launches the actual assignment with the selected model.
 - `pre-production`
 - `share-media`
 
+## When To Delegate
+
+Delegate execution to subagents where the work splits into independent parts, needs an independent
+reader, or would crowd the coordinator's own context; do small work directly; a coupled feature
+keeps one owner. Start independent tasks concurrently when their ownership, dependencies and
+resources permit.
+
+- A worker hands required independent reviews, gates and additional capacity needs up to its
+  delegating agent when it cannot launch them itself, as **Dispatch**'s launch fallback says.
+- Delegation does not extend the user's authorization or relax safety and sequencing requirements.
+
+## Matrix
+
+These are model families, not pinned versions. Each capability label selects the latest available
+member of its family on the current host. The calling skill chooses the capability level appropriate
+to each assignment. Cheap through advanced form the ordinary capability ladder; specialist is a
+separate tier.
+
+| Capability | Codex family | Claude family | Selection | Fallback |
+| ---------- | ------------ | ------------- | --------- | -------- |
+| `cheap` | Terra | Sonnet | Lower-cost, bounded tasks and cheaper-model checks | Caller-authorized ordinary ladder |
+| `standard` | Sol | Opus | Balanced reviews, analysis, and substantive tasks, and a narrow independent judgment: a small packet whose answer accepts no diff for merge | Caller-authorized ordinary ladder |
+| `advanced` | Astra | Fable | Difficult and the most demanding tasks, and an independent judgment that accepts a diff for merge or a plan before it is built | Caller-authorized ordinary ladder |
+| `specialist` | Astra | Mythos | Only a calling skill explicitly selecting specialist | Claude: `advanced` by default, or caller-selected tier; Codex Astra holds |
+
+The labels describe selection policy, not identical capabilities across providers or guaranteed
+host availability. A catalog omission is not availability evidence; the workflow resolves an
+exact host dispatch identifier and classifies its actual assignment. Reasoning effort is a separate dispatch
+setting; no capability level implies a particular effort or permission to change repository or
+global configuration.
+
+A capture worker, mechanically capturing the pages and states a brief lists, takes the `cheap`
+family on every host. It captures without judging; the delegating agent reads every image whole
+before relying on it or sending it.
+
+### Review panel
+
+A review panel's three seats take these families, each at its latest host version. A caller that
+asks for the panel names these families as its selection. A seat is a model family, not a provider,
+so two seats may share a provider.
+
+| Seat | Family |
+| --- | --- |
+| 1 | Sol |
+| 2 | Opus |
+| 3 | Fable |
+
 ## Workflow
 
 1. Identify the calling skill or direct task, its assigned roles or verification chat, and any
    explicit capability-level or model requirement. Inspect the current host's subagent catalog and dispatch
    parameters, or its chat model picker, and read
-   [model capabilities](references/model-capabilities.md). Keep catalog discovery, an accepted dispatch,
+   **Matrix**. Keep catalog discovery, an accepted dispatch,
    and host-exposed runtime identity as separate evidence; a worker-reported label is only a label.
-2. Resolve the capability level or model family the caller names to its family in **model
-   capabilities**; the coordinator's model never overrides it. Use an exact user override only for
+2. Resolve the capability level or model family the caller names to its family in **Matrix**; the coordinator's model never overrides it. Use an exact user override only for
    the role, chat, and capability row it expressly governs; one explicitly scoped to every assignment governs
    every row. For every other row, use the latest matching identifier from the host's model-selection
    surface for the current selection or permitted fallback step. **The skill must never hard-code
@@ -61,7 +107,7 @@ agent; the calling agent launches the actual assignment with the selected model.
    **For assignments with no provider or exact-model requirement, a capacity refusal moves the
    assignment to the matching model on the other harness**: a
    Codex model's refusal relaunches the same assignment, with the same brief and reasoning effort, on the
-   Claude family at the same capability level in **model capabilities**, and a Claude model's refusal on the
+   Claude family at the same capability level in **Matrix**, and a Claude model's refusal on the
    Codex family, because the refusal is one provider's capacity and the other's model at that level does the
    same work without waiting out a reset time the refusal can only guess. It is not unavailability: it
    permits none of step 4's unsupported-model fallbacks, no lower capability level and no absorbing the work
@@ -108,8 +154,8 @@ agent; the calling agent launches the actual assignment with the selected model.
    skill-verification chat, choose the least-capable suitable mapped family, resolve its exact candidate, and
    launch the actual chat assignment; never skip that family because the catalog omits it. Advance to another
    family only after an explicit unsupported receipt and only as the caller's fallback policy permits. Otherwise
-   use the task criteria in the table, with **standard** as the default. Reserve advanced for the assignments the
-   table gives it unless specifically required. Select specialist only when the calling skill explicitly
+   use the task criteria in **Matrix**, with **standard** as the default. Reserve advanced for the assignments
+   **Matrix** gives it unless specifically required. Select specialist only when the calling skill explicitly
    selects it for that assignment; neither task difficulty nor a generic fallback enters that tier. Default reasoning effort to **medium** for every
    assignment, including complex work, independent reviews, coordinators, and higher-capability
    models. Use another effort only when the user or invoking skill explicitly specifies it for
@@ -132,17 +178,6 @@ agent; the calling agent launches the actual assignment with the selected model.
    arguments the host accepted; a missing or mismatched field is an invalid dispatch,
    not review evidence. Replace that reader with an explicitly selected reader before counting
    the required review or gate as complete.
-
-## When To Delegate
-
-Delegate execution to subagents where the work splits into independent parts, needs an independent
-reader, or would crowd the coordinator's own context; do small work directly; a coupled feature
-keeps one owner. Start independent tasks concurrently when their ownership, dependencies and
-resources permit.
-
-- A worker hands required independent reviews, gates and additional capacity needs up to its
-  delegating agent when it cannot launch them itself, as **Dispatch**'s launch fallback says.
-- Delegation does not extend the user's authorization or relax safety and sequencing requirements.
 
 ## Dispatch
 
@@ -198,8 +233,8 @@ context and returns its verdict into the step waiting on it; nothing else does b
   not the surrounding cohort.
 - **A worker hands each capture the user should see up the same way, as it is made.** Through any
   mid-run channel the host gives it to the delegating agent, it sends the file path and the
-  caption `share-media` requires, or, for a capture worker that captures without judging as
-  [model capabilities](references/model-capabilities.md) says, what each capture shows, leaving its
+  caption `share-media` requires, or, for a capture worker that captures without judging as **Matrix**
+  says, what each capture shows, leaving its
   reading and caption to the delegating agent; a worker whose only channel is its final message
   returns with the captures made since and is resumed. Work that will make such captures goes to a worker the
   delegating agent can resume or hear from mid-run; where the host offers neither, the delegating

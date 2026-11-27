@@ -29,7 +29,7 @@ short_description: 'Ask three strong models what they think, or review with them
 Use the members the user names. For an unnamed panel on a provider required by the calling
 skill, dispatch three independent reviewers at the advanced tier on that provider. When
 neither the user nor the calling skill sets the selection, use the three seats listed under
-**Review panel** in the `subagent-matrix` model capabilities reference. Resolve each launch
+**Review panel** in `subagent-matrix`'s **Matrix** section. Resolve each launch
 through that skill at high effort. Start the three in parallel, read-only, with no subagents
 of their own.
 
