@@ -1,6 +1,7 @@
 import fcntl
 import gzip
 import logging
+import math
 import os
 import shutil
 import subprocess
@@ -56,6 +57,7 @@ DOCUMENT_PREAMBLE: Final[str] = (
 )
 INSTALL_MARKER: Final[str] = "node_modules/.use-dashboard-installed"
 MAX_METRICS: Final[int] = 4
+MAX_PIE_ITEMS: Final[int] = 8
 OVERVIEW_TITLE: Final[str] = "Overview"
 PROPOSALS_TITLE: Final[str] = "Proposals"
 WAITING_STATUS: Final[dict[str, str]] = {"label": "Waiting on you", "tone": Tone.WARNING.value}
@@ -172,6 +174,7 @@ def check_number(value: object, path: str, maximum: float | None = None) -> None
     if (
         isinstance(value, bool)
         or not isinstance(value, int | float)
+        or not math.isfinite(value)
         or value < 0
         or (maximum is not None and value > maximum)
     ):
@@ -181,10 +184,15 @@ def check_number(value: object, path: str, maximum: float | None = None) -> None
 
 
 def check_chart(chart: dict[str, object], path: str) -> None:
-    """Require a chart to hold some amount to draw."""
+    """Require a chart to hold some amount to draw, and a pie to hold no more parts than it has colors."""
 
-    if not any(cast(dict[str, float], item)["value"] > 0 for item in cast(list[object], chart["items"])):
+    items = cast(list[dict[str, float]], chart["items"])
+
+    if not any(item["value"] > 0 for item in items):
         raise DashboardSpecError(f"{path}.items must hold a value above 0")
+
+    if chart["kind"] == ChartKind.PIE and len(items) > MAX_PIE_ITEMS:
+        raise DashboardSpecError(f"{path}.items must hold at most {MAX_PIE_ITEMS} items in a pie")
 
 
 def check_whole_number(value: object, path: str) -> None:
