@@ -189,23 +189,25 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   a protocol — and `SKILL.md` names the file at the point the workflow reads it. A skill with two
   routes through it (two modes, two kinds of target, two hosts) keeps the shared workflow in
   `SKILL.md` and gives each route its own reference, so the file a reader loads first stays within
-  the size budget under **Writing**. A skill is read by people as well as agents, and **its main idea stays
-  in `SKILL.md`, near the top**: the part a reader opens the skill to see, whatever its form, such as
-  the mapping, principle or contract its name promises. A person scanning the skill sees only its body,
-  so an idea moved to a reference is one they never find; a reference holds what only some routes,
-  modes or readers need. Sections come in the order a run needs them: the first decision
-  before the procedure, and the common path before its edge cases. References may explain the technical steps for a route selected by the
+  the size budget under **Writing**. References may explain the technical steps for a route selected by the
   entry point. They do not select the top-level workflow, hide a decision gate, declare a dependency,
   or invoke another skill. Scripts the skill runs go under `scripts/`; supporting files may live
   under `assets/`, `resources/`, or another directory named for their role. Keep only files the skill
   needs.
+- **A skill's main idea stays in `SKILL.md`, near the top,** whatever its form, even where Skill
+  shape would send it to a reference: the part a reader opens the skill to see, such as the
+  mapping, principle or contract its name promises. A skill is read by people as well as agents,
+  and a person scanning it sees only its body, so an idea moved to a reference is one they never
+  find; the vendor rubric's placement of the most important instructions near the top gives the
+  agent's side of the same reason. A reference holds what only some routes, modes or readers need.
 - **A skill keeps as few references as its routes need.** Each one earns its own file because some
   route or reader skips it; a subject that fits an existing reference goes there, renaming that file
   to the broader subject when the new text widens it, and a new file is added only for a subject
   none covers. A name joining two subjects, such as `x-and-y`, signals two files' worth or a
   broader name not yet found. Whenever a pass covers a skill, judge its references as a set:
   - merge references on one subject, or always read together;
-  - move into `SKILL.md` a short one every run reads, when the body has room under its budget;
+  - move into `SKILL.md` a short one every run follows, or one holding the main idea above, when
+    the body has room under its budget;
   - delete one nothing links to, or whose content the body or another reference already states.
 - Never add `agents/openai.yaml` to a repository skill, and remove one found in a canonical
   package. Repository skills contain `SKILL.md` and only supporting files required by the skill;
@@ -413,7 +415,8 @@ a template where correct results genuinely vary in shape.
   reader of the file needs comes before guidance only some cases need, and each part follows the
   parts whose terms it uses. In a style guide, a section on footnotes, which only some documents
   use, follows the sections on headings and paragraphs that every document uses, even though
-  footnotes extend paragraphs.
+  footnotes extend paragraphs. In a skill, sections come in the order a run needs them: the first
+  decision before the procedure, and the common path before its edge cases.
 - Express each independent requirement once, as one concise statement or bullet, without padding. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
 - **A file's size budget follows how it loads.** A change that pushes a file past its budget, or
   grows one already past it, makes its room in the same change by merging what the file states
@@ -434,7 +437,8 @@ a template where correct results genuinely vary in shape.
     `SKILL.md` says when to read it.
   - **A budget is a ceiling, not a target.** A file under it is still too long when its length is out
     of proportion to what it does: cut every sentence whose removal leaves a reader's actions
-    unchanged, however far under budget the file sits.
+    unchanged, however far under budget the file sits, judging a cut as the vendor rubric's
+    **Cutting A Passage** says.
 - **A correction restructures the bullet it lands in, never appends to it.** A bullet that already
   carries an exception, or runs past about twelve lines, takes no further clause: state its rule in
   one sentence and move each condition and exception into a sub-bullet or a bullet of its own, so
