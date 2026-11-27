@@ -20,7 +20,7 @@ const RING_RADIUS = 15.9155;
 
 const RING_WIDTH = 5;
 
-const DIMMED = 'opacity-35';
+const DIMMED = 'opacity-40';
 
 interface Slice {
   key: string;
@@ -100,7 +100,7 @@ function ItemLabel({ slice, selection }: { slice: Slice; selection: Selection })
   }
 
   return (
-    <DialogOpener onOpen={(button) => selection.open(slice, button)} className="text-left hover:underline">
+    <DialogOpener onOpen={(button) => selection.open(slice, button)} className="text-left">
       {label}
     </DialogOpener>
   );
