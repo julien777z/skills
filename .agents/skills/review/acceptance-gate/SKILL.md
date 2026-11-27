@@ -169,11 +169,8 @@ code, hand-written configuration or styling where an owner exists, a setting lef
 library warns against, a shortcut a comment or report admits, a result its reader would question.
 The list illustrates the question and never bounds it. A rubric exemption that would excuse such a
 shape is named in the flag. A remedy that sends the author to an existing piece judges that piece the same way first: a wrapper or
-a duplicate is not an owner. An increment fixing an earlier flag is judged on the earlier flags it
-answers and on its own lines, read the same way, never only against that flag; the rest of the
-modules it touches and of the originating diff, which the earlier gate judged, is context, open to a
-new flag only where the increment changes what it depends on or it holds a confirmed defect or
-exploitable vulnerability.
+a duplicate is not an owner. An increment fixing an earlier flag is judged as the **Diff** question
+says for repairs, its own lines read the same way, never only against that flag.
 
 Before the design comparison, verify that the supplied rule sources are complete and cover the
 file groups in the diff. Check preambles, imports, declarations and executable bodies in the
@@ -293,8 +290,10 @@ question and never a level of its own:
   correction after base incorporation, or the repairs of and answers to a verdict's flags, read with the
   whole branch diff as its originating diff. For repairs, the gate judges only the repair's changed
   lines and the flags they answer, consulting the rest of the branch diff for what those lines touch
-  and never raising a flag on a defect the repair did not cause, one it causes elsewhere being
-  anchored on the repair's line: the whole change is judged once, by final acceptance.
+  and never raising a flag on a defect the repair did not cause, apart from an exploitable
+  vulnerability, which the rubric's **Exploitable Findings** keeps open on any surface the diff
+  touches; one it causes elsewhere is anchored on the repair's line. The whole change is judged
+  once, by final acceptance.
 - **Base incorporation — what did the base bring in that the change must refactor?** The procedure
   below.
 - **Final acceptance — may this merge?** The complete pull-request diff, read once after review is
