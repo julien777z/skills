@@ -26,8 +26,8 @@ Apply `scope-of-change` to the scope of issues encountered while tracing a test 
    applicable guidance; do not adopt a conflicting pattern merely because it already exists or
    matches the source language. The runtime under test and the assertion framework are separate
    choices. Read the complete [rubric](references/rubric.md) and the
-   [suites reference](references/suites.md), which holds suite, module, configuration,
-   time-budget, verification-isolation and live-deployment conventions, before inspecting, reviewing, changing,
+   [suites reference](references/suites.md), which holds suite, module, configuration and
+   time-budget conventions, and **Running Tests Safely** below, before inspecting, reviewing, changing,
    or executing any covered test surface. Discover the repository's test roots, distribution and build
    roots, artifact boundaries, fixture packages, factory owner, shared test utilities, runner
    targets, and analogous sibling tests. For a test of shell, process, container, browser, network,
@@ -95,6 +95,29 @@ Apply `scope-of-change` to the scope of issues encountered while tracing a test 
    missing attribution unmeasured. Do not add reporting infrastructure or withhold an ordinary
    repair's completion because that attribution is unavailable.
 
+## Running Tests Safely
+
+- Before combining, reordering or parallelizing verification, read its owning runner and lifecycle
+  declarations. Preserve their process, session, environment, dependency and resource isolation,
+  including setup and cleanup order; related inputs or one verification checkpoint do not establish
+  that checks can share an execution context. Keep the declared partitions unless their actual
+  contract supports the proposed optimization. Classify a failure against that invocation first:
+  correct an unsupported invocation and reproduce through the native route before blaming or
+  changing application code. A failure that persists there is investigated at its actual owner.
+- Isolate experimental faults from working state other writers, readers or checks can observe.
+  Use a private candidate built from the canonical implementation under its native execution contract;
+  establish which implementation and dependencies the experiment actually loads and that shared
+  state remains unchanged. If that route cannot preserve the contract, establish the concrete
+  limitation before arranging an exclusive window with the affected writers, readers and check
+  owners. Hold that window through exact restoration and the successful control; a short mutation or later restore
+  does not make concurrent exposure safe. Never claim isolation is impossible without checking it.
+- Treat create, update, and delete requests against a live deployment as data mutations, not health
+  checks: run them only against a target the repository explicitly designates for mutation testing,
+  leaving no persistent synthetic records in a stable or shared staging environment, and keep live
+  smoke testing read-only everywhere else. Where the same artifact and materially equivalent
+  configuration run in several environments, one successful write test on that target plus
+  read-only health and routing checks on the others validates the shared path.
+
 ## Mutation Proof
 
 Mutation experiments are temporary diagnostic work, not a maintained validation system. Reuse
@@ -110,7 +133,7 @@ When a focused experiment is useful and supported by the existing route:
 1. Select the nearest editable canonical first-party implementation. Never mutate generated or
    vendored output, run generation for proof, or mutate the test itself. Mutate test support only
    when that support is genuinely the subject under test.
-2. Apply the suites reference's **Verification And Experiments** experimental-isolation boundary before
+2. Apply **Running Tests Safely**'s experimental-isolation boundary before
    selecting the mutation route. Record the canonical target's content hash, staged and unstaged
    state, and the candidate's baseline. In a private candidate, verify the actual loaded source and
    dependency paths, and preserve the native runner's partitions, environment and lifecycle. An

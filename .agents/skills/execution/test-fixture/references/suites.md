@@ -1,7 +1,7 @@
 # Suites, Modules And Test Configuration
 
 Contents: **Suites And Classifications**, **Module Conventions**, **Test Configuration**, **Time
-Budgets**, **Verification And Experiments**, **Live Deployments**.
+Budgets**.
 
 Apply these conventions wherever a test, suite, test configuration or test job is written or
 changed. The rubric owns what a test is worth, where it sits against its source, its data, its
@@ -23,7 +23,7 @@ doubles and its name.
   conditional skips and fixture branches that choose between real and simulated execution. Missing
   credentials or an unavailable required service fail the suite; neither turns it into a skipped or
   mocked success. Fixtures may own real client setup, scenario construction and cleanup.
-- Apply **Live Deployments** below. Always-live execution grants no additional mutation authority.
+- Apply the skill's **Running Tests Safely**. Always-live execution grants no additional mutation authority.
 - Every directory holding tests must be reachable from a runner target, and a test should assert that correspondence. A suite that no target selects is a suite nothing reports on.
 
 ## Module Conventions
@@ -79,29 +79,3 @@ For Python suites; another language keeps test configuration where its runner re
   - Every instruction about a suite's runtime — a worker's brief, a fix step, a gate's remedy —
     states the budget as its target, never only the timeout, since a suite that merely stays under
     the timeout can still be three times over budget.
-
-## Verification And Experiments
-
-- Before combining, reordering or parallelizing verification, read its owning runner and lifecycle
-  declarations. Preserve their process, session, environment, dependency and resource isolation,
-  including setup and cleanup order; related inputs or one verification checkpoint do not establish
-  that checks can share an execution context. Keep the declared partitions unless their actual
-  contract supports the proposed optimization. Classify a failure against that invocation first:
-  correct an unsupported invocation and reproduce through the native route before blaming or
-  changing application code. A failure that persists there is investigated at its actual owner.
-- Isolate experimental faults from working state other writers, readers or checks can observe.
-  Use a private candidate built from the canonical implementation under its native execution contract;
-  establish which implementation and dependencies the experiment actually loads and that shared
-  state remains unchanged. If that route cannot preserve the contract, establish the concrete
-  limitation before arranging an exclusive window with the affected writers, readers and check
-  owners. Hold that window through exact restoration and the successful control; a short mutation or later restore
-  does not make concurrent exposure safe. Never claim isolation is impossible without checking it.
-
-## Live Deployments
-
-- Treat create, update, and delete requests against a live deployment as data mutations, not health
-  checks: run them only against a target the repository explicitly designates for mutation testing,
-  leaving no persistent synthetic records in a stable or shared staging environment, and keep live
-  smoke testing read-only everywhere else. Where the same artifact and materially equivalent
-  configuration run in several environments, one successful write test on that target plus
-  read-only health and routing checks on the others validates the shared path.

@@ -114,7 +114,7 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
 
 ## Suites And Failures
 
-- Before selecting a test invocation, apply `test-fixture`'s **Verification And Experiments**
+- Before selecting a test invocation, apply `test-fixture`'s **Running Tests Safely**
   boundary to the repository's actual runner, target declarations and setup/cleanup lifecycle.
   Run through its test-runner skill at the required scope, preserving the runner's execution
   partitions rather than joining paths in one framework invocation. A single suite is for iterating
