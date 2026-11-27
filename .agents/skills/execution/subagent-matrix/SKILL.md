@@ -22,10 +22,10 @@ the coordinator's own context; do small work directly. Start independent tasks c
 their ownership, dependencies and resources permit. Delegation does not extend the user's
 authorization or relax safety and sequencing requirements.
 
-**A paused session launches nothing.** Before any launch, read the task ledger through
-`session-ledger` for an open `hold` entry, the user's pause on automated work; a review, gate,
-worker or check run in a scope it still covers, one the entry does not list as resumed, waits in
-that entry's queue until the user resumes it.
+**A paused session launches nothing the pause covers; a launch the user asks for during it
+runs.** Before any launch, read the task ledger through `session-ledger` for an open `hold` entry,
+the user's pause on automated work; a review, gate, worker or check run in a scope it still covers,
+one the entry does not list as resumed, waits in that entry's queue until the user resumes it.
 
 ## Matrix
 
