@@ -6,26 +6,24 @@ short_description: 'Show a local page in the user''s browser, or operate a brows
 
 # Use Browser
 
-Select a browser for the task, then show the page or operate it through its supported controls.
+Select a browser for each operation. Honor a browser explicitly named for that operation; if it
+lacks the required account session, use its supported sign-in route or report the step blocked.
+Otherwise, use the user's browser to show them a page and follow **Operating A Browser** for other
+work. A browser named for an inspection does not carry over to a separate preview request.
 
 ## Showing A Local Page
 
 For a local page the user should look at, including a served page or an HTML file the agent wrote,
-such as a rendered dashboard. A `file://` preview needs the user's browser on the machine that holds
+such as a rendered dashboard. A `file://` preview needs the selected browser on the machine that holds
 the file; when it is not, such as a cloud session, serve the page to that browser instead.
 
-Open the page in a task group in the user's browser, or in the browser explicitly requested for the
-preview, bound as below. If a task tab already shows it, reload that
+Open the page in a task tab in the selected browser, bound as below. If a task tab already shows it, reload that
 tab. Bring the preview to the front only when the user asks to see it. If the selected browser
 cannot load the file, use a local URL served to that browser or report the preview blocker.
 
 ## Operating A Browser
 
-For each requested operation, select in this order. A browser named for an inspection does not carry
-over to a separate request to show the page in the user's browser.
-
-- Honor an explicitly requested browser. If it lacks the required account session, use its supported
-  sign-in route or report that browser step blocked; do not silently switch browsers.
+For operations without an explicit browser, select in this order:
 - For a task needing the user's account session, use the harness to connect to the user's existing
   browser and relevant profile.
 - Otherwise, for local development and verification, use an isolated `agent-browser` session or an
