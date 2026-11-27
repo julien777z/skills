@@ -81,9 +81,10 @@ Build the clean target contract instead of preserving transitional behavior.
   before deciding what its revision keeps or clears; required columns do not themselves create an
   obligation to preserve disposable or nonexistent rows.
 - For retained values, use the authoritative source where one exists and a type-valid placeholder
-  only where none exists and the placeholder expresses a legitimate domain state. Never
-  invent an identity, ownership or scope to fill one. Never overwrite a known retained value, fabricate a placeholder in runtime code, or
-  keep a permanent schema default solely to make a migration convenient.
+  only where none exists and the placeholder expresses a legitimate domain state. Never invent an
+  identity, ownership or scope to fill one. Never overwrite a known retained value, fabricate a
+  placeholder in runtime code, or keep a permanent schema default solely to make a migration
+  convenient.
 - **A backfill writes each row's value under the new contract, never one chosen so existing rows
   keep behaving as before.** A flag set on every pre-change row so it keeps the old outcome, such as
   staying exempt from a new check, closed to a new path, or treated as the old kind, is a legacy

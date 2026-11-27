@@ -7,8 +7,9 @@ user-invocable: false
 
 # Engineering Conventions
 
-What every line a change writes follows: code, configuration, manifests, documentation, comments,
-commit messages and pull-request text. Read it before a change writes its first line, and apply it
+The conventions every change follows in what it writes and builds: code, configuration, manifests,
+documentation, comments, commit messages, pull-request text, product copy, data contracts and the
+releases a project runs. Read it before a change writes its first line, and apply it
 to every line the change writes. Read each reference before a change reaches its subject:
 
 - [versions](references/versions.md), before choosing a runtime, base image, dependency release,
