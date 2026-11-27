@@ -61,10 +61,11 @@ When the user asks for work the pause still covers, such as finishing or merging
 resuming the task's execution, ask through the question tool before starting it, naming the work
 and when the pause started. A request already asked about in this run is not asked again.
 
+- **Resume all gates**, listed first and recommended, since the user most often wants everything
+  back: lifts the whole pause, as resuming the gates does.
 - **Resume gates for this only**, offered only when the request covers one scope, one pull request
   or the task's execution: adds that scope to the entry's resumed scopes, and the work runs with its
   reviews, gates, checks and workers while every other scope stays paused.
-- **Resume all gates**: lifts the whole pause, as resuming the gates does.
 - **Continue with gates paused**: the work runs, what the pause covers stays queued, and a merge
   goes ahead without those reviews, its report saying the gates were paused.
 - **Stop**: nothing runs, and the reply says that asking to resume the gates restarts everything.
