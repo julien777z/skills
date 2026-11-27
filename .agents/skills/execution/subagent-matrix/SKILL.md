@@ -84,7 +84,8 @@ sending it.
      assignment at each step and moving on only on another unsupported receipt: earlier versions of
      the same family, newest first; the other provider's family at that tier; then each lower tier in
      turn, same provider first, never skipping one, even to a family another seat already uses. A
-     specialist assignment instead falls back as its **Matrix** row says, holding when that would
+     specialist assignment, on an unsupported or a denied receipt, instead falls back as its
+     **Matrix** row says, holding when that would
      break the user's constraint or is itself unsupported. Report the original request as
      unavailable and name the tier and model actually used.
    - A comparison pair keeps one model and effort on both sides through every relaunch.
@@ -181,7 +182,7 @@ was not. Keep every argument name and value, omitting only secret values.
 - **Selected dispatch:** `<model>` / `<reasoning effort>` / `<history mode>`
 - **Arguments:** `<complete argument names and safe values>`
 - **Host receipt:** <verbatim receipt, or `none — <why no invocation was possible>`>
-- **Classification:** <native tool not exposed | no resolved model ID | unsupported-model receipt | rejected dispatch | capacity refusal | accepted worker later failed>
+- **Classification:** <native tool not exposed | no resolved model ID | unsupported-model receipt | denied receipt | rejected dispatch | capacity refusal | accepted worker later failed>
 - **Fallback:** <assignment held, handed up to the delegating agent, or top-level in-process work and its loss of independence>
 ```
 
