@@ -1,6 +1,6 @@
 ---
 name: merge-gate
-description: Merge a pull request its caller is authorized to merge, once its review has accepted a head — verify its delivery dependencies, take it out of draft as the last step before the merge, gate that exact head, resolve conflicts, squash-merge, and include CI commits in the checkout refresh. Use when an authorized merge is reached; a pull request leaves draft only here. Holds what authorizes a merge, deployment, publication or release, which failing checks a merge excludes, what follows a merge, the refresh after a merge of agent configuration, and when a pull request may be polled.
+description: Merge a pull request its caller is authorized to merge, once its review has accepted a head — verify its delivery dependencies, take it out of draft as the last step before the merge, gate that exact head, resolve conflicts, squash-merge, and include CI commits in the checkout refresh. Use when an authorized merge is reached; a pull request leaves draft only here. Holds what authorizes a merge, deployment, publication or release, which failing checks a merge excludes, what follows a merge, whether an already validated artifact is rebuilt or redeployed after its source head moves, the refresh after a merge of agent configuration, and when a pull request may be polled.
 short_description: 'Take a reviewed pull request out of draft, gate its exact head, and merge it.'
 ---
 
@@ -62,7 +62,8 @@ for an agent-configuration change, Agent Sync handling before this skill finishe
 ## Dependencies
 - `stop-gates`
 - `merge-conflict`
-- `pre-production`
+- `change-scope`
+- `writing-conventions`
 - `update-skills`
 - `test-fixture`
 
@@ -76,7 +77,7 @@ caller or native validation evidence identifying its command and covered behavio
 resolved dependencies, configuration, toolchain and runner inputs, successful result, and durable
 output. Missing evidence prevents reusing that result or admitting a local-coverage exclusion; it
 never waives hosted coverage. The caller also supplies each validation exclusion: a current-user
-direction to leave a named test or check alone, a baseline exclusion established by `pre-production`'s
+direction to leave a named test or check alone, a baseline exclusion established by `change-scope`'s
 **Encountered Issues** classification with its default-branch evidence, or evidence that a hosted
 runner or provider interruption meets **Validation Exclusions**' interruption and local-coverage
 conditions. A caller with no fix rule has each fix's delta judged the way it judged the accepted
@@ -89,7 +90,7 @@ says, and exclusions are applied before any failure is repaired.
 
 - **Waived, baseline and non-essential checks.** A failing check the current user explicitly
   waives, an established baseline exclusion, and a non-essential check left red on findings the
-  change did not write are excluded, each as `pre-production`'s **Encountered Issues** classifies
+  change did not write are excluded, each as `change-scope`'s **Encountered Issues** classifies
   it. Record the check and its exclusion evidence in the task's record, then attempt the authorized
   merge without asking the user; a baseline exclusion is named to the user only where that
   classification allows. Keep that classification rather than excluding a required repair merely
@@ -181,7 +182,7 @@ test jobs run once, on the head about to merge.
    run on the base branch. The merge is held only for slowness this pull request caused, so a
    suite it made slower than that base run is an unsuccessful result for **Classify every unsuccessful check** even when its job
    passed. A suite already past its budget that this pull request did not slow does not hold the
-   merge: it is a defect the work noticed, and its fix is placed as `pre-production`'s **Scope
+   merge: it is a defect the work noticed, and its fix is placed as `change-scope`'s **Scope
    Follows The Defect, Not The Request** says.
    A skipped or neutral job supplies no coverage: establish whether its native condition makes it
    inapplicable, or required validation is missing. Draft skips never supply test coverage. A job
@@ -210,9 +211,9 @@ test jobs run once, on the head about to merge.
    hang, push a speculative fix, cancel, re-run, or report the run stuck from a pending status alone.
 8. **Classify every unsuccessful check before repair.** A caller-supplied exclusion, or a
    current-user waiver naming the test or check, is excluded. Preserve established baseline classifications;
-   classify a newly encountered possible baseline under `pre-production`'s **Encountered Issues**,
+   classify a newly encountered possible baseline under `change-scope`'s **Encountered Issues**,
    without reentering that skill's active run. A non-essential check failing only on findings
-   `pre-production`'s essential-checks bullet leaves red is an exclusion too. Record an exclusion's
+   `change-scope`'s essential-checks bullet leaves red is an exclusion too. Record an exclusion's
    evidence, remove it from required coverage, and do not repair, rerun, or wait for it. Apply
    **Validation Exclusions**' interrupted-check exclusion automatically: record a qualified check as skipped
    and do not rerun or wait for a green hosted result. For a canceled or otherwise interrupted
@@ -231,7 +232,7 @@ test jobs run once, on the head about to merge.
    configures them, never taken on a reviewer's, worker's or plan's word,
    or runner-specific behavior, never disk, memory or ports the session can free — is pushed
    without local proof. A relevant
-   external-service failure is an encountered issue under `pre-production` and is fixed the same way;
+   external-service failure is an encountered issue under `change-scope` and is fixed the same way;
    never rerun a failing validation to get a green result, or skip, disable, or quarantine a test
    or confine its job to drafts to get past it. Report a blocker only when relevant missing
    coverage needs user input or unavailable credentials, with the check, evidence and remediation attempted.
@@ -378,7 +379,7 @@ Merged: [<owner>/<repo>#<number>](<url>) at <short sha> — checks: <local only 
 ```
 
 The checks field leaves out baseline failures and non-essential checks left red, as
-`pre-production`'s **Encountered Issues** says.
+`change-scope`'s **Encountered Issues** says.
 
 Or, when a gate holds: `Not merged: <link> — <gate>: <evidence>`. The evidence includes each
 relevant check's terminal result, read from its log where its status was stale.

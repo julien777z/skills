@@ -13,6 +13,8 @@ rendered pages for the second, and corrects what serves the reader badly.
 ## Dependencies
 - `doctor-protocol`
 - `pre-production`
+- `change-scope`
+- `writing-conventions`
 - `run-site`
 - `share-media`
 - `get-doctors`
@@ -22,7 +24,7 @@ rendered pages for the second, and corrects what serves the reader badly.
 
 Run `doctor-protocol`.
 
-Apply the general React rule, the React layout rule, the React copy and forms rule, `pre-production`'s
+Apply the general React rule, the React layout rule, the React copy and forms rule, `writing-conventions`'
 product-copy reference and the interface rules the repository's own project guidance holds. They
 are the rubric; this doctor cites them and never restates them. Their examples are written in
 React, and every lens applies to any web interface, read in its framework's terms.
@@ -194,12 +196,12 @@ finding rejected because a rule's example differed from the case in front of it.
 
 ## Dispositions
 
-Apply `pre-production` to every correction.
+Apply `change-scope` and `pre-production` to every correction.
 
 1. **Change boundary.** This doctor changes interface text wherever it is written, component and
    page source, the shared components that own a shape, and the variants and props a fix adds to
    them. It adds no feature, page or flow.
-2. **What a rule file names a defect is fixed on every page that has it**, as `pre-production`'s
+2. **What a rule file names a defect is fixed on every page that has it**, as `change-scope`'s
    **Scope Follows The Defect, Not The Request** says of such a shape and its **Product Choices**
    says of such text. The fix is the remedy the rule states, made at the shared component that owns
    the shape, with every page that builds its own copy moved onto it.
@@ -208,7 +210,7 @@ Apply `pre-production` to every correction.
    copy for a refusal a service words is fixed at that service, as the general React rule's **Rendering and
    Data** says, with the interface showing what the service sends.
 4. **Making content fit is a fix, decided and made at whatever width the defect shows**, by a
-   remedy that keeps every value readable, as `pre-production`'s **Product Choices** says of
+   remedy that keeps every value readable, as `change-scope`'s **Product Choices** says of
    content and its space. Squeezing, truncating, shrinking and narrowing are never the remedy.
 5. **A routine presentation detail is decided and stated in the report**, as **Product Choices**
    says of one, and a detail the user already decided on a page is followed.

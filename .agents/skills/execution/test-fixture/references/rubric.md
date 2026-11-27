@@ -64,7 +64,7 @@ a credible failure mode. Source inspection can be the cheapest independent guard
 the user-facing key, byte, or path changes and survives an identifier-only refactor. Static is not
 a deletion reason, and neither is ordinary slowness; a disproportionate cost under question 5 is,
 as **Test Cost** sets out. A test already failing on the default branch is a baseline failure:
-record it as `pre-production`'s **Encountered Issues** says and move on, without reproducing,
+record it as `change-scope`'s **Encountered Issues** says and move on, without reproducing,
 investigating or repairing it, and never delete its test for failing.
 
 ### Test Deletion Evidence
@@ -120,7 +120,7 @@ setup, parametrization, and assertion conventions, but never import from a sibli
 genuinely shared support to the nearest common test owner instead.
 
 Trace each reused fixture, sample, or helper import to its defining module before treating it as
-canonical. Apply `pre-production`'s **Code Layout** boundary between executable consumers and reusable
+canonical. Apply `writing-conventions`' **Code Layout** boundary between executable consumers and reusable
 owners: test-only setup belongs in established test support, while behavior used by applications
 and commands belongs in its existing reusable source owner. Move the definition and update all
 consumers rather than re-exporting it through a command or copying it into test support. Inspect
@@ -253,7 +253,7 @@ that file gets a file of its own instead of joining the others. Check it mechani
 test module in scope and compare its name, without the test-file marker, with the source file at the mirrored
 path. A test module named for a function or class inside a source file is a finding; its tests fold
 into that source file's test module, organized as this section's class rule and **Prefer
-Parametrized Cases** say, within `pre-production`'s size budget, the rest handled as that budget
+Parametrized Cases** say, within `change-scope`'s size budget, the rest handled as that budget
 says.
 
 Before placing or moving a test, compare analogous sibling service tests and their corresponding
@@ -414,7 +414,7 @@ of one family, named so that a reader tells from the names alone how they relate
 - A change that adds a sibling names it this way and renames the family's other members to match
   in that change, with every consumer: a qualified or numbered name means nothing beside a bare
   sibling, so the rename is part of naming the fixture the change adds, never incidental cleanup
-  under `pre-production`'s size budget, whatever the number of consumers.
+  under `change-scope`'s size budget, whatever the number of consumers.
 
 For every fixture, in a family or not, the name is what a reader takes the value to be:
 
@@ -441,7 +441,7 @@ scope a caller names:
 
 A change that adds, renames or removes a fixture runs the listing before it is finished and
 fixes every row it reports, rows in families it did not add to included, unless
-`pre-production`'s size budget reserves a record for a row outside the family it adds to.
+`change-scope`'s size budget reserves a record for a row outside the family it adds to.
 
 Name several results in one test for their scenario or domain role, such as
 `invited_member_response` and `created_member_response`, never with a letter or a number, such as

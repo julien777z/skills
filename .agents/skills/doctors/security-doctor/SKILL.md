@@ -14,7 +14,7 @@ names is proven by the rule and the source that holds it.
 - `doctor-protocol`
 - `security-audit`
 - `subagent-matrix`
-- `pre-production`
+- `change-scope`
 - `test-fixture`
 - `get-doctors`
 
@@ -246,7 +246,7 @@ hunt followed by **Validation**. Reconnaissance runs once, before the first.
    defect the run notices that is no vulnerability is fixed in this run too, as `doctor-protocol`'s
    **Resolve The Scope** says.
 2. **Every confirmed finding is closed in this run** with the smallest fix that enforces the access
-   the product already intends, as `pre-production`'s security bullet says. A change that
+   the product already intends, as `change-scope`'s security bullet says. A change that
    widens access or changes who may see a record is a reserved decision, asked as
    `doctor-protocol`'s **Gate And Show The Plan** says.
 3. **Each fix carries a regression test**, built under `test-fixture`, that fails without the fix

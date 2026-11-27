@@ -125,14 +125,14 @@ The statement is written before the edit, in the shape `SKILL.md`'s
   examples generic. Read it whole and send it as `share-media`'s **What reaches the user, and when** says, write the
   skill to produce that shape, then validate it through the required skill-test run, review, and
   acceptance gate. A guidance-output format is routine guidance design, not a user approval gate; a change to the product
-  a skill operates still follows `pre-production`'s **Product Choices**.
+  a skill operates still follows `change-scope`'s **Product Choices**.
 
 ## Moved Text
 
 Guidance moved between files — a skill relocated, bullets gathered into a new rule or out of one —
 that lands beside a statement of the same requirement is merged with it into one in the same
 change, keeping every distinct criterion and exception, and any other defect a standing rule names
-that the move brings to light is fixed in it, as `pre-production`'s **Scope Follows The Defect, Not
+that the move brings to light is fixed in it, as `change-scope`'s **Scope Follows The Defect, Not
 The Request** says of a defect the work notices, with `acceptance-gate` judging the repair's scope
 and size. Moving text unchanged proves it survived; it is never a reason to report a defect as
 left for the user.

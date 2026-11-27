@@ -12,6 +12,7 @@ else.
 ## Dependencies
 - `doctor-protocol`
 - `pre-production`
+- `writing-conventions`
 - `get-doctors`
 - `council`
 
@@ -109,7 +110,7 @@ is fixed there, as `doctor-protocol`'s **Resolve The Scope** says.
 ### History Narration
 
 Flags documentation that recounts what changed: "formerly", "used to", "replaces", migration
-tables, upgrade notes, and deprecation prose, against `pre-production`'s **Documentation**
+tables, upgrade notes, and deprecation prose, against `writing-conventions`' **Documentation**
 conventions. Git history is the record of what changed. Reach: partition.
 
 - every history-word hit in a document or a description;
@@ -141,7 +142,7 @@ whose reader acts on it. Left alone: a short restatement at a point of use that 
 
 Flags a description that does not tell its reader what the value or operation is. Reach: partition.
 
-- every description of an input, output, option, setting or field, against `pre-production`'s
+- every description of an input, output, option, setting or field, against `writing-conventions`'
   **Repository Text**: one that restates the flag or variable the value becomes, stands a
   value grammar in place of words, or lists which callers use it;
 - every route handler's docstring, against the FastAPI rules' **Route Metadata**: one that restates
@@ -155,7 +156,7 @@ route description.
 
 ### Machine And Example Values
 
-Flags prose that holds a value from one machine or one person's data, against `pre-production`'s
+Flags prose that holds a value from one machine or one person's data, against `writing-conventions`'
 **Examples And Paths** and **Whose Standards Apply** conventions. Reach: partition.
 
 - every one-machine-path hit: a home directory, a temporary directory, the place a checkout sits, a

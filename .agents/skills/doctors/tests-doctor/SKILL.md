@@ -15,6 +15,8 @@ apply `test-fixture`'s validation boundary to diagnostic experiments.
 
 ## Dependencies
 - `pre-production`
+- `change-scope`
+- `writing-conventions`
 - `doctor-protocol`
 - `test-fixture`
 - `council`
@@ -187,7 +189,7 @@ exposes included. For a seam,
 inspect non-test callers and history, move coverage to its real owner boundary, then remove the
 unused export, flag, wrapper, injection hook, or dead path without a compatibility alias. A test
 failing at this run's baseline measurement is this doctor's own finding: a run the user invoked to
-repair tests is the one exception to `pre-production`'s **Encountered Issues** baseline exclusion,
+repair tests is the one exception to `change-scope`'s **Encountered Issues** baseline exclusion,
 which records and leaves a test already failing on the default branch that other work meets. For a
 baseline failure, reproduce the product defect, fix it at its owner in a separate commit, and show
 the same harness failing with the fix absent and passing with it present. Do not weaken, skip, or

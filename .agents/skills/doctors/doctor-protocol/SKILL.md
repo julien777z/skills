@@ -15,7 +15,7 @@ finds. This skill owns the run; each doctor owns only its domain.
 - `code-simplify`
 - `acceptance-gate`
 - `defer-scope`
-- `pre-production`
+- `change-scope`
 - `execute-task`
 - `edit-skill`
 - `session-ledger`
@@ -91,7 +91,7 @@ standard.
 ## Resolve The Scope
 
 Use an explicit domain, service, path, or other concrete selection supplied by the caller.
-Otherwise audit the whole repository. A doctor run sets its own scope, so `pre-production`'s
+Otherwise audit the whole repository. A doctor run sets its own scope, so `change-scope`'s
 incidental size budget does not apply. Before fan-out, take `defer-scope`'s **Reading A Scope** for
 that scope, which returns its declined and canceled records with the reason each was declined and
 what would reopen it. A finding one covers enters the ledger as declined and is skipped, never
@@ -109,7 +109,7 @@ refused deferral authorizes its implementation in this run.
 **A defect or vulnerability the run notices is never outside the boundary.** Whatever its size, its
 area, the lens that met it or the doctor running, a confirmed defect or exploitable vulnerability
 joins the remediation plan as a required entry and is fixed in this run at its owner, as
-`pre-production`'s **Scope Follows The Defect, Not The Request** says of a defect the work notices.
+`change-scope`'s **Scope Follows The Defect, Not The Request** says of a defect the work notices.
 It is never reported in place of a fix, deferred or left for another doctor. What a doctor's
 disposition may still exclude is cleanup that fixes no defect.
 
@@ -262,7 +262,7 @@ Otherwise write a decision-complete remediation plan from the ledger.
     procedure, each as options with each consequence and a recommendation; only the entries that
     depend on an answer wait for it.
   - **A departure from a rule rides the rule change.** Where the run judges a shape a rule
-    prescribes or exempts worse than the departure, as `pre-production`'s **Trade-Offs Are
+    prescribes or exempts worse than the departure, as `change-scope`'s **Trade-Offs Are
     Surfaced, Never Enforced** asks of a rule, the rule change goes on the run's
     agent-configuration pull request, and the code keeps the rule's form until that change merges,
     since code that departs from a rule still in force reads as a defect to the next run. The

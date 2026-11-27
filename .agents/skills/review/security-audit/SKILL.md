@@ -1,6 +1,6 @@
 ---
 name: security-audit
-description: Must be used before writing or changing code that crosses a trust boundary — input handling, authentication, authorization, sessions, secrets, cryptography, deserialization, file paths, subprocesses, outbound requests, templates — and for any security review of a branch, pull request or pending changes. Its rubric owns what counts as an exploitable finding, the precedents that rule false positives out, how code is built safely, and the smallest fix; the skill reports, and its caller owns what happens to each finding. Use when asked to check a change for security bugs or to security-review a change.
+description: Must be used before writing or changing code that crosses a trust boundary — input handling, authentication, authorization, sessions, secrets, cryptography, deserialization, file paths, subprocesses, outbound requests, templates — and for any security review of a branch, pull request or pending changes. Its rubric owns what counts as an exploitable finding, the precedents that rule false positives out, whether a credential an agent has seen counts as exposed in any task, how code is built safely, and the smallest fix; the skill reports, and its caller owns what happens to each finding. Use when asked to check a change for security bugs or to security-review a change.
 short_description: 'Security guidance for writing code and reviewing a change for exploitable vulnerabilities.'
 ---
 
@@ -14,7 +14,8 @@ reviewing and apply it throughout. This file holds how that judgment is applied 
 
 ## Dependencies
 - `subagent-matrix`
-- `pre-production`
+- `change-scope`
+- `writing-conventions`
 
 ## While Writing Code
 
@@ -66,7 +67,7 @@ codebase security audit the skill listing describes.
   trace does not hold.
 
 A finding in lines the running task wrote is fixed in that task's change. Any other finding is
-returned to the caller, who applies `pre-production`'s **Scope Follows The Defect, Not The
+returned to the caller, who applies `change-scope`'s **Scope Follows The Defect, Not The
 Request** to place the fix. No findings file is
 committed, and the review changes no code.
 

@@ -13,7 +13,8 @@ output.
 
 ## Dependencies
 - `i-have-adhd`
-- `pre-production`
+- `change-scope`
+- `writing-conventions`
 - `session-ledger`
 - `share-media`
 
@@ -74,7 +75,7 @@ output.
   instead of asking the reader to reproduce it, in its first line, its numbered steps and its
   closing action alike, over any `i-have-adhd` example that hands the reader such a step. The
   reader gets such steps only when they asked how to do something themselves.
-- **An issue the work met is fixed and named once as fixed**, as `pre-production`'s **Encountered
+- **An issue the work met is fixed and named once as fixed**, as `change-scope`'s **Encountered
   Issues** says, never offered as a follow-up: "Also fixed on the way: the stale dependency the
   build pulled in", never "there is also a stale dependency. Want me to handle that next?".
 - **Report work that is happening or affects the requested outcome.** A status such as “pending”
@@ -125,7 +126,7 @@ output.
   some condition states that behavior and where it applies, such as "photo galleries now become
   carousels past six photos on every page", never folds it into the fix it arrived with, so the
   reader can tell a new layout, control or flow from a repair.
-- Replies follow `pre-production`'s **Language** and **Examples And Paths**: American
+- Replies follow `writing-conventions`' **Language** and **Examples And Paths**: American
   English, and no value the user gave as an example reproduced.
 - A capture or file a reply relies on is read whole and shown as `share-media` says.
 

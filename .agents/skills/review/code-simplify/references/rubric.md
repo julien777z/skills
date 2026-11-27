@@ -19,7 +19,7 @@ Changed Flows**, **Remedies**, **Guidance Prose**.
   commit, another slice or a file it moved, copied or recreated at a new path alike. Check a
   finding's place against the pull request's file list, never the reviewed delta or a move's label.
 - **Outside the change:** a bug it meets is always fixed, where
-  `pre-production`'s **Scope Follows The Defect, Not The Request** places it. Non-bug cleanup outside
+  `change-scope`'s **Scope Follows The Defect, Not The Request** places it. Non-bug cleanup outside
   the change follows that skill's size budget for admission, placement and deferral.
 - **Contracts.** Preserve what a consumer outside the user's control observes: public routes and
   their shapes, durable identifiers, persisted and wire formats. A contract whose every consumer the
@@ -161,7 +161,7 @@ verdict, before deciding. Each field asks only for the facts the change has:
 10. **Configuration is required unless it has a safe default or its owner documents an absence.** A
    settings field, environment variable, secret, config key or workflow input the change adds or
    reads as optional, with a default that is not safe or a branch that skips or weakens its work
-   when it is unset, is a `should` finding under `pre-production`'s **Configuration** convention: a
+   when it is unset, is a `should` finding under `writing-conventions`' **Configuration** convention: a
    deployment that misses it runs without what it provides. Local runs or tests lacking the value
    are not such a documented absence. The remedy makes it required and deletes the absence branch.
 

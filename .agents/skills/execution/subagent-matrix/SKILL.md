@@ -10,8 +10,8 @@ A skill that delegates declares this one in its dependencies; a missing declarat
 bypass it.
 
 ## Dependencies
+- `change-scope`
 
-- `pre-production`
 - `session-ledger`
 - `share-media`
 

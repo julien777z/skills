@@ -20,7 +20,7 @@ Gate** says.
 
 - The branch consumes the dependency's pull-request branch, or its default branch once merged, in
   the manifest, the lockfile and any workflow checkout, a maintained branch being a reference
-  `pre-production`'s **Versions** permits while developing, or builds on a same-repository
+  `writing-conventions`' **Versions** permits while developing, or builds on a same-repository
   sibling's branch, and pushes.
 - Every build, test and walkthrough runs against that checked-in reference, never a local copy the
   manifest does not name.
@@ -34,7 +34,7 @@ Gate** says.
 ## Each Repository Speaks Only Its Own Vocabulary
 
 What goes inside a change keeps to its own repository's words in every repository the run
-touches. Apply `pre-production`'s **Whose Standards Apply** and `banned-terminology`'s **Naming**.
+touches. Apply `writing-conventions`' **Whose Standards Apply** and `banned-terminology`'s **Naming**.
 
 Where this run touched more than one repository, sweep for borrowed words before delivering:
 search each repository for the distinctive nouns of the others it was worked on beside, and read

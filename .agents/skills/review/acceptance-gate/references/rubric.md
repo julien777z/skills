@@ -20,7 +20,7 @@ Ground intent in the user's accepted requirements, the change's history, and the
 The statement names:
 
 - the user's request in their own words, quoted, with each example value it holds named by its kind
-  in brackets as `pre-production`'s **Examples And Paths** says, and with every later word of theirs
+  in brackets as `writing-conventions`' **Examples And Paths** says, and with every later word of theirs
   that widened or narrowed it. Those words bound the change's scope: a restatement in the agent's
   words, a plan step it wrote or a brief never widens it, and a remedy whose product effect — what a feature does or
   shows, or a visible change on surfaces the user did not name — reaches past them is flagged as a
@@ -235,13 +235,13 @@ The criteria are `security-audit`'s `references/rubric.md`, and they cut in both
   path; a layer that covers some paths, such as one kind of handler, leaves a finding on the rest.
 - **When it arrived does not matter.** An exploitable finding on a surface the diff touches or
   reads, whether the change introduced it, inherited it or sits beside it, is a flag whose remedy
-  goes where `pre-production`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places it. "Not new in this round" never demotes it to a note.
+  goes where `change-scope`'s **Scope Follows The Defect, Not The Request** bullet on a noticed defect places it. "Not new in this round" never demotes it to a note.
 - **Severity is likelihood and impact together, and it orders the flags.** A targeted exploit with
   real consequence, a state change an attacker can force, a disclosure of secrets or credentials, a
   business-logic bypass whose blast radius is real: each is a flag of medium severity or above. A
   finding that defeats an explicit security boundary — an action the system gates behind a role,
   performed without it — is a flag with the boundary named. An exploitable finding below medium is
-  still a flag, and its fix goes where `pre-production`'s noticed-defect bullet places it, ordered by severity; only the
+  still a flag, and its fix goes where `change-scope`'s noticed-defect bullet places it, ordered by severity; only the
   defense-in-depth gap the bullet above defines is a hardening note. If the concrete damage cannot
   be described, the severity is lower than it looks.
 - **The remedy is found in `security-audit`'s order, not written for the sink.** A guarantee the code
@@ -269,7 +269,7 @@ run an audit of any kind later never stands in for it.
 ## The Tests Behind Each Question
 
 **An example the user gave is never reproduced.** On every question, each hit in the intent
-statement's example search outside the uses `pre-production`'s **Examples And Paths** permits
+statement's example search outside the uses `writing-conventions`' **Examples And Paths** permits
 is a flag, and so is any literal in the searched places that looks lifted from real data rather than
 invented. The remedy is an invented value keeping only the trait the case turns on. A missing
 example search, or a bracketed kind in the quoted request the search does not list, holds a clean
@@ -294,18 +294,18 @@ the evidence. Preserve the required configuration contract without exposing secr
 the answer is one of four dispositions, decided by the tests below in order. The first that holds
 ends the question.
 
-1. **fix** — the item is a confirmed defect, as `pre-production`'s **Scope Follows The Defect, Not
+1. **fix** — the item is a confirmed defect, as `change-scope`'s **Scope Follows The Defect, Not
    The Request** defines one. Measured evidence from a
    live run — a rate, a duration, a memory trail, a kill — is evidence of a defect the way a
    confirmed review finding is: the gate takes it as given and never re-derives the defect from the
    tree, because a tree read alone cannot see a rate. A defect is fixed whatever shape its fix takes, whether the
    change introduced it, the task asked for it, or the work only ran into it. Use the placement
-   that `pre-production`'s **Scope Follows The Defect, Not The Request** requires. A migration is how a fix is written, never a reason to record it instead. A check that
+   that `change-scope`'s **Scope Follows The Defect, Not The Request** requires. A migration is how a fix is written, never a reason to record it instead. A check that
    would rediscover the defect does not soften this: rediscovery excuses the record, never the fix.
    Product state never softens it either: broken is broken for one admin as for a thousand users.
    A missing safeguard that definition leaves out goes on to the tests below, its exploitability
    judged under **Exploitable Findings**. A suspected defect whose confirmation the caller can
-   reach with its own tools is fix as well, as `pre-production`'s noticed-defect bullet says: investigated in the change and fixed if it confirms, never defer; one that does not confirm is closed with what the investigation showed.
+   reach with its own tools is fix as well, as `change-scope`'s noticed-defect bullet says: investigated in the change and fixed if it confirms, never defer; one that does not confirm is closed with what the investigation showed.
 2. **close** — the item is real but not worth doing. Either the product state leaves it protecting or
    serving nobody — an access control between the one admin and the data only that admin can see, a
    hardening against users the product does not have, neither of which retires a finding an attacker
@@ -331,7 +331,7 @@ ends the question.
    That the code under change is deployed or running somewhere, a backfill in flight on live data
    included, is the order the fix rolls out in, stated in the pull request; it is never a blocker.
    The gate never routes work to a decision on its own: where a fix's remedy is a product choice
-   `pre-production`'s **Product Choices** reserves to the user, the fork is put to the user now, before that remedy is built,
+   `change-scope`'s **Product Choices** reserves to the user, the fork is put to the user now, before that remedy is built,
    never filed as theirs unasked; a trade-off inside a choice the user's words already settled takes
    the cleanest fix and states it in the pull request. A defer also requires that the record's
    resolution criteria describe an end state and name the intent a fix has to preserve, never a
@@ -342,7 +342,7 @@ ends the question.
    requirement owes is the user's decision whatever its size: triage returns defer on that ground
    alone, naming the fork — the shape, every instance it would convert, the size of that change and
    the recommendation — which the caller puts to the user now; it is built only at the scope the
-   user approves, never returned as do. Incidental cleanup past `pre-production`'s size budget is
+   user approves, never returned as do. Incidental cleanup past `change-scope`'s size budget is
    defer without the arguability test only where that budget reserves a record for it. Cleanup the
    active budget admits, in this change or placed in another repository, is do, whatever its file
    count, as the budget in force for the scope the intent statement records says. A finding
@@ -357,7 +357,7 @@ ends the question.
    and the diff can. A defer names which of the grounds above holds and the evidence for it; any
    other ground is a refusal.
 4. **do** — none of the above: the item is worth doing and its cleanest fix is within reach, so it is
-   done where `pre-production`'s **Scope Follows The Defect, Not The Request** places the work.
+   done where `change-scope`'s **Scope Follows The Defect, Not The Request** places the work.
 
 **Admission — may this work be deferred?** The triage question asked of a proposed record. The
 answer is accept when triage's disposition is defer, and otherwise a refusal naming the disposition
@@ -385,7 +385,7 @@ in the removed shape?
 **A test is priced by what it costs to run.** Flag a test the diff adds or changes, or the module
 holding it, that `test-fixture`'s cost question calls disproportionate, and any change that absorbs
 a slow test in a way `test-fixture`'s **Test Cost** lists; the remedy is making it cheap or removing it, as that
-rubric and `pre-production` decide. For existing-reporting evidence, missing
+rubric and `change-scope` decide. For existing-reporting evidence, missing
 available evidence holds a clean verdict; attribution the native route cannot provide is recorded
 unmeasured and does not hold an otherwise validated repair.
 

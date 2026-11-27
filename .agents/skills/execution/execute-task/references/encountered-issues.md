@@ -5,11 +5,11 @@ How `SKILL.md`'s **Encountered Issues** handles what the work runs into.
 ## Disposition
 
 - **A finding against the task's changed design, and every defect the work runs into, is fixed**:
-  apply `pre-production`'s **Scope Follows The Defect, Not The Request** for placement. Use its
+  apply `change-scope`'s **Scope Follows The Defect, Not The Request** for placement. Use its
   size budget and `defer-scope` for cleanup. The fix takes a shape the standing
   guidance allows, as the next bullet says, and offering it to the user is not a disposition: "Want this handled, or shall I leave it?" spends a turn to obtain
   permission the guidance already settled. The question that is genuinely the user's is a product
-  choice, as `pre-production`'s **Product Choices** defines one, never whether an encountered issue
+  choice, as `change-scope`'s **Product Choices** defines one, never whether an encountered issue
   gets fixed.
 - **An instruction one agent passes another — a brief, a correction, a review finding, a gate's fix
   step, a note or summary an earlier turn left for a later one — is checked against the standing
@@ -56,15 +56,15 @@ How `SKILL.md`'s **Encountered Issues** handles what the work runs into.
   it ran, a check it read, a review it received, and anything it looked at — a screenshot or
   recording, its own or a worker's, a walk through the product, a log, a report. A defect seen there
   is found exactly as a failing test is. How far the fix then reaches is a different question, and
-  `pre-production`'s **Scope Follows The Defect, Not The Request** answers it.
+  `change-scope`'s **Scope Follows The Defect, Not The Request** answers it.
 - Never reject a fix solely because it is described as high risk. Assess its expected net effect,
   concrete failure modes, and available validation instead of treating the label as a stop rule.
-- Apply `pre-production`'s scope decision before treating a review observation as mandatory work.
+- Apply `change-scope`'s scope decision before treating a review observation as mandatory work.
   A review naming a non-defect improvement does not turn independent cleanup into a defect or
   authorize recursive expansion; it is done or placed as the size budget says, and recorded with
   `defer-scope` only on a ground that budget reserves a record for.
 - Delete the dead code the change itself leaves, and other confirmed dead code it meets within
-  `pre-production`'s size budget. Confirm that no live application or library consumer, public
+  `change-scope`'s size budget. Confirm that no live application or library consumer, public
   export, or external contract still depends on it, judged where the change will land as
   `code-simplify`'s rubric says; remove tests that exist only to exercise the dead code; and
   validate the affected behavior.

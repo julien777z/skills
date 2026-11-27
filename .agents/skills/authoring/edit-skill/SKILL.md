@@ -54,7 +54,7 @@ change and a product choice, which reach the user as above, a guidance change re
 only when the agent is unsure whether it does what they meant**, asked through the question tool;
 otherwise its gates run and it merges. A hold the invoking workflow or a rule sets, such as the
 GitHub rule's hold on a pull request that adds a doctor skill, still applies. A guidance edit that
-intentionally changes the product still follows `pre-production`'s **Product Choices**. The gate
+intentionally changes the product still follows `change-scope`'s **Product Choices**. The gate
 set of the edit's route validates the correction.
 When a separate source task is active, or a guidance batch is in flight, preserve its execution and
 follow **Recording During A Task** for the edit's timing.
@@ -63,7 +63,8 @@ follow **Recording During A Task** for the edit's timing.
 - `skill-pass`
 - `code-simplify`
 - `acceptance-gate`
-- `pre-production`
+- `change-scope`
+- `writing-conventions`
 - `test-skill`
 - `subagent-matrix`
 - `review-pass`
@@ -86,7 +87,7 @@ recording or delivering a batch.
   the current work, and the guidance edit is its record. While a guidance batch is in flight, its
   delivery is that action and the user's words are its evidence.
 - Record the correction as a `guidance_correction` entry with `session-ledger`: the user's words, if
-  any, quoted as `pre-production`'s **Examples And Paths** says, the evidence of the gap, and for a
+  any, quoted as `writing-conventions`' **Examples And Paths** says, the evidence of the gap, and for a
   process its verified run, a reproduction scenario, the Scope Statement **Identify the failure class** writes,
   whose From now on line is the entry's intended behavior, the canonical files it will change, and
   `pending` as its `status`. **Validate input** through **Resolve which repository owns the target** run at once, while the evidence
@@ -275,7 +276,7 @@ small it looks.** Each route below is the gate set its batch passes on the head 
      the nearest case outside the class behaves as before. The edit covers the class the user
      plainly meant, no narrower and no broader. It costs no subagent and holds nothing.
      - What the statement lists inside that class is written at once, with no question; product
-       choices still follow `pre-production`'s **Product Choices**.
+       choices still follow `change-scope`'s **Product Choices**.
      - **Beyond what the user asked is a policy change**: a requirement neither the request nor its
        failure needs, such as a step, a routing rule or a hold the request never named; any
        exception to, or change of, standing guidance the user did not ask to change, however

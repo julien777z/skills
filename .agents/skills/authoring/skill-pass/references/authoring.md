@@ -152,7 +152,7 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   offers, stays that harness's, confined to a scoped compatibility section or a file only that
   harness loads. Verify each path in every harness that loads the guidance or that the change sets
   up, such as running a hook against each harness's payload. A harness left unserved is a defect,
-  fixed now where `pre-production`'s **Scope Follows The Defect, Not The Request** places it,
+  fixed now where `change-scope`'s **Scope Follows The Defect, Not The Request** places it,
   never as new behavior.
 - Keep reusable skill names, instructions, scripts, and interfaces model-agnostic. Name a client or
   model only in a scoped compatibility section where its behavior genuinely differs. A skill states
@@ -315,7 +315,7 @@ restriction. Gate a single user-only workflow inside an otherwise usable skill i
 ### Decisions
 
 - **A skill sends a decision to the user only when it is the user's**: a product, scope, security, disclosure or authorization choice, as
-  `pre-production`'s **Product Choices** defines one, or a step only the user can take. Every other contested
+  `change-scope`'s **Product Choices** defines one, or a step only the user can take. Every other contested
   call a workflow's own checks cannot settle — a disputed finding, a flag that survives its
   repairs, a stuck review, the disposition of a change that keeps failing — goes to `council` in
   **Ask** mode, and its ruling, by majority unless the skill sets a stricter threshold, is followed and named in the skill's result. A skill whose

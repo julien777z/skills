@@ -18,7 +18,8 @@ skill never readies, merges or deploys.
 - `security-audit`
 - `defer-scope`
 - `session-ledger`
-- `pre-production`
+- `change-scope`
+- `writing-conventions`
 - `council`
 - `subagent-matrix`
 - `skill-pass`
@@ -55,7 +56,7 @@ skill never readies, merges or deploys.
   runs `code-simplify` once over the pull request's whole diff, in process or by slice as **Local
   Passes** says; a fix that pass pushes is watched to the same end, and the watch then stops. The
   report names each exclusion, leaving out baseline failures and non-essential checks left red as
-  `pre-production`'s **Encountered Issues** says, and each thread waiting on the user. A draft runs no test jobs, so
+  `change-scope`'s **Encountered Issues** says, and each thread waiting on the user. A draft runs no test jobs, so
   its watch reports `draft: watch ended, tests not run`; this mode never readies or merges a pull
   request.
 - **Combined** (the invocation names more than one open pull request, each with its accepted head
@@ -77,7 +78,7 @@ skill never readies, merges or deploys.
   refresh and review threads do not apply, and fixes are committed in the task's own checkout
   without pushing, the exception the GitHub rule's **Pre-Push Gate** makes for a review the user
   asked for without a push.
-- **A repository the owner does not own**, as `pre-production`'s **Whose Standards Apply** defines it:
+- **A repository the owner does not own**, as `writing-conventions`' **Whose Standards Apply** defines it:
   the pass fixes the request's own issues and the defects it finds, wherever they sit. **Local
   Passes** do not run, the reviewer brief's rules are that repository's own guidance, the final
   acceptance brief names the repository as someone else's, and a finding that rests only on a
@@ -119,7 +120,7 @@ Each pass reviews only what no earlier pass reviewed.
 
 Read the title and description against the current head first, and rewrite either one that no
 longer describes the branch: a feature named that was taken back out, a shape the change replaced,
-a contract the diff no longer breaks. Rewrite as `pre-production`'s **Repository Text** says and under the GitHub rule's independent
+a contract the diff no longer breaks. Rewrite as `writing-conventions`' **Repository Text** says and under the GitHub rule's independent
 publishing context, never from a body a tool truncated. Refresh once more before final acceptance,
 because the pass's own fixes change what the branch does. Name the fixes review surfaced rather
 than the task required, so a reader sees why the diff is wider than the title.
@@ -219,7 +220,7 @@ These run in the order below, in process unless a pass says otherwise.
 
 - **Python rules:** for the delta's changed Python files, run `acceptance-gate`'s
   `scripts/python_rule_findings.py` over them; each finding it lists gets its fix, and each
-  paragraph candidate `pre-production`'s **Code Layout** makes a boundary gets its blank line.
+  paragraph candidate `writing-conventions`' **Code Layout** makes a boundary gets its blank line.
   Read the comments added by the delta even when the script finds nothing. For each, identify the
   external constraint it explains or refactor the owned code so its intent is visible. For owned
   behavior described in a comment, point to an assertion on the observed result that fails when
@@ -279,7 +280,7 @@ changed. Make the smallest changes that answer real findings, and push back on t
     the loop;
   - nit: fix it when it is a one-line change in a line the change already touches, otherwise decline
     it in one line;
-  - outside the change: fix every bug as `pre-production`'s **Scope Follows The Defect, Not The Request**
+  - outside the change: fix every bug as `change-scope`'s **Scope Follows The Defect, Not The Request**
     requires. Use its size budget and `defer-scope` for cleanup.
 - **Next round** only while budget remains and a blocker or should is open, or code or guidance
   behavior changed since the last approval. Run the checks covering the fix and `git diff --shortstat <base>` first; if

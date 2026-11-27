@@ -14,6 +14,8 @@ it whole before the pass.
 ## Dependencies
 - `list-prs`
 - `pre-production`
+- `change-scope`
+- `writing-conventions`
 - `subagent-matrix`
 - `test-fixture`
 
@@ -71,7 +73,7 @@ proposed mechanism.
   decision.
 - Fix a `nit` only when it is a one-line change in a line the change already touches; otherwise
   list it as declined.
-- Outside the change, as the rubric's **Scope** says, fix every bug under `pre-production`'s
+- Outside the change, as the rubric's **Scope** says, fix every bug under `change-scope`'s
   **Scope Follows The Defect, Not The Request**. Apply its size budget to cleanup and return to the
   caller only what that budget reserves a record for.
 - Check each remedy against the language and layout rules for its file before applying it.

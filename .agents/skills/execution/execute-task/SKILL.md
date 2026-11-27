@@ -14,6 +14,8 @@ agent-configuration pull request.
 ## Dependencies
 - `review-proposal`
 - `pre-production`
+- `change-scope`
+- `writing-conventions`
 - `banned-terminology`
 - `run-site`
 - `code-simplify`
@@ -93,7 +95,7 @@ plan of its own; only an edit that adds nothing skips it.
 
 ### What The Plan Holds
 
-- For a bug, establish the intended behavior and apply `pre-production`'s **Trade-Offs Are
+- For a bug, establish the intended behavior and apply `change-scope`'s **Trade-Offs Are
   Surfaced, Never Enforced** before choosing the remedy or presenting an alternative. Use the
   same check when a worker, reviewer, or failed approach changes the proposed remedy.
 - Select verification before recommending it, putting it in a plan, or delegating it. Read
@@ -249,7 +251,7 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
   lives. A step the agent adds, or widens past what the user asked, is recorded as agent-originated,
   proceeds under the task's authorization like the work **When A Plan Is Needed** says a plan in
   execution covers, and is never shown as user-approved; one that is a product choice goes to the user
-  before it is built, as `pre-production`'s **Product Choices** says. Update it when the state
+  before it is built, as `change-scope`'s **Product Choices** says. Update it when the state
   changes, not when a report is due: the plan being shown, a step starting, finishing, blocking or being
   skipped, a follow-up's plan.
 - **A step that waits on other work records what it waits for**: the gate, merge or result whose
@@ -307,8 +309,9 @@ after its gating check has been read, outside the command, chain or batch that r
 
 ### Product Constraints
 
-`pre-production` is active in every change task: read it whole and invoke it before the first
-edit. Read the product state from project guidance before changing a contract or stored value.
+`pre-production`, `change-scope` and `writing-conventions` are active in every change task: read
+each whole and invoke it before the first edit. Read the product state from project guidance
+before changing a contract or stored value.
 
 Before drafting a plan or selecting targets, as **Plan** says, and again before recommending an
 implementation, asking a question that presupposes one, or delegating its edits, apply [product
@@ -323,15 +326,13 @@ Before an edit that crosses a trust boundary `security-audit` names, invoke it a
 
 ### Encountered Issues
 
-Apply `pre-production`'s encountered-issues policy while making the change, handled as
-[encountered issues](references/encountered-issues.md) says:
-
-- Its **Disposition** says what is fixed in the change in flight and what is recorded with
-  `defer-scope`, how an instruction one agent passes another is checked against the standing
-  guidance before it is sent and before it is acted on, and when a correction is asked about.
-  Offering a fix to the user is not a disposition.
-- Its **CI Gates And Deliberate Breaks** says how a required check that exists to detect deliberate
-  changes, going red on an intentional break, is reported and never suppressed or designed around.
+Apply `change-scope`'s **Encountered Issues** while making the change, as [encountered
+issues](references/encountered-issues.md) says: its **Disposition** says what is fixed in the change
+in flight and what is recorded with `defer-scope`, how an instruction one agent passes another is
+checked against the standing guidance before it is sent and before it is acted on, and when a
+correction is asked about, offering a fix to the user being no disposition; its **CI Gates And
+Deliberate Breaks** says how a required check that detects deliberate changes, red on an
+intentional break, is reported and never suppressed or designed around.
 
 ### Ongoing Simplification
 
@@ -370,7 +371,7 @@ required check or the host prevents delivery, keep the push and pull request as 
 
 **A pull request's title and description are brought up to date at every milestone, not at every
 push.** A milestone is a finished plan step or worker task whose checks pass, and a guidance correction pushed onto the pull request carrying it. After it, add
-what the milestone changed and rewrite whatever no longer holds, as `pre-production`'s **Repository
+what the milestone changed and rewrite whatever no longer holds, as `writing-conventions`' **Repository
 Text** says, before the milestone is reported. A push inside a step, such as a repair or a rebase,
 leaves the description for that step's milestone. `review-pass`'s **Description Refresh** still
 checks it before review.
@@ -387,10 +388,8 @@ than one repository, run its sweep for borrowed names before delivering.
 
 When the user asks to resume the task itself — its execution or implementation, not a question
 about the change — follow `stop-gates`' **Asking While Paused** before continuing at the saved
-step.
-
-Until then the hold suspends **Work You Have Already Named**: named work stays recorded with its
-next step and is not resumed.
+step. Until then the hold suspends **Work You Have Already Named**: named work stays recorded with
+its next step and is not resumed.
 
 ### Work You Have Already Named
 

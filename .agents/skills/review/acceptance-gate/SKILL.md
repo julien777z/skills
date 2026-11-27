@@ -21,6 +21,8 @@ calling workflow states how its repairs are judged.
 - `code-simplify`
 - `security-audit`
 - `pre-production`
+- `change-scope`
+- `writing-conventions`
 - `test-fixture`
 - `run-site`
 - `council`
@@ -123,18 +125,18 @@ after them say:
 4. the affected-repository map required by `code-simplify`'s **Trace Changed Flows**. For each
    changed file group, resolve its project guidance, scoped repository rules and installed shared
    rules by path. Supply the complete text and scope of each source inline or in a named file. In a
-   repository the owner does not own, as `pre-production`'s **Whose Standards Apply** defines it, the
+   repository the owner does not own, as `writing-conventions`' **Whose Standards Apply** defines it, the
    brief says so: the gate judges the change against the request, its defects and that repository's
    own guidance and conventions, and a shared rule's standard is no flag there.
    **The pre-gate check runs before every gate.** When the Python rules apply, the caller runs
    `scripts/python_rule_findings.py` with the project's Python interpreter on the in-scope Python
-   files before dispatch, fixes each finding, and each paragraph candidate `pre-production`'s **Code
+   files before dispatch, fixes each finding, and each paragraph candidate `writing-conventions`' **Code
    Layout** makes a boundary, in the lines the change writes or edits, then runs it again. Supply the
    file list and every finding that run prints, including an explicit empty result. The reader
    verifies each reported shape against the source and rule;
 5. exactly one question from the list below.
 
-**The gate judges with its dependencies' criteria.** Apply `pre-production` to the scope decision,
+**The gate judges with its dependencies' criteria.** Apply `change-scope` to the scope decision,
 `test-fixture` to test costs and existing reporting evidence, and `run-site`'s **Scenarios** to
 changes that add or alter product states. Apply `security-audit`'s review in process, as an
 invocation that cannot launch agents, with no delegated agents; take its exploitable findings into
@@ -222,13 +224,13 @@ consumer accepts and how it excludes each obsolete representation. Flag missing 
 Distinct meanings carried by the canonical representation still receive the ordinary guard checks.
 A verdict with no added guard says `no guard added` in those words.
 
-**Then it lists every product choice the diff makes**, as `pre-production`'s **Product Choices** defines one — a change to
+**Then it lists every product choice the diff makes**, as `change-scope`'s **Product Choices** defines one — a change to
 what a feature does or shows, a remedy whose visible effect is large, such as a layout, control or
 flow changing across many pages, a change carried past the surface the user named — each with the
 user's words in the intent statement that settle it. Small presentation decisions on the surface in
 hand are not listed; neither is a game's design, which the global rules' game-design bullet makes
 the agent's decision and never a question for the user, a new control or room included; nor is local
-test tooling or the records it seeds, which `pre-production`'s **Local Stacks** leaves to the
+test tooling or the records it seeds, which `run-site`'s **Local Stacks** leaves to the
 agent. A product choice with no such words is a flag whose remedy is putting the choice to the
 user before the code stands, whatever the change calls itself, a fix included. An earlier
 acceptance, a plan record without the user's words, or a brief calling the choice decided is not
@@ -407,7 +409,7 @@ including when its simplest compliant repair still requires substantial irreduci
 mechanisms its gain cannot carry. A confirmed defect remains owed under the fix test. A hypothetical
 safeguard or compatibility concern is judged against the target repository's product state and
 contract, not promoted to a defect merely because a reviewer flagged it. Deprecated usage and a
-warning a run prints are never hypothetical: they are defects under `pre-production`, and the gate
+warning a run prints are never hypothetical: they are defects under `change-scope`, and the gate
 flags each one it meets in the diff or in the verification output the caller supplies.
 
 Escalate only a genuine unresolved product, scope, security, disclosure or authorization choice, stating the concrete

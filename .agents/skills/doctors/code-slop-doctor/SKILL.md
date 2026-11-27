@@ -13,6 +13,8 @@ does nothing or makes a reader wince, and takes it out.
 ## Dependencies
 - `doctor-protocol`
 - `pre-production`
+- `change-scope`
+- `writing-conventions`
 - `code-simplify`
 - `test-fixture`
 - `banned-terminology`
