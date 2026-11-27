@@ -22,8 +22,10 @@ cannot load the file, use a local URL served to that browser or report the previ
 
 For visits, forms, screenshots, testing, sign-in and other browser work, select in this order:
 
-- Honor an explicitly requested browser. For a task needing the user's account session, use the
-  harness to connect to the user's existing browser and relevant profile.
+- Honor an explicitly requested browser. If it lacks the required account session, use its supported
+  sign-in route or report that browser step blocked; do not silently switch browsers.
+- For a task needing the user's account session, use the harness to connect to the user's existing
+  browser and relevant profile.
 - Otherwise, for local development and verification, use an isolated `agent-browser` session or an
   isolated browser supplied by the harness. Create a task-owned session without inherited browser
   attachment, profile or saved-state settings. Do not attach to the user's existing browser or
