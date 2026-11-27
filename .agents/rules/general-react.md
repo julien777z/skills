@@ -60,9 +60,9 @@ function Card({ title, action, footer, children, variant = "default" }: CardProp
   its parts, the fix names the one component that replaces it and lists each slot prop it takes.
 - **An optional behavior and the inputs it needs are one prop.** When the behavior needs its own
   inputs, supplying them through one named prop enables it. A caller can omit that prop for the
-  default behavior. Group the inputs used only by that behavior in its value. Give every other
-  content prop the same role whether the behavior is enabled or disabled. Keep independent slots
-  separate, and use a boolean when the behavior needs no other input.
+  default behavior. Group the inputs used only by that behavior in its value. Render independent
+  content props in their usual slots whether the behavior is enabled or disabled. Use a boolean
+  when the behavior needs no other input.
 - **Layout and type come from primitives, never from class strings.** A feature component arranges
   its content with the shared layout and text primitives — a row, a column, a grid, a box, a text, a
   heading — through their variants (`<Flex gap="sm" justify="between">`, `<Type size="sm"
