@@ -42,8 +42,7 @@ recreated is inside it. List problems you see outside it separately, with the fi
 Reply:
 VERDICT: APPROVE or CHANGES
 Guidance intent evidence: <controlling requirement and decisive path and evidence, if applicable>
-Reuse search: <per addition: terms searched · candidates found, each with its path · reuse, extend or new stands | finding id>
-File placement: <per added file: candidate paths read · chosen owner or reason to separate | finding id>
+Reuse search: <per addition: terms searched · candidate paths read · reuse, extend or new stands | finding id. For added files, give the chosen owner or reason to separate.>
 S1 [blocker|should|nit] <file>:<line> <claim>. Fix: <suggestion>
 O1 [outside] <files> <claim>
 ```
