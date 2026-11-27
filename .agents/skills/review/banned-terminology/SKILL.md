@@ -18,8 +18,7 @@ Rename banned terms elsewhere in touched files within `pre-production`'s size bu
 
 ## Naming
 
-Read [Naming](references/naming.md) before choosing, accepting or changing a name. Use a clearer
-term when the name is vague. Apply the list procedure only when the user changes the list.
+Read [Naming](references/naming.md) before choosing, accepting or changing a name.
 
 ## Dependencies
 - `pre-production`
