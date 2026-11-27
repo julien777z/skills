@@ -287,13 +287,12 @@ question and never a level of its own:
 - **Admission — may this work be deferred?** The triage question asked of a proposed record.
 - **Proposal — should this be written?**
 - **Diff — should this stand?** A finished plan step or worker task that later steps build on, a
-  correction after base incorporation, or the repairs of and answers to a verdict's flags, read with the
-  whole branch diff as its originating diff. For repairs, the gate judges only the repair's changed
-  lines and the flags they answer, consulting the rest of the branch diff for what those lines touch
-  and never raising a flag on a defect the repair did not cause, apart from an exploitable
-  vulnerability, which the rubric's **Exploitable Findings** keeps open on any surface the diff
-  touches; one it causes elsewhere is anchored on the repair's line. The whole change is judged
-  once, by final acceptance.
+  correction after base incorporation, or the repairs of and answers to a verdict's flags, read with
+  the whole branch diff as its originating diff. For repairs, the gate judges only the repair's
+  changed lines and the flags they answer, consulting the rest of the branch diff for what those
+  lines touch and never raising a flag on a defect the repair did not cause, apart from an
+  exploitable vulnerability, which the rubric's **Exploitable Findings** keeps open; one it causes
+  elsewhere is anchored on the repair's line. The whole change is judged once, by final acceptance.
 - **Base incorporation — what did the base bring in that the change must refactor?** The procedure
   below.
 - **Final acceptance — may this merge?** The complete pull-request diff, read once after review is
