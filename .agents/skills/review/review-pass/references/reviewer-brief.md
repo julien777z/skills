@@ -31,6 +31,9 @@ only the likely overlapping files and the callers needed to confirm the overlap.
 ownership violation with the paths and the responsibility they share. Similar names alone are
 insufficient evidence. Leave unrelated siblings unread and classify findings already present
 outside the change as outside the diff. Report the folders scanned and the candidate files opened.
+For a skill or rule listed under Whole, read the package in full and count a misplacement in a file
+whose instructions the change adds to or alters as inside the change, as skill-pass's Placement
+step makes it.
 Apply the simplification rubric's severity to a violated requirement.
 Flag a setting, env var, secret, config key or workflow input left optional or given an unsafe default, or
 code that skips or weakens its work when one is unset, unless its owner documents that absence
