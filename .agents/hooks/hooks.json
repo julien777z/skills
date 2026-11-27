@@ -1,5 +1,5 @@
 {
-  "description": "Load the i-have-adhd and user-facing-output skills at session start, tell a running session on its next prompt when the installed guidance changed, and check at turn end that every task ledger entry owing a backup comment has one.",
+  "description": "Load the i-have-adhd and user-facing-output skills at session start, tell a running session on its next prompt when the installed guidance changed, keeping that record no longer than the session's transcript, and check at turn end that every task ledger entry owing a backup comment has one.",
   "hooks": {
     "SessionStart": [
       {
@@ -48,6 +48,17 @@
             "type": "command",
             "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/guidance-changes/main.py\"",
             "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/guidance-changes/main.py\"",
+            "timeout": 3
           }
         ]
       }
