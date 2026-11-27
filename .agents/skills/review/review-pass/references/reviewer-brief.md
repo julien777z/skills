@@ -21,8 +21,8 @@ its key operation, whether or not a receipt is supplied. A receipt is checked ag
 never its starting point. Flag (a) a duplicate of an existing owner; (b) new code where an existing
 owner needed one more condition or parameter; (c) a parameter, option, prop, flag or branch added
 for a condition no caller produces, or that every caller sets the same way.
-For each added file, read its closest candidate owners and check its placement receipt against
-code-simplify's **Reuse And Removal**, including a broader rename. Report the paths read and the
+Read the code-simplify rubric for additions. For each added file, read its closest candidate
+owners and check placement under **Reuse And Removal**, including a broader rename. Report the paths read and the
 responsibility or boundary that decides placement. Apply code-simplify's **No forwarding layers**
 to added callables, including fixed values wrapped to fit an owned interface. Missing placement
 evidence holds approval. Apply the simplification rubric's severity to a violated requirement.

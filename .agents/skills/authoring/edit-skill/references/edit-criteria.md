@@ -21,7 +21,8 @@ Reviewed Batches**, **Relocations**, **Resuming A Batch**.
 - Repair the decision at its owner. When its rule is already correct, fix the step that let the
   agent skip it or accept a result without the required evidence. Remove conflicting permissions,
   check other routes for the same failure, and replay the original decision under the repair.
-  When the owning skill was skipped, repair its description first so the run loads it.
+  Repair the description when discovery failed. When a caller or stopping clause skipped an
+  applicable skill or check, repair that path.
 - Test the proposed instruction against that original decision path before proposing or writing it. If a
   reader could follow it and still repeat the miss, explain the mismatch to the user, name the
   instruction that actually caused or allowed the decision, and correct that owning path and
