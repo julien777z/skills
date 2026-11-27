@@ -186,9 +186,9 @@ def check_number(value: object, path: str, maximum: float | None = None) -> None
 def check_chart(chart: dict[str, object], path: str) -> None:
     """Require a chart to hold some amount to draw, and a pie to hold no more parts than it has colors."""
 
-    items = cast(list[dict[str, float]], chart["items"])
+    items = cast(list[dict[str, object]], chart["items"])
 
-    if not any(item["value"] > 0 for item in items):
+    if not any(cast(float, item["value"]) > 0 for item in items):
         raise DashboardSpecError(f"{path}.items must hold a value above 0")
 
     if chart["kind"] == ChartKind.PIE and len(items) > MAX_PIE_ITEMS:

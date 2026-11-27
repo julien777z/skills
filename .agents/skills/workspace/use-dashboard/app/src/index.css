@@ -31,7 +31,7 @@
   --next: oklch(0.7 0.16 300);
   /* Series colors a chart gives values that carry no tone, in order: distinct hues, never a gray and never
      the purple of the `next` tone, spread around the hue circle in two lightnesses so neighboring
-     hues still part. The chart skips any whose hue sits near a tone the same chart uses. */
+     hues still part. */
   --series-1: oklch(0.8 0.14 235);
   --series-2: oklch(0.64 0.14 50);
   --series-3: oklch(0.8 0.14 170);
