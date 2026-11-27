@@ -119,8 +119,8 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   section's heading inside the skill chosen.** Before choosing a skill, rule, reference or section,
   state the condition its name and description set — a release stage, a technology, a mode, a kind of
   task — and ask whether the guidance would still be true where that condition does not hold. If
-  it would, that file is too narrow, however close its neighboring section: the guidance goes to
-  the file whose subject matches its own. Scope is judged by subject, never reach: guidance that
+  it would, that file, reference or section is too narrow, however close its neighbor: the
+  guidance goes to the one whose subject matches its own. Scope is judged by subject, never reach: guidance that
   holds in every repository still goes to the skill or rule owning its subject, as the first bullet
   places guidance about `.agents` content, and `.agents/global.md` takes only what the placement
   bullet above leaves it. Use existing mentions and dependencies to find readers. Assign
@@ -205,7 +205,8 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   route or reader skips it; a subject an existing reference's name already covers, by the
   name-bounds test above, goes there, a rename to a broader name that truly covers both is the
   other way in, and a new file is added only for a subject no name covers. A name joining two
-  subjects, such as `x-and-y`, signals two files' worth or a broader name not yet found. Whenever a pass covers a skill, judge its references as a set:
+  subjects, such as `x-and-y`, signals two files' worth or a broader name not yet found. Whenever a
+  pass covers a skill, judge its references as a set:
   - merge references on one subject, or always read together;
   - move into `SKILL.md` a short one every run follows, or one holding the main idea above, when
     the body has room under its budget;
