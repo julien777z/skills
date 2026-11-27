@@ -185,18 +185,16 @@ once the agent that made it has re-read the changed lines against the flag and r
 covering that code; that recorded check is the increment's **Pre-Push Gate** verdict, and it never
 closes the flag, which the review's next round or a fresh gate does.
 
-- **Required checks use CI’s commands and scope.** Read the workflow files that trigger on a pull
-  request and run every fast checking job that can run locally — lint, format, type checks, build,
-  generated-output drift, docs checks — with the job's own command, scope, mode, tool version and
-  configuration, plus any check a skill in use requires. Test suites of every kind, unit through
-  end-to-end, and coverage runs are not push checks: they run once, with each test job's own
-  command, scope, mode, tool version and configuration, when the task's changes are complete, as
-  the slow verification below. A variant scoped to the changed files, run in write mode, or left out
-  because the diff looks unrelated is not that check. Project guidance that lists the commands is a
-  shortcut to the workflows, which are right where the two disagree. An explicitly selected
-  workflow's declared check sequence and delivery constraints set when the batch runs and which
-  results stay valid; a job is left to its hosted run only for a hosted service or credentials the
-  session itself found absent, or runner behavior.
+- **Required checks use CI’s commands and scope.** Read the workflows that trigger on a pull request.
+  Apply `execute-task`'s **Suites And Failures** to select jobs for local execution. Run each
+  selected job with its own command, scope, mode, tool version and configuration, along with checks
+  the active skill requires. Fast checks run before a push. Test suites and coverage runs follow
+  the slow verification below. A variant scoped to the changed files or run in write mode is not
+  that check. Project guidance that lists the commands is a shortcut to the workflows, which are
+  right where the two disagree. An explicitly selected workflow's check sequence and delivery
+  constraints set when the batch runs and which results stay valid. For a job selected locally,
+  leave it to its hosted run only for a hosted service or credentials the session found absent,
+  or runner behavior.
 - **Commit each small coherent step and push it as soon as its checks pass**, at least every five
   minutes of work and before any long wait, never at the end of a unit or task. A delegated worker
   pushes to the pull request's branch at the same cadence. A push is what lets the user review and

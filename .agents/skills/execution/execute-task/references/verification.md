@@ -61,10 +61,10 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
   and review, never its test suites, once the feature is complete, then the required final checks
   before delivery, keeping evidence the change has not invalidated rather than restarting that
   verification for each push.
-- **Which jobs run here.** A test suite, a job that needs a hosted service or a running stack, or
-  one too slow to run before every push joins the slow verification at the end and is named in the
-  report. Room on this machine never leaves a job to its hosted run: a shortage of disk, memory or
-  ports is recovered as `pre-production`'s **Local Stacks** says, and the job runs here. **Suites
+- **Which jobs run here.** Select local jobs under **Suites And Failures**. A selected test suite,
+  a job that needs a service or running stack, or one too slow to run before every push joins
+  verification at the end and is named in the report. Recover local shortages of disk, memory or
+  ports as `pre-production`'s **Local Stacks** says and run the job locally. **Suites
   And Failures**' cannot-run bullet decides when a job may be left to its hosted run. A
   non-essential check left red on findings the change did not write, as `pre-production`'s
   essential-checks bullet classifies them, holds no push.
@@ -95,8 +95,9 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
   verification, a background worker, CI on the pushed head, or a question to the user, bring the
   work to a coherent step, commit it, and push it; the checks' own runs are part of the push, not
   such a wait.
-- **The slow verification** is every test suite and coverage run, unit through end-to-end, run
-  once the task's changes are complete, a browser walkthrough, a run against a
+- **The slow verification** is the test suites and coverage runs selected under **Suites And
+  Failures**, from unit through end-to-end, run once the task's changes are complete. It also
+  includes a browser walkthrough, a run against a
   service without the change, root-causing a failure seen along the way: anything slow or needing a
   running stack. What it finds goes out as fix pushes, each once its checks pass.
 - **A dependency still in review** is consumed as
@@ -118,10 +119,17 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
   Run through its test-runner skill at the required scope, preserving the runner's execution
   partitions rather than joining paths in one framework invocation. A single suite is for iterating
   on a failure you are actively fixing, never the run a change is verified against.
-- **Choosing which suites to run is not the author's call.** Do not skip a suite because it looks
-  unaffected, runs slowly, or needs services started — start them. If a suite genuinely cannot run,
-  name it and say why alongside the result, because a result reported without that caveat claims
-  coverage that was never achieved.
+- **Select local verification within the task's authorization.** Read what each job actually does,
+  including setup, fixtures and teardown, before reproducing it locally. A hosted workflow's access
+  does not authorize an agent to use live systems, real accounts or their data, or create external
+  effects locally. Check whether that access is needed to verify the requested outcome and already
+  authorized. For example, verify a tooling change that a live-provider job shares by exercising
+  the changed setup in isolation. Leave unrelated live checks out of local verification and its
+  missing-coverage report. If live behavior is necessary and its access is outside the task's
+  authorization, follow **Task Authorization** in `SKILL.md`.
+- **Run the suites selected within that boundary.** Do not skip one because it looks unaffected,
+  runs slowly, or needs local services started. If a required suite genuinely cannot run, name it
+  and say why alongside the result.
   - A suite cannot run only when this session found why itself: its own runner refused with a
     concrete cause after the recovery `pre-production`'s **Local Stacks** gives, or a credential or
     hosted service it requires is absent from where the repository configures it (its settings,
@@ -140,8 +148,8 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
 - **Hosted test jobs are required at the merge, not before it.** A pull request leaves draft only
   as the last step before an authorized merge, and a draft starts no test jobs. With no merge
   authorized, delivery is complete at the reviewable draft, and the task's test evidence is the
-  end-of-changes run of every test job with CI's own commands, which the GitHub rule's **Pre-Push
-  Gate** requires. At an authorized merge,
+  end-of-changes run of the test jobs selected above, with CI's own commands, as the GitHub rule's
+  **Pre-Push Gate** requires. At an authorized merge,
   `merge-gate`'s **Check Gate** drives every test job to a terminal result and fixes each failure
   within the pull request's scope, apart from a baseline failure, which is recorded and left as
   `pre-production`'s **Encountered Issues** says.
