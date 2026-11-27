@@ -210,10 +210,10 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   so each one added is context every session pays. Before adding one, fold the subject into an
   existing skill whose name covers it, placed in its body or references as the next bullet says;
   failing that, broaden or rename a close skill so its name covers both; and merge skills whose
-  subjects overlap. Add a skill only for a subject
-  no existing name can stretch to cover without going vague, and state its listing cost — one more
-  name and description on every turn — in the change's description. One skill holding several
-  domains as references, each loaded only when its domain comes up, is the pattern to reach for.
+  subjects overlap. Add a skill only for a subject no existing name can stretch to cover without
+  going vague, and state its listing cost — one more name and description on every turn — in the
+  change's description. One skill holding several domains as references, each loaded only when its
+  domain comes up, is the pattern to reach for.
 - **A skill's name reads, as it appears in the skill listing, as what the skill does or holds.** A
   skill holding rules a run applies takes a noun phrase, such as `naming-rules`; a verb-first name,
   such as `publish-build`, is for a skill that performs that action, whoever starts it. Read a
@@ -294,7 +294,7 @@ as a skill of conventions every change follows. The flag keeps it out of the men
 from while its description stays in the agent's listing, so it still loads wherever its subject
 comes up; unlike `disable-model-invocation`, it hides nothing from an agent. A skill a user may
 start by name, or one whose description ends "Run only when the user asks for it.", stays in the
-menu; a skill the user triggers by words alone, with no workflow of its own to start, is still
+menu; a skill whose workflows start only from what the user says, never from its name, is still
 rule-type.
 
 ### Dependencies
