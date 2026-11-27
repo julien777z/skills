@@ -57,7 +57,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 
 ## Spec
 
-Each `<n> min` below stands for a duration written as `use-dashboard` writes one, such as `~18 min`
+Each `<n> min` and `<total> min` below stands for a duration written as `use-dashboard` writes one, such as `~18 min`
 or `~3h 10 min`.
 
 - **Header.** `title`: `Progress Dashboard`. `topic`: the task in a few words, such as "Bulk
