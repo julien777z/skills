@@ -93,8 +93,8 @@ Use `use-browser` for browser control through its supported route. Apply `test-f
     leases, records or processes the session's own work created; recovery is exhausted, and
     reported as a gate, only once no route remains.
   - **Production data, and records real users or other people own, stay with the user.**
-  - **Deployed and shared remote environments are otherwise not local**; `test-fixture`'s **Live
-    Deployments** governs a write sent to one.
+  - **Deployed and shared remote environments are otherwise not local**; `test-fixture`'s **Running
+    Tests Safely** governs a write sent to one.
 
 ## Work out which repositories are present
 
