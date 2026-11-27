@@ -40,11 +40,6 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   - A requirement about how a kind of work is done goes in the skill that runs when that work is
     done: executing a task in the skill that runs execution, merging in the skill that merges, test
     writing in the skill that runs for tests.
-  - Use existing mentions and dependencies to find readers. Establish ownership from the skill's
-    core responsibility and the point when the requirement must apply. Put new guidance with that
-    owner. If older guidance is misplaced, move it and update its readers when the correction is
-    in scope. If that would expand the request, explain the mismatch and ask whether to include
-    the relocation. Continue the work already authorized.
   - A rule file, `.agents/rules/*.md`, exists only for a subject no skill runs for: a language,
     framework or tool matched by file pattern, or a host such as GitHub whose rules span many
     skills. A requirement goes in one only when no skill runs where it applies, and it holds in any
@@ -127,9 +122,11 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   the file whose subject matches its own. Scope is judged by subject, never reach: guidance that
   holds in every repository still goes to the skill or rule owning its subject, as the first bullet
   places guidance about `.agents` content, and `.agents/global.md` takes only what the placement
-  bullet above leaves it. Neither
-  running on every task nor already holding a related rule, such as one on required fields when
-  the guidance is about required settings, makes a narrower file the owner.
+  bullet above leaves it. Use existing mentions and dependencies to find readers. Assign
+  ownership by the file's responsibility and when the guidance must apply. Move existing text
+  and update its readers when correcting its placement is in scope. When that relocation would
+  expand the request, explain the mismatch and ask whether to include it. Continue the work
+  already authorized.
 - Paths inside a repository's `.agents`:
   - `agent` -> `.agents/agents/<name>.md`
   - `rule` -> `.agents/rules/<name>.md`

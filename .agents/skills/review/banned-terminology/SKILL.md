@@ -16,42 +16,10 @@ Rename banned terms elsewhere in touched files within `pre-production`'s size bu
 
 **No name reads or sounds like a profane, sexual, slurring or otherwise inappropriate word.** That covers every name a person reads or hears: product and player-facing text, an item, character, place or creature, an asset, a file, an identifier and an object placed in a world. Before a name is used, say it aloud as a child would sound it out, and read it run together with its neighbor and shortened to its initials; a name that a listener would hear as such a word, or a reader would see as one at a glance, such as a tree whose spoken name differs from a curse by a sound few listeners catch, or a title whose initials spell one, is replaced with another word of the same kind. An everyday word that merely sits a letter away from one, such as a camera shot or a passing car, is its ordinary self to every reader and stays. Rename one already in the product on every surface it reaches, as **Adding or updating** does for a banned word.
 
-If you reach for a placeholder-ish term a future reader could not decode from the name alone, pick a
-more intuitive name rather than adding it to the list. An abstraction coined one level above the
-concrete thing — an "entity" for a customer, a "target" for a server — is such a term even when it
-is accurate, because the reader has to be told what it stands for. Before a new package, module,
-type, step or document heading takes a name, ask whether the user would say that word for the thing;
-if they would say something more concrete, that is the name.
-
 ## Naming
 
-- **Name things with the everyday word a reader expects.** The reader is this codebase's: a name
-  says what its product, its users and its existing code call the thing, never a word that is right
-  only in another field, such as a botanical Latin name for a plant in a garden shop's catalog.
-  Where the domain or a provider has a term this codebase's readers use, use it. A parcel the
-  carrier reports as delivered is `delivered`, never `parcel_arrived`, because an unusual synonym
-  makes every reader translate it back. This covers identifiers, fields, messages, documentation and
-  test names in every language.
-- **A name says what it is about, so a reader never opens the body to learn what it acts on or
-  holds.** That holds for every name: a function, Boolean, field, event, constant, class, module,
-  file or package. Use a qualifier when it communicates a role, state, input or output that
-  readers need to distinguish. Keep labels for design decisions, implementation preferences,
-  or migration phases in the design record when they add no such distinction. A name built on
-  a verb names the verb's object: `job.writes_files`,
-  `assert_may_book_rooms`, never `writes(job)` or `assert_may_book`, whose reader asks "writes
-  what?", "book what?". A receiver or argument supplies the subject only when it is the very thing
-  the name is about: `loan.is_overdue` and `is_deliverable(message)` need nothing more, but a check
-  on whether a member may change a club's bookings takes the club and is about its bookings, so it is
-  `may_change_bookings(member, club)`, never `may_change(member, club)`. A generic noun says what it
-  holds unless its receiver already does: `shipment.status` is the shipment's own state, but the
-  state of its customs check is `customs_status`; a parsed recipe in a local variable is `recipe`,
-  never `result` or `data`; a constant is `MAX_GUESTS_PER_TABLE`, never `LIMIT`; and a module of
-  date helpers is `dates.py`, never `helpers.py` or `misc.py`. The one generic container name is
-  the category package a language rule assigns, such as `utils/`, whose topic-named modules carry
-  what it holds. A name a framework or protocol defines keeps its own spelling.
-- Name things for the shape being exercised, not for whichever caller happened to prompt the work.
-  A test needing a table with a secret column names it for that — a record with a secret — rather
-  than borrowing the one real table the change was made for.
+Read [Naming](references/naming.md) before choosing, accepting or changing a name. Use a clearer
+term when the name is vague. Apply the list procedure only when the user changes the list.
 
 ## Dependencies
 - `pre-production`
