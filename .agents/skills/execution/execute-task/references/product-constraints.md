@@ -48,10 +48,11 @@ For a design that writes or uses a persisted domain record, trace a representati
 input through storage to its ordinary reads and actions before choosing the design. Record the
 source locations, authoritative representation at each step, and purpose of each retained copy,
 including which operations use it and what happens if it is unavailable. Carry that trace into
-the plan or design record. If the application owns the saved record, verify that ordinary
-operations use it when the original input is unavailable. If authority stays external, identify
-which operations require it and verify their behavior when it is unavailable. Do this for a
-single field or consumer and for work that needs no separate plan.
+the plan or design record. For facts the application owns, ordinary operations use the saved
+representation. Verify that behavior with the original input present and unavailable, using a
+conflicting copy when that can occur. Reserve access to the original input or an external
+authority for operations that need it, and verify their unavailable behavior separately. Do this
+for a single field or consumer and for work that needs no separate plan.
 
 ## Rules And Analogous Files
 
