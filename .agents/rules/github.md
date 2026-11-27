@@ -46,24 +46,17 @@ alwaysApply: true
   open state or recorded touch does not. Other sessions' pull requests and branches stay untouched,
   apart from damaged local Git state a skill installing shared guidance backs up and repairs.
 - **Each session keeps one open agent-configuration pull request per repository, and every guidance
-  change it makes there goes on it.** Agent configuration is the whole canonical `.agents` tree:
-  skills with their own scripts, assets and templates, rules, agent definitions and agent hooks,
-  whatever their change does. Installers, workflows and tooling outside `.agents` are source work,
-  as is everything else. Before any guidance edit is committed, read this session's ledger for an
-  open agent-configuration pull request in that repository with a creation receipt, and verify its
-  state remotely: one found is the target, whatever the edit's topic, so a new subject, a worker's
-  repair or a hook is never a reason for a second one. Only when none is open does the session open
-  one, from the freshly fetched default branch. A pull request this session did not create is
-  never a target unless the user explicitly directs its continuation; a touch or reference
-  receipt, matching topic, branch, open state or batch record never makes it one. Consolidate a
-  duplicate this session opened onto its first and close the duplicate, saying where the work
-  went; never retarget, close or fold in one this session did not open.
-- **A worker never opens a pull request.** Its brief names the branch of the pull request the work
-  continues; a worker whose brief names none, or whose work belongs on another kind of branch,
-  hands the edit up to its delegating agent with the change described, as `subagent-matrix`'s
-  launch fallback hands up a step.
-- **Every worker pushes to the branch of the pull request the work continues**, fetching and
-  rebasing its unpushed commits onto the remote branch before each push. A branch per worker,
+  change it makes there goes on it**, whatever its topic, a worker's repair or a hook included.
+  Agent configuration is the whole canonical `.agents` tree, hooks included; installers, workflows
+  and tooling outside it are source work. Before committing a guidance edit, read this session's
+  ledger for an open one with a creation receipt and verify it remotely; only when none is open,
+  open one from the freshly fetched default branch. One this session did not create is a target
+  only when the user explicitly directs its continuation; a touch or reference receipt, topic,
+  branch or open state never makes it one. Consolidate a duplicate this session opened onto its
+  first and close it, saying where the work went; never retarget, close or fold in another's.
+- **Every worker pushes to the branch of the pull request the work continues**, named in its brief,
+  fetching and rebasing its unpushed commits onto the remote branch before each push, and never
+  opens a pull request: without a branch in its brief, it hands the edit up. A branch per worker,
   integrated later, is the same split with the integration deferred.
 - **Agent configuration and source never share a branch**, even when a guidance change follows the
   source work checked out: sharing holds the guidance behind source review and outside the
