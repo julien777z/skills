@@ -813,6 +813,7 @@ CHART_ITEM_SHAPE: Final[ObjectShape] = ObjectShape(
     },
     required=frozenset({"label", "value", "figure"}),
 )
+
 TAB_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Tab",
     fields={"label": TEXT, "sections": SECTIONS},
