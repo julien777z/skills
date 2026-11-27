@@ -39,8 +39,8 @@ alwaysApply: true
   request from its creation or authorized-continuation receipt, carried forward when a follow-up
   starts a new task in the same session, and verify its owner, open state and scope. Distinct
   concerns and worker contributions stay on it, in separate commits where appropriate. Open another
-  only when none is in progress, the user directs a split, `pre-production`'s side-work bullet
-  places work on the task's side pull request, or a new manually dispatched workflow needs its
+  only when none is in progress, the user directs a split, a skill in use places side work on its
+  own pull request, or a new manually dispatched workflow needs its
   placeholder pull request. Continue another session's pull request only when the user, an invoked
   skill or a repository rule explicitly directs it; a matching topic, existing branch, open state
   or recorded touch does not. Other sessions' pull requests and branches stay untouched,
