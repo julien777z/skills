@@ -12,6 +12,7 @@ bypass it.
 ## Dependencies
 
 - `pre-production`
+- `session-ledger`
 - `share-media`
 
 ## When To Delegate
@@ -20,6 +21,10 @@ Delegate where the work splits into independent parts, needs an independent read
 the coordinator's own context; do small work directly. Start independent tasks concurrently when
 their ownership, dependencies and resources permit. Delegation does not extend the user's
 authorization or relax safety and sequencing requirements.
+
+**A paused session launches nothing.** Before any launch, read the task ledger through
+`session-ledger` for an open `hold` entry, the user's pause on automated work; a review, gate,
+worker or check run it covers waits in that entry's queue until the user resumes it.
 
 ## Matrix
 
