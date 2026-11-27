@@ -135,9 +135,10 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   - **Text already misplaced in a file whose instructions the change adds to or alters moves in the
     same change** to the file, reference or section whose name covers it, with its readers updated,
     when the pass's **Placement** step tests that file: that file is the change's scope. A file that
-    only receives moved text is tested for what it receives; a misplacement found elsewhere in it
-    is put to the user as for an untouched file. For a misplacement in a file the change does not touch, explain the mismatch and
-    ask whether to include the move, continuing the work already authorized.
+    only receives moved text is tested for what it receives; a misplacement found elsewhere in it is
+    put to the user as for an untouched file. For a misplacement in a file the change does not
+    touch, explain the mismatch and ask whether to include the move, continuing the work already
+    authorized.
 - Paths inside a repository's `.agents`:
   - `agent` -> `.agents/agents/<name>.md`
   - `rule` -> `.agents/rules/<name>.md`
