@@ -66,14 +66,6 @@ Before choosing a design, and before the first edit on a path that takes no plan
 its receipt in the task record, even for a small follow-up, a bug fix or a worker's task with no
 plan of its own; only an edit that adds nothing skips it.
 
-Before choosing a design that writes or uses a persisted domain record, trace a representative
-record from input through storage to the ordinary reads and actions that use it. Name the
-authoritative representation at each step and explain the purpose of every retained copy. When
-the application owns the saved record, plan and verify that those reads and actions work from
-that record when the original input is unavailable. If authority stays external, identify the
-operations that need it and how they behave when it is unavailable. Apply this check even when
-the change touches one field or consumer or needs no separate plan.
-
 ### When A Plan Is Needed
 
 - **Every source or product change gets a plan shown to the user before its first edit, except a
