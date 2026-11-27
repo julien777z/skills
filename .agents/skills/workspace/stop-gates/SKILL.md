@@ -30,7 +30,8 @@ investigating, editing, committing and pushing a fix, with the fast checks a pus
 1. **Stop each running item.** Tell each worker to push what it has and stop, then end it; cancel
    each running review, gate and check run. Never discard a worker's unpushed work: wait for its
    push or copy its worktree's changes to the task's working-files folder first.
-2. **Record the pause** in the task ledger through `session-ledger`, as a `hold` entry: when it
+2. **Record the pause** in the task ledger through `session-ledger`, as a `hold` entry whose open
+   state is the session's gates-off flag, read before every launch and every merge: when it
    started, the user's words, and one line per stopped or queued item with its pull request or
    scope, head, stage reached, brief location and next action, so the resume can restart each
    from where it stopped. A result that arrives after the stop is kept in the entry and not acted on.
@@ -43,5 +44,7 @@ investigating, editing, committing and pushing a fix, with the fast checks a pus
   no reply asks whether to resume.
 - **Before any launch, read the ledger for an open `hold`.** A review, gate, worker or check run
   it covers is not started; it is added to the entry's queue instead.
+- **A merge asks first.** With the hold open, a merge, even one the user authorized, waits for
+  the user to confirm that merging with gates paused is intentional.
 - Corrections and decisions made during the pause are recorded as usual, so the resumed work can
   act on them.
