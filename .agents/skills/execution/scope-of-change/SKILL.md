@@ -1,6 +1,6 @@
 ---
 name: scope-of-change
-description: "What a change takes on and how far it reaches, and which of its decisions are the user's. Read before planning, fixing, reviewing or gating any change, whenever a check fails or the work turns up a problem, and before putting a decision to the user. Covers classifying a validation failure against the default branch, which checks have to pass and a lint, formatting or other non-essential check red on code the change did not write, a hosted attempt a runner interrupted, what counts as a defect and how far its fix reaches, side work and the pull request that carries it, a package consumed through a branch reference, incidental cleanup's size budget and the grounds for a deferral record, a better shape than the repository's, a correction to one screen against a rule, telling a product choice from a routine detail, restoring intended behavior in a bug fix, and surfacing trade-offs rather than enforcing them."
+description: "What a change takes on: the problems it fixes, how far it reaches, the pull request it rides, and the decisions it makes itself rather than putting to the user. Read before planning, fixing, reviewing or gating any change, whenever a check fails or the work turns up a problem, and before putting a decision to the user. Covers classifying a validation failure against the default branch, which checks have to pass and a lint, formatting or other non-essential check red on code the change did not write, a hosted attempt a runner interrupted, what counts as a defect and how far its fix reaches, side work and the pull request that carries it, a package consumed through a branch reference, incidental cleanup's size budget and the grounds for a deferral record, a better shape than the repository's, a correction to one screen against a rule, telling a product choice from a routine detail, restoring intended behavior in a bug fix, and surfacing trade-offs rather than enforcing them."
 short_description: 'Decide what a change fixes, carries and leaves, and which of its choices go to the user.'
 ---
 
@@ -178,11 +178,10 @@ authorizes compatibility with an obsolete owned contract or revision.
     freshly fetched default branch when it does not need the change, or from the change's branch,
     stacked on it, when it does; a worker builds it while the change goes on, and it is reviewed
     and gated on its own.
-  - **A package other repositories consume through a branch reference keeps the change and its
-    side work on one pull request, whatever their size.** A consumer's manifest can point at only
-    one branch of the package, so two pull requests there can never be tested together from the
-    consumer; the task never opens more than one pull request in that repository for work a
-    consumer must test together.
+  - **No more than one pull request per repository holds a task's change and its side work where a
+    consumer must test them together, whatever their size**, such as a package other repositories
+    test through a branch reference while the change is unmerged: a consumer's manifest points at
+    one branch of the package.
   - Side work in agent configuration rides the session's one agent-configuration pull request in
     its own commits, as the GitHub rule's **Branches and Pull Requests** keeps one per repository.
 - **Incidental cleanup has a size budget, measured against the scope the user set and the size of
@@ -240,7 +239,9 @@ authorizes compatibility with an obsolete owned contract or revision.
 - **A better shape is proposed, never swept in.** Where a different shape than the one the
   repository already follows would serve better — more standard, simpler, less code — the change
   keeps the existing shape and the conversion goes to the user as a proposal: the shape, why it is
-  better, every instance it would convert and the size of that change, with a recommendation. It is
+  better, every instance it would convert and the size of that change, with a recommendation. This
+  holds for an owned contract the work does not otherwise alter, the proposal naming every consumer
+  it would change. It is
   built only once the user approves it and at the scope they approve, as its own work rather than
   under the size budget above, and never left half done; a sweep built unasked costs its whole size
   again when the user rejects it.
@@ -368,8 +369,6 @@ the issue should be ignored.
   remedy obvious, but a routine presentation or interaction detail is not such a change: it is
   decided and reported as **Product Choices** says. Routine internal changes within the settled
   experience proceed and are stated in the pull request.
-- Say what changed for whom. "This is a change, not a refactor" belongs at the top of the description,
-  not buried among the mechanics.
 - **A measured failure is never a trade-off.** A rate, a duration, a kill or a resource trail observed
   on a live run is a defect. Fix it under the same rule as any other bug. Whether it is fixed, or
   whether it may be recorded and left, is not a fork to present.

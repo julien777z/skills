@@ -24,7 +24,7 @@ Build the clean target contract instead of preserving transitional behavior.
   service contract, or observed resource risk it enforces. A remote environment, a large dataset, or
   a hypothetical production concern alone supplies none. Do not invent a cutoff or reduce the
   requested outcome on that basis; carry out the authorized work and verify it. Preserve limits
-  required by an established contract, and fix a measured failure as the defect it is.
+  required by an established contract.
 - Keep owned cutover sequencing in the release procedure. Move affected users to the target
   contract and convert retained data in versioned migrations. Do not add runtime behavior for
   mixed owned versions, half-applied transitions, or an in-flight state the work has established
@@ -85,9 +85,7 @@ Build the clean target contract instead of preserving transitional behavior.
 - Prefer a deliberate break to an owned API, wire, schema, payload, or stored shape when it
   materially simplifies the result. Update affected consumers and migrate retained data, then remove
   the old shape; update every consumer and generated contract in the same change. A break the
-  requested work or a defect requires is made without a question. One chosen only because another
-  shape would serve better, on a contract the work does not otherwise alter, is proposed to the user
-  first, with every consumer it would change, and built only at the scope they approve.
+  requested work or a defect requires is made without a question.
 - **An owned contract stays owned across repositories.** A consumer in a sibling repository the
   user owns makes the break multi-repository work, never somebody else's decision; only a consumer
   outside the user's control freezes a shape. The new shape reaches every site answering the same
