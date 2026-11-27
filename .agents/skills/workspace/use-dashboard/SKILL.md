@@ -1,6 +1,6 @@
 ---
 name: use-dashboard
-description: Render a dashboard spec into the shared HTML dashboard page and deliver it to the user. Use as a dependency whenever a skill delivers a dashboard page built from its data, so those dashboards share one look and the caller writes data, never HTML.
+description: Render a dashboard spec into the shared HTML dashboard page and deliver it to the user. Use as a dependency whenever a skill delivers a dashboard page built from its data, so those dashboards share one look and the caller writes data, never HTML. Also owns every correction to a dashboard that would hold for any dashboard, such as how it looks, reads, counts or responds.
 short_description: 'Turn a dashboard spec into the shared HTML page and deliver it.'
 ---
 
@@ -22,6 +22,12 @@ that a harness sizes to its content. The
 navbar keeps the title whole and the page links beside it: the page spans up to 1920 px so a wide
 screen shows more links, the links scroll sideways with a visible scrollbar when they still do not
 fit, and they fold into a menu only below 1024 px.
+
+**A correction to one dashboard that would hold for any dashboard belongs here**, never in the
+skill that built it: how a figure is written, what a chart shows on hover, what is clickable, which
+colors mean what, how text reads. The calling skill takes only what concerns its own data, such as
+which pages it has, what it counts and what its observations cover. When a correction does both,
+split it between the two.
 
 ## Dependencies
 - `pages:write-page`
