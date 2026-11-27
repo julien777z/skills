@@ -106,7 +106,7 @@ recording or delivering a batch.
 - Write the edit in the checkout **Resolve which repository owns the target** resolves, on the branch **Branch and commit** selects — the batch's own
   branch while a batch is in flight and its pull request has not merged — commit it, and push it to
   that branch's pull request once the checks the GitHub rule's **Pre-Push Gate** defines pass, opening a draft when the branch has
-  none; this holds for a source pull request **Branch and commit** selects as for an agent-configuration one.
+  none, which a worker hands up instead; this holds for a source pull request **Branch and commit** selects as for an agent-configuration one.
   When the checkout holds the active task's uncommitted or source-branch work, write and commit the
   edit from a separate worktree on the selected branch, leave the task's tree untouched, and stage
   only the guidance files. Record the branch, the `commits` list and the pull request in the entry's
@@ -196,8 +196,7 @@ small it looks.** Each route below is the gate set its batch passes on the head 
   delivered, or hold the source pull request for it beyond the checks its ridden edits need and the
   delivery of the batch carrying them.
 - **Delivery is the agent's own work, never the user's errand.** It starts at its own trigger
-  without the user asking, and its operational choices — another round, splitting a correction onto
-  its own pull request, dropping one, accepting a residual miss — are the agent's, a contested one
+  without the user asking, and its operational choices — another round, dropping one, accepting a residual miss — are the agent's, a contested one
   going to `council` in **Ask** mode. No question, report, pending-decision list or note puts such a
   choice to the user or describes a pending batch as waiting on them; one that does is corrected,
   never carried forward. A policy change **Identify the failure class** sends to the user, dropping it
