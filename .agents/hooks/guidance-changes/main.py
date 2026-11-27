@@ -130,8 +130,8 @@ def changed_guidance(seen: str, installed: str) -> dict[str, list[str]] | None:
     for path in listing.splitlines():
         parts = Path(path).parts
 
-        if len(parts) >= 4 and parts[1] == "skills":
-            kinds["skills"].add(parts[3] if len(parts) > 4 else parts[2])
+        if len(parts) >= 5 and parts[1] == "skills":
+            kinds["skills"].add(parts[3])
         elif len(parts) >= 3 and parts[1] == "rules":
             kinds["rules"].add(Path(parts[2]).stem)
         elif path == f"{GUIDANCE_ROOT}/global.md":
@@ -193,7 +193,10 @@ def main() -> int:
         if changes != {}:
             sys.stdout.write(change_notice(changes))
 
-        transcript_path = hook_input["transcript_path"] or (saved["transcript_path"] if saved else None)
+        written = hook_input["transcript_path"]
+        transcript_path = (
+            written if written and Path(written).exists() else (saved["transcript_path"] if saved else None)
+        )
 
         STATE_DIRECTORY.mkdir(parents=True, exist_ok=True)
         state_path.write_text(
