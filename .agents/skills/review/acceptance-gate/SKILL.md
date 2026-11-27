@@ -201,6 +201,9 @@ the severity `code-simplify`'s rubric gives it. Where the change wrote that chec
 verify each against the sources. Name the searches and candidates read in `Also read`. For other
 suspect shapes, apply the rubric's removal test. Missing validation evidence
 is a separate flag, never a reason to leave the design judgment unfinished.
+For added files, check and cite the placement evidence under the rubric's **Reuse And Removal**.
+For callables the diff adds or changes to return fixed values, apply **No forwarding layers**.
+An approval requires the evidence these checks call for.
 
 **Trace changed state-like values during the design comparison.** Apply the rubric's **State
 Meaning** criteria to their writers, transformations and consumers, including values whose names did

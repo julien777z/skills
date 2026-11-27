@@ -14,6 +14,7 @@ agent-configuration pull request.
 ## Dependencies
 - `review-proposal`
 - `pre-production`
+- `banned-terminology`
 - `run-site`
 - `code-simplify`
 - `review-pass`
@@ -50,11 +51,8 @@ the task. Where it owns a stage, return its result to this run rather than start
 - The session agent selects independently applicable specialized skills from their descriptions once.
   They return outcomes, pending decisions and required coordinator work to the caller.
 - A selected workflow presents its own plan through the route it declares, an approval it requires included.
-- A read-only task — a question answered from the code, a listing, a report with no edit — does
-  not run this skill, though it still reads the reference of this skill that governs a subject it
-  meets, as the description lists them; a task whose edits sub-agents make is not read-only for the
-  agent that delegated them. A read-only turn does not close an open run either: a run still holding named
-  work stays active through such a turn, and that turn moves its items.
+- A read-only task uses the relevant reference without running this skill. Delegating edits
+  counts as editing. A read-only turn keeps an open run active and advances its named work.
 
 ## Plan
 

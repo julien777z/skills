@@ -44,6 +44,16 @@ operation, which resources it may reach, and which destinations must not receive
 data or authority. Carry this receipt into review and deployment verification; a component check
 or an internally consistent configuration does not replace it.
 
+For a design that writes or uses a persisted domain record, trace a representative record from its
+input through storage to its ordinary reads and actions before choosing the design. Record the
+source locations, authoritative representation at each step, and purpose of each retained copy,
+including which operations use it and what happens if it is unavailable. Carry that trace into
+the plan or design record. For facts the application owns, ordinary operations use the saved
+representation. Verify that behavior with the original input present and unavailable, using a
+conflicting copy when that can occur. Reserve access to the original input or an external
+authority for operations that need it, and verify their unavailable behavior separately. Do this
+for a single field or consumer and for work that needs no separate plan.
+
 ## Rules And Analogous Files
 
 Before each edit, read the shared and repository rules governing every surface it reaches — its
