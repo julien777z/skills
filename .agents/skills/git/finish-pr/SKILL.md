@@ -115,9 +115,7 @@ hold only the unit that needs the unresolved result, recording its gate and save
 in its set.
 Follow the active task's recorded priorities when choosing the next eligible unit.
 
-Before the first step, read the task ledger through `session-ledger` for an open `hold` entry that
-still covers a selected pull request; with one, follow `stop-gates`' **Asking While Paused** once
-for the whole selection.
+Before the first step, follow `stop-gates`' **Asking While Paused** once for the whole selection.
 
 1. **Review the whole pull request.** Invoke `review-pass` on the pull request with its intent
    statement, asking for the whole pull request: its complete merge-base diff, the full contents of every touched file, related code and

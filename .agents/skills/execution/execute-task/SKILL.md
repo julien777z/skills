@@ -384,9 +384,8 @@ than one repository, run its sweep for borrowed names before delivering.
 ### Resuming While Gates Are Paused
 
 When the user asks to resume the task itself — its execution or implementation, not a question
-about the change — read the task ledger through `session-ledger` for an open `hold` entry that
-still covers the task's execution; with one, follow `stop-gates`' **Asking While Paused** before
-continuing at the saved step.
+about the change — follow `stop-gates`' **Asking While Paused** before continuing at the saved
+step.
 
 Until then the hold suspends **Work You Have Already Named**: named work stays recorded with its
 next step and is not resumed.

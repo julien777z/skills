@@ -30,8 +30,7 @@ for an agent-configuration change, Agent Sync handling before this skill finishe
     naming what remains for the user and that skill, in a report or a plan's closing line, is how
     it is left to them, not an offer.
 - **A merge while gates are paused asks the user first, even with authorization.** Before step 1
-  of **Check Gate**, read the task ledger through `session-ledger` for an open `hold` entry that
-  still covers this pull request; with one, follow `stop-gates`' **Asking While Paused**. A pull
+  of **Check Gate**, follow `stop-gates`' **Asking While Paused** for this pull request. A pull
   request merged during a pause has skipped the reviews its merge assumes, and the user may simply
   have forgotten to resume them.
 - This skill merges only a pull request whose merge its caller is authorized to perform: a user
@@ -61,7 +60,6 @@ for an agent-configuration change, Agent Sync handling before this skill finishe
   the task's scope and authorization, never an incidental recovery allowance.
 
 ## Dependencies
-- `session-ledger`
 - `stop-gates`
 - `merge-conflict`
 - `pre-production`

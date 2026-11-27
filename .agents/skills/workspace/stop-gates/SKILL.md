@@ -17,8 +17,7 @@ everything at once, keep what is needed to restart it, and work with the user on
 
 Everything the session does on its task, so nothing builds on the state being corrected:
 
-- the task's own implementation, in the main session as much as in workers: the edit in hand is
-  committed and pushed as it stands, and nothing further is built;
+- the task's own implementation, in the main session as much as in workers;
 - reviews, acceptance gates, council rounds, skill-test readers and security audits;
 - implementation and fix workers, and any coordinator running them;
 - slow verification: test suites, browser walkthroughs, anything needing a running stack;
@@ -38,7 +37,7 @@ merge or resume something.
    each running review, gate and check run. Never discard a worker's unpushed work: wait for its
    push or copy its worktree's changes to the task's working-files folder first.
 2. **Record the pause** in the task ledger through `session-ledger`, as a `hold` entry whose open
-   state is the session's gates-off flag, read before every launch and every merge: when it
+   state is the session's gates-off flag: when it
    started, the user's words, the task's saved step, and one line per stopped or queued item with its pull request or
    scope, head, stage reached, brief location and next action, so the resume can restart each
    from where it stopped. A result that arrives after the stop is kept in the entry and not acted on.
@@ -52,25 +51,22 @@ merge or resume something.
   answer that names only the outcome leaves them without what they paused to see. This lasts only
   while the pause is open: once every gate resumes, answers return to their usual length, and
   resuming gates for one scope leaves it on.
-
 - **The pause holds until the user resumes it**, through **Asking While Paused** below, by asking
   to resume the gates, or in their own words. A context summary, a new message, a finished fix, a
   notification or a schedule never lifts it, and no reply asks whether to resume.
 - **The pause covers every scope except those resumed one at a time.** The `hold` entry lists each
   resumed scope, a pull request or the task's execution; that scope's reviews, gates, checks and
   workers run as normal while everything else stays paused.
-- **Before any launch, read the ledger for an open `hold`.** A review, gate, worker or check run
-  in a scope it still covers is not started; it is added to the entry's queue instead.
-- **Named work stays named, not resumed.** Work the agent already said it would do is recorded in
-  the entry and waits; the pause outranks any rule that resumes it without being asked.
 - Corrections and decisions made during the pause are recorded as usual, so the resumed work can
   act on them.
 
 ## Asking While Paused
 
-When the user asks for work the pause still covers, such as finishing or merging a pull request or
-resuming the task's execution, ask through the question tool before starting it, naming the work
-and when the pause started. A request already asked about in this run is not asked again.
+When the user asks for work the pause may cover, such as finishing or merging a pull request or
+resuming the task's execution, read the task ledger through `session-ledger` for an open `hold`
+entry whose resumed scopes do not include that work; with none, nothing is asked. With one, ask
+through the question tool before starting the work, naming it and when the pause started. A
+request already asked about in this run is not asked again.
 
 - **Resume all gates**, listed first and recommended, since the user most often wants everything
   back: lifts the whole pause, as resuming the gates does.
@@ -80,6 +76,3 @@ and when the pause started. A request already asked about in this run is not ask
 - **Continue with gates paused**: the work runs, what the pause covers stays queued, and a merge
   goes ahead without those reviews, its report saying the gates were paused.
 - **Stop**: nothing runs, and the reply says that asking to resume the gates restarts everything.
-
-A request covering several pull requests or every scope has no "for this only" option, since it is
-already everything.
