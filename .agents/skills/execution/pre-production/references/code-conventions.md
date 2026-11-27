@@ -122,7 +122,7 @@ commit messages and pull-request text. `SKILL.md` names this file at the point a
 
 - **Every project the owner runs or consumes runs the newest stable language runtime, base image
   and dependency releases it works with.** Which release is newest is read from its publisher's
-  release list at the time, such as python.org's downloads or the package registry, never from
+  release list at the time, such as the runtime's official release page or the package registry, never from
   memory or from a version the user names, which is checked the same way. A change made for that move — one the user asks for, or
   the upgrade pull request a warning leads to, as this skill's **Scope Follows The Defect, Not The
   Request** places it — moves what the project actually runs onto them: its version file,
