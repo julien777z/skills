@@ -74,6 +74,14 @@ review against an independent search:
 - **New** names what each candidate found cannot do; with none found, the search terms are the
   evidence. A receipt that names no search is no receipt.
 
+Before creating any file, read the closest existing files and record where the addition belongs.
+Check whether it fits an existing file as named or whether a broader name would describe both
+the existing contents and the addition. Use the existing file when they share a responsibility,
+renaming it and updating its callers when its current name is too narrow. Create a separate file
+when the receipt identifies the responsibility or boundary the split preserves, such as a distinct
+UI component, a dependency boundary, or a path the framework requires. Keep model declarations
+with their models even when the operational module is small.
+
 A workaround, or a design that changes a shared operation, guard, contract, subsystem, runtime
 boundary or independent consumer, also writes all three fields below, in the task record or
 verdict, before deciding. Each field asks only for the facts the change has:
@@ -112,11 +120,8 @@ verdict, before deciding. Each field asks only for the facts the change has:
    - **Reachability is judged where the change will land**: the branch it merges into and the open
      branches it ships with, in every repository the user controls. "Set outside this repository"
      leaves the question open until those are read.
-2. **A new module whose concern an existing module already owns** merges into that owner, renamed
-   first if its name is too narrow. A module holding one public symbol is the plainest case; several
-   one-symbol modules of one shape are one module. Exempt: a shown dependency boundary, an entry
-   point found by path, and a UI component module. Never move a data model into operational code to
-   remove a small models module.
+2. **File ownership.** Verify each added file's placement under **Reuse And Removal**. A file
+   holding one public symbol is a cue to check its siblings for a shared responsibility.
 3. **A new declaration that names what the repository already declares** is a second copy. Search for
    a new enum, constant set, mapping or model by its members or keys, never by its name. When the two
    answer the same question, the new values become properties of the existing declaration.
