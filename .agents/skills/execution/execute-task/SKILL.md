@@ -395,6 +395,9 @@ holds:
 - **No** keeps everything paused and tells the user that asking to resume the gates restarts the
   task together with them.
 
+Until then the hold suspends **Work You Have Already Named**: named work stays recorded with its
+next step and is not resumed.
+
 ### Work You Have Already Named
 
 **Priority** decides which named work runs now; lower-priority work retains its saved step and paused
