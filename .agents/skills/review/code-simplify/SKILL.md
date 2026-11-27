@@ -30,6 +30,11 @@ Make the search and write its receipt in the task record before the edit, as the
 In planning, read and report evidence only. Apply the check again when a follow-up changes the
 proposed mechanism.
 
+Name each model for the concept it represents and each operation for what it does. Use a
+qualifier when it communicates a distinct role, state, input or output that callers need to
+recognize. Keep labels that only announce a design decision, implementation preference or
+migration phase in the design record.
+
 ## 1. Scope
 
 1. Take the scope the caller names. Otherwise use `git diff $(git merge-base <base> HEAD)` plus the
