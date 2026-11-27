@@ -166,22 +166,18 @@ def check_choice[E: StrEnum](value: object, path: str, choices: type[E]) -> E:
     return choices(value)
 
 
-def check_fraction(value: object, path: str) -> None:
-    """Require a number from 0 to 1."""
+def check_number(value: object, path: str, maximum: float | None = None) -> None:
+    """Require a number of at least 0, and at most `maximum` when one is given."""
 
     if (
         isinstance(value, bool)
         or not isinstance(value, int | float)
-        or not 0 <= value <= 1
+        or value < 0
+        or (maximum is not None and value > maximum)
     ):
-        raise DashboardSpecError(f"{path} must be a number from 0 to 1")
+        bounds = f"from 0 to {maximum:g}" if maximum is not None else "of at least 0"
 
-
-def check_amount(value: object, path: str) -> None:
-    """Require a number of at least 0."""
-
-    if isinstance(value, bool) or not isinstance(value, int | float) or value < 0:
-        raise DashboardSpecError(f"{path} must be a number of at least 0")
+        raise DashboardSpecError(f"{path} must be a number {bounds}")
 
 
 def check_chart(chart: dict[str, object], path: str) -> None:
@@ -527,10 +523,10 @@ TEXT: Final[Field] = Field(check=check_text, typescript="string")
 TEXTS: Final[Field] = Field(check=check_texts, typescript="string[]")
 ROWS: Final[Field] = Field(check=check_rows, typescript="string[][]")
 TIMESTAMP: Final[Field] = Field(check=check_timestamp, typescript="string")
-FRACTION: Final[Field] = Field(check=check_fraction, typescript="number")
+FRACTION: Final[Field] = Field(check=partial(check_number, maximum=1), typescript="number")
 WHOLE_NUMBER: Final[Field] = Field(check=check_whole_number, typescript="number")
 FLAG: Final[Field] = Field(check=check_flag, typescript="boolean")
-AMOUNT: Final[Field] = Field(check=check_amount, typescript="number")
+AMOUNT: Final[Field] = Field(check=check_number, typescript="number")
 SECTIONS: Final[Field] = Field(check=check_sections, typescript="Section[]")
 TONE: Final[Field] = Field(
     check=partial(check_choice, choices=Tone), typescript=Tone.__name__, choices=Tone
