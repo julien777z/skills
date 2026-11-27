@@ -58,7 +58,8 @@ step naming the section it reads, the
    renamed target, a link fix, or wording that changes no instruction — and a file that only
    receives moved text keep the test of the lines they change and start no whole-file sweep; a file
    or heading the change itself renames stays under the test. In a repository's own guidance, apply
-   the reference's bullet on a repository's own guidance in the same files.
+   the reference's **A repository's own guidance holds only the facts that repository owns** in the
+   same files.
 7. **Description as the index.** For every subject a skill owns, confirm a clause of its frontmatter
    description names it, and judge the description as the authoring reference's **Descriptions**
    says. An index of owners kept in a rule file, `.agents/global.md` or a table is a finding.
