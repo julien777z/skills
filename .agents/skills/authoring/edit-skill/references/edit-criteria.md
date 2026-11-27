@@ -9,18 +9,21 @@ Reviewed Batches**, **Relocations**, **Resuming A Batch**.
 
 ## Causal Diagnosis
 
-- Trace the actual path from the request to the missed behavior: whether the instruction was
-  absent, its skill loaded, its trigger or sequence kept it from the decision, a conflicting
-  instruction overrode it, or the agent failed to apply guidance it had. Read exceptions and
-  stopping clauses with its callers. When the substantive rule is already correct, inspect the
-  step that produced the rejected recommendation, triage, brief or action: what instruction and
-  review evidence it used, what next action those required, and how its chosen action differed.
-  Repair that decision step at its owner rather than restating the substantive rule or ending
-  with a noncompliance report. Remove conflicting permissions, check other routes for the same
-  failure, and replay the original decision under the repair before closing the issue.
-  Record missing historical evidence without inventing a cause; it does not prevent repairing
-  the observed decision path. When the owning skill was not invoked, harden its frontmatter
-  description first; body text cannot control a run that never loads the skill.
+- Before proposing a correction, trace the actual path from the request to the missed behavior.
+  Read records of the run and identify the first decision where the path diverged. Record the
+  action taken, the guidance or evidence available at that point, and the required next action.
+  If a review passed the work, compare its brief, the sources it inspected, the checks it
+  performed, and the verdict the editor accepted. Read relevant exceptions and stopping clauses
+  with their callers. Identify whether the rule was missing, the trigger or sequence kept it
+  from the decision, a conflict overrode it, or the agent skipped an applicable check. Explain
+  the verified divergence to the user with the correction. Record unavailable evidence and
+  proceed from the part of the path you can verify.
+- Repair the first missed decision at its owner. For a skipped check, specify the evidence the
+  agent produces before taking the next action. When a later review also passed the miss,
+  require that review to verify the evidence. Remove conflicting permissions, identify other routes
+  that make the same decision, and verify the repair on the original case and an adjacent route.
+  Repair the description when discovery failed. When a caller or stopping clause skipped an
+  applicable skill or check, repair that path.
 - Test the proposed instruction against that original decision path before proposing or writing it. If a
   reader could follow it and still repeat the miss, explain the mismatch to the user, name the
   instruction that actually caused or allowed the decision, and correct that owning path and
