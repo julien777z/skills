@@ -14,7 +14,8 @@ For a local page the user should look at, including a served page or an HTML fil
 such as a rendered dashboard. A `file://` preview needs the user's browser on the machine that holds
 the file; when it is not, such as a cloud session, serve the page to that browser instead.
 
-Open the page in a task group in the user's browser, bound as below. If a task tab already shows it, reload that
+Open the page in a task group in the user's browser, or in the browser explicitly requested for the
+preview, bound as below. If a task tab already shows it, reload that
 tab. Bring the preview to the front only when the user asks to see it. If the selected browser
 cannot load the file, use a local URL served to that browser or report the preview blocker.
 
