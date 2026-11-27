@@ -187,10 +187,11 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   a protocol — and `SKILL.md` names the file at the point the workflow reads it. A skill with two
   routes through it (two modes, two kinds of target, two hosts) keeps the shared workflow in
   `SKILL.md` and gives each route its own reference, so the file a reader loads first stays within
-  the size budget under **Writing**. The exception is what the skill exists for: the table, catalog or
-  rubric its name or description centers on, which every run reads, stays in `SKILL.md` as one of its
-  first sections, so a reader meets it before the workflow that uses it; a reference holds what only
-  some routes, modes or readers need. Sections come in the order a run needs them: the first decision
+  the size budget under **Writing**. A skill is read by people as well as agents, and **its main idea stays
+  in `SKILL.md`, near the top**: the part a reader opens the skill to see, whatever its form, such as
+  the mapping, principle or contract its name promises. A person scanning the skill sees only its body,
+  so an idea moved to a reference is one they never find; a reference holds what only some routes,
+  modes or readers need. Sections come in the order a run needs them: the first decision
   before the procedure, and the common path before its edge cases. References may explain the technical steps for a route selected by the
   entry point. They do not select the top-level workflow, hide a decision gate, declare a dependency,
   or invoke another skill. Scripts the skill runs go under `scripts/`; supporting files may live
