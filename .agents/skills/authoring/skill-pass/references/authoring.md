@@ -205,6 +205,13 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   or invoke another skill. Scripts the skill runs go under `scripts/`; supporting files may live
   under `assets/`, `resources/`, or another directory named for their role. Keep only files the skill
   needs.
+- **A new skill is the last resort.** Every listed skill's name and description load on every turn,
+  so each one added is context every session pays. Before adding one, fold the subject into an
+  existing skill whose name covers it, as a reference; failing that, broaden or rename a close skill
+  so its name covers both; and merge skills whose subjects overlap. Add a skill only for a subject
+  no existing name can stretch to cover without going vague, and state its listing cost — one more
+  name and description on every turn — in the change's description. One skill holding several
+  domains as references, each loaded only when its domain comes up, is the pattern to reach for.
 - **A skill's main idea stays in `SKILL.md`, near the top,** whatever its form, even where Skill
   shape would send it to a reference: the part a reader opens the skill to see, such as the
   mapping, principle or contract its name promises. A skill is read by people as well as agents,
@@ -279,6 +286,15 @@ user asks for it in words, cannot follow another skill that names it, and never 
 holds when other work needs one. Keep every skill listed and end its description with the exact
 sentence "Run only when the user asks for it.", which is how readers and tools recognize the
 restriction. Gate a single user-only workflow inside an otherwise usable skill in its body.
+
+**A rule-type skill is hidden from the user's `/` menu with `user-invocable: false`.** A rule-type
+skill holds rules other skills and runs apply and has no workflow a user starts by naming it, such
+as a skill of conventions every change follows. The flag keeps it out of the menu the user types
+from while its description stays in the agent's listing, so it still loads wherever its subject
+comes up; unlike `disable-model-invocation`, it hides nothing from an agent. A skill a user may
+start by name, or one whose description ends "Run only when the user asks for it.", stays in the
+menu; a skill the user triggers by words alone, with no workflow of its own to start, is still
+rule-type.
 
 ### Dependencies
 
