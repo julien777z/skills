@@ -49,7 +49,9 @@ merge or resume something.
 - **Answers explain more than usual.** The user paused because they noticed a problem, so each
   answer about the work traces what led to it: the step or agent that made the decision, the
   guidance or input it acted on, and the evidence for each link, before what to change. A short
-  answer that names only the outcome leaves them without what they paused to see.
+  answer that names only the outcome leaves them without what they paused to see. This lasts only
+  while the pause is open: once every gate resumes, answers return to their usual length, and
+  resuming gates for one scope leaves it on.
 
 - **The pause holds until the user resumes it**, through **Asking While Paused** below, by asking
   to resume the gates, or in their own words. A context summary, a new message, a finished fix, a
