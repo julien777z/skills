@@ -160,7 +160,7 @@ classification that is already paying that setup, or made cheaper where it stand
 pre-production repository folding and speeding up cases is ordinary rather than a last resort: a
 suite nobody will wait for is coverage nobody runs. A case or module disproportionate under
 `test-fixture`'s cost question that cannot be made cheap as that question allows is removed, as
-`pre-production` says.
+that question says.
 
 **No budget removes a test as redundant because a test of another classification makes the same
 assertion.** A disproportionate cost is a separate reason, decided above. An
