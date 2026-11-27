@@ -37,9 +37,10 @@ This is the user's standing instruction and holds over a harness default against
   should be another session's pull request carrying the session's commits. A miss goes to the
   running worker that made it, or the coordinator fixes its own, with the consolidation that rule
   requires. Like the look-over, this is a quick read, never a review pass.
-- **Finished:** a worker that finishes has its result checked as [reported outcomes](outcomes.md)
-  says, its captures held to its brief and design as the look-over holds them, and its pull
-  requests spot-checked, before its result is relayed. A miss it left goes to a fresh worker as
+- **Finished:** a worker has finished once it reports its task done, even while its thread stays
+  open waiting on a review or a reply, as much as when the host shows it ended. It has its result
+  checked as [reported outcomes](outcomes.md) says, its captures held to its brief and design as
+  the look-over holds them, and its pull requests spot-checked, before its result is relayed. A miss it left goes to a fresh worker as
   `subagent-matrix`'s **Dispatch** says for a follow-up, never back to the finished one.
 - **Rate-limited:** a worker a rate limit or quota stopped is not stalled. It is resumed at once
   as `subagent-matrix`'s capacity rule says for a running worker, never scheduled for the reset
