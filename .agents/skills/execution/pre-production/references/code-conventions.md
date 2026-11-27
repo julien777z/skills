@@ -165,7 +165,10 @@ commit messages and pull-request text. `SKILL.md` names this file at the point a
   as an HTML attribute.
 - **A name says what it is about, so a reader never opens the body to learn what it acts on or
   holds.** That holds for every name: a function, Boolean, field, event, constant, class, module,
-  file or package. A name built on a verb names the verb's object: `job.writes_files`,
+  file or package. Use a qualifier when it communicates a role, state, input or output that
+  readers need to distinguish. Keep labels for design decisions, implementation preferences,
+  or migration phases in the design record when they add no such distinction. A name built on
+  a verb names the verb's object: `job.writes_files`,
   `assert_may_book_rooms`, never `writes(job)` or `assert_may_book`, whose reader asks "writes
   what?", "book what?". A receiver or argument supplies the subject only when it is the very thing
   the name is about: `loan.is_overdue` and `is_deliverable(message)` need nothing more, but a check
