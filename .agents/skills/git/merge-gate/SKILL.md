@@ -38,7 +38,7 @@ for an agent-configuration change, Agent Sync handling before this skill finishe
   authorizes the merge, or a standing permission in the GitHub rule's **Merge Authorization**. It
   creates no authorization of its own,
   and without one it is not invoked: the pull request stays draft.
-- Once that authorization holds, never ask the user for permission to merge and never end by
+- Once that authorization holds, never ask the user for permission to merge outside a pause and never end by
   offering the merge as the remaining step. What stops a merge is a gate: a relevant required check
   that is not green, a head that no longer matches the accepted SHA, or a conflict still unresolved.
   Report that gate.
