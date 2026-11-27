@@ -209,7 +209,7 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   so each one added is context every session pays. Before adding one, fold the subject into an
   existing skill whose name covers it, placed in its body or references as the next bullet says;
   failing that, broaden or rename a close skill so its name covers both; and merge skills whose
-  subjects overlap, never folding a skill a user starts by name into one hidden from the menu. Add a skill only for a subject
+  subjects overlap. Add a skill only for a subject
   no existing name can stretch to cover without going vague, and state its listing cost — one more
   name and description on every turn — in the change's description. One skill holding several
   domains as references, each loaded only when its domain comes up, is the pattern to reach for.
@@ -293,8 +293,8 @@ as a skill of conventions every change follows. The flag keeps it out of the men
 from while its description stays in the agent's listing, so it still loads wherever its subject
 comes up; unlike `disable-model-invocation`, it hides nothing from an agent. A skill a user may
 start by name, or one whose description ends "Run only when the user asks for it.", stays in the
-menu; a skill whose workflows start from what the user says rather than from its name is
-rule-type too, unless its description ends that way.
+menu; a skill the user triggers by words alone, with no workflow of its own to start, is still
+rule-type.
 
 ### Dependencies
 
