@@ -227,8 +227,8 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
 ### Descriptions
 
 **A skill's name reads, as the user would type it, as what the skill does or holds.** A skill
-holding rules a run applies takes a noun phrase, such as `scope-of-change`; a verb-first name, such as
-`finish-pr`, is only for a skill the user invokes to perform that action. Read a proposed name as an
+holding rules a run applies takes a noun phrase, such as `naming-rules`; a verb-first name, such as
+`publish-build`, is only for a skill the user invokes to perform that action. Read a proposed name as an
 instruction: if it reads as one and the skill is not that action, rename it.
 
 The front-matter `description` is read on every turn, for every skill, to decide
