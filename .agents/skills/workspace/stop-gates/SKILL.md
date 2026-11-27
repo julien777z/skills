@@ -1,6 +1,6 @@
 ---
 name: stop-gates
-description: Pause every review, gate, check run and worker in the current session, so the user and agent can correct a problem before any of them goes on, and keep the pause in force until the user resumes it with resume-gates. Use when the user asks to stop or hold the gates, reviews, checks or workers. Run only when the user asks for it.
+description: Pause every review, gate, check run and worker in the current session, so the user and agent can correct a problem before any of them goes on, and keep the pause in force until the user resumes it. Use when the user asks to stop or hold the gates, reviews, checks or workers. Run only when the user asks for it.
 short_description: 'Pause every review, gate, check run and worker until the user resumes them.'
 ---
 
@@ -32,13 +32,13 @@ investigating, editing, committing and pushing a fix, with the fast checks a pus
    push or copy its worktree's changes to the task's working-files folder first.
 2. **Record the pause** in the task ledger through `session-ledger`, as a `hold` entry: when it
    started, the user's words, and one line per stopped or queued item with its pull request or
-   scope, head, stage reached, brief location and next action, so resume-gates can restart each
+   scope, head, stage reached, brief location and next action, so the resume can restart each
    from where it stopped. A result that arrives after the stop is kept in the entry and not acted on.
 3. **Report it**: one line per item stopped, then answer what the user raised.
 
 ## While Paused
 
-- **The pause holds until the user resumes it**, through resume-gates or their own words. A
+- **The pause holds until the user resumes it**, by asking to resume the gates or in their own words. A
   context summary, a new message, a finished fix, a notification or a schedule never lifts it, and
   no reply asks whether to resume.
 - **Before any launch, read the ledger for an open `hold`.** A review, gate, worker or check run
