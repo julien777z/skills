@@ -24,13 +24,15 @@ Reviewed Batches**, **Relocations**, **Resuming A Batch**.
   that make the same decision, and verify the repair on the original case and an adjacent route.
   Repair the description when discovery failed. When a caller or stopping clause skipped an
   applicable skill or check, repair that path.
-- Test the proposed instruction against that original decision path before proposing or writing it. If a
-  reader could follow it and still repeat the miss, explain the mismatch to the user, name the
-  instruction that actually caused or allowed the decision, and correct that owning path and
-  its conflicting callers. Escalate a genuine unresolved choice, not permission for an already
-  authorized repair. Do not mechanically apply a requested wording change or add a general
-  reminder beside a stop rule it cannot override. The original scenario must demonstrate that
-  the causal correction changes the reader's next action.
+- Compare the user's proposed wording with the standing guidance before drafting. Use their
+  request to establish the desired behavior, and record which decision would actually change.
+  Broaden the owning instruction in place when adjacent cases escape it. Use the decision repair
+  above when the standing rule already covers the failure. Consolidate overlapping instructions
+  so each requirement has one owner and one statement.
+- Replay the original decision before proposing or writing the edit. If the draft still admits the
+  miss, explain which instruction, condition or caller allows it and repair that path. Escalate
+  genuine unresolved choices. In verification, show the different next action the correction
+  produces.
 - When several reported problems come from the same decision, correct that decision once at its
   owner. Remove incident-specific rules that only restate the repair. Keep local details that
   still govern a distinct contract or operation.
