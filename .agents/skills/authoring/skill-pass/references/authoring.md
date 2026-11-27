@@ -115,7 +115,10 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   guided by a few examples in the skill of what such a choice looks like. A list of one repository's
   categories, page names or skill names written into a shared skill makes it that repository's copy;
   shared skills still name the shared skills they depend on.
-- **A file's name and description bound what it owns.** Before choosing a skill or rule, state
+- **A file's name and description bound what it owns,** and so do a reference's file name and a
+  section's heading inside the skill chosen. The same test picks the reference and the section
+  that the text joins: a reference named for one subject, or a section headed for one, never
+  takes text on another just because the skill is right. Before choosing a skill or rule, state
   the condition its name and description set — a release stage, a technology, a mode, a kind of
   task — and ask whether the guidance would still be true where that condition does not hold. If
   it would, that file is too narrow, however close its neighboring section: the guidance goes to
