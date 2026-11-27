@@ -2,6 +2,7 @@
 name: pre-production
 description: "The product state before it ships, applied to implementation, review and operational data tasks, maintenance, cleanup, tooling and CI repairs included: build only the target contract, never adding a compatibility shim or keeping support for an obsolete owned contract or revision; update its owned consumers and migrate retained data. Also covers which contracts, environments and records a project's guidance marks as having users or as disposable, what retained data obliges, configuration as an owned contract, deliberate breaks of owned contracts across repositories, adapting to a third-party provider's contract, and what a requiredness change and a backfill owe retained data."
 short_description: 'Build the target contract for the product before it ships, with no compatibility for obsolete owned shapes.'
+user-invocable: false
 ---
 
 # Pre-Production

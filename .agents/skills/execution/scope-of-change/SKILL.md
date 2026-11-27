@@ -2,6 +2,7 @@
 name: scope-of-change
 description: "What a change takes on: the problems it fixes, how far it reaches, the pull request it rides, and the decisions it makes rather than asks. Read before planning, fixing, reviewing or gating a change, when a check fails or work turns up a problem, and before putting a decision to the user. Covers classifying a failing check against the default branch, which checks must pass, a lint or formatting check red on unwritten code, a hosted attempt a runner interrupted, what a defect is and how far its fix reaches, repairing the design behind a defect, a limit with no evidenced requirement, why today's deployment size never sets the design, side work and its pull request, a package consumed through a branch reference, the cleanup size budget, deferral grounds and widening it when the user says \"widen scope\" or \"clean up what you find\", a better shape than the repository's, a correction to one screen against a rule, product choices against routine details, restoring intended behavior, and surfacing trade-offs."
 short_description: 'Decide what a change fixes, carries and leaves, and which of its choices go to the user.'
+user-invocable: false
 ---
 
 # Scope Of Change

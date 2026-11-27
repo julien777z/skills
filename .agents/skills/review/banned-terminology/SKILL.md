@@ -2,6 +2,7 @@
 name: banned-terminology
 description: Owns the banned-terms list in resources/banned_words.json and enforces it. Use when naming anything — code, files, assets, and the items, characters, places and objects players or users meet — when writing a pull request or a message to the user, when reviewing a name, when the user says a name is unclear or asks for a word to be renamed across one codebase, when they ask for a word to be kept out wherever it appears, when they reject a replacement an entry recommends, when they lift a ban, or whenever the decision is about a word rather than one symbol.
 short_description: 'Choose clear names and apply terminology rules.'
+user-invocable: false
 ---
 
 # Banned Terminology

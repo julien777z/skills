@@ -2,6 +2,7 @@
 name: doctor-protocol
 description: The audit-and-fix protocol every doctor skill runs on — scope resolution, a repository index doctors share, a mechanical pre-pass, a partitioned read-only audit under a reviewer cap, a resumable run ledger, a remediation plan shown and started at once, fixes by area on one pull request, one final review, deferral of leftovers, and the report skeleton. Read from a doctor skill that declares it; never invoked on its own.
 short_description: 'Set the audit, fix, review, and reporting process used by every doctor skill.'
+user-invocable: false
 ---
 
 # Doctor Protocol

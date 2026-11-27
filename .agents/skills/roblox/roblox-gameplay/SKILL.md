@@ -2,6 +2,7 @@
 name: roblox-gameplay
 description: Apply every time actively modifying a Roblox game, a bug fix as much as a feature, including mechanics, progression, rewards, controls, presentation, UI, and world content, and when deciding a flag or finding raised on such a change. Shape a fun, immediately understandable loop with frequent satisfying successes, rich readable feedback, meaningful progression suited to the game. Change whatever in the game stands out as incorrect or would be better another way, art included, without asking, apart from the core loop or genre, anything players pay for, security, disclosure, authorization and what the user's own words decided.
 short_description: 'Apply every time actively modifying a Roblox game, including mechanics, progression, rewards, controls, presentation, UI, and world content.'
+user-invocable: false
 ---
 
 # Roblox gameplay and player enjoyment

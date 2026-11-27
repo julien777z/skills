@@ -2,6 +2,7 @@
 name: engineering-conventions
 description: "The conventions every change follows in what it writes and builds: code, configuration, manifests, documentation, comments, commit messages, pull-request text, product copy and forms. Read before writing or editing any of them, and for whose standards govern a repository, code layout and doing one thing one way, declaring configuration and naming a value that differs by environment, logging, choosing versions, dependency releases, holds, pins and tag or branch references, partial updates, required fields and how a read path handles an absent value, American English, example values and paths, documentation, repository text such as commit and pull-request descriptions, and text or forms a product's reader meets."
 short_description: 'Write code, configuration, manifests, documentation and repository text the way every change writes them.'
+user-invocable: false
 ---
 
 # Engineering Conventions

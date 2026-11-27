@@ -2,6 +2,7 @@
 name: roblox-characters
 description: Apply whenever a Roblox character is planned, created, modified, imported, placed, animated, or playtested — NPCs, enemies and other creatures, pets and companions, and the player's avatar — including avatar overrides, accessories and faces, rigs, skinning and bones, idle, procedural and action animation, locomotion, NPC conversations, overhead names, and character collision. Require visible motion that matches movement, grounded and purposeful placement, readable presentation, and motion verified in Play.
 short_description: 'Make Roblox NPCs, creatures, and avatars look, move, and present convincingly.'
+user-invocable: false
 ---
 
 # Roblox characters
