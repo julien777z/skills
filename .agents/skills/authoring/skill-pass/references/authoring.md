@@ -115,8 +115,9 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   guided by a few examples in the skill of what such a choice looks like. A list of one repository's
   categories, page names or skill names written into a shared skill makes it that repository's copy;
   shared skills still name the shared skills they depend on.
-- **A file's name and description bound what it owns.** Before choosing a skill or rule, state
-  the condition its name and description set — a release stage, a technology, a mode, a kind of
+- **A file's name and description bound what it owns, and so do a reference's file name and a
+  section's heading inside the skill chosen.** Before choosing a skill, rule, reference or section,
+  state the condition its name and description set — a release stage, a technology, a mode, a kind of
   task — and ask whether the guidance would still be true where that condition does not hold. If
   it would, that file is too narrow, however close its neighboring section: the guidance goes to
   the file whose subject matches its own. Scope is judged by subject, never reach: guidance that
@@ -201,9 +202,10 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   find; the vendor rubric's placement of the most important instructions near the top gives the
   agent's side of the same reason. A reference holds what only some routes, modes or readers need.
 - **A skill keeps as few references as its routes need.** Each one earns its own file because some
-  route or reader skips it; a subject that fits an existing reference goes there, renaming that file
-  to the broader subject when the new text widens it, and a new file is added only for a subject
-  none covers. A name joining two subjects, such as `x-and-y`, signals two files' worth or a
+  route or reader skips it; a subject an existing reference's name already covers, by the
+  name-bounds test above, goes there, a rename to a broader name that truly covers both is the
+  other way in, and a new file is added only for a subject no name covers. The right skill never
+  makes a reference or section named for another subject the place for text. A name joining two subjects, such as `x-and-y`, signals two files' worth or a
   broader name not yet found. Whenever a pass covers a skill, judge its references as a set:
   - merge references on one subject, or always read together;
   - move into `SKILL.md` a short one every run follows, or one holding the main idea above, when
