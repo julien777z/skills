@@ -1,15 +1,19 @@
 ---
-name: writing-conventions
-description: "How every line a change writes reads: code, configuration, manifests, documentation, comments, commit messages, pull-request text, product copy and forms. Read before writing or editing any of them, and for whose standards govern a repository, code layout and doing one thing one way, declaring configuration and naming a value that differs by environment, logging, choosing versions or dependency releases, American English, example values and paths, documentation, repository text such as commit and pull-request descriptions, and text or forms a product's reader meets."
-short_description: 'Write code, configuration, documentation and repository text the way every change writes them.'
+name: engineering-conventions
+description: "The conventions every change follows in what it writes and builds: code, configuration, manifests, documentation, comments, commit messages, pull-request text, product copy and forms. Read before writing or editing any of them, and for whose standards govern a repository, code layout and doing one thing one way, declaring configuration and naming a value that differs by environment, logging, choosing versions, dependency releases, holds, pins and tag or branch references, American English, example values and paths, documentation, repository text such as commit and pull-request descriptions, and text or forms a product's reader meets."
+short_description: 'Write code, configuration, manifests, documentation and repository text the way every change writes them.'
 ---
 
-# Writing Conventions
+# Engineering Conventions
 
 What every line a change writes follows: code, configuration, manifests, documentation, comments,
 commit messages and pull-request text. Read it before a change writes its first line, and apply it
-to every line the change writes. Before writing or changing text or a form a product's reader
-meets, also read [the product-copy reference](references/product-copy.md).
+to every line the change writes. Read each reference before a change reaches its subject:
+
+- [versions](references/versions.md), before choosing a runtime, base image, dependency release,
+  hold or pin, or a tag or branch reference to external code;
+- [product copy](references/product-copy.md), before writing or changing text or a form a
+  product's reader meets.
 
 ## Dependencies
 - `pre-production`
@@ -121,34 +125,6 @@ meets, also read [the product-copy reference](references/product-copy.md).
   alone, leaves a provider's error response out of the record, or redacts a warning or error
   wholesale because it might hold personal data. Records that report no failure may still withhold
   personal data.
-
-## Versions
-
-- Reference external code and automation by a maintained version tag when available, or by a
-  maintained branch while developing or when no release tag exists. Do not pin dependency manifests,
-  shared checkouts, or workflow references to commit hashes. Lockfiles and release records may retain
-  the exact resolved commit for reproducibility and provenance.
-
-- **Every project the owner runs or consumes runs the newest stable language runtime, base image
-  and dependency releases it works with.** Which release is newest is read from its publisher's
-  release list at the time, such as the runtime's official release page or the package registry, never from
-  memory or from a version the user names, which is checked the same way. A change made for that move — one the user asks for, or
-  the upgrade pull request a warning leads to, as `scope-of-change`'s **Scope Follows The Defect, Not
-  The Request** places it — moves what the project actually runs onto them: its version file,
-  container images, CI and lockfile, with whatever code changes the new releases need, including in
-  an owned package that only widened its range to let a consumer move. Neither of these is that
-  move: a CI leg kept on the old release beside the new one, or a dependency held below its newest
-  release. A change that touches a manifest or lockfile for another purpose, such as adding one
-  dependency, takes that dependency's newest stable release and moves nothing else. Hold one back only
-  where an install or test shows the newer release failing on the project's runtime, such as
-  a dependency the owner does not control pinning it, and name that failure in a comment beside
-  the constraint; a pin in a package the owner controls is widened in that package as part of the
-  move, its release left to the owner; a
-  migration the newer release needs is part of the move, not a reason to hold. Widening a
-  supported range to admit a newer release is fine, since an owned project's range serves the
-  owner's own projects. Raise its minimum once keeping the lower release no longer makes sense,
-  such as when the formatter or the code would stay on the older release's syntax. A library
-  published for consumers outside the owner's projects keeps the range its language rule sets.
 
 ## Language
 

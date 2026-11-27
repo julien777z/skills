@@ -19,7 +19,7 @@ skill never readies, merges or deploys.
 - `defer-scope`
 - `session-ledger`
 - `scope-of-change`
-- `writing-conventions`
+- `engineering-conventions`
 - `council`
 - `subagent-matrix`
 - `skill-pass`
@@ -78,7 +78,7 @@ skill never readies, merges or deploys.
   refresh and review threads do not apply, and fixes are committed in the task's own checkout
   without pushing, the exception the GitHub rule's **Pre-Push Gate** makes for a review the user
   asked for without a push.
-- **A repository the owner does not own**, as `writing-conventions`' **Whose Standards Apply** defines it:
+- **A repository the owner does not own**, as `engineering-conventions`' **Whose Standards Apply** defines it:
   the pass fixes the request's own issues and the defects it finds, wherever they sit. **Local
   Passes** do not run, the reviewer brief's rules are that repository's own guidance, the final
   acceptance brief names the repository as someone else's, and a finding that rests only on a
@@ -120,7 +120,7 @@ Each pass reviews only what no earlier pass reviewed.
 
 Read the title and description against the current head first, and rewrite either one that no
 longer describes the branch: a feature named that was taken back out, a shape the change replaced,
-a contract the diff no longer breaks. Rewrite as `writing-conventions`' **Repository Text** says and under the GitHub rule's independent
+a contract the diff no longer breaks. Rewrite as `engineering-conventions`' **Repository Text** says and under the GitHub rule's independent
 publishing context, never from a body a tool truncated. Refresh once more before final acceptance,
 because the pass's own fixes change what the branch does. Name the fixes review surfaced rather
 than the task required, so a reader sees why the diff is wider than the title.
@@ -220,7 +220,7 @@ These run in the order below, in process unless a pass says otherwise.
 
 - **Python rules:** for the delta's changed Python files, run `acceptance-gate`'s
   `scripts/python_rule_findings.py` over them; each finding it lists gets its fix, and each
-  paragraph candidate `writing-conventions`' **Code Layout** makes a boundary gets its blank line.
+  paragraph candidate `engineering-conventions`' **Code Layout** makes a boundary gets its blank line.
   Read the comments added by the delta even when the script finds nothing. For each, identify the
   external constraint it explains or refactor the owned code so its intent is visible. For owned
   behavior described in a comment, point to an assertion on the observed result that fails when

@@ -20,7 +20,7 @@ Ground intent in the user's accepted requirements, the change's history, and the
 The statement names:
 
 - the user's request in their own words, quoted, with each example value it holds named by its kind
-  in brackets as `writing-conventions`' **Examples And Paths** says, and with every later word of theirs
+  in brackets as `engineering-conventions`' **Examples And Paths** says, and with every later word of theirs
   that widened or narrowed it. Those words bound the change's scope: a restatement in the agent's
   words, a plan step it wrote or a brief never widens it, and a remedy whose product effect — what a feature does or
   shows, or a visible change on surfaces the user did not name — reaches past them is flagged as a
@@ -269,7 +269,7 @@ run an audit of any kind later never stands in for it.
 ## The Tests Behind Each Question
 
 **An example the user gave is never reproduced.** On every question, each hit in the intent
-statement's example search outside the uses `writing-conventions`' **Examples And Paths** permits
+statement's example search outside the uses `engineering-conventions`' **Examples And Paths** permits
 is a flag, and so is any literal in the searched places that looks lifted from real data rather than
 invented. The remedy is an invented value keeping only the trait the case turns on. A missing
 example search, or a bracketed kind in the quoted request the search does not list, holds a clean

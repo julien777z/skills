@@ -22,7 +22,7 @@ calling workflow states how its repairs are judged.
 - `security-audit`
 - `pre-production`
 - `scope-of-change`
-- `writing-conventions`
+- `engineering-conventions`
 - `test-fixture`
 - `run-site`
 - `council`
@@ -125,12 +125,12 @@ after them say:
 4. the affected-repository map required by `code-simplify`'s **Trace Changed Flows**. For each
    changed file group, resolve its project guidance, scoped repository rules and installed shared
    rules by path. Supply the complete text and scope of each source inline or in a named file. In a
-   repository the owner does not own, as `writing-conventions`' **Whose Standards Apply** defines it, the
+   repository the owner does not own, as `engineering-conventions`' **Whose Standards Apply** defines it, the
    brief says so: the gate judges the change against the request, its defects and that repository's
    own guidance and conventions, and a shared rule's standard is no flag there.
    **The pre-gate check runs before every gate.** When the Python rules apply, the caller runs
    `scripts/python_rule_findings.py` with the project's Python interpreter on the in-scope Python
-   files before dispatch, fixes each finding, and each paragraph candidate `writing-conventions`' **Code
+   files before dispatch, fixes each finding, and each paragraph candidate `engineering-conventions`' **Code
    Layout** makes a boundary, in the lines the change writes or edits, then runs it again. Supply the
    file list and every finding that run prints, including an explicit empty result. The reader
    verifies each reported shape against the source and rule;

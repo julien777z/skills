@@ -12,7 +12,7 @@ exercise, and prove that each test protects behavior or an independent contract.
 ## Dependencies
 - `session-ledger`
 - `scope-of-change`
-- `writing-conventions`
+- `engineering-conventions`
 
 ## Workflow
 

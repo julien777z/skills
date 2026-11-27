@@ -63,7 +63,7 @@ follow **Recording During A Task** for the edit's timing.
 - `code-simplify`
 - `acceptance-gate`
 - `scope-of-change`
-- `writing-conventions`
+- `engineering-conventions`
 - `test-skill`
 - `subagent-matrix`
 - `review-pass`
@@ -86,7 +86,7 @@ recording or delivering a batch.
   the current work, and the guidance edit is its record. While a guidance batch is in flight, its
   delivery is that action and the user's words are its evidence.
 - Record the correction as a `guidance_correction` entry with `session-ledger`: the user's words, if
-  any, quoted as `writing-conventions`' **Examples And Paths** says, the evidence of the gap, and for a
+  any, quoted as `engineering-conventions`' **Examples And Paths** says, the evidence of the gap, and for a
   process its verified run, a reproduction scenario, the Scope Statement **Identify the failure class** writes,
   whose From now on line is the entry's intended behavior, the canonical files it will change, and
   `pending` as its `status`. **Validate input** through **Resolve which repository owns the target** run at once, while the evidence

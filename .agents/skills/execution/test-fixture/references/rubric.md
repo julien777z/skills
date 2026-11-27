@@ -120,7 +120,7 @@ setup, parametrization, and assertion conventions, but never import from a sibli
 genuinely shared support to the nearest common test owner instead.
 
 Trace each reused fixture, sample, or helper import to its defining module before treating it as
-canonical. Apply `writing-conventions`' **Code Layout** boundary between executable consumers and reusable
+canonical. Apply `engineering-conventions`' **Code Layout** boundary between executable consumers and reusable
 owners: test-only setup belongs in established test support, while behavior used by applications
 and commands belongs in its existing reusable source owner. Move the definition and update all
 consumers rather than re-exporting it through a command or copying it into test support. Inspect

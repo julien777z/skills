@@ -16,7 +16,7 @@ apply `test-fixture`'s validation boundary to diagnostic experiments.
 ## Dependencies
 - `pre-production`
 - `scope-of-change`
-- `writing-conventions`
+- `engineering-conventions`
 - `doctor-protocol`
 - `test-fixture`
 - `council`

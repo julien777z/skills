@@ -48,7 +48,7 @@ evidence in the private record and remove obsolete blocker wording from the cons
 
 The maintained target follows the user's explicit reference choice, then applicable repository
 guidance: a default branch, published release tag, or another permitted maintained reference.
-Recorded commits establish provenance; they do not override `writing-conventions`' **Versions** convention.
+Recorded commits establish provenance; they do not override `engineering-conventions`' versions reference.
 An explicitly permitted nonexempt immutable reference still needs merged or released provenance. A dependency
 merge does not authorize a release or make the consumer's old testing reference suitable for
 delivery. Before merging, verify all nonexempt consuming locations have moved, validate what they

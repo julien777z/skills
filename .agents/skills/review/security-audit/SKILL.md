@@ -15,7 +15,7 @@ reviewing and apply it throughout. This file holds how that judgment is applied 
 ## Dependencies
 - `subagent-matrix`
 - `scope-of-change`
-- `writing-conventions`
+- `engineering-conventions`
 
 ## While Writing Code
 

@@ -56,7 +56,7 @@ mechanical check that finds every instance rather than the first one noticed:
 - an import from a sibling suite, and a test or test-support module that imports setup, helpers or
   sample data from an executable script or command entrypoint (read the pre-pass's import list for
   every edge from a test root into an executable): the shared definition moves to its
-  test-support owner with every consumer, as `writing-conventions`' **Code Layout** conventions say; a
+  test-support owner with every consumer, as `engineering-conventions`' **Code Layout** conventions say; a
   test importing a command to exercise that command stays;
 - a symbol defined in an application package — a service, an app, or a library package outside its
   own test-utilities package — whose every consumer is under `tests/`, a test-utilities package, or

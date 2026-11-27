@@ -14,7 +14,7 @@ rendered pages for the second, and corrects what serves the reader badly.
 - `doctor-protocol`
 - `pre-production`
 - `scope-of-change`
-- `writing-conventions`
+- `engineering-conventions`
 - `run-site`
 - `share-media`
 - `get-doctors`
@@ -24,7 +24,7 @@ rendered pages for the second, and corrects what serves the reader badly.
 
 Run `doctor-protocol`.
 
-Apply the general React rule, the React layout rule, the React copy and forms rule, `writing-conventions`'
+Apply the general React rule, the React layout rule, the React copy and forms rule, `engineering-conventions`'
 product-copy reference and the interface rules the repository's own project guidance holds. They
 are the rubric; this doctor cites them and never restates them. Their examples are written in
 React, and every lens applies to any web interface, read in its framework's terms.

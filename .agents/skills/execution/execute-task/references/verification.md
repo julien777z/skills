@@ -76,7 +76,7 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
   check or a whole-tree check that every shared component has a docs page.
 - **The spacing check.** Before each push, list the exact adjacent line pairs where setup, a guard,
   transformation, side effect or return meets the next phase without the blank line
-  `writing-conventions`' **Code Layout** requires; for changed Python files, `acceptance-gate`'s
+  `engineering-conventions`' **Code Layout** requires; for changed Python files, `acceptance-gate`'s
   `scripts/python_rule_findings.py` lists the candidate pairs. Fix every listed boundary in the
   lines the change writes or edits, and elsewhere in the changed files within `scope-of-change`'s
   incidental size budget; an unrelated bug or a passing formatter does not satisfy this check.

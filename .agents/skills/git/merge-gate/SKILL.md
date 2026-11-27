@@ -69,7 +69,7 @@ for an agent-configuration change, Agent Sync handling before this skill finishe
 - `stop-gates`
 - `merge-conflict`
 - `scope-of-change`
-- `writing-conventions`
+- `engineering-conventions`
 - `update-skills`
 - `test-fixture`
 

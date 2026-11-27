@@ -14,7 +14,7 @@ does nothing or makes a reader wince, and takes it out.
 - `doctor-protocol`
 - `pre-production`
 - `scope-of-change`
-- `writing-conventions`
+- `engineering-conventions`
 - `code-simplify`
 - `test-fixture`
 - `banned-terminology`

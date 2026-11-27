@@ -191,7 +191,7 @@ of file.
   layering the repository's language rules set;
 - every prompt an application gives a model that is held as text in code — a template, a server's
   instructions, an agent definition — found by reading each model-client call's arguments back to
-  where their text is declared, as `writing-conventions`' **Code Layout** conventions place it;
+  where their text is declared, as `engineering-conventions`' **Code Layout** conventions place it;
 - every declaration list ordered by when its entries were added rather than by what they describe
   — the fields of a message or model, an enum's members, a configuration's keys — so one concept's
   entries sit apart, and every owned wire contract whose field numbers record that history.
@@ -230,7 +230,7 @@ One meaning spelled out many times, or a literal that belongs to one machine.
   spacing step, a layer order — in script or in a second stylesheet;
 - the pre-pass's one-machine path list in source, configuration and fixtures, every environment
   named in code without its full domain, and every sample value shaped like a real identifier from
-  another system, as `writing-conventions`' **Examples And Paths** and **Whose Standards Apply** say.
+  another system, as `engineering-conventions`' **Examples And Paths** and **Whose Standards Apply** say.
 
 The remedy is one owned definition — a component or style token, the existing helper, one
 configuration source, the enum itself — and every site reading it; a restated theme token is read
@@ -295,7 +295,7 @@ the departure as the rule change, as `doctor-protocol`'s **Gate And Show The Pla
 - **Narrating comments and docs** — a comment restating the line below it; a comment justifying a
   choice whose reason lives in code the repository controls; a comment narrating what a branch,
   guard or invariant does or protects against; a comment or docstring recounting what the code
-  used to do, against `writing-conventions`' **Documentation** conventions; a second comment on
+  used to do, against `engineering-conventions`' **Documentation** conventions; a second comment on
   behavior another party owns; a docstring listing the parameters, return or raised types the
   signature already declares, or running past the line the repository's language rules require; a
   JSDoc block on a prop, field, type or component; a comment on an external quirk running past two
@@ -304,12 +304,12 @@ the departure as the rule change, as `doctor-protocol`'s **Gate And Show The Pla
   line; a branch returning `True` or `False` to restate its own condition; comparing to `True`,
   `False` or `None` with `==`; a hand-written loop that a comprehension, builtin or
   standard-library call already does; a helper re-implementing the standard library; statements of
-  different phases run together with no blank line between them, against `writing-conventions`' **Code
+  different phases run together with no blank line between them, against `engineering-conventions`' **Code
   Layout** conventions.
 - **Defensive noise** — a try/except around code that cannot raise what it catches; catch, log and
   re-raise repeated at each layer.
 - **Names that do not say their subject** — every name, read against `banned-terminology`'s
-  **Naming** and `writing-conventions`' **Language**: a verb with no object; `data`, `result`, `temp`, `info`, `helper`,
+  **Naming** and `engineering-conventions`' **Language**: a verb with no object; `data`, `result`, `temp`, `info`, `helper`,
   `manager` or `handler` naming something specific; `_new`, `_v2`, `_final` or `_fixed` suffixes; a
   name saying how rather than what; a word right only in another field, or one thing called by two
   words; a name a reader cannot map to what it renders or holds; two exported names for one need,
@@ -364,7 +364,7 @@ during cutover remains a finding while the older writer still exists.
   ignored; every filter that narrows a check to changed lines.
 - **Censored failure** — every record of a failure that drops the exception's message, notes or
   traceback, renders it as its type alone, replaces it with a placeholder, leaves out a provider's
-  error response, or redacts a warning or error wholesale, against `writing-conventions`' **Logging**
+  error response, or redacts a warning or error wholesale, against `engineering-conventions`' **Logging**
   conventions: read every logging call inside a handler or beside a raise, and every redaction
   filter with what it matches.
 - **Deprecated usage** — every warning the pre-pass's list collected from the baseline checks, and
@@ -504,7 +504,7 @@ the deployment needs it:
 - **Weakened** — a value the code needs that is declared optional, or with a default on which a
   production deployment would not get the full behavior the value exists for; and a reader that
   skips, switches off or weakens its work when the value is unset. This shape is judged from the
-  declaration and the reader alone, whatever the deployment columns show, as `writing-conventions`'
+  declaration and the reader alone, whatever the deployment columns show, as `engineering-conventions`'
   **Configuration** conventions and `code-simplify`'s **Configuration is required unless it has a
   safe default or its owner documents an absence** say;
 - **Bypassed** — the pre-pass's environment reads in application code outside the typed model.
@@ -538,8 +538,8 @@ their owners have released.
 - two libraries declared for one job, or a package the platform, framework or runtime provides;
 - the pre-pass's outdated list: every dependency held below its newest stable release, every
   language runtime in a version file, CI leg or container below the newest stable one the project
-  works with, and every container base image behind its newest stable tag, as `writing-conventions`'
-  **Versions** conventions say;
+  works with, and every container base image behind its newest stable tag, as `engineering-conventions`'
+  versions reference says;
 - the pre-pass's package-audit list: every declared package with a published advisory a release
   fixes;
 - the pre-pass's commit-hash pins: a manifest, shared checkout or workflow reference pinned to a

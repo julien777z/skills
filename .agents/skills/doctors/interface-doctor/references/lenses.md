@@ -17,7 +17,7 @@ Placement, Messages And States, Drawn Two Ways.
 ## Idle Text
 
 Text an end user reads that changes nothing they do or understand, against the **Copy** section of
-`writing-conventions`' product-copy reference and the React copy and forms rule's **Interface Copy**.
+`engineering-conventions`' product-copy reference and the React copy and forms rule's **Interface Copy**.
 
 Evidence: the copy-table row, and the neighboring rows of its surface that already say what it
 says, or the absence of anything the reader does differently for having read it.

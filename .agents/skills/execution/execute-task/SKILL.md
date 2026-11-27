@@ -15,7 +15,7 @@ agent-configuration pull request.
 - `review-proposal`
 - `pre-production`
 - `scope-of-change`
-- `writing-conventions`
+- `engineering-conventions`
 - `banned-terminology`
 - `run-site`
 - `code-simplify`
@@ -309,7 +309,7 @@ after its gating check has been read, outside the command, chain or batch that r
 
 ### Product Constraints
 
-`pre-production`, `scope-of-change` and `writing-conventions` are active in every change task: read
+`pre-production`, `scope-of-change` and `engineering-conventions` are active in every change task: read
 each whole and invoke it before the first edit. Read the product state from project guidance
 before changing a contract or stored value.
 
@@ -371,7 +371,7 @@ required check or the host prevents delivery, keep the push and pull request as 
 
 **A pull request's title and description are brought up to date at every milestone, not at every
 push.** A milestone is a finished plan step or worker task whose checks pass, and a guidance correction pushed onto the pull request carrying it. After it, add
-what the milestone changed and rewrite whatever no longer holds, as `writing-conventions`' **Repository
+what the milestone changed and rewrite whatever no longer holds, as `engineering-conventions`' **Repository
 Text** says, before the milestone is reported. A push inside a step, such as a repair or a rebase,
 leaves the description for that step's milestone. `review-pass`'s **Description Refresh** still
 checks it before review.

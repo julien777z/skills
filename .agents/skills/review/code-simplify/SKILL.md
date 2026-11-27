@@ -15,7 +15,7 @@ it whole before the pass.
 - `list-prs`
 - `pre-production`
 - `scope-of-change`
-- `writing-conventions`
+- `engineering-conventions`
 - `subagent-matrix`
 - `test-fixture`
 
