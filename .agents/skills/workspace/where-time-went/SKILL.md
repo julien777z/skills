@@ -29,8 +29,8 @@ pending, by the agent that asked or by any other, still counts.
   except a span that runs from a turn's last message to the next message from the user or the
   coordinator, and a span in which the agent's only activity is a pending user request. A tool call
   is busy from its call to its result.
-- **Every figure is clock time**, apart from a chart summed over every agent, whose figures are
-  agent time and which sets no `total`. A single agent's or assignment's figure is the length of its busy
+- **Every figure is clock time**, apart from the Activity charts by kind of activity and by role,
+  which are summed over every agent as use-dashboard allows a figure summed over parallel work. A single agent's or assignment's figure is the length of its busy
   intervals. A group's figure, whether a workflow, a round, a phase or the whole session, is the
   length of the union of its members' busy intervals.
 - **A worker that receives several assignments** over the session is one entry per assignment, each
@@ -109,15 +109,14 @@ pages, in order:
   card carrying `status` Blocked in `critical` and an active one no pill. Up next holds those not
   started, with no pill, since the column says it, each with its estimate in `meta` and, when the
   session has several plans, the plan it belongs to in `tag`.
-- **Activity** (`activity`). Charts of the same working time cut other ways, each a whole as a pie
+- **Activity** (`chart`). Charts of the same working time cut other ways, each a whole as a pie
   or a comparison as bars: time by kind of activity — the model thinking and writing, running
   tests, waiting on other commands, Git and the hosting service, lint and type checks, reading
   files, editing — summed over every agent, with the main agent's waits on its children left out
   so no time counts twice, and each command counted under the program it runs, never under a path
   or word it names, so a lint run over test files is lint, not running tests; time by role, such as implementation, review, gate, council and skill
   test, with each role's agent count as its `detail`; how many times each gate, review or council
-  ran, as bars; and agents per model. A summed chart says in its
-  `description` that its figures are agent time, which runs past clock time where agents worked in parallel.
+  ran, as bars; and agents per model.
   Every item opens what it sums through `details`: an activity its split by role and the agents
   that spent the most on it, running tests also its whole-suite against targeted runs, its time
   before and after any guidance change about when tests run, and its longest commands; a role its
