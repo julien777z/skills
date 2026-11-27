@@ -181,11 +181,11 @@ with an obsolete owned contract or revision.
   rule's **Branches and Pull Requests** to place the fix in each affected repository. A defect the
   change introduced or the requested behavior cannot work without stays part of the change at any
   size. **Every other noticed defect is placed as the side-work bullet below says.** Use the GitHub
-  rule's **Pre-Push Gate** for a dependency it needs. A defect is never deferred, left as a note or offered
-  to the user as a question. **A suspected defect whose confirmation is in the agent's reach** — a
-  run, a walk through the product, a measurement with its own tools — is investigated now and, if
-  it confirms, fixed and placed as above; that it is unconfirmed, needs a walk or lies beyond this
-  change is never a reason to defer it.
+  rule's **Pre-Push Gate** for a dependency it needs. A defect is never deferred, left as a note or
+  offered to the user as a question. **A suspected defect whose confirmation is in the agent's
+  reach** — a run, a walk through the product, a measurement with its own tools — is investigated
+  now and, if it confirms, fixed and placed as above; that it is unconfirmed, needs a walk or lies
+  beyond this change is never a reason to defer it.
 - **A security vulnerability the work finds is such a defect, whoever finds it and whenever it
   arrived.** One a gate, reviewer or audit reports in code the change never touched, one that
   predates the change, and one another layer is said to stop before that layer is traced on every
@@ -231,18 +231,19 @@ with an obsolete owned contract or revision.
     whatever its file count, bar the record grounds below, and the one-hop limit above does not
     bound it. Each such fix gets its own commit, named for what it repairs.
   - **A deferral record for incidental cleanup is reserved for three grounds:** cleanup comparable
-    in size to the change in flight or larger, the two together too large for one careful read,
-    such as a sweep as large again as a change of hundreds of files; work an external blocker holds, something outside every repository the user owns that the fix cannot
-    be written without; and a decision that is the user's, such as a design choice or a change to
-    what the product does: one nobody has asked about is put to them now as **Product Choices**
-    says, and one already put and still unanswered, when the run ends included, or one they decline
-    is recorded. Work recorded on a ground is returned to the caller to record, listed in the
-    change's report one line each with its record and its ground, and never fixed in the change.
-    Everything else the work meets is done, since a record costs more than a small fix: a later run
-    must find, read, triage and execute it, and it can be lost or misstated on the way. A defect, a
-    security vulnerability included, and a suspected defect whose confirmation is in reach are never
-    past the budget, as the bullets above say. An explicitly requested broad refactor sets its own
-    scope and carries no budget.
+    in size to the change in flight or larger, the two together too large for one careful read, such
+    as a sweep as large again as a change of hundreds of files; work an external blocker holds,
+    something outside every repository the user owns that the fix cannot be written without; and a
+    decision that is the user's, such as a design choice or a change to what the product does: one
+    nobody has asked about is put to them now as **Product Choices** says, and one already put and
+    still unanswered, when the run ends included, or one they decline is recorded. Work recorded on
+    a ground is returned to the caller to record, listed in the change's report one line each with
+    its record and its ground, and never fixed in the change. Everything else the work meets is
+    done, since a record costs more than a small fix: a later run must find, read, triage and
+    execute it, and it can be lost or misstated on the way. A defect, a security vulnerability
+    included, and a suspected defect whose confirmation is in reach are never past the budget, as
+    the bullets above say. An explicitly requested broad refactor sets its own scope and carries no
+    budget.
 - **A correction to how one screen looks or reads reaches every page when the user makes it a
   rule, and that screen alone when they do not.** A correction the user asks to have codified, or
   gives a reason for that holds wherever the shape appears, such as "labels sit above their fields

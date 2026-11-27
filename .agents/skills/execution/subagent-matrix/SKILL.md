@@ -82,12 +82,12 @@ sending it.
      and the candidate meets every provider, model or tier requirement; otherwise report the receipt
      and substitute nothing. A permitted fallback steps down as little as it can, launching the
      assignment at each step and moving on only on another unsupported receipt: earlier versions of
-     the same family, newest first; the other provider's family at that tier; then each lower tier in
-     turn, same provider first, never skipping one, even to a family another seat already uses. A
+     the same family, newest first; the other provider's family at that tier; then each lower tier
+     in turn, same provider first, never skipping one, even to a family another seat already uses. A
      specialist assignment, on an unsupported or a denied receipt, instead falls back as its
-     **Matrix** row says, holding when that would
-     break the user's constraint or is itself unsupported. Report the original request as
-     unavailable and name the tier and model actually used.
+     **Matrix** row says, holding when that would break the user's constraint or is itself
+     unsupported. Report the original request as unavailable and name the tier and model actually
+     used.
    - A comparison pair keeps one model and effort on both sides through every relaunch.
 4. **Send the dispatch explicitly**: the selected model and effort as arguments, and no inherited
    history, with a self-contained brief (on Codex `spawn_agent`, `fork_turns: "none"`). Check the
