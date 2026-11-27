@@ -207,7 +207,7 @@ authorizes compatibility with an obsolete owned contract or revision.
     whatever its file count, bar the record grounds below, and the one-hop limit above does not
     bound it. Each such fix gets its own commit, named for what it repairs.
     - **The user widens the session in their own words, and only then**, such as "widen scope" or
-      "clean up what you find"; nothing else turns it on. Record that decision, and a later stop,
+      "clean up what you find"; nothing else widens the session. Record that decision, and a later stop,
       with `session-ledger` as one scoped to the whole session, so it reaches every later task,
       context summary, handoff and worker brief.
     - While it holds, collect the items you are unsure about instead of deciding each one, and
