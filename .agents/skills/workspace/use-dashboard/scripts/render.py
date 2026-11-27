@@ -805,6 +805,7 @@ FIGURE_SHAPE: Final[ObjectShape] = ObjectShape(
     },
     required=frozenset({"image", "alt"}),
 )
+
 CHART_ITEM_SHAPE: Final[ObjectShape] = ObjectShape(
     name="ChartItem",
     fields={
