@@ -128,7 +128,7 @@ pages, in order:
   to its kind of edit alone: formatting or a lint fix on files the requested work wrote, or required
   by a standing requirement, is that work. Each concern also counts its files that no requested
   work touched, since that count, not the commit count, is how much it widened a review. A `chart`
-  of files changed per concern, the last two kinds in `warning`, each item opening its commits; and
+  per pull request of files changed per concern, the last two kinds in `warning`, each item opening its commits; and
   a `table` of the concerns with both counts, each row opening its commits. Then what the agents read: files read per agent, as its median and its largest with
   who read it, and reads by repository and by area as charts, so a reader sees whether reviewers
   read the change or the whole tree.
