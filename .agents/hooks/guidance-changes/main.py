@@ -13,10 +13,12 @@ logger = logging.getLogger(__name__)
 STATE_DIRECTORY: Final[Path] = (
     Path(os.environ.get("XDG_STATE_HOME") or Path.home() / ".local" / "state") / "agent-guidance" / "sessions"
 )
+
 PROMPT_PATH: Final[Path] = Path(__file__).resolve().parent / "prompts" / "guidance-changed.md"
 GUIDANCE_ROOT: Final[str] = ".agents"
 GENERATED_ROOT: Final[str] = ".agents/.auto_generated"
 SESSION_START_EVENTS: Final[frozenset[str]] = frozenset({"SessionStart", "sessionStart"})
+SILENT_PROMPT_EVENT: Final[str] = "beforeSubmitPrompt"
 SESSION_KEYS: Final[tuple[str, ...]] = ("session_id", "conversation_id")
 MAX_NAMES_PER_KIND: Final[int] = 12
 GIT_TIMEOUT_SECONDS: Final[int] = 5
@@ -51,7 +53,16 @@ def changed_guidance(seen: str, installed: str) -> dict[str, list[str]] | None:
     """Return the skills, rules and other guidance that differ between two installs."""
 
     listing = git_output(
-        ["diff", "--name-only", seen, installed, "--", f":(top){GUIDANCE_ROOT}", f":(top,exclude){GENERATED_ROOT}"]
+        [
+            "diff",
+            "--name-only",
+            "--end-of-options",
+            seen,
+            installed,
+            "--",
+            f":(top){GUIDANCE_ROOT}",
+            f":(top,exclude){GENERATED_ROOT}",
+        ]
     )
 
     if listing is None:
@@ -107,19 +118,18 @@ def main() -> int:
         state = session_state_path(session)
         seen = state.read_text(encoding="utf-8").strip() if state.is_file() else None
 
-        if seen == installed or (seen is not None and payload.get("hook_event_name") in SESSION_START_EVENTS):
+        event = payload.get("hook_event_name")
+
+        if seen == installed or (seen is not None and event in SESSION_START_EVENTS | {SILENT_PROMPT_EVENT}):
             return 0
 
-        STATE_DIRECTORY.mkdir(parents=True, exist_ok=True)
-        state.write_text(installed, encoding="utf-8")
-
-        if seen is None:
-            return 0
-
-        changes = changed_guidance(seen, installed)
+        changes = changed_guidance(seen, installed) if seen is not None else {}
 
         if changes != {}:
             sys.stdout.write(change_notice(changes))
+
+        STATE_DIRECTORY.mkdir(parents=True, exist_ok=True)
+        state.write_text(installed, encoding="utf-8")
     except Exception:
         logger.exception("The guidance-change check could not run")
 
