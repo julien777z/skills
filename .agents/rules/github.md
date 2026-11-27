@@ -127,8 +127,8 @@ alwaysApply: true
     the user's current pauses and exclusions;
   - a pull request confined to agent configuration, static metadata included, once the gates its
     guidance-editing route requires have passed on the head that merges and its complete file list
-    is confirmed confined. One that adds a doctor skill waits instead for the user's review
-    together with everything in its batch;
+    is confirmed confined. One that adds a doctor skill, or changes what a hook runs or a harness
+    permission, waits instead for the user's review together with everything in its batch;
   - the focused revert of a pull request an agent merged by mistake, which may auto-merge.
 - **A pull request confined to deferral records, active or declined, merges without a separate
   request as soon as its records are written**, through the skill that runs a merge, with its required checks, once
