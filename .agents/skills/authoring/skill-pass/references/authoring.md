@@ -91,10 +91,10 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   fails when a shared skill or rule already states its requirement, however it is worded, since a
   wording difference only means the copy is stale, and when it copies how the repository's tooling
   behaves, as the bullet on tooling above says. It is deleted rather than moved, because its owner
-  already holds it, and a fact only the repository owns, such as its own folder, service or
-  scenario, stays. The point-of-use allowance under **Writing** covers a skill's own text, not such
-  a copy. The name-bounds bullet's scope decides which files a change tests: a stale copy in a file
-  the change does not touch is raised as a misplacement there is.
+  already holds it, and a fact only the repository owns, such as its product state or a domain
+  rule about its own records, stays; a passage whose only repository-owned part is a tool or file
+  name is still a copy. The name-bounds bullet's scope decides which files a change tests: a stale
+  copy in a file the change does not touch is raised as a misplacement in such a file is.
 - **A new rule file is only ever a guidance correction**, written for a subject no skill runs
   for, as the placement bullet above says. A system an agent built, such as a booking
   service's flows, is documented in its code and README, never in guidance; repository guidance
@@ -441,8 +441,10 @@ a template where correct results genuinely vary in shape.
 
 ## Writing
 
-- A skill may restate an ambient rule when it helps the reader act at the point of use; this does
-  not license a second copy of a decision boundary owned by a skill that necessarily runs.
+- A shared skill may restate an ambient rule when it helps the reader act at the point of use; this
+  does not license a second copy of a decision boundary owned by a skill that necessarily runs. A
+  repository's own skill restates none, as **A repository's own guidance holds only the facts that
+  repository owns** says.
 - If target file does not exist, create it with a concise structure matching existing style.
 - Group frontmatter fields by subject. Put a field that summarizes, qualifies, or overrides
   another immediately after the field it relates to, unless the format requires another order.
