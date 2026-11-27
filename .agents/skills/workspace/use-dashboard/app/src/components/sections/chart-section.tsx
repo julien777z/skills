@@ -30,7 +30,7 @@ interface Slice {
 function themeHue(variable: string): number {
   const value = getComputedStyle(document.documentElement).getPropertyValue(`--${variable}`).trim();
 
-  return Number(value.match(/([\d.]+)\s*\)$/)?.[1] ?? Number.NaN);
+  return Number(value.slice(value.lastIndexOf(' ') + 1, -1));
 }
 
 function hueDistance(first: number, second: number): number {
@@ -46,7 +46,7 @@ function seriesColorsFor(items: ChartItem[]): string[] {
     const hue = themeHue(name);
     const clearance = Math.min(360, ...toneHues.map((toneHue) => hueDistance(hue, toneHue)));
 
-    return { color: `var(--${name})`, clearance: Number.isNaN(clearance) ? 0 : clearance };
+    return { color: `var(--${name})`, clearance };
   });
   const clear = series.filter(({ clearance }) => clearance > NEAR_TONE_DEGREES);
   const near = series
@@ -70,7 +70,7 @@ function slicesOf(items: ChartItem[], kind: ChartKind): Slice[] {
       color = series[next++ % series.length];
     }
 
-    return { key, item, color, share: total > 0 ? item.value / total : 0 };
+    return { key, item, color, share: item.value / total };
   });
 }
 
@@ -181,21 +181,21 @@ function Pie({
   total?: string;
   selection: Selection;
 }): ReactNode {
-  const hovered = slices.find(({ key }) => key === selection.active);
+  const active = slices.find(({ key }) => key === selection.active);
   const ringId = useId();
   const drawn = slices.filter(({ share }) => share > 0);
   const sliceAt = (target: EventTarget): Slice | undefined =>
     target instanceof Element ? slices.find(({ key }) => key === target.getAttribute('data-slice')) : undefined;
 
   function handleKey(event: KeyboardEvent<HTMLDivElement>): void {
-    const target = steppedIndex(event.key, hovered ? drawn.indexOf(hovered) : -1, drawn.length);
+    const target = steppedIndex(event.key, active ? drawn.indexOf(active) : -1, drawn.length);
 
     if (target !== undefined) {
       event.preventDefault();
       selection.setActive(drawn[target].key);
-    } else if ((event.key === 'Enter' || event.key === ' ') && hovered?.item.details) {
+    } else if ((event.key === 'Enter' || event.key === ' ') && active?.item.details) {
       event.preventDefault();
-      selection.open(hovered, event.currentTarget);
+      selection.open(active, event.currentTarget);
     }
   }
 
@@ -207,7 +207,7 @@ function Pie({
         className="relative size-40 shrink-0 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring"
         role="listbox"
         aria-label={title}
-        aria-activedescendant={hovered ? `${ringId}-${slices.indexOf(hovered)}` : undefined}
+        aria-activedescendant={active ? `${ringId}-${slices.indexOf(active)}` : undefined}
         tabIndex={0}
         onKeyDown={handleKey}
         onBlur={() => selection.setActive(null)}
@@ -228,7 +228,7 @@ function Pie({
               id={`${ringId}-${index}`}
               role="option"
               tabIndex={-1}
-              aria-selected={hovered?.key === slice.key}
+              aria-selected={active?.key === slice.key}
             >
               {`${slice.item.label}: ${slice.item.figure}, ${percentOf(slice.share)}`}
             </div>
@@ -259,13 +259,13 @@ function Pie({
                     r={RING_RADIUS_FOR_CIRCUMFERENCE_100}
                     fill="none"
                     stroke={slice.color}
-                    strokeWidth={hovered?.key === slice.key ? RING_WIDTH + 1.5 : RING_WIDTH}
+                    strokeWidth={active?.key === slice.key ? RING_WIDTH + 1.5 : RING_WIDTH}
                     strokeDasharray={`${length} ${100 - length}`}
                     strokeDashoffset={dashOffset}
                     className={cn(
                       'transition-[opacity,stroke-width]',
                       slice.item.details && 'cursor-pointer',
-                      hovered && hovered.key !== slice.key && DIMMED,
+                      active && active.key !== slice.key && DIMMED,
                     )}
                   />
                 </TooltipTrigger>
@@ -275,13 +275,13 @@ function Pie({
           })}
         </svg>
         <span className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-8 text-center">
-          {hovered ? (
+          {active ? (
             <>
               <Text size="xs" tone="muted">
-                {hovered.item.label}
+                {active.item.label}
               </Text>
               <Text size="sm" weight="semibold" numeric>
-                {percentOf(hovered.share)}
+                {percentOf(active.share)}
               </Text>
             </>
           ) : (
@@ -312,11 +312,7 @@ function Bars({ slices, selection }: { slices: Slice[]; selection: Selection }):
                 {slice.item.figure}
               </Text>
             </Stack>
-            <Progress
-              value={largest > 0 ? (slice.item.value / largest) * 100 : 0}
-              color={slice.color}
-              aria-hidden="true"
-            />
+            <Progress value={(slice.item.value / largest) * 100} color={slice.color} aria-hidden="true" />
             {slice.item.detail && (
               <Text size="xs" tone="muted">
                 {slice.item.detail}
