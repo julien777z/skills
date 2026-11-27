@@ -1,6 +1,6 @@
 ---
 name: use-browser
-description: Show the user a page the agent made, such as a dashboard or report, in their browser, reloading its tab in the task group; or operate the user's browser to open websites, fill forms, click, take screenshots, extract data, test web apps, QA and bug hunts, sign in, or automate Electron apps and Slack. Use whenever a task opens, shows, reloads or controls a browser page, before selecting a browser or binding a task tab, and when a browser or app surface reports an inventory or availability error.
+description: Show the user a page the agent made, such as a dashboard or report, in their browser, or select and operate a browser for websites, forms, screenshots, testing, sign-in and other tasks. Use whenever a task opens, shows, reloads or controls a browser page, before selecting a browser or binding a task tab, and when a browser or app surface reports an inventory or availability error.
 short_description: 'Show a local page in the user''s browser, or operate a browser.'
 ---
 
@@ -22,11 +22,12 @@ cannot load the file, use a local URL served to that browser or report the previ
 
 For visits, forms, screenshots, testing, sign-in and other browser work, select by purpose:
 
-- For local development and verification, use `agent-browser` or an isolated browser supplied by
-  the harness. Do not fall back to the user's personal browser if neither is available; report the
-  blocked browser step and continue independent work.
-- For a user-reported issue at a non-local URL, sign-in, account work, or another task that uses
-  the user's session, use the harness to connect to the user's existing browser and relevant profile.
+- For local development and verification, use an isolated `agent-browser` session or an isolated
+  browser supplied by the harness. Do not attach to the user's existing browser or profile, or fall
+  back to it if neither route is available; report the blocked step and continue independent work.
+- For user-requested browser operations on non-local sites, such as an issue at a supplied URL,
+  and for tasks needing the user's account session, use the harness to connect to the user's
+  existing browser and relevant profile.
 - Honor an explicitly requested browser. Showing a page to the user follows **Showing A Local Page**;
   an agent's own inspection of that page follows the local verification route above.
 
