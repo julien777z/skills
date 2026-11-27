@@ -121,7 +121,9 @@ commit messages and pull-request text. `SKILL.md` names this file at the point a
   the exact resolved commit for reproducibility and provenance.
 
 - **Every project the owner runs or consumes runs the newest stable language runtime, base image
-  and dependency releases it works with.** A change made for that move — one the user asks for, or
+  and dependency releases it works with.** Which release is newest is read from its publisher's
+  release list at the time, such as python.org's downloads or the package registry, never from
+  memory or from a version the user names, which is checked the same way. A change made for that move — one the user asks for, or
   the upgrade pull request a warning leads to, as this skill's **Scope Follows The Defect, Not The
   Request** places it — moves what the project actually runs onto them: its version file,
   container images, CI and lockfile, with whatever code changes the new releases need, including in
@@ -130,7 +132,9 @@ commit messages and pull-request text. `SKILL.md` names this file at the point a
   release. A change that touches a manifest or lockfile for another purpose, such as adding one
   dependency, takes that dependency's newest stable release and moves nothing else. Hold one back only
   where an install or test shows the newer release failing on the project's runtime, such as
-  another dependency pinning it, and name that failure in a comment beside the constraint; a
+  a dependency the owner does not control pinning it, and name that failure in a comment beside
+  the constraint; a pin in a package the owner controls is widened in that package as part of the
+  move, its release left to the owner; a
   migration the newer release needs is part of the move, not a reason to hold. Widening a
   supported range to admit a newer release is fine, since an owned project's range serves the
   owner's own projects. Raise its minimum once keeping the lower release no longer makes sense,
