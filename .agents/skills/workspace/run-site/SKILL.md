@@ -63,7 +63,7 @@ Use `use-browser` for browser control through its supported route. Apply `test-f
   first" is the defect, not the workaround. A setup step with a documented precondition is a setup
   step that will fail for whoever does not read the document.
 
-## Local Stacks
+## Local Stacks And Development Data
 
 - **Local stack resources are disposable, and repairing them is part of the work, never a question
   for the user.** Local databases and their migration state, Redis, Docker containers, volumes,

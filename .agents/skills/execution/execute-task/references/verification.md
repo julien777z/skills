@@ -64,7 +64,7 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
 - **Which jobs run here.** Select local jobs under **Suites And Failures**. A selected test suite,
   a job that needs a service or running stack, or one too slow to run before every push joins
   verification at the end and is named in the report. Recover local shortages of disk, memory or
-  ports as `run-site`'s **Local Stacks** says and run the job locally. **Suites
+  ports as `run-site`'s **Local Stacks And Development Data** says and run the job locally. **Suites
   And Failures**' cannot-run bullet decides when a job may be left to its hosted run. A
   non-essential check left red on findings the change did not write, as `scope-of-change`'s
   essential-checks bullet classifies them, holds no push.
@@ -131,7 +131,7 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
   runs slowly, or needs local services started. If a required suite genuinely cannot run, name it
   and say why alongside the result.
   - A suite cannot run only when this session found why itself: its own runner refused with a
-    concrete cause after the recovery `run-site`'s **Local Stacks** gives, or a credential or
+    concrete cause after the recovery `run-site`'s **Local Stacks And Development Data** gives, or a credential or
     hosted service it requires is absent from where the repository configures it (its settings,
     secrets or environment).
   - When a reviewer, worker or plan says a suite needs credentials, a service or access, check that

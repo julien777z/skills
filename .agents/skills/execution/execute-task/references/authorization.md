@@ -64,7 +64,7 @@ step is a new approval boundary, and how a step or choice reaches the user.
   decide it, act and report what was done. The class: whether to delete, reset or recreate a local
   resource, such as a cache volume filling the disk or a database stuck on a migration the branch
   has since regenerated, and whether to reset or reopen local records to reach a state, such as a
-  test account back at its first sign-in, both of which `run-site`'s **Local Stacks** gives the agent; what a
+  test account back at its first sign-in, both of which `run-site`'s **Local Stacks And Development Data** gives the agent; what a
   data change owes records already stored, which project guidance says; which of two
   implementation details to use where a rule picks one; how to remove duplication the guidance
   treats as a defect — which repository or package owns shared behavior and which mechanism replaces

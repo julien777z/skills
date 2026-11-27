@@ -230,7 +230,7 @@ flow changing across many pages, a change carried past the surface the user name
 user's words in the intent statement that settle it. Small presentation decisions on the surface in
 hand are not listed; neither is a game's design, which the global rules' game-design bullet makes
 the agent's decision and never a question for the user, a new control or room included; nor is local
-test tooling or the records it seeds, which `run-site`'s **Local Stacks** leaves to the
+test tooling or the records it seeds, which `run-site`'s **Local Stacks And Development Data** leaves to the
 agent. A product choice with no such words is a flag whose remedy is putting the choice to the
 user before the code stands, whatever the change calls itself, a fix included. An earlier
 acceptance, a plan record without the user's words, or a brief calling the choice decided is not
