@@ -43,6 +43,9 @@ Findings use this scale:
 A maintainability finding is never `blocker`. It is at most `should`, and only when it is one of:
 
 - a second copy of a helper or mechanism the repository already owns (standards 3 and 4);
+- an added file doing work an existing file owns when the split serves no distinct boundary
+  (standard 2);
+- a fixed value wrapped in a callable for a repository-owned interface (standard 5);
 - new code beside an existing helper or mechanism that would have done the job with one more
   parameter, condition or case (standard 4);
 - an abstraction, interface or factory the change adds with a single implementation or caller, or
