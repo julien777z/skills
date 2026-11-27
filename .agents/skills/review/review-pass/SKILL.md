@@ -64,6 +64,12 @@ skill never readies, merges or deploys.
 ## Targets
 
 - **Open pull request:** the pull request is the review target and the working pull request.
+- **Bulk set:** pull requests opened together to make one similar change across repositories, as
+  `subagent-matrix`'s **Dispatch** names them, are one target, each still its own working pull
+  request. One reviewer reads every diff in one pass and carries the loop; final acceptance is one
+  gate over the frozen diffs, naming a verdict per head, as `acceptance-gate`'s several-diffs
+  paragraph allows; and **Range** records a `review` entry per head. A finding accepted on one is
+  checked against every other and its fix applied wherever the same case holds.
 - **Merged range a caller delegates:** read [Merged targets](references/merged-targets.md), this
   skill's reference for reviewing an immutable `first-parent..merge-commit` range and opening a fix
   pull request only once a finding needs one.

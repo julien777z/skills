@@ -117,8 +117,8 @@ Follow the active task's recorded priorities when choosing the next eligible uni
 
 Before the first step, follow `stop-gates`' **Asking While Paused** once for the whole selection.
 
-1. **Review the whole pull request.** Invoke `review-pass` on the pull request with its intent
-   statement, asking for the whole pull request: its complete merge-base diff, the full contents of every touched file, related code and
+1. **Review the whole pull request.** Invoke `review-pass` on the pull request, or once on a bulk
+   set as its **Targets** names one, with its intent statement, asking for the whole pull request: its complete merge-base diff, the full contents of every touched file, related code and
    sibling modules. Its **Range** decides what an earlier pass already covers: a pull request whose
    recorded `whole` head has not moved keeps that verdict and is reviewed again by no one, and one
    that moved since gets only its delta from that head. It returns the accepted head.
