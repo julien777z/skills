@@ -57,6 +57,9 @@ and deliver the same dashboard again on every request so the user keeps one page
 
 ## Spec
 
+Each `<n> min` below stands for a duration written as `use-dashboard` writes one, such as `~18 min`
+or `~3h 10 min`.
+
 - **Header.** `title`: `Progress Dashboard`. `topic`: the task in a few words, such as "Bulk
   export". `subtitle`: the task's goal, such as "Let admins download a month of invoices as one
   file". It sets no `status`.
