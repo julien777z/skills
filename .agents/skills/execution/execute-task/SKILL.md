@@ -398,7 +398,7 @@ Apply [named work](references/named-work.md):
   with its next step before whatever displaced it starts, and resume it without waiting for
   "continue".
 - After a compaction or handoff, read each step's state from `session-ledger` and the repository,
-  never from the summary.
+  never from the summary, and confirm each running worker's check timer.
 - Before a report goes out, compare each outstanding item against the line the last report carried
   for it; an unchanged line means the item is finished in this turn when **Priority** permits it.
 - A wait blocks only the work that depends on what is awaited. Every wait applies that test to the

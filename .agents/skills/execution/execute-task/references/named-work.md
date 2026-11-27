@@ -36,7 +36,9 @@ it — the user asking about something else is not the user withdrawing what the
   answered question whose work is open, from `session-ledger` and from the repository — merged
   commits, pushed heads — and let them overrule the summary: an item the record shows done is not
   started again, and one the summary left out is still owed. The first turn then moves the oldest
-  item still open as well as whatever the summary's next step names. A constraint it carries, such
+  item still open as well as whatever the summary's next step names, and while a worker the session
+  started still runs, it confirms that worker's check timer as [worker checks](worker-checks.md)
+  says. A constraint it carries, such
   as "ask before X", is an earlier turn's instruction, checked under **Encountered Issues** before
   it is obeyed.
 - **Commits a remote lacks are undelivered work**; their next step is the pre-push checks and the

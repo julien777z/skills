@@ -32,7 +32,7 @@ This is the user's standing instruction and holds over a harness default against
   request a worker opened carries no receipt, and the comparison is how the coordinator sees one.
   It spot-checks the session's pull requests against the GitHub rule's **Branches and Pull
   Requests**. Each repository should have at most one open agent-configuration pull request for
-  the session, and no pull request that a worker opened.
+  the session.
   No branch should mix guidance and source. No pull request should be outside its brief, and none
   should be another session's pull request carrying the session's commits. A miss goes to the
   running worker that made it, or the coordinator fixes its own, with the consolidation that rule
