@@ -291,7 +291,8 @@ small it looks.** Each route below is the gate set its batch passes on the head 
        statement lists something beyond what the user asked or the invoking workflow holds it.
    - Place a required edit in the existing file that owns the subject. If no file of the selected
      type governs it, create the owner under **Guidance Changes Proceed Automatically** and record
-     its recommended name, scope and behavior in the correction evidence.
+     its recommended name, chosen as `skill-pass`'s authoring reference's **Package And References**
+     says, scope and behavior in the correction evidence.
 
 3. **Include the underlying issue.** A concrete issue or evidence, such as screenshots, the user
    raises with a guidance request is requested scope: fix the underlying product or code issue in

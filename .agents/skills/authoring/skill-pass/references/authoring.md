@@ -134,9 +134,9 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
     and **each bullet against its section's heading**.
   - **Text already misplaced in a file whose instructions the change adds to or alters moves in the
     same change** to the file, reference or section whose name covers it, with its readers updated,
-    when the pass's **Placement** step tests that file: that file is the change's scope. A receiver
-    of moved text is tested for what it receives, and its own other misplacements follow the
-    bullet below. For a misplacement in a file the change does not touch, explain the mismatch and
+    when the pass's **Placement** step tests that file: that file is the change's scope. A file that
+    only receives moved text is tested for what it receives; a misplacement found elsewhere in it
+    is put to the user as for an untouched file. For a misplacement in a file the change does not touch, explain the mismatch and
     ask whether to include the move, continuing the work already authorized.
 - Paths inside a repository's `.agents`:
   - `agent` -> `.agents/agents/<name>.md`
@@ -213,6 +213,10 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   no existing name can stretch to cover without going vague, and state its listing cost — one more
   name and description on every turn — in the change's description. One skill holding several
   domains as references, each loaded only when its domain comes up, is the pattern to reach for.
+- **A skill's name reads, as it appears in the skill listing, as what the skill does or holds.** A
+  skill holding rules a run applies takes a noun phrase, such as `naming-rules`; a verb-first name,
+  such as `publish-build`, is for a skill that performs that action, whoever starts it. Read a
+  proposed name as an instruction: if it reads as one and the skill is not that action, rename it.
 - **A skill's main idea stays in `SKILL.md`, near the top,** whatever its form, even where Skill
   shape would send it to a reference: the part a reader opens the skill to see, such as the
   mapping, principle or contract its name promises. A skill is read by people as well as agents,
@@ -241,11 +245,6 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   overly specific guidance, duplication, unsupported claims, or an unclear ownership boundary.
 
 ### Descriptions
-
-**A skill's name reads, as the user would type it, as what the skill does or holds.** A skill
-holding rules a run applies takes a noun phrase, such as `naming-rules`; a verb-first name, such as
-`publish-build`, is only for a skill the user invokes to perform that action. Read a proposed name as an
-instruction: if it reads as one and the skill is not that action, rename it.
 
 The front-matter `description` is read on every turn, for every skill, to decide
 whether this one fires. It has two jobs. The first is to state **when** — the situations that

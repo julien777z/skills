@@ -55,8 +55,8 @@ step naming the section it reads, the
    whole of each file under `.agents` whose instructions the change adds to or alters, a skill
    counted with its whole package, and of each file an audit covers, never to the changed lines
    alone. A file touched only mechanically — a citation or dependency repointed at a moved or
-   renamed target, a link fix, or wording that changes no instruction — keeps the test of the lines
-   it changes and starts no whole-file sweep; a file or heading the change itself renames stays
+   renamed target, a link fix, or wording that changes no instruction — and a file that only
+   receives moved text keep the test of the lines they change and start no whole-file sweep; a file or heading the change itself renames stays
    under the test.
 7. **Description as the index.** For every subject a skill owns, confirm a clause of its frontmatter
    description names it, and judge the description as the authoring reference's **Descriptions**
