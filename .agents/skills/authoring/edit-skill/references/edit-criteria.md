@@ -63,17 +63,18 @@ The statement is written before the edit, in the shape `SKILL.md`'s
   the same class that the request never mentioned, a different kind of thing from its examples. A
   case the draft would still handle as before means the draft only renamed the examples; it is
   rewritten until that case changes, and the case is listed under *Also changes*.
-- **Broad probe.** Name the nearest case outside the class and read the draft, and every reader
-  the inheritance search finds, for that case. It must be handled as before: a draft that changes
-  it is narrowed until it does not, and the case is the *Stays as it is* line. Then ask of every
-  item under *Also changes*, and every behavior change under *Inherited*, whether the user,
-  reading only their own words, would expect it. Count the run work the draft starts as well — the
-  subagents, review rounds or loops, gates and whole-file sweeps a realistic case runs, judged as
+- **Broad probe.** Name the nearest case outside the class and read the draft, and every reader the
+  inheritance search finds, for that case. It must be handled as before: a draft that changes it is
+  narrowed until it does not, and the case is the *Stays as it is* line. Then ask of every item
+  under *Also changes*, and every behavior change under *Inherited*, whether the user, reading only
+  their own words, would expect it. Count the run work the draft starts as well — the subagents,
+  review rounds or loops, gates and whole-file sweeps a realistic case runs, judged as
   `skill-pass`'s **Budgets and flows** judges a flow — such as a check that starts one reviewer per
-  changed file where the request named one review: work that multiplies past what the user's
-  words point to fails the probe, never the cost of building a product design. An item that fails
-  leaves the draft, moves to *Beyond what you asked* and takes the policy-change route, with the
-  case, the count and the narrower version, while the rest proceeds.
+  changed file where the request named one review: work that multiplies past what the user's words
+  point to fails the probe, never the cost of building a product design, whoever drafted it, a
+  worker or reviewer included: it is never dropped as a carried instruction outside the request. An
+  item that fails leaves the draft, moves to *Beyond what you asked* and takes the policy-change
+  route, with the case, the count and the narrower version, while the rest proceeds.
 - **Transfer evidence.** For a correction to a recurring failure class, run edited guidance on
   a task with a different surface and vocabulary that still reaches the same decision. Also
   exercise the closest legitimate case outside the class. Renaming the original example can
