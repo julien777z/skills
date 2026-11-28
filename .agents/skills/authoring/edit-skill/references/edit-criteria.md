@@ -71,10 +71,11 @@ The statement is written before the edit, in the shape `SKILL.md`'s
   review rounds or loops, gates and whole-file sweeps a realistic case runs, judged as
   `skill-pass`'s **Budgets and flows** judges a flow — such as a check that starts one reviewer per
   changed file where the request named one review: work that multiplies past what the user's words
-  point to fails the probe, never the cost of building a product design, whoever drafted it, a
-  worker or reviewer included: it is never dropped as a carried instruction outside the request. An
-  item that fails leaves the draft, moves to *Beyond what you asked* and takes the policy-change
-  route, with the case, the count and the narrower version, while the rest proceeds.
+  point to fails the probe, never the cost of building a product design. A worker's or reviewer's
+  proposed text is part of the draft for this probe, not a carried instruction outside the request:
+  work it multiplies fails the probe as the draft's own does. An item that fails leaves the draft,
+  moves to *Beyond what you asked* and takes the policy-change route, with the case, the count and
+  the narrower version, while the rest proceeds.
 - **Transfer evidence.** For a correction to a recurring failure class, run edited guidance on
   a task with a different surface and vocabulary that still reaches the same decision. Also
   exercise the closest legitimate case outside the class. Renaming the original example can
