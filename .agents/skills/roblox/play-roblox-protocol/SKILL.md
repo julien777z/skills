@@ -2,6 +2,7 @@
 name: play-roblox-protocol
 description: The protocol every skill that plays a published Roblox game runs on, for playing games only and never for building or editing one — finding the game and a named player, joining and staying in that player's server, playing in the isolated runner, playing to achieve the game's objective while pursuing its secondary goals such as currency, collectibles, experience and free rewards, what the agent may and may not do in a game, delegating play to a worker, captures, recording what a session learns, and the report skeleton. Read from a skill that declares it, such as a play skill for one game or a research study's play turns; never invoked on its own.
 short_description: 'Set how an agent joins, plays and reports a published Roblox game.'
+user-invocable: false
 ---
 
 # Play Roblox Protocol

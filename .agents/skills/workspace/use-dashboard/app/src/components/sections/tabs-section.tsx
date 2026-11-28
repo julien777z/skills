@@ -2,12 +2,10 @@ import { type KeyboardEvent, type ReactNode, useId, useRef, useState } from 'rea
 
 import { Stack } from '@/components/primitives';
 import { Button } from '@/components/ui/button';
-import { cn, withKeys } from '@/lib/utils';
+import { cn, steppedIndex, withKeys } from '@/lib/utils';
 import type { Tab, TabsSection as TabsSectionSpec } from '@/spec';
 import { DashboardSection } from './dashboard-section';
 import { InTabPanelContext, SectionCard } from './section-card';
-
-const NEXT_TAB_KEYS: Record<string, number> = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
 
 function TabSections({ tab }: { tab: Tab }): ReactNode {
   return (
@@ -29,15 +27,7 @@ export function TabsSection({ section }: { section: TabsSectionSpec }): ReactNod
   const selected = Math.min(current, tabs.length - 1);
 
   function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
-    const step = NEXT_TAB_KEYS[event.key];
-    const target =
-      event.key === 'Home'
-        ? 0
-        : event.key === 'End'
-          ? tabs.length - 1
-          : step === undefined
-            ? undefined
-            : (selected + step + tabs.length) % tabs.length;
+    const target = steppedIndex(event.key, selected, tabs.length);
 
     if (target === undefined) {
       return;

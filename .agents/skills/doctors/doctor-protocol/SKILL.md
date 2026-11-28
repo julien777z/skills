@@ -2,6 +2,7 @@
 name: doctor-protocol
 description: The audit-and-fix protocol every doctor skill runs on — scope resolution, a repository index doctors share, a mechanical pre-pass, a partitioned read-only audit under a reviewer cap, a resumable run ledger, a remediation plan shown and started at once, fixes by area on one pull request, one final review, deferral of leftovers, and the report skeleton. Read from a doctor skill that declares it; never invoked on its own.
 short_description: 'Set the audit, fix, review, and reporting process used by every doctor skill.'
+user-invocable: false
 ---
 
 # Doctor Protocol
@@ -15,7 +16,7 @@ finds. This skill owns the run; each doctor owns only its domain.
 - `code-simplify`
 - `acceptance-gate`
 - `defer-scope`
-- `pre-production`
+- `scope-of-change`
 - `execute-task`
 - `edit-skill`
 - `session-ledger`
@@ -59,9 +60,10 @@ either this protocol restated, which is skill-to-skill duplication, or a rule th
 
 ## Launches
 
-Every subagent is resolved through `subagent-matrix` and recorded as its **Dispatch** says, in the
-run ledger. Reviewers run at the capability level the calling doctor selects, or standard when it
-selects none, with any reviewer fallback the doctor specifies; workers run at standard.
+Every subagent is resolved through `subagent-matrix` and recorded as its **Output** dispatch line
+says, in the run ledger. Reviewers run at the capability level the calling doctor selects, or
+standard when it selects none, with any reviewer fallback the doctor specifies; workers run at
+standard.
 
 | Launch | Small route | Whole route |
 |---|---|---|
@@ -90,7 +92,7 @@ selects none, with any reviewer fallback the doctor specifies; workers run at st
 ## Resolve The Scope
 
 Use an explicit domain, service, path, or other concrete selection supplied by the caller.
-Otherwise audit the whole repository. A doctor run sets its own scope, so `pre-production`'s
+Otherwise audit the whole repository. A doctor run sets its own scope, so `scope-of-change`'s
 incidental size budget does not apply. Before fan-out, take `defer-scope`'s **Reading A Scope** for
 that scope, which returns its declined and canceled records with the reason each was declined and
 what would reopen it. A finding one covers enters the ledger as declined and is skipped, never
@@ -108,7 +110,7 @@ refused deferral authorizes its implementation in this run.
 **A defect or vulnerability the run notices is never outside the boundary.** Whatever its size, its
 area, the lens that met it or the doctor running, a confirmed defect or exploitable vulnerability
 joins the remediation plan as a required entry and is fixed in this run at its owner, as
-`pre-production`'s **Scope Follows The Defect, Not The Request** says of a defect the work notices.
+`scope-of-change`'s **Scope Follows The Defect, Not The Request** says of a defect the work notices.
 It is never reported in place of a fix, deferred or left for another doctor. What a doctor's
 disposition may still exclude is cleanup that fixes no defect.
 
@@ -261,7 +263,7 @@ Otherwise write a decision-complete remediation plan from the ledger.
     procedure, each as options with each consequence and a recommendation; only the entries that
     depend on an answer wait for it.
   - **A departure from a rule rides the rule change.** Where the run judges a shape a rule
-    prescribes or exempts worse than the departure, as `pre-production`'s **Trade-Offs Are
+    prescribes or exempts worse than the departure, as `scope-of-change`'s **Trade-Offs Are
     Surfaced, Never Enforced** asks of a rule, the rule change goes on the run's
     agent-configuration pull request, and the code keeps the rule's form until that change merges,
     since code that departs from a rule still in force reads as a defect to the next run. The

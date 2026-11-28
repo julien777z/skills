@@ -12,6 +12,7 @@ Resolve recorded deferrals instead of treating their proposed work as automatica
 - `defer-scope`
 - `linear`
 - `pre-production`
+- `scope-of-change`
 - `code-simplify`
 - `acceptance-gate`
 - `merge-gate`
@@ -45,7 +46,7 @@ could not be inventoried, and do not claim an aggregate or session scope is comp
 
 ## Assess Every Record
 
-Apply `pre-production` to decide which problems and target contracts belong in the release.
+Apply `scope-of-change` to decide which problems belong in the release, and `pre-production` to decide its target contracts.
 
 Read the complete Linear issue with comments or the complete repository-ledger record with supporting files and
 the pull request carrying it. Read the current implementation and history of the code it names. Confirm that

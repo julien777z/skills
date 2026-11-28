@@ -2,6 +2,7 @@
 name: database-migrations
 description: "Apply before changing persisted database schema or stored representations, including repositories without a migration runner and startup schema reconciliation. Use versioned Alembic revisions, never ad hoc runtime migrations; guide authoring, rebasing, and troubleshooting their canonical chain."
 short_description: 'Guide for authoring, rebasing, and troubleshooting Alembic database migrations, including how to avoid and fix branched migration graphs.'
+user-invocable: false
 ---
 
 # Database Migrations

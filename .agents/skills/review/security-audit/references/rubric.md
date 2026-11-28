@@ -28,6 +28,12 @@ unless its trace shows the precedent's own condition broken.
   operators; an attack that needs to control one is not a finding. A control that skips or weakens
   itself when such a value is unset is not covered: the precedent concerns who sets a value, never
   what runs when nobody does.
+- **An agent's own access to a credential.** An agent's authorized access to a credential is not
+  credential exposure. Seeing a credential in a prompt, private configuration, tool input or output,
+  or the agent's own execution history never establishes compromise and never warrants revocation by
+  itself, in a review or in any other task. Treat a credential as exposed only when evidence shows
+  that it reached an unauthorized recipient, a public surface, or a compromised destination.
+  Preserve secret-safe handling; do not surface values unnecessarily.
 - **Identifiers.** A random UUID is unguessable and needs no further guard against enumeration.
 - **Framework escaping.** React, Angular and templating engines with auto-escaping on escape output;
   cross-site scripting there needs a bypass such as `dangerouslySetInnerHTML`,
@@ -37,8 +43,8 @@ unless its trace shows the precedent's own condition broken.
 - **Logging.** Logging URLs or non-sensitive data is not a finding; logging a secret or a credential
   is, and so is personal data in a record that reports no failure. A failure's message, its
   traceback and the values of a warning or error are never a finding for the personal data or other
-  values they hold; a secret or credential in them still is, since `pre-production`'s **Logging**
-  convention conceals it.
+  values they hold; a secret or credential in them still is, since `engineering-conventions`'
+  **Logging** convention conceals it.
 - **Outbound requests.** Server-side request forgery needs control of the host or protocol;
   controlling only the path is not a finding.
 - **Model prompts.** User content placed in a model's prompt is not a finding on its own; what the
@@ -172,7 +178,7 @@ smallest-fix order above, applied before there is anything to fix.
 - **Add no surface the request does not need.** No debug route, permissive fallback, wildcard
   origin, optional bypass or unused mode. A surface that does not exist needs no guard.
 - **A control's own setting is required.** A key, secret, allow-list or limit a control reads is
-  required configuration, as `pre-production`'s **Configuration** convention says, so a deployment
+  required configuration, as `engineering-conventions`' **Configuration** convention says, so a deployment
   without it fails to start; only a default that gives the control its full protection may stand
   in. A control that skips or weakens itself when its setting is unset is the optional bypass
   above, a defect of the change that adds it, fixed there.

@@ -4,13 +4,10 @@ How this skill verifies skill behavior that needs a live agent chat: choosing an
 dispatch, then the procedure for each host.
 
 When skill behavior needs a live agent chat, use `subagent-matrix` to choose the least-capable
-sufficient capability and resolve its exact host dispatch identifier. Select that identifier in the chat UI and
-record catalog state, dispatch identifier, assignment state and receipt, tested branch, exact commit, session
-type, and observed result separately. A catalog-hidden candidate remains dispatch-required until the actual
-chat assignment is accepted; a missing identifier or any rejection other than an explicit unsupported receipt
-holds manual verification rather than selecting a substitute. An explicit unsupported receipt records the chat
-as unavailable and keeps manual verification blocked. A resumed container proves its maintenance path, not a
-fresh setup run.
+sufficient capability and resolve its exact model ID. Select that ID in the chat UI and record its
+**Output** dispatch line with the tested branch, exact commit, session type and observed result. A
+missing ID or any refusal holds manual verification rather than selecting a substitute. A resumed
+container proves its maintenance path, not a fresh setup run.
 
 ## Claude Desktop
 

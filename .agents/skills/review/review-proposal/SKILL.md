@@ -12,6 +12,7 @@ proposal held for approval is asked under the global rules' **Asking the user** 
 
 ## Dependencies
 - `pre-production`
+- `scope-of-change`
 - `test-fixture`
 - `subagent-matrix`
 - `acceptance-gate`
@@ -20,7 +21,7 @@ proposal held for approval is asked under the global rules' **Asking the user** 
 
 ## Scope
 
-Apply `pre-production` to the proposal and each alternative. Invoke `acceptance-gate` for the independent Proposal verdict and its **Bounds** admission and severity rules; step 5 sets how a proposal's repairs are judged. Use `session-ledger` to retain the proposal, inputs, evidence, dispositions and pending decision.
+Apply `pre-production` and `scope-of-change` to the proposal and each alternative. Invoke `acceptance-gate` for the independent Proposal verdict and its **Bounds** admission and severity rules; step 5 sets how a proposal's repairs are judged. Use `session-ledger` to retain the proposal, inputs, evidence, dispositions and pending decision.
 
 Use on an implementation plan before the user sees it, and where approval of a proposed change is
 already required: explicit product, security, disclosure or scope alternatives. This creates no
@@ -36,8 +37,8 @@ Follow the dependency's fallback procedure without inventing a compliant launch 
 
 1. **Prepare the evidence.** Build the acceptance-gate intent statement from the user's requirements,
    accepted decisions and verified repository facts. Distinguish facts, proposed changes and choices
-   the user must make. Freeze the proposal, intent, full pre-production text, relevant project guidance
-   and referenced contract or retained-data facts, with their exact content identities. Every attacker
+   the user must make. Freeze the proposal, intent, full `pre-production` and `scope-of-change`
+   text, relevant project guidance and referenced contract or retained-data facts, with their exact content identities. Every attacker
    receives the same material and the [attack criteria](references/attack-criteria.md). Record a verified
    absence or a non-repository scope explicitly; missing required evidence returns `needs-evidence`
    with its source and next action. Do not load unrelated rules or invent facts. Explicit alternatives
@@ -45,7 +46,7 @@ Follow the dependency's fallback procedure without inventing a compliant launch 
 2. **Attack the whole proposal.** Dispatch three fresh read-only standard reviewers per round using
    subagent-matrix. Give them different emphases: requirements/authority, ownership/design and
    verification/cost/recovery. Each still applies every criterion to the whole proposal and receives
-   the complete pre-production guidance. Keep peer reports out of the round. Run ready slots in
+   the complete `pre-production` and `scope-of-change` guidance. Keep peer reports out of the round. Run ready slots in
    parallel when capacity permits; queue unstarted slots otherwise. Follow the selector's original
    result and producer-recovery contract, replacing only stopped or unproven slots, never live workers
    or valid siblings. Count only verified compliant launches, identical inputs and complete originals.

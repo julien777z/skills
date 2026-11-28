@@ -28,7 +28,7 @@ merged without an earlier `review-pass`.
 - `review-pass`
 - `session-ledger`
 - `execute-task`
-- `pre-production`
+- `scope-of-change`
 
 ## Targets
 
@@ -98,4 +98,4 @@ or says nothing is needed.
 ```
 
 The check-gate column leaves out baseline failures and non-essential checks left red, as
-`pre-production`'s **Encountered Issues** says.
+`scope-of-change`'s **Encountered Issues** says.

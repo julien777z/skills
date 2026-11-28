@@ -56,7 +56,7 @@ mechanical check that finds every instance rather than the first one noticed:
 - an import from a sibling suite, and a test or test-support module that imports setup, helpers or
   sample data from an executable script or command entrypoint (read the pre-pass's import list for
   every edge from a test root into an executable): the shared definition moves to its
-  test-support owner with every consumer, as `pre-production`'s **Code Layout** conventions say; a
+  test-support owner with every consumer, as `engineering-conventions`' **Code Layout** conventions say; a
   test importing a command to exercise that command stays;
 - a symbol defined in an application package — a service, an app, or a library package outside its
   own test-utilities package — whose every consumer is under `tests/`, a test-utilities package, or
@@ -160,7 +160,7 @@ classification that is already paying that setup, or made cheaper where it stand
 pre-production repository folding and speeding up cases is ordinary rather than a last resort: a
 suite nobody will wait for is coverage nobody runs. A case or module disproportionate under
 `test-fixture`'s cost question that cannot be made cheap as that question allows is removed, as
-`pre-production` says.
+that question says.
 
 **No budget removes a test as redundant because a test of another classification makes the same
 assertion.** A disproportionate cost is a separate reason, decided above. An
@@ -230,7 +230,7 @@ when only one suite uses it. Fixture lifecycle wiring and scenario inputs stay i
 Inject application model types where a shared import would invert dependencies.
 Discover that owner from existing implementations and the repository's test-utilities package
 before relocating anything.
-Complete the ownership move as `pre-production`'s **Scope Follows The Defect, Not The Request**
+Complete the ownership move as `scope-of-change`'s **Scope Follows The Defect, Not The Request**
 says of a parallel copy: inspect every related implementation, move every consumer onto the one
 owner, and flag a partial move even when the factory left behind was already there. Generic
 lifecycle helpers retain their own owners; a shared word does not establish shared responsibility.

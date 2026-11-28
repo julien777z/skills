@@ -208,7 +208,8 @@ sync log. Remedy: fix the reference, or cut what it anchored.
 
 A requirement in a file that `skill-pass`'s **Where Guidance Lives** does not make its owner:
 `.agents/global.md` holding what need not bind before a skill loads; a rule file holding what a
-skill runs for; a skill holding what its name and description do not bound; shared guidance
+skill runs for; a skill holding what its name and description do not bound, or a reference or
+section inside it holding what its file name or heading does not; shared guidance
 carrying one repository's facts, or a copy of how its tooling behaves today; guidance held in a
 harness's memory. And a rule file or `.agents/global.md` that names an individual skill, outside
 the one place that section allows, or that keeps an index of which skill owns which subject.
@@ -311,8 +312,10 @@ the entry point's `## Dependencies`. Remedy: the one that section's criteria sta
 Nothing leads in: a skill no file names whose description carries no trigger; a subject a skill
 owns that no clause of its description names, as `skill-pass`'s **Descriptions** and its conflict
 criteria require; a variant file no router row links; a hook on disk not registered; a skill the
-usage measurement shows never invoked; and an owned skill hidden from the listing by a frontmatter flag,
-which that **Descriptions** section counts as a defect whatever the skill's invocation name.
+usage measurement shows never invoked; and an owned skill hidden from the agent's listing by a
+frontmatter flag, which that **Descriptions** section counts as a defect whatever the skill's
+invocation name. `user-invocable: false` on a rule-type skill hides it only from the user's menu and
+is no such defect.
 Evidence: the reference counts, the description beside the skill's section headings, and usage.
 Remedy: add the clause, remove the flag and state the user-only gate in the description, or a
 whole-file cut under Dispositions.
