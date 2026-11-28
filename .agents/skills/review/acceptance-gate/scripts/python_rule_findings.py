@@ -34,13 +34,30 @@ from ast import (
     walk,
 )
 from enum import StrEnum
+from io import StringIO
 from pathlib import Path
+from re import Pattern, compile
+from tokenize import COMMENT, generate_tokens
 from typing import Final
 
 DATA_CLASS_MODULES: Final[set[str]] = {"dataclasses", "pydantic.dataclasses", "pydantic"}
 NAMED_TUPLE_MODULES: Final[set[str]] = {"typing", "typing_extensions"}
 MIGRATION_DOCSTRING_FUNCTIONS: Final[set[str]] = {"upgrade", "downgrade"}
 MAX_TEST_NAME_WORDS: Final[int] = 8
+CONSTRAINT_KEYWORDS: Final[set[str]] = {
+    "min_length",
+    "max_length",
+    "ge",
+    "gt",
+    "le",
+    "lt",
+    "pattern",
+    "max_digits",
+    "decimal_places",
+    "multiple_of",
+}
+
+STANDARD_CITATION: Final[Pattern[str]] = compile(r"\b(?:RFC|ISO|IEC|NIST|IEEE|ECMA|FIPS)[ -]?\d")
 
 
 class ParagraphCandidateKind(StrEnum):
@@ -281,6 +298,45 @@ def long_test_name_findings(path: Path, module: Module) -> list[str]:
     return findings
 
 
+def states_requirement(node: Assign | AnnAssign) -> bool:
+    """Tell whether an assignment's value is a literal or a call constrained by keyword."""
+
+    value = node.value
+
+    if isinstance(value, Constant):
+        return True
+
+    return isinstance(value, Call) and any(keyword.arg in CONSTRAINT_KEYWORDS for keyword in value.keywords)
+
+
+def standard_citation_findings(path: Path, module: Module, source: str) -> list[str]:
+    """Find comments citing a standard directly above a value that states the requirement itself."""
+
+    assignments = {
+        node.lineno for node in walk(module) if isinstance(node, (Assign, AnnAssign)) and states_requirement(node)
+    }
+
+    comments = {
+        token.start[0]: token.string for token in generate_tokens(StringIO(source).readline) if token.type == COMMENT
+    }
+
+    findings: list[str] = []
+
+    for line, text in comments.items():
+        if not STANDARD_CITATION.search(text):
+            continue
+
+        following = line + 1
+
+        while following in comments:
+            following += 1
+
+        if following in assignments:
+            findings.append(f"{path}:{line}: comment cites a standard above the value that states it")
+
+    return findings
+
+
 def python_findings(path: Path) -> list[str]:
     """Find the Python rule shapes a reader can check mechanically in one file."""
 
@@ -301,6 +357,7 @@ def python_findings(path: Path) -> list[str]:
     findings.extend(docstring_findings(path, module, lines))
     findings.extend(layout_findings(path, module, lines))
     findings.extend(long_test_name_findings(path, module))
+    findings.extend(standard_citation_findings(path, module, source))
 
     return findings
 
