@@ -1,8 +1,9 @@
-import { cn } from 'cn';
 import { ArrowUpRight } from 'lucide-react';
 import type { ReactNode } from 'react';
+
 import { ExternalLink, PullRequestIcon, RichText, StatusBadge } from '@/components';
 import { PULL_REQUESTS } from '@/lib/tone';
+import { cn } from '@/lib/utils';
 import type { LinkItem, LinksSection as LinksSectionSpec } from '@/spec';
 import { ListSection } from './list-section';
 

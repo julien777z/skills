@@ -27,8 +27,7 @@ corrected beside it; a problem the current work meets never holds or drops such 
 through, a skill whose trigger did not fire when it should have, one that says nothing about the case
 in hand, a step you found yourself doing that no skill describes: each is this skill's input, and
 noticing it is the whole trigger. Waiting to be told is what leaves the next session to rediscover
-the same gap, and the session that hit it is the only one holding the evidence. What counts as a
-flaw, how it is judged and where its fix goes follow `self-improvement-protocol`.
+the same gap, and the session that hit it is the only one holding the evidence.
 
 The tell is a sentence you are about to write to the user about your own process — that you skipped
 a step, that a check did not apply, that you should have done something earlier. Diagnose the route
@@ -61,7 +60,6 @@ When a separate source task is active, or a guidance batch is in flight, preserv
 follow **Recording During A Task** for the edit's timing.
 
 ## Dependencies
-- `self-improvement-protocol`
 - `skill-pass`
 - `code-simplify`
 - `acceptance-gate`
@@ -136,8 +134,6 @@ recording or delivering a batch.
 ## Guidance Delivery
 
 This route delivers the frozen batch of `guidance_correction` entries its invocation names,
-never the fixes on a held self-improvement pull request, which wait as the GitHub rule's **Merge
-Authorization** says,
 beside the source stream. It holds the source pull request only for the checks its ridden edits
 need and the delivery of the batch carrying them; only an edit on that pull request, or one the GitHub rule's **Merge Authorization** holds for a source pull request, waits for that merge. **The primary agent coordinates it**, starting its
 reviewer, gate and skill-test agents in the background so the user's review of the source pull

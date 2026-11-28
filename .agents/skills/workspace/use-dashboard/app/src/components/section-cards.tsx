@@ -1,11 +1,11 @@
-import { cn } from 'cn';
 import type { ComponentProps, ReactNode } from 'react';
+
 import { Grid, Stack, Text } from '@/components/primitives';
 import { Card, CardAction, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { TONES } from '@/lib/tone';
-import { withKeys } from '@/lib/utils';
+import { cn, withKeys } from '@/lib/utils';
 import type { Metric, ProgressSummary } from '@/spec';
 import { RichText } from './rich-text';
 import { StatusBadge } from './status-badge';
@@ -27,7 +27,7 @@ function StatCard({
     <Card
       className={cn(
         '@container/card bg-gradient-to-t from-primary/5 to-card shadow-xs dark:bg-card',
-        wide && '@xl/main:col-span-2',
+        wide && '@xl/page:col-span-2',
       )}
     >
       <CardHeader>
@@ -45,7 +45,7 @@ function StatCard({
           </CardAction>
         )}
       </CardHeader>
-      {children && <CardFooter className="flex-col items-stretch gap-1.5 text-sm">{children}</CardFooter>}
+      {children && <CardFooter className="flex-col items-stretch gap-2">{children}</CardFooter>}
     </Card>
   );
 }

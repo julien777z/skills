@@ -1,7 +1,5 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "@fontsource-variable/geist";
-@import "@fontsource-variable/geist-mono";
 
 @custom-variant dark (&:where(:root:not([data-theme="light"]), :root:not([data-theme="light"]) *));
 
@@ -78,8 +76,8 @@
 }
 
 @theme inline {
-  --font-sans: "Geist Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-mono: "Geist Mono Variable", ui-monospace, monospace;
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -148,5 +146,22 @@ body {
     z-index: 50;
     height: env(safe-area-inset-top, 0px);
     background: var(--background);
+  }
+}
+
+@layer utilities {
+  .scrollbar-visible::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .scrollbar-visible::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+    background: var(--border);
+  }
+
+  @supports not selector(::-webkit-scrollbar) {
+    .scrollbar-visible {
+      scrollbar-width: thin;
+    }
   }
 }

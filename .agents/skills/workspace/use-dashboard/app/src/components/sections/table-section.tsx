@@ -1,8 +1,8 @@
-import { cn } from 'cn';
 import { type ReactNode, useRef, useState } from 'react';
+
 import { DialogOpener, RichText } from '@/components';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { withKeys } from '@/lib/utils';
+import { cn, withKeys } from '@/lib/utils';
 import type { TableSection as TableSectionSpec } from '@/spec';
 import { SectionCard } from './section-card';
 import { SectionDialog } from './section-dialog';

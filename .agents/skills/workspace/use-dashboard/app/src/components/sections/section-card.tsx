@@ -1,10 +1,10 @@
-import { cn } from 'cn';
 import { type Context, createContext, type ReactNode, useContext } from 'react';
+
 import { RichText } from '@/components';
 import { Stack, Text } from '@/components/primitives';
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { sectionAnchor } from '@/lib/utils';
+import { cn, sectionAnchor } from '@/lib/utils';
 
 export const InDialogContext: Context<boolean> = createContext(false);
 

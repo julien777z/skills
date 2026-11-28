@@ -7,20 +7,21 @@ short_description: 'Turn a dashboard spec into the shared HTML page and deliver 
 # Use Dashboard
 
 A caller describes its dashboard as a JSON spec; [scripts/render.py](scripts/render.py) validates it
-and fills the page built from [app/](app/), a React app on Tailwind CSS and stock shadcn/ui
-components laid out as shadcn's dashboard-01 block with a top navbar of pages: a slim sticky navbar
-with the dashboard's icon and title and a link to each page, the open page's title and subtitle
-under it, a row of metric cards, and each section in its own card. Every dashboard gets that layout
-without the caller writing any markup. The page is one self-contained file with its web font bundled
-in, and a diagram is drawn by Mermaid, loaded from jsDelivr, with its connections listed as text
-when Mermaid cannot load. The page is dark unless the host's viewer is explicitly set to light
-(`data-theme="light"` on the root element), and renders every value as text, so data never runs as
-markup or script. A dialog opens just below the entry, row or node that opened it, at most 640 px
+and fills the page built from [app/](app/), a React app on Tailwind CSS and shadcn/ui laid out as a
+standard shadcn site: a sticky top navbar with the dashboard's icon and title and a link to each
+page, the open page's title and subtitle under it, a row of stat cards, and each section in its own
+card. Every dashboard gets that layout without the caller writing any markup. The page is one
+self-contained file; its web font loads from Google Fonts and falls back to system fonts, and a
+diagram is drawn by Mermaid, loaded from jsDelivr, with its connections listed as text when Mermaid
+cannot load. The page is dark unless the host's viewer is explicitly set to light
+(`data-theme="light"` on the root element), and renders every value as text, so data never runs
+as markup or script. A dialog opens just below the entry, row or node that opened it, at most 640 px
 tall, or less when the frame or window it opens in is shorter, with its contents scrolling; apart
 from that cap, nothing on the page is sized by the viewport's height, so it shows whole in a frame
-that a harness sizes to its content. The navbar keeps the title whole and the page links beside it:
-the page spans up to 1920 px so a wide screen shows more links, the links scroll sideways with a
-visible scrollbar when they still do not fit, and they fold into a menu only below 1024 px.
+that a harness sizes to its content. The
+navbar keeps the title whole and the page links beside it: the page spans up to 1920 px so a wide
+screen shows more links, the links scroll sideways with a visible scrollbar when they still do not
+fit, and they fold into a menu only below 1024 px.
 
 ## Dependencies
 - `pages:write-page`
@@ -38,12 +39,12 @@ Every other field is optional, and an absent one leaves its part of the page out
 
 | Field | Shape |
 | --- | --- |
-| `subtitle` | One line under the first page's title only; every other page shows its own `subtitle` or none. |
+| `subtitle` | One line under every page's title. |
 | `status` | `{label, tone?}`: the badge at the right of the navbar. While any question is `open`, the renderer shows `Waiting on you` in the `warning` tone there and as the `Proposals` page's `status`, and a spec that sets either then is refused. |
 | `notice` | `{title, body, tone?}`: a banner with an icon for its tone under every page's title, for the one thing the reader must see first wherever they are. |
 | `progress` | `{value: 0–1, label, detail?, segments?}`: a stat card twice as wide as the others, with the percentage, `detail` as its badge, and a bar. `segments` is `[{label, details?, tone?, weight?}]`, one block per unit of work in order, each as wide as its `weight`, a whole number of at least 1, relative to the others, a missing weight counting as 1, and its `label`, with each of `details` on a line under it, shown in a tooltip while the pointer rests on it; without `segments` the bar is a plain fill. |
 | `metrics` | `[{label, value, detail?}]`: at most four stat cards beside the progress, `detail` under the figure. |
-| `pages` | `[{title, icon, layout?, subtitle?, status?, progress?, locked?, sections}]`: one navbar link each, a page's `subtitle` under its title, on the first page in place of the dashboard's, a page's `progress`, in the shape above, shown at its top, with `status` (`{label, tone?}`) shown as a dot in its tone after the page's name, and its label read out to screen readers, for the page's current state, such as something that needs the reader. A `locked` page sets `sections` to `[]` until it has content: its link shows a lock in place of its icon and cannot be opened. The first is always `Overview` with `icon` `overview`, and the progress and metrics show on it. A page titled `Proposals` always has `icon` `proposals` and comes directly after `Overview`, and it is the only page that holds `questions` sections, in tabs and dialogs as well. `sections` render in order; with `layout` `columns`, the default, boards, tables, outlines, trees, tabs, diagrams, figures and timelines take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
+| `pages` | `[{title, icon, layout?, subtitle?, status?, progress?, locked?, sections}]`: one navbar link each, a page's `subtitle` replacing the dashboard's under its title, a page's `progress`, in the shape above, shown at its top, with `status` (`{label, tone?}`) shown as a dot in its tone after the page's name, and its label read out to screen readers, for the page's current state, such as something that needs the reader. A `locked` page sets `sections` to `[]` until it has content: its link shows a lock in place of its icon and cannot be opened. The first is always `Overview` with `icon` `overview`, and the progress and metrics show on it. A page titled `Proposals` always has `icon` `proposals` and comes directly after `Overview`, and it is the only page that holds `questions` sections, in tabs and dialogs as well. `sections` render in order; with `layout` `columns`, the default, boards, tables, outlines, trees, tabs, diagrams and figures take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
 | `references` | `[{text, url?, details?}]`, each with exactly one of `url` and `details`: every whole-word occurrence of `text` in any page's text becomes a link to `url`, or opens `details`, one section, in a dialog, apart from the navbar, page titles, stat card figures, badges, progress segment tooltips and the first cell of a table row that opens a dialog, which stay plain. |
 
 An `icon` is one of `overview`, `proposals`, `progress`, `board`, `checklist`, `list`, `chart`, `activity`,
@@ -68,17 +69,16 @@ of a process, carries no count. Section types:
 
 | `type` | Fields | Item fields |
 | --- | --- | --- |
-| `board` | `title`, `columns: [{title, tone?, page_size?, items}]` | `title`, `detail?`, `status?`, `meta?`, `tag?`, `url?`, `at?`, `links?`: `status` (`{label, tone?}`) a pill in its tone for what the card's column does not already say, such as Blocked; `tag`, `meta` and `at` share one line of small text, in that order |
+| `board` | `title`, `columns: [{title, tone?, page_size?, items}]` | `title`, `detail?`, `status?`, `meta?`, `tag?`, `url?`, `at?`, `links?`: `status` (`{label, tone?}`) the card's state as a pill in its tone; `tag`, `meta` and `at` share one line of small text, in that order |
 | `questions` | `title`, `items`, `page_size?`, `group_label?` | `question`, `status` (`open`, `answered`), `context?`, `options?`, `recommendation?`, `answer?`, `meta?`, `at?`, `group?` |
 | `links` | `title`, `items`, `page_size?`, `group_label?` | `label`, `url`, `detail?`, `status?`, `tone?`, `state?`, `group?`: `state` is a pull request's `open`, `draft`, `merged` or `closed`, drawn with the pull-request pill's icon and color for it in place of the arrow; an item with a `state` is labeled with the pull request's `repository#number` alone, such as `garden-api#42`, what it does in a few words in `detail` |
 | `table` | `title`, `columns`, `rows`, `details?` | each row a list of strings, one per column; `details`, one section per row, makes each row open a dialog holding that section, with its title and description as the dialog's |
 | `notes` | `title`, `items` | each item a string |
 | `changes` | `title`, `items`, `page_size?`, `group_label?` | `name`, `change` (`added`, `changed`, `removed`), `detail?`, `current?`, `proposed?`, `links?`, `group?`: a named part with its change as a colored badge; `current` and `proposed` say what the part does on each side of the change, each on its own line under the name behind a bold Current or Proposed label, the proposed line after the current one and after `detail`, which holds anything else; an added part sets only `proposed` and a removed part only `current` |
-| `outline` | `title`, `groups: [{title, items}]`, `expanded?` (every item starts open when true), `stacked?` (groups run in one column, each across the full width, for groups read in order), `collapsible?` (false shows every item in full with no toggle, its `title` as a muted label beside its `detail`, for a short write-up of facts read top to bottom) | `title`, `detail?`, `current?`, `proposed?`, `tone?`, `tag?`, `meta?`, `links?`, `points?`, with at least one of `detail`, `current` and `proposed`: a headline that opens to its detail, then `current` and `proposed` as a `changes` item shows them, with `points` as a bulleted list under them, with `tone` as the item's dot, `tag` as a neutral badge and `meta` as small text; without `expanded`, a group of one or two items shows them open |
-| `tree` | `title`, `items`, `open_depth?` (levels open on load, 1 by default) | `label`, `detail?`, `tag?`, `figure?`, `status?`, `meta?`, `tone?`, `children?`, `details?`: nested entries, each with children opening and closing from a chevron, `tag` a short label that tells otherwise alike entries apart, such as the warehouse each parcel left from, in an outline badge beside its label, `status` (`{label, tone?}`) a pill in its tone after the tag, `figure` a short quantity, such as a count or a duration, in muted right-aligned tabular figures at the end of the row, so every entry's figure lines up with its siblings', `meta` as muted text just before the figure, siblings' dots and labels lined up whether or not each has children, `tone` alone coloring the entry's dot, whatever `status` holds: without it a leaf's dot is neutral and an entry with children shows none, and `details`, one section, opening in a dialog from the entry's label, which then shows as a link with an open icon; for a whole made of parts made of parts |
+| `outline` | `title`, `groups: [{title, items}]`, `expanded?` (every item starts open when true), `stacked?` (groups run in one column, each across the full width, for groups read in order), `collapsible?` (false shows every item in full with no toggle, its `title` as a muted label beside its `detail`, for a short write-up of facts read top to bottom) | `title`, `detail?`, `current?`, `proposed?`, `tone?`, `tag?`, `meta?`, `links?`, `points?`, with at least one of `detail`, `current` and `proposed`: a headline that opens to its detail, then `current` and `proposed` as a `changes` item shows them, with `points` as a bulleted list under them, with `tag` as a badge in the item's tone (neutral without one) and `meta` as small text; without `expanded`, a group of one or two items shows them open |
+| `tree` | `title`, `items`, `open_depth?` (levels open on load, 1 by default) | `label`, `detail?`, `tag?`, `figure?`, `status?`, `meta?`, `tone?`, `children?`, `details?`: nested entries, each with children opening and closing from a chevron, `tag` a short label that tells otherwise alike entries apart, such as the warehouse each parcel left from, in a neutral pill beside its label, `figure` a short quantity, such as a count or a duration, in a neutral badge after that, `status` (`{label, tone?}`) the entry's state as a pill in its tone after the figure, its tone also coloring the entry's dot when the entry sets no `tone`, `meta` beside them, and `details`, one section, opening in a dialog from the entry's label, which then shows as a link with an open icon; for a whole made of parts made of parts |
 | `tabs` | `title`, `tabs: [{label, sections}]` | each tab a `label` and the `sections` it shows: a bar of tab labels, read with the arrow keys as well as the pointer, over the selected tab's sections, which render inside this card in order; a tab whose `sections` is `[]` is left off the bar, and with one tab left no bar shows, only its sections; for one subject split into kinds the reader looks at one at a time |
 | `figures` | `title`, `items`, `stacked?` (one figure per row, each followed by its caption, for pictures read in order) | `image`, `alt`, `caption?`: `image` a base64 data URI of an SVG, PNG, JPEG, WebP or GIF image, a single figure taking the card's width and several two side by side on a wide page, or one per row at a readable width with `stacked`, with `alt` read out in its place and `caption` under it; for what the reader needs to see rather than read, such as a map, a mock-up or a screenshot |
-| `timeline` | `title`, `lanes: [{label, tag?, tone?, details?, bars}]`, `gaps?: [{start, end, label}]` | bar: `start`, `end`, `tone?`, `label?`, both times ISO 8601 with their UTC offset and `end` no earlier than `start`: a Gantt chart of when work ran in clock time, one row per lane with its label, its `tag` as an outline badge and a dot in its `tone` as a tree leaf's, and each bar placed on one time axis across the card in its `tone`, or neutral without one, the axis ticked in the viewer's local time with the date where the span crosses days; a `gap` is a hatched band across every lane with its label above, such as a pause while a provider throttled requests, drawn as a short break of fixed width whatever its length, so a long pause never squeezes the work around it, with its length in its label; idle time between bars stays empty; resting the pointer on a bar shows its lane, label, start, end and duration; a lane with `details`, one section, opens it in a dialog from its label; lane labels are unique and each lane holds at least one bar; on a narrow screen the chart scrolls sideways inside its card |
 | `diagram` | `title`, `nodes`, `edges`, `prs?`, `steps?`, `legend?` (`[{tone, label}]`, a line in each tone beside what it means) | node: `id`, `label`, `detail?`, `pr?`, `change?`, `tone?`, `details?`, `target?`; edge: `from`, `to`, `label?`, `step?`, `change?`, `tone?`, `details?`; pr: `ref`, `url`; each step a string |
 
 A diagram draws each node as a box inside a frame titled with the `ref` its `pr` names, and each
@@ -171,14 +171,6 @@ with sections, and its tab labels are unique. A URL renders as a link only when 
 
 Dashboards look alike because they are built alike:
 
-- **The page is stock shadcn components laid out as dashboard-01.** A slim top navbar of pages,
-  metric cards as dashboard-01's section cards, and each section a `Card` with its title and
-  description in the card header. A table is a `Table` in a rounded bordered frame under a muted
-  header row, a pill an outline `Badge` whose tone shows only as a dot or icon inside it, apart from
-  the pull-request pill, and tabs, dialogs, collapsibles, tooltips, separators and the phone-width
-  page menu are `Tabs`, `Dialog`, `Collapsible`, `Tooltip`, `Separator` and `Sheet`. Spacing follows
-  dashboard-01: `gap-4 md:gap-6` between parts, `px-4 lg:px-6` at the page's sides and `py-4
-  md:py-6` above and below.
 - **Overview first, then one page per subject.** Every dashboard opens on `Overview`, the page
   that tells the reader where things stand: the `progress` and `metrics` stat cards, then sections
   that summarize, such as counts per subject
@@ -204,31 +196,16 @@ Dashboards look alike because they are built alike:
   remarks? `notes`. How do the parts connect? `diagram`. What is this made of, part by part — an order and its parcels, a folder and its files? `tree`,
   never a flat table whose rows name their parent.
   One subject in several kinds, read one kind at a time? `tabs`. What does it look like? `figures`.
-  When did each piece of work run, and what ran in parallel? `timeline`.
 - **Detail opens in place.** A tree entry's parts are its `children`, opened from its chevron,
   never a dialog; a dialog through `details` holds what is not a part of the entry, such as a
   write-up about it, a table or a diagram.
-- **A pill is for a state the reader scans for that nothing else on the entry shows.** A status,
-  a mark such as Matches or Out of date, or a pull request's state where no state icon is drawn
-  takes a pill — in a tree, the entry's `status` — never words trailing the entry in `meta`; a
-  short label that tells otherwise alike entries apart takes a tree entry's `tag`. A longer label
-  saying what kind of thing an item is or which group it belongs to, such as its plan or its type,
-  is plain text. A pill earns its place by telling items apart: one reading the same on most items
-  has stopped meaning anything, and one that only restates the entry's dot, its board column or
-  its pull request's state icon, such as Done, Active, Up next or Open, is left out. One that tells
-  the reader what to look at, such as a Damaged or Held at customs mark, stays, in the `warning` or
-  `critical` tone its meaning carries.
-- **A piece of work's dot shows where it stands.** A tree entry that stands for work, such as a
-  step, a delivery run or a group of them, takes the `tone` of its state — `good` done, `accent`
-  active, `critical` blocked, `next` not started — whatever pill it carries, so a delivered parcel
-  marked Damaged still has a green dot; a group's state comes from its members, active while any
-  runs, blocked while one waits and done once all are finished. Every other tree keeps its tones
-  as **Tone means the same everywhere** defines them.
-- **Figures line up.** A quantity siblings are compared by, such as a tree entry's `figure`, sits
-  right-aligned at the end of its row, never in a badge like a tag, so the reader reads them down a
-  column.
-- **The dashboard's subtitle shows once**, under the first page's title; every other page shows its
-  own `subtitle` or none.
+- **A pill is for a state the reader scans for.** A status, a mark such as Matches or Out of date,
+  or a pull request's state takes a pill — in a tree, the entry's `status` — never words trailing
+  the entry in `meta`; a short label that tells otherwise alike entries apart takes a tree entry's
+  `tag`. A longer label saying what kind of thing an item is or which group it belongs to, such as
+  its plan or its type, is plain text. A pill
+  earns its place by telling items apart: statuses that differ from item to item are worth a pill on
+  every one, while a pill reading the same on most items has stopped meaning anything.
 - **A figure is a real quantity in a unit the reader knows.** A duration is clock time. A total over
   work that ran in parallel counts overlapping time once, so no total is longer than the clock time
   it spans. A figure never carries a label for how it was computed.
@@ -236,28 +213,18 @@ Dashboards look alike because they are built alike:
   sense of it, such as "at step 2" or "see above": it says what happens then, such as "after the
   batch is frozen". A numbered title keeps its number; the text about it never leans on one.
 - **A label names only what it marks.** A segment, tag, group or row label never restates the
-  dashboard's `topic`, the heading above it, or what a pill, tag or figure on the same entry shows:
-  the reader already has them, so a progress segment is labeled with its step, such as "Offer
-  rules", never "Plot waitlist: Offer rules", an outline group is headed with the area it covers,
-  never with the task's name, and an entry tagged with its model is labeled with its role, such as
-  "Copy editor", never "Copy editor (Corvid 2.4)".
-- **A model is named exactly.** Wherever a dashboard names a model, such as the one an agent ran
-  on, it gives the model and its version as the provider names it, such as Corvid 2.4, never the
-  family alone, such as Corvid, and never the alias a launch passed: read the model the run used
-  from its own records, such as the model ID in its transcript, and name one the records do not
-  show as unknown rather than guess it from the alias.
+  dashboard's `topic` or the heading above it: the reader already has both, so a progress segment
+  is labeled with its step, such as "Offer rules", never "Plot waitlist: Offer rules", and an outline
+  group is headed with the area it covers, never with the task's name.
 - **Labels and headings are written in sentence case and shown as written.** The dashboard's
   `title` and the preview `topic` `Synthetic Preview` are names, in title case.
 - **Tone means the same everywhere.** `good` is fine, matches or finished, `warning` needs the
   reader's look or action, `critical` is wrong or blocking, `accent`, a blue, is running now or
   informational, and `next`, a purple, is up next or still to do. Leave it out for neutral; never
   tone an item only to decorate it.
-- **Assistive tech reads only the page's words.** No element, the page root and navbar included,
-  takes style or script text into its accessible name.
 - **Blue text is a link.** A reader clicks blue text, so only links take it, and a tone colors a
   dot, border, line or bar, never text. A figure, number or label meant to stand out sits in a
-  neutral badge, and a quantity in muted tabular figures, rather than taking a color or the weight its
-  neighboring names already use.
+  neutral badge rather than taking a color or the weight its neighboring names already use.
 - **Text shows the current state and earns its line.** A `description`, subtitle or note says what
   is true now and only what the title and the contents do not, such as which entries a count covers
   or that a figure lacks records for part of its range. A sentence that restates the title,
@@ -323,15 +290,13 @@ data exists, or a change to the app — runs on one made-up scenario, never on r
    open local copy checks it every few seconds and shows a new render's data in place, on the same
    page and scroll position, with no reload; only a render from a changed app reloads it.
 
-Change a delivered dashboard only by re-rendering its whole spec, never by editing the page's HTML,
-which skips the renderer's validation. Everything the reader can click, a table row or tree entry
-that opens a dialog included, shows the pointer cursor. Change the page itself only in `app/`. A new
-part of the page uses a stock shadcn component, added with the shadcn CLI (`npx shadcn@latest add
-<component>` in `app/`) into `app/src/components/ui/` and kept as the CLI wrote it; custom markup or
-CSS is written only for what no shadcn component covers, and goes once a stock component covers it.
-The spec is declared once, in `scripts/` (its enums in `models.py`, its shapes in `render.py`), and
-`render.py` writes the app's TypeScript types from it into the build. Run `npm ci` once and then
-`npm run check` in `app/` to write those types and type-check and lint the app.
+Change a delivered dashboard only by re-rendering its whole spec, never by editing the page's
+HTML, which skips the renderer's validation. Everything the reader can click, a table row or tree
+entry that opens a dialog included, shows the pointer cursor. Change the page itself only in `app/`: its shadcn
+components live in `app/src/components/ui/` and are added with the shadcn CLI. The spec is declared
+once, in `scripts/` (its enums in `models.py`, its shapes in `render.py`), and `render.py` writes the
+app's TypeScript types from it into the build. Run `npm ci` once and then `npm run check` in `app/`
+to write those types and type-check and lint the app.
 
 ## Delivery
 

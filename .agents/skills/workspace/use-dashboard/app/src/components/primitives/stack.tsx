@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 
 const STACK_VARIANTS = {
   direction: { row: 'flex-row', column: 'flex-col' },
-  gap: { none: 'gap-0', xs: 'gap-1', sm: 'gap-2', md: 'gap-3', lg: 'gap-4', xl: 'gap-6', page: 'gap-4 md:gap-6' },
+  gap: { none: 'gap-0', xs: 'gap-1', sm: 'gap-2', md: 'gap-3', lg: 'gap-4', xl: 'gap-6' },
   align: { start: 'items-start', center: 'items-center', stretch: 'items-stretch' },
   justify: { start: 'justify-start', center: 'justify-center', between: 'justify-between', end: 'justify-end' },
   wrap: { true: 'flex-wrap', false: 'flex-nowrap' },
@@ -26,13 +26,16 @@ const STACK_VARIANTS = {
   badge: {
     none: '',
     slot: 'mt-0.5 size-5 shrink-0',
+    goodFilled: 'size-5 shrink-0 rounded-full bg-good text-background',
+    accentRing: 'size-5 shrink-0 rounded-full border border-info',
     brand: 'size-7 shrink-0 rounded-md bg-primary text-primary-foreground',
   },
-  frame: { none: '', page: '@container/main mx-auto w-full max-w-[120rem]', readable: 'max-w-4xl' },
+  frame: { none: '', page: '@container/page mx-auto w-full max-w-[120rem]', readable: 'max-w-4xl' },
   height: { auto: '', bar: 'min-h-14' },
-  block: { none: '', row: 'py-3', page: 'py-4 md:py-6' },
+  block: { none: '', row: 'py-3', page: 'py-8' },
   push: { true: 'ml-auto shrink-0', false: '' },
   show: { always: '', fromSm: 'hidden sm:flex', fromLg: 'hidden lg:flex', belowLg: 'lg:hidden' },
+  scroll: { true: 'scrollbar-visible overflow-x-auto pb-1', false: '' },
   marker: {
     none: 'list-none',
     bullet: 'list-disc pl-5 marker:text-muted-foreground',
@@ -59,6 +62,7 @@ const stackVariants: ReturnType<typeof cva<typeof STACK_VARIANTS>> = cva('flex m
     block: 'none',
     push: false,
     show: 'always',
+    scroll: false,
     marker: 'none',
   },
 });

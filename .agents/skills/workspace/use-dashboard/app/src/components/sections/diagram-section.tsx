@@ -1,12 +1,11 @@
-import { cn } from 'cn';
 import { type ReactNode, useContext, useEffect, useRef, useState } from 'react';
+
 import { ExternalLink, RichText } from '@/components';
 import { Grid, Stack, Text } from '@/components/primitives';
-import { Badge } from '@/components/ui/badge';
 import { drawDiagram } from '@/lib/diagram';
 import { linkAttributes, type References, ReferencesContext } from '@/lib/references';
 import { CHANGES, TONES } from '@/lib/tone';
-import { scrollToSection, withKeys } from '@/lib/utils';
+import { cn, scrollToSection, withKeys } from '@/lib/utils';
 import { Change, type DiagramEdge, type DiagramSection as DiagramSectionSpec, type Section } from '@/spec';
 import { SectionCard } from './section-card';
 import { SectionDialog } from './section-dialog';
@@ -265,9 +264,11 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
           <Grid as="ol" columns={split ? 'single' : 'steps'} gap="sm" divider={split ? 'side' : 'top'}>
             {withKeys(section.steps, (step) => step).map(({ key, item: step }, index) => (
               <Stack key={key} as="li" direction="row" align="start" gap="sm">
-                <Badge variant="outline" className="size-5 shrink-0 rounded-full px-0 tabular-nums">
-                  {index + 1}
-                </Badge>
+                <Stack align="center" justify="center" badge="accentRing">
+                  <Text size="xxs" weight="bold">
+                    {index + 1}
+                  </Text>
+                </Stack>
                 <Text size="sm" tone="muted">
                   <RichText text={step} />
                 </Text>
