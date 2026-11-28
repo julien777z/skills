@@ -72,9 +72,8 @@ confuse those conclusions.
 
 ## Workflow
 
-Run on the pushed head before the edit's review and acceptance gate. A repair a round makes is
-pushed and every scenario the carry-forward bullet does not carry reruns at once, never held for a
-review or gate first.
+Run where the caller's delivery route places the round. On a guidance batch's full delivery route
+that is the pushed head before any review, each repair rerun at once, as that route says.
 
 1. **Have someone other than the edit's author define the behavior.** Record the observed miss, the
    outcome the user requires and the real case the miss came from. One fresh scenario writer,

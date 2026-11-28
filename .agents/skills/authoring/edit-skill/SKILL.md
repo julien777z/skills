@@ -83,8 +83,9 @@ recording or delivering a batch.
   only once it has worked** says, never to be classified; any other is recorded once diagnosed.
 - A direct request to change guidance, such as "use edit-skill to reflect that", is recorded the
   same way. While another task runs, the requested action is the behavior it describes, applied to
-  the current work, and the guidance edit is its record. While a guidance batch is in flight, its
-  delivery is that action and the user's words are its evidence.
+  the current work, and the guidance edit is its record. While a guidance batch is in flight, the
+  request starts the next batch, as the bullet below on a correction recorded once the batch is
+  frozen says, and the user's words are its evidence.
 - Record the correction as a `guidance_correction` entry with `session-ledger`: the user's words, if
   any, quoted as `engineering-conventions`' **Examples And Paths** says, the evidence of the gap, and for a
   process its verified run, a reproduction scenario, the Scope Statement **Identify the failure class** writes,
@@ -104,8 +105,9 @@ recording or delivering a batch.
   session's branch. A brief to any worker whose task a pending entry's subject covers carries that
   entry's intended behavior, with the user's words quoted and the installed text it amends named.
 - Write the edit in the checkout **Resolve which repository owns the target** resolves, on the branch **Branch and commit** selects — the batch's own
-  branch until that batch is frozen, an entry recorded later waiting as `session-ledger`'s **Guidance
-  Batches** says — commit it, and push it to
+  branch until that batch is frozen; an entry recorded after the freeze is recorded and backed up
+  now, and its edit is written on the next batch's branch once the in-flight pull request merges,
+  as `session-ledger`'s **Guidance Batches** says — commit it, and push it to
   that branch's pull request once the checks the GitHub rule's **Pre-Push Gate** defines pass, opening a draft when the branch has
   none, which a worker hands up instead; this holds for a source pull request **Branch and commit** selects as for an agent-configuration one.
   When the checkout holds the active task's uncommitted or source-branch work, write and commit the
@@ -154,7 +156,7 @@ small it looks.** Each route below is the gate set its batch passes on the head 
   writer, grader and one reader per scenario: four agents for one correction. The pull request
   then merges as **Check the diff file list against the default branch, then merge** says. A
   repair goes back to a fresh gate over its delta and reruns its scenario. A batch that stops
-  qualifying, when an entry joins it or a repair grows it, moves to the full route and keeps
+  qualifying, when a repair grows it, moves to the full route and keeps
   every verdict on what did not change.
 - **Full route.** Every other batch, through **Check the sources** to **Review the tested
   batch once** below. One whose head its invoking workflow already reviewed and accepted skips **Review the

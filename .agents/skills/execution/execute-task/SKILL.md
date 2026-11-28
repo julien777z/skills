@@ -459,7 +459,7 @@ Review** once each has its accepted head.
   as **Guidance Delivery**'s **Resume the batch** says, so its review pass, history and ready message cover them. An entry recorded after the batch in flight froze is delivered in the batch frozen
   once that one is done, so the source stream then waits for that delivery too, and for nothing
   else before **Review the pull request**. Each such entry's skill-test round runs on the head **Review the pull request** accepted, before
-  **Shape the history**, and its repairs follow **Guidance Delivery**'s **Test the batch first**. A task with none has no guidance stream.
+  **Shape the history**, and the round's repairs, each rerun at once, return to review together once it passes, as **Guidance Delivery**'s **Test the batch first** says. A task with none has no guidance stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
   request belongs to the guidance stream:
 
