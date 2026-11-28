@@ -86,7 +86,7 @@ they were judged, sends no worker back to rework what the task delivered, and do
 
 Apart from **End Of Task**, fix, re-render or re-run, and judge again. Stop when a whole pass finds nothing worth changing.
 Report what changed, grouped by skill, with each change stated as what the reader now sees or what
-the agent now does.
+the agent now does, never as how the guidance is wired, such as which skill now depends on which.
 
 ## Output
 
