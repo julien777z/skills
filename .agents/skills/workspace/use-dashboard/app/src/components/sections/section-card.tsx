@@ -17,6 +17,7 @@ interface SectionCardProps {
   summary?: number | string;
   wide?: boolean;
   flush?: boolean;
+  action?: ReactNode;
   children: ReactNode;
 }
 
@@ -42,6 +43,7 @@ export function SectionCard({
   summary,
   wide = false,
   flush = false,
+  action,
   children,
 }: SectionCardProps): ReactNode {
   const inDialog = useContext(InDialogContext);
@@ -65,7 +67,10 @@ export function SectionCard({
                 </Text>
               )}
             </Stack>
-            <Summary summary={summary} />
+            <Stack direction="row" align="center" gap="sm">
+              <Summary summary={summary} />
+              {action}
+            </Stack>
           </Stack>
           {children}
         </Stack>
@@ -77,6 +82,7 @@ export function SectionCard({
     return (
       <Stack gap="lg">
         <DialogHeader>
+          {action && <div className="absolute top-3 right-12">{action}</div>}
           <DialogTitle>
             <RichText text={title} />
           </DialogTitle>
@@ -112,9 +118,10 @@ export function SectionCard({
             <RichText text={description} />
           </CardDescription>
         )}
-        {typeof summary === 'string' && (
-          <CardAction>
+        {(typeof summary === 'string' || action) && (
+          <CardAction className="flex items-center gap-2">
             <Summary summary={summary} />
+            {action}
           </CardAction>
         )}
       </CardHeader>

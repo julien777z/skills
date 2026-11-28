@@ -203,3 +203,108 @@ export async function drawDiagram(section: DiagramSection, container: HTMLElemen
 
   return { svg: chosen.svg, width: chosen.width * Math.max(chosen.scale, MIN_DIAGRAM_SCALE) };
 }
+
+const SVG_NAMESPACE: string = 'http://www.w3.org/2000/svg';
+
+const XHTML_NAMESPACE: string = 'http://www.w3.org/1999/xhtml';
+
+const INLINED_TEXT_STYLES: readonly string[] = [
+  'color',
+  'font-family',
+  'font-size',
+  'font-weight',
+  'line-height',
+  'text-decoration-line',
+];
+
+function opaqueBackground(element: Element): string {
+  for (let current: Element | null = element; current; current = current.parentElement) {
+    const color = getComputedStyle(current).backgroundColor;
+
+    if (color && color !== 'transparent' && !color.endsWith(', 0)')) {
+      return color;
+    }
+  }
+
+  return getComputedStyle(document.body).backgroundColor;
+}
+
+function fontFaces(): string {
+  const rules: string[] = [];
+
+  for (const sheet of Array.from(document.styleSheets)) {
+    try {
+      for (const rule of Array.from(sheet.cssRules)) {
+        if (rule instanceof CSSFontFaceRule) {
+          rules.push(rule.cssText);
+        }
+      }
+    } catch {
+      // A cross-origin stylesheet hides its rules; the page's own fonts are bundled inline.
+    }
+  }
+
+  return rules.join('\n');
+}
+
+/** A file name for a diagram, from the dashboard's title, the open page's and the section's. */
+export function diagramFileName(title: string): string {
+  const slug = (text: string): string =>
+    text
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '');
+
+  const page = document.querySelector('[aria-current="page"]')?.textContent ?? '';
+
+  return `${[slug(document.title), slug(page), slug(title)].filter(Boolean).join('-') || 'diagram'}.svg`;
+}
+
+/** Save a drawn diagram as a standalone SVG file, with the page's label styles and background baked in. */
+export function downloadDiagram(svg: SVGSVGElement, fileName: string): void {
+  const copy = svg.cloneNode(true) as SVGSVGElement;
+  const originals = svg.querySelectorAll('*');
+  const copies = copy.querySelectorAll('*');
+
+  originals.forEach((original, index) => {
+    if (original.namespaceURI !== XHTML_NAMESPACE) {
+      return;
+    }
+
+    const computed = getComputedStyle(original);
+    const target = copies[index] as HTMLElement;
+
+    for (const property of INLINED_TEXT_STYLES) {
+      target.style.setProperty(property, computed.getPropertyValue(property));
+    }
+  });
+
+  const { x, y, width, height } = svg.viewBox.baseVal;
+  const background = document.createElementNS(SVG_NAMESPACE, 'rect');
+
+  background.setAttribute('x', String(x));
+  background.setAttribute('y', String(y));
+  background.setAttribute('width', String(width));
+  background.setAttribute('height', String(height));
+  background.setAttribute('fill', opaqueBackground(svg));
+  copy.insertBefore(background, copy.firstChild);
+
+  const fonts = document.createElementNS(SVG_NAMESPACE, 'style');
+
+  fonts.textContent = fontFaces();
+  copy.insertBefore(fonts, copy.firstChild);
+  copy.setAttribute('xmlns', SVG_NAMESPACE);
+  copy.setAttribute('width', String(Math.round(width)));
+  copy.setAttribute('height', String(Math.round(height)));
+  copy.style.removeProperty('max-width');
+  copy.style.removeProperty('width');
+
+  const blob = new Blob([new XMLSerializer().serializeToString(copy)], { type: 'image/svg+xml' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+
+  link.href = url;
+  link.download = fileName;
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 0);
+}

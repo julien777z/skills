@@ -1,9 +1,12 @@
 import { cn } from 'cn';
+import { Download } from 'lucide-react';
 import { type ReactNode, useContext, useEffect, useRef, useState } from 'react';
 import { ExternalLink, RichText } from '@/components';
 import { Grid, Stack, Text } from '@/components/primitives';
 import { Badge } from '@/components/ui/badge';
-import { drawDiagram } from '@/lib/diagram';
+import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { diagramFileName, downloadDiagram, drawDiagram } from '@/lib/diagram';
 import { linkAttributes, type References, ReferencesContext } from '@/lib/references';
 import { CHANGES, TONES } from '@/lib/tone';
 import { scrollToSection, withKeys } from '@/lib/utils';
@@ -207,7 +210,36 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
   }, [section, references]);
 
   return (
-    <SectionCard title={section.title} description={section.description} wide>
+    <SectionCard
+      title={section.title}
+      description={section.description}
+      wide
+      action={
+        status === DrawStatus.DRAWN && (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label="Download diagram as SVG"
+                  onClick={() => {
+                    const svg = figure.current?.querySelector('svg');
+
+                    if (svg) {
+                      downloadDiagram(svg, diagramFileName(section.title));
+                    }
+                  }}
+                >
+                  <Download />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>Download diagram as SVG</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )
+      }
+    >
       <Grid columns={split ? 'figureBesideSteps' : 'single'} gap="lg">
         <Stack gap="md">
           {status === DrawStatus.FAILED && (
