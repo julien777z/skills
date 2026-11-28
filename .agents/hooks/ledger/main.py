@@ -27,6 +27,7 @@ PROMPTS_DIRECTORY: Final[Path] = Path(os.path.abspath(__file__)).parent / "promp
 CREATED_LEDGER_PROMPT_FILENAME: Final[str] = "created-ledger.md"
 MISSING_BACKUPS_PROMPT_FILENAME: Final[str] = "missing-backups.md"
 UNREADABLE_LEDGERS_PROMPT_FILENAME: Final[str] = "unreadable-ledgers.md"
+REPLY_PROMPT_FILENAME: Final[str] = "reply.md"
 
 
 def prompt(filename: str) -> str:
@@ -68,7 +69,9 @@ def read_hook_input() -> HookInput:
 
 
 def deliver(hook_input: HookInput, message: str) -> HookOutcome:
-    """Hand the agent a message it acts on before the turn ends."""
+    """Hand the agent a message it acts on before the turn ends, closing with the reply it owes."""
+
+    message = f"{message}\n\n{prompt(REPLY_PROMPT_FILENAME)}"
 
     if hook_input["expects_followup_message"]:
         print(json.dumps({"followup_message": message}))

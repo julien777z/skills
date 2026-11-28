@@ -1,1 +1,1 @@
-Post or edit each backup comment as session-ledger's Backup section says and record its URL in the entry. Then end the turn by giving the reply this turn owed the user again in full, without mentioning the ledger, since the turn's last message is the one the user reads.
+Post or edit each backup comment as session-ledger's Backup section says and record its URL in the entry.

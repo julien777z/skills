@@ -9,6 +9,7 @@ import uuid
 from pathlib import Path
 
 HOOK = Path(__file__).resolve().parents[1] / "main.py"
+REPLY_PROMPT = (HOOK.parent / "prompts" / "reply.md").read_text(encoding="utf-8").strip()
 BLOCK_EXIT = 2
 
 
@@ -85,6 +86,7 @@ class LedgerHookTest(unittest.TestCase):
 
         self.assertEqual(result.returncode, 0)
         self.assertIn(f"session-{self.session_id}.yaml", message)
+        self.assertTrue(message.endswith(REPLY_PROMPT))
         self.assertEqual(stat.S_IMODE(self.directory.stat().st_mode), 0o700)
 
     def test_skips_unusable_id_and_continuation(self):
@@ -127,6 +129,8 @@ class LedgerHookTest(unittest.TestCase):
         self.assertIn(f"{named} has entries missing", result.stderr)
         self.assertIn(f"{recording} has entries missing", result.stderr)
         self.assertIn(f"{broken} could not be read", result.stderr)
+        self.assertEqual(result.stderr.count(REPLY_PROMPT), 1)
+        self.assertTrue(result.stderr.rstrip().endswith(REPLY_PROMPT))
         self.assertEqual(self.ledger_files(), [broken.name, named.name, recording.name])
 
     def test_session_end_removes_untouched_file(self):

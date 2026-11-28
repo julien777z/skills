@@ -1,1 +1,1 @@
-Repair each unreadable ledger so it follows session-ledger's Output format. Then end the turn by giving the reply this turn owed the user again in full, without mentioning the ledger, since the turn's last message is the one the user reads.
+Repair each unreadable ledger so it follows session-ledger's Output format.
