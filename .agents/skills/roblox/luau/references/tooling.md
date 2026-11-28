@@ -10,7 +10,7 @@ Use Rokit to pin tools, Wally to manage packages, Rojo to map source to places, 
 
 Exclude installed packages, generated networking, vendored code, and verification artifacts consistently. Anchor root exclusions so build-output patterns cannot accidentally exclude authored builders. Do not suppress first-party diagnostics to get a green check. Generated agent mirrors are owned by Agent Sync, not a competing formatter.
 
-When configuring CI, keep lint, automated tests, and build/artifact integrity checks distinct. Read the actual workflows to determine which checks exist and whether cloud execution is provisioned.
+When configuring CI, give each lint tool its own job, and keep automated tests and build/artifact integrity checks distinct. Read the actual workflows to determine which checks exist and whether cloud execution is provisioned; report a cloud test the workflow configures but the repository has not provisioned as incomplete, not passed.
 
 ## Readability and blank lines
 
@@ -22,7 +22,11 @@ Author logical blank-line groups before formatting. [StyLua's configuration](htt
 
 Separate engine-independent behavior tests from Roblox engine tests, using shared typed fakes where appropriate. A Lute runner with Jest-compatible assertions is not actual Roblox Jest execution. Discover the project's installed runner, suite locations, and supported commands; keep manual interaction tooling separate and results ignored.
 
-Commit the project's package lockfile when its package manager produces one. When using a dedicated test project, mount development packages and fixtures only there; delivery integrity must reject them. Cover authority, failure, cancellation, transitions, rewards, and shared spatial contracts. Static checks do not prove rendering, player controls, persistence across joins, or multiplayer behavior.
+Write specs as `.spec.luau` files with explicit `JestGlobals` imports, asserting behavior, failure, and recovery. Use `assert` where later lines need type refinement, since an expectation alone does not narrow an optional Instance. Test pure policy under Lute where practical, and use Roblox tests for adapter mappings and rendered behavior; React rendering is scheduled, so wait for a specific result with a bounded deadline instead of assuming children exist. Shared fakes for players, profiles, logging, and async control model engine scheduling and ownership — yielding load and save completion, session loss, and player departure — and tests do not assert only the implementation's internal steps.
+
+A Lute test loader resolves string-path requires from the test Rojo tree, gives each spec a fresh module registry, and supplies its documented Jest-compatible matcher set. A load error, no specs found, or a watchdog timeout fails the run; add a missing matcher with matching semantics rather than weakening a spec.
+
+Commit the project's package lockfile when its package manager produces one. When using a dedicated test project, mount development packages and fixtures only there; delivery integrity must reject them. Cover the boundaries where a silent regression costs progress: authority, invalid requests, rate limits, failure, cancellation, transitions, rewards and duplicate grants, persistence and session failures, encounters, travel, cleanup, and shared spatial contracts. Static checks do not prove rendering, player controls, persistence across joins, or multiplayer behavior.
 
 ## Verified version-specific issues
 
@@ -31,5 +35,7 @@ Lute 1.0.0's unused-variable rule misclassifies locals used only as assignment r
 Blink 0.18.8's `Parser.Map` does not parse a range suffix after a map declaration, despite that syntax appearing in newer documentation. Use the pinned compiler's supported syntax. Bound client requests with string/array ranges and server validation; do not claim a map-size bound that is not enforced.
 
 Rojo maps `init.luau` to the containing ModuleScript. A child require from that module uses `@self/Child`, not `./Child` (which resolves to a sibling of the ModuleScript). Verify renamed module trees with the fresh sourcemap.
+
+rocale-cli 0.1.3 once failed a completed Open Cloud task in `ocaleSdk.getTaskLogs` with `attempt to index nil with 'messages'` before printing any Jest results, and an unchanged-head rerun completed the suite; its underlying API cause is unresolved. Treat it as a runner log-retrieval failure, neither an assertion failure nor a pass: keep the failed run, inspect its task and upload status, retry one isolated run only when the failure is at that boundary, and require the actual Jest summary and a successful runner exit. Never mask assertion failures with blanket retries.
 
 If Wally directories contain leftover package copies, move the generated directories out of the build input and run the configured package installation again. Wally installation does not prove stale files were removed. Source/package equality must use the clean installed closure.

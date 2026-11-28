@@ -23,16 +23,16 @@ an encountered issue from the task.
     shape, or operation as the changed code — a near-duplicate helper, a parallel implementation,
     a second representation of one value. `code-simplify`'s **Before Choosing A Design** search
     found these before the edit; this pass rereads its receipts against the code as built. A copy of
-    the change's own mechanism is the change's scope under `pre-production`'s **Scope Follows The
+    the change's own mechanism is the change's scope under `scope-of-change`'s **Scope Follows The
     Defect, Not The Request**: give the mechanism one owner, move every consumer onto it and delete the copies.
     Other code the change resembles and should be one thing with is made one thing within
-    `pre-production`'s size budget. Follow that rule's placement for widened cleanup and use
+    `scope-of-change`'s size budget. Follow that rule's placement for widened cleanup and use
     `defer-scope` for work it defers.
   - **Sibling modules**: the other modules in each changed file's package, which is where a
     misplaced piece of logic and its rightful home become visible together.
 - When a repair changes another file, inspect its complete contents and relevant owners to verify
   that repair and its necessary consumer updates. This expands validation, not permission for a
-  new cleanup frontier; use `pre-production`'s scope decision before adding another correction.
+  new cleanup frontier; use `scope-of-change`'s scope decision before adding another correction.
 - Check the combined scope against the requested outcome, including all incidental changes;
   individually useful edits can add up to a disproportionate change. Ask only about a genuine
   decision **Encountered Issues** reserves for the user.

@@ -1,6 +1,6 @@
 ---
 name: where-time-went
-description: "Show where the current session's working time went as a dashboard: the main agent, subagents, loops and their rounds, and what happened inside each — its stages of work, check runs and the agents it started — as expandable trees, beside what is running now and what is still to do. Run only when the user asks for it."
+description: "Show where the current session's working time and scope went as a dashboard: the main agent, subagents, loops and their rounds, and what happened inside each as expandable trees; charts of time by workflow, activity, role and model; the scope of what the changes touched and the agents read, against what was asked; and the agent's own observations on waste and whether the time was justified; beside what is running now and what is still to do. Run only when the user asks for it."
 short_description: 'Show where session working time went, as a dashboard.'
 ---
 
@@ -12,8 +12,8 @@ short_description: 'Show where session working time went, as a dashboard.'
 - `session-ledger`
 - `progress`
 
-Explain where this session's agents spent their working time, and what came of it, from the
-session's own evidence. By default cover the whole current session through invocation, including
+Explain where this session's agents spent their working time, what they touched and read, and what
+came of it, from the session's own evidence, so the reader can judge it for waste. By default cover the whole current session through invocation, including
 nested agents; honor a requested task or time range. Read only this session and its descendants,
 never unrelated chats. A compacted summary does not narrow the time range: recover earlier records
 where available and mark gaps where they are not.
@@ -30,7 +30,8 @@ pending, by the agent that asked or by any other, still counts.
   except a span that runs from a turn's last message to the next message from the user or the
   coordinator, and a span in which the agent's only activity is a pending user request. A tool call
   is busy from its call to its result.
-- **Every figure is clock time.** A single agent's or assignment's figure is the length of its busy
+- **Every figure is clock time**, apart from the Activity charts by kind of activity and by role,
+  which are summed over every agent as use-dashboard allows a figure summed over parallel work. A single agent's or assignment's figure is the length of its busy
   intervals. A group's figure, whether a workflow, a round, a phase or the whole session, is the
   length of the union of its members' busy intervals.
 - **A worker that receives several assignments** over the session is one entry per assignment, each
@@ -91,9 +92,45 @@ pages, in order:
   one row per top-level workflow, with its time and its state, as **States** names it — each row
   opening a short write-up of that workflow in a dialog: what it did, its outcome and its largest
   stages, as **What happened** names them.
+  A `chart` of working time by top-level workflow, a `tone` of `warning` on Rework, Detour and Avoidable,
+  each item opening the same write-up as its table row through `details`.
+  Then **Observations**: an `outline` of what the agent concludes from every page, each item a
+  headline with the figures behind it — where effort was wasted or repeated, what ran longer than
+  its result needed, work outside what was asked, rework traced to the step that caused it, such as
+  a review's suggested fix followed literally, reviewing set against building, runs lost to rate
+  limits or redone after a weaker model, and a verdict
+  on whether the time was justified for the task, said plainly. Each waste names the guidance change
+  that would prevent it, or the guidance that already does and when it took effect. Each observation
+  is the agent's judgment of the evidence, never a restatement of a figure, and names the page that
+  shows it. A cause an observation states is traced, as the global rules require: one that says the
+  agents ignored guidance first reads when that guidance took effect, since a rule merged late in
+  the session governed only the work after it.
 - **Now and next** (`board`). The Active and Up next columns of `progress`'s `board` "Work", built
   as that skill builds them from the same plans, so both dashboards show the same cards; Active also
   holds each running agent no plan step holds, saying what it does.
+- **Activity** (`chart`). Charts of the same working time cut other ways, each a whole as a pie
+  or a comparison as bars: time by kind of activity — the model thinking and writing, running
+  tests, waiting on other commands, Git and the hosting service, lint and type checks, reading
+  files, editing — summed over every agent, with the main agent's waits on its children left out
+  so no time counts twice, and each command counted under the program it runs, never under a path
+  or word it names, so a lint run over test files is lint, not running tests; time by role, such as implementation, review, gate, council and skill
+  test, with each role's agent count as its `detail`; how many times each gate, review or council
+  ran, as bars; and agents per model.
+  Every item opens what it sums through `details`: an activity its split by role and the agents
+  that spent the most on it, running tests also its whole-suite against targeted runs, its time
+  before and after any guidance change about when tests run, and its longest commands; a role its
+  launches with model and time; a model its launches by role.
+- **Scope** (`data`). What the work touched against what was asked. Per pull request, the concerns
+  its commits carry, read from their messages and files, each with its file and line counts and
+  whether the request, a standing requirement the user set, guidance the agents applied on their
+  own, or nothing asked for put it there. A commit belongs to the concern its files serve, never
+  to its kind of edit alone: formatting or a lint fix on files the requested work wrote, or required
+  by a standing requirement, is that work. Each concern also counts its files that no requested
+  work touched, since that count, not the commit count, is how much it widened a review. A `chart`
+  per pull request of files changed per concern, the last two kinds in `warning`, each item opening its commits; and
+  a `table` of the concerns with both counts, each row opening its commits. Then what the agents read: files read per agent, as its median and its largest with
+  who read it, and reads by repository and by area as charts, so a reader sees whether reviewers
+  read the change or the whole tree.
 - **Loops** (`list`). One `tree`: each workflow, then its rounds or groups, then the agents or
   assignments inside them, each broken down as **What happened** says. Every entry's `figure` is its
   time, or for work up next its estimate in `meta`; its `tone` and any `status` are as **States**
@@ -120,7 +157,8 @@ never left out, and a stage with children is accounted for the same way. A listi
 longest single activities is not a breakdown.
 
 Name agents by role or task, never by ID. A spec holds no raw transcript, credential or secret.
-After delivery, reply with one line: the session's working time and the largest workflow.
+After delivery, reply with the session's working time, the largest workflow and the observations'
+verdict in a few lines.
 
 ## Guardrails
 

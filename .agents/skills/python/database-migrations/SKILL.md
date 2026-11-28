@@ -2,6 +2,7 @@
 name: database-migrations
 description: "Apply before changing persisted database schema or stored representations, including repositories without a migration runner and startup schema reconciliation. Use versioned Alembic revisions, never ad hoc runtime migrations; guide authoring, rebasing, and troubleshooting their canonical chain."
 short_description: 'Guide for authoring, rebasing, and troubleshooting Alembic database migrations, including how to avoid and fix branched migration graphs.'
+user-invocable: false
 ---
 
 # Database Migrations
@@ -24,7 +25,9 @@ migration workflow.
   receives it the same way when it deploys. It may clear or drop disposable values under its
   destructive-operation declarations. Never hand it to a one-time script, a statement run by hand,
   or a reset an operator performs per environment. Keep the configured replay tests. Rebuilding a
-  local stack's database is not such a change.
+  local stack's database is not such a change. A value a new requirement needs that disposable
+  rows lack is still backfilled as `pre-production`'s **Retained Data** says, and only a row that
+  section deletes is dropped.
 - When affected values must survive, apply the retained-data requirements below.
 
 ## Structure

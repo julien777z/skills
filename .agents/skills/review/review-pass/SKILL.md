@@ -18,7 +18,8 @@ skill never readies, merges or deploys.
 - `security-audit`
 - `defer-scope`
 - `session-ledger`
-- `pre-production`
+- `scope-of-change`
+- `engineering-conventions`
 - `council`
 - `subagent-matrix`
 - `skill-pass`
@@ -55,7 +56,7 @@ skill never readies, merges or deploys.
   runs `code-simplify` once over the pull request's whole diff, in process or by slice as **Local
   Passes** says; a fix that pass pushes is watched to the same end, and the watch then stops. The
   report names each exclusion, leaving out baseline failures and non-essential checks left red as
-  `pre-production`'s **Encountered Issues** says, and each thread waiting on the user. A draft runs no test jobs, so
+  `scope-of-change`'s **Encountered Issues** says, and each thread waiting on the user. A draft runs no test jobs, so
   its watch reports `draft: watch ended, tests not run`; this mode never readies or merges a pull
   request.
 - **Combined** (the invocation names more than one open pull request, each with its accepted head
@@ -64,6 +65,12 @@ skill never readies, merges or deploys.
 ## Targets
 
 - **Open pull request:** the pull request is the review target and the working pull request.
+- **Bulk set:** pull requests opened together to make one similar change across repositories, as
+  `subagent-matrix`'s **Dispatch** names them, are one target, each still its own working pull
+  request. One reviewer reads every diff in one pass and carries the loop; final acceptance is one
+  gate over the frozen diffs, naming a verdict per head, as `acceptance-gate`'s several-diffs
+  paragraph allows; and **Range** records a `review` entry per head. A finding accepted on one is
+  checked against every other and its fix applied wherever the same case holds.
 - **Merged range a caller delegates:** read [Merged targets](references/merged-targets.md), this
   skill's reference for reviewing an immutable `first-parent..merge-commit` range and opening a fix
   pull request only once a finding needs one.
@@ -71,7 +78,7 @@ skill never readies, merges or deploys.
   refresh and review threads do not apply, and fixes are committed in the task's own checkout
   without pushing, the exception the GitHub rule's **Pre-Push Gate** makes for a review the user
   asked for without a push.
-- **A repository the owner does not own**, as `pre-production`'s **Whose Standards Apply** defines it:
+- **A repository the owner does not own**, as `engineering-conventions`' **Whose Standards Apply** defines it:
   the pass fixes the request's own issues and the defects it finds, wherever they sit. **Local
   Passes** do not run, the reviewer brief's rules are that repository's own guidance, the final
   acceptance brief names the repository as someone else's, and a finding that rests only on a
@@ -113,7 +120,7 @@ Each pass reviews only what no earlier pass reviewed.
 
 Read the title and description against the current head first, and rewrite either one that no
 longer describes the branch: a feature named that was taken back out, a shape the change replaced,
-a contract the diff no longer breaks. Rewrite as `pre-production`'s **Repository Text** says and under the GitHub rule's independent
+a contract the diff no longer breaks. Rewrite as `engineering-conventions`' **Repository Text** says and under the GitHub rule's independent
 publishing context, never from a body a tool truncated. Refresh once more before final acceptance,
 because the pass's own fixes change what the branch does. Name the fixes review surfaced rather
 than the task required, so a reader sees why the diff is wider than the title.
@@ -213,8 +220,9 @@ These run in the order below, in process unless a pass says otherwise.
 
 - **Python rules:** for the delta's changed Python files, run `acceptance-gate`'s
   `scripts/python_rule_findings.py` over them; each finding it lists gets its fix, and each
-  paragraph candidate `pre-production`'s **Code Layout** makes a boundary gets its blank line.
-  Read the comments added by the delta even when the script finds nothing. For each, identify the
+  paragraph candidate `engineering-conventions`' **Code Layout** makes a boundary gets its blank line, and
+  each standard citation candidate the shared Python formatting rule's comment bullets rule out is
+  removed. Read the comments added by the delta even when the script finds nothing. For each, identify the
   external constraint it explains or refactor the owned code so its intent is visible. For owned
   behavior described in a comment, point to an assertion on the observed result that fails when
   the behavior regresses.
@@ -238,7 +246,9 @@ changed. Make the smallest changes that answer real findings, and push back on t
   needs no new round. These rounds count the pull request's review loop; one finding's fix still
   follows the limit of 3 review rounds per change, as `acceptance-gate`'s **Bounds** counts them.
 - **Reviewer:** dispatch an independent reviewer on the running session's provider through
-  `subagent-matrix` at the advanced tier and medium effort. Pass the running provider as a
+  `subagent-matrix` at medium effort: the cheap tier during implementation, and the standard tier
+  for the final review of the whole pull request once its implementation is complete, such as the
+  review before its merge. Pass the running provider as a
   requirement in briefs to `council` and other independent review steps this pass starts.
   Use **Harness Compatibility** where it applies. One reviewer carries every round of a pass
   where the host can continue an agent, so it re-reads nothing it already holds; a later round starts a new one only where the
@@ -271,7 +281,7 @@ changed. Make the smallest changes that answer real findings, and push back on t
     the loop;
   - nit: fix it when it is a one-line change in a line the change already touches, otherwise decline
     it in one line;
-  - outside the change: fix every bug as `pre-production`'s **Scope Follows The Defect, Not The Request**
+  - outside the change: fix every bug as `scope-of-change`'s **Scope Follows The Defect, Not The Request**
     requires. Use its size budget and `defer-scope` for cleanup.
 - **Next round** only while budget remains and a blocker or should is open, or code or guidance
   behavior changed since the last approval. Run the checks covering the fix and `git diff --shortstat <base>` first; if
@@ -300,7 +310,9 @@ review.
   independent, one whose merge is withheld or held included. An agent-configuration pull request
   is in it only when its guidance depends on or describes behavior another pull request in the set
   changes; one whose guidance holds on the default branch as it stands is outside the set, and its
-  review and merge wait on no other pull request. The round runs once, after its own review has
+  review and merge wait on no other pull request. The session's side pull request is outside its
+  task pull request's set: it is based on that branch, and once the task merges its retarget
+  brings that base in and reruns its gates. The round runs once, after its own review has
   accepted a head of every pull request in the set and before any of them merges. A pull request
   whose own review ends with its change reverted or the pull request closed, under the ruling the
   round limit calls for, leaves the set, and the round runs over the rest. A set of one does not run.

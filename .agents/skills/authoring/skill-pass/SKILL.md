@@ -1,6 +1,6 @@
 ---
 name: skill-pass
-description: 'How agent guidance under `.agents`, and code outside it that sets up, configures or fixes how agents run, is written, placed and checked — the criteria and the source check for a skill, rule, agent definition, hook, setting, reference or project guidance. Read when writing, editing, reviewing or auditing guidance, for where a requirement lives among the global rules, a rule file and a skill; frontmatter descriptions; skill dependencies and their declaration; conflicting instructions; citations that must resolve; size budgets by how a file loads; the vendor rubric for prohibitions, absolutes, emphasis and what a current model needs no telling, with the evidence a cut needs; counting that wording per file; harness support; subagent counts and what a flow costs; output sections; routers; prose duplication; validating guidance; listing which skills and rules read a skill, a rule or one of its sections; and how a reviewer or gate of a guidance diff is briefed. It starts no subagents.'
+description: 'How agent guidance under `.agents`, and code outside it that sets up, configures or fixes how agents run, is written, placed and checked — the criteria and source check for any guidance file. Read when writing, editing, reviewing or auditing guidance, for where a requirement lives among the global rules, a rule file and a skill; frontmatter descriptions; adding a skill against a reference, rename or merge; hiding a skill from the menu; skill dependencies and their declaration; conflicting instructions; citations that must resolve; size budgets by how a file loads; the vendor rubric for prohibitions, absolutes, emphasis and what a model needs no telling, and the evidence a cut needs; counting that wording per file; harness support; subagent counts and what a flow costs; output sections; routers; prose duplication; validating guidance; listing which skills and rules read a skill, a rule or one of its sections; and how a reviewer or gate of a guidance diff is briefed. It starts no subagents.'
 short_description: 'Apply the writing, placement, conflict and source checks to agent guidance.'
 ---
 
@@ -12,7 +12,7 @@ no pull request and delivers nothing. An invocation names what it covers — a d
 or the whole canonical tree — and the pass runs over that.
 
 ## Dependencies
-- `pre-production`
+- `scope-of-change`
 - `council`
 - `i-have-adhd`
 - `code-simplify`
@@ -50,9 +50,16 @@ step naming the section it reads, the
 5. **Conflicts.** Apply **Conflict Check**.
 6. **Placement.** Test each requirement against the authoring reference's **Where Guidance Lives**:
    name the skill that runs when the requirement applies before accepting it in a rule file or
-   `.agents/global.md`, check what the owning file's name and description bound, and confirm no rule
-   file or `.agents/global.md` names an individual skill outside the one place that reference
-   allows.
+   `.agents/global.md`, and confirm no rule file or `.agents/global.md` names an individual skill
+   outside the one place that reference allows. Then apply that reference's name-bounds test to the
+   whole of each file under `.agents` whose instructions the change adds to or alters, a skill
+   counted with its whole package, and of each file an audit covers, never to the changed lines
+   alone. A file touched only mechanically — a citation or dependency repointed at a moved or
+   renamed target, a link fix, or wording that changes no instruction — and a file that only
+   receives moved text keep the test of the lines they change and start no whole-file sweep; a file
+   or heading the change itself renames stays under the test. In a repository's own guidance, apply
+   the reference's **A repository's own guidance holds only the facts that repository owns** in the
+   same files.
 7. **Description as the index.** For every subject a skill owns, confirm a clause of its frontmatter
    description names it, and judge the description as the authoring reference's **Descriptions**
    says. An index of owners kept in a rule file, `.agents/global.md` or a table is a finding.
@@ -151,6 +158,11 @@ for these shapes:
 - a section grown around a second subject;
 - a heading named for a category with one member;
 - a rubric left inline that the authoring reference's skill shape sends to a reference;
+- one requirement restated in several places in one file, each in different words;
+- prose restating a table's or catalog's values, such as the names it maps, instead of naming the
+  table;
+- a vocabulary, record format or field list one skill defines spelled out again in its callers,
+  which name the owner's term for it instead;
 - a single bullet added to a file that does not own its subject, the duplication least likely to be
   looked at twice.
 

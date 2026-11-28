@@ -108,11 +108,9 @@ def ledger_sessions(document: object) -> list[str]:
 
 
 def is_untouched_session_ledger(document: object, session_id: str) -> bool:
-    """Tell whether a ledger lists only the session and records nothing."""
+    """Tell whether a ledger holds nothing but the session's ID."""
 
-    is_empty = ledger_mapping(document).get("entries") == []
-
-    return is_empty and ledger_sessions(document) == [session_id]
+    return document == {"session_ledger": {"sessions": [session_id], "entries": []}}
 
 
 def ledger_records(document: object) -> list[BackupRecord]:

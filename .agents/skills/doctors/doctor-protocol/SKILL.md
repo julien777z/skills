@@ -2,6 +2,7 @@
 name: doctor-protocol
 description: The audit-and-fix protocol every doctor skill runs on — scope resolution, a repository index doctors share, a mechanical pre-pass, a partitioned read-only audit under a reviewer cap, a resumable run ledger, a remediation plan shown and started at once, fixes by area on one pull request, one final review, deferral of leftovers, and the report skeleton. Read from a doctor skill that declares it; never invoked on its own.
 short_description: 'Set the audit, fix, review, and reporting process used by every doctor skill.'
+user-invocable: false
 ---
 
 # Doctor Protocol
@@ -15,7 +16,7 @@ finds. This skill owns the run; each doctor owns only its domain.
 - `code-simplify`
 - `acceptance-gate`
 - `defer-scope`
-- `pre-production`
+- `scope-of-change`
 - `execute-task`
 - `edit-skill`
 - `session-ledger`
@@ -59,9 +60,10 @@ either this protocol restated, which is skill-to-skill duplication, or a rule th
 
 ## Launches
 
-Every subagent is resolved through `subagent-matrix` and recorded as its **Dispatch** says, in the
-run ledger. Reviewers run at the capability level the calling doctor selects, or standard when it
-selects none, with any reviewer fallback the doctor specifies; workers run at standard.
+Every subagent is resolved through `subagent-matrix` and recorded as its **Output** dispatch line
+says, in the run ledger. Reviewers run at the capability level the calling doctor selects, or
+standard when it selects none, with any reviewer fallback the doctor specifies; workers run at
+standard.
 
 | Launch | Small route | Whole route |
 |---|---|---|
@@ -90,7 +92,7 @@ selects none, with any reviewer fallback the doctor specifies; workers run at st
 ## Resolve The Scope
 
 Use an explicit domain, service, path, or other concrete selection supplied by the caller.
-Otherwise audit the whole repository. A doctor run sets its own scope, so `pre-production`'s
+Otherwise audit the whole repository. A doctor run sets its own scope, so `scope-of-change`'s
 incidental size budget does not apply. Before fan-out, take `defer-scope`'s **Reading A Scope** for
 that scope, which returns its declined and canceled records with the reason each was declined and
 what would reopen it. A finding one covers enters the ledger as declined and is skipped, never
@@ -108,7 +110,7 @@ refused deferral authorizes its implementation in this run.
 **A defect or vulnerability the run notices is never outside the boundary.** Whatever its size, its
 area, the lens that met it or the doctor running, a confirmed defect or exploitable vulnerability
 joins the remediation plan as a required entry and is fixed in this run at its owner, as
-`pre-production`'s **Scope Follows The Defect, Not The Request** says of a defect the work notices.
+`scope-of-change`'s **Scope Follows The Defect, Not The Request** says of a defect the work notices.
 It is never reported in place of a fix, deferred or left for another doctor. What a doctor's
 disposition may still exclude is cleanup that fixes no defect.
 
@@ -261,12 +263,15 @@ Otherwise write a decision-complete remediation plan from the ledger.
     procedure, each as options with each consequence and a recommendation; only the entries that
     depend on an answer wait for it.
   - **A departure from a rule rides the rule change.** Where the run judges a shape a rule
-    prescribes or exempts worse than the departure, as `pre-production`'s **Trade-Offs Are Surfaced,
-    Never Enforced** asks of a rule, the rule change and the source entry that departs under it both
-    go on the session's side pull request, the one source entry the GitHub rule's **Branches and
-    Pull Requests** would otherwise keep on the run's pull request, merging together on the user's
-    word, and the run's pull request keeps the rule's form, since code that departs from a rule
-    still in force reads as a defect to the next run.
+    prescribes or exempts worse than the departure, as `scope-of-change`'s **Trade-Offs Are
+    Surfaced, Never Enforced** asks of a rule, the rule change goes on the session's side pull
+    request in the rule's repository. Where that is the run's own repository, the source entry that
+    departs under it goes on the same side pull request, the one source entry the GitHub rule's
+    **Branches and Pull Requests** would otherwise keep on the run's pull request, and the two merge
+    together on the user's word. Where the rule lives in another repository, the source entry goes
+    on the run's repository's side pull request, held there until the rule change merges. Either way
+    the run's pull request keeps the rule's form, since code that departs from a rule still in force
+    reads as a defect to the next run.
 - **The gated plan is shown, and its work starts in the same turn.** The user reads one line per
   area with its entry counts, the order, what waits on a decision and any path no reviewer read;
   the entries themselves go in the plan file sent with it, as the reference says. The message
@@ -350,10 +355,10 @@ configured rather than inventing one.
 
 Then take every measure again and rerun the mechanical pre-pass. Each instance a measure of defect
 candidates still counts is matched to a ledger entry that retains it: kept with a reason, declined,
-deferred or waiting on a reserved user decision or carried with a rule change on the side pull
-request. An instance with no such entry is a missed fix and goes back out as a fix step. Inventory
-totals, such as files, symbols, dependencies, documents and strings, and performance measures are
-compared before and after, never reconciled item by item.
+deferred or waiting on a reserved user decision, or carried with or held on a rule change on a side
+pull request. An instance with no such entry is a missed fix and goes back out as a fix step.
+Inventory totals, such as files, symbols, dependencies, documents and strings, and performance
+measures are compared before and after, never reconciled item by item.
 
 ## Review The Result
 
@@ -420,11 +425,13 @@ Keep each repository's run on its draft pull request for the user's review: no d
 is merged or set to auto-merge by the run, whatever standing merge exception would otherwise cover
 it, because the merge is where the owner reads the decisions the run made on its own. A later
 explicit user instruction naming the target may authorize merge. A run that changes both agent
-configuration and source carries its source fixes on the task's pull request and its guidance on the
+configuration and source carries its source fixes on the run's pull request and its guidance on the
 session's side pull request, as the GitHub rule's **Branches and Pull Requests** says, and each
 stays on one pull request however many fixes the run makes. Complete every planned entry
 continuously; checkpoints sequence work on those drafts and never wait for a merge, a source entry
-that rides a rule change on the side pull request under **Gate And Show The Plan** included. Run
+that rides a rule change on a side pull request under **Gate And Show The Plan** included, apart
+from one held on another repository's rule change, which the run completes there and reports as
+held. Run
 **Run Repository-Native Checks**, **Review The Result**, and **Accept The Complete Diff** over the
 completed work before reporting it for the user's review. Confirm that every planned disposition
 landed.
@@ -451,7 +458,8 @@ The final report names:
 - the baseline and final check results and any category not configured;
 - every decision the run made, each council ruling, and each reserved decision with the user's
   answer or as still open;
-- each source entry carried with a rule change on the side pull request, with that pull request;
+- each source entry carried with a rule change on a side pull request, or held there on one in
+  another repository, with that pull request;
 - remaining external blockers.
 
 Per-entry detail, each applied correction with its evidence and commit, goes in a file sent with

@@ -44,6 +44,14 @@ class SectionType(StrEnum):
     TABS = "tabs"
     FIGURES = "figures"
     TIMELINE = "timeline"
+    CHART = "chart"
+
+
+class ChartKind(StrEnum):
+    """Ways a `chart` section draws its values."""
+
+    PIE = "pie"
+    BAR = "bar"
 
 
 class PageLayout(StrEnum):

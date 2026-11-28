@@ -1,7 +1,8 @@
 ---
 name: test-fixture
-description: Must be used when deciding regression coverage for any behavior change, and before creating, moving, renaming, editing, reviewing, or generating any test, fixture, factory, test data, test support, or test configuration in any language, and before executing tests after such a change. Rejects hard-coded domain test data when a canonical fixture or factory owns it, and enforces existing-coverage reuse before new tests, one class per file with small cases folded into existing owning classes, concise parametrized cases, honest doubles, and regression validation through existing tools. Use before choosing or adding a test suite or classification, setting a test time budget, or weighing a test's cost or the evidence for deleting one. Its rubric owns what makes a test worth keeping, changing or removing, and its Sweep applies that to a finished change's tests and their neighbors.
+description: Must be used when deciding regression coverage for any behavior change, and before creating, moving, renaming, editing, reviewing, or generating any test, fixture, factory, test data, test support, or test configuration in any language, and before executing tests after such a change. Rejects hard-coded domain test data when a canonical fixture or factory owns it, and enforces existing-coverage reuse before new tests, one class per file with small cases folded into existing owning classes, concise parametrized cases, honest doubles, and regression validation through existing tools. Use before choosing or adding a test suite or classification, combining or reordering verification, running an experimental fault against shared state, sending a test write to a live deployment, setting a test time budget, or weighing a test's cost or the evidence for deleting one. Its rubric owns what makes a test worth keeping, changing or removing, and its Sweep applies that to a finished change's tests and their neighbors.
 short_description: 'Check test data and fixtures before changing tests or running tests after a fixture change.'
+user-invocable: false
 ---
 
 # Test Fixture
@@ -11,11 +12,12 @@ exercise, and prove that each test protects behavior or an independent contract.
 
 ## Dependencies
 - `session-ledger`
-- `pre-production`
+- `scope-of-change`
+- `engineering-conventions`
 
 ## Workflow
 
-Apply `pre-production` to the scope of issues encountered while tracing a test surface.
+Apply `scope-of-change` to the scope of issues encountered while tracing a test surface.
 
 1. Read the repository’s test eligibility policy and applicable testing, framework, and organization
    guidance before selecting a test surface. Classify the proposed verification by what it does,
@@ -26,7 +28,7 @@ Apply `pre-production` to the scope of issues encountered while tracing a test s
    matches the source language. The runtime under test and the assertion framework are separate
    choices. Read the complete [rubric](references/rubric.md) and the
    [suites reference](references/suites.md), which holds suite, module, configuration and
-   time-budget conventions, before inspecting, reviewing, changing,
+   time-budget conventions, and **Running Tests Safely** below, before inspecting, reviewing, changing,
    or executing any covered test surface. Discover the repository's test roots, distribution and build
    roots, artifact boundaries, fixture packages, factory owner, shared test utilities, runner
    targets, and analogous sibling tests. For a test of shell, process, container, browser, network,
@@ -94,6 +96,29 @@ Apply `pre-production` to the scope of issues encountered while tracing a test s
    missing attribution unmeasured. Do not add reporting infrastructure or withhold an ordinary
    repair's completion because that attribution is unavailable.
 
+## Running Tests Safely
+
+- Before combining, reordering or parallelizing verification, read its owning runner and lifecycle
+  declarations. Preserve their process, session, environment, dependency and resource isolation,
+  including setup and cleanup order; related inputs or one verification checkpoint do not establish
+  that checks can share an execution context. Keep the declared partitions unless their actual
+  contract supports the proposed optimization. Classify a failure against that invocation first:
+  correct an unsupported invocation and reproduce through the native route before blaming or
+  changing application code. A failure that persists there is investigated at its actual owner.
+- Isolate experimental faults from working state other writers, readers or checks can observe.
+  Use a private candidate built from the canonical implementation under its native execution contract;
+  establish which implementation and dependencies the experiment actually loads and that shared
+  state remains unchanged. If that route cannot preserve the contract, establish the concrete
+  limitation before arranging an exclusive window with the affected writers, readers and check
+  owners. Hold that window through exact restoration and the successful control; a short mutation or later restore
+  does not make concurrent exposure safe. Never claim isolation is impossible without checking it.
+- Treat create, update, and delete requests against a live deployment as data mutations, not health
+  checks: run them only against a target the repository explicitly designates for mutation testing,
+  leaving no persistent synthetic records in a stable or shared staging environment, and keep live
+  smoke testing read-only everywhere else. Where the same artifact and materially equivalent
+  configuration run in several environments, one successful write test on that target plus
+  read-only health and routing checks on the others validates the shared path.
+
 ## Mutation Proof
 
 Mutation experiments are temporary diagnostic work, not a maintained validation system. Reuse
@@ -109,7 +134,7 @@ When a focused experiment is useful and supported by the existing route:
 1. Select the nearest editable canonical first-party implementation. Never mutate generated or
    vendored output, run generation for proof, or mutate the test itself. Mutate test support only
    when that support is genuinely the subject under test.
-2. Apply `pre-production`'s **Verification And Experiments** experimental-isolation boundary before
+2. Apply **Running Tests Safely**'s experimental-isolation boundary before
    selecting the mutation route. Record the canonical target's content hash, staged and unstaged
    state, and the candidate's baseline. In a private candidate, verify the actual loaded source and
    dependency paths, and preserve the native runner's partitions, environment and lifecycle. An
@@ -147,9 +172,9 @@ dispositions, the **Mirror Source Ownership** test-module check, the **Naming Ch
 keeper, and delete one that proves nothing once the rubric's deletion evidence is recorded. A
 repaired or strengthened guarantee follows the existing-check validation procedure above. A fix that repairs a defect —
 a test that cannot fail, guards the wrong behavior or breaks in a fresh checkout — is always made,
-with placement under `pre-production`, apart from a test already failing on the default branch,
-which the rubric records and leaves. Apply `pre-production`'s size budget to other cleanup and
-return deferred work to the caller. Apply the cost-reporting procedure above to the run that verified the
+with placement under `scope-of-change`, apart from a test already failing on the default branch,
+which the rubric records and leaves. Apply `scope-of-change`'s size budget to other cleanup and
+return to the caller only what that budget reserves a record for. Apply the cost-reporting procedure above to the run that verified the
 change. A disproportionate test, parametrized family or module in scope is made cheap or removed
 as the rubric's **Test Cost** decides.
 
@@ -159,7 +184,7 @@ for.
 ## Completion
 
 Fix concrete violations encountered in the relevant tests, sibling tests, fixtures, factories, and
-shared utilities at the breadth `pre-production` sets. Do not turn a focused change
+shared utilities at the breadth `scope-of-change` sets. Do not turn a focused change
 into an unrelated repository-wide audit.
 
 Run the locally available targets the final diff reaches. That is this skill's own check of the

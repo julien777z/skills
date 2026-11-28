@@ -1,6 +1,7 @@
 import fcntl
 import gzip
 import logging
+import math
 import os
 import shutil
 import subprocess
@@ -19,6 +20,7 @@ from typing import Final, cast
 from xml.etree.ElementTree import ParseError, fromstring
 
 from models import (
+    ChartKind,
     Change,
     Field,
     ObjectShape,
@@ -55,6 +57,7 @@ DOCUMENT_PREAMBLE: Final[str] = (
 )
 INSTALL_MARKER: Final[str] = "node_modules/.use-dashboard-installed"
 MAX_METRICS: Final[int] = 4
+MAX_PIE_ITEMS: Final[int] = 8
 OVERVIEW_TITLE: Final[str] = "Overview"
 PROPOSALS_TITLE: Final[str] = "Proposals"
 WAITING_STATUS: Final[dict[str, str]] = {"label": "Waiting on you", "tone": Tone.WARNING.value}
@@ -165,15 +168,31 @@ def check_choice[E: StrEnum](value: object, path: str, choices: type[E]) -> E:
     return choices(value)
 
 
-def check_fraction(value: object, path: str) -> None:
-    """Require a number from 0 to 1."""
+def check_number(value: object, path: str, maximum: float | None = None) -> None:
+    """Require a number of at least 0, and at most `maximum` when one is given."""
 
     if (
         isinstance(value, bool)
         or not isinstance(value, int | float)
-        or not 0 <= value <= 1
+        or not math.isfinite(value)
+        or value < 0
+        or (maximum is not None and value > maximum)
     ):
-        raise DashboardSpecError(f"{path} must be a number from 0 to 1")
+        bounds = f"from 0 to {maximum:g}" if maximum is not None else "of at least 0"
+
+        raise DashboardSpecError(f"{path} must be a number {bounds}")
+
+
+def check_chart(chart: dict[str, object], path: str) -> None:
+    """Require a chart to hold some amount to draw, and a pie to hold no more parts than it has colors."""
+
+    items = cast(list[dict[str, object]], chart["items"])
+
+    if not any(cast(float, item["value"]) > 0 for item in items):
+        raise DashboardSpecError(f"{path}.items must hold a value above 0")
+
+    if chart["kind"] == ChartKind.PIE and len(items) > MAX_PIE_ITEMS:
+        raise DashboardSpecError(f"{path}.items must hold at most {MAX_PIE_ITEMS} items in a pie")
 
 
 def check_whole_number(value: object, path: str) -> None:
@@ -528,10 +547,11 @@ TEXT: Final[Field] = Field(check=check_text, typescript="string")
 TEXTS: Final[Field] = Field(check=check_texts, typescript="string[]")
 ROWS: Final[Field] = Field(check=check_rows, typescript="string[][]")
 TIMESTAMP: Final[Field] = Field(check=check_timestamp, typescript="string")
-FRACTION: Final[Field] = Field(check=check_fraction, typescript="number")
+FRACTION: Final[Field] = Field(check=partial(check_number, maximum=1), typescript="number")
 WHOLE_NUMBER: Final[Field] = Field(check=check_whole_number, typescript="number")
 FLAG: Final[Field] = Field(check=check_flag, typescript="boolean")
 MOMENT: Final[Field] = Field(check=check_moment, typescript="string")
+AMOUNT: Final[Field] = Field(check=check_number, typescript="number")
 SECTIONS: Final[Field] = Field(check=check_sections, typescript="Section[]")
 TONE: Final[Field] = Field(
     check=partial(check_choice, choices=Tone), typescript=Tone.__name__, choices=Tone
@@ -802,6 +822,20 @@ FIGURE_SHAPE: Final[ObjectShape] = ObjectShape(
     },
     required=frozenset({"image", "alt"}),
 )
+
+CHART_ITEM_SHAPE: Final[ObjectShape] = ObjectShape(
+    name="ChartItem",
+    fields={
+        "label": TEXT,
+        "value": AMOUNT,
+        "figure": TEXT,
+        "detail": TEXT,
+        "tone": TONE,
+        "details": Field(check=check_section, typescript="Section"),
+    },
+    required=frozenset({"label", "value", "figure"}),
+)
+
 TAB_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Tab",
     fields={"label": TEXT, "sections": SECTIONS},
@@ -963,6 +997,24 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
             ),
         },
         frozenset({"lanes"}),
+    ),
+    SectionType.CHART: section_shape(
+        SectionType.CHART,
+        {
+            "kind": Field(
+                check=partial(check_choice, choices=ChartKind),
+                typescript=ChartKind.__name__,
+                choices=ChartKind,
+            ),
+            "items": Field(
+                check=partial(check_objects, shape=CHART_ITEM_SHAPE, unique="label"),
+                typescript="ChartItem[]",
+                shape=CHART_ITEM_SHAPE,
+            ),
+            "total": TEXT,
+        },
+        frozenset({"kind", "items"}),
+        check_chart,
     ),
     SectionType.TABLE: section_shape(
         SectionType.TABLE,

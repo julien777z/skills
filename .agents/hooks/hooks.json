@@ -1,5 +1,5 @@
 {
-  "description": "Load the i-have-adhd and user-facing-output skills at session start, at turn end create the session's ledger when none records it and check that every task ledger entry owing a backup comment has one, and at session end remove the ledger it created for the session while that ledger lists only the session and holds no entries.",
+  "description": "Load the i-have-adhd and user-facing-output skills at session start, tell a running session on its next prompt when the installed guidance changed, keeping that record no longer than the session's transcript, at turn end create the session's ledger when none records it and check that every task ledger entry owing a backup comment has one, and at session end remove the ledger it created for the session while that ledger holds nothing but the session's ID.",
   "hooks": {
     "SessionStart": [
       {
@@ -19,15 +19,13 @@
             "timeout": 10
           }
         ]
-      }
-    ],
-    "SessionEnd": [
+      },
       {
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/ledger/main.py\"",
-            "timeout": 3
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/guidance-changes/main.py\"",
+            "timeout": 10
           }
         ]
       }
@@ -39,6 +37,37 @@
             "type": "command",
             "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/ledger/main.py\"",
             "timeout": 30
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/guidance-changes/main.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/guidance-changes/main.py\"",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/ledger/main.py\"",
+            "timeout": 3
           }
         ]
       }

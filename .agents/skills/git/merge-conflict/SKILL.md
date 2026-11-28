@@ -14,6 +14,7 @@ answers to one question may now sit in one tree.
 ## Dependencies
 - `acceptance-gate`
 - `pre-production`
+- `scope-of-change`
 - `council`
 
 ## Neither Side Is Authoritative
@@ -80,7 +81,7 @@ source checkout, remote branches and unrelated edits throughout.
    the outcome: keep the target's shape and move incoming call sites onto it; take the incoming shape
    and move the target's call sites; or deliberately combine what each lacks in one mechanism.
 4. **A tie has not finished.** There is no coin-flip default and no presumption for either side:
-   apply `pre-production`'s test and take whichever yields the cleaner result and leaves the fewest
+   apply `scope-of-change`'s fewest-mechanisms test and take whichever yields the cleaner result and leaves the fewest
    mechanisms behind. Where that still does not separate them, the two are one design under two
    names, and the answer is the spelling the rest of the repository already reads.
 5. **Preserve behavior required by the target contract.** Migrate affected consumers and retained

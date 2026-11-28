@@ -21,6 +21,8 @@ calling workflow states how its repairs are judged.
 - `code-simplify`
 - `security-audit`
 - `pre-production`
+- `scope-of-change`
+- `engineering-conventions`
 - `test-fixture`
 - `run-site`
 - `council`
@@ -95,8 +97,8 @@ pull-request context is a flag to obtain that context, not permission to assume 
 
 The gate is read-only and distinct from the author. If its reader cannot launch, apply
 `subagent-matrix`'s launch fallback. Invoke `subagent-matrix` at the capability level
-**Questions** gives the gate's question. Dispatch the gate with that exact identifier, and retain catalog state, identifier, assignment
-state and host receipt in the gate record. Its reader freshness follows `subagent-matrix`'s **Dispatch**. Its
+**Questions** gives the gate's question. Dispatch the gate with that exact model, and retain its `subagent-matrix` **Output** dispatch
+line in the gate record. Its reader freshness follows `subagent-matrix`'s **Dispatch**. Its
 prompt carries five things and nothing else; what it reads from the tree itself, the paragraphs
 after them say:
 
@@ -123,18 +125,19 @@ after them say:
 4. the affected-repository map required by `code-simplify`'s **Trace Changed Flows**. For each
    changed file group, resolve its project guidance, scoped repository rules and installed shared
    rules by path. Supply the complete text and scope of each source inline or in a named file. In a
-   repository the owner does not own, as `pre-production`'s **Whose Standards Apply** defines it, the
+   repository the owner does not own, as `engineering-conventions`' **Whose Standards Apply** defines it, the
    brief says so: the gate judges the change against the request, its defects and that repository's
    own guidance and conventions, and a shared rule's standard is no flag there.
    **The pre-gate check runs before every gate.** When the Python rules apply, the caller runs
    `scripts/python_rule_findings.py` with the project's Python interpreter on the in-scope Python
-   files before dispatch, fixes each finding, and each paragraph candidate `pre-production`'s **Code
-   Layout** makes a boundary, in the lines the change writes or edits, then runs it again. Supply the
+   files before dispatch, fixes each finding, each paragraph candidate `engineering-conventions`' **Code
+   Layout** makes a boundary, and each standard citation candidate the shared Python formatting
+   rule's comment bullets rule out, in the lines the change writes or edits, then runs it again. Supply the
    file list and every finding that run prints, including an explicit empty result. The reader
    verifies each reported shape against the source and rule;
 5. exactly one question from the list below.
 
-**The gate judges with its dependencies' criteria.** Apply `pre-production` to the scope decision,
+**The gate judges with its dependencies' criteria.** Apply `scope-of-change` to the scope decision,
 `test-fixture` to test costs and existing reporting evidence, and `run-site`'s **Scenarios** to
 changes that add or alter product states. Apply `security-audit`'s review in process, as an
 invocation that cannot launch agents, with no delegated agents; take its exploitable findings into
@@ -169,11 +172,8 @@ code, hand-written configuration or styling where an owner exists, a setting lef
 library warns against, a shortcut a comment or report admits, a result its reader would question.
 The list illustrates the question and never bounds it. A rubric exemption that would excuse such a
 shape is named in the flag. A remedy that sends the author to an existing piece judges that piece the same way first: a wrapper or
-a duplicate is not an owner. An increment fixing an earlier flag is judged on the earlier flags it
-answers and on its own lines, read the same way, never only against that flag; the rest of the
-modules it touches and of the originating diff, which the earlier gate judged, is context, open to a
-new flag only where the increment changes what it depends on or it holds a confirmed defect or
-exploitable vulnerability.
+a duplicate is not an owner. An increment fixing an earlier flag is judged as the **Diff** question
+says for repairs, its own lines read the same way, never only against that flag.
 
 Before the design comparison, verify that the supplied rule sources are complete and cover the
 file groups in the diff. Check preambles, imports, declarations and executable bodies in the
@@ -225,13 +225,13 @@ consumer accepts and how it excludes each obsolete representation. Flag missing 
 Distinct meanings carried by the canonical representation still receive the ordinary guard checks.
 A verdict with no added guard says `no guard added` in those words.
 
-**Then it lists every product choice the diff makes**, as `pre-production`'s **Product Choices** defines one — a change to
+**Then it lists every product choice the diff makes**, as `scope-of-change`'s **Product Choices** defines one — a change to
 what a feature does or shows, a remedy whose visible effect is large, such as a layout, control or
 flow changing across many pages, a change carried past the surface the user named — each with the
 user's words in the intent statement that settle it. Small presentation decisions on the surface in
 hand are not listed; neither is a game's design, which the global rules' game-design bullet makes
 the agent's decision and never a question for the user, a new control or room included; nor is local
-test tooling or the records it seeds, which `pre-production`'s **Local Stacks** leaves to the
+test tooling or the records it seeds, which `run-site`'s **Local Stacks And Development Data** leaves to the
 agent. A product choice with no such words is a flag whose remedy is putting the choice to the
 user before the code stands, whatever the change calls itself, a fix included. An earlier
 acceptance, a plan record without the user's words, or a brief calling the choice decided is not
@@ -290,8 +290,12 @@ question and never a level of its own:
 - **Admission — may this work be deferred?** The triage question asked of a proposed record.
 - **Proposal — should this be written?**
 - **Diff — should this stand?** A finished plan step or worker task that later steps build on, a
-  correction after base incorporation, or the repairs of and answers to a verdict's flags, read with the
-  whole branch diff as its originating diff.
+  correction after base incorporation, or the repairs of and answers to a verdict's flags, read with
+  the whole branch diff as its originating diff. For repairs, the gate judges only the repair's
+  changed lines and the flags they answer, consulting the rest of the branch diff for what those
+  lines touch and never raising a flag on a defect the repair did not cause, apart from an
+  exploitable vulnerability, which the rubric's **Exploitable Findings** keeps open; one it causes
+  elsewhere is anchored on the repair's line. The whole change is judged once, by final acceptance.
 - **Base incorporation — what did the base bring in that the change must refactor?** The procedure
   below.
 - **Final acceptance — may this merge?** The complete pull-request diff, read once after review is
@@ -406,7 +410,7 @@ including when its simplest compliant repair still requires substantial irreduci
 mechanisms its gain cannot carry. A confirmed defect remains owed under the fix test. A hypothetical
 safeguard or compatibility concern is judged against the target repository's product state and
 contract, not promoted to a defect merely because a reviewer flagged it. Deprecated usage and a
-warning a run prints are never hypothetical: they are defects under `pre-production`, and the gate
+warning a run prints are never hypothetical: they are defects under `scope-of-change`, and the gate
 flags each one it meets in the diff or in the verification output the caller supplies.
 
 Escalate only a genuine unresolved product, scope, security, disclosure or authorization choice, stating the concrete

@@ -86,6 +86,15 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   today; a repository keeps no `.agents/references/` folder.
 - A rule that cannot be stated without naming something this repository owns belongs in
   `.agents/project.md`. Move it there rather than rewording it into something generic but untrue.
+- **A repository's own guidance holds only the facts that repository owns.** Outside the shared
+  skills repository, a passage of a repository's `.agents/project.md`, rules or repository skills
+  fails when a shared skill or rule already states its requirement, however it is worded, since a
+  wording difference only means the copy is stale, and when it copies how the repository's tooling
+  behaves, as the bullet on tooling above says. It is deleted rather than moved, because its owner
+  already holds it, and a fact only the repository owns, such as its product state or a domain
+  rule about its own records, stays; a passage whose only repository-owned part is a tool or file
+  name is still a copy. The name-bounds bullet's scope decides which files a change tests: a stale
+  copy in a file the change does not touch is raised as a misplacement in such a file is.
 - **A new rule file is only ever a guidance correction**, written for a subject no skill runs
   for, as the placement bullet above says. A system an agent built, such as a booking
   service's flows, is documented in its code and README, never in guidance; repository guidance
@@ -115,18 +124,30 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   guided by a few examples in the skill of what such a choice looks like. A list of one repository's
   categories, page names or skill names written into a shared skill makes it that repository's copy;
   shared skills still name the shared skills they depend on.
-- **A file's name and description bound what it owns.** Before choosing a skill or rule, state
-  the condition its name and description set — a release stage, a technology, a mode, a kind of
-  task — and ask whether the guidance would still be true where that condition does not hold. If
-  it would, that file is too narrow, however close its neighboring section: the guidance goes to
-  the file whose subject matches its own. Scope is judged by subject, never reach: guidance that
-  holds in every repository still goes to the skill or rule owning its subject, as the first bullet
-  places guidance about `.agents` content, and `.agents/global.md` takes only what the placement
-  bullet above leaves it. Use existing mentions and dependencies to find readers. Assign
-  ownership by the file's responsibility and when the guidance must apply. Move existing text
-  and update its readers when correcting its placement is in scope. When that relocation would
-  expand the request, explain the mismatch and ask whether to include it. Continue the work
-  already authorized.
+- **A file's name and description bound what it owns, and so do a reference's file name and a
+  section's heading inside the skill chosen.** Before choosing a skill, rule, reference or section,
+  state the condition its name and description set — a release stage, a technology, a mode, a kind
+  of task — and ask whether the guidance would still be true where that condition does not hold.
+  If it would, that file, reference or section is too narrow, however close its neighbor: the
+  guidance goes to the one whose subject matches its own.
+  - Scope is judged by subject, never reach: guidance that holds in every repository still goes to
+    the skill or rule owning its subject, as the first bullet places guidance about `.agents`
+    content, and `.agents/global.md` takes only what the placement bullet above leaves it. Assign
+    ownership by the file's responsibility and when the guidance must apply, and use existing
+    mentions and dependencies to find readers.
+  - Applied to a whole file, the test reads its **boundary**, the condition its name and
+    description set, such as "a mobile platform"; **each description clause**, every subject of
+    which falls inside that boundary; **each section and reference** by its heading or file name,
+    asking whether its guidance would still hold where the condition does not, as a section on
+    commit-message wording in a skill bounded by one mobile platform still holds on every other;
+    and **each bullet against its section's heading**.
+  - **Text already misplaced in a file whose instructions the change adds to or alters moves in the
+    same change** to the file, reference or section whose name covers it, with its readers updated,
+    when the pass's **Placement** step tests that file: that file is the change's scope. A file that
+    only receives moved text is tested for what it receives; a misplacement found elsewhere in it is
+    put to the user as for an untouched file. For a misplacement in a file the change does not
+    touch, explain the mismatch and ask whether to include the move, continuing the work already
+    authorized.
 - Paths inside a repository's `.agents`:
   - `agent` -> `.agents/agents/<name>.md`
   - `rule` -> `.agents/rules/<name>.md`
@@ -151,7 +172,7 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   offers, stays that harness's, confined to a scoped compatibility section or a file only that
   harness loads. Verify each path in every harness that loads the guidance or that the change sets
   up, such as running a hook against each harness's payload. A harness left unserved is a defect,
-  fixed now where `pre-production`'s **Scope Follows The Defect, Not The Request** places it,
+  fixed now where `scope-of-change`'s **Scope Follows The Defect, Not The Request** places it,
   never as new behavior.
 - Keep reusable skill names, instructions, scripts, and interfaces model-agnostic. Name a client or
   model only in a scoped compatibility section where its behavior genuinely differs. A skill states
@@ -194,6 +215,34 @@ or fixes how agents run, is written, placed, served to harnesses and validated. 
   or invoke another skill. Scripts the skill runs go under `scripts/`; supporting files may live
   under `assets/`, `resources/`, or another directory named for their role. Keep only files the skill
   needs.
+- **A new skill is the last resort.** Every listed skill's name and description load on every turn,
+  so each one added is context every session pays. Before adding one, fold the subject into an
+  existing skill whose name covers it, placed in its body or references as the next bullet says;
+  failing that, broaden or rename a close skill so its name covers both; and merge skills whose
+  subjects overlap. Add a skill only for a subject no existing name can stretch to cover without
+  going vague, and state its listing cost — one more name and description on every turn — in the
+  change's description. One skill holding several domains as references, each loaded only when its
+  domain comes up, is the pattern to reach for.
+- **A skill's name reads, as it appears in the skill listing, as what the skill does or holds.** A
+  skill holding rules a run applies takes a noun phrase, such as `naming-rules`; a verb-first name,
+  such as `publish-build`, is for a skill that performs that action, whoever starts it. Read a
+  proposed name as an instruction: if it reads as one and the skill is not that action, rename it.
+- **A skill's main idea stays in `SKILL.md`, near the top,** whatever its form, even where Skill
+  shape would send it to a reference: the part a reader opens the skill to see, such as the
+  mapping, principle or contract its name promises. A skill is read by people as well as agents,
+  and a person scanning it sees only its body, so an idea moved to a reference is one they never
+  find; the vendor rubric's placement of the most important instructions near the top gives the
+  agent's side of the same reason. A reference holds what only some routes, modes or readers need.
+- **A skill keeps as few references as its routes need.** Each one earns its own file because some
+  route or reader skips it; a subject an existing reference's name already covers, by the
+  name-bounds test above, goes there, a rename to a broader name that truly covers both is the
+  other way in, and a new file is added only for a subject no name covers. A name joining two
+  subjects, such as `x-and-y`, signals two files' worth or a broader name not yet found. Whenever a
+  pass covers a skill, judge its references as a set:
+  - merge references on one subject, or always read together;
+  - move into `SKILL.md` a short one every run follows, or one holding the main idea above, when
+    the body has room under its budget;
+  - delete one nothing links to, or whose content the body or another reference already states.
 - Never add `agents/openai.yaml` to a repository skill, and remove one found in a canonical
   package. Repository skills contain `SKILL.md` and only supporting files required by the skill;
   provider UI metadata stays outside repositories and is never propagated.
@@ -248,6 +297,15 @@ holds when other work needs one. Keep every skill listed and end its description
 sentence "Run only when the user asks for it.", which is how readers and tools recognize the
 restriction. Gate a single user-only workflow inside an otherwise usable skill in its body.
 
+**A rule-type skill is hidden from the user's `/` menu with `user-invocable: false`.** A rule-type
+skill holds rules other skills and runs apply and has no workflow a user starts by naming it, such
+as a skill of conventions every change follows. The flag keeps it out of the menu the user types
+from while its description stays in the agent's listing, so it still loads wherever its subject
+comes up; unlike `disable-model-invocation`, it hides nothing from an agent. A skill a user may
+start by name, or one whose description ends "Run only when the user asks for it.", stays in the
+menu; a skill whose workflows start only from what the user says, never from its name, is still
+rule-type.
+
 ### Dependencies
 
 - **Refer to a skill, and to anything inside it, by the skill's name, never by path.** the `code-simplify` skill's rubric reference is right; a relative path into another skill's directory is wrong, because the directories move between repositories and user-level roots and the name is the only stable handle.
@@ -298,7 +356,7 @@ restriction. Gate a single user-only workflow inside an otherwise usable skill i
 ### Decisions
 
 - **A skill sends a decision to the user only when it is the user's**: a product, scope, security, disclosure or authorization choice, as
-  `pre-production`'s **Product Choices** defines one, or a step only the user can take. Every other contested
+  `scope-of-change`'s **Product Choices** defines one, or a step only the user can take. Every other contested
   call a workflow's own checks cannot settle — a disputed finding, a flag that survives its
   repairs, a stuck review, the disposition of a change that keeps failing — goes to `council` in
   **Ask** mode, and its ruling, by majority unless the skill sets a stricter threshold, is followed and named in the skill's result. A skill whose
@@ -384,7 +442,9 @@ a template where correct results genuinely vary in shape.
 ## Writing
 
 - A skill may restate an ambient rule when it helps the reader act at the point of use; this does
-  not license a second copy of a decision boundary owned by a skill that necessarily runs.
+  not license a second copy of a decision boundary owned by a skill that necessarily runs. A
+  repository's own skill restates none that a shared skill or rule states, as **A repository's own
+  guidance holds only the facts that repository owns** says.
 - If target file does not exist, create it with a concise structure matching existing style.
 - Group frontmatter fields by subject. Put a field that summarizes, qualifies, or overrides
   another immediately after the field it relates to, unless the format requires another order.
@@ -400,7 +460,8 @@ a template where correct results genuinely vary in shape.
   reader of the file needs comes before guidance only some cases need, and each part follows the
   parts whose terms it uses. In a style guide, a section on footnotes, which only some documents
   use, follows the sections on headings and paragraphs that every document uses, even though
-  footnotes extend paragraphs.
+  footnotes extend paragraphs. In a skill, sections come in the order a run needs them: the first
+  decision before the procedure, and the common path before its edge cases.
 - Express each independent requirement once, as one concise statement or bullet, without padding. Merge overlapping or synonymous guidance without losing distinct criteria or exceptions.
 - **A file's size budget follows how it loads.** A change that pushes a file past its budget, or
   grows one already past it, makes its room in the same change by merging what the file states
@@ -419,6 +480,10 @@ a template where correct results genuinely vary in shape.
     and an audit reports their total.
   - **A reference has no line budget.** One past 100 lines opens with a contents list, and
     `SKILL.md` says when to read it.
+  - **A budget is a ceiling, not a target.** A file under it is still too long when its length is out
+    of proportion to what it does: cut every sentence whose removal leaves a reader's actions
+    unchanged, however far under budget the file sits, judging a cut as the vendor rubric's
+    **Cutting A Passage** says.
 - **A correction restructures the bullet it lands in, never appends to it.** A bullet that already
   carries an exception, or runs past about twelve lines, takes no further clause: state its rule in
   one sentence and move each condition and exception into a sub-bullet or a bullet of its own, so
@@ -459,7 +524,8 @@ a template where correct results genuinely vary in shape.
     was: the `Final` rule reaches every module-level constant and stops before a function's local
     names, which nobody raised. A neighboring subject, a requirement the case never needed, and a
     change the user would not expect from their own words stay out of the draft and are put to
-    the user.
+    the user; a move the **Placement** step requires is inside the change and listed under *Also
+    changes*.
   - **Every instruction that does the same work, and none that does other work.** Apply the
     decision to each instruction in the file that does the same work: one section rewritten while
     a neighbor still does the narrow thing is the draft half done.

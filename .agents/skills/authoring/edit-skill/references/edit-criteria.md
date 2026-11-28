@@ -63,12 +63,19 @@ The statement is written before the edit, in the shape `SKILL.md`'s
   the same class that the request never mentioned, a different kind of thing from its examples. A
   case the draft would still handle as before means the draft only renamed the examples; it is
   rewritten until that case changes, and the case is listed under *Also changes*.
-- **Broad probe.** Name the nearest case outside the class and read the draft, and every reader
-  the inheritance search finds, for that case. It must be handled as before: a draft that changes
-  it is narrowed until it does not, and the case is the *Stays as it is* line. Then ask of every
-  item under *Also changes*, and every behavior change under *Inherited*, whether the user,
-  reading only their own words, would expect it. An item that fails leaves the draft, moves to
-  *Beyond what you asked* and takes the policy-change route, while the rest proceeds.
+- **Broad probe.** Name the nearest case outside the class and read the draft, and every reader the
+  inheritance search finds, for that case. It must be handled as before: a draft that changes it is
+  narrowed until it does not, and the case is the *Stays as it is* line. Then ask of every item
+  under *Also changes*, and every behavior change under *Inherited*, whether the user, reading only
+  their own words, would expect it. Count the run work the draft starts as well — the subagents,
+  review rounds or loops, gates and whole-file sweeps a realistic case runs, judged as
+  `skill-pass`'s **Budgets and flows** judges a flow — such as a check that starts one reviewer per
+  changed file where the request named one review: work that multiplies past what the user's words
+  point to fails the probe, never the cost of building a product design. A worker's or reviewer's
+  proposed text is part of the draft for this probe, not a carried instruction outside the request:
+  work it multiplies fails the probe as the draft's own does. An item that fails leaves the draft,
+  moves to *Beyond what you asked* and takes the policy-change route, with the case, the count and
+  the narrower version, while the rest proceeds.
 - **Transfer evidence.** For a correction to a recurring failure class, run edited guidance on
   a task with a different surface and vocabulary that still reaches the same decision. Also
   exercise the closest legitimate case outside the class. Renaming the original example can
@@ -125,14 +132,14 @@ The statement is written before the edit, in the shape `SKILL.md`'s
   examples generic. Read it whole and send it as `share-media`'s **What reaches the user, and when** says, write the
   skill to produce that shape, then validate it through the required skill-test run, review, and
   acceptance gate. A guidance-output format is routine guidance design, not a user approval gate; a change to the product
-  a skill operates still follows `pre-production`'s **Product Choices**.
+  a skill operates still follows `scope-of-change`'s **Product Choices**.
 
 ## Moved Text
 
 Guidance moved between files — a skill relocated, bullets gathered into a new rule or out of one —
 that lands beside a statement of the same requirement is merged with it into one in the same
 change, keeping every distinct criterion and exception, and any other defect a standing rule names
-that the move brings to light is fixed in it, as `pre-production`'s **Scope Follows The Defect, Not
+that the move brings to light is fixed in it, as `scope-of-change`'s **Scope Follows The Defect, Not
 The Request** says of a defect the work notices, with `acceptance-gate` judging the repair's scope
 and size. Moving text unchanged proves it survived; it is never a reason to report a defect as
 left for the user.
@@ -181,8 +188,9 @@ the invocation supplies all of these for the batch's complete `.agents` diff at 
 
 The route then runs **Run `validate_sources.py check`** and
 **Run one `test-skill` round** for the guidance the diff changed, started on that head, and no
-`review-pass`. A repair the skill-test round makes goes through `review-pass` over its delta, as
-**Guidance Delivery**'s **Conclude the skill test** says, and a head that moved since the acceptance for any other reason
+`review-pass`. The repairs the skill-test round makes are rerun at once and go through one
+`review-pass` over their delta once the round passes, as **Guidance Delivery**'s **Test the batch
+first** says, and a head that moved since the acceptance for any other reason
 is a batch like any other. The pull request then merges or holds as the handing workflow's
 delivery rule and the GitHub rule's **Merge Authorization** say.
 
@@ -209,7 +217,7 @@ one's answer.
 
 Read every entry in the frozen batch and resume at its recorded first
 nonterminal stage, rebuilding a lost or truncated entry from its backup
-comment as `session-ledger` accepts it; the comment's existence records that the correction was admitted under **Recording During A Task**, its Intended behavior stands as the recovered intent for **Guidance Delivery**'s **Review the batch** beside the user's words, taken from the conversation where they survive and otherwise named as missing in that intent, never replaced by that paraphrase, and **Run one `test-skill` round**
+comment as `session-ledger` accepts it; the comment's existence records that the correction was admitted under **Recording During A Task**, its Intended behavior stands as the recovered intent for **Guidance Delivery**'s **Review the tested batch once** beside the user's words, taken from the conversation where they survive and otherwise named as missing in that intent, never replaced by that paraphrase, and **Run one `test-skill` round**
 rebuilds the reproduction scenario from its failure class and invariant, with anything else
 unrecoverable handled as `session-ledger` incomplete retrieval. An entry with no recorded commit
 applies its edits under **Write the edit** and **Split a multi-item request**, on the branch **Branch and commit** selects; one with a
@@ -218,7 +226,8 @@ against the base from the host, which override the entry's and the comment's rec
 and delivery stage; a merged or closed pull request resumes at verifying the merged text, never
 at review. An edit **Branch and commit** puts on a source pull request this session drives is pushed there and
 passes **Run `validate_sources.py check`**'s source check on the head carrying it before that pull request's source stream
-proceeds, and **Run one `test-skill` round**'s skill-test round on the head that pull request's review pass accepted, before the source review and delivery. It carries **Check prose duplication**'s checks into that
+proceeds, and **Run one `test-skill` round**'s skill-test round on the pushed head carrying it,
+before the source review and delivery. It carries **Check prose duplication**'s checks into that
 pull request's simplification pass and **Brief `review-pass`'s final acceptance**'s incident vocabulary into its final acceptance. An edit **Branch and commit** selects on
 another session's source pull request runs **Run `validate_sources.py check`** through **Run one `test-skill` round** here on the head it pushed, and the
 delivery report says the push moved that pull request's head past its owner's acceptance. An

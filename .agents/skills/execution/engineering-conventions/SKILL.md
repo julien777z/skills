@@ -1,7 +1,27 @@
-# Code Conventions
+---
+name: engineering-conventions
+description: "The conventions every change follows in what it writes and builds: code, configuration, manifests, documentation, comments, commit messages, pull-request text, product copy and forms. Read before writing or editing any of them, and for whose standards govern a repository, code layout and doing one thing one way, declaring configuration and naming a value that differs by environment, logging, choosing versions, dependency releases, holds, pins and tag or branch references, partial updates, required fields and how a read path handles an absent value, American English, example values and paths, documentation, repository text such as commit and pull-request descriptions, and text or forms a product's reader meets."
+short_description: 'Write code, configuration, manifests, documentation and repository text the way every change writes them.'
+user-invocable: false
+---
 
-What every line a change writes follows: code, configuration, manifests, documentation, comments,
-commit messages and pull-request text. `SKILL.md` names this file at the point a change is written.
+# Engineering Conventions
+
+The conventions every change follows in what it writes and builds: code, configuration, manifests,
+documentation, comments, commit messages, pull-request text, product copy, data contracts and the
+releases a project runs. Read it before a change writes its first line, and apply it
+to every line the change writes. Read each reference before a change reaches its subject:
+
+- [versions](references/versions.md), before choosing a runtime, base image, dependency release,
+  hold or pin, or a tag or branch reference to external code;
+- [data contracts](references/data-contracts.md), before shaping a field, a column, a partial
+  update or a read that can find a value absent;
+- [product copy](references/product-copy.md), before writing or changing text or a form a
+  product's reader meets.
+
+## Dependencies
+- `pre-production`
+- `scope-of-change`
 
 ## Whose Standards Apply
 
@@ -10,7 +30,7 @@ commit messages and pull-request text. `SKILL.md` names this file at the point a
   open a pull request to, is someone else's. There a change carries what the request asks for and
   the defects it meets — a bug, a vulnerability, behavior that breaks for that project's users —
   written in that repository's own conventions. The style, structure, naming, testing, tooling, CI,
-  runtime and documentation standards these rules and skills set, and this skill's incidental
+  runtime and documentation standards these rules and skills set, and `scope-of-change`'s incidental
   cleanup, are not applied there: an item only they would raise is left out, neither fixed nor
   recorded as deferred work in that repository, and named to the user in chat only when it bears on
   the request. The rules on how the agent acts hold in every repository: authorization, merging,
@@ -31,8 +51,8 @@ commit messages and pull-request text. `SKILL.md` names this file at the point a
   and naming conventions, such as how it spells an event type or a scope, are the library's own,
   never a consumer's domain vocabulary: a helper encoding such a convention belongs in the library
   even when one consumer prompted it, and the library's owned API gains it. This holds at the
-  wrapper's layer; an application modeling the provider's data keeps its own field names, as this
-  skill's **Adapting is not imitating** says.
+  wrapper's layer; an application modeling the provider's data keeps its own field names, as
+  `pre-production`'s **Adapting is not imitating** says.
 - Identify environments by their full domain name throughout code, configuration, documentation,
   and user-facing labels, including enum and constant names. Code identifiers may encode the whole
   domain with separators, such as `garden.example` becoming `GARDEN_EXAMPLE`. Never drop the domain
@@ -43,22 +63,19 @@ commit messages and pull-request text. `SKILL.md` names this file at the point a
 
 ## Code Layout
 
-- In every language, use blank lines to separate setup, validation, transformations, side effects, and returns. Keep adjacent statements together only when they form one small operation; do not turn a function into an uninterrupted paragraph merely because a formatter permits it. Apply this to every line you write or edit, and elsewhere in a file you change within this skill's incidental size budget.
+- In every language, use blank lines to separate setup, validation, transformations, side effects, and returns. Keep adjacent statements together only when they form one small operation; do not turn a function into an uninterrupted paragraph merely because a formatter permits it. Apply this to every line you write or edit, and elsewhere in a file you change within `scope-of-change`'s incidental size budget.
 - Use current language syntax for simple operations. For one-off Python interpolation, use f-strings instead of string concatenation or `.format()`, and keep spacing in the final string rather than a fragment with a hidden leading space. Follow the Python rule for reusable structured templates.
 
 - **The repository does one thing one way.** Before writing anything of a kind it already holds —
   a router, a client, a helper, a test, a fixture, a configuration entry, the way it raises and
   reports errors — read how the existing instances are written and follow that shape. A new pattern
   beside the old one reads as bespoke however good it is, and a reviewer meeting it has to learn two
-  ways to do the same thing. **A better shape is proposed, never swept in.** Where a different shape
-  would serve better — more standard, simpler, less code — the change keeps the existing shape and
-  the conversion goes to the user as a proposal: the shape, why it is better, every instance it
-  would convert and the size of that change, with a recommendation. It is built only once the user
-  approves it and at the scope they approve, as its own work rather than under this skill's size
-  budget, and never left half done; a sweep built unasked costs its whole size again when the
-  user rejects it. An existing shape a standing rule names a defect is not followed; it is repaired
-  on every instance as this skill's **Scope Follows The Defect, Not The Request** says. Only a difference a
-  contract the instance serves requires stays, with that contract named in the report.
+  ways to do the same thing. Where a different shape would serve better, the change keeps the
+  existing one and proposes the conversion, as `scope-of-change`'s **A better shape is proposed, never
+  swept in** says. An existing shape a standing rule names a defect is not followed; it is repaired
+  on every instance as `scope-of-change`'s **Scope Follows The Defect, Not The Request** says. Only a
+  difference a contract the instance serves requires stays, with that contract named in the
+  report.
 
 - A bootstrap or setup folder holds its entrypoint and, when needed, its configuration file at
   its root. Supporting scripts, modules, and data files go in its `resources/` folder; configuration
@@ -94,6 +111,12 @@ commit messages and pull-request text. `SKILL.md` names this file at the point a
   is set, and no code path falls back to weaker behavior when one is unset: a webhook check that
   passes every request when its verification key is missing, or a rate limit that switches off
   without its store address, is the defect even where the declaration reads as required.
+- **A value that differs by environment has one name, and whatever already scopes values per
+  environment supplies it** — an environment's secrets, a per-environment config file, a deployment
+  registry. Never a second name per environment, nor an expression or branch choosing between
+  names, such as `FEED_URL_STAGING` beside `FEED_URL_PRODUCTION` picked by `env == "production"`.
+  Before adding a value, read how its siblings are scoped and supplied; a sibling selecting between
+  per-environment names is a defect, moved onto the one name.
 - The technology rules say how each settings owner declares a required value.
 
 ## Logging
@@ -106,36 +129,6 @@ commit messages and pull-request text. `SKILL.md` names this file at the point a
   alone, leaves a provider's error response out of the record, or redacts a warning or error
   wholesale because it might hold personal data. Records that report no failure may still withhold
   personal data.
-
-- An agent's authorized access to a credential is not credential exposure. Seeing a credential in a
-  prompt, private configuration, tool input or output, or the agent's own execution history never
-  establishes compromise and never warrants revocation by itself. Treat a credential as exposed
-  only when evidence shows that it reached an unauthorized recipient, a public surface, or a
-  compromised destination. Preserve secret-safe handling; do not surface values unnecessarily.
-
-## Versions
-
-- Reference external code and automation by a maintained version tag when available, or by a
-  maintained branch while developing or when no release tag exists. Do not pin dependency manifests,
-  shared checkouts, or workflow references to commit hashes. Lockfiles and release records may retain
-  the exact resolved commit for reproducibility and provenance.
-
-- **Every project the owner runs or consumes runs the newest stable language runtime, base image
-  and dependency releases it works with.** A change made for that move — one the user asks for, or
-  the upgrade pull request a warning leads to, as this skill's **Scope Follows The Defect, Not The
-  Request** places it — moves what the project actually runs onto them: its version file,
-  container images, CI and lockfile, with whatever code changes the new releases need, including in
-  an owned package that only widened its range to let a consumer move. Neither of these is that
-  move: a CI leg kept on the old release beside the new one, or a dependency held below its newest
-  release. A change that touches a manifest or lockfile for another purpose, such as adding one
-  dependency, takes that dependency's newest stable release and moves nothing else. Hold one back only
-  where an install or test shows the newer release failing on the project's runtime, such as
-  another dependency pinning it, and name that failure in a comment beside the constraint; a
-  migration the newer release needs is part of the move, not a reason to hold. Widening a
-  supported range to admit a newer release is fine, since an owned project's range serves the
-  owner's own projects. Raise its minimum once keeping the lower release no longer makes sense,
-  such as when the formatter or the code would stay on the older release's syntax. A library
-  published for consumers outside the owner's projects keeps the range its language rule sets.
 
 ## Language
 
@@ -200,6 +193,8 @@ commit messages and pull-request text. `SKILL.md` names this file at the point a
 
 ## Repository Text
 
+- Say what changed for whom. "This is a change, not a refactor" belongs at the top of a pull
+  request's description, not buried among the mechanics.
 - Write repository artifact text for its reader: describe behavior, configuration, contracts and
   validation, without narrating the task that produced it. This includes action and workflow
   metadata, configuration descriptions, code comments, documentation, commit messages and

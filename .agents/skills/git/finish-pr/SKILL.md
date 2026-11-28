@@ -33,11 +33,11 @@ Review, fix, and merge the pull requests selected under **Targets**.
 ## Dependencies
 - `edit-skill`
 - `list-prs`
-- `pre-production`
 - `review-pass`
 - `merge-gate`
 - `session-ledger`
 - `execute-task`
+- `stop-gates`
 
 ## Targets
 
@@ -122,11 +122,14 @@ hold only the unit that needs the unresolved result, recording its gate and save
 in its set.
 Follow the active task's recorded priorities when choosing the next eligible unit.
 
-1. **Review the whole pull request.** Invoke `review-pass` on the pull request with its intent
-   statement, asking for the whole pull request: its complete merge-base diff, the full contents of every touched file, related code and
-   sibling modules. Its **Range** decides what an earlier pass already covers: a pull request whose
-   recorded `whole` head has not moved keeps that verdict and is reviewed again by no one, and one
-   that moved since gets only its delta from that head. It returns the accepted head.
+Before the first step, follow `stop-gates`' **Asking While Paused** once for the whole selection.
+
+1. **Review the whole pull request.** Invoke `review-pass` on the pull request, or once on a bulk
+   set as its **Targets** names one, with its intent statement, asking for the whole pull request:
+   its complete merge-base diff, the full contents of every touched file, related code and sibling
+   modules. Its **Range** decides what an earlier pass already covers: a pull request whose recorded
+   `whole` head has not moved keeps that verdict and is reviewed again by no one, and one that moved
+   since gets only its delta from that head. It returns the accepted head.
 2. **Review the combined set.** When the selected units hold more than one member of the set
    `review-pass`'s **Set and timing** defines, invoke its **Combined Review** over those members
    once **Review the whole pull request** has returned for each. A member goes on only at a head

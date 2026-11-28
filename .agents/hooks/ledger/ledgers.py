@@ -84,7 +84,7 @@ def names_session(path: Path, session_id: str) -> bool:
 
 
 def session_ledgers(hook_input: HookInput) -> tuple[set[Path], set[Path]]:
-    """Return the ledgers changed since the session began: named by its transcript, then by ID."""
+    """Return the session's ledgers: its own file or one its transcript names, then by ID."""
 
     directory = ledger_directory()
 
@@ -98,6 +98,11 @@ def session_ledgers(hook_input: HookInput) -> tuple[set[Path], set[Path]]:
 
     if session_id is None:
         return named, set()
+
+    own = session_ledger_path(session_id)
+
+    if own.is_file():
+        named.add(own)
 
     mentioning = {
         path
@@ -117,8 +122,14 @@ def session_ledger_path(session_id: str) -> Path:
     return ledger_directory() / f"session-{session_id}.yaml"
 
 
+def session_ledger_text(session_id: str) -> str:
+    """Return the text the hook writes into the ledger it creates for a session."""
+
+    return SESSION_LEDGER_TEMPLATE.format(session_id=session_id)
+
+
 def create_session_ledger(session_id: str) -> Path | None:
-    """Create the session's empty ledger file unless it exists."""
+    """Create the session's ledger, or return None when the file already exists."""
 
     path = session_ledger_path(session_id)
     directory = path.parent
@@ -129,7 +140,7 @@ def create_session_ledger(session_id: str) -> Path | None:
 
     try:
         with os.fdopen(descriptor, "w") as handle:
-            handle.write(SESSION_LEDGER_TEMPLATE.format(session_id=session_id))
+            handle.write(session_ledger_text(session_id))
             handle.flush()
             os.fsync(handle.fileno())
 

@@ -23,7 +23,7 @@ writing, keeping or removing, and how suites are laid out, configured and budget
   repair included, gets no walkthrough capture unless the user asks for one. A task with several
   features may verify each completed feature that way, its test suites excepted; an edit, file,
   commit, push, handoff or plan step is not a feature boundary.
-- Classify validation failures under `pre-production`'s **Encountered Issues** before expanding
+- Classify validation failures under `scope-of-change`'s **Encountered Issues** before expanding
   repair work. Fix a completed-feature batch's relevant failures together, then repeat only the
   checks the fixes affect. While repairing a failure or a review or gate finding, run only the tests
   that cover the changed code; the full suites run only in the one end-of-changes run above, never
@@ -61,13 +61,12 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
   and review, never its test suites, once the feature is complete, then the required final checks
   before delivery, keeping evidence the change has not invalidated rather than restarting that
   verification for each push.
-- **Which jobs run here.** Select local jobs under **Suites And Failures**. A selected test suite,
-  a job that needs a service or running stack, or one too slow to run before every push joins
+- **Which jobs run here.** Select local jobs under **Suites And Failures**. A selected test suite, a
+  job that needs a service or running stack, or one too slow to run before every push joins
   verification at the end and is named in the report. Recover local shortages of disk, memory or
-  ports as `pre-production`'s **Local Stacks** says and run the job locally. **Suites
+  ports as `run-site`'s **Local Stacks And Development Data** says and run the job locally. **Suites
   And Failures**' cannot-run bullet decides when a job may be left to its hosted run. A
-  non-essential check left red on findings the change did not write, as `pre-production`'s
-  essential-checks bullet classifies them, holds no push.
+  non-essential check left red as `scope-of-change`'s essential-checks bullet says holds no push.
 - **A local variant of a CI check is not that check**, and each of these passes locally and fails
   in CI: lint or type checks scoped to the changed files, where CI's whole-tree run finds an
   untouched caller of a signature the change altered; a formatter or linter in write mode, which
@@ -76,9 +75,9 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
   check or a whole-tree check that every shared component has a docs page.
 - **The spacing check.** Before each push, list the exact adjacent line pairs where setup, a guard,
   transformation, side effect or return meets the next phase without the blank line
-  `pre-production`'s **Code Layout** requires; for changed Python files, `acceptance-gate`'s
+  `engineering-conventions`' **Code Layout** requires; for changed Python files, `acceptance-gate`'s
   `scripts/python_rule_findings.py` lists the candidate pairs. Fix every listed boundary in the
-  lines the change writes or edits, and elsewhere in the changed files within `pre-production`'s
+  lines the change writes or edits, and elsewhere in the changed files within `scope-of-change`'s
   incidental size budget; an unrelated bug or a passing formatter does not satisfy this check.
   Before pushing, record the checked revision and file list, the check output (including an empty
   result), and the disposition of any candidate kept together. When edits follow the check, rerun it
@@ -114,7 +113,7 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
 
 ## Suites And Failures
 
-- Before selecting a test invocation, apply `pre-production`'s **Verification And Experiments**
+- Before selecting a test invocation, apply `test-fixture`'s **Running Tests Safely**
   boundary to the repository's actual runner, target declarations and setup/cleanup lifecycle.
   Run through its test-runner skill at the required scope, preserving the runner's execution
   partitions rather than joining paths in one framework invocation. A single suite is for iterating
@@ -131,7 +130,7 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
   runs slowly, or needs local services started. If a required suite genuinely cannot run, name it
   and say why alongside the result.
   - A suite cannot run only when this session found why itself: its own runner refused with a
-    concrete cause after the recovery `pre-production`'s **Local Stacks** gives, or a credential or
+    concrete cause after the recovery `run-site`'s **Local Stacks And Development Data** gives, or a credential or
     hosted service it requires is absent from where the repository configures it (its settings,
     secrets or environment).
   - When a reviewer, worker or plan says a suite needs credentials, a service or access, check that
@@ -152,7 +151,7 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
   **Pre-Push Gate** requires. At an authorized merge,
   `merge-gate`'s **Check Gate** drives every test job to a terminal result and fixes each failure
   within the pull request's scope, apart from a baseline failure, which is recorded and left as
-  `pre-production`'s **Encountered Issues** says.
+  `scope-of-change`'s **Encountered Issues** says.
 - When CI tests fail, read the job logs by whichever route reaches them, such as the hosting
   service's API, CLI or connector. Ask the user for the failure output only once the reach check in
   [authorization](authorization.md)'s **Steps Only The User Can Take** finds no route.

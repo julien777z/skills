@@ -1,6 +1,6 @@
 ---
 name: use-browser
-description: Show the user a page the agent made, such as a dashboard or report, in their browser, reloading its tab in the task group; or operate a browser — by default a headless one the agent runs itself, and the harness's or an MCP browser only when the user asks for it or gives a specific URL to inspect or debug — to open websites, fill forms, click, take screenshots, extract data, test web apps, QA and bug hunts, sign in, or automate Electron apps and Slack. Use whenever a task opens, shows, reloads or controls a browser page, before selecting a browser or binding a task tab, and when a browser or app surface reports an inventory or availability error.
+description: Show the user a page the agent made, such as a dashboard or report, in their browser, reloading its task tab; or operate a browser — by default a headless one the agent runs itself, and the harness's or an MCP browser only when the user asks for it or gives a specific URL to inspect or debug — to open websites, fill forms, click, take screenshots, extract data, test web apps, QA and bug hunts, sign in, or automate Electron apps and Slack. Use whenever a task opens, shows, reloads or controls a browser page, before selecting a browser or binding a task tab, and when a browser or app surface reports an inventory or availability error.
 short_description: 'Show a local page in the user''s browser, or operate a browser.'
 allowed-tools: Bash(agent-browser:*), Bash(npx agent-browser:*)
 ---
@@ -18,7 +18,7 @@ For a local page the user should look at, including a served page or an HTML fil
 such as a rendered dashboard. A `file://` preview needs the selected browser on the machine that holds
 the file; when it is not, such as a cloud session, serve the page to that browser instead.
 
-Open the page in a task group in the user's browser, selected and bound as **Selecting And Binding
+Open the page in a task tab in the user's browser, selected and bound as **Selecting And Binding
 A Tab** says for the user's browser. If a task tab already shows it, reload that tab. Bring the
 preview to the front only when the user asks to see it. If that browser cannot load the file, use
 a local URL served to it or report the preview blocker.
@@ -34,7 +34,8 @@ a local URL served to it or report the preview blocker.
   from the CLI, which matches the installed version: `agent-browser skills get core`, adding
   `--full` for the command reference. The headless route takes nothing from the user's browser:
   `--auto-connect`, `--profile` naming one of the user's browser profiles, and `connect` or `--cdp`
-  aimed at a browser the user runs are the user's-browser route below.
+  aimed at a browser the user runs are the user's-browser route below. A skill's script that
+  starts its own headless browser with a fresh profile is on this route.
 - **Electron desktop apps and Slack**: the agent launches the app itself where it opens no window
   on the user's desktop, such as an isolated runner or a virtual display, with a DevTools port on
   127.0.0.1 (`--remote-debugging-port=<port>`) and a test profile and test data where the app takes
@@ -45,7 +46,13 @@ a local URL served to it or report the preview blocker.
   request, and is then attached the same way.
 - **The harness's browser control or an MCP browser is used only when the user asks for it, or
   gives a specific URL to inspect or debug.** Then connect to their existing browser and the
-  relevant profile, as **Selecting And Binding A Tab** says for the user's browser.
+  relevant profile, as **Selecting And Binding A Tab** says for the user's browser. In Codex, when
+  the user names Chrome, an `@Chrome` mention included, or the task selects their existing Chrome
+  session, use the bundled Browser plugin's Chrome backend and follow the plugin's setup and Chrome
+  troubleshooting for the selected profile. If that backend stays unavailable after supported
+  recovery, report the plugin blocker and continue independent work. On that backend, never enable
+  or request Chrome remote debugging, attach a debugger or automation CLI to Chrome, launch a debug browser,
+  or substitute another browser or backend for that operation.
 - If the headless browser cannot run, report the blocked browser step with its error and continue
   any work that can be verified independently. Never move to the user's browser or a harness
   preview, or ask the user to show or keep a window open, unless they asked for that route.
@@ -57,7 +64,8 @@ Bind the task's browser before reading, navigating or interacting.
 In the agent's headless browser:
 
 - Run one named session per task (`--session <name>`), record its name, and keep every action of
-  the task in it. A restarted session keeps its name but loses its pages and sign-in, so after
+  the task in it; a parallel worker takes its own session, named after the task's with a suffix
+  of its own. A restarted session keeps its name but loses its pages and sign-in, so after
   reconnecting or restarting browser control, read `agent-browser --session <name> get url` and a
   `snapshot` before the next action, then sign in again and return to the page when they were lost.
 - Send each step that carries a secret, such as the `open` of a one-time sign-in link or the
@@ -68,16 +76,16 @@ In the agent's headless browser:
 
 In the user's browser:
 
-- Inventory browser metadata and select the user's existing browser and the relevant profile. An
-  open user tab can identify the URL and profile, but leave that tab and the user's groups alone.
-- Create a dedicated tab group for the task through the browser harness. Open task-owned tabs in
-  that group, in the background when supported. Keep navigation, debugging, screenshots, sign-in,
-  and verification in those tabs. Work with one tab when it suffices.
-- Record the group and each tab's stable IDs. Bind each action and observation to the intended
-  task tab, verifying the binding after reconnecting or switching. A CLI attached to their browser
-  acts on the task tab only once bound to its ID; its named session alone selects no tab. Keep the
-  task group when replacing a closed tab. If the harness cannot create or bind a grouped tab, use
-  its supported recovery or report the browser step as blocked.
+- Inventory browser metadata and select the user's existing browser and relevant profile. Leave
+  unrelated tabs and groups alone.
+- For the bundled Chrome backend, name the session and open a task-owned tab through the plugin.
+  If the user explicitly tags an existing tab, follow the plugin's tab-claiming procedure.
+- For other routes, create a dedicated task tab group and open task-owned tabs in it, in the
+  background when supported.
+- Bind each action and observation to the intended tab's stable ID. Verify the binding after
+  reconnecting or switching. A CLI attached to their browser acts on the task tab only once bound
+  to its ID; its named session alone selects no tab. If tab creation, claiming or binding fails,
+  follow recovery for the selected route or report the blocker.
 
 In either browser:
 

@@ -11,7 +11,6 @@ down, and carry on where it stopped, so the user does nothing but paste the mess
 
 ## Dependencies
 - `session-ledger`
-- `pre-production`
 
 ## Resolving The Targets
 

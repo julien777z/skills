@@ -1,3 +1,4 @@
+import importlib
 import json
 import os
 import stat
@@ -7,8 +8,11 @@ import tempfile
 import unittest
 import uuid
 from pathlib import Path
+from unittest import mock
 
 HOOK = Path(__file__).resolve().parents[1] / "main.py"
+sys.path.insert(0, str(HOOK.parent))
+ledgers = importlib.import_module("ledgers")
 REPLY_PROMPT = (HOOK.parent / "prompts" / "reply.md").read_text(encoding="utf-8").strip()
 BLOCK_EXIT = 2
 
@@ -75,6 +79,28 @@ class LedgerHookTest(unittest.TestCase):
         self.assertEqual((second.returncode, second.stderr), (0, ""))
         self.assertEqual(self.ledger_files(), [mentioning.name, ledger.name])
 
+    def test_keeps_existing_session_file_the_scan_misses(self):
+        """Test that a session file with records, older than the session and naming no ID, stays."""
+
+        ledger = self.directory / f"session-{self.session_id}.yaml"
+        plan = {"id": "plan-1", "kind": "plan", "summary": "s", "data": {"status": "shown"}}
+        text = json.dumps({"session_ledger": {"sessions": [], "entries": [plan]}})
+
+        self.directory.mkdir()
+        ledger.write_text(text)
+        os.utime(ledger, (0, 0))
+
+        result = self.run_hook()
+
+        self.assertEqual(result.returncode, BLOCK_EXIT)
+        self.assertIn(f"{ledger} has entries missing", result.stderr)
+        self.assertEqual(ledger.read_text(), text)
+
+        with mock.patch.dict(os.environ, {"XDG_STATE_HOME": str(self.state_home)}):
+            self.assertIsNone(ledgers.create_session_ledger(self.session_id))
+
+        self.assertEqual(ledger.read_text(), text)
+
     def test_followup_message_names_created_file(self):
         """Test that Cursor's conversation ID keys a private file its follow-up message names."""
 
@@ -111,6 +137,7 @@ class LedgerHookTest(unittest.TestCase):
         named = self.directory / "named-task.yaml"
         recording = self.directory / "recording-task.yaml"
         broken = self.directory / "broken-task.yaml"
+        repeated = self.directory / "repeated-task.yaml"
 
         named.write_text(json.dumps({"session_ledger": {"entries": [plan]}}))
         recording.write_text(
@@ -118,6 +145,10 @@ class LedgerHookTest(unittest.TestCase):
         )
 
         broken.write_text(f"session_ledger: [{self.session_id}\n")
+        repeated.write_text(
+            f"session_ledger:\n  entries: [{{id: kept}}]\n  entries: []\n"
+            f"  sessions: [{self.session_id}]\n"
+        )
 
         self.transcript.write_text(
             self.transcript.read_text() + json.dumps({"path": str(named)}) + "\n"
@@ -129,27 +160,39 @@ class LedgerHookTest(unittest.TestCase):
         self.assertIn(f"{named} has entries missing", result.stderr)
         self.assertIn(f"{recording} has entries missing", result.stderr)
         self.assertIn(f"{broken} could not be read", result.stderr)
+        self.assertIn(f"{repeated} could not be read", result.stderr)
         self.assertEqual(result.stderr.count(REPLY_PROMPT), 1)
         self.assertTrue(result.stderr.rstrip().endswith(REPLY_PROMPT))
-        self.assertEqual(self.ledger_files(), [broken.name, named.name, recording.name])
+        self.assertEqual(
+            self.ledger_files(), [broken.name, named.name, recording.name, repeated.name]
+        )
 
-    def test_session_end_removes_untouched_file(self):
+    def test_session_end_removes_only_untouched_file(self):
         """Test that session end deletes the hook's file only while nothing is recorded in it."""
 
         ledger = self.directory / f"session-{self.session_id}.yaml"
+        task = self.directory / "task.yaml"
         rewritten = f"session_ledger:\n  entries: []\n  sessions: [{self.session_id}]\n"
         joined = rewritten.replace(f"{self.session_id}]", f"{self.session_id}, {uuid.uuid4()}]")
-        recorded = rewritten.replace("entries: []", "entries: [{id: kept}]")
         claude = {"hook_event_name": "SessionEnd"}
-        cursor = {"conversation_id": self.session_id, "hook_event_name": "sessionEnd"}
+        cursor = {"session_id": None, "conversation_id": self.session_id}
+        cursor |= {"hook_event_name": "sessionEnd"}
 
-        for payload, text, kept in (
-            (claude, None, False),
-            (claude, rewritten, False),
-            (claude, joined, True),
-            (cursor, recorded, True),
+        for payload, text, kept, returncode in (
+            (claude, None, False, 0),
+            (cursor, None, False, 0),
+            (claude, rewritten, False, 0),
+            (claude, joined, True, 0),
+            (claude, rewritten.replace("entries: []", "entries: [{id: kept}]"), True, 0),
+            (claude, rewritten.replace(f"[{self.session_id}]", "[]"), True, 0),
+            (claude, rewritten + "  notes: [kept]\n", True, 0),
+            (claude, "session_ledger:\n  entries: [{id: kept}]\n" + rewritten[16:], True, 1),
+            (claude, f"session_ledger: [{self.session_id}\n", True, 1),
         ):
             with self.subTest(payload=payload, text=text):
+                if ledger.exists():
+                    ledger.unlink()
+
                 self.run_hook()
 
                 if text is not None:
@@ -157,8 +200,15 @@ class LedgerHookTest(unittest.TestCase):
 
                 result = self.run_hook(**payload)
 
-                self.assertEqual((result.returncode, result.stderr), (0, ""))
+                self.assertEqual(result.returncode, returncode)
                 self.assertEqual(ledger.exists(), kept)
+
+        task.write_text(rewritten)
+        ledger.unlink()
+
+        self.run_hook(**claude)
+
+        self.assertTrue(task.exists())
 
 
 if __name__ == "__main__":

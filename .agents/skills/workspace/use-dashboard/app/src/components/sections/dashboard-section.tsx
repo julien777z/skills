@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { type Section, SectionType } from '@/spec';
 import { BoardSection } from './board-section';
 import { ChangesSection } from './changes-section';
+import { ChartSection } from './chart-section';
 import { DiagramSection } from './diagram-section';
 import { FiguresSection } from './figures-section';
 import { LinksSection } from './links-section';
@@ -40,5 +41,7 @@ export function DashboardSection({ section }: { section: Section }): ReactNode {
       return <FiguresSection section={section} />;
     case SectionType.TIMELINE:
       return <TimelineSection section={section} />;
+    case SectionType.CHART:
+      return <ChartSection section={section} />;
   }
 }

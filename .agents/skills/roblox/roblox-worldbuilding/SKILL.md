@@ -2,6 +2,7 @@
 name: roblox-worldbuilding
 description: Apply when planning, inspecting, creating, modifying, importing, optimizing, or playtesting anything placed in a Roblox world — maps, terrain, water, roads, buildings, rooms, props, environmental meshes, or Blender assets, whether the work runs in Studio or through builder scripts and the project's own tools. Also apply when handling authored signs or runtime world-space text, regardless of renderer. Require coherent environments, deliberate place architecture, economical measured geometry, readable traversal, artwork kept intact through imports and rebuilds, and player-height visual/performance checks; a world change is reported finished only after its grounding, blocking, boundary and surface audit in Play, and a new map or visual pass only after a fresh-eye review as well.
 short_description: 'Build and improve Roblox worlds, terrain, structures, props, and assets.'
+user-invocable: false
 ---
 
 # Roblox worldbuilding

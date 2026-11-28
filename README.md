@@ -55,7 +55,10 @@ the `session-start-hook` skill a Claude cloud session supplies.
 Other artifact types retain their owned-link pruning and conflict checks.
 
 The installer needs `python3` to validate installation roots. Hook registration needs Python 3.11
-or newer; with an older version the installer links the hooks, warns, and registers none. The `ledger` hook needs PyYAML. When a ledger the
+or newer; with an older version the installer links the hooks, warns, and registers none. The `ledger` hook needs PyYAML to check a ledger
+anything has been recorded in. When no ledger records the session at turn end, it creates
+`session-<session ID>.yaml` in the private `agent-ledgers/` state directory and names it once, and at
+session end it deletes that file while it holds nothing but the session's ID. When a ledger the
 session writes lacks a backup comment, it keeps the turn going in Claude Code and Codex and submits
 a follow-up message in Cursor. Codex runs a newly registered hook once it has been reviewed and
 trusted there.
@@ -79,7 +82,7 @@ values they replaced.
 | `.agents/skills/<category>/<name>/` | One skill: `SKILL.md`, with `references/`, `scripts/`, `assets/`, or `resources/` beside it. The categories sort the skills and reach no provider — each one still installs as `<name>`, so a name is unique across the whole tree. |
 | `.agents/agents/` | Subagent definitions; the tier each runs on is stated by the skill that launches it. |
 | `.agents/rules/` | Reconciled reusable rules; technology-specific rules retain their file scopes. |
-| `.agents/hooks/<name>/` | One hook: its `main.py` entry point and supporting modules, linked into each user-level root under `hooks/<name>/`. `ledger/` is the turn-end check that every task ledger entry owing a backup comment has one. `session-skills/` starts each session with one installed skill's text loaded, and is registered once each for `i-have-adhd` and `user-facing-output`; for a skill longer than 10,000 characters it names the installed file to read instead, and for one that is not installed it does nothing. |
+| `.agents/hooks/<name>/` | One hook: its `main.py` entry point and supporting modules, linked into each user-level root under `hooks/<name>/`. `ledger/` creates each session's ledger at turn end when none records the session, checks that every task ledger entry owing a backup comment has one, and at session end deletes the session's ledger while nothing was recorded in it. `session-skills/` starts each session with one installed skill's text loaded, and is registered once each for `i-have-adhd` and `user-facing-output`; for a skill longer than 10,000 characters it names the installed file to read instead, and for one that is not installed it does nothing. |
 | `.agents/hooks/hooks.json` | The event each hook runs on, with any arguments it takes. Agent Sync turns it into each provider's registrations: Claude's `settings.json` and Codex's and Cursor's `hooks.json`. The installer reconciles those into each user-level root, pointing them at the linked hooks: it adds new registrations, replaces its earlier ones, and removes its own that no longer have a hook. |
 | `.agents/external_resources.json` | Third-party skills and reference directories vendored by the workflow. |
 | `.agents/resources/<name>/` | Vendored reference files, linked into each supported user-level root under `resources/<name>/`. |
@@ -111,13 +114,13 @@ These run only when you ask for them by name, such as `/code-slop-doctor`.
 - [`new-doctor`](.agents/skills/doctors/new-doctor/SKILL.md) — Create a doctor skill on the shared doctor-protocol for one class of repository hygiene.
 - [`placeholder-data`](.agents/skills/workspace/placeholder-data/SKILL.md) — Turn a pasted API payload into the same shape with obviously fake values.
 - [`research-games`](.agents/skills/roblox/research-games/SKILL.md) — Research Roblox charts for the requested audience and region.
+- [`resume-gates`](.agents/skills/workspace/resume-gates/SKILL.md) — Restart the paused gates, checks and workers on the corrected state.
 - [`roblox-game-overview`](.agents/skills/roblox/roblox-game-overview/SKILL.md) — Explain and audit a Roblox game in a dashboard with pictures staged in the game.
 - [`schema-doctor`](.agents/skills/doctors/schema-doctor/SKILL.md) — Check models and schemas for unnecessary nulls, complexity, keys, and indexes.
 - [`security-doctor`](.agents/skills/doctors/security-doctor/SKILL.md) — Find and fix the exploitable vulnerabilities in a codebase, each proven by a concrete attack.
 - [`skill-doctor`](.agents/skills/doctors/skill-doctor/SKILL.md) — Audit rules, skills and their flows for what to cut, fix, or add.
 - [`tests-doctor`](.agents/skills/doctors/tests-doctor/SKILL.md) — Audit tests for contract value, redundant proof, weak assertions, runtime, provider rate limits, and determinism.
 - [`where-time-went`](.agents/skills/workspace/where-time-went/SKILL.md) — Show where session working time went, as a dashboard.
-- [`widen-scope`](.agents/skills/execution/widen-scope/SKILL.md) — Turn on cleanup of the problems the work runs into for the rest of the session.
 
 ### Model-Invoked
 
@@ -138,6 +141,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`design-taste-frontend`](.agents/skills/web/design-taste-frontend/SKILL.md) — tasteskill 2.5.1, the anti-slop frontend skill.
 - [`doctor-protocol`](.agents/skills/doctors/doctor-protocol/SKILL.md) — Set the audit, fix, review, and reporting process used by every doctor skill.
 - [`edit-skill`](.agents/skills/authoring/edit-skill/SKILL.md) — Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.
+- [`engineering-conventions`](.agents/skills/execution/engineering-conventions/SKILL.md) — Write code, configuration, manifests, documentation and repository text the way every change writes them.
 - [`execute-task`](.agents/skills/execution/execute-task/SKILL.md) — Plan source and product changes and show the plan; validate canonical guidance changes through their delivery gates.
 - [`frontend-design`](.agents/skills/web/frontend-design/SKILL.md) — Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one.
 - [`get-doctors`](.agents/skills/doctors/get-doctors/SKILL.md) — List every doctor skill with what it audits, and the order to run several in a row.
@@ -157,7 +161,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`no-text-ai-slop`](.agents/skills/review/no-text-ai-slop/SKILL.md) — Edit drafts into sharper, more human writing while preserving the writer's personal voice, or detect AI-slop patterns without rewriting.
 - [`play-marble-simulator`](.agents/skills/roblox/play-marble-simulator/SKILL.md) — Play the public Roblox marble game Marble Elimination Ultimate (a marble race where the last marbles each level are eliminated) in the isolated Roblox runner, alone or in the same server as a Roblox player the user names, playing to win and collecting the game's coins, and sending screenshots as play goes on.
 - [`play-roblox-protocol`](.agents/skills/roblox/play-roblox-protocol/SKILL.md) — Set how an agent joins, plays and reports a published Roblox game.
-- [`pre-production`](.agents/skills/execution/pre-production/SKILL.md) — Apply target-contract constraints to implementation and review tasks.
+- [`pre-production`](.agents/skills/execution/pre-production/SKILL.md) — Build the target contract for the product before it ships, with no compatibility for obsolete owned shapes.
 - [`prisma-client-api`](.agents/skills/web/prisma-client-api/SKILL.md) — Prisma Client API reference covering model queries, filters, operators, and client methods.
 - [`process-ledger`](.agents/skills/execution/process-ledger/SKILL.md) — Process verified private-ledger records into durable outcomes.
 - [`progress`](.agents/skills/workspace/progress/SKILL.md) — Show the task’s progress as a dashboard.
@@ -173,10 +177,12 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`roblox-ui`](.agents/skills/roblox/roblox-ui/SKILL.md) — Design and change Roblox interfaces, including HUDs and menus.
 - [`roblox-worldbuilding`](.agents/skills/roblox/roblox-worldbuilding/SKILL.md) — Build and improve Roblox worlds, terrain, structures, props, and assets.
 - [`run-site`](.agents/skills/workspace/run-site/SKILL.md) — Start an application stack and perform browser verification where applicable.
+- [`scope-of-change`](.agents/skills/execution/scope-of-change/SKILL.md) — Decide what a change fixes, carries and leaves, and which of its choices go to the user.
 - [`security-audit`](.agents/skills/review/security-audit/SKILL.md) — Security guidance for writing code and reviewing a change for exploitable vulnerabilities.
 - [`session-ledger`](.agents/skills/workspace/session-ledger/SKILL.md) — Keep verified task artifacts in one private task file.
 - [`share-media`](.agents/skills/media/share-media/SKILL.md) — Show captures, option previews, spoken replies and the material a reply relies on where the user reads.
 - [`skill-pass`](.agents/skills/authoring/skill-pass/SKILL.md) — Apply the writing, placement, conflict and source checks to agent guidance.
+- [`stop-gates`](.agents/skills/workspace/stop-gates/SKILL.md) — Pause the task, its workers, reviews, gates and checks until the user resumes them.
 - [`storyline`](.agents/skills/roblox/storyline/SKILL.md) — Create or improve a coherent game story with playable beats, resolved arcs and room to continue.
 - [`subagent-matrix`](.agents/skills/execution/subagent-matrix/SKILL.md) — Select a model capability level for live verification chats or subagent delegation.
 - [`t3-code`](.agents/skills/workspace/t3-code/SKILL.md) — Manage T3 Code configuration and provider environment variables.

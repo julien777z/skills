@@ -14,6 +14,8 @@ agent-configuration pull request.
 ## Dependencies
 - `review-proposal`
 - `pre-production`
+- `scope-of-change`
+- `engineering-conventions`
 - `banned-terminology`
 - `run-site`
 - `code-simplify`
@@ -28,6 +30,7 @@ agent-configuration pull request.
 - `process-ledger`
 - `list-prs`
 - `session-ledger`
+- `stop-gates`
 - `edit-skill`
 - `guidance-flow`
 - `test-skill`
@@ -57,7 +60,9 @@ the task. Where it owns a stage, return its result to this run rather than start
 ## Plan
 
 Every task that changes files starts here, and so does every follow-up that arrives while one runs.
-Before drafting a plan or selecting targets, apply **Product Constraints** and **Task Authorization**.
+Before reading code for a plan or selecting targets, load `pre-production`, `scope-of-change` and
+`engineering-conventions` whole, each once per task, then apply
+**Product Constraints** and **Task Authorization**.
 
 Before choosing a design, and before the first edit on a path that takes no plan, apply
 `code-simplify`'s **Before Choosing A Design** check to everything the change will add and write
@@ -92,7 +97,7 @@ plan of its own; only an edit that adds nothing skips it.
 
 ### What The Plan Holds
 
-- For a bug, establish the intended behavior and apply `pre-production`'s **Trade-Offs Are
+- For a bug, establish the intended behavior and apply `scope-of-change`'s **Trade-Offs Are
   Surfaced, Never Enforced** before choosing the remedy or presenting an alternative. Use the
   same check when a worker, reviewer, or failed approach changes the proposed remedy.
 - Select verification before recommending it, putting it in a plan, or delegating it. Read
@@ -126,8 +131,8 @@ plan of its own; only an edit that adds nothing skips it.
 - **Settle ownership before the plan is final.** When the design comparison for a shared operation,
   contract, subsystem, runtime boundary, or independent consumer spans subsystems, delegate its
   inventory to one read-only subagent. Invoke `subagent-matrix` at its standard
-  capability level for that reader, launch the exact resolved identifier, and retain catalog state,
-  identifier, assignment state and host receipt with the plan evidence. The plan states where common
+  capability level for that reader, launch the exact resolved model, and retain its `subagent-matrix`
+  **Output** dispatch line with the plan evidence. The plan states where common
   behavior will live and which policy or wiring stays consumer-specific; it never starts from a parallel
   structure and leaves ownership for implementation.
 - Send each message as `user-facing-output` and `share-media` require: any open decisions first,
@@ -208,7 +213,7 @@ as **Work You Have Already Named** says. It lands on the task's pull request and
 as next. Whether the amended plan is shown first follows **When A Plan Is Needed** and **Showing
 The Plan**.
 
-Classify each source or product follow-up under **When A Plan Is Needed** before preparing a plan. A small, clearly specified follow-up executes on the user's request; only a follow-up outside that exception needs its own plan. A canonical guidance correction follows **When A Plan Is Needed** and waits for no plan; while a guidance batch is in flight it joins that batch, as `edit-skill`'s **Recording During A Task** says. **Priority** decides when other follow-ups run and whether affected work pauses now; none of the routes below makes arrival order a reason to preempt active recovery.
+Classify each source or product follow-up under **When A Plan Is Needed** before preparing a plan. A small, clearly specified follow-up executes on the user's request; only a follow-up outside that exception needs its own plan. A canonical guidance correction follows **When A Plan Is Needed** and waits for no plan; one recorded while a guidance batch is in flight starts the next batch, as `edit-skill`'s **Recording During A Task** says. **Priority** decides when other follow-ups run and whether affected work pauses now; none of the routes below makes arrival order a reason to preempt active recovery.
 
 - **One that touches nothing in flight** — other files, another outcome — leaves the running work
   going. It gets a plan only when **When A Plan Is Needed** calls for one, and runs beside that work
@@ -249,7 +254,7 @@ Classify each source or product follow-up under **When A Plan Is Needed** before
   lives. A step the agent adds, or widens past what the user asked, is recorded as agent-originated,
   proceeds under the task's authorization like the work **When A Plan Is Needed** says a plan in
   execution covers, and is never shown as user-approved; one that is a product choice goes to the user
-  before it is built, as `pre-production`'s **Product Choices** says. Update it when the state
+  before it is built, as `scope-of-change`'s **Product Choices** says. Update it when the state
   changes, not when a report is due: the plan being shown, a step starting, finishing, blocking or being
   skipped, a follow-up's plan.
 - **A step that waits on other work records what it waits for**: the gate, merge or result whose
@@ -307,11 +312,12 @@ after its gating check has been read, outside the command, chain or batch that r
 
 ### Product Constraints
 
-`pre-production` is active in every change task: read it whole and invoke it before the first
-edit. Read the product state from project guidance before changing a contract or stored value.
+`pre-production`, `scope-of-change` and `engineering-conventions` are active in every change task,
+loaded whole as **Plan** says, before the first edit. Read the product state from project guidance
+before changing a contract or stored value.
 
-Before drafting a plan or selecting targets, as **Plan** says, and again before recommending an
-implementation, asking a question that presupposes one, or delegating its edits, apply [product
+Before reading code for a plan or selecting targets, as **Plan** says, and again before recommending
+an implementation, asking a question that presupposes one, or delegating its edits, apply [product
 constraints](references/product-constraints.md) and **Task Authorization**: resolve the request's
 targets in the named outcome's context, trace the requested behavior through its runtime path into
 the target receipt, and read the rules and analogous files governing every surface an edit reaches.
@@ -323,15 +329,16 @@ Before an edit that crosses a trust boundary `security-audit` names, invoke it a
 
 ### Encountered Issues
 
-Apply `pre-production`'s encountered-issues policy while making the change, handled as
-[encountered issues](references/encountered-issues.md) says:
-
-- Its **Disposition** says what is fixed in the change in flight and what is recorded with
-  `defer-scope`, how an instruction one agent passes another is checked against the standing
-  guidance before it is sent and before it is acted on, and when a correction is asked about.
-  Offering a fix to the user is not a disposition.
-- Its **CI Gates And Deliberate Breaks** says how a required check that exists to detect deliberate
-  changes, going red on an intentional break, is reported and never suppressed or designed around.
+Apply `scope-of-change`'s **Encountered Issues** while making the change, as [encountered
+issues](references/encountered-issues.md) says; a deprecation or warning a run prints is fixed
+during the task, as `scope-of-change`'s deprecated-usage bullet places it, on the side pull request
+when the change neither introduced nor needs it, never left or offered. Its **Disposition** says
+what is fixed in the change in flight and what is recorded with `defer-scope`, how an instruction
+one agent passes another is checked against the standing guidance before it is sent and before it is
+acted on, and when a correction is asked about, offering a fix to the user being no disposition; its
+**CI Gates And Deliberate Breaks**, how a required check that detects deliberate changes, red on an
+intentional break, is reported, never suppressed or designed around; its **Widened Scope**, the
+borderline-item triage.
 
 ### Ongoing Simplification
 
@@ -370,7 +377,7 @@ required check or the host prevents delivery, keep the push and pull request as 
 
 **A pull request's title and description are brought up to date at every milestone, not at every
 push.** A milestone is a finished plan step or worker task whose checks pass, and a guidance correction pushed onto the pull request carrying it. After it, add
-what the milestone changed and rewrite whatever no longer holds, as `pre-production`'s **Repository
+what the milestone changed and rewrite whatever no longer holds, as `engineering-conventions`' **Repository
 Text** says, before the milestone is reported. A push inside a step, such as a repair or a rebase,
 leaves the description for that step's milestone. `review-pass`'s **Description Refresh** still
 checks it before review.
@@ -382,6 +389,13 @@ context, with **Pull Requests** applying inside each of them. Write each reposit
 contents solely from its own perspective and in its own vocabulary, as
 [multi-repository delivery](references/multi-repository.md) says, and where the run touched more
 than one repository, run its sweep for borrowed names before delivering.
+
+### Resuming While Gates Are Paused
+
+When the user asks to resume the task itself — its execution or implementation, not a question
+about the change — follow `stop-gates`' **Asking While Paused** before continuing at the saved
+step. Until then the hold suspends **Work You Have Already Named**: named work stays recorded with
+its next step and is not resumed.
 
 ### Work You Have Already Named
 
@@ -444,13 +458,18 @@ Review** once each has its accepted head.
 
 - **Guidance stream.** Invoke `process-ledger` for the task's private ledger. It sends the
   `guidance_correction` batch it freezes to `edit-skill`'s **Guidance Delivery** route, which the
-  primary agent coordinates so its review and checks never wait on the source stream. Before a source pull request's **Review the pull request**,
-  every pending `guidance_correction` entry the GitHub rule's **Branches and Pull Requests** puts
-  on it, in the batch in flight or the one after it, is pushed to it and passes its source check,
-  as **Guidance Delivery**'s **Resume the batch** says, so its review pass, history and ready message cover them. An entry recorded after the batch in flight merged is delivered in the batch frozen
-  once that one is done, so the source stream then waits for that delivery too, and for nothing
-  else before **Review the pull request**. Each such entry's skill-test round runs on the head **Review the pull request** accepted, before
-  **Shape the history**, and a repair it makes returns to review as **Guidance Delivery**'s **Conclude the skill test** says. A task with none has no guidance stream.
+  primary agent coordinates so its review and checks never wait on the source stream. Before a
+  source pull request's **Review the pull request**, every pending `guidance_correction` entry the
+  GitHub rule's **Branches and Pull Requests** puts on it, in the batch in flight, or in the next
+  one once `session-ledger`'s **Guidance Batches** lets its edit be written, is pushed to it and
+  passes its source check, as **Guidance Delivery**'s **Resume the batch** says, so its review pass,
+  history and ready message cover them. An entry recorded after the batch in flight froze is
+  delivered in the next batch once the batch in flight merges or leaves flight on a recorded hold,
+  as **Guidance Batches** says, so the source stream then waits for that delivery too, and for
+  nothing else before **Review the pull request**. Each such entry's skill-test round runs on the
+  pushed head before **Review the pull request**, as **Guidance Delivery**'s **Test the batch
+  first** says, and the round's repairs, each rerun at once, return to review together once it
+  passes. A task with none has no guidance stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
   request belongs to the guidance stream, and a side pull request carrying both kinds to this one:
 
@@ -479,16 +498,23 @@ Review** once each has its accepted head.
    result it read: the merge, or the gate that holds it. Otherwise send **Reconcile the result**'s message; the pull
    request stays draft.
 
-The ready-for-review message takes exactly this shape, one message per pull request, leaving out
+The ready-for-review message takes exactly this shape, one message per pull request, in every report
+that hands a pull request to the reader for review, a follow-up's included, whether or not the steps
+before it ran; a step that did not run is left out of **Review** as that line says, never reported
+under another label. Its line
+labels are these and no others: each requested outcome, each new behavior worded as new and each
+defect the change needed go in **What landed**, and a fix the change did not need goes in **Side
+work** with the side pull request carrying it. It leaves out
 **Deferred** when nothing was deferred, **Before deploy** when the change needs nothing outside the
 code to deploy, **Still running** when none of this pull request's own work is active, and **Side
 work** when none is open. Use the message as the material for the review request in the question
-tool, as `user-facing-output` directs; the question asks for the review alone:
+tool, as `user-facing-output` directs; the question asks for the review alone, and its own text
+leaves out the **Before deploy** line:
 
 ```markdown
 **Ready for review:** <pull request URL>
 
-- **What landed:** <each requested outcome, and each defect fixed because the change needed it, one clause each>
+- **What landed:** <each requested outcome, each new behavior named as new, and each defect fixed because the change needed it, one clause each>
 - **Review:** <full | delta `<reviewed head>..<head>` | nothing new> · review loop <n> round(s), <n> finding(s) fixed · acceptance passed on `<head>` — leave out each count `review-pass` did not run
 - **History:** <n> commits (<subject> · <subject> · …)
 - **Deferred:**
