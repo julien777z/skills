@@ -42,6 +42,14 @@ paths:
   changes action labels, or disables unrelated controls; preserve automatic refresh instead of
   stopping it to hide flicker. These settled-view requirements apply to every data-dependent
   component, including one outside a shared page section.
+- **State that can change on its own stays current without the reader acting.** A status, a
+  verification, a job's progress or a list someone else edits is read fresh on load and updated
+  automatically in the background while it can still change, its settled view kept mounted as the
+  bullet above says. An end-user page carries no control whose only job is to re-fetch or re-check,
+  such as Check status, Refresh or Reload: a delivery shown as "Arriving soon" turns to "Delivered"
+  on its own. Where the reader needs to know something, a banner says it under the boxed-banner
+  bullet below. A control that retries an action the reader started after it failed, such as Try
+  again on a failed submission, one that changes state, and staff or admin tools are unaffected.
   Validate each affected component through a cold load and repeated slow refreshes of populated, empty,
   and failed results, including recovery after an initial failure and dismissal followed by the same
   and a changed failure. The cold load changes directly from one complete skeleton to the settled
