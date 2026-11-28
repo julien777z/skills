@@ -43,9 +43,16 @@ const DATED_TICK: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric',
 
 const DATE_TICK: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric' };
 
-interface Scale {
+interface Segment {
   start: number;
-  span: number;
+  end: number;
+  left: number;
+  width: number;
+  collapsed: boolean;
+}
+
+interface Scale {
+  segments: Segment[];
 }
 
 interface Tick {
@@ -53,20 +60,60 @@ interface Tick {
   label: string;
 }
 
+const GAP_PERCENT: number = 5;
+
 function scaleOf(lanes: TimelineLane[], gaps: TimelineGap[]): Scale {
   const moments = [...lanes.flatMap((lane) => lane.bars), ...gaps].flatMap((span) => [
     Date.parse(span.start),
     Date.parse(span.end),
   ]);
   const start = Math.min(...moments);
+  const end = Math.max(start + MINUTE_MS, Math.max(...moments));
+  const breaks = gaps
+    .map((gap) => ({ start: Math.max(start, Date.parse(gap.start)), end: Math.min(end, Date.parse(gap.end)) }))
+    .filter((gap) => gap.end > gap.start)
+    .sort((first, second) => first.start - second.start);
+  const pieces: Omit<Segment, 'left' | 'width'>[] = [];
+  let cursor = start;
 
-  return { start, span: Math.max(MINUTE_MS, Math.max(...moments) - start) };
+  for (const gap of breaks) {
+    if (gap.start > cursor) {
+      pieces.push({ start: cursor, end: gap.start, collapsed: false });
+    }
+
+    pieces.push({ start: Math.max(cursor, gap.start), end: gap.end, collapsed: true });
+    cursor = Math.max(cursor, gap.end);
+  }
+
+  if (end > cursor) {
+    pieces.push({ start: cursor, end, collapsed: false });
+  }
+
+  const collapsedShare = pieces.filter((piece) => piece.collapsed).length * GAP_PERCENT;
+  const active = pieces.filter((piece) => !piece.collapsed).reduce((sum, piece) => sum + piece.end - piece.start, 0);
+  let left = 0;
+
+  return {
+    segments: pieces.map((piece) => {
+      const width = piece.collapsed
+        ? GAP_PERCENT
+        : ((piece.end - piece.start) / Math.max(MINUTE_MS, active)) * (100 - collapsedShare);
+      const segment = { ...piece, left, width };
+
+      left += width;
+
+      return segment;
+    }),
+  };
 }
 
 const EDGE_PERCENT: number = 6;
 
 function offset(scale: Scale, at: number): number {
-  return ((at - scale.start) / scale.span) * 100;
+  const segment = scale.segments.find((candidate) => at <= candidate.end) ?? scale.segments[scale.segments.length - 1];
+  const fraction = (at - segment.start) / Math.max(1, segment.end - segment.start);
+
+  return segment.left + Math.min(1, Math.max(0, fraction)) * segment.width;
 }
 
 function tickAnchor(left: number): string {
@@ -86,22 +133,29 @@ function firstTickAt(start: number, interval: number): number {
 }
 
 function ticksOf(scale: Scale): Tick[] {
-  const end = scale.start + scale.span;
-  const interval =
-    TICK_INTERVALS_MS.find((candidate) => scale.span / candidate <= MAX_TICKS) ??
-    TICK_INTERVALS_MS[TICK_INTERVALS_MS.length - 1];
-  const crossesDays = new Date(scale.start).toDateString() !== new Date(end).toDateString();
+  const active = scale.segments.filter((segment) => !segment.collapsed);
+  const first = scale.segments[0].start;
+  const last = scale.segments[scale.segments.length - 1].end;
+  const crossesDays = new Date(first).toDateString() !== new Date(last).toDateString();
   const ticks: Tick[] = [];
   let previousDay = '';
 
-  for (let at = firstTickAt(scale.start, interval); at <= end; at += interval) {
-    const moment = new Date(at);
-    const day = moment.toDateString();
-    const dated = crossesDays && day !== previousDay;
-    const format = interval >= DAY_MS ? DATE_TICK : dated ? DATED_TICK : CLOCK_TICK;
+  for (const segment of active) {
+    const span = segment.end - segment.start;
+    const allowed = Math.max(1, Math.round((MAX_TICKS * segment.width) / 100));
+    const interval =
+      TICK_INTERVALS_MS.find((candidate) => span / candidate <= allowed) ??
+      TICK_INTERVALS_MS[TICK_INTERVALS_MS.length - 1];
 
-    ticks.push({ at, label: moment.toLocaleString(undefined, format) });
-    previousDay = day;
+    for (let at = firstTickAt(segment.start, interval); at <= segment.end; at += interval) {
+      const moment = new Date(at);
+      const day = moment.toDateString();
+      const dated = crossesDays && day !== previousDay;
+      const format = interval >= DAY_MS ? DATE_TICK : dated ? DATED_TICK : CLOCK_TICK;
+
+      ticks.push({ at, label: moment.toLocaleString(undefined, format) });
+      previousDay = day;
+    }
   }
 
   return ticks;
@@ -152,7 +206,7 @@ function LaneLabel({ lane }: { lane: TimelineLane }): ReactNode {
   return (
     <div className="flex h-8 min-w-0 items-center gap-2">
       <ToneDot tone={lane.tone} />
-      <span className="min-w-0 truncate text-sm">
+      <span className="min-w-0 truncate text-sm" title={lane.label}>
         {lane.details ? (
           <DialogOpener
             opener={opener}
@@ -209,7 +263,7 @@ export function TimelineSection({ section }: { section: TimelineSectionSpec }): 
     <SectionCard title={section.title} description={section.description} wide>
       <TooltipProvider>
         <ScrollArea type="auto" className="w-full">
-          <div className="grid min-w-[48rem] grid-cols-[minmax(8rem,14rem)_minmax(0,1fr)] pb-3">
+          <div className="grid min-w-[48rem] grid-cols-[minmax(10rem,18rem)_minmax(0,1fr)] pb-3">
             <div className={cn('pr-4 sm:sticky sm:left-0 sm:z-10', inDialog ? 'bg-background' : 'bg-card')}>
               <div className="h-6" />
               {gaps.length > 0 && <div className="h-5" />}
