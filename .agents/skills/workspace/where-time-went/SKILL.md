@@ -10,6 +10,7 @@ short_description: 'Show where session working time went, as a dashboard.'
 
 - `use-dashboard`
 - `session-ledger`
+- `progress`
 
 Explain where this session's agents spent their working time, and what came of it, from the
 session's own evidence. By default cover the whole current session through invocation, including
@@ -90,12 +91,9 @@ pages, in order:
   one row per top-level workflow, with its time and its state, as **States** names it — each row
   opening a short write-up of that workflow in a dialog: what it did, its outcome and its largest
   stages, as **What happened** names them.
-- **Now and next** (`board`). One `board` with the columns Active (`accent`) and Up next (`next`).
-  Each card is one plan step, or one part of a step with parts, or a running agent no plan step
-  holds, saying what the work does, in plan order. Active holds active and blocked ones, a blocked
-  card carrying `status` Blocked in `critical` and an active one no pill. Up next holds
-  those not started, with no pill, since the column says it, each with its estimate in `meta` and,
-  when the session has several plans, the plan it belongs to in `tag`.
+- **Now and next** (`board`). The Active and Up next columns of `progress`'s `board` "Work", built
+  as that skill builds them from the same plans, so both dashboards show the same cards; Active also
+  holds each running agent no plan step holds, saying what it does.
 - **Loops** (`list`). One `tree`: each workflow, then its rounds or groups, then the agents or
   assignments inside them, each broken down as **What happened** says. Every entry's `figure` is its
   time, or for work up next its estimate in `meta`; its `tone` and any `status` are as **States**
