@@ -60,7 +60,9 @@ the task. Where it owns a stage, return its result to this run rather than start
 ## Plan
 
 Every task that changes files starts here, and so does every follow-up that arrives while one runs.
-Before drafting a plan or selecting targets, apply **Product Constraints** and **Task Authorization**.
+Before reading code for a plan or selecting targets, invoke `pre-production`, `scope-of-change` and
+`engineering-conventions` with the Skill tool, each once per task and read whole, then apply
+**Product Constraints** and **Task Authorization**.
 
 Before choosing a design, and before the first edit on a path that takes no plan, apply
 `code-simplify`'s **Before Choosing A Design** check to everything the change will add and write
@@ -310,8 +312,8 @@ after its gating check has been read, outside the command, chain or batch that r
 
 ### Product Constraints
 
-`pre-production`, `scope-of-change` and `engineering-conventions` are active in every change task: read
-each whole and invoke it before the first edit. Read the product state from project guidance
+`pre-production`, `scope-of-change` and `engineering-conventions` are active in every change task,
+invoked and read whole as **Plan** says, before the first edit. Read the product state from project guidance
 before changing a contract or stored value.
 
 Before drafting a plan or selecting targets, as **Plan** says, and again before recommending an
@@ -489,7 +491,10 @@ Review** once each has its accepted head.
    result it read: the merge, or the gate that holds it. Otherwise send **Reconcile the result**'s message; the pull
    request stays draft.
 
-The ready-for-review message takes exactly this shape, one message per pull request. Its line
+The ready-for-review message takes exactly this shape, one message per pull request, in every report
+that hands a pull request to the reader for review, a follow-up's included, whether or not the steps
+before it ran; a step that did not run is left out of **Review** as that line says, never reported
+under another label. Its line
 labels are these and no others: each requested outcome, each new behavior worded as new and each
 defect the change needed go in **What landed**, and a fix the change did not need goes in **Side
 work** with the side pull request carrying it. It leaves out
