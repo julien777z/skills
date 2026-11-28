@@ -97,7 +97,8 @@ Build the clean target contract instead of preserving transitional behavior.
   field through one mapping that covers every variant the domain has: a club whose members are
   people or organizations sends the provider `person` or `organization` from each member's own
   kind, never `organization` for all; a mocked gateway and a provider's test mode accept a wrong
-  value, so only a per-variant check of the outgoing request catches one. A constant the provider
+  value, so only a per-variant check of the outgoing request catches one, each field it asserts set
+to a value no other case, factory default or provider sample shares. A constant the provider
   fixes for every caller, such as the one currency a single-currency product charges in, stays a
   constant.
 
