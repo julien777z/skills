@@ -25,7 +25,6 @@ function TreeItem({ node, depth, openDepth }: { node: TreeNode; depth: number; o
   const [showDetails, setShowDetails] = useState(false);
   const opener = useRef<HTMLButtonElement | null>(null);
   const children = node.children ?? [];
-  const tone = node.tone ?? node.status?.tone;
 
   return (
     <li>
@@ -41,7 +40,7 @@ function TreeItem({ node, depth, openDepth }: { node: TreeNode; depth: number; o
             <ChevronRight className={cn('size-4 transition-transform', open && 'rotate-90')} />
           </button>
         ) : null}
-        {(tone || children.length === 0) && <ToneDot tone={tone} offset />}
+        {(node.tone || children.length === 0) && <ToneDot tone={node.tone} offset />}
         <Stack gap="none" grow>
           <Text size="sm" breakAnywhere>
             {node.details ? (

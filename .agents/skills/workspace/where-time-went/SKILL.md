@@ -57,13 +57,15 @@ anything else carries no assessment.
 
 ### States
 
-Each workflow, agent, assignment and plan step is in one state, with its pill and tone: **Active**,
-`accent`, running now; **Blocked**, `critical`, started and waiting on something; **Up next**,
-`next`, not started yet; **Done**, `good`, finished. A reviewer's verdict, such as Approved, Changes
-or Flag, takes the place of Done on a review, and a finished workflow's Rework, Detour or Avoidable,
-`warning`, takes its place where the evidence supports one; finished work with nothing standing out
-shows Done, which the user keeps although it repeats, and an assessment that says nothing, such as
-necessary, is never shown. Read the plans of every ledger this session wrote through
+Each workflow, agent, assignment and plan step is in one state, which sets its entry's `tone`, the
+dot `use-dashboard`'s **Making A Dashboard** describes: **Active**, `accent`, running now;
+**Blocked**, `critical`, started and waiting on something; **Up next**, `next`, not started yet;
+**Done**, `good`, finished, whatever its verdict or assessment. A table cell names the state in
+words, since it has no dot. A pill shows only what the dot does not, in `warning`: a reviewer's
+verdict asking for a look, such as Changes or Flag, and a finished workflow's Rework, Detour or
+Avoidable where the evidence supports one; a blocked entry's pill, in `critical`, names what it
+waits on. Done, Active, Up next, an approving verdict and an assessment that says nothing, such
+as necessary, take no pill. Read the plans of every ledger this session wrote through
 `session-ledger`, leaving out withdrawn and complete plans: a step or part `active` is Active,
 `blocked` is Blocked, `next` is Up next, `done` is Done and `skipped` is left out, and a step with
 parts is read part by part. A plan still waiting on a decision or approval keeps its steps, each
@@ -92,17 +94,19 @@ pages, in order:
 - **Now and next** (`board`). One `board` with the columns Active (`accent`) and Up next (`next`).
   Each card is one plan step, or one part of a step with parts, or a running agent no plan step
   holds, saying what the work does, in plan order. Active holds active and blocked ones, a blocked
-  card carrying `status` Blocked in `critical` and an active one no pill. Up next holds those not
-  started, with no pill, since the column says it, each with its estimate in `meta` and, when the
-  session has several plans, the plan it belongs to in `tag`.
+  card's `status` naming what it waits on in `critical` and an active one no pill. Up next holds
+  those not started, with no pill, since the column says it, each with its estimate in `meta` and,
+  when the session has several plans, the plan it belongs to in `tag`.
 - **Loops** (`list`). One `tree`: each workflow, then its rounds or groups, then the agents or
   assignments inside them, each broken down as **What happened** says. Every entry's `figure` is its
-  time, or for work up next its estimate in `meta`; its `status` is a pill as **States**
-  says, in the matching tone; the model a reviewer ran on is its `tag`.
+  time, or for work up next its estimate in `meta`; its `tone` and any `status` are as **States**
+  says; the model an agent ran on is its `tag`, named as `use-dashboard` names a model, and its
+  label names its role without that model.
 - **Timeline** (`calendar`). One `tree` of the session's phases in order, each labeled by the work
   done in it with its time as `figure`. Its children are the agents, assignments and reviewers that
-  worked in that phase, in the order they started, each with its time in the phase, its `status` and
-  `tag`, and its work in the phase broken down as **What happened** says.
+  worked in that phase, in the order they started, each with its time in the phase, its `tone`,
+  `status` and `tag` as on the Loops page, and its work in the phase broken down as **What
+  happened** says.
 
 ### What happened
 

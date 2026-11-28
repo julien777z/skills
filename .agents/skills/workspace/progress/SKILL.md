@@ -115,18 +115,19 @@ and deliver the same dashboard again on every request so the user keeps one page
 - **`tree` "Plan tree"**, with `open_depth` 2: one entry per plan that is not withdrawn, in
   the order they were shown or approved, `label` the plan's title, `figure` "<done> of <n> steps" and `meta` "~<n> min left", or
   `status` "Proposed" for a plan still waiting on a decision or an approval; under it one entry per step, in plan order, `label`
-  "<n>. <step title>", `status` its status (Done, Active, Blocked, Up next or Skipped) toned as its
-  progress segment is, `meta` "~<n> min" while it is not done or its measured duration once it is,
-  and `figure` "<done> of <n> parts" for a step with parts, counting parts not skipped; and under
-  such a step one entry per part, `label` its title and `status` its status, toned `good` when done,
-  `accent` when active, `critical` when blocked, `next` when not yet started and neutral when skipped.
+  "<n>. <step title>", `tone` its status's tone as its progress segment is, `status` only for a
+  blocked step, what it waits on, toned `critical`, or a skipped one, Skipped, neutral, `meta`
+  "~<n> min" while it is not done or its measured duration once it is, and `figure` "<done> of <n>
+  parts" for a step with parts, counting parts not skipped; and under such a step one entry per
+  part, `label` its title, with `tone` and `status` set as for a step.
 - **Plan write-up**: the plan as a reader who missed the conversation needs it, from the ledger's
   `plan` entry: an `outline` with `expanded` and `stacked` set, `title` the plan's title and `description` its
   goal, then "Shown · ~<total> min" for a plan shown with no open decision, "Approved · ~<total> min" only for one the user's words approved, or "Proposed · ~<total> min" for one still waiting on a decision or an approval. Its groups, each only when it has something in it:
   "Context", why the plan exists and what it starts from, one item per point; "Steps", one item per
   step titled "<n>. <step title>", `detail` what the step changes and how, `meta` "~<n> min" and
-  `tag` its status (Done, Active, Blocked, Up next or Skipped) toned as the progress segments are,
-  adding "· added by agent" for a step whose origin is `agent`;
+  `tone` its status's tone as the progress segments are, and `tag`, only when it has something to
+  say, what a blocked step waits on or Skipped, with "· added by agent" after it for a step whose
+  origin is `agent`, or "Added by agent" alone;
   "Decisions", each choice the plan settled with the option taken and why; "Verification", how
   the result will be checked; and "After the plan", what it leaves to the user, such as reviewing
   and merging, never with a time, since the agent cannot know how long the user takes.
@@ -184,9 +185,9 @@ and deliver the same dashboard again on every request so the user keeps one page
   ones, which need nothing more from the reader, with `group_label` "Repository". `label` its
   `<repository>#<number>`, `url`, `group` "<owner>/<repo>", `detail` its short title, then the
   checks and review state just read, `state` its
-  `open` or `draft`, and `status` and `tone`: Open `good`, Draft neutral, and Failing checks
-  `critical` in place of either when the head's checks fail, read the way the Ready to merge table's
-  Checks column reads them.
+  `open` or `draft`, and, only when the head's checks fail, read the way the Ready to merge table's
+  Checks column reads them, `status` Failing checks toned `critical`; the `state` icon already
+  shows open or draft.
 - **`questions` "Open"**: each open question, with its `recommendation`.
 - **`questions` "Answered"**: each answered question with the user's `answer` in their words and
   `at` the time it was given, with `page_size` 5.
