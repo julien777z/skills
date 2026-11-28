@@ -216,13 +216,13 @@ Dashboards look alike because they are built alike:
   earns its place by telling items apart: statuses that differ from item to item are worth a pill on
   every one, while a pill reading the same on most items has stopped meaning anything.
 - **A figure is a real quantity in a unit the reader knows.** A duration is clock time. Every
-  duration on the page, in text as in figures, reads in its two largest units, starting from the
-  largest that is not zero, so `2d 7h`, `5h 42 min` and `12 min`, never `55h` or `2d 7h 12 min`; a
-  one-letter unit sits against its number and a longer one follows a space. A total over work that
-  ran in parallel counts overlapping time once, so no total is longer than the clock time it spans.
-  A figure summed over parallel work instead is agent time: its chart's `description` says so, and
-  it sets no `total`. A pie's parts never overlap, so its shares add up to its whole. A figure never
-  carries a label for how it was computed.
+  elapsed or estimated time on the page, in text as in figures, reads in its two largest units,
+  starting from the largest that is not zero, so `2d 7h`, `5h 42 min` and `12 min`, never `55h` or
+  `2d 7h 12 min`; a one-letter unit sits against its number and a longer one follows a space. A
+  total over work that ran in parallel counts overlapping time once, so no total is longer than the
+  clock time it spans. A figure summed over parallel work instead is agent time: its chart's
+  `description` says so, and it sets no `total`. A pie's parts never overlap, so its shares add up
+  to its whole. A figure never carries a label for how it was computed.
 - **Text says what it means where it stands.** A line never sends the reader elsewhere to make
   sense of it, such as "at step 2" or "see above": it says what happens then, such as "after the
   batch is frozen". A numbered title keeps its number; the text about it never leans on one.
