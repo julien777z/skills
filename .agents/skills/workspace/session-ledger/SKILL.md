@@ -23,9 +23,10 @@ identity, never a second authoritative copy of its records.
     locator rather than creating another.
   - A new task with no prior ledger, before that file exists or while it holds another task's
     records, creates `<task>.yaml` there.
-  - A session that continues a task whose ledger exists copies the ID the hook's file lists into
-    that ledger's `sessions`, moves what it recorded in the hook's file there, and deletes that
-    file.
+  - A session that continues a task whose ledger exists, as that task's owner, copies the ID the
+    hook's file lists into that ledger's `sessions`, moves what it recorded in the hook's file
+    there, and deletes that file. A worker session leaves the hook's file untouched and returns its
+    records to the owner, as the sole-writer bullet below says.
   - Keep the directory private to its owner and the file owner-readable and writable only.
 - An established task's missing locator, absent file, unreadable file, or invalid content is a
   recovery condition, not an empty ledger. Reconcile available canonical artifact receipts,
@@ -36,8 +37,9 @@ identity, never a second authoritative copy of its records.
   pull request's current head. Any other comment is a reference, not a record. Recover or reconstruct
   the file from verified evidence, preserving provenance and existing records. If evidence remains
   unavailable, report the incomplete retrieval; never create an empty replacement or claim a
-  complete result. Only a successfully read valid file with `entries: []`, or a genuinely new
-  task's initialized file, establishes an empty ledger.
+  complete result. Only a successfully read valid file with `entries: []`, a genuinely new
+  task's initialized file, or a hook-created `session-<session ID>.yaml` a handoff names that its
+  session ended with nothing recorded in, establishes an empty ledger.
 - Keep local evidence needed to resume work or reuse a verdict in private task storage with the
   ledger's restart and handoff durability. Before recording a local locator, retain and read back
   its required scenarios, frozen inputs, reports or logs there, recording their provenance and
@@ -208,12 +210,13 @@ This skill authorizes those comments and their edits under the GitHub rule's **C
     the comment and record its URL, or repair the ledger.
   - In Claude Code and Codex it refuses to end the turn; in Cursor it submits its message as the
     next one.
-  - When the session ends, the same hook deletes the file it created for the session while that
-    file lists only the session and holds no entries; a file holding records stays for whoever
-    continues the task.
+  - Where the harness runs a session-end hook, the same hook deletes the file it created for the
+    session while that file holds nothing but the session's ID and an empty `entries` list; a file
+    holding anything else stays for whoever continues the task.
   - It runs where `python3` is Python 3.11 or newer. Without PyYAML, a ledger whose text holds the
-    session's ID counts as the session's, the hook still creates one when none does, it reports
-    every turn that the backups were not checked, and it keeps the session's file at session end.
+    session's ID counts as the session's, the hook still creates one when none does and still
+    deletes it at session end while its text is what the hook wrote, and any other ledger it
+    finds is reported every turn as not checked and kept at session end.
 
 ## Output
 
@@ -250,9 +253,10 @@ collections or an envelope per kind.
 - Do not commit a ledger file or its private evidence, or infer a record from a transcript. Never record
   credentials, tokens, request bodies, other secrets, or unrelated session details. Remove task
   ledger files, retained evidence and transfer copies after the task ends and no receiver or active
-  worker still needs them; a handoff continues the task and is not its end. A ledger whose
-  `sessions` lists the running session is kept with the ended task's entries removed, so the
-  turn-end hook does not create it again.
+  worker still needs them; a handoff continues the task and is not its end. When the ended task's
+  ledger lists the running session, write `session-<session ID>.yaml` holding only that ID and an
+  empty `entries` list, as the hook writes it, before deleting the task's file, so the turn-end hook
+  does not create one again and session end removes it.
 - Never infer a record from a repository directory, local branch, remembered pull-request number,
   or search result alone.
 - A missing record is not permission to broaden a query. Ask for the target when the current task

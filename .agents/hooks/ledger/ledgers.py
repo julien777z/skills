@@ -2,7 +2,6 @@ import mmap
 import os
 import re
 import stat
-import tempfile
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Final
@@ -84,7 +83,7 @@ def names_session(path: Path, session_id: str) -> bool:
 
 
 def session_ledgers(hook_input: HookInput) -> tuple[set[Path], set[Path]]:
-    """Return the ledgers changed since the session began: named by its transcript, then by ID."""
+    """Return the session's ledgers: its own file or one its transcript names, then by ID."""
 
     directory = ledger_directory()
 
@@ -98,6 +97,11 @@ def session_ledgers(hook_input: HookInput) -> tuple[set[Path], set[Path]]:
 
     if session_id is None:
         return named, set()
+
+    own = session_ledger_path(session_id)
+
+    if own.is_file():
+        named.add(own)
 
     mentioning = {
         path
@@ -117,26 +121,25 @@ def session_ledger_path(session_id: str) -> Path:
     return ledger_directory() / f"session-{session_id}.yaml"
 
 
+def session_ledger_text(session_id: str) -> str:
+    """Return the text the hook writes into the ledger it creates for a session."""
+
+    return SESSION_LEDGER_TEMPLATE.format(session_id=session_id)
+
+
 def create_session_ledger(session_id: str) -> Path | None:
-    """Create the session's empty ledger file unless it exists."""
+    """Create the session's ledger, or return None when the file already exists."""
 
     path = session_ledger_path(session_id)
-    directory = path.parent
 
-    directory.mkdir(mode=0o700, parents=True, exist_ok=True)
-
-    descriptor, temporary = tempfile.mkstemp(dir=directory, prefix=".session-", suffix=".tmp")
+    path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
 
     try:
-        with os.fdopen(descriptor, "w") as handle:
-            handle.write(SESSION_LEDGER_TEMPLATE.format(session_id=session_id))
-            handle.flush()
-            os.fsync(handle.fileno())
-
-        os.link(temporary, path)
+        descriptor = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
     except FileExistsError:
         return None
-    finally:
-        os.unlink(temporary)
+
+    with os.fdopen(descriptor, "w") as handle:
+        handle.write(session_ledger_text(session_id))
 
     return path

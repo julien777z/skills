@@ -9,13 +9,36 @@ from types import ModuleType
 from typing import Final
 
 from documents import is_untouched_session_ledger, ledger_findings, ledger_sessions
-from ledgers import create_session_ledger, session_ledger_path, session_ledgers
+from ledgers import (
+    create_session_ledger,
+    session_ledger_path,
+    session_ledger_text,
+    session_ledgers,
+)
 from models import HookInput, HookOutcome, LedgerFormatError
 
 try:
     import yaml
 except ImportError:
     yaml: ModuleType | None = None
+    YAML_ERRORS: tuple[type[Exception], ...] = ()
+else:
+    YAML_ERRORS = (yaml.YAMLError,)
+
+    class UniqueKeyLoader(yaml.SafeLoader):
+        """Load YAML safely, refusing a mapping that repeats a key."""
+
+        def construct_mapping(self, node, deep=False):
+            """Build a mapping, raising when one of its keys appears twice."""
+
+            keys = [key.value for key, _ in node.value if isinstance(key, yaml.ScalarNode)]
+
+            if len(keys) != len(set(keys)):
+                raise yaml.constructor.ConstructorError(
+                    None, None, "a mapping repeats a key", node.start_mark
+                )
+
+            return super().construct_mapping(node, deep=deep)
 
 logger = logging.getLogger(__name__)
 
@@ -102,6 +125,18 @@ def create_ledger(hook_input: HookInput) -> HookOutcome:
     return deliver(hook_input, prompt(CREATED_LEDGER_PROMPT_FILENAME).format(path=created))
 
 
+def is_untouched(text: str, session_id: str) -> bool:
+    """Tell whether a ledger's text holds nothing but the session's ID."""
+
+    if text == session_ledger_text(session_id):
+        return True
+
+    if yaml is None:
+        raise ImportError("PyYAML is not installed")
+
+    return is_untouched_session_ledger(yaml.load(text, UniqueKeyLoader), session_id)
+
+
 def end_session(hook_input: HookInput) -> HookOutcome:
     """Remove the session's ledger when nothing was recorded in it."""
 
@@ -113,6 +148,7 @@ def end_session(hook_input: HookInput) -> HookOutcome:
     path = session_ledger_path(session_id)
 
     try:
+        before = path.stat()
         text = path.read_text()
     except FileNotFoundError:
         return HookOutcome.END_TURN
@@ -121,15 +157,15 @@ def end_session(hook_input: HookInput) -> HookOutcome:
 
         return HookOutcome.FAILED
 
-    if yaml is None:
-        logger.error("The session's ledger was not checked: PyYAML is not installed")
-
-        return HookOutcome.FAILED
-
     try:
-        if is_untouched_session_ledger(yaml.safe_load(text), session_id):
+        if not is_untouched(text, session_id):
+            return HookOutcome.END_TURN
+
+        after = path.stat()
+
+        if (after.st_ino, after.st_mtime_ns) == (before.st_ino, before.st_mtime_ns):
             path.unlink()
-    except (OSError, yaml.YAMLError, LedgerFormatError) as error:
+    except (OSError, ImportError, *YAML_ERRORS, LedgerFormatError) as error:
         logger.error("The session's ledger was kept: %s", error)
 
         return HookOutcome.FAILED
@@ -148,15 +184,11 @@ def main() -> HookOutcome:
     if hook_input["is_continuation"]:
         return HookOutcome.END_TURN
 
+    session_id = hook_input["session_id"]
     named, mentioning = session_ledgers(hook_input)
 
     if not named and not mentioning:
         return create_ledger(hook_input)
-
-    if yaml is None:
-        logger.error("Ledger backups were not checked: PyYAML is not installed")
-
-        return HookOutcome.FAILED
 
     checked = False
     unreadable: list[str] = []
@@ -164,13 +196,25 @@ def main() -> HookOutcome:
 
     for ledger in sorted(named | mentioning):
         try:
-            document = yaml.safe_load(ledger.read_text())
+            text = ledger.read_text()
 
-            if ledger in mentioning and hook_input["session_id"] not in ledger_sessions(document):
+            if session_id is not None and text == session_ledger_text(session_id):
+                checked = True
+
+                continue
+
+            if yaml is None:
+                logger.error("Ledger backups were not checked: PyYAML is not installed")
+
+                return HookOutcome.FAILED
+
+            document = yaml.safe_load(text)
+
+            if ledger in mentioning and session_id not in ledger_sessions(document):
                 continue
 
             findings = ledger_findings(document)
-        except (OSError, UnicodeDecodeError, yaml.YAMLError, LedgerFormatError) as error:
+        except (OSError, UnicodeDecodeError, *YAML_ERRORS, LedgerFormatError) as error:
             checked = True
             unreadable.append(f"{ledger} could not be read: {error}")
 
