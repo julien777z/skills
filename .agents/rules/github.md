@@ -48,15 +48,16 @@ alwaysApply: true
   touch does not. Other sessions' pull requests and branches stay untouched, apart from damaged
   local Git state a skill installing shared guidance backs up and repairs.
 - **Each session keeps at most one side pull request per repository**, agent configuration and
-  source together, one commit per concern: every guidance edit the session makes there, a worker's
-  repair included, unless the user names the task's pull request for it, or the task's pull request
-  is itself guidance work, whose guidance follow-ups and corrections the user asks for stay on it,
-  and side work, which the task does not need, no user asked for and the change did not introduce: a
-  defect, warning, deprecation or upgrade the agent noticed, a lint or cleanup fix, or its own scope
-  increase. A user asking for a guidance edit alongside a task whose pull request carries other
-  work, in the same request included, does not put it on the task's pull request. Side work is fixed
-  there during the task as `scope-of-change` says, apart from cleanup a record ground holds, which
-  is recorded; a noticed defect, deprecation or printed warning is never recorded, left or offered.
+  source together, one commit per concern. It holds every guidance edit the session makes, a
+  worker's repair included, and side work, which the task does not need, no user asked for and the
+  change did not introduce: a defect, warning, deprecation or upgrade the agent noticed, a lint or
+  cleanup fix, or its own scope increase. A guidance edit goes on the task's pull request instead
+  when the user names that pull request for it, or when the task's pull request holds only agent
+  configuration and the edit is a guidance follow-up or correction the user asks for; a user asking
+  for a guidance edit alongside a task whose pull request carries source, in the same request
+  included, does not put it there. Side work is fixed on the side pull request during the task as
+  `scope-of-change` says, apart from cleanup a record ground holds, which is recorded; a noticed
+  defect, deprecation or printed warning is never recorded, left or offered.
   - Its branch starts from and is based on the task pull request's branch, so the task's merge
     leaves it no conflict; once the task merges, retarget it to the default branch, bring that base
     in and rerun the affected gates. With no task pull request in the repository, as in the skills
