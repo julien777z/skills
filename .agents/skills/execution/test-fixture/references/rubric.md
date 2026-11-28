@@ -55,7 +55,11 @@ after the owner repair. One regression per classification that reaches the bug c
 
 For a substantial behavior change, cover the normal path, each meaningful boundary, and the relevant
 validation or failure path. A single assertion or a single happy-path case is not sufficient
-coverage for a multi-path contract.
+coverage for a multi-path contract. A provider request that varies by a domain value is asserted at
+the provider boundary, its outgoing request checked once per value the domain has, with every field
+the record decides asserted in each, on a record whose value for that field differs between the
+cases and from the factory's default and the provider's sample, so a hard-coded value fails a case;
+never only through a mock above that boundary.
 
 Keep a test when it independently enforces a public API, plugin interface, protocol, configuration,
 migration, storage, security, platform, default, exact user-facing bytes, generated cross-language,

@@ -63,8 +63,9 @@ identity, never a second authoritative copy of its records.
   atomically replace the ledger. Read it back only where a later step depends on the write:
   before reporting persistence, before a handoff, an ownership transfer or a worker receiving the
   locator, and after a write that failed or was interrupted. The next update's reread covers every
-  other write. Preserve the previous valid file when validation or writing fails; a failed write
-  remains owed.
+  other write. Preserve the previous valid file when validation or writing fails, and delete the
+  temporary file a failed or interrupted write left, so no partial copy stays beside the ledger; a
+  failed write remains owed.
 
 ## Workflow
 
@@ -106,7 +107,11 @@ identity, never a second authoritative copy of its records.
    - For a question put to the user, record a `question` entry: the question, its options, the
      recommendation, the work that depends on it, its status (`open`, `evidence_pending`,
      `answered` or `withdrawn`), and the user's answer in their words with when it was given.
-     Keep an assumption made without the user as an assumption, never as an answer.
+     Keep an assumption made without the user as an assumption, never as an answer. A decision
+     found that the user must make is put to them through the question tool, as the global rules'
+     **Asking the user** says, before its entry is recorded; one not yet asked, such as the next
+     in a sequence that waits for the current answer, is never recorded as a `question` and stays
+     in the `next_action` of the work it holds until it is asked.
    - For a decision the user states without a recorded question — how a surface looks or reads,
      what a feature does, a scope — record a `decision` entry when it is given: the surface it
      governs and the user's words with when they were given. A later decision on that surface is

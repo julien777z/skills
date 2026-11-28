@@ -56,9 +56,9 @@ paths:
   product should have done itself. When an action reveals that the page shows stale data, such as a
   request refused because the item it targets has changed since the page loaded, the page fetches
   the current data itself — in the background, as a transition that keeps the settled view under
-  the React layout rule's **Shared Surfaces** on screen with no skeleton and no full reload, or through a refresh control
-  where an automatic update would move content under the reader — and the message states only the
-  condition, such as "This playlist was deleted."
+  the React layout rule's **Shared Surfaces** on screen with no skeleton and no full reload, and
+  applies an update that would move content in place, without shifting the reader's position — and
+  the message states only the condition, such as "This playlist was deleted."
 - **Every section, every step of a flow and every dialog carries a one-sentence description under
   its own heading, inside its surface** — two on a flow's first step, as the React layout rule's
   **Layout And Spacing** allows for a flow's first question — saying what the reader does there, what the section holds, or why
