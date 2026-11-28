@@ -57,23 +57,21 @@ anything else carries no assessment.
 
 ### States
 
-Each workflow, agent, assignment and plan step is in one state, which sets its entry's `tone`, the
-dot `use-dashboard`'s **Making A Dashboard** describes: **Active**, `accent`, running now;
-**Blocked**, `critical`, started and waiting on something; **Up next**, `next`, not started yet;
-**Done**, `good`, finished, whatever its verdict or assessment. A table cell names the state in
-words, since it has no dot. A pill shows only what the dot does not, in `warning`: a reviewer's
-verdict asking for a look, such as Changes or Flag, and a finished workflow's Rework, Detour or
-Avoidable where the evidence supports one; a blocked entry's pill, in `critical`, names what it
-waits on. Done, Active, Up next, an approving verdict and an assessment that says nothing, such
-as necessary, take no pill. Read the plans of every ledger this session wrote through
-`session-ledger`, leaving out withdrawn and complete plans: a step or part `active` is Active,
-`blocked` is Blocked, `next` is Up next, `done` is Done and `skipped` is left out, and a step with
-parts is read part by part. A plan still waiting on a decision or approval keeps its steps, each
-tagged Proposed. Work not started goes under the workflow that ran its plan's earlier steps, or
-under an entry of its own named for the plan when none has run. Its estimate is shown in `meta`,
-marked `~`, never as a `figure`, and never counts toward working time or the longest workflow; a
-total of remaining work is totaled as `session-ledger` totals a plan. A ledger that cannot be read
-is a gap the dashboard names, never an empty plan.
+Each workflow, agent, assignment and plan step is in one state: **Active**, running now;
+**Blocked**, started and waiting on something; **Up next**, not started yet; **Done**, finished,
+whatever its verdict or assessment. Its entry's dot and pill follow `use-dashboard`'s **Making A
+Dashboard**, and a table cell names the state in words. The pills that stay are a reviewer's verdict
+asking for a look, such as Changes or Flag, and a finished workflow's Rework, Detour or Avoidable
+where the evidence supports one, all `warning`, and what a blocked entry waits on; an approving
+verdict and an assessment that says nothing, such as necessary, take none. Read the plans of every
+ledger this session wrote through `session-ledger`, leaving out withdrawn and complete plans: a step
+or part `active` is Active, `blocked` is Blocked, `next` is Up next, `done` is Done and `skipped` is
+left out, and a step with parts is read part by part. A plan still waiting on a decision or approval
+keeps its steps, each tagged Proposed. Work not started goes under the workflow that ran its plan's
+earlier steps, or under an entry of its own named for the plan when none has run. Its estimate is
+shown in `meta`, marked `~`, never as a `figure`, and never counts toward working time or the
+longest workflow; a total of remaining work is totaled as `session-ledger` totals a plan. A ledger
+that cannot be read is a gap the dashboard names, never an empty plan.
 
 ## Dashboard
 
