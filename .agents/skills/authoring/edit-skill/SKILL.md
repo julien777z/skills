@@ -136,6 +136,8 @@ recording or delivering a batch.
 ## Guidance Delivery
 
 This route delivers the frozen batch of `guidance_correction` entries its invocation names,
+never the fixes on a held self-improvement pull request, which wait as the GitHub rule's **Merge
+Authorization** says,
 beside the source stream. It holds the source pull request only for the checks its ridden edits
 need and the delivery of the batch carrying them; only an edit on that pull request, or one the GitHub rule's **Merge Authorization** holds for a source pull request, waits for that merge. **The primary agent coordinates it**, starting its
 reviewer, gate and skill-test agents in the background so the user's review of the source pull
