@@ -56,6 +56,16 @@ Build the clean target contract instead of preserving transitional behavior.
   materially simplifies the result. Update affected consumers and migrate retained data, then remove
   the old shape; update every consumer and generated contract in the same change. A break the
   requested work or a defect requires is made without a question.
+- **An owned wire or schema contract is numbered in reading order.** A field or value added to,
+  changed in or removed from an owned protobuf message or enum, API model or owned enum sits
+  beside the ones it relates to, and the whole message, model or enum is renumbered or reordered
+  in that order, released or not, unless a consumer outside the user's control freezes it, as the
+  next bullet says: a `ship_to_postcode` added to a message whose `ship_to_city` is field 4
+  becomes field 5, never the next free number at the end, and no gap or reserved slot is kept for
+  stable numbers. Ordering an owned contract is never compatibility to keep, so the bar above
+  never holds it back; stored values that depend on the numbers are converted by a migration under
+  **Retained Data**. A third-party contract's order and a table's physical column order stay as
+  they are.
 - **An owned contract stays owned across repositories.** A consumer in a sibling repository the
   user owns makes the break multi-repository work, never somebody else's decision; only a consumer
   outside the user's control freezes a shape. The new shape reaches every site answering the same
