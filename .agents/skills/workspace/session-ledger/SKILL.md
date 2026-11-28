@@ -60,8 +60,9 @@ identity, never a second authoritative copy of its records.
   atomically replace the ledger. Read it back only where a later step depends on the write:
   before reporting persistence, before a handoff, an ownership transfer or a worker receiving the
   locator, and after a write that failed or was interrupted. The next update's reread covers every
-  other write. Preserve the previous valid file when validation or writing fails; a failed write
-  remains owed.
+  other write. Preserve the previous valid file when validation or writing fails, and delete the
+  temporary file a failed or interrupted write left, so no partial copy stays beside the ledger; a
+  failed write remains owed.
 
 ## Workflow
 
