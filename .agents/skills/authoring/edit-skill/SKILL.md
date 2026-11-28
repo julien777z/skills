@@ -356,7 +356,7 @@ small it looks.** Each route below is the gate set its batch passes on the head 
    Authorization** holds it. Never ask to repeat that authorization or to continue an ordinary
    repair. It settles no genuine unresolved product, scope or authorization choice, which goes to
    the user under **Bounds** while independent work continues, and authorizes no release.
-   **Branch and commit.** Select the edit's pull request under the GitHub rule's **Branches and
+   1. **Branch and commit.** Select the edit's pull request under the GitHub rule's **Branches and
       Pull Requests**: the session's one side pull request in its repository, never the task's, the
       branch checked out included, unless the user names the task's pull request for it or the task
       is only that guidance change; asking for it alongside the task's work does not. Commit the
