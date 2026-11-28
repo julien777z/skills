@@ -10,7 +10,7 @@ Use Rokit to pin tools, Wally to manage packages, Rojo to map source to places, 
 
 Exclude installed packages, generated networking, vendored code, and verification artifacts consistently. Anchor root exclusions so build-output patterns cannot accidentally exclude authored builders. Do not suppress first-party diagnostics to get a green check. Generated agent mirrors are owned by Agent Sync, not a competing formatter.
 
-When configuring CI, keep each lint tool's job, automated tests, and build/artifact integrity checks distinct. Read the actual workflows to determine which checks exist and whether cloud execution is provisioned; report a cloud test the workflow configures but the repository has not provisioned as incomplete, not passed. A fork's pull request never runs privileged code with cloud secrets.
+When configuring CI, give each lint tool its own job, and keep automated tests and build/artifact integrity checks distinct. Read the actual workflows to determine which checks exist and whether cloud execution is provisioned; report a cloud test the workflow configures but the repository has not provisioned as incomplete, not passed.
 
 ## Readability and blank lines
 
@@ -26,7 +26,7 @@ Write specs as `.spec.luau` files with explicit `JestGlobals` imports, asserting
 
 A Lute test loader resolves string-path requires from the test Rojo tree, gives each spec a fresh module registry, and supplies its documented Jest-compatible matcher set. A load error, no specs found, or a watchdog timeout fails the run; add a missing matcher with matching semantics rather than weakening a spec.
 
-Commit the project's package lockfile when its package manager produces one. When using a dedicated test project, mount development packages and fixtures only there; delivery integrity must reject them. Cover authority, invalid requests, rate limits, failure, cancellation, transitions, duplicate rewards, persistence and session failures, encounters, travel, cleanup, and shared spatial contracts. Static checks do not prove rendering, player controls, persistence across joins, or multiplayer behavior.
+Commit the project's package lockfile when its package manager produces one. When using a dedicated test project, mount development packages and fixtures only there; delivery integrity must reject them. Cover the boundaries where a silent regression costs progress: authority, invalid requests, rate limits, failure, cancellation, transitions, duplicate rewards, persistence and session failures, encounters, travel, cleanup, and shared spatial contracts. Static checks do not prove rendering, player controls, persistence across joins, or multiplayer behavior.
 
 ## Verified version-specific issues
 
@@ -36,6 +36,6 @@ Blink 0.18.8's `Parser.Map` does not parse a range suffix after a map declaratio
 
 Rojo maps `init.luau` to the containing ModuleScript. A child require from that module uses `@self/Child`, not `./Child` (which resolves to a sibling of the ModuleScript). Verify renamed module trees with the fresh sourcemap.
 
-rocale-cli 0.1.3 once failed a completed Open Cloud task in `ocaleSdk.getTaskLogs` with `attempt to index nil with 'messages'` before printing any Jest results, and an unchanged-head rerun completed the suite. Treat that as a runner log-retrieval failure, neither an assertion failure nor a pass: keep the failed run, inspect its task and upload status, retry one isolated run only when the failure is at that boundary, and require the actual Jest summary and a successful runner exit. Never mask assertion failures with blanket retries.
+rocale-cli 0.1.3 once failed a completed Open Cloud task in `ocaleSdk.getTaskLogs` with `attempt to index nil with 'messages'` before printing any Jest results, and an unchanged-head rerun completed the suite; its underlying API cause is unresolved. Treat it as a runner log-retrieval failure, neither an assertion failure nor a pass: keep the failed run, inspect its task and upload status, retry one isolated run only when the failure is at that boundary, and require the actual Jest summary and a successful runner exit. Never mask assertion failures with blanket retries.
 
 If Wally directories contain leftover package copies, move the generated directories out of the build input and run the configured package installation again. Wally installation does not prove stale files were removed. Source/package equality must use the clean installed closure.

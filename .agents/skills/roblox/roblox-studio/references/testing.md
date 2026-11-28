@@ -1117,20 +1117,19 @@ normal source and fixture state afterward.
 
 Engine tests in Edit establish engine behavior in that context. Live physics, replication, input,
 persistence, and multiple clients need their own supported execution context. Open Cloud likewise
-uses its own privileged context and serialized test project.
+uses its own privileged context and serialized test project: run it only against the game's
+dedicated private test experience, and serialize the uploads and runs that share its place. Prefer
+one test experience per game, since DataStores share the experience's namespace and separate
+repositories' CI concurrency groups do not coordinate uploads to a shared place.
 
-Run Open Cloud tests only against the game's dedicated private test experience, with a credential
-scoped to it, never staging or production. Prefer one test experience per game: DataStores share
-the experience's namespace, and separate repositories' CI concurrency groups do not coordinate
-uploads to a shared place. Serialize uploads and runs that share a place, and Studio sessions and
-fixture runs that share a place or profile, since concurrent mutation invalidates the evidence; edit
-no source a running check reads.
+Serialize Studio sessions and fixture runs that share a place or profile, since concurrent mutation
+invalidates the evidence, and edit no source a running check reads. A Roblox Jest run that is
+rejected or canceled fails, in any runner, as failed results do.
 
 When the project has a Studio test runner, give it a bounded wait, structured current-run results, and cleanup
 in `finally`: restore the normal source tree and original test marker, remove all injected test and
 authoring trees/packages, and leave Play stopped. Disable an Edit-only test entry for ordinary Play
-so it cannot launch with insufficient permissions. A rejected or canceled run fails, as failed
-results do. Never parse a historical `all tests passed` console line, or one from an unrelated
+so it cannot launch with insufficient permissions. Never parse a historical `all tests passed` console line, or one from an unrelated
 plugin, as the current result; Studio output can include old failures and passes. Keep result
 attributes and current run identity authoritative.
 
