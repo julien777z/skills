@@ -5,6 +5,7 @@ import { PageHeader } from '@/components/page-header';
 import { Grid, Stack } from '@/components/primitives';
 import { DashboardSection } from '@/components/sections';
 import { useDashboardUpdates } from '@/hooks/page-refresh';
+import { OpenPageContext } from '@/lib/page-context';
 import { References, ReferencesContext } from '@/lib/references';
 import { withKeys } from '@/lib/utils';
 import { type Dashboard, PageLayout } from '@/spec';
@@ -57,11 +58,13 @@ export function App({ dashboard: initial }: { dashboard: Dashboard }): ReactNode
           </Stack>
         )}
         {showSummary && <SectionCards progress={progress} metrics={pageMetrics} />}
-        <Grid key={current} inset="page" gap="lg" columns={page.layout === PageLayout.ROWS ? 'single' : 'wide'}>
-          {withKeys(page.sections, (section) => section.title).map(({ key, item: section }) => (
-            <DashboardSection key={key} section={section} />
-          ))}
-        </Grid>
+        <OpenPageContext.Provider value={{ dashboardTitle: dashboard.title, pageTitle: page.title }}>
+          <Grid key={current} inset="page" gap="lg" columns={page.layout === PageLayout.ROWS ? 'single' : 'wide'}>
+            {withKeys(page.sections, (section) => section.title).map(({ key, item: section }) => (
+              <DashboardSection key={key} section={section} />
+            ))}
+          </Grid>
+        </OpenPageContext.Provider>
       </Stack>
     </ReferencesContext.Provider>
   );

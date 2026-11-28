@@ -169,6 +169,11 @@ included; a new guidance pull request opens only when no open one can receive th
 repository keeps one open guidance pull request. A user's request during a frozen batch, on its task
 pull request as anywhere, waits the same way.
 
+A `guidance_correction` marked for the session's held self-improvement pull request belongs to no
+batch: it is written on that pull request as soon as it is recorded, whatever batch is in flight,
+and is delivered only when the user's finishing run hands that pull request's entries to delivery
+as one batch.
+
 ## Backup
 
 Every `guidance_correction`, `plan` and `decision` entry, and every answered `question`, is backed up

@@ -109,9 +109,11 @@ dependent unit. Its dependency gates its merge, never its review:
 ## Self-Improvement Pull Requests
 
 A target labeled `self-improvement` has had no review, gate or skill test, as the GitHub rule's
-**Merge Authorization** holds it. This run starts them: the pull request's whole diff goes to
-`edit-skill`'s **Guidance Delivery** route as its batch, skill test included, beside **Workflow**'s
-review, and the label is removed once they pass, before its merge.
+**Merge Authorization** holds it. This run starts them: the `guidance_correction` entries marked
+for that pull request, rebuilt from their backups where another session recorded them, go to
+`edit-skill`'s **Guidance Delivery** route as one batch over the pull request's whole diff, skill
+test included, beside **Workflow**'s review, and the label is removed once they pass, before its
+merge.
 
 ## Workflow
 

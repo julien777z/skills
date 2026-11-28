@@ -233,25 +233,25 @@ def check_moment(value: object, path: str) -> None:
     if not BROWSER_MOMENT.fullmatch(str(value)):
         raise DashboardSpecError(f"{path} must read like 2026-11-10T10:00:00+00:00")
 
-    if datetime.fromisoformat(str(value)).tzinfo is None:
-        raise DashboardSpecError(f"{path} must give its UTC offset, such as +00:00")
-
 
 def check_timeline(section: dict[str, object], path: str) -> None:
-    """Require gaps that last and never overlap."""
+    """Require gaps that never overlap."""
 
     gaps = sorted(
         (datetime.fromisoformat(str(gap["start"])), datetime.fromisoformat(str(gap["end"])), index)
         for index, gap in enumerate(section.get("gaps", []))
     )
 
-    for start, end, index in gaps:
-        if end <= start:
-            raise DashboardSpecError(f"{path}.gaps[{index}].end must be later than its start")
-
     for (_, previous_end, previous), (start, _, index) in zip(gaps, gaps[1:], strict=False):
         if start < previous_end:
             raise DashboardSpecError(f"{path}.gaps[{index}] overlaps {path}.gaps[{previous}]")
+
+
+def check_lasting_span(span: dict[str, object], path: str) -> None:
+    """Require a span to end later than it starts."""
+
+    if datetime.fromisoformat(str(span["end"])) <= datetime.fromisoformat(str(span["start"])):
+        raise DashboardSpecError(f"{path}.end must be later than {path}.start")
 
 
 def check_span(span: dict[str, object], path: str) -> None:
@@ -891,7 +891,7 @@ TIMELINE_GAP_SHAPE: Final[ObjectShape] = ObjectShape(
     name="TimelineGap",
     fields={"start": MOMENT, "end": MOMENT, "label": TEXT},
     required=frozenset({"start", "end", "label"}),
-    relations=check_span,
+    relations=check_lasting_span,
 )
 NOTICE_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Notice",

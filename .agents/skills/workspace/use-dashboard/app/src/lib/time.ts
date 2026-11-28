@@ -27,11 +27,18 @@ export function formatDuration(milliseconds: number): string {
     return `${Math.round(milliseconds / 1000)}s`;
   }
 
-  const days = Math.floor(minutes / MINUTES_PER_DAY);
-  const hours = Math.floor((minutes % MINUTES_PER_DAY) / 60);
-  const rest = minutes % 60;
+  const parts = [
+    { value: Math.floor(minutes / MINUTES_PER_DAY), unit: 'd' },
+    { value: Math.floor((minutes % MINUTES_PER_DAY) / 60), unit: 'h' },
+    { value: minutes % 60, unit: ' min' },
+  ];
+  const largest = parts.findIndex((part) => part.value > 0);
 
-  return [days && `${days}d`, hours && `${hours}h`, rest && `${rest}m`].filter(Boolean).join(' ');
+  return parts
+    .slice(largest, largest + 2)
+    .filter((part) => part.value > 0)
+    .map((part) => `${part.value}${part.unit}`)
+    .join(' ');
 }
 
 export function relativeTime(iso: string, now: number): string {

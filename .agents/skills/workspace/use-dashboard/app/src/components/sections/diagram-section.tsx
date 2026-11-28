@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { diagramFileName, downloadDiagram, drawDiagram } from '@/lib/diagram';
+import { OpenPageContext } from '@/lib/page-context';
 import { linkAttributes, type References, ReferencesContext } from '@/lib/references';
 import { CHANGES, TONES } from '@/lib/tone';
 import { scrollToSection, withKeys } from '@/lib/utils';
@@ -162,6 +163,7 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
   const [status, setStatus] = useState<DrawStatus>(DrawStatus.DRAWING);
   const [split, setSplit] = useState(false);
   const [opened, setOpened] = useState<OpenedDetails | null>(null);
+  const openPage = useContext(OpenPageContext);
   const [exporting, setExporting] = useState(false);
   const [exportFailed, setExportFailed] = useState(false);
   const opener = useRef<HTMLOrSVGElement | null>(null);
@@ -241,7 +243,7 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
 
                       setExporting(true);
                       setExportFailed(false);
-                      downloadDiagram(svg, diagramFileName(section.title))
+                      downloadDiagram(svg, diagramFileName(openPage.dashboardTitle, openPage.pageTitle, section.title))
                         .catch((error: unknown) => {
                           console.error(error);
                           setExportFailed(true);

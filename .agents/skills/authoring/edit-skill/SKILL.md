@@ -83,9 +83,11 @@ Honor the selected workflow's verification sequence and any delivery or installa
 recording or delivering a batch.
 
 - A guidance fix for a flaw the agent found in its own work, during a task or at its completion,
-  is no batch entry: it goes on the session's held self-improvement pull request as the GitHub
-  rule's **Merge Authorization** says, and runs **Validate input** through **Branch and commit**
-  there. A gap in how guidance handles anything else follows the bullets below.
+  goes on the session's held self-improvement pull request as the GitHub rule's **Merge
+  Authorization** says. It is recorded as the bullet below on recording says, backed up as every
+  entry is, and marked for that pull request, which keeps it out of every batch as `session-ledger`'s
+  **Guidance Batches** says; it then runs **Validate input** through **Branch and commit** there at
+  once. A gap in how guidance handles anything else follows the bullets below unchanged.
 - A process correction waits for its verified run or merge to be written, as **A process is encoded
   only once it has worked** says, never to be classified; any other is recorded once diagnosed.
 - A direct request to change guidance, such as "use edit-skill to reflect that", is recorded the

@@ -260,22 +260,14 @@ function fontFaces(): string {
   return rules.join('\n');
 }
 
-export function diagramFileName(title: string): string {
+export function diagramFileName(...titles: string[]): string {
   const slug = (text: string): string =>
     text
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-|-$/g, '');
 
-  const current = document.querySelector('[aria-current="page"]')?.cloneNode(true) as Element | undefined;
-
-  current?.querySelectorAll('.sr-only').forEach((hidden) => {
-    hidden.remove();
-  });
-
-  const page = current?.textContent ?? '';
-
-  return `${[slug(document.title), slug(page), slug(title)].filter(Boolean).join('-') || 'diagram'}.png`;
+  return `${titles.map(slug).filter(Boolean).join('-') || 'diagram'}.png`;
 }
 
 function standaloneSvg(svg: SVGSVGElement): { markup: string; width: number; height: number } {

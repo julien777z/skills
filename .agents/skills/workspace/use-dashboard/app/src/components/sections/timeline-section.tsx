@@ -1,5 +1,5 @@
 import { cn } from 'cn';
-import { type ReactNode, useContext } from 'react';
+import { Fragment, type ReactNode, useContext } from 'react';
 
 import { Stack } from '@/components/primitives/stack';
 import { Text } from '@/components/primitives/text';
@@ -39,6 +39,16 @@ const TICK_INTERVALS_MS: readonly number[] = [
 const MAX_TICKS: number = 6;
 
 const DATE_TICK: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric' };
+
+const TickAnchor = { START: 'start', CENTER: 'center', END: 'end' } as const;
+
+type TickAnchor = (typeof TickAnchor)[keyof typeof TickAnchor];
+
+const TICK_ANCHOR_CLASSES: Record<TickAnchor, string> = {
+  [TickAnchor.START]: 'translate-x-0',
+  [TickAnchor.CENTER]: '-translate-x-1/2',
+  [TickAnchor.END]: '-translate-x-full',
+};
 
 const GAP_PERCENT: number = 5;
 
@@ -117,12 +127,16 @@ function offset(scale: Scale, at: number): number {
   return segment.left + Math.min(1, Math.max(0, fraction)) * segment.width;
 }
 
-function tickAnchor(left: number): string {
+function tickAnchor(left: number): TickAnchor {
   if (left < EDGE_PERCENT) {
-    return 'translate-x-0';
+    return TickAnchor.START;
   }
 
-  return left > 100 - EDGE_PERCENT ? '-translate-x-full' : '-translate-x-1/2';
+  return left > 100 - EDGE_PERCENT ? TickAnchor.END : TickAnchor.CENTER;
+}
+
+function labelReach(label: string, position: number): number {
+  return ((label.length + 2) * PERCENT_PER_LABEL_CHARACTER) / (tickAnchor(position) === TickAnchor.CENTER ? 2 : 1);
 }
 
 function firstTickAt(start: number, interval: number): number {
@@ -143,11 +157,10 @@ function spaced(scale: Scale, ticks: Tick[]): Tick[] {
     const at = offset(scale, tick.at);
     const previous = kept[kept.length - 1];
     const nearBreak = breakEdges.some((edge) => Math.abs(edge - at) < BREAK_CLEARANCE_PERCENT);
-    const reach = (label: string, position: number): number =>
-      ((label.length + 2) * PERCENT_PER_LABEL_CHARACTER) / (tickAnchor(position) === '-translate-x-1/2' ? 2 : 1);
     const nearPrevious =
       previous !== undefined &&
-      at - offset(scale, previous.at) < reach(previous.label, offset(scale, previous.at)) + reach(tick.label, at);
+      at - offset(scale, previous.at) <
+        labelReach(previous.label, offset(scale, previous.at)) + labelReach(tick.label, at);
 
     if (!nearBreak && !nearPrevious) {
       kept.push(tick);
@@ -226,12 +239,17 @@ function BarMark({ lane, bar, scale }: { lane: TimelineLane; bar: TimelineBar; s
 
 function LaneLabel({ lane }: { lane: TimelineLane }): ReactNode {
   return (
-    <div className="flex h-8 min-w-0 items-center gap-2">
-      <ToneDot tone={lane.tone} />
-      <span className="min-w-0 truncate text-sm" title={lane.label}>
+    <div className="flex min-h-8 min-w-0 items-start gap-2 py-1.5">
+      <ToneDot tone={lane.tone} offset />
+      <span className="min-w-0 text-sm break-words">
         <DetailsLabel label={lane.label} details={lane.details} className="cursor-pointer" />
+        {lane.tag && (
+          <>
+            {' '}
+            <StatusBadge label={lane.tag} dot={false} />
+          </>
+        )}
       </span>
-      {lane.tag && <StatusBadge label={lane.tag} dot={false} />}
     </div>
   );
 }
@@ -259,66 +277,75 @@ function GapLabel({ gap, scale }: { gap: TimelineGap; scale: Scale }): ReactNode
   );
 }
 
+function TrackBackdrop({ ticks, gaps, scale }: { ticks: Tick[]; gaps: TimelineGap[]; scale: Scale }): ReactNode {
+  return (
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+      {withKeys(ticks, (tick) => String(tick.at)).map(({ key, item: tick }) => (
+        <div
+          key={key}
+          style={{ left: `${offset(scale, tick.at)}%` }}
+          className="absolute inset-y-0 border-l border-border"
+        />
+      ))}
+      {withKeys(gaps, (gap) => gap.start).map(({ key, item: gap }) => (
+        <GapBand key={key} gap={gap} scale={scale} />
+      ))}
+    </div>
+  );
+}
+
 export function TimelineSection({ section }: { section: TimelineSectionSpec }): ReactNode {
   const gaps = section.gaps ?? [];
   const scale = scaleOf(section.lanes, gaps);
   const ticks = ticksOf(scale);
   const lanes = withKeys(section.lanes, (lane) => lane.label);
   const inDialog = useContext(InDialogContext);
+  const labelCell = cn('pr-4 sm:sticky sm:left-0 sm:z-10', inDialog ? 'bg-background' : 'bg-card');
 
   return (
     <SectionCard title={section.title} description={section.description} wide>
       <TooltipProvider>
         <ScrollArea type="auto" className="w-full">
           <div className="grid min-w-[48rem] grid-cols-[minmax(10rem,18rem)_minmax(0,1fr)] pb-3">
-            <div className={cn('pr-4 sm:sticky sm:left-0 sm:z-10', inDialog ? 'bg-background' : 'bg-card')}>
-              <div className="h-6" />
-              {gaps.length > 0 && <div className="h-5" />}
-              {lanes.map(({ key, item: lane }) => (
-                <LaneLabel key={key} lane={lane} />
+            <div className={labelCell} />
+            <div aria-hidden="true" className="relative h-6 text-xs text-muted-foreground tabular-nums">
+              {withKeys(ticks, (tick) => String(tick.at)).map(({ key, item: tick }) => (
+                <span
+                  key={key}
+                  style={{ left: `${offset(scale, tick.at)}%` }}
+                  className={cn(
+                    'absolute top-0 whitespace-nowrap',
+                    TICK_ANCHOR_CLASSES[tickAnchor(offset(scale, tick.at))],
+                  )}
+                >
+                  {tick.label}
+                </span>
               ))}
             </div>
-            <div className="relative">
-              <div aria-hidden="true" className="relative h-6 text-xs text-muted-foreground tabular-nums">
-                {withKeys(ticks, (tick) => String(tick.at)).map(({ key, item: tick }) => (
-                  <span
-                    key={key}
-                    style={{ left: `${offset(scale, tick.at)}%` }}
-                    className={cn('absolute top-0 whitespace-nowrap', tickAnchor(offset(scale, tick.at)))}
-                  >
-                    {tick.label}
-                  </span>
-                ))}
-              </div>
-              <div className="relative">
-                <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-                  {withKeys(ticks, (tick) => String(tick.at)).map(({ key, item: tick }) => (
-                    <div
-                      key={key}
-                      style={{ left: `${offset(scale, tick.at)}%` }}
-                      className="absolute inset-y-0 border-l border-border"
-                    />
-                  ))}
+            {gaps.length > 0 && (
+              <>
+                <div className={labelCell} />
+                <div className="relative h-5">
+                  <TrackBackdrop ticks={ticks} gaps={gaps} scale={scale} />
                   {withKeys(gaps, (gap) => gap.start).map(({ key, item: gap }) => (
-                    <GapBand key={key} gap={gap} scale={scale} />
+                    <GapLabel key={key} gap={gap} scale={scale} />
                   ))}
                 </div>
-                {gaps.length > 0 && (
-                  <div className="relative h-5">
-                    {withKeys(gaps, (gap) => gap.start).map(({ key, item: gap }) => (
-                      <GapLabel key={key} gap={gap} scale={scale} />
-                    ))}
-                  </div>
-                )}
-                {lanes.map(({ key, item: lane }) => (
-                  <div key={key} className="relative h-8 border-b border-border/50 last:border-b-0">
-                    {withKeys(lane.bars, (bar) => bar.start).map(({ key: barKey, item: bar }) => (
-                      <BarMark key={barKey} lane={lane} bar={bar} scale={scale} />
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </div>
+              </>
+            )}
+            {lanes.map(({ key, item: lane }) => (
+              <Fragment key={key}>
+                <div className={cn(labelCell, 'border-b border-border/50')}>
+                  <LaneLabel lane={lane} />
+                </div>
+                <div className="relative min-h-8 border-b border-border/50">
+                  <TrackBackdrop ticks={ticks} gaps={gaps} scale={scale} />
+                  {withKeys(lane.bars, (bar) => bar.start).map(({ key: barKey, item: bar }) => (
+                    <BarMark key={barKey} lane={lane} bar={bar} scale={scale} />
+                  ))}
+                </div>
+              </Fragment>
+            ))}
           </div>
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
