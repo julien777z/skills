@@ -143,10 +143,11 @@ function spaced(scale: Scale, ticks: Tick[]): Tick[] {
     const at = offset(scale, tick.at);
     const previous = kept[kept.length - 1];
     const nearBreak = breakEdges.some((edge) => Math.abs(edge - at) < BREAK_CLEARANCE_PERCENT);
+    const reach = (label: string, position: number): number =>
+      ((label.length + 2) * PERCENT_PER_LABEL_CHARACTER) / (tickAnchor(position) === '-translate-x-1/2' ? 2 : 1);
     const nearPrevious =
       previous !== undefined &&
-      at - offset(scale, previous.at) <
-        (Math.max(previous.label.length, tick.label.length) + 2) * PERCENT_PER_LABEL_CHARACTER;
+      at - offset(scale, previous.at) < reach(previous.label, offset(scale, previous.at)) + reach(tick.label, at);
 
     if (!nearBreak && !nearPrevious) {
       kept.push(tick);
