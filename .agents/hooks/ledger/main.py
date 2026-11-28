@@ -69,7 +69,7 @@ def read_hook_input() -> HookInput:
 
 
 def deliver(hook_input: HookInput, message: str) -> HookOutcome:
-    """Hand the agent a message it acts on before the turn ends, closing with the reply it owes."""
+    """Hand the agent the work this message names and the instruction to end with its reply."""
 
     message = f"{message}\n\n{prompt(REPLY_PROMPT_FILENAME)}"
 
