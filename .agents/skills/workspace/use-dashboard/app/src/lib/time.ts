@@ -13,6 +13,27 @@ export function formatMoment(iso: string, now: number): string {
   return then.toLocaleString(undefined, sameDay ? CLOCK : DATE_AND_CLOCK);
 }
 
+export function formatSpan(start: string, end: string, now: number): string {
+  const sameDay = new Date(start).toDateString() === new Date(end).toDateString();
+  const until = new Date(end).toLocaleString(undefined, sameDay ? CLOCK : DATE_AND_CLOCK);
+
+  return `${formatMoment(start, now)} – ${until}`;
+}
+
+export function formatDuration(milliseconds: number): string {
+  const minutes = Math.round(milliseconds / MINUTE_MS);
+
+  if (minutes < 1) {
+    return `${Math.round(milliseconds / 1000)}s`;
+  }
+
+  const days = Math.floor(minutes / MINUTES_PER_DAY);
+  const hours = Math.floor((minutes % MINUTES_PER_DAY) / 60);
+  const rest = minutes % 60;
+
+  return [days && `${days}d`, hours && `${hours}h`, rest && `${rest}m`].filter(Boolean).join(' ');
+}
+
 export function relativeTime(iso: string, now: number): string {
   const then = new Date(iso);
   const minutes = Math.round((now - then.getTime()) / MINUTE_MS);
