@@ -1,6 +1,6 @@
 ---
 name: user-facing-output
-description: "Apply before the first user-facing response and to every response the user reads, without waiting for an invocation. On top of `i-have-adhd` it owns the list of open decisions shown after each user message, evidence-pending questions, putting decisions and reader-owned actions to the question tool, the closing line, reporting an issue fixed on the way and side work apart from the task's pull request, and what the text says: a link for anything the reader might open, a proposal never reading as done, a web product's views called pages, text written for the user rather than for reviewers or workers, and new behavior named as new."
+description: "Apply before the first user-facing response and to every response the user reads, without waiting for an invocation. On top of `i-have-adhd` it owns the list of open decisions shown after each user message, evidence-pending questions, putting decisions and reader-owned actions to the question tool, the closing line, reporting an issue the work met as fixed and side work apart from the task's pull request, and what the text says: a link for anything the reader might open, a proposal never reading as done, a web product's views called pages, text written for the user rather than for reviewers or workers, and new behavior named as new."
 short_description: 'Keep open decisions visible, ask through the question tool, and word every reply for its reader.'
 ---
 
@@ -149,7 +149,8 @@ output.
   request description or a capture's caption that shows the product behaving differently under
   some condition states that behavior and where it applies, such as "photo galleries now become
   carousels past six photos on every page", never folds it into the fix it arrived with, so the
-  reader can tell a new layout, control or flow from a repair.
+  reader can tell a new layout, control or flow from a repair. In a ready-for-review message it is
+  named as new inside its **What landed** clause, never on a line of its own.
 - Replies follow `pre-production`'s **Language** and **Examples And Paths**: American
   English, and no value the user gave as an example reproduced.
 - A capture or file a reply relies on is read whole and shown as `share-media` says.

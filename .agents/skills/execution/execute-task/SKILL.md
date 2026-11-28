@@ -479,7 +479,10 @@ Review** once each has its accepted head.
    result it read: the merge, or the gate that holds it. Otherwise send **Reconcile the result**'s message; the pull
    request stays draft.
 
-The ready-for-review message takes exactly this shape, one message per pull request, leaving out
+The ready-for-review message takes exactly this shape, one message per pull request. Its line
+labels are these and no others: each requested outcome, each new behavior worded as new and each
+defect the change needed go in **What landed**, and a fix the change did not need goes in **Side
+work** with the side pull request carrying it. It leaves out
 **Deferred** when nothing was deferred, **Before deploy** when the change needs nothing outside the
 code to deploy, **Still running** when none of this pull request's own work is active, and **Side
 work** when none is open. Use the message as the material for the review request in the question
