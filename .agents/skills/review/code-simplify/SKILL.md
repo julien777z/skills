@@ -14,6 +14,8 @@ it whole before the pass.
 ## Dependencies
 - `list-prs`
 - `pre-production`
+- `scope-of-change`
+- `engineering-conventions`
 - `subagent-matrix`
 - `test-fixture`
 
@@ -50,7 +52,8 @@ proposed mechanism.
   siblings at once, review in process and start no subagents.
 - **Larger scopes by slice.** Partition by app, service or package into at most five slices,
   grouping neighboring areas when there are more, and launch one read-only `code-simplify` agent
-  per slice through `subagent-matrix` at its advanced capability level, each with the rubric, its
+  per slice through `subagent-matrix`, at the cheap tier during implementation and the standard
+  tier in the final review of the whole pull request, each with the rubric, its
   slice's diff and file contents, the intent, the affected-repository map and the pull request's
   complete file list against its merge base with each file's added, modified or renamed status, so
   a slice can tell the change's own code from older code. Add one cross-cutting
@@ -70,7 +73,7 @@ proposed mechanism.
   decision.
 - Fix a `nit` only when it is a one-line change in a line the change already touches; otherwise
   list it as declined.
-- Outside the change, as the rubric's **Scope** says, fix every bug under `pre-production`'s
+- Outside the change, as the rubric's **Scope** says, fix every bug under `scope-of-change`'s
   **Scope Follows The Defect, Not The Request**. Apply its size budget to cleanup and return to the
   caller only what that budget reserves a record for.
 - Check each remedy against the language and layout rules for its file before applying it.

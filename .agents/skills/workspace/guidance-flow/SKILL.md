@@ -95,8 +95,8 @@ pages it reaches. Pages follow the categories as the sources stand when they are
    categories **Pages** finds, and every rule file.
 2. **Read each page's flow.** From each page's starting skills, read the entry points and follow
    every invocation, subagent launch and borrowed rubric the flow reaches, including conditional
-   ones, such as a security review that runs only for some changes. Read `subagent-matrix` and its
-   capability reference for who each launch the flow describes uses. Note, for every claim, the
+   ones, such as a security review that runs only for some changes. Read `subagent-matrix`, its
+   **Matrix** included, for who each launch the flow describes uses. Note, for every claim, the
    `SKILL.md` lines that state it.
 
    While reading a page's flow, record every rule a skill on the page reads: each rule its text

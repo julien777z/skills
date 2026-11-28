@@ -1,6 +1,6 @@
 ---
 name: use-dashboard
-description: Render a dashboard spec into the shared HTML dashboard page and deliver it to the user. Use as a dependency whenever a skill delivers a dashboard page built from its data, so those dashboards share one look and the caller writes data, never HTML.
+description: Render a dashboard spec into the shared HTML dashboard page and deliver it to the user. Use as a dependency whenever a skill delivers a dashboard page built from its data, so those dashboards share one look and the caller writes data, never HTML. Also owns every correction to a dashboard that would hold for any dashboard, such as how it looks, reads, counts or responds.
 short_description: 'Turn a dashboard spec into the shared HTML page and deliver it.'
 ---
 
@@ -22,6 +22,12 @@ that a harness sizes to its content. The
 navbar keeps the title whole and the page links beside it: the page spans up to 1920 px so a wide
 screen shows more links, the links scroll sideways with a visible scrollbar when they still do not
 fit, and they fold into a menu only below 1024 px.
+
+**A correction to one dashboard that would hold for any dashboard belongs here**, never in the
+skill that built it: how a figure is written, what a chart shows on hover, what is clickable, which
+colors mean what, how text reads. The calling skill takes only what concerns its own data, such as
+which pages it has, what it counts and what its observations cover. When a correction does both,
+split it between the two.
 
 ## Dependencies
 - `pages:write-page`
@@ -79,6 +85,7 @@ of a process, carries no count. Section types:
 | `tree` | `title`, `items`, `open_depth?` (levels open on load, 1 by default) | `label`, `detail?`, `tag?`, `figure?`, `status?`, `meta?`, `tone?`, `children?`, `details?`: nested entries, each with children opening and closing from a chevron, `tag` a short label that tells otherwise alike entries apart, such as the warehouse each parcel left from, in a neutral pill beside its label, `figure` a short quantity, such as a count or a duration, in a neutral badge after that, `status` (`{label, tone?}`) the entry's state as a pill in its tone after the figure, its tone also coloring the entry's dot when the entry sets no `tone`, `meta` beside them, and `details`, one section, opening in a dialog from the entry's label, which then shows as a link with an open icon; for a whole made of parts made of parts |
 | `tabs` | `title`, `tabs: [{label, sections}]` | each tab a `label` and the `sections` it shows: a bar of tab labels, read with the arrow keys as well as the pointer, over the selected tab's sections, which render inside this card in order; a tab whose `sections` is `[]` is left off the bar, and with one tab left no bar shows, only its sections; for one subject split into kinds the reader looks at one at a time |
 | `figures` | `title`, `items`, `stacked?` (one figure per row, each followed by its caption, for pictures read in order) | `image`, `alt`, `caption?`: `image` a base64 data URI of an SVG, PNG, JPEG, WebP or GIF image, a single figure taking the card's width and several two side by side on a wide page, or one per row at a readable width with `stacked`, with `alt` read out in its place and `caption` under it; for what the reader needs to see rather than read, such as a map, a mock-up or a screenshot |
+| `chart` | `title`, `kind` (`pie`, `bar`), `items`, `total?` | `label`, `value`, `figure`, `detail?`, `tone?`, `details?`: `value` a number of at least 0 that sizes the item's slice or bar, at least one above 0; `figure` the value as the reader reads it, such as `3h 20 min`, shown beside the label with, in a pie, its share of the whole; `detail` a line under it; `tone` colors an item whose meaning is that tone's, such as a late shipment in `warning`; `details`, one section, opens in a dialog when the item's label or its pie slice is clicked; a bar itself is not clickable, since its label beside it already opens the same dialog, for what lies behind that amount, such as the agents or runs it sums. Every untoned item in a pie takes the next series color, distinct hues that are never a gray, taking those close to a tone the chart uses last, and every untoned bar one color, so only a tone stands out. Pointing at an item, or walking a pie's ring with the arrow keys, dims the rest. A pie's slice shows its label, figure and share in a popup, and its label and share in the ring's middle, so a reader reads it off the ring without matching colors; a bar, whose label and figure sit beside it, has no popup. A pie is a ring with `total` in its middle and a legend beside it; bars run one per item scaled to the largest; labels are unique |
 | `diagram` | `title`, `nodes`, `edges`, `prs?`, `steps?`, `legend?` (`[{tone, label}]`, a line in each tone beside what it means) | node: `id`, `label`, `detail?`, `pr?`, `change?`, `tone?`, `details?`, `target?`; edge: `from`, `to`, `label?`, `step?`, `change?`, `tone?`, `details?`; pr: `ref`, `url`; each step a string |
 
 A diagram draws each node as a box inside a frame titled with the `ref` its `pr` names, and each
@@ -196,6 +203,8 @@ Dashboards look alike because they are built alike:
   remarks? `notes`. How do the parts connect? `diagram`. What is this made of, part by part — an order and its parcels, a folder and its files? `tree`,
   never a flat table whose rows name their parent.
   One subject in several kinds, read one kind at a time? `tabs`. What does it look like? `figures`.
+  How is a whole split, or how do amounts compare? `chart`, never a table of numbers the reader has
+  to compare by eye; a pie holds the parts of one whole, at most eight, and bars compare the rest.
 - **Detail opens in place.** A tree entry's parts are its `children`, opened from its chevron,
   never a dialog; a dialog through `details` holds what is not a part of the entry, such as a
   write-up about it, a table or a diagram.
@@ -206,9 +215,14 @@ Dashboards look alike because they are built alike:
   its plan or its type, is plain text. A pill
   earns its place by telling items apart: statuses that differ from item to item are worth a pill on
   every one, while a pill reading the same on most items has stopped meaning anything.
-- **A figure is a real quantity in a unit the reader knows.** A duration is clock time. A total over
-  work that ran in parallel counts overlapping time once, so no total is longer than the clock time
-  it spans. A figure never carries a label for how it was computed.
+- **A figure is a real quantity in a unit the reader knows.** A duration is clock time. Every
+  elapsed or estimated time a spec carries, in text as in figures, reads in its two largest units,
+  starting from the largest that is not zero, so `2d 7h`, `5h 42 min` and `12 min`, never `55h` or
+  `2d 7h 12 min`; a one-letter unit sits against its number and a longer one follows a space. A
+  total over work that ran in parallel counts overlapping time once, so no total is longer than the
+  clock time it spans. A figure summed over parallel work instead is agent time: its chart's
+  `description` says so, and it sets no `total`. A pie's parts never overlap, so its shares add up
+  to its whole. A figure never carries a label for how it was computed.
 - **Text says what it means where it stands.** A line never sends the reader elsewhere to make
   sense of it, such as "at step 2" or "see above": it says what happens then, such as "after the
   batch is frozen". A numbered title keeps its number; the text about it never leans on one.
@@ -218,10 +232,14 @@ Dashboards look alike because they are built alike:
   group is headed with the area it covers, never with the task's name.
 - **Labels and headings are written in sentence case and shown as written.** The dashboard's
   `title` and the preview `topic` `Synthetic Preview` are names, in title case.
-- **Tone means the same everywhere.** `good` is fine, matches or finished, `warning` needs the
-  reader's look or action, `critical` is wrong or blocking, `accent`, a blue, is running now or
-  informational, and `next`, a purple, is up next or still to do. Leave it out for neutral; never
-  tone an item only to decorate it.
+- **Tone means the same everywhere.** `good`, green, is fine, matches or finished: Done,
+  Approved, Passed. `warning` needs the reader's look or action, `critical` is wrong or blocking,
+  `accent`, a blue, is running now or informational, such as Running, and `next`, a purple, is up
+  next or still to do. A status takes the tone its meaning carries on every dashboard, never a
+  color picked for one page. Leave it out for neutral; never tone an item only to decorate it.
+- **A model is named exactly.** A label, tag or figure naming the model an agent ran on gives its
+  display name and version, read from the model ID the session's records show, such as Corvid 2.4
+  for `corvid-2-4`, never the family alone or the raw ID.
 - **Blue text is a link.** A reader clicks blue text, so only links take it, and a tone colors a
   dot, border, line or bar, never text. A figure, number or label meant to stand out sits in a
   neutral badge rather than taking a color or the weight its neighboring names already use.
@@ -289,6 +307,17 @@ data exists, or a change to the app — runs on one made-up scenario, never on r
    published page or browser tab. A full page also writes `<page>.update.js` beside itself; an
    open local copy checks it every few seconds and shows a new render's data in place, on the same
    page and scroll position, with no reload; only a render from a changed app reloads it.
+4. **Look the page over before it reaches the user.** The agent that delivers the dashboard, never a
+   subagent, views the rendered page itself, every page and the entries and dialogs that carry its
+   content, and judges it as the user will: does each page make sense, is every color, pill and
+   label the standard one for what it marks, are names exact and readable, is every elapsed or
+   estimated time in the text, as in the figures, written in its two largest units, and does
+   anything look wrong, repeated, raw or confusing, such as an internal identifier or file path as a
+   label, a name given in both a label and its tag, or a figure that contradicts another. These
+   rules list what is already known; the look-over uses judgment for everything else. Fix what it
+   finds in the spec or in the caller's data, re-render, and look again. The look-over renders to a
+   working copy in the task's working-files folder, never to the delivered output path, whose open
+   copy updates in place; only a page with nothing left to fix is rendered to that path.
 
 Change a delivered dashboard only by re-rendering its whole spec, never by editing the page's
 HTML, which skips the renderer's validation. Everything the reader can click, a table row or tree

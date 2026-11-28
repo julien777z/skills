@@ -8,7 +8,7 @@ short_description: 'Ask three strong models what they think, or review with them
 
 ## Dependencies
 - `subagent-matrix`
-- `pre-production`
+- `scope-of-change`
 
 ## Modes
 
@@ -28,9 +28,9 @@ short_description: 'Ask three strong models what they think, or review with them
 
 Use the members the user names. For an unnamed panel on a provider required by the calling
 skill, dispatch three independent reviewers at the advanced tier on that provider. When
-neither the user nor the calling skill sets the selection, use the three seats listed under
-**Review panel** in the `subagent-matrix` model capabilities reference. Resolve each launch
-through that skill at high effort. Start the three in parallel, read-only, with no subagents
+neither the user nor the calling skill sets the selection, use the default seats: Sol, Opus
+and Fable, each at its latest host version. A seat is a model family, not a provider, so two seats
+may share one. Resolve each launch through `subagent-matrix` at high effort. Start the three in parallel, read-only, with no subagents
 of their own.
 
 - **Missing members.** Resolve an unavailable default seat through `subagent-matrix` down to
@@ -58,8 +58,8 @@ explore new ideas, skip fixes to code that is being replaced.
 1. Send each member the brief and collect the replies. Summarize the useful findings, where members
    disagree, and the next steps.
 2. Make the changes you agree with, and answer each finding: fixed, or declined with evidence. A
-   defect outside the request is fixed where `pre-production` places it. Apply that skill's size
-   budget to cleanup and list deferred work for recording.
+   defect outside the request is fixed where `scope-of-change` places it. Apply that skill's size
+   budget to cleanup and list for recording only what that budget reserves a record for.
 3. Send the next round to the same members, with those answers and the diff since the last round.
    Each full review pass is one round.
 4. Stop when every member is satisfied, or after three rounds. An open disagreement then is settled

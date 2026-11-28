@@ -41,31 +41,34 @@ alwaysApply: true
   request from its creation or authorized-continuation receipt, carried forward when a follow-up
   starts a new task in the same session, and verify its owner, open state and scope. Distinct
   concerns and worker contributions stay on it in separate commits. Open another only when none is
-  in progress, the user directs a split, the work is side work, or a new manually dispatched
-  workflow needs its placeholder pull request. Continue another session's pull request only when the
-  user, an invoked skill or a repository rule explicitly directs it; a matching topic, existing
-  branch, open state or recorded touch does not. Other sessions' pull requests and branches stay
-  untouched, apart from damaged local Git state a skill installing shared guidance backs up and
-  repairs.
+  in progress, the user directs a split, the work is side work, a skill in use places work on its
+  own pull request, or a new manually dispatched workflow needs its placeholder pull request.
+  Continue another session's pull request only when the user, an invoked skill or a repository rule
+  explicitly directs it; a matching topic, existing branch, open state or recorded touch does not.
+  Other sessions' pull requests and branches stay untouched, apart from damaged local Git state a
+  skill installing shared guidance backs up and repairs.
 - **Each session keeps at most one side pull request per repository**, agent configuration and
-  source together, one commit per concern: every guidance edit the session makes there, unless the
-  user puts it on the task's pull request or the task is that guidance change, and side work, which
-  the task does not need, no user asked for and the change did not introduce: a defect, warning,
-  deprecation or upgrade the agent noticed, a lint or cleanup fix, or its own scope increase.
+  source together, one commit per concern: every guidance edit the session makes there, a worker's
+  repair included, unless the user puts it on the task's pull request or the task is that guidance
+  change, and side work, which the task does not need, no user asked for and the change did not
+  introduce: a defect, warning, deprecation or upgrade the agent noticed, a lint or cleanup fix, or
+  its own scope increase.
   - Its branch starts from and is based on the task pull request's branch, so the task's merge
     leaves it no conflict; once the task merges, retarget it to the default branch, bring that base
     in and rerun the affected gates. With no task pull request in the repository, as in the skills
-    repository while the task's code lives elsewhere, it is based on the default branch, and while
-    it holds only agent configuration it is the session's agent-configuration pull request.
-  - Select it from this session's ledger: one it opened or the user directs it to continue,
-    verified remotely, never by a touch or reference receipt, topic, branch, open state or batch
-    record. Fold a duplicate this session opened into the first, then close it saying so.
-  - Agent configuration is the canonical `.agents` tree: skills with their own scripts, assets and
-    templates, rules and agent definitions, plus nonbehavioral text and guidance-reference
-    corrections in agent hooks and installers; a change to execution, timing, installation,
-    discovery, permissions or mutation scope is source work.
-- **Every worker pushes to the branch of the pull request the work continues**, fetching and
-  rebasing its unpushed commits onto the remote branch before each push. A branch per worker,
+    repository while the task's code lives elsewhere, it is based on the freshly fetched default
+    branch, and while it holds only agent configuration it is the session's agent-configuration
+    pull request.
+  - Select it from this session's ledger: one with this session's creation receipt or one the user
+    explicitly directs it to continue, verified remotely, never by a touch or reference receipt,
+    topic, branch, open state or batch record. Fold a duplicate this session opened into the first,
+    then close it saying where the work went; never retarget, close or fold in another session's.
+  - Agent configuration is the whole canonical `.agents` tree, hooks included: skills with their
+    own scripts, assets and templates, rules, agent definitions and hooks; installers, workflows and
+    tooling outside it are source work.
+- **Every worker pushes to the branch of the pull request the work continues**, named in its brief,
+  fetching and rebasing its unpushed commits onto the remote branch before each push, and never
+  opens a pull request: without a branch in its brief, it hands the edit up. A branch per worker,
   integrated later, is the same split with the integration deferred.
 - **Guidance true only once a still-open source pull request merges**, describing behavior it adds
   or removes or needing a workflow or tool change it carries, waits for it: by construction on a
@@ -127,9 +130,9 @@ alwaysApply: true
   - a pull request confined to agent configuration and only ever based on the default branch, static
     metadata included, once its guidance-editing route's gates pass on the head that merges and its
     complete file list is confirmed confined; a side pull request ever based on a task's, or one
-    carrying source, merges only on the user's word. One adding a doctor skill waits for the user's
-    review with its batch, and a workflow, installer or tooling outside a skill's folder is source
-    work when its execution changes, even in `.agents`;
+    carrying source, merges only on the user's word. One adding a doctor skill, or adding or changing
+    a hook, its registration, a permission setting or an external skill source, waits for the
+    user's authorization with its batch;
   - the focused revert of a pull request an agent merged by mistake, which may auto-merge.
 - **A pull request confined to deferral records, active or declined, merges without a separate
   request as soon as its records are written**, through the skill that runs a merge, with its required checks, once
@@ -150,11 +153,11 @@ alwaysApply: true
 - Carry every agent-configuration pull request this session selected through conflict resolution,
   validation, readiness and the merge its authorization allows. Never close one or leave it open
   merely because it is draft or conflicts with the base, only because it is superseded or unwanted.
-- **An authorized merge is not held for an excluded check**: one the current user explicitly
-  waives, an established baseline failure, a non-essential check left red on findings the change
-  did not write, or a hosted attempt a runner or provider interrupted with no validation failure
-  when equivalent local validation passed on the merge head. Each is recorded with its evidence,
-  and none is rerun or waited on to get a green result. Never bypass branch protection.
+- **An authorized merge is not held for an excluded check**: one the current user explicitly waives,
+  an established baseline failure, a non-essential check left red under the cleanup size budget, or
+  a hosted attempt a runner or provider interrupted with no validation failure when equivalent local
+  validation passed on the merge head. Each is recorded with its evidence, and none is rerun or
+  waited on to get a green result. Never bypass branch protection.
 
 ## Comments
 

@@ -2,6 +2,7 @@
 name: user-facing-output
 description: "Apply before the first user-facing response and to every response the user reads, without waiting for an invocation. On top of `i-have-adhd` it owns the list of open decisions shown after each user message, evidence-pending questions, putting decisions and reader-owned actions to the question tool, the closing line, reporting as fixed an issue the work met, and side work apart from the task's pull request, and what the text says: a link for anything the reader might open, a proposal never reading as done, a web product's views called pages, text written for the user rather than for reviewers or workers, and new behavior named as new."
 short_description: 'Keep open decisions visible, ask through the question tool, and word every reply for its reader.'
+user-invocable: false
 ---
 
 # User-Facing Output
@@ -13,7 +14,8 @@ output.
 
 ## Dependencies
 - `i-have-adhd`
-- `pre-production`
+- `scope-of-change`
+- `engineering-conventions`
 - `session-ledger`
 - `share-media`
 - `merge-gate`
@@ -84,7 +86,7 @@ output.
   instead of asking the reader to reproduce it, in its first line, its numbered steps and its
   closing action alike, over any `i-have-adhd` example that hands the reader such a step. The
   reader gets such steps only when they asked how to do something themselves.
-- **An issue the work met is fixed and named once as fixed**, as `pre-production`'s **Encountered
+- **An issue the work met is fixed and named once as fixed**, as `scope-of-change`'s **Encountered
   Issues** says, never offered as a follow-up: "Also fixed, on [the side pull
   request](https://github.com/example/garden-api/pull/43): the stale dependency the build pulled
   in", never "there is also a stale dependency. Want me to handle that next?".
@@ -151,7 +153,7 @@ output.
   carousels past six photos on every page", never folds it into the fix it arrived with, so the
   reader can tell a new layout, control or flow from a repair. In a ready-for-review message it is
   named as new inside its **What landed** clause, never on a line of its own.
-- Replies follow `pre-production`'s **Language** and **Examples And Paths**: American
+- Replies follow `engineering-conventions`' **Language** and **Examples And Paths**: American
   English, and no value the user gave as an example reproduced.
 - A capture or file a reply relies on is read whole and shown as `share-media` says.
 

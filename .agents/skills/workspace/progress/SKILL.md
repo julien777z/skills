@@ -13,7 +13,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 - `session-ledger`
 - `list-prs`
 - `use-dashboard`
-- `pre-production`
+- `scope-of-change`
 - `execute-task`
 - `merge-gate`
 - `user-facing-output`
@@ -57,6 +57,9 @@ and deliver the same dashboard again on every request so the user keeps one page
    owner's wait and resume route.
 
 ## Spec
+
+Each `<n> min` and `<total> min` below stands for a duration written as `use-dashboard` writes one, such as `~18 min`
+or `~3h 10 min`.
 
 - **Header.** `title`: `Progress Dashboard`. `topic`: the task in a few words, such as "Bulk
   export". `subtitle`: the task's goal, such as "Let admins download a month of invoices as one
@@ -154,7 +157,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 - **`table` "Ready to merge"**: one row per open or draft pull request, in merge order, with the
   columns Pull request, Checks, Conflicts, Open threads, Waits on and Ready. Checks is "Passing",
   "Failing: <check>" or "Running", over the checks the change answers for, leaving out a baseline
-  failure as `pre-production`'s **Encountered Issues** says; Conflicts "None" or "With <base>"; Open threads the count of
+  failure as `scope-of-change`'s **Encountered Issues** says; Conflicts "None" or "With <base>"; Open threads the count of
   unresolved review threads; Waits on the pull requests or actions it needs first, or "Nothing".
   Ready is "Yes" only when its checks pass, it has no conflict or open thread, and nothing it waits
   on is left; otherwise it names the first thing missing.

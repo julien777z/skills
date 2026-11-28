@@ -1,6 +1,6 @@
 ---
 name: run-site
-description: Bring an application stack up and repair startup blockers. A change a reader sees rendered is inspected rendered before it is reported, in every execution environment, using the browser selected by use-browser; the full recorded walkthrough applies in cloud execution environments and whenever the user asks for browser work. Use before planning, recommending, delegating or performing browser walkthroughs or rendered UI inspections, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works. Use before starting container-backed work, to select the local container runtime.
+description: Bring an application stack up and repair startup blockers. A change a reader sees rendered is inspected rendered before it is reported, in every execution environment, using the browser selected by use-browser; the full recorded walkthrough applies in cloud execution environments and whenever the user asks for browser work. Use before planning, recommending, delegating or performing browser walkthroughs or rendered UI inspections, when a page is behind sign-in, when services are not running, when a bootstrap or environment problem blocks local work, or when asked to show that the app works. Use before starting container-backed work, to select the local container runtime, and before repairing, resetting or reseeding a local stack, its records or the development data of a disposable non-production deployment.
 short_description: 'Start an application stack and perform browser verification where applicable.'
 ---
 
@@ -12,7 +12,7 @@ functionality, and a local inspection delivers its captures; a change no page sh
 request checks, with no capture.
 
 ## Dependencies
-- `pre-production`
+- `scope-of-change`
 - `share-media`
 - `use-browser`
 - `proton-pass`
@@ -62,6 +62,39 @@ Use `use-browser` for browser control through its supported route. Apply `test-f
 - **When you find one of these, fix it — do not report it as a caveat.** "Run this other thing
   first" is the defect, not the workaround. A setup step with a documented precondition is a setup
   step that will fail for whoever does not read the document.
+
+## Local Stacks And Development Data
+
+- **Local stack resources are disposable, and repairing them is part of the work, never a question
+  for the user.** Local databases and their migration state, Redis, Docker containers, volumes,
+  networks, images and the daemon itself can be repaired, reset, dropped or recreated whenever the
+  task needs them working. A database stuck on a revision a branch has since regenerated, a stale
+  cache, a wedged container: fix it and carry on. The same holds for each of these:
+  - **The records a local stack holds:** create, edit, reset, reopen or convert them whenever the
+    work needs them in a given state — a test account to sign in with, a submission held in review
+    to show a banner, a record a new rule no longer accepts — as the repository's data policy says,
+    report what was done, and never put the choice to the user.
+  - **The tooling that brings a local stack to a state:** a scenario command, the test accounts and
+    records it creates, and what each scenario seeds are added, changed or redesigned as the work
+    needs, never put to the user in a plan, a question or a gate's remedy, and never a product
+    choice, since no user of the product meets them.
+  - **What the session's own work leaves behind when disk, memory or a port runs short:** build
+    caches and the leases and snapshots holding them, stopped containers, orphaned processes and
+    build output.
+  - **Development data in a non-production deployment**, when the project's guidance or its release
+    stage marks it disposable: an unreleased product's staging saves, its test profiles and
+    accounts, and the records a staging environment holds for its testers are reset, converted or
+    recreated whenever the work needs them, such as a test save that no longer loads after an
+    item's ID changed, then reported, never put to the user.
+- **The limits on that rule:**
+  - **A resource another run is actively using is never stopped**, such as a test runner holding
+    the stack's lock. Wait for it or use a separate resource. A route that limit rules out, such as
+    restarting a daemon a running test still uses, leaves narrower ones, such as removing only the
+    leases, records or processes the session's own work created; recovery is exhausted, and
+    reported as a gate, only once no route remains.
+  - **Production data, and records real users or other people own, stay with the user.**
+  - **Deployed and shared remote environments are otherwise not local**; `test-fixture`'s **Running
+    Tests Safely** governs a verification or test write sent to one.
 
 ## Work out which repositories are present
 
@@ -187,9 +220,7 @@ files.
   every screen that mounts it, or on the page the agent builds for a change **Principles** confines
   to a component, then read the state it was meant to leave — where the element landed,
   what the field holds, whether the list closed up — and reload where it persists something. A drag
-  is several moves, not one jump: move to the start, press, move to the end, release, through the
-  browser's own mouse commands, as its CLI guide from `use-browser` gives them in the headless
-  browser.
+  is several moves, not one jump: press, move through the points between, release.
 - A library doing the work is a reason to exercise it, never an exemption: the arguments handed to it
   and the state handed back belong to the change.
 - Distinguish tool success from application success: confirm the intended request happened, then read
@@ -245,7 +276,7 @@ is a defect in the change.
 Anything the run shows that the product should not do — an error the run did not ask for (a
 failed request, an empty section, an error boundary, an unwritten redirect, a console error) or
 wrong behavior on screen (a value shown altered or lost, data in the wrong place, a broken
-layout) — is a defect the walkthrough found, and `pre-production`'s **Encountered Issues** decides
+layout) — is a defect the walkthrough found, and `scope-of-change`'s **Encountered Issues** decides
 what happens to it. Diagnose it to its cause through the service log, the network response, and the
 rendering code, fix it, and re-run the step. The one exception is the failure you induced on the
 run above; say which kind each capture shows, since the two look identical.

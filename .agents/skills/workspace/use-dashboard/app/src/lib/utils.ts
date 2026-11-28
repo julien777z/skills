@@ -27,3 +27,27 @@ export function scrollToSection(title: string): void {
     .querySelector(`[data-section-title="${CSS.escape(title)}"]`)
     ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
+
+const STEP_KEYS: Record<string, number> = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
+
+export function steppedIndex(key: string, current: number, count: number): number | undefined {
+  const step = STEP_KEYS[key];
+
+  if (key === 'Home') {
+    return 0;
+  }
+
+  if (key === 'End') {
+    return count - 1;
+  }
+
+  if (step === undefined) {
+    return undefined;
+  }
+
+  if (current < 0) {
+    return step > 0 ? 0 : count - 1;
+  }
+
+  return (current + step + count) % count;
+}

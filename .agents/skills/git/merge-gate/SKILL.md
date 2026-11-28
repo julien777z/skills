@@ -1,6 +1,6 @@
 ---
 name: merge-gate
-description: Merge a pull request its caller is authorized to merge, once its review has accepted a head — verify its delivery dependencies, take it out of draft as the last step before the merge, gate that exact head, resolve conflicts, squash-merge, and include CI commits in the checkout refresh. Use when an authorized merge is reached; a pull request leaves draft only here. Holds what authorizes a merge, deployment, publication or release, which failing checks a merge excludes, what follows a merge, the refresh after a merge of agent configuration, and when a pull request may be polled.
+description: Merge a pull request its caller is authorized to merge, once its review has accepted a head — verify its delivery dependencies, take it out of draft as the last step before the merge, gate that exact head, resolve conflicts, squash-merge, and include CI commits in the checkout refresh. Use when an authorized merge is reached; a pull request leaves draft only here. Holds what authorizes a merge, deployment, publication or release, which failing checks a merge excludes, what follows a merge, whether an already validated artifact is rebuilt or redeployed after its source head moves, the refresh after a merge of agent configuration, and when a pull request may be polled.
 short_description: 'Take a reviewed pull request out of draft, gate its exact head, and merge it.'
 ---
 
@@ -29,12 +29,16 @@ for an agent-configuration change, Agent Sync handling before this skill finishe
     instruction, a skill they invoke for it, such as `/finish-pr`, or guidance that grants it;
     naming what remains for the user and that skill, in a report or a plan's closing line, is how
     it is left to them, not an offer.
+- **A merge while gates are paused asks the user first, even with authorization.** Before step 1
+  of **Check Gate**, follow `stop-gates`' **Asking While Paused** for this pull request. A pull
+  request merged during a pause has skipped the reviews its merge assumes, and the user may simply
+  have forgotten to resume them.
 - This skill merges only a pull request whose merge its caller is authorized to perform: a user
   instruction naming the merge and the pull request, an invoked skill that states its invocation
   authorizes the merge, or a standing permission in the GitHub rule's **Merge Authorization**. It
   creates no authorization of its own,
   and without one it is not invoked: the pull request stays draft.
-- Once that authorization holds, never ask the user for permission to merge and never end by
+- Once that authorization holds, never ask the user for permission to merge outside a pause and never end by
   offering the merge as the remaining step. What stops a merge is a gate: a relevant required check
   that is not green, a head that no longer matches the accepted SHA, or a conflict still unresolved.
   Report that gate.
@@ -57,10 +61,19 @@ for an agent-configuration change, Agent Sync handling before this skill finishe
   requires. Never add a temporary input, mode, wrapper or alternate workflow to bypass the failure,
   even with a promise to remove it; a genuinely missing durable capability is source work under
   the task's scope and authorization, never an incidental recovery allowance.
+- **A validated artifact is not rebuilt, republished or redeployed only because its source head
+  advanced.** Compare the edits with the artifact's actual source: cleanup proven to preserve
+  runtime behavior, dependencies, configuration, and required artifact metadata needs no new
+  artifact. Keep required source checks, and report the deployed artifact's actual commit and
+  digest rather than claiming the cleaned-up head is deployed. A behavior change, an unproven
+  equivalence, or a requested release requiring a new artifact still needs the build and rollout.
 
 ## Dependencies
+- `stop-gates`
 - `merge-conflict`
 - `pre-production`
+- `scope-of-change`
+- `engineering-conventions`
 - `update-skills`
 - `test-fixture`
 
@@ -74,7 +87,7 @@ caller or native validation evidence identifying its command and covered behavio
 resolved dependencies, configuration, toolchain and runner inputs, successful result, and durable
 output. Missing evidence prevents reusing that result or admitting a local-coverage exclusion; it
 never waives hosted coverage. The caller also supplies each validation exclusion: a current-user
-direction to leave a named test or check alone, a baseline exclusion established by `pre-production`'s
+direction to leave a named test or check alone, a baseline exclusion established by `scope-of-change`'s
 **Encountered Issues** classification with its default-branch evidence, or evidence that a hosted
 runner or provider interruption meets **Validation Exclusions**' interruption and local-coverage
 conditions. A caller with no fix rule has each fix's delta judged the way it judged the accepted
@@ -85,13 +98,13 @@ head before the gate repeats.
 An authorized merge is not held for an excluded check, as the GitHub rule's **Merge Authorization**
 says, and exclusions are applied before any failure is repaired.
 
-- **Waived, baseline and non-essential checks.** A failing check the current user explicitly
-  waives, an established baseline exclusion, and a non-essential check left red on findings the
-  change did not write are excluded, each as `pre-production`'s **Encountered Issues** classifies
-  it. Record the check and its exclusion evidence in the task's record, then attempt the authorized
-  merge without asking the user; a baseline exclusion is named to the user only where that
-  classification allows. Keep that classification rather than excluding a required repair merely
-  because the same failure also appears on the default branch.
+- **Waived, baseline and non-essential checks.** A failing check the current user explicitly waives,
+  an established baseline exclusion, and a non-essential check left red as `scope-of-change`'s
+  essential-checks bullet says are excluded, each as `scope-of-change`'s **Encountered Issues**
+  classifies it. Record the check and its exclusion evidence in the task's record, then attempt the
+  authorized merge without asking the user; a baseline exclusion is named to the user only where
+  that classification allows. Keep that classification rather than excluding a required repair
+  merely because the same failure also appears on the default branch.
 - **Interrupted hosted checks.** An interrupted hosted check supplies no validation result for the
   work it did not complete. When the logs establish a runner or provider interruption without a
   validation failure, exclude the interrupted attempt if equivalent local validation passed for
@@ -179,7 +192,7 @@ test jobs run once, on the head about to merge.
    run on the base branch. The merge is held only for slowness this pull request caused, so a
    suite it made slower than that base run is an unsuccessful result for **Classify every unsuccessful check** even when its job
    passed. A suite already past its budget that this pull request did not slow does not hold the
-   merge: it is a defect the work noticed, and its fix is placed as `pre-production`'s **Scope
+   merge: it is a defect the work noticed, and its fix is placed as `scope-of-change`'s **Scope
    Follows The Defect, Not The Request** says.
    A skipped or neutral job supplies no coverage: establish whether its native condition makes it
    inapplicable, or required validation is missing. Draft skips never supply test coverage. A job
@@ -207,32 +220,33 @@ test jobs run once, on the head about to merge.
    its summary and cleanup. A log showing completion **is** the terminal result. Never diagnose a
    hang, push a speculative fix, cancel, re-run, or report the run stuck from a pending status alone.
 8. **Classify every unsuccessful check before repair.** A caller-supplied exclusion, or a
-   current-user waiver naming the test or check, is excluded. Preserve established baseline classifications;
-   classify a newly encountered possible baseline under `pre-production`'s **Encountered Issues**,
-   without reentering that skill's active run. A non-essential check failing only on findings
-   `pre-production`'s essential-checks bullet leaves red is an exclusion too. Record an exclusion's
-   evidence, remove it from required coverage, and do not repair, rerun, or wait for it. Apply
-   **Validation Exclusions**' interrupted-check exclusion automatically: record a qualified check as skipped
-   and do not rerun or wait for a green hosted result. For a canceled or otherwise interrupted
-   attempt with no recorded validation failure and no exclusion, use an equivalent successful
-   hosted attempt or follow a pending replacement through **Drive the complete inventory to terminal results**. If neither exists, obtain
-   equivalent local validation when it can qualify for the exclusion, or retry the hosted check
-   on the same head using `POST /repos/{owner}/{repo}/actions/jobs/{job_id}/rerun`. Verify the
-   retried job's head and required context before using its result. Missing logs or an unknown cancellation cause cannot justify local substitution;
-   recover hosted coverage in that case. A canceled attempt alone does not end the gate.
-   Every other failure is relevant. Read its annotations and complete log, fix the repository
-   input responsible — code, test, configuration or workflow — and commit it. **Every relevant
-   failure on the head goes into one push**: read all of them before fixing any, reproduce each
-   with the job's own command where it can run locally, and push only once each reproduced failure
-   passes locally, so the next hosted run is the last. Only a failure that cannot run locally —
-   a hosted service or credentials this session itself found absent from where the repository
-   configures them, never taken on a reviewer's, worker's or plan's word,
-   or runner-specific behavior, never disk, memory or ports the session can free — is pushed
-   without local proof. A relevant
-   external-service failure is an encountered issue under `pre-production` and is fixed the same way;
-   never rerun a failing validation to get a green result, or skip, disable, or quarantine a test
-   or confine its job to drafts to get past it. Report a blocker only when relevant missing
-   coverage needs user input or unavailable credentials, with the check, evidence and remediation attempted.
+   current-user waiver naming the test or check, is excluded. Preserve established baseline
+   classifications; classify a newly encountered possible baseline under `scope-of-change`'s
+   **Encountered Issues**, without reentering that skill's active run. A non-essential check left
+   red as `scope-of-change`'s essential-checks bullet says is an exclusion too. Record an
+   exclusion's evidence, remove it from required coverage, and do not repair, rerun, or wait for it.
+   Apply **Validation Exclusions**' interrupted-check exclusion automatically: record a qualified
+   check as skipped and do not rerun or wait for a green hosted result. For a canceled or otherwise
+   interrupted attempt with no recorded validation failure and no exclusion, use an equivalent
+   successful hosted attempt or follow a pending replacement through **Drive the complete inventory
+   to terminal results**. If neither exists, obtain equivalent local validation when it can qualify
+   for the exclusion, or retry the hosted check on the same head using `POST
+   /repos/{owner}/{repo}/actions/jobs/{job_id}/rerun`. Verify the retried job's head and required
+   context before using its result. Missing logs or an unknown cancellation cause cannot justify
+   local substitution; recover hosted coverage in that case. A canceled attempt alone does not end
+   the gate. Every other failure is relevant. Read its annotations and complete log, fix the
+   repository input responsible — code, test, configuration or workflow — and commit it. **Every
+   relevant failure on the head goes into one push**: read all of them before fixing any, reproduce
+   each with the job's own command where it can run locally, and push only once each reproduced
+   failure passes locally, so the next hosted run is the last. Only a failure that cannot run
+   locally — a hosted service or credentials this session itself found absent from where the
+   repository configures them, never taken on a reviewer's, worker's or plan's word, or
+   runner-specific behavior, never disk, memory or ports the session can free — is pushed without
+   local proof. A relevant external-service failure is an encountered issue under `scope-of-change`
+   and is fixed the same way; never rerun a failing validation to get a green result, or skip,
+   disable, or quarantine a test or confine its job to drafts to get past it. Report a blocker only
+   when relevant missing coverage needs user input or unavailable credentials, with the check,
+   evidence and remediation attempted.
 9. **Leave services this workflow did not start alone.** Never stop, restart, reconfigure or claim a local service the calling workflow did not start:
    another agent or person may be using it. When relevant validation needs local services and one it
    did not start is running, use the matching hosted check as the fallback rather than running a
@@ -376,7 +390,7 @@ Merged: [<owner>/<repo>#<number>](<url>) at <short sha> — checks: <local only 
 ```
 
 The checks field leaves out baseline failures and non-essential checks left red, as
-`pre-production`'s **Encountered Issues** says.
+`scope-of-change`'s **Encountered Issues** says.
 
 Or, when a gate holds: `Not merged: <link> — <gate>: <evidence>`. The evidence includes each
 relevant check's terminal result, read from its log where its status was stale.

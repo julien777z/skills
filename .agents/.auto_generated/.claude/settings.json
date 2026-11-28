@@ -24,6 +24,15 @@
             "timeout": 10
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/guidance-changes/main.py\"",
+            "timeout": 10
+          }
+        ]
       }
     ],
     "Stop": [
@@ -33,6 +42,28 @@
             "type": "command",
             "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/ledger/main.py\"",
             "timeout": 30
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/guidance-changes/main.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/guidance-changes/main.py\"",
+            "timeout": 3
           }
         ]
       }
