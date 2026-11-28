@@ -93,6 +93,12 @@ output.
   Leave out actions that never started when they are outside the request. Name a concrete blocker
   when it prevents the requested outcome, and answer directly when the reader asks about an
   action's status. This applies to progress updates and final replies.
+- **A merge or release the work depends on is reported as its state, never handed to the reader.**
+  The report names the open pull request or the release not yet cut and what the work does once it
+  lands, such as "the site follows the theme pull request's branch until it merges, then the
+  theme's default branch", never a heading, line or step giving it to the reader to do, such as
+  "Your call: merge the theme pull request first" or "once you cut a release", since the global
+  rules reserve each to the reader's own words.
 - **A report keeps the task's pull request apart from side work.** Once the task's pull request
   has finished its own work, review and gate, the report says it is ready for review first, never
   waiting for a side pull request, guidance delivery or skill test. A progress report or status
