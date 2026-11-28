@@ -23,6 +23,15 @@ cannot load the file, use a local URL served to that browser or report the previ
 
 ## Operating A Browser
 
+On Codex, select Google Chrome through the bundled Browser plugin's Chrome backend. An
+`@Chrome` mention selects that backend. Follow the plugin's setup, tab controls, and Chrome
+troubleshooting for the selected profile. This route also applies when a task needs the user's
+existing Chrome session without naming the plugin.
+
+If the Chrome backend is missing or its supported recovery fails, report the plugin blocker and
+continue independent work. For this route, never enable or request Chrome remote debugging,
+attach a debugger or automation CLI to Chrome, or launch a debug browser as a substitute.
+
 For operations without an explicit browser, select in this order:
 - For a task needing the user's account session, use the harness to connect to the user's existing
   browser and relevant profile.
@@ -50,7 +59,7 @@ and retry its normal recovery path.
 
 - Inventory browser metadata and select the user's existing browser and the relevant profile. An
   open user tab can identify the URL and profile, but leave that tab and the user's groups alone.
-- Create a dedicated tab group for the task through the browser harness. Open task-owned tabs in
+- Create a dedicated tab group for the task through the selected browser controls. Open task-owned tabs in
   that group, in the background when supported. Keep navigation, debugging, screenshots, sign-in,
   and verification in those tabs. Work with one tab when it suffices.
 - Record the group and each tab's stable IDs. Bind each action and observation to the intended
