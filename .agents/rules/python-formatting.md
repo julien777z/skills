@@ -104,6 +104,12 @@ ALLOWED_STATES: Final[frozenset[str]] = frozenset({"ready", "complete"})
   kept in step with it. Delete the clauses and keep the noun phrase.
 - In ordinary docstrings, a trailing clause explaining an invariant, a fallback, or when something
   is created is narration, not identification. Drop it.
+- **A docstring or comment describes the normal path and hedges for no other.** A path normal users
+  never take, such as an account an admin created, an import or a provider's rare omission, is
+  handled in code and covered by tests; naming it in prose, as "if they gave one" or "when present",
+  reads as a flaw in the normal path. A sign-up acceptance a sign-up always carries is recorded by
+  `"""Record the Terms of Service acceptance the current user gave when signing up."""`, never
+  "…when signing up, if they gave one".
 
 ```python
 # Bad: one clause per aspect, restating the body
@@ -142,6 +148,11 @@ def ensure_tenant_member(user: User) -> None:
 ```
 
 - **Comments are only for third-party quirks** — an SDK bug, a library's surprising contract, a spec oddity, a protocol requirement — that a reader could not infer from our own code. If the reason lives in code you control, it is not a comment.
+- **A requirement behind a value the code states is not a quirk.** A minimum length, a format, a
+  header or a limit a standard or library requires is stated by the value and asserted by its test,
+  so `SIGNING_SECRET: CredentialField = Field(min_length=32)` carries no comment citing the RFC
+  behind 32. Nor is a workaround the code already makes evident, such as naming the deprecated
+  path a client no longer takes.
 - **If your own code needs a comment to be understood, the code is too complex — refactor it instead.** Rename the identifier, extract a well-named helper, split the function, or restructure until the intent is obvious without prose. Reach for a comment only after the code cannot be made clearer and the remaining "why" is genuinely external.
 - **Never explain behavior in a comment — tests assert behavior.** Do not narrate what a branch, guard, ordering, or invariant does or protects against; encode that in a test that fails when it regresses. The test is the durable, executable specification; the comment is not.
 - **Keep any comment to 1–2 lines**, factual, and about the external quirk only. A comment that runs longer is a signal the code (or the abstraction) needs restructuring, not more prose.
