@@ -490,17 +490,16 @@ the issue should be ignored.
   from a related record some records lack, such as a time zone read from an optional preferences
   record, is one of these. It is made required where the domain places it: on the related record and
   the link to it only where the domain gives every record that related record, and otherwise on the
-  record that needs it, the column aligned as the read-path bullet above says. Either way every
-  existing record keeps its row and gets the value from its source or a placeholder the next bullet
-  allows; only a row the next bullet deletes is removed. Neither what the agent builds nor any
+  record that needs it, the column aligned as the read-path bullet above says. Either way the
+  migration gives every existing record the value from its source or a placeholder the next bullet
+  allows, and removes only a row the next bullet deletes. Neither what the agent builds nor any
   option, plan or recommendation it puts to the user keeps the column nullable for records without
   the value, proceeds without it, sends a provider less than the provider requires, fills it at
   request time with a value that is not the record's own, such as another actor's, or refuses, skips
   or deletes the records that lack it where a source or such a placeholder can supply it, an error
   raised for them included. Each keeps legacy support for those records, or drops them where the
-  migration owes them a value. The migration writes every row's value as the next bullet says.
-  Released user data with no authoritative source is a retention question for the user, asked before
-  the design is offered, as **Product State** says.
+  migration owes them a value. Released user data with no authoritative source is a retention
+  question for the user, asked before the design is offered, as **Product State** says.
 - For retained values, use the authoritative source where one exists. Where none exists, use a
   type-valid placeholder only when it expresses a legitimate domain state, or when the records are
   disposable pre-production data and the placeholder is a value describing the record, such as a
