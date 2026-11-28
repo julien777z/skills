@@ -490,7 +490,9 @@ the issue should be ignored.
   from a related record some records lack, such as a time zone read from an optional preferences
   record, is one of these. It is made required where the domain places it: on the related record and
   the link to it only where the domain gives every record that related record, and otherwise on the
-  record that needs it, the column aligned as the read-path bullet above says. Either way the
+  record that needs it, the column aligned as the read-path bullet above says; this placement is
+  settled here and never put to the user, so an optional related record is never made required to
+  carry the value. Either way the
   migration gives every existing record the value from its source or a placeholder the next bullet
   allows, and removes only a row the next bullet deletes. Neither what the agent builds nor any
   option, plan or recommendation it puts to the user keeps the column nullable for records without
