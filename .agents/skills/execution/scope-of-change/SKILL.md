@@ -188,9 +188,9 @@ authorizes compatibility with an obsolete owned contract or revision.
   the change in flight**, never against a fixed file count or only the files the change happened to
   edit. Incidental cleanup is everything the request did not ask for that fixes no defect, outside
   the change's own design, the defect's shape above and the required checks' findings the
-  essential-checks bullet decides. A change to a skill edits that skill's whole folder, its
-  `SKILL.md`, references, scripts and templates alike, and cleanup inside that folder is held to
-  neither budget's size limits: an agent reads a skill as one unit, so a rule restated between two
+  essential-checks bullet decides. A skill's whole folder, its `SKILL.md`, references, scripts and
+  templates alike, counts as one unit for the budget, and cleanup inside a folder a change edits is
+  held to neither budget's size limits: an agent reads a skill as one unit, so a rule restated between two
   of its files is tidied whenever a change edits either one, placed as the side-work bullet above
   says, keeping every criterion either copy carries. Cleanup in another skill keeps the budget in force; a placement move the guidance
   criteria require is part of the change, not cleanup.

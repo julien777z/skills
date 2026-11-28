@@ -60,8 +60,8 @@ the task. Where it owns a stage, return its result to this run rather than start
 ## Plan
 
 Every task that changes files starts here, and so does every follow-up that arrives while one runs.
-Before reading code for a plan or selecting targets, invoke `pre-production`, `scope-of-change` and
-`engineering-conventions` with the Skill tool, each once per task and read whole, then apply
+Before reading code for a plan or selecting targets, load `pre-production`, `scope-of-change` and
+`engineering-conventions` whole, each once per task, then apply
 **Product Constraints** and **Task Authorization**.
 
 Before choosing a design, and before the first edit on a path that takes no plan, apply
@@ -316,7 +316,7 @@ after its gating check has been read, outside the command, chain or batch that r
 invoked and read whole as **Plan** says, before the first edit. Read the product state from project guidance
 before changing a contract or stored value.
 
-Before drafting a plan or selecting targets, as **Plan** says, and again before recommending an
+Before reading code for a plan or selecting targets, as **Plan** says, and again before recommending an
 implementation, asking a question that presupposes one, or delegating its edits, apply [product
 constraints](references/product-constraints.md) and **Task Authorization**: resolve the request's
 targets in the named outcome's context, trace the requested behavior through its runtime path into
