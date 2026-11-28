@@ -119,7 +119,8 @@ and deliver the same dashboard again on every request so the user keeps one page
   `status` "Proposed" for a plan still waiting on a decision or an approval; under it one entry per step, in plan order, `label`
   "<n>. <step title>", `tone` its status's tone as its progress segment is, `status` only for a
   blocked step, what it waits on, toned `critical`, or a skipped one, Skipped, neutral, `meta`
-  "~<n> min" while it is not done or its measured duration once it is, and `figure` "<done> of <n>
+  "~<n> min" while it is not done or its measured duration once it is, none for a done step whose
+  start or finish the ledger lacks, and `figure` "<done> of <n>
   parts" for a step with parts, counting parts not skipped; and under such a step one entry per
   part, `label` its title, with `tone` and `status` set as for a step.
 - **Plan write-up**: the plan as a reader who missed the conversation needs it, from the ledger's
@@ -143,7 +144,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 | --- | --- | --- |
 | Active | `accent` | Active and blocked steps: `detail` what the step changes, from its ledger entry, `tag` the plan's title when the task has several plans, `status` "Blocked" toned `critical` when blocked, `meta` its estimate, adding "· <done> of <n> parts" for a step with parts, counting parts not skipped. Each question whose evidence is still owed: `title` the question, `detail` the evidence being gathered, `tag` "Question". |
 | Up next | `next` | Steps not started, in plan order, with `meta` as above and `tag` the plan's title when the task has several plans. |
-| Done | `good` | Finished steps, `meta` their measured duration. |
+| Done | `good` | Finished steps, `meta` their measured duration, left out when the ledger lacks its start or finish. |
 
 - **`diagram` "Architecture diagram"**: one diagram covering every pull request the page covers, so
   an arrow can run from one pull request's code to another's. `prs`: each pull request, `ref` its
