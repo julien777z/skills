@@ -206,11 +206,12 @@ This skill authorizes those comments and their edits under the GitHub rule's **C
     the comment and record its URL, or repair the ledger.
   - In Claude Code and Codex it refuses to end the turn; in Cursor it submits its message as the
     next one.
-  - When the session ends, the same hook deletes the file it created for the session if nothing
-    was recorded in it; a file holding records stays for whoever continues the task.
+  - When the session ends, the same hook deletes the file it created for the session while that
+    file lists only the session and holds no entries; a file holding records stays for whoever
+    continues the task.
   - It runs where `python3` is Python 3.11 or newer. Without PyYAML, a ledger whose text holds the
-    session's ID counts as the session's, the hook still creates one when none does, and it reports
-    every turn that the backups were not checked.
+    session's ID counts as the session's, the hook still creates one when none does, it reports
+    every turn that the backups were not checked, and it keeps the session's file at session end.
 
 ## Output
 

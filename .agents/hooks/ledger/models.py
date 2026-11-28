@@ -28,7 +28,7 @@ class HookOutcome(Enum):
 
 
 class HookInput(TypedDict):
-    """The turn-end payload fields the hook reads."""
+    """The hook-event payload fields the hook reads."""
 
     is_session_end: bool
     is_continuation: bool

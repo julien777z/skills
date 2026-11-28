@@ -8,8 +8,8 @@ from pathlib import Path
 from types import ModuleType
 from typing import Final
 
-from backups import ledger_findings, ledger_sessions
-from ledgers import create_session_ledger, remove_untouched_session_ledger, session_ledgers
+from documents import is_untouched_session_ledger, ledger_findings, ledger_sessions
+from ledgers import create_session_ledger, session_ledger_path, session_ledgers
 from models import HookInput, HookOutcome, LedgerFormatError
 
 try:
@@ -102,13 +102,32 @@ def create_ledger(hook_input: HookInput) -> HookOutcome:
 def end_session(hook_input: HookInput) -> HookOutcome:
     """Remove the session's ledger when nothing was recorded in it."""
 
-    if hook_input["session_id"] is None:
+    session_id = hook_input["session_id"]
+
+    if session_id is None:
         return HookOutcome.END_TURN
 
+    path = session_ledger_path(session_id)
+
     try:
-        remove_untouched_session_ledger(hook_input["session_id"])
-    except OSError as error:
-        logger.error("The session's ledger could not be removed: %s", error)
+        text = path.read_text()
+    except FileNotFoundError:
+        return HookOutcome.END_TURN
+    except (OSError, UnicodeDecodeError) as error:
+        logger.error("The session's ledger could not be read: %s", error)
+
+        return HookOutcome.FAILED
+
+    if yaml is None:
+        logger.error("The session's ledger was not checked: PyYAML is not installed")
+
+        return HookOutcome.FAILED
+
+    try:
+        if is_untouched_session_ledger(yaml.safe_load(text), session_id):
+            path.unlink()
+    except (OSError, yaml.YAMLError, LedgerFormatError) as error:
+        logger.error("The session's ledger was kept: %s", error)
 
         return HookOutcome.FAILED
 
@@ -116,7 +135,7 @@ def end_session(hook_input: HookInput) -> HookOutcome:
 
 
 def main() -> HookOutcome:
-    """Give the session a ledger and hold the turn while one the session writes owes a backup."""
+    """Run the ledger hook for the event the harness reports."""
 
     hook_input = read_hook_input()
 

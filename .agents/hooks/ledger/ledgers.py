@@ -141,14 +141,3 @@ def create_session_ledger(session_id: str) -> Path | None:
 
     return path
 
-
-def remove_untouched_session_ledger(session_id: str) -> None:
-    """Delete the ledger the hook created for a session while it still holds only the session."""
-
-    path = session_ledger_path(session_id)
-
-    try:
-        if path.read_text() == SESSION_LEDGER_TEMPLATE.format(session_id=session_id):
-            path.unlink()
-    except FileNotFoundError:
-        return

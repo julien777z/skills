@@ -133,17 +133,26 @@ class LedgerHookTest(unittest.TestCase):
         """Test that session end deletes the hook's file only while nothing is recorded in it."""
 
         ledger = self.directory / f"session-{self.session_id}.yaml"
+        rewritten = f"session_ledger:\n  entries: []\n  sessions: [{self.session_id}]\n"
+        recorded = rewritten.replace("entries: []", "entries: [{id: kept}]")
 
-        self.run_hook()
-        untouched = self.run_hook(hook_event_name="SessionEnd")
+        for event, text, kept in (
+            ("SessionEnd", None, False),
+            ("SessionEnd", rewritten, False),
+            ("sessionEnd", recorded, True),
+        ):
+            with self.subTest(event=event, text=text):
+                self.run_hook()
 
-        self.assertEqual((untouched.returncode, ledger.exists()), (0, False))
+                if text is not None:
+                    ledger.write_text(text)
 
-        self.run_hook()
-        ledger.write_text(ledger.read_text().replace("entries: []", "entries: [{id: kept}]"))
-        recorded = self.run_hook(hook_event_name="sessionEnd")
+                result = self.run_hook(
+                    session_id=None, conversation_id=self.session_id, hook_event_name=event
+                )
 
-        self.assertEqual((recorded.returncode, ledger.exists()), (0, True))
+                self.assertEqual((result.returncode, result.stderr), (0, ""))
+                self.assertEqual(ledger.exists(), kept)
 
 
 if __name__ == "__main__":
