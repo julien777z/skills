@@ -66,8 +66,8 @@ Before reading code for a plan or selecting targets, load `pre-production`, `sco
 
 Before choosing a design, and before the first edit on a path that takes no plan, apply
 `code-simplify`'s **Before Choosing A Design** check to everything the change will add, split or
-rename and write its receipt in the task record, even for a small follow-up, a bug fix or a worker's task with no
-plan of its own; only an edit that adds nothing skips it.
+rename and write its receipt in the task record, even for a small follow-up, a bug fix or a
+worker's task with no plan of its own; only an edit that adds nothing skips it.
 
 ### When A Plan Is Needed
 
