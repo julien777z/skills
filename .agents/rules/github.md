@@ -49,14 +49,14 @@ alwaysApply: true
   repairs.
 - **Each session keeps at most one side pull request per repository**, agent configuration and
   source together, one commit per concern: every guidance edit the session makes there, unless the
-  user puts it on the task's pull request or the task is that guidance change, and side work, what
-  the agent takes on that the task does not need and no user request asked for: a defect, warning,
-  deprecation or upgrade it noticed and the change did not introduce, a lint or cleanup fix, or its
-  own scope increase.
+  user puts it on the task's pull request or the task is that guidance change, and side work, which
+  the task does not need and no user asked for: a defect, warning, deprecation or upgrade the agent
+  noticed and the change did not introduce, a lint or cleanup fix, or its own scope increase.
   - Its branch starts from and is based on the task pull request's branch, so the task's merge
-    leaves it no conflict; once the task merges, retarget it onto the default branch. In a
-    repository with no task pull request, such as the skills repository while the task's code lives
-    elsewhere, it is the session's agent-configuration pull request, based on the default branch.
+    leaves it no conflict; once the task merges, retarget it to the default branch, bring that base
+    in and rerun the affected gates. With no task pull request in the repository, as in the skills
+    repository while the task's code lives elsewhere, it is the session's agent-configuration pull
+    request, on the default branch.
   - Select it from this session's ledger: one it opened or the user directs it to continue,
     verified remotely, never by a touch or reference receipt, topic, branch, open state or batch
     record. Fold a duplicate this session opened into the first, then close it saying so.
@@ -124,12 +124,12 @@ alwaysApply: true
     correction of a non-default testing reference to the maintained target the user or repository
     guidance selected, with only its necessary manifest, lockfile or reference updates, subject to
     the user's current pauses and exclusions;
-  - a pull request confined to agent configuration that the session opened on the default branch,
-    static metadata included, once the gates its guidance-editing route requires have passed on the
-    head that merges and its complete file list is confirmed confined; a side pull request opened
-    on a task's, even once retargeted, or one carrying source, merges only on the user's word. One
-    adding a doctor skill waits for the user's review with its batch, and a workflow, installer or
-    tooling outside a skill's folder is source work when its execution changes, even in `.agents`;
+  - a pull request confined to agent configuration and opened on the default branch, static metadata
+    included, once its guidance-editing route's gates pass on the head that merges and its complete
+    file list is confirmed confined; a side pull request opened on a task's, even once retargeted,
+    or one carrying source, merges only on the user's word. One adding a doctor skill waits for the
+    user's review with its batch, and a workflow, installer or tooling outside a skill's folder is
+    source work when its execution changes, even in `.agents`;
   - the focused revert of a pull request an agent merged by mistake, which may auto-merge.
 - **A pull request confined to deferral records, active or declined, merges without a separate
   request as soon as its records are written**, through the skill that runs a merge, with its required checks, once

@@ -261,11 +261,12 @@ Otherwise write a decision-complete remediation plan from the ledger.
     procedure, each as options with each consequence and a recommendation; only the entries that
     depend on an answer wait for it.
   - **A departure from a rule rides the rule change.** Where the run judges a shape a rule
-    prescribes or exempts worse than the departure, as `pre-production`'s **Trade-Offs Are
-    Surfaced, Never Enforced** asks of a rule, the rule change and the source entry that departs
-    under it both go on the session's side pull request, merging together on the user's word, and
-    the run's pull request keeps the rule's form, since code that departs from a rule still in
-    force reads as a defect to the next run.
+    prescribes or exempts worse than the departure, as `pre-production`'s **Trade-Offs Are Surfaced,
+    Never Enforced** asks of a rule, the rule change and the source entry that departs under it both
+    go on the session's side pull request, the one source entry the GitHub rule's **Branches and
+    Pull Requests** would otherwise keep on the run's pull request, merging together on the user's
+    word, and the run's pull request keeps the rule's form, since code that departs from a rule
+    still in force reads as a defect to the next run.
 - **The gated plan is shown, and its work starts in the same turn.** The user reads one line per
   area with its entry counts, the order, what waits on a decision and any path no reviewer read;
   the entries themselves go in the plan file sent with it, as the reference says. The message
@@ -275,13 +276,13 @@ Otherwise write a decision-complete remediation plan from the ledger.
   ones open then, and when. Showing it starts implementation and verification only; a merge still
   waits for what **Deliver** names.
 
-**The plan schedules order, never branches.** Every entry lands on the run's pull request, or on
-the session's side pull request for what the GitHub rule's **Branches and Pull Requests** puts
-there, whatever lens found it, however unrelated two entries look and however many
+**The plan schedules order, never branches.** Every entry lands on the run's pull request, or on the
+session's side pull request for what the GitHub rule's **Branches and Pull Requests** puts there and
+for that source entry, whatever lens found it, however unrelated two entries look and however many
 there are. A plan that gives a group its own branch has split one instruction into several
-deliveries, and the ones after the first are what get dropped. Size is a reason to sequence a
-group late and describe it clearly in the pull request, never a reason for a second branch; beyond
-those two, only the user asking to hold work apart puts an entry anywhere else. The plan may name
+deliveries, and the ones after the first are what get dropped. Size is a reason to sequence a group
+late and describe it clearly in the pull request, never a reason for a second branch; beyond those
+two, only the user asking to hold work apart puts an entry anywhere else. The plan may name
 checkpoints that group related entries on the same draft pull request.
 
 ## Guard Recurrences

@@ -452,8 +452,7 @@ Review** once each has its accepted head.
   else before **Review the pull request**. Each such entry's skill-test round runs on the head **Review the pull request** accepted, before
   **Shape the history**, and a repair it makes returns to review as **Guidance Delivery**'s **Conclude the skill test** says. A task with none has no guidance stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
-  request belongs to the guidance stream, and a side pull request carrying both kinds runs this
-  stream for its source and **Guidance Delivery** for its guidance:
+  request belongs to the guidance stream, and a side pull request carrying both kinds to this one:
 
 1. **Review the pull request.** Invoke `review-pass` on the pull request with the
    intent statement. It runs its review loop and one final `acceptance-gate` over the changes no
@@ -469,9 +468,7 @@ Review** once each has its accepted head.
    cover each of them and every simplification, confirm intentional contract changes are reflected
    in the expected behavior, and confirm multi-repository delivery artifacts describe only their
    owning repository. Then build this pull request's ready-for-review message, in the shape below,
-   from `list-prs`, what the run did and `review-pass`'s **Output**, and send it as soon as this
-   pull request's own work, review and gate are done: a side pull request, guidance delivery or
-   other side work still running never holds it.
+   from `list-prs`, what the run did and `review-pass`'s **Output**; side work never holds it.
 4. **Merge when authorized.** When **Task Authorization** finds the merge authorized, send **Reconcile the result**'s message together with the
    invocation of `merge-gate`, passing the accepted head, `review-pass`'s **Checks** results with their
    commands and head as the behaviors local tests already cover, every exclusion it returned with
@@ -485,11 +482,8 @@ Review** once each has its accepted head.
 The ready-for-review message takes exactly this shape, one message per pull request, leaving out
 **Deferred** when nothing was deferred, **Before deploy** when the change needs nothing outside the
 code to deploy, **Still running** when none of this pull request's own work is active, and **Side
-work** when none is open. **Still running** holds only this pull request's work; side work, such
-as the session's side pull request, its guidance delivery or skill tests, goes under **Side work**
-and never reads as this pull request unfinished. Its **Next:** review is an action the
-reader owns. Use the message as the material for the review request in the question tool, as
-`user-facing-output` directs; the question asks for the review alone:
+work** when none is open. Use the message as the material for the review request in the question
+tool, as `user-facing-output` directs; the question asks for the review alone:
 
 ```markdown
 **Ready for review:** <pull request URL>
@@ -497,12 +491,11 @@ reader owns. Use the message as the material for the review request in the quest
 - **What landed:** <each requested outcome, one clause each>
 - **Review:** <full | delta `<reviewed head>..<head>` | nothing new> · review loop <n> round(s), <n> finding(s) fixed · acceptance passed on `<head>` — leave out each count `review-pass` did not run
 - **History:** <n> commits (<subject> · <subject> · …)
-- **Fixed on the way:** <each incidental fix, or none>
 - **Deferred:**
   1. <item> — <ground> — <record link>
 - **Before deploy:** <each step only a deployment needs, such as a secret to add, in plain text>
-- **Still running:** <the authorized merge through `merge-gate` (CI ~<n> min)>
-- **Side work, not holding this review:** <side pull request link — what it carries — its state>
+- **Still running:** <only this pull request's work: the authorized merge through `merge-gate` (CI ~<n> min)>
+- **Side work, not holding this review:** <each side pull request, guidance delivery or skill test still open: link — each incidental fix or other change it carries — its state>
 
 **Next:** <review the pull request; send follow-ups here, `/finish-pr` to review what this pass has not and merge, or `/merge-now` to merge first and review after | review the pull request; it merges once its checks pass>
 ```
