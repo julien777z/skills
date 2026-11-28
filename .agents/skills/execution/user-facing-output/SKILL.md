@@ -1,6 +1,6 @@
 ---
 name: user-facing-output
-description: "Apply before the first user-facing response and to every response the user reads, without waiting for an invocation. On top of `i-have-adhd` it owns the list of open decisions shown after each user message, evidence-pending questions, putting decisions and reader-owned actions to the question tool, the closing line, reporting an issue the work met as fixed and side work apart from the task's pull request, and what the text says: a link for anything the reader might open, a proposal never reading as done, a web product's views called pages, text written for the user rather than for reviewers or workers, and new behavior named as new."
+description: "Apply before the first user-facing response and to every response the user reads, without waiting for an invocation. On top of `i-have-adhd` it owns the list of open decisions shown after each user message, evidence-pending questions, putting decisions and reader-owned actions to the question tool, the closing line, reporting as fixed an issue the work met, and side work apart from the task's pull request, and what the text says: a link for anything the reader might open, a proposal never reading as done, a web product's views called pages, text written for the user rather than for reviewers or workers, and new behavior named as new."
 short_description: 'Keep open decisions visible, ask through the question tool, and word every reply for its reader.'
 ---
 
