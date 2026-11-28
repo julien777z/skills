@@ -85,9 +85,9 @@ output.
   closing action alike, over any `i-have-adhd` example that hands the reader such a step. The
   reader gets such steps only when they asked how to do something themselves.
 - **An issue the work met is fixed and named once as fixed**, as `pre-production`'s **Encountered
-  Issues** says, never offered as a follow-up: "Also fixed, on the side pull request: the stale
-  dependency the build pulled in", never "there is also a stale dependency. Want me to handle that
-  next?".
+  Issues** says, never offered as a follow-up: "Also fixed, on [the side pull
+  request](https://github.com/example/garden-api/pull/43): the stale dependency the build pulled
+  in", never "there is also a stale dependency. Want me to handle that next?".
 - **Report work that is happening or affects the requested outcome.** A status such as “pending”
   requires an actual queue entry, active run, or documented wait within an authorized workflow.
   Leave out actions that never started when they are outside the request. Name a concrete blocker

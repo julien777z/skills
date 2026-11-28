@@ -206,11 +206,12 @@ with an obsolete owned contract or revision.
   inside that folder is held to neither budget's size limits: an
   agent reads a skill as one unit, so a rule restated between two of its files is tidied in the
   change that edits either one, keeping every criterion either copy carries. Cleanup in another
-  skill keeps the budget in force.
+  skill keeps the budget in force. Under either budget, cleanup is placed under the GitHub rule's
+  **Branches and Pull Requests**.
   - **The default budget:** cleanup that fixes no defect — duplication, dead code, a misplaced
-    helper, an abstraction with one implementation, layout — is done wherever the work met it,
-    placed under the GitHub rule's **Branches and Pull Requests**, while it is small beside the
-    change in flight, such as a few files of cleanup met by a change of dozens.
+    helper, an abstraction with one implementation, layout — is done wherever the work met it while
+    it is small beside the change in flight, such as a few files of cleanup met by a change of
+    dozens.
   - **The widened budget** holds instead under a broad scope, where the user named the whole
     product, the whole codebase or everything, and while a decision the user scoped to the whole
     session widens it, until they withdraw it: every cleanup the work meets is in scope and done,
