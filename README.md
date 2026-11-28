@@ -111,13 +111,13 @@ These run only when you ask for them by name, such as `/code-slop-doctor`.
 - [`new-doctor`](.agents/skills/doctors/new-doctor/SKILL.md) — Create a doctor skill on the shared doctor-protocol for one class of repository hygiene.
 - [`placeholder-data`](.agents/skills/workspace/placeholder-data/SKILL.md) — Turn a pasted API payload into the same shape with obviously fake values.
 - [`research-games`](.agents/skills/roblox/research-games/SKILL.md) — Research Roblox charts for the requested audience and region.
+- [`resume-gates`](.agents/skills/workspace/resume-gates/SKILL.md) — Restart the paused gates, checks and workers on the corrected state.
 - [`roblox-game-overview`](.agents/skills/roblox/roblox-game-overview/SKILL.md) — Explain and audit a Roblox game in a dashboard with pictures staged in the game.
 - [`schema-doctor`](.agents/skills/doctors/schema-doctor/SKILL.md) — Check models and schemas for unnecessary nulls, complexity, keys, and indexes.
 - [`security-doctor`](.agents/skills/doctors/security-doctor/SKILL.md) — Find and fix the exploitable vulnerabilities in a codebase, each proven by a concrete attack.
 - [`skill-doctor`](.agents/skills/doctors/skill-doctor/SKILL.md) — Audit rules, skills and their flows for what to cut, fix, or add.
 - [`tests-doctor`](.agents/skills/doctors/tests-doctor/SKILL.md) — Audit tests for contract value, redundant proof, weak assertions, runtime, provider rate limits, and determinism.
 - [`where-time-went`](.agents/skills/workspace/where-time-went/SKILL.md) — Show where session working time went, as a dashboard.
-- [`widen-scope`](.agents/skills/execution/widen-scope/SKILL.md) — Turn on cleanup of the problems the work runs into for the rest of the session.
 
 ### Model-Invoked
 
@@ -138,6 +138,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`design-taste-frontend`](.agents/skills/web/design-taste-frontend/SKILL.md) — tasteskill 2.5.1, the anti-slop frontend skill.
 - [`doctor-protocol`](.agents/skills/doctors/doctor-protocol/SKILL.md) — Set the audit, fix, review, and reporting process used by every doctor skill.
 - [`edit-skill`](.agents/skills/authoring/edit-skill/SKILL.md) — Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.
+- [`engineering-conventions`](.agents/skills/execution/engineering-conventions/SKILL.md) — Write code, configuration, manifests, documentation and repository text the way every change writes them.
 - [`execute-task`](.agents/skills/execution/execute-task/SKILL.md) — Plan source and product changes and show the plan; validate canonical guidance changes through their delivery gates.
 - [`frontend-design`](.agents/skills/web/frontend-design/SKILL.md) — Guidance for distinctive, intentional visual design when building new UI or reshaping an existing one.
 - [`get-doctors`](.agents/skills/doctors/get-doctors/SKILL.md) — List every doctor skill with what it audits, and the order to run several in a row.
@@ -157,7 +158,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`no-text-ai-slop`](.agents/skills/review/no-text-ai-slop/SKILL.md) — Edit drafts into sharper, more human writing while preserving the writer's personal voice, or detect AI-slop patterns without rewriting.
 - [`play-marble-simulator`](.agents/skills/roblox/play-marble-simulator/SKILL.md) — Play the public Roblox marble game Marble Elimination Ultimate (a marble race where the last marbles each level are eliminated) in the isolated Roblox runner, alone or in the same server as a Roblox player the user names, playing to win and collecting the game's coins, and sending screenshots as play goes on.
 - [`play-roblox-protocol`](.agents/skills/roblox/play-roblox-protocol/SKILL.md) — Set how an agent joins, plays and reports a published Roblox game.
-- [`pre-production`](.agents/skills/execution/pre-production/SKILL.md) — Apply target-contract constraints to implementation and review tasks.
+- [`pre-production`](.agents/skills/execution/pre-production/SKILL.md) — Build the target contract for the product before it ships, with no compatibility for obsolete owned shapes.
 - [`prisma-client-api`](.agents/skills/web/prisma-client-api/SKILL.md) — Prisma Client API reference covering model queries, filters, operators, and client methods.
 - [`process-ledger`](.agents/skills/execution/process-ledger/SKILL.md) — Process verified private-ledger records into durable outcomes.
 - [`progress`](.agents/skills/workspace/progress/SKILL.md) — Show the task’s progress as a dashboard.
@@ -173,10 +174,12 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`roblox-ui`](.agents/skills/roblox/roblox-ui/SKILL.md) — Design and change Roblox interfaces, including HUDs and menus.
 - [`roblox-worldbuilding`](.agents/skills/roblox/roblox-worldbuilding/SKILL.md) — Build and improve Roblox worlds, terrain, structures, props, and assets.
 - [`run-site`](.agents/skills/workspace/run-site/SKILL.md) — Start an application stack and perform browser verification where applicable.
+- [`scope-of-change`](.agents/skills/execution/scope-of-change/SKILL.md) — Decide what a change fixes, carries and leaves, and which of its choices go to the user.
 - [`security-audit`](.agents/skills/review/security-audit/SKILL.md) — Security guidance for writing code and reviewing a change for exploitable vulnerabilities.
 - [`session-ledger`](.agents/skills/workspace/session-ledger/SKILL.md) — Keep verified task artifacts in one private task file.
 - [`share-media`](.agents/skills/media/share-media/SKILL.md) — Show captures, option previews, spoken replies and the material a reply relies on where the user reads.
 - [`skill-pass`](.agents/skills/authoring/skill-pass/SKILL.md) — Apply the writing, placement, conflict and source checks to agent guidance.
+- [`stop-gates`](.agents/skills/workspace/stop-gates/SKILL.md) — Pause the task, its workers, reviews, gates and checks until the user resumes them.
 - [`storyline`](.agents/skills/roblox/storyline/SKILL.md) — Create or improve a coherent game story with playable beats, resolved arcs and room to continue.
 - [`subagent-matrix`](.agents/skills/execution/subagent-matrix/SKILL.md) — Select a model capability level for live verification chats or subagent delegation.
 - [`t3-code`](.agents/skills/workspace/t3-code/SKILL.md) — Manage T3 Code configuration and provider environment variables.
