@@ -92,6 +92,12 @@ output.
   Leave out actions that never started when they are outside the request. Name a concrete blocker
   when it prevents the requested outcome, and answer directly when the reader asks about an
   action's status. This applies to progress updates and final replies.
+- **A report keeps the task's pull request apart from side work.** Once the task's pull request
+  has finished its own work, review and gate, the report says it is ready for review first, never
+  waiting for a side pull request, guidance delivery or skill test. A progress report or status
+  update lists what remains on the task's pull request under its own heading and side work under
+  a heading naming it side work, never both under one heading such as "Still running", so nothing
+  still running on side work reads as the task unfinished.
 - **State is the work's progress, never a reassurance.** A limit or correction the reader set —
   what the agent will not do, such as publish, merge or touch something; how it works from then on;
   that it understood — is confirmed once, in the reply to the message that set it. After that the

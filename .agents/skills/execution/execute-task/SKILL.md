@@ -469,7 +469,9 @@ Review** once each has its accepted head.
    cover each of them and every simplification, confirm intentional contract changes are reflected
    in the expected behavior, and confirm multi-repository delivery artifacts describe only their
    owning repository. Then build this pull request's ready-for-review message, in the shape below,
-   from `list-prs`, what the run did and `review-pass`'s **Output**.
+   from `list-prs`, what the run did and `review-pass`'s **Output**, and send it as soon as this
+   pull request's own work, review and gate are done: a side pull request, guidance delivery or
+   other side work still running never holds it.
 4. **Merge when authorized.** When **Task Authorization** finds the merge authorized, send **Reconcile the result**'s message together with the
    invocation of `merge-gate`, passing the accepted head, `review-pass`'s **Checks** results with their
    commands and head as the behaviors local tests already cover, every exclusion it returned with
@@ -482,7 +484,10 @@ Review** once each has its accepted head.
 
 The ready-for-review message takes exactly this shape, one message per pull request, leaving out
 **Deferred** when nothing was deferred, **Before deploy** when the change needs nothing outside the
-code to deploy, and **Still running** when no work is active. Its **Next:** review is an action the
+code to deploy, **Still running** when none of this pull request's own work is active, and **Side
+work** when none is open. **Still running** holds only this pull request's work; side work, such
+as the session's side pull request, its guidance delivery or skill tests, goes under **Side work**
+and never reads as this pull request unfinished. Its **Next:** review is an action the
 reader owns. Use the message as the material for the review request in the question tool, as
 `user-facing-output` directs; the question asks for the review alone:
 
@@ -496,7 +501,8 @@ reader owns. Use the message as the material for the review request in the quest
 - **Deferred:**
   1. <item> — <ground> — <record link>
 - **Before deploy:** <each step only a deployment needs, such as a secret to add, in plain text>
-- **Still running:** <the authorized merge through `merge-gate` (CI ~<n> min) | active validation or delivery of the guidance fixes from this task (<n> correction(s))>
+- **Still running:** <the authorized merge through `merge-gate` (CI ~<n> min)>
+- **Side work, not holding this review:** <side pull request link — what it carries — its state>
 
 **Next:** <review the pull request; send follow-ups here, `/finish-pr` to review what this pass has not and merge, or `/merge-now` to merge first and review after | review the pull request; it merges once its checks pass>
 ```
