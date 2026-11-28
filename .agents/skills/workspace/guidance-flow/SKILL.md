@@ -207,8 +207,10 @@ pages it reaches. Pages follow the categories as the sources stand when they are
      frontmatter says to read it, with one item per section of the rule: `title` the heading,
      `detail` what the section governs in a sentence, and `meta` the skills that cite that section.
    - Each category page, `layout` `rows`: a `diagram` `Flow` drawn in levels, as the work nests:
-     every skill the page's starting skills reach, at any depth, is a node joined to the skill
-     that runs it, never to the starting skill when another skill runs it, such as a gate a review
+     every skill of the page's category is a node, and so is every skill the page's starting
+     skills reach, at any depth, each joined to the skill that runs it or whose dependency it is,
+     with a `borrows` edge for a skill another follows without running it, such as a rules skill a
+     builder applies, never to the starting skill when another skill runs it, such as a gate a review
      skill runs inside a task's completion step; each node is labeled with its name and given its
      role in a few words as its `detail`, and one node per launch hangs off the skill or subagent
      that starts it, such as a review a worker starts, labeled with the short name of the
