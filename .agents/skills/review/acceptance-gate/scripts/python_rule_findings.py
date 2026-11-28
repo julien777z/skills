@@ -27,6 +27,7 @@ from ast import (
     While,
     With,
     get_docstring,
+    literal_eval,
     match_case,
     parse,
     stmt,
@@ -34,13 +35,32 @@ from ast import (
     walk,
 )
 from enum import StrEnum
+from io import StringIO
 from pathlib import Path
+from re import Pattern, compile
+from tokenize import COMMENT, generate_tokens
 from typing import Final
 
 DATA_CLASS_MODULES: Final[set[str]] = {"dataclasses", "pydantic.dataclasses", "pydantic"}
 NAMED_TUPLE_MODULES: Final[set[str]] = {"typing", "typing_extensions"}
 MIGRATION_DOCSTRING_FUNCTIONS: Final[set[str]] = {"upgrade", "downgrade"}
 MAX_TEST_NAME_WORDS: Final[int] = 8
+CONSTRAINT_KEYWORDS: Final[set[str]] = {
+    "min_length",
+    "max_length",
+    "ge",
+    "gt",
+    "le",
+    "lt",
+    "pattern",
+    "max_digits",
+    "decimal_places",
+    "multiple_of",
+}
+
+STANDARD_CITATION: Final[Pattern[str]] = compile(
+    r"\b(?:RFC|ISO|IEC|IEEE|ECMA|FIPS(?: PUB)?|NIST(?: SP)?)[ -]?\d"
+)
 
 
 class ParagraphCandidateKind(StrEnum):
@@ -281,6 +301,55 @@ def long_test_name_findings(path: Path, module: Module) -> list[str]:
     return findings
 
 
+def states_requirement(node: Assign | AnnAssign) -> bool:
+    """Tell whether an assignment's value is a literal or a call constrained by keyword."""
+
+    value = node.value
+
+    if value is None:
+        return False
+
+    if isinstance(value, Call):
+        return any(keyword.arg in CONSTRAINT_KEYWORDS for keyword in value.keywords)
+
+    try:
+        literal_eval(value)
+    except (ValueError, TypeError):
+        return False
+
+    return True
+
+
+def standard_citation_findings(path: Path, module: Module, source: str) -> list[str]:
+    """List comments citing a standard directly above a value that may state the requirement itself."""
+
+    assignments = {
+        node.lineno for node in walk(module) if isinstance(node, (Assign, AnnAssign)) and states_requirement(node)
+    }
+
+    comments = {
+        token.start[0]: token.string
+        for token in generate_tokens(StringIO(source).readline)
+        if token.type == COMMENT and not token.line[: token.start[1]].strip()
+    }
+
+    findings: list[str] = []
+
+    for line, text in comments.items():
+        if not STANDARD_CITATION.search(text):
+            continue
+
+        following = line + 1
+
+        while following in comments:
+            following += 1
+
+        if following in assignments:
+            findings.append(f"{path}:{line}: standard citation candidate, above a value that may state it")
+
+    return findings
+
+
 def python_findings(path: Path) -> list[str]:
     """Find the Python rule shapes a reader can check mechanically in one file."""
 
@@ -301,12 +370,13 @@ def python_findings(path: Path) -> list[str]:
     findings.extend(docstring_findings(path, module, lines))
     findings.extend(layout_findings(path, module, lines))
     findings.extend(long_test_name_findings(path, module))
+    findings.extend(standard_citation_findings(path, module, source))
 
     return findings
 
 
 def main() -> None:
-    """Print the Python rule findings and paragraph candidates for the given source files."""
+    """Print the Python rule findings and candidates for the given source files."""
 
     parser = ArgumentParser(description="List Python rule shapes and adjacent statements that may need a blank line.")
 

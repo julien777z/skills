@@ -210,7 +210,7 @@ as **Work You Have Already Named** says. It lands on the task's pull request and
 as next. Whether the amended plan is shown first follows **When A Plan Is Needed** and **Showing
 The Plan**.
 
-Classify each source or product follow-up under **When A Plan Is Needed** before preparing a plan. A small, clearly specified follow-up executes on the user's request; only a follow-up outside that exception needs its own plan. A canonical guidance correction follows **When A Plan Is Needed** and waits for no plan; while a guidance batch is in flight it joins that batch, as `edit-skill`'s **Recording During A Task** says. **Priority** decides when other follow-ups run and whether affected work pauses now; none of the routes below makes arrival order a reason to preempt active recovery.
+Classify each source or product follow-up under **When A Plan Is Needed** before preparing a plan. A small, clearly specified follow-up executes on the user's request; only a follow-up outside that exception needs its own plan. A canonical guidance correction follows **When A Plan Is Needed** and waits for no plan; one recorded while a guidance batch is in flight starts the next batch, as `edit-skill`'s **Recording During A Task** says. **Priority** decides when other follow-ups run and whether affected work pauses now; none of the routes below makes arrival order a reason to preempt active recovery.
 
 - **One that touches nothing in flight** — other files, another outcome — leaves the running work
   going. It gets a plan only when **When A Plan Is Needed** calls for one, and runs beside that work
@@ -456,10 +456,10 @@ Review** once each has its accepted head.
   primary agent coordinates so its review and checks never wait on the source stream. Before a source pull request's **Review the pull request**,
   every pending `guidance_correction` entry the GitHub rule's **Branches and Pull Requests** puts
   on it, in the batch in flight or the one after it, is pushed to it and passes its source check,
-  as **Guidance Delivery**'s **Resume the batch** says, so its review pass, history and ready message cover them. An entry recorded after the batch in flight merged is delivered in the batch frozen
+  as **Guidance Delivery**'s **Resume the batch** says, so its review pass, history and ready message cover them. An entry recorded after the batch in flight froze is delivered in the batch frozen
   once that one is done, so the source stream then waits for that delivery too, and for nothing
   else before **Review the pull request**. Each such entry's skill-test round runs on the head **Review the pull request** accepted, before
-  **Shape the history**, and a repair it makes returns to review as **Guidance Delivery**'s **Conclude the skill test** says. A task with none has no guidance stream.
+  **Shape the history**, and the round's repairs, each rerun at once, return to review together once it passes, as **Guidance Delivery**'s **Test the batch first** says. A task with none has no guidance stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
   request belongs to the guidance stream:
 
