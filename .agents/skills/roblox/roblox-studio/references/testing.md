@@ -1106,15 +1106,32 @@ Edit execution; never weaken production security to run it. Settings marked
 [Not Scriptable](https://create.roblox.com/docs/reference/engine/classes/ServerScriptService)
 cannot be assigned through Luau. Qualify the actual runner instead of repeating unsupported writes.
 
+Studio's MCP Edit context refuses `Instance.new("Player")` with `lacking capability WritePlayer`.
+Use real Studio clients when player lifecycle or replication is the subject, and a narrow typed fake
+from the game's shared test support for a deterministic service test; never add capabilities or
+cast engine services to `any` to make a fixture work. An MCP command also runs in a synthetic
+requiring context, where a string-alias require such as `@game/...` can fail with `could not reset
+to requiring context` although the module loads in the game. Use an explicit ModuleScript Instance
+only at that orchestration boundary, keep runtime source on string-path requires, and restore the
+normal source and fixture state afterward.
+
 Engine tests in Edit establish engine behavior in that context. Live physics, replication, input,
 persistence, and multiple clients need their own supported execution context. Open Cloud likewise
 uses its own privileged context and serialized test project.
 
+Run Open Cloud tests only against the game's dedicated private test experience, with a credential
+scoped to it, never staging or production. Prefer one test experience per game: DataStores share
+the experience's namespace, and separate repositories' CI concurrency groups do not coordinate
+uploads to a shared place. Serialize uploads and runs that share a place, and Studio sessions and
+fixture runs that share a place or profile, since concurrent mutation invalidates the evidence; edit
+no source a running check reads.
+
 When the project has a Studio test runner, give it a bounded wait, structured current-run results, and cleanup
 in `finally`: restore the normal source tree and original test marker, remove all injected test and
 authoring trees/packages, and leave Play stopped. Disable an Edit-only test entry for ordinary Play
-so it cannot launch with insufficient permissions. Never parse a historical `all tests passed`
-console line as the current result; Studio output can include old failures and passes. Keep result
+so it cannot launch with insufficient permissions. A rejected or canceled run fails, as failed
+results do. Never parse a historical `all tests passed` console line, or one from an unrelated
+plugin, as the current result; Studio output can include old failures and passes. Keep result
 attributes and current run identity authoritative.
 
 If using a separate test project, synchronize its complete explicitly mounted trees. Copying packages while omitting the suite can wait forever for an uninstalled runner. Verify the test entry before dispatch and
