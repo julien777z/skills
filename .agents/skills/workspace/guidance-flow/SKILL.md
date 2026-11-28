@@ -276,7 +276,8 @@ pages it reaches. Pages follow the categories as the sources stand when they are
      or the rule's name as words, exactly as the page's text writes it, and `url` its whole
      `SKILL.md` or rule file at the commit read. A skill or rule named anywhere in a tree, an
      outline, a diagram's `steps` or a `changes` item is then a link, so every such text writes the
-     name in that one form; outline items carry no `links`.
+     name in that one form, and text that does not mean a skill or rule avoids a word that is one's
+     name, such as "progress", which would link it; outline items carry no `links`.
 6. **Deliver** through `use-dashboard`, as a dashboard of a subject that outlives the session, so an
    existing page with the same title and topic, the repository, is updated when this session can
    update it. Name what is incomplete, if anything, in one line.
