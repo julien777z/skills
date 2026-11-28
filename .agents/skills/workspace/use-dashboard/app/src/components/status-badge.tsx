@@ -1,8 +1,7 @@
 import type { ReactNode } from 'react';
 
 import { Badge } from '@/components/ui/badge';
-import { TONES, ToneName } from '@/lib/tone';
-import { cn } from '@/lib/utils';
+import { ToneName } from '@/lib/tone';
 import { ToneDot } from './tone-dot';
 
 export function StatusBadge({
@@ -15,7 +14,7 @@ export function StatusBadge({
   dot?: boolean;
 }): ReactNode {
   return (
-    <Badge variant="outline" className={cn('gap-1.5 tabular-nums', TONES[tone].badge)}>
+    <Badge variant="outline" className="px-1.5 text-muted-foreground tabular-nums">
       {dot && <ToneDot tone={tone} />}
       {label}
     </Badge>

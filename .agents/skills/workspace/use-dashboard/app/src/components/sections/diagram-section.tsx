@@ -1,11 +1,16 @@
+import { cn } from 'cn';
+import { Download } from 'lucide-react';
 import { type ReactNode, useContext, useEffect, useRef, useState } from 'react';
-
 import { ExternalLink, RichText } from '@/components';
 import { Grid, Stack, Text } from '@/components/primitives';
-import { drawDiagram } from '@/lib/diagram';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { diagramFileName, downloadDiagram, drawDiagram } from '@/lib/diagram';
+import { OpenPageContext } from '@/lib/page-context';
 import { linkAttributes, type References, ReferencesContext } from '@/lib/references';
 import { CHANGES, TONES } from '@/lib/tone';
-import { cn, scrollToSection, withKeys } from '@/lib/utils';
+import { scrollToSection, withKeys } from '@/lib/utils';
 import { Change, type DiagramEdge, type DiagramSection as DiagramSectionSpec, type Section } from '@/spec';
 import { SectionCard } from './section-card';
 import { SectionDialog } from './section-dialog';
@@ -158,6 +163,9 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
   const [status, setStatus] = useState<DrawStatus>(DrawStatus.DRAWING);
   const [split, setSplit] = useState(false);
   const [opened, setOpened] = useState<OpenedDetails | null>(null);
+  const openPage = useContext(OpenPageContext);
+  const [exporting, setExporting] = useState(false);
+  const [exportFailed, setExportFailed] = useState(false);
   const opener = useRef<HTMLOrSVGElement | null>(null);
   const labels = new Map(section.nodes.map((node) => [node.id, node.label]));
   const used = new Set([...section.nodes, ...section.edges].map((part) => part.change).filter(Boolean));
@@ -182,7 +190,6 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
         drawing.svg.style.width = `${Math.round(drawing.width)}px`;
 
         target.replaceChildren(drawing.svg);
-        target.scrollLeft = (target.scrollWidth - target.clientWidth) / 2;
 
         function openDetails(details: Section, element: HTMLOrSVGElement, reference?: string) {
           opener.current = element;
@@ -207,7 +214,53 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
   }, [section, references]);
 
   return (
-    <SectionCard title={section.title} description={section.description} wide>
+    <SectionCard
+      title={section.title}
+      description={section.description}
+      wide
+      action={
+        status === DrawStatus.DRAWN && (
+          <Stack direction="row" align="center" gap="sm">
+            {exportFailed && (
+              <Text size="xs" tone="muted">
+                The image could not be saved.
+              </Text>
+            )}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    aria-label="Download diagram as PNG"
+                    disabled={exporting}
+                    onClick={() => {
+                      const svg = figure.current?.querySelector('svg');
+
+                      if (!svg) {
+                        return;
+                      }
+
+                      setExporting(true);
+                      setExportFailed(false);
+                      downloadDiagram(svg, diagramFileName(openPage.dashboardTitle, openPage.pageTitle, section.title))
+                        .catch((error: unknown) => {
+                          console.error(error);
+                          setExportFailed(true);
+                        })
+                        .finally(() => setExporting(false));
+                    }}
+                  >
+                    <Download />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Download diagram as PNG</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </Stack>
+        )
+      }
+    >
       <Grid columns={split ? 'figureBesideSteps' : 'single'} gap="lg">
         <Stack gap="md">
           {status === DrawStatus.FAILED && (
@@ -224,7 +277,7 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
           )}
           <div
             ref={figure}
-            className="grid justify-items-center overflow-x-auto [&_.cluster-label_div]:!max-w-none [&_.cluster-label_div]:!whitespace-nowrap [&_.cluster-label_foreignObject]:overflow-visible [&_svg]:h-auto"
+            className="grid justify-items-center-safe overflow-x-auto [&_.nodeLabel_a]:underline [&_.nodeLabel_b]:font-semibold [&_.nodeLabel_button]:underline [&_.nodeLabel_small]:text-muted-foreground [&_.cluster-label_div]:!max-w-none [&_.cluster-label_div]:!whitespace-nowrap [&_.cluster-label_foreignObject]:overflow-visible [&_svg]:h-auto"
           />
           {section.legend && (
             <Stack direction="row" gap="lg" wrap>
@@ -264,11 +317,9 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
           <Grid as="ol" columns={split ? 'single' : 'steps'} gap="sm" divider={split ? 'side' : 'top'}>
             {withKeys(section.steps, (step) => step).map(({ key, item: step }, index) => (
               <Stack key={key} as="li" direction="row" align="start" gap="sm">
-                <Stack align="center" justify="center" badge="accentRing">
-                  <Text size="xxs" weight="bold">
-                    {index + 1}
-                  </Text>
-                </Stack>
+                <Badge variant="outline" className="size-5 shrink-0 rounded-full px-0 tabular-nums">
+                  {index + 1}
+                </Badge>
                 <Text size="sm" tone="muted">
                   <RichText text={step} />
                 </Text>

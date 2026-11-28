@@ -164,9 +164,12 @@ pages it reaches. Pages follow the categories as the sources stand when they are
        show them, then one line naming each category left without a page.
    - `Usage`, `icon` `chart` and `layout` `rows`, across every skill the dashboard maps:
      - a `tree` `Where subagents go`, `open_depth` 2, one root per skill a person starts directly,
-       most subagents first. Its `figure` is the subagents one run usually starts, everything
-       beneath it counted, such as "~6 subagents"; its `meta` names what adds more, such as "more
-       per finding and per area", or "fixed" when nothing does. The usual figure counts, for one
+       most subagents first. Skills a person starts that run one shared flow with the same counts,
+       such as audits that each run one protocol, are one root labeled with the skill they share,
+       its `detail` naming them. A root's `figure` is the subagents one run usually starts,
+       everything beneath it counted, as a bare count, such as "~6", like every figure in the
+       tree; its `meta` names what adds more, such as "more per finding and per area", or "fixed"
+       when nothing does. The usual figure counts, for one
        round each, only launches whose every ancestor always runs, a skill a step runs only under a
        condition counting as one that does not; a count that depends on the work counts at its stated
        least, or at one. No figure sums a worst case across the whole graph, and none reads "0+": a
@@ -203,17 +206,24 @@ pages it reaches. Pages follow the categories as the sources stand when they are
      `details` is an `outline` titled with the rule's name, its `description` when the rule's
      frontmatter says to read it, with one item per section of the rule: `title` the heading,
      `detail` what the section governs in a sentence, and `meta` the skills that cite that section.
-   - Each category page, `layout` `rows`: a `diagram` `Flow` whose nodes are the skills the
-     page's starting skills reach directly, each labeled with its name and given its role in a few
-     words as its `detail`, and one node per launch labeled with the short name of the subagents it
-     starts, such as `Draft reviewers`, with how many and how often, such as "×3 per round", in its
-     `detail`, and one node per rule the page's skills read, labeled with the rule's name as
+   - Each category page, `layout` `rows`: a `diagram` `Flow` drawn in levels, as the work nests:
+     every skill of the page's category is a node, and so is every skill the page's starting
+     skills reach, at any depth, each joined to the skill that runs it, never to the starting skill
+     when another skill runs it, such as a gate a review skill runs inside a task's completion step.
+     A skill another declares as a dependency is joined to it by `invokes` when that skill runs it
+     and by `borrows` when it only follows it, such as a rules skill a builder applies, and a
+     category skill nothing runs, borrows or depends on stands alone. Each node is labeled with its name and given its
+     role in a few words as its `detail`, and one node per launch hangs off the skill or subagent
+     that starts it, such as a review a worker starts, labeled with the short name of the
+     subagents it starts, such as `Draft reviewers`, with how many and how often, such as "×3 per
+     round", in its `detail`. A skill several branches reach is one node with an edge from each.
+     Work that runs in parallel streams, such as a task's guidance and source streams at
+     completion, branches from the step that starts both. One node per rule the page's skills read is labeled with the rule's name as
      words, such as `GitHub rule` or `Global rules`, with what it governs in a few words as its
      `detail`. Edges are labeled `invokes`,
-     `launches` (from the skill to its launch node), `borrows` or `reads` (from a skill to a rule
-     it cites), and `steps` say in order how the
-     work moves through them; a skill reached only further down appears in the `Skills` table
-     alone. A rule keeps the diagram readable by appearing once: one that most of the page's skills
+     `launches` (from the skill or subagent to its launch node), `borrows` or `reads` (from a skill
+     to a rule it cites), and `steps` say in order how the work moves through them, level by
+     level. A rule keeps the diagram readable by appearing once: one that most of the page's skills
      cite, or that loads always and none of them cites, such as the global rules, has a single
      `reads` edge from the page's first starting skill, and the `steps` say it applies throughout;
      a rule that loads by file pattern and that no skill on the page cites stays on the `Rules`
@@ -264,15 +274,17 @@ pages it reaches. Pages follow the categories as the sources stand when they are
        label beside what it changes about the subagents, rounds or steps.
    - **Entry write-up**: an `outline` with `stacked` set and `collapsible` false, `title` the
      entry's label and `description` what it does in a sentence. Its groups, each only when it has
-     something in it: "Why subagents start", one item per launch at or beneath the entry, saying
-     what those subagents exist to catch or produce; and "Good to know", what a reader tuning the flow
-     should know, such as the condition that starts a launch, what a later round reruns, a scope
+     something in it: "Why subagents start", one item per launch at or beneath the entry, titled with
+     the launch's name and saying what those subagents exist to catch or produce; and "Good to
+     know", items titled with what each is about, such as "Condition" or "Later rounds", holding
+     what a reader tuning the flow should know, such as the condition that starts a launch, what a later round reruns, a scope
      another skill also reads in the same run, or a count that grows with the size of the change.
    - `references` hold one entry per mapped skill and one per mapped rule: `text` the skill's name,
      or the rule's name as words, exactly as the page's text writes it, and `url` its whole
      `SKILL.md` or rule file at the commit read. A skill or rule named anywhere in a tree, an
      outline, a diagram's `steps` or a `changes` item is then a link, so every such text writes the
-     name in that one form; outline items carry no `links`.
+     name in that one form, and text that does not mean a skill or rule avoids a word that is one's
+     name, such as "progress", which would link it; outline items carry no `links`.
 6. **Deliver** through `use-dashboard`, as a dashboard of a subject that outlives the session, so an
    existing page with the same title and topic, the repository, is updated when this session can
    update it. Name what is incomplete, if anything, in one line.

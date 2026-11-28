@@ -23,7 +23,7 @@ interface GroupedItem {
 interface ListSectionProps<Item extends GroupedItem> {
   title: string;
   description?: string;
-  summary: (items: Item[]) => ReactNode;
+  summary: (items: Item[]) => number | string | undefined;
   items: Item[];
   pageSize?: number;
   groupLabel?: string;
@@ -46,11 +46,11 @@ function ListRow({ icon, title, detail, aside, body }: ListRowContent): ReactNod
         </Stack>
       )}
       <Stack grow gap="xs">
-        <Text weight="medium" breakAnywhere>
+        <Text size="sm" weight="medium" breakAnywhere>
           {title}
         </Text>
         {detail && (
-          <Text size="sm" tone="muted" breakAnywhere>
+          <Text size="detail" tone="muted" breakAnywhere>
             {detail}
           </Text>
         )}

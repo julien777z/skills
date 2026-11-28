@@ -12,6 +12,7 @@ import { OutlineSection } from './outline-section';
 import { QuestionsSection } from './questions-section';
 import { TableSection } from './table-section';
 import { TabsSection } from './tabs-section';
+import { TimelineSection } from './timeline-section';
 import { TreeSection } from './tree-section';
 
 export function DashboardSection({ section }: { section: Section }): ReactNode {
@@ -38,6 +39,8 @@ export function DashboardSection({ section }: { section: Section }): ReactNode {
       return <TabsSection section={section} />;
     case SectionType.FIGURES:
       return <FiguresSection section={section} />;
+    case SectionType.TIMELINE:
+      return <TimelineSection section={section} />;
     case SectionType.CHART:
       return <ChartSection section={section} />;
   }

@@ -105,6 +105,11 @@ Treat visible intersections as map defects to repair during the affected visual 
   and the placement or scatter rule that set them keeps that clearance. The audit flags every
   unintended intersection across the world, built piece against built piece included, and each
   is fixed where it was placed: moved, reshaped or removed.
+- **A built space shows no gap into unbuilt space.** Walls meet each other, the floor and the
+  roof or ceiling, so sky, terrain or empty space shows only through an opening designed as one,
+  such as a window or a doorway. An opening a player can see into, such as a stair down to a
+  cellar or a dungeon mouth, shows what lies beyond it, lit enough to read, never a flat black
+  hole.
 - Inspect the entire footprint and perimeter of circular plazas, disks, pools, steps, thin slabs, roof edges, and other parts touching terrain or geometry. Checking only the center misses grass wedges at curved edges and crossings at road joins.
 - Trace the actual source of clipping: solid terrain, decorative grass, a placed plant/mesh, intersecting parts, or nearly coplanar faces. Fix the relevant geometry/material/placement rather than concealing it with lighting or a camera restriction.
 - Clear or grade terrain beneath paving with enough margin for the voxel surface's interpolation. Use suitable non-grass material under hard surfaces when needed to prevent blades protruding. Prefer a local terrain edit that preserves nearby water, landscaping, and contours. Do not globally remove vegetation to fix one plaza.

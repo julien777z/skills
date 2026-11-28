@@ -26,13 +26,17 @@ import {
   Users,
   Workflow,
 } from 'lucide-react';
-import { type ReactNode, useEffect, useState } from 'react';
-
+import { type ReactNode, useState } from 'react';
 import { Stack, Text } from '@/components/primitives';
 import { Button } from '@/components/ui/button';
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+} from '@/components/ui/navigation-menu';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { relativeTime } from '@/lib/time';
-import { cn } from '@/lib/utils';
 import { IconName, type Label, type Page } from '@/spec';
 import { StatusBadge } from './status-badge';
 import { ToneDot } from './tone-dot';
@@ -67,120 +71,122 @@ interface SiteHeaderProps {
   title: string;
   icon: IconName;
   status?: Label;
-  updatedAt: string;
   pages: Page[];
   current: number;
   onSelectPage: (position: number) => void;
 }
 
-function PageLinks({
-  pages,
-  current,
-  vertical,
-  onSelectPage,
-}: Pick<SiteHeaderProps, 'pages' | 'current' | 'onSelectPage'> & { vertical: boolean }): ReactNode {
-  return (
-    <Stack as="ul" direction={vertical ? 'column' : 'row'} gap="xs">
-      {pages.map((page, position) => {
-        const Icon = page.locked ? Lock : ICONS[page.icon];
-        const active = position === current;
+type PageLinksProps = Pick<SiteHeaderProps, 'pages' | 'current' | 'onSelectPage'>;
 
-        return (
-          <li key={page.icon}>
-            <Button
-              variant="ghost"
-              size="sm"
-              aria-current={active ? 'page' : undefined}
-              disabled={page.locked}
-              onClick={() => onSelectPage(position)}
-              className={cn(
-                'text-muted-foreground hover:text-foreground',
-                vertical && 'w-full justify-start',
-                active && 'bg-accent text-foreground',
-              )}
-            >
-              <Icon />
-              {page.title}
-              {page.status && (
-                <>
-                  <ToneDot tone={page.status.tone} />
-                  <Text srOnly>{`, ${page.status.label}`}</Text>
-                </>
-              )}
-            </Button>
-          </li>
-        );
-      })}
-    </Stack>
+function PageLabel({ page, icon = false }: { page: Page; icon?: boolean }): ReactNode {
+  const Icon = page.locked ? Lock : ICONS[page.icon];
+
+  return (
+    <>
+      {(icon || page.locked) && <Icon />}
+      {page.title}
+      {page.status && (
+        <>
+          <ToneDot tone={page.status.tone} />
+          <Text srOnly>{`, ${page.status.label}`}</Text>
+        </>
+      )}
+    </>
   );
 }
 
-export function SiteHeader({
-  title,
-  icon,
-  status,
-  updatedAt,
-  pages,
-  current,
-  onSelectPage,
-}: SiteHeaderProps): ReactNode {
-  const [now, setNow] = useState(() => Date.now());
-  const [menuOpen, setMenuOpen] = useState(false);
-  const hasPages = pages.length > 1;
+function PageNavigation({ pages, current, onSelectPage }: PageLinksProps): ReactNode {
+  return (
+    <ScrollArea type="auto" className="min-w-0 flex-1 whitespace-nowrap">
+      <NavigationMenu viewport={false} aria-label="Dashboard pages" className="max-w-none justify-start">
+        <NavigationMenuList className="-ml-3 justify-start gap-0">
+          {pages.map((page, position) => (
+            <NavigationMenuItem key={page.icon}>
+              <NavigationMenuLink
+                asChild
+                active={position === current}
+                className="relative h-14 flex-row items-center gap-1.5 rounded-none px-3 py-0 text-muted-foreground after:absolute after:inset-x-3 after:bottom-0 after:h-0.5 hover:bg-transparent hover:text-foreground focus:bg-transparent focus-visible:ring-inset disabled:opacity-50 data-active:bg-transparent data-active:text-foreground data-active:after:bg-foreground data-active:hover:bg-transparent data-active:focus:bg-transparent"
+              >
+                <button type="button" disabled={page.locked} onClick={() => onSelectPage(position)}>
+                  <PageLabel page={page} />
+                </button>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+          ))}
+        </NavigationMenuList>
+      </NavigationMenu>
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
+  );
+}
+
+function PageMenu({ title, icon, pages, current, onSelectPage }: SiteHeaderProps): ReactNode {
+  const [open, setOpen] = useState(false);
   const BrandIcon = ICONS[icon];
 
-  useEffect(() => {
-    const timer = window.setInterval(() => setNow(Date.now()), 60_000);
-
-    return () => window.clearInterval(timer);
-  }, []);
-
-  function handleSelectFromMenu(position: number) {
-    setMenuOpen(false);
+  function handleSelect(position: number) {
+    setOpen(false);
     onSelectPage(position);
   }
 
   return (
-    <header className="sticky top-[env(safe-area-inset-top,0px)] z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <Stack direction="row" align="center" gap="lg" inset="page" frame="page" height="bar">
-        {hasPages && (
-          <Stack show="belowLg">
-            <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="-ml-2" aria-label="Open pages">
-                  <Menu />
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild>
+        <Button variant="ghost" size="icon" className="-ml-2" aria-label="Open pages">
+          <Menu />
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="left">
+        <SheetHeader>
+          <SheetTitle>
+            <Stack direction="row" align="center" gap="sm">
+              <BrandIcon className="size-4" />
+              {title}
+            </Stack>
+          </SheetTitle>
+        </SheetHeader>
+        <Stack as="nav" label="Dashboard pages" inset="page">
+          <Stack as="ul" gap="xs">
+            {pages.map((page, position) => (
+              <li key={page.icon}>
+                <Button
+                  variant="ghost"
+                  aria-current={position === current ? 'page' : undefined}
+                  disabled={page.locked}
+                  onClick={() => handleSelect(position)}
+                  className="w-full justify-start text-muted-foreground aria-[current=page]:bg-accent aria-[current=page]:text-foreground"
+                >
+                  <PageLabel page={page} icon />
                 </Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="w-60">
-                <SheetHeader>
-                  <SheetTitle>{title}</SheetTitle>
-                </SheetHeader>
-                <Stack as="nav" label="Dashboard pages" inset="page">
-                  <PageLinks pages={pages} current={current} vertical onSelectPage={handleSelectFromMenu} />
-                </Stack>
-              </SheetContent>
-            </Sheet>
+              </li>
+            ))}
+          </Stack>
+        </Stack>
+      </SheetContent>
+    </Sheet>
+  );
+}
+
+export function SiteHeader(props: SiteHeaderProps): ReactNode {
+  const { status, pages, current } = props;
+
+  return (
+    <header className="sticky top-[env(safe-area-inset-top,0px)] z-40 w-full border-b bg-background">
+      <Stack direction="row" align="center" gap="sm" inset="page" frame="page" height="bar">
+        <Stack direction="row" align="center" gap="sm" show="belowLg">
+          <PageMenu {...props} />
+          <Text size="sm" weight="medium">
+            {pages[current].title}
+          </Text>
+        </Stack>
+        <Stack direction="row" align="center" grow show="fromLg">
+          <PageNavigation {...props} />
+        </Stack>
+        {status && (
+          <Stack push>
+            <StatusBadge label={status.label} tone={status.tone} />
           </Stack>
         )}
-        <Stack direction="row" align="center" gap="sm" shrink="belowLg">
-          <Stack align="center" justify="center" badge="brand">
-            <BrandIcon className="size-4" />
-          </Stack>
-          <Text weight="semibold">{title}</Text>
-        </Stack>
-        {hasPages && (
-          <Stack as="nav" label="Dashboard pages" show="fromLg" scroll>
-            <PageLinks pages={pages} current={current} vertical={false} onSelectPage={onSelectPage} />
-          </Stack>
-        )}
-        <Stack direction="row" align="center" gap="md" push>
-          <Stack show="fromSm">
-            <Text size="xs" tone="muted">
-              {relativeTime(updatedAt, now)}
-            </Text>
-          </Stack>
-          {status && <StatusBadge label={status.label} tone={status.tone} />}
-        </Stack>
       </Stack>
     </header>
   );

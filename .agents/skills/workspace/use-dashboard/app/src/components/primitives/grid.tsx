@@ -3,17 +3,17 @@ import type { ReactNode } from 'react';
 
 const GRID_VARIANTS = {
   columns: {
-    pair: 'grid grid-cols-1 @3xl/page:grid-cols-2',
+    pair: 'grid grid-cols-1 @3xl/main:grid-cols-2',
     single: 'grid grid-cols-1',
     narrow: 'grid grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))]',
     wide: 'grid grid-cols-[repeat(auto-fit,minmax(min(100%,380px),1fr))]',
     steps: 'grid sm:grid-cols-[repeat(auto-fill,minmax(min(100%,300px),1fr))]',
     figureBesideSteps: 'grid grid-cols-1 lg:grid-cols-[auto_minmax(300px,1fr)]',
-    stats2: 'grid grid-cols-1 @xl/page:grid-cols-2',
-    stats3: 'grid grid-cols-1 @xl/page:grid-cols-2 @5xl/page:grid-cols-3',
-    stats4: 'grid grid-cols-1 @xl/page:grid-cols-2 @5xl/page:grid-cols-4',
-    stats5: 'grid grid-cols-1 @xl/page:grid-cols-2 @5xl/page:grid-cols-5',
-    stats6: 'grid grid-cols-1 @xl/page:grid-cols-2 @5xl/page:grid-cols-6',
+    stats2: 'grid grid-cols-1 @xl/main:grid-cols-2',
+    stats3: 'grid grid-cols-1 @xl/main:grid-cols-2 @5xl/main:grid-cols-3',
+    stats4: 'grid grid-cols-1 @xl/main:grid-cols-2 @5xl/main:grid-cols-4',
+    stats5: 'grid grid-cols-1 @xl/main:grid-cols-2 @5xl/main:grid-cols-5',
+    stats6: 'grid grid-cols-1 @xl/main:grid-cols-2 @5xl/main:grid-cols-6',
     labelBeside: 'grid grid-cols-1 sm:grid-cols-[fit-content(11rem)_minmax(0,1fr)]',
   },
   gap: {
@@ -23,7 +23,7 @@ const GRID_VARIANTS = {
     loose: 'gap-x-8 gap-y-6',
     pairs: 'gap-x-6 gap-y-1 sm:gap-y-2',
   },
-  inset: { none: '', page: 'px-4 lg:px-6' },
+  inset: { none: '', page: 'px-4 sm:px-6 lg:px-10' },
   align: { start: 'items-start', stretch: 'items-stretch' },
   divider: { none: '', top: 'border-t pt-4', side: 'border-t pt-4 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-7' },
 } as const;

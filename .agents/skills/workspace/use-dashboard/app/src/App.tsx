@@ -1,9 +1,11 @@
 import { type ReactNode, useMemo, useState } from 'react';
 
-import { NoticeBanner, RichText, SectionCards, SiteHeader } from '@/components';
-import { Grid, Stack, Text } from '@/components/primitives';
+import { NoticeBanner, SectionCards, SiteHeader } from '@/components';
+import { PageHeader } from '@/components/page-header';
+import { Grid, Stack } from '@/components/primitives';
 import { DashboardSection } from '@/components/sections';
 import { useDashboardUpdates } from '@/hooks/page-refresh';
+import { OpenPageContext } from '@/lib/page-context';
 import { References, ReferencesContext } from '@/lib/references';
 import { withKeys } from '@/lib/utils';
 import { type Dashboard, PageLayout } from '@/spec';
@@ -25,6 +27,7 @@ export function App({ dashboard: initial }: { dashboard: Dashboard }): ReactNode
   const metrics = dashboard.metrics ?? [];
   const progress = page.progress ?? (current === 0 ? dashboard.progress : undefined);
   const pageMetrics = current === 0 ? metrics : [];
+  const subtitle = page.subtitle ?? (current === 0 ? dashboard.subtitle : undefined);
   const showSummary = Boolean(progress) || pageMetrics.length > 0;
 
   function handleSelectPage(position: number) {
@@ -43,33 +46,25 @@ export function App({ dashboard: initial }: { dashboard: Dashboard }): ReactNode
         title={dashboard.title}
         icon={dashboard.icon}
         status={dashboard.status}
-        updatedAt={dashboard.updated_at}
         pages={dashboard.pages}
         current={current}
         onSelectPage={handleSelectPage}
       />
-      <Stack as="main" gap="xl" frame="page" block="page">
-        <Stack gap="xs" inset="page">
-          <Text as="h1" size="title" weight="bold">
-            {page.title}
-          </Text>
-          {(page.subtitle ?? dashboard.subtitle) && (
-            <Text as="p" tone="muted" measure>
-              <RichText text={page.subtitle ?? dashboard.subtitle ?? ''} />
-            </Text>
-          )}
-        </Stack>
+      <Stack as="main" gap="page" frame="page" block="page">
+        <PageHeader title={dashboard.title} subtitle={subtitle} updatedAt={dashboard.updated_at} />
         {dashboard.notice && (
           <Stack inset="page">
             <NoticeBanner notice={dashboard.notice} />
           </Stack>
         )}
         {showSummary && <SectionCards progress={progress} metrics={pageMetrics} />}
-        <Grid key={current} inset="page" gap="lg" columns={page.layout === PageLayout.ROWS ? 'single' : 'wide'}>
-          {withKeys(page.sections, (section) => section.title).map(({ key, item: section }) => (
-            <DashboardSection key={key} section={section} />
-          ))}
-        </Grid>
+        <OpenPageContext.Provider value={{ dashboardTitle: dashboard.title, pageTitle: page.title }}>
+          <Grid key={current} inset="page" gap="lg" columns={page.layout === PageLayout.ROWS ? 'single' : 'wide'}>
+            {withKeys(page.sections, (section) => section.title).map(({ key, item: section }) => (
+              <DashboardSection key={key} section={section} />
+            ))}
+          </Grid>
+        </OpenPageContext.Provider>
       </Stack>
     </ReferencesContext.Provider>
   );

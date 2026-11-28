@@ -1,11 +1,11 @@
+import { cn } from 'cn';
 import { type KeyboardEvent, type ReactNode, useId, useMemo, useRef, useState } from 'react';
-
 import { DialogOpener } from '@/components';
 import { Stack, Text } from '@/components/primitives';
 import { Progress } from '@/components/ui/progress';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { TONES } from '@/lib/tone';
-import { cn, steppedIndex, withKeys } from '@/lib/utils';
+import { steppedIndex, withKeys } from '@/lib/utils';
 import { type ChartItem, ChartKind, type ChartSection as ChartSectionSpec } from '@/spec';
 import { SectionCard } from './section-card';
 import { SectionDialog } from './section-dialog';
