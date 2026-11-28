@@ -125,7 +125,7 @@ An agent reaches for these on its own whenever the work calls for them.
 
 - [`acceptance-gate`](.agents/skills/review/acceptance-gate/SKILL.md) — Have an independent reviewer decide whether a proposed change fits the task and the repository.
 - [`agent-lock`](.agents/skills/workspace/agent-lock/SKILL.md) — Coordinate exclusive use of a shared resource between agents using an exact string key.
-- [`banned-terminology`](.agents/skills/review/banned-terminology/SKILL.md) — Owns the banned-terms list in resources/banned_words.json and enforces it.
+- [`banned-terminology`](.agents/skills/review/banned-terminology/SKILL.md) — Choose clear names and apply terminology rules.
 - [`brag`](.agents/skills/media/brag/SKILL.md) — Turn the current project website into a short, polished, shareable launch video using Hyperframes.
 - [`brag-slim`](.agents/skills/media/brag-slim/SKILL.md) — Turn a project directory or a website URL into a short, shareable launch video with music, motion, and share copy.
 - [`build-types`](.agents/skills/web/build-types/SKILL.md) — Regenerate generated API types from an OpenAPI document, using the API contract this branch deploys with.

@@ -9,25 +9,25 @@ Reviewed Batches**, **Relocations**, **Resuming A Batch**.
 
 ## Causal Diagnosis
 
-- Trace the actual path from the request to the missed behavior: whether the instruction was
-  absent, its skill loaded, its trigger or sequence kept it from the decision, a conflicting
-  instruction overrode it, or the agent failed to apply guidance it had. Read exceptions and
-  stopping clauses with its callers. When the substantive rule is already correct, inspect the
-  step that produced the rejected recommendation, triage, brief or action: what instruction and
-  review evidence it used, what next action those required, and how its chosen action differed.
-  Repair that decision step at its owner rather than restating the substantive rule or ending
-  with a noncompliance report. Remove conflicting permissions, check other routes for the same
-  failure, and replay the original decision under the repair before closing the issue.
-  Record missing historical evidence without inventing a cause; it does not prevent repairing
-  the observed decision path. When the owning skill was not invoked, harden its frontmatter
-  description first; body text cannot control a run that never loads the skill.
-- Test the proposed instruction against that original decision path before proposing or writing it. If a
-  reader could follow it and still repeat the miss, explain the mismatch to the user, name the
-  instruction that actually caused or allowed the decision, and correct that owning path and
-  its conflicting callers. Escalate a genuine unresolved choice, not permission for an already
-  authorized repair. Do not mechanically apply a requested wording change or add a general
-  reminder beside a stop rule it cannot override. The original scenario must demonstrate that
-  the causal correction changes the reader's next action.
+- Before proposing a correction, trace the actual path from the request to the missed behavior.
+  Read records of the run and identify the first decision where the path diverged. Record the
+  action taken, the guidance or evidence available at that point, and the required next action.
+  If a review passed the work, compare its brief, the sources it inspected, the checks it
+  performed, and the verdict the editor accepted. Read relevant exceptions and stopping clauses
+  with their callers. Identify whether the rule was missing, the trigger or sequence kept it
+  from the decision, a conflict overrode it, or the agent skipped an applicable check. Explain
+  the verified divergence to the user with the correction. Record unavailable evidence and
+  proceed from the part of the path you can verify.
+- Repair the first missed decision at its owner. For a skipped check, specify the evidence the
+  agent produces before taking the next action. When a later review also passed the miss,
+  require that review to verify the evidence. Remove conflicting permissions, identify other routes
+  that make the same decision, and verify the repair on the original case and an adjacent route.
+  Repair the description when discovery failed. When a caller or stopping clause skipped an
+  applicable skill or check, repair that path.
+- Replay the original decision before proposing or writing the edit. If the draft still admits the
+  miss, explain which instruction, condition or caller allows it and repair that path. Escalate
+  genuine unresolved choices. In verification, show the different next action the correction
+  produces.
 - When several reported problems come from the same decision, correct that decision once at its
   owner. Remove incident-specific rules that only restate the repair. Keep local details that
   still govern a distinct contract or operation.
@@ -36,6 +36,14 @@ Reviewed Batches**, **Relocations**, **Resuming A Batch**.
 
 The statement is written before the edit, in the shape `SKILL.md`'s
 **Output** gives, and revised when the written text turns out to change more or less than it says.
+
+- Before drafting a behavior change, compare the user's suggested wording with the governing
+  text and the decisions it controls. Use their request to establish the desired outcome.
+  Inspect adjacent cases and record what the edit would change. Broaden the owning instruction
+  in place when related cases escape it. Use **Causal Diagnosis** when the standing rule already
+  covers an observed miss. Consolidate overlap into one statement at its owner. If the desired
+  behavior is already covered and inspection finds no gap, show the existing instruction and
+  the evidence for keeping it.
 
 - **Each line says one thing the user can check against what they meant.**
   - The statement never repeats the user's own words back to them; they know what they said, and

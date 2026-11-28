@@ -14,6 +14,7 @@ agent-configuration pull request.
 ## Dependencies
 - `review-proposal`
 - `pre-production`
+- `banned-terminology`
 - `run-site`
 - `code-simplify`
 - `review-pass`
@@ -50,11 +51,8 @@ the task. Where it owns a stage, return its result to this run rather than start
 - The session agent selects independently applicable specialized skills from their descriptions once.
   They return outcomes, pending decisions and required coordinator work to the caller.
 - A selected workflow presents its own plan through the route it declares, an approval it requires included.
-- A read-only task — a question answered from the code, a listing, a report with no edit — does
-  not run this skill, though it still reads the reference of this skill that governs a subject it
-  meets, as the description lists them; a task whose edits sub-agents make is not read-only for the
-  agent that delegated them. A read-only turn does not close an open run either: a run still holding named
-  work stays active through such a turn, and that turn moves its items.
+- A read-only task uses the relevant reference without running this skill. Delegating edits
+  counts as editing. A read-only turn keeps an open run active and advances its named work.
 
 ## Plan
 
@@ -276,7 +274,9 @@ worktree of its own and `subagent-matrix`'s worker brief, filled with the plan's
 report carries a receipt for each thing it added; one without them goes back to the worker before
 its head is built on. Before writing a script or doing a check by hand, the agent
 and every worker look in the repository's `.agents/tools/` and write, run and maintain helpers
-there as [repository helpers](references/repository-helpers.md) says.
+there as [repository helpers](references/repository-helpers.md) says. While a worker runs, it is
+checked on a schedule, its output looked over and its pull requests spot-checked, as
+[worker checks](references/worker-checks.md) says.
 
 ### Task Authorization
 
@@ -399,7 +399,7 @@ Apply [named work](references/named-work.md):
   with its next step before whatever displaced it starts, and resume it without waiting for
   "continue".
 - After a compaction or handoff, read each step's state from `session-ledger` and the repository,
-  never from the summary.
+  never from the summary, and confirm each running worker's check timer.
 - Before a report goes out, compare each outstanding item against the line the last report carried
   for it; an unchanged line means the item is finished in this turn when **Priority** permits it.
 - A wait blocks only the work that depends on what is awaited. Every wait applies that test to the

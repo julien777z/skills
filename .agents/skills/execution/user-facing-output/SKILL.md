@@ -134,7 +134,7 @@ output.
   some condition states that behavior and where it applies, such as "photo galleries now become
   carousels past six photos on every page", never folds it into the fix it arrived with, so the
   reader can tell a new layout, control or flow from a repair.
-- Replies follow `pre-production`'s **Naming And Language** and **Examples And Paths**: American
+- Replies follow `pre-production`'s **Language** and **Examples And Paths**: American
   English, and no value the user gave as an example reproduced.
 - A capture or file a reply relies on is read whole and shown as `share-media` says.
 

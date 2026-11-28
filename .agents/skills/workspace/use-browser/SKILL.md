@@ -8,12 +8,15 @@ allowed-tools: Bash(agent-browser:*), Bash(npx agent-browser:*)
 # Use Browser
 
 Show a page in the user's browser, or operate a browser: by default a headless one the agent runs.
+Honor a browser the user explicitly names for an operation; if it lacks the required account
+session, use its supported sign-in route or report the step blocked. A browser named for an
+inspection does not carry over to a separate preview request.
 
 ## Showing A Local Page
 
-For an HTML file the agent wrote, such as a rendered dashboard, that the user should look at. This
-route needs the user's browser on the machine that holds the file, since a `file://` address
-resolves there; when it is not, such as a cloud session, this route does not apply.
+For a local page the user should look at, including a served page or an HTML file the agent wrote,
+such as a rendered dashboard. A `file://` preview needs the selected browser on the machine that holds
+the file; when it is not, such as a cloud session, serve the page to that browser instead.
 
 Open the page in a task group in the user's browser, selected and bound as **Selecting And Binding
 A Tab** says for the user's browser. If a task tab already shows it, reload that tab. Bring the
@@ -21,9 +24,6 @@ preview to the front only when the user asks to see it. If that browser cannot l
 a local URL served to it or report the preview blocker.
 
 ## Operating A Browser
-
-For the agent's own work in a browser: visiting sites, filling forms, clicking, screenshots,
-extracting data, testing and QA, signing in, Electron desktop apps and Slack.
 
 - **The agent's own headless browser is the default**, for public pages, local stacks, walkthroughs,
   screenshots, recordings, QA, sign-in to a test account and every other browser step, by the agent
