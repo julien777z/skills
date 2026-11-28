@@ -20,11 +20,12 @@ class EntryStatus(StrEnum):
 
 
 class HookInput(TypedDict):
-    """The turn-end payload fields the backup check reads."""
+    """The turn-end payload fields the hook reads."""
 
     is_continuation: bool
     expects_followup_message: bool
     transcript_path: str | None
+    session_id: str | None
 
 
 class BackupRecord(TypedDict):

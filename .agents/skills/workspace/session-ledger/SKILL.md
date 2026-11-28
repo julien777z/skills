@@ -12,11 +12,19 @@ identity, never a second authoritative copy of its records.
 
 ## Storage
 
-- Resolve the locator from the active task's metadata before every retrieval or update. For a new
-  task with no prior ledger, create `<task>.yaml` in `agent-ledgers/` under the user's private
-  state directory (`$XDG_STATE_HOME`, by default `~/.local/state`): the turn-end hook under
-  **Backup** checks only files there whose names end in `.yaml` or `.yml`. Record the
-  absolute locator and stable task identity in task context before using it. Keep the directory private to its owner and the file owner-readable and writable only.
+- **Every session has a ledger**: a file in `agent-ledgers/` under the user's private state
+  directory (`$XDG_STATE_HOME`, by default `~/.local/state`) whose name ends in `.yaml` or `.yml`,
+  the only files the turn-end hook under **Backup** reads. Resolve its locator from the active
+  task's metadata before every retrieval or update, and record the absolute locator and stable task
+  identity in task context before using it.
+  - When a turn ends and no ledger records the session, that hook creates `session-<session
+    ID>.yaml` there, listing the ID under `sessions`, and names it to the agent: that file is the
+    session's ledger, so resolve that locator rather than creating another.
+  - A session that needs its ledger before its first turn ends creates `<task>.yaml` there itself.
+  - A session that continues a task whose ledger exists adds its session ID, as the file the hook
+    created for it lists it, to that ledger's `sessions`, moves what it recorded in that file
+    there, and deletes the file.
+  - Keep the directory private to its owner and the file owner-readable and writable only.
 - An established task's missing locator, absent file, unreadable file, or invalid content is a
   recovery condition, not an empty ledger. Reconcile available canonical artifact receipts,
   continuation records, worker returns and the backup comments **Backup** keeps on this task's
@@ -185,13 +193,16 @@ This skill authorizes those comments and their edits under the GitHub rule's **C
   commit owe no backup. Any other plan, decision or question owes one until its list has an item;
   any other `guidance_correction` until its list holds a comment URL of its own.
 - The installed turn-end hook `ledger` checks each ledger this session writes: one under
-  `agent-ledgers/` that the session's transcript names and that changed at or after the session's
-  first recorded timestamp, or that the transcript names at all when it records no timestamp. While
-  one owes a backup or cannot be read, the hook lists each entry and what it lacks. In Claude Code
-  and Codex it refuses to end the turn; in Cursor it submits the list as the next message. It
-  holds a turn back at most once in a row, so post or edit the comment and record its URL, or
-  repair the ledger, in the turn it reopens. It runs only where `python3` is Python 3.11 or newer
-  with PyYAML installed; without PyYAML it reports every turn that the backups were not checked.
+  `agent-ledgers/` that changed at or after the session's first recorded timestamp, or at any time
+  when the transcript records none, and that the session's transcript names or whose text holds the
+  session's ID, which the harness passes as `session_id` or, in Cursor, `conversation_id`. When it
+  finds none, it creates the session's ledger as **Storage** says and names it. While one owes a
+  backup or cannot be read, the hook lists each entry and what it lacks. In Claude Code and Codex
+  it refuses to end the turn; in Cursor it submits its message as the next one. It holds a turn
+  back at most once in a row, so record what the session's work owes a created ledger, post or edit
+  the comment and record its URL, or repair the ledger, in the turn it reopens. It runs only where
+  `python3` is Python 3.11 or newer; it creates a ledger without PyYAML, but without PyYAML it
+  reports every turn that the backups were not checked.
 
 ## Output
 
@@ -203,6 +214,8 @@ Keep `id` stable and unique within the task. Use `observations: []` when none ha
 
 ```yaml
 session_ledger:
+  sessions:
+    - "<harness session ID>"
   entries:
     - id: "<stable task-local identifier>"
       kind: "<record kind>"
@@ -214,7 +227,8 @@ session_ledger:
           data: {}
 ```
 
-An empty ledger is `session_ledger: {entries: []}`. Add record-specific fields within `data`, not
+`sessions` lists the ID of each session that has written the ledger, in the order each took it
+over. An empty ledger is `session_ledger: {sessions: ["<harness session ID>"], entries: []}`. Add record-specific fields within `data`, not
 new top-level collections or an envelope per kind.
 
 ## Guardrails

@@ -2,6 +2,7 @@ import mmap
 import os
 import re
 import stat
+import tempfile
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Final
@@ -9,8 +10,12 @@ from typing import Final
 from models import HookInput
 
 LEDGER_DIRECTORY_NAME: Final[str] = "agent-ledgers"
+LEDGER_SUFFIXES: Final[frozenset[str]] = frozenset({".yaml", ".yml"})
 LEDGER_NAME_PATTERN: Final[re.Pattern[bytes]] = re.compile(rb"agent-ledgers/([^\s\"'\\/]+\.ya?ml)")
 TIMESTAMP_PATTERN: Final[re.Pattern[bytes]] = re.compile(rb'"timestamp"\s*:\s*"([^"]+)"')
+SESSION_LEDGER_TEMPLATE: Final[str] = (
+    'session_ledger:\n  sessions:\n    - "{session_id}"\n  entries: []\n'
+)
 
 
 def ledger_directory() -> Path:
@@ -37,6 +42,25 @@ def session_start(transcript: mmap.mmap) -> datetime | None:
     return started if started.tzinfo is not None else started.replace(tzinfo=UTC)
 
 
+def transcript_ledgers(transcript_path: str | None) -> tuple[set[bytes], datetime | None]:
+    """Read the ledger names a transcript mentions and the session start it records."""
+
+    if transcript_path is None:
+        return set(), None
+
+    try:
+        with (
+            open(transcript_path, "rb") as handle,
+            mmap.mmap(handle.fileno(), 0, access=mmap.ACCESS_READ) as transcript,
+        ):
+            names = {match.group(1) for match in LEDGER_NAME_PATTERN.finditer(transcript)}
+            started = session_start(transcript)
+    except (OSError, ValueError):
+        return set(), None
+
+    return names, started
+
+
 def is_written_since(path: Path, started: datetime | None) -> bool:
     """Tell whether a ledger file exists and was modified at or after the session's start."""
 
@@ -50,25 +74,54 @@ def is_written_since(path: Path, started: datetime | None) -> bool:
     return stat.S_ISREG(status.st_mode) and is_recent
 
 
-def session_ledgers(hook_input: HookInput) -> list[Path]:
-    """Return the ledgers the session writes: named in its transcript and modified since it began."""
-
-    transcript_path = hook_input["transcript_path"]
-    directory = ledger_directory()
-
-    if transcript_path is None or not directory.is_dir():
-        return []
+def names_session(path: Path, session_id: str) -> bool:
+    """Tell whether a ledger file's text holds the session's ID."""
 
     try:
-        with (
-            open(transcript_path, "rb") as handle,
-            mmap.mmap(handle.fileno(), 0, access=mmap.ACCESS_READ) as transcript,
-        ):
-            names = {match.group(1) for match in LEDGER_NAME_PATTERN.finditer(transcript)}
-            started = session_start(transcript)
-    except (OSError, ValueError):
+        return session_id.encode() in path.read_bytes()
+    except OSError:
+        return False
+
+
+def session_ledgers(hook_input: HookInput) -> list[Path]:
+    """Return the ledgers modified since the session began that it names or that name it."""
+
+    directory = ledger_directory()
+
+    if not directory.is_dir():
         return []
 
-    candidates = (directory / os.fsdecode(name) for name in names)
+    names, started = transcript_ledgers(hook_input["transcript_path"])
+    candidates = {directory / os.fsdecode(name) for name in names}
+    session_id = hook_input["session_id"]
+
+    if session_id is not None:
+        candidates.update(
+            path
+            for path in directory.iterdir()
+            if path.suffix in LEDGER_SUFFIXES and names_session(path, session_id)
+        )
 
     return sorted(path for path in candidates if is_written_since(path, started))
+
+
+def create_session_ledger(session_id: str) -> Path | None:
+    """Create the session's empty ledger, or return None when its file already exists."""
+
+    directory = ledger_directory()
+    directory.mkdir(mode=0o700, parents=True, exist_ok=True)
+
+    path = directory / f"session-{session_id}.yaml"
+    descriptor, temporary = tempfile.mkstemp(dir=directory, prefix=".session-", suffix=".tmp")
+
+    try:
+        with os.fdopen(descriptor, "w") as handle:
+            handle.write(SESSION_LEDGER_TEMPLATE.format(session_id=session_id))
+
+        os.link(temporary, path)
+    except FileExistsError:
+        return None
+    finally:
+        os.unlink(temporary)
+
+    return path

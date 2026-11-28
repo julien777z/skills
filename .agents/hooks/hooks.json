@@ -1,5 +1,5 @@
 {
-  "description": "Load the i-have-adhd and user-facing-output skills at session start, and check at turn end that every task ledger entry owing a backup comment has one.",
+  "description": "Load the i-have-adhd and user-facing-output skills at session start, and at turn end create the session's ledger when none records it and check that every task ledger entry owing a backup comment has one.",
   "hooks": {
     "SessionStart": [
       {
