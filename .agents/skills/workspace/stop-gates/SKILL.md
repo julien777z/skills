@@ -35,8 +35,9 @@ merge or resume something.
 Run it only when the user asks for the pause in their own words; another skill reads the pause and
 runs **Asking While Paused**, never this procedure.
 
-1. **Stop each running item.** Stop your own work on the task at the next point it can be
-   committed, and push it. Tell each worker to push what it has and stop, then end it; cancel
+1. **Stop each running item.** Stop your own work on the task at once and write nothing further
+   for it: commit and push what is already written where the push's fast checks pass, and otherwise
+   leave it uncommitted in the worktree with the `hold` entry naming the files. Tell each worker to push what it has and stop, then end it; cancel
    each running review, gate and check run. Never discard a worker's unpushed work: wait for its
    push or copy its worktree's changes to the task's working-files folder first.
 2. **Record the pause** in the task ledger through `session-ledger`, as a `hold` entry whose open
