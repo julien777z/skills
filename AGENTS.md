@@ -220,24 +220,24 @@ holds its procedure.
   request from its creation or authorized-continuation receipt, carried forward when a follow-up
   starts a new task in the same session, and verify its owner, open state and scope. Distinct
   concerns and worker contributions stay on it, in separate commits where appropriate. Open another
-  only when none is in progress, the user directs a split, or a new manually dispatched workflow
-  needs its placeholder pull request. Continue another session's pull request only when the user,
-  an invoked skill or a repository rule explicitly directs it; a matching topic, existing branch,
-  open state or recorded touch does not. Other sessions' pull requests and branches stay untouched,
-  apart from damaged local Git state a skill installing shared guidance backs up and repairs.
-- **Each session opens its own agent-configuration pull request in each repository.** Agent
-  configuration is the canonical `.agents` tree: skills with their own scripts, assets and
-  templates, rules and agent definitions, plus nonbehavioral text and guidance-reference
-  corrections in agent hooks and installers. A change to execution, timing, installation,
-  discovery, permissions or mutation scope is source work, as is everything else. Select an open
-  pull request only when this session's ledger records its creation receipt or the user explicitly
-  directs its continuation, and verify its state and scope remotely; a touch or reference receipt,
-  matching topic, branch, open state or batch record establishes neither. If none qualifies, open
-  one from the freshly fetched default branch; later guidance edits and worker tasks join it.
-  Consolidate a duplicate this session opened onto it and close the duplicate, saying where the
-  work went; never retarget, close or fold in one this session did not open.
-- **Every worker pushes to the branch of the pull request the work continues**, fetching and
-  rebasing its unpushed commits onto the remote branch before each push. A branch per worker,
+  only when none is in progress, the user directs a split, a skill in use places side work on its
+  own pull request, or a new manually dispatched workflow needs its placeholder pull request.
+  Continue another session's pull request only when the user, an invoked skill or a repository rule
+  explicitly directs it; a matching topic, existing branch, open state or recorded touch does not.
+  Other sessions' pull requests and branches stay untouched, apart from damaged local Git state a
+  skill installing shared guidance backs up and repairs.
+- **Each session keeps one open agent-configuration pull request per repository, and every guidance
+  change it makes there goes on it**, whatever its topic, a worker's repair included.
+  Agent configuration is the whole canonical `.agents` tree, hooks included; installers, workflows
+  and tooling outside it are source work. Before committing a guidance edit, read this session's
+  ledger for an open one with a creation receipt and verify it remotely; only when none is open,
+  open one from the freshly fetched default branch. One this session did not create is a target
+  only when the user explicitly directs its continuation; a touch or reference receipt, topic,
+  branch or open state never makes it one. Consolidate a duplicate this session opened onto its
+  first and close it, saying where the work went; never retarget, close or fold in another's.
+- **Every worker pushes to the branch of the pull request the work continues**, named in its brief,
+  fetching and rebasing its unpushed commits onto the remote branch before each push, and never
+  opens a pull request: without a branch in its brief, it hands the edit up. A branch per worker,
   integrated later, is the same split with the integration deferred.
 - **Agent configuration and source never share a branch**, even when a guidance change follows the
   source work checked out: sharing holds the guidance behind source review and outside the
@@ -308,9 +308,8 @@ holds its procedure.
     the user's current pauses and exclusions;
   - a pull request confined to agent configuration, static metadata included, once the gates its
     guidance-editing route requires have passed on the head that merges and its complete file list
-    is confirmed confined. One that adds a doctor skill waits instead for the user's review
-    together with everything in its batch, and a workflow, installer or repository tooling outside
-    a skill's folder is source work when its execution changes, even under `.agents`;
+    is confirmed confined. One adding a doctor skill, or adding or changing a hook, its registration,
+    a permission setting or an external skill source, waits for the user's authorization with its batch;
   - the focused revert of a pull request an agent merged by mistake, which may auto-merge.
 - **A pull request confined to deferral records, active or declined, merges without a separate
   request as soon as its records are written**, through the skill that runs a merge, with its required checks, once
@@ -331,11 +330,11 @@ holds its procedure.
 - Carry every agent-configuration pull request this session selected through conflict resolution,
   validation, readiness and merge. Never close one or leave it open merely because it is draft or
   conflicts with the base, only because its change is superseded or no longer wanted.
-- **An authorized merge is not held for an excluded check**: one the current user explicitly
-  waives, an established baseline failure, a non-essential check left red on findings the change
-  did not write, or a hosted attempt a runner or provider interrupted with no validation failure
-  when equivalent local validation passed on the merge head. Each is recorded with its evidence,
-  and none is rerun or waited on to get a green result. Never bypass branch protection.
+- **An authorized merge is not held for an excluded check**: one the current user explicitly waives,
+  an established baseline failure, a non-essential check left red under the cleanup size budget, or
+  a hosted attempt a runner or provider interrupted with no validation failure when equivalent local
+  validation passed on the merge head. Each is recorded with its evidence, and none is rerun or
+  waited on to get a green result. Never bypass branch protection.
 
 ## Comments
 
