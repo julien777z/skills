@@ -158,9 +158,12 @@ identity, never a second authoritative copy of its records.
 
 ## Guidance Batches
 
-One guidance batch is in flight at a time. It is frozen when delivery starts. An entry admitted
-while it is in flight joins it until its pull request merges. A batch is in flight from its freeze
-until every entry has a verified delivery or a recorded hold; a held entry does not keep it in flight.
+One guidance batch is in flight at a time. It is frozen when delivery starts, through the guidance
+delivery route or a request to finish its pull request, and takes no entry after that. An entry
+admitted while it is in flight waits in the ledger, governing the session at once, and starts the next batch, whose pull
+request opens once the in-flight one merges, so a repository keeps one open guidance pull request.
+A batch is in flight from its freeze until every entry has a verified delivery or a recorded hold;
+a held entry does not keep it in flight.
 
 ## Backup
 
