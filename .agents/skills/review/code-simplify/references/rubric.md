@@ -93,8 +93,7 @@ for the same responsibility, holding modules named for what each holds, such as 
 `pricing.py` and `delivery.py`; a caller- or variant-named sibling file is never the answer. Files
 a framework or the repository's layout requires, such as routes, migrations or one test class per
 file, keep that layout. Report the candidates and why the file stands alone. Search within the
-file kind the repository requires,
-such as a model module for a model declaration.
+file kind the repository requires, such as a model module for a model declaration.
 
 A workaround, or a design that changes a shared operation, guard, contract, subsystem, runtime
 boundary or independent consumer, also writes all three fields below, in the task record or

@@ -92,6 +92,13 @@ Build the clean target contract instead of preserving transitional behavior.
 - Requiring a field the provider may legitimately omit is still wrong, and moving toward the
   provider's shape never licenses it. Accept what it can send; require only what an owned validation
   or selection boundary proves is present.
+- **A value describing a domain record is derived from that record, never hard-coded.** An entity
+  or holder type, a tax classification or a country a provider is sent comes from the record's own
+  field through one mapping that covers every variant the domain has: a club whose members are
+  people or organizations sends the provider `individual` or `business` from each member's own
+  kind, never `business` for all. Its test asserts the outgoing request at the provider boundary
+  for each variant, since a mocked gateway and a provider's test mode accept a wrong value. A constant the provider fixes for every caller, such as the one currency a
+  single-currency product charges in, stays a constant.
 
 ## Retained Data
 
