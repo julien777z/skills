@@ -307,16 +307,17 @@ data exists, or a change to the app — runs on one made-up scenario, never on r
    published page or browser tab. A full page also writes `<page>.update.js` beside itself; an
    open local copy checks it every few seconds and shows a new render's data in place, on the same
    page and scroll position, with no reload; only a render from a changed app reloads it.
-4. **Look the page over before it reaches the user.** The agent that delivers the dashboard,
-   never a subagent, views the rendered page itself, every page and the entries and dialogs that
-   carry its content, and judges it as the user will: does each page make sense, is every color,
-   pill and label the standard one for what it marks, are names exact and readable, and does
-   anything look wrong, repeated, raw or confusing, such as an internal identifier or file path as
-   a label, a name given in both a label and its tag, or a figure that contradicts another. These rules list
-   what is already known; the look-over uses judgment for everything else. Fix what it finds in the
-   spec or in the caller's data, re-render, and look again. The look-over renders to a working copy
-   in the task's working-files folder, never to the delivered output path, whose open copy updates
-   in place; only a page with nothing left to fix is rendered to that path.
+4. **Look the page over before it reaches the user.** The agent that delivers the dashboard, never a
+   subagent, views the rendered page itself, every page and the entries and dialogs that carry its
+   content, and judges it as the user will: does each page make sense, is every color, pill and
+   label the standard one for what it marks, are names exact and readable, is every elapsed or
+   estimated time in the text, as in the figures, written in its two largest units, and does
+   anything look wrong, repeated, raw or confusing, such as an internal identifier or file path as a
+   label, a name given in both a label and its tag, or a figure that contradicts another. These
+   rules list what is already known; the look-over uses judgment for everything else. Fix what it
+   finds in the spec or in the caller's data, re-render, and look again. The look-over renders to a
+   working copy in the task's working-files folder, never to the delivered output path, whose open
+   copy updates in place; only a page with nothing left to fix is rendered to that path.
 
 Change a delivered dashboard only by re-rendering its whole spec, never by editing the page's
 HTML, which skips the renderer's validation. Everything the reader can click, a table row or tree
