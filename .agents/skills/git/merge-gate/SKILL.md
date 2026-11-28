@@ -98,13 +98,13 @@ head before the gate repeats.
 An authorized merge is not held for an excluded check, as the GitHub rule's **Merge Authorization**
 says, and exclusions are applied before any failure is repaired.
 
-- **Waived, baseline and non-essential checks.** A failing check the current user explicitly
-  waives, an established baseline exclusion, and a non-essential check left red on findings the
-  change did not write are excluded, each as `scope-of-change`'s **Encountered Issues** classifies
-  it. Record the check and its exclusion evidence in the task's record, then attempt the authorized
-  merge without asking the user; a baseline exclusion is named to the user only where that
-  classification allows. Keep that classification rather than excluding a required repair merely
-  because the same failure also appears on the default branch.
+- **Waived, baseline and non-essential checks.** A failing check the current user explicitly waives,
+  an established baseline exclusion, and a non-essential check left red on a record ground are
+  excluded, each as `scope-of-change`'s **Encountered Issues** classifies it. Record the check and
+  its exclusion evidence in the task's record, then attempt the authorized merge without asking the
+  user; a baseline exclusion is named to the user only where that classification allows. Keep that
+  classification rather than excluding a required repair merely because the same failure also
+  appears on the default branch.
 - **Interrupted hosted checks.** An interrupted hosted check supplies no validation result for the
   work it did not complete. When the logs establish a runner or provider interruption without a
   validation failure, exclude the interrupted attempt if equivalent local validation passed for
