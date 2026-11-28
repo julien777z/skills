@@ -31,7 +31,10 @@ stopped from building on.
    - Committed on a pull request but not yet installed: run `update-skills`, so every launched
      agent loads them.
    - Agreed but on no pull request: ask the user through the question tool whether to open one
-     before resuming, recommending that. Without one, the restarted work carries each change in
+     before resuming, recommending that. Ask even though the change is agreed and an agent may open
+     the pull request without approval: the user set this question for a resume, so it is their
+     standing instruction, not a settled remedy offered back, and nothing restarts until they
+     answer. Without one, the restarted work carries each change in
      its brief, quoted with the installed text it amends, from the ledger, never from a harness's
      memory.
 4. **Tell the user what resumes differently**: a short list, one line per item whose restarted run
