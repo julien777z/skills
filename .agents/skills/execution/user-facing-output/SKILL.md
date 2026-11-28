@@ -87,11 +87,15 @@ output.
   closing action alike, over any `i-have-adhd` example that hands the reader such a step. The
   reader gets such steps only when they asked how to do something themselves.
 - **An issue the work met is fixed and named once as fixed**, as `scope-of-change`'s **Encountered
-  Issues** says, never offered as a follow-up: "Also fixed, on [the side pull
-  request](https://github.com/example/garden-api/pull/43): the stale dependency the build pulled
-  in", never "there is also a stale dependency. Want me to handle that next?". In a
+  Issues** says, never offered as a follow-up: "- **Side work, not holding this review:** [the side
+  pull request](https://github.com/example/garden-api/pull/43) — the stale dependency the build
+  pulled in — draft", never "there is also a stale dependency. Want me to handle that next?". In a
   ready-for-review message it goes inside **What landed** when the change needed it and on the
   **Side work** line otherwise, never on a line or paragraph of its own.
+- **A ready-for-review message, a follow-up's included, opens with its **Ready for review** line and
+  uses its template's labels and no others**, the side pull request only on its **Side work** line;
+  `i-have-adhd`'s lead-with-the-action and end-with-one-next-action are met by the template's
+  closing **Next:** line, and state restated for the reader goes on the template's own lines.
 - **Report work that is happening or affects the requested outcome.** A status such as “pending”
   requires an actual queue entry, active run, or documented wait within an authorized workflow.
   Leave out actions that never started when they are outside the request. Name a concrete blocker

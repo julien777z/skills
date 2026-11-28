@@ -356,16 +356,16 @@ small it looks.** Each route below is the gate set its batch passes on the head 
    Authorization** holds it. Never ask to repeat that authorization or to continue an ordinary
    repair. It settles no genuine unresolved product, scope or authorization choice, which goes to
    the user under **Bounds** while independent work continues, and authorizes no release.
-   1. **Branch and commit.** Select the edit's pull request under the GitHub rule's **Branches and
+   **Branch and commit.** Select the edit's pull request under the GitHub rule's **Branches and
       Pull Requests**: the session's one side pull request in its repository, never the task's, the
-      branch checked out included, unless the user puts it there or the task is that guidance
-      change. Commit the `.agents` files, never a provider mirror, and push each step once the
-      checks the GitHub rule's **Pre-Push Gate** defines pass. Open the pull request as a draft; it
-      stays draft until `merge-gate` marks it ready as the last step before its merge. An open pull
-      request leaves the current guidance in use. A source fix **Include the underlying issue**
-      requires goes where the GitHub rule's **Branches and Pull Requests** places it: on the task's
-      pull request when the task needs it or the user asked for it, otherwise on the session's side
-      pull request.
+      branch checked out included, unless the user names the task's pull request for it or the task
+      is only that guidance change; asking for it alongside the task's work does not. Commit the
+      `.agents` files, never a provider mirror, and push each step once the checks the GitHub rule's
+      **Pre-Push Gate** defines pass. Open the pull request as a draft; it stays draft until
+      `merge-gate` marks it ready as the last step before its merge. An open pull request leaves the
+      current guidance in use. A source fix **Include the underlying issue** requires goes where the
+      GitHub rule's **Branches and Pull Requests** places it: on the task's pull request when the
+      task needs it or the user asked for it, otherwise on the session's side pull request.
    2. **Run `validate_sources.py check`**, the source check `skill-pass`'s **Source Check**
       describes, before the pull request merges, and again whenever the branch changes after that
       run. Nothing on a pull request runs the sync: the workflow runs on the default branch after

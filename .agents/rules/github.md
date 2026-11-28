@@ -49,12 +49,13 @@ alwaysApply: true
   local Git state a skill installing shared guidance backs up and repairs.
 - **Each session keeps at most one side pull request per repository**, agent configuration and
   source together, one commit per concern: every guidance edit the session makes there, a worker's
-  repair included, unless the user puts it on the task's pull request or the task is that guidance
-  change, and side work, which the task does not need, no user asked for and the change did not
-  introduce: a defect, warning, deprecation or upgrade the agent noticed, a lint or cleanup fix, or
-  its own scope increase. Side work is fixed there during the task as `scope-of-change` says,
-  apart from cleanup a record ground holds, which is recorded; a noticed defect, deprecation or
-  printed warning is never recorded, left or offered.
+  repair included, unless the user names the task's pull request for it or the task is only that
+  guidance change, and side work, which the task does not need, no user asked for and the change did
+  not introduce: a defect, warning, deprecation or upgrade the agent noticed, a lint or cleanup fix,
+  or its own scope increase. A user asking for a guidance edit alongside the task's work, in the
+  same request included, does not put it on the task's pull request. Side work is fixed there during
+  the task as `scope-of-change` says, apart from cleanup a record ground holds, which is recorded; a
+  noticed defect, deprecation or printed warning is never recorded, left or offered.
   - Its branch starts from and is based on the task pull request's branch, so the task's merge
     leaves it no conflict; once the task merges, retarget it to the default branch, bring that base
     in and rerun the affected gates. With no task pull request in the repository, as in the skills
