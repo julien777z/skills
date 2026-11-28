@@ -2,6 +2,7 @@ import mmap
 import os
 import re
 import stat
+import tempfile
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Final
@@ -9,8 +10,12 @@ from typing import Final
 from models import HookInput
 
 LEDGER_DIRECTORY_NAME: Final[str] = "agent-ledgers"
+LEDGER_SUFFIXES: Final[frozenset[str]] = frozenset({".yaml", ".yml"})
 LEDGER_NAME_PATTERN: Final[re.Pattern[bytes]] = re.compile(rb"agent-ledgers/([^\s\"'\\/]+\.ya?ml)")
 TIMESTAMP_PATTERN: Final[re.Pattern[bytes]] = re.compile(rb'"timestamp"\s*:\s*"([^"]+)"')
+SESSION_LEDGER_TEMPLATE: Final[str] = (
+    'session_ledger:\n  sessions:\n    - "{session_id}"\n  entries: []\n'
+)
 
 
 def ledger_directory() -> Path:
@@ -37,6 +42,25 @@ def session_start(transcript: mmap.mmap) -> datetime | None:
     return started if started.tzinfo is not None else started.replace(tzinfo=UTC)
 
 
+def transcript_ledgers(transcript_path: str | None) -> tuple[set[bytes], datetime | None]:
+    """Read the ledger names a transcript mentions and the session start it records."""
+
+    if transcript_path is None:
+        return set(), None
+
+    try:
+        with (
+            open(transcript_path, "rb") as handle,
+            mmap.mmap(handle.fileno(), 0, access=mmap.ACCESS_READ) as transcript,
+        ):
+            names = {match.group(1) for match in LEDGER_NAME_PATTERN.finditer(transcript)}
+            started = session_start(transcript)
+    except (OSError, ValueError):
+        return set(), None
+
+    return names, started
+
+
 def is_written_since(path: Path, started: datetime | None) -> bool:
     """Tell whether a ledger file exists and was modified at or after the session's start."""
 
@@ -50,25 +74,80 @@ def is_written_since(path: Path, started: datetime | None) -> bool:
     return stat.S_ISREG(status.st_mode) and is_recent
 
 
-def session_ledgers(hook_input: HookInput) -> list[Path]:
-    """Return the ledgers the session writes: named in its transcript and modified since it began."""
-
-    transcript_path = hook_input["transcript_path"]
-    directory = ledger_directory()
-
-    if transcript_path is None or not directory.is_dir():
-        return []
+def names_session(path: Path, session_id: str) -> bool:
+    """Tell whether a ledger file's text holds the session's ID."""
 
     try:
-        with (
-            open(transcript_path, "rb") as handle,
-            mmap.mmap(handle.fileno(), 0, access=mmap.ACCESS_READ) as transcript,
-        ):
-            names = {match.group(1) for match in LEDGER_NAME_PATTERN.finditer(transcript)}
-            started = session_start(transcript)
-    except (OSError, ValueError):
-        return []
+        return session_id.encode() in path.read_bytes()
+    except OSError:
+        return False
 
+
+def session_ledgers(hook_input: HookInput) -> tuple[set[Path], set[Path]]:
+    """Return the session's ledgers: its own file or one its transcript names, then by ID."""
+
+    directory = ledger_directory()
+
+    if not directory.is_dir():
+        return set(), set()
+
+    names, started = transcript_ledgers(hook_input["transcript_path"])
+    session_id = hook_input["session_id"]
     candidates = (directory / os.fsdecode(name) for name in names)
+    named = {path for path in candidates if is_written_since(path, started)}
 
-    return sorted(path for path in candidates if is_written_since(path, started))
+    if session_id is None:
+        return named, set()
+
+    own = session_ledger_path(session_id)
+
+    if own.is_file():
+        named.add(own)
+
+    mentioning = {
+        path
+        for path in directory.iterdir()
+        if path.suffix in LEDGER_SUFFIXES
+        and path not in named
+        and is_written_since(path, started)
+        and names_session(path, session_id)
+    }
+
+    return named, mentioning
+
+
+def session_ledger_path(session_id: str) -> Path:
+    """Return where the hook keeps the ledger it creates for a session."""
+
+    return ledger_directory() / f"session-{session_id}.yaml"
+
+
+def session_ledger_text(session_id: str) -> str:
+    """Return the text the hook writes into the ledger it creates for a session."""
+
+    return SESSION_LEDGER_TEMPLATE.format(session_id=session_id)
+
+
+def create_session_ledger(session_id: str) -> Path | None:
+    """Create the session's ledger, or return None when the file already exists."""
+
+    path = session_ledger_path(session_id)
+    directory = path.parent
+
+    directory.mkdir(mode=0o700, parents=True, exist_ok=True)
+
+    descriptor, temporary = tempfile.mkstemp(dir=directory, prefix=".session-", suffix=".tmp")
+
+    try:
+        with os.fdopen(descriptor, "w") as handle:
+            handle.write(session_ledger_text(session_id))
+            handle.flush()
+            os.fsync(handle.fileno())
+
+        os.link(temporary, path)
+    except FileExistsError:
+        return None
+    finally:
+        os.unlink(temporary)
+
+    return path

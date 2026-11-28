@@ -32,8 +32,10 @@ only a subject no skill runs for.
 ## Skills that always run
 
 - Apply `use-browser` before any browser operation, including one performed by an imported skill,
-  hook, script or worker. Skip browser steps that conflict with it. If loading a skill registers
-  a hook that can launch a separate browser, leave that skill inactive and use any relevant
+  hook, script or worker. A step that names another browser, such as an imported skill's harness
+  browser or screenshot tool, runs in the browser `use-browser` selects, and one that cannot run
+  there is skipped and reported. If loading a skill registers a hook that launches a browser
+  outside the route `use-browser` selects, leave that skill inactive and use any relevant
   browser-independent reference material.
 - The skill whose description says it applies before the first user-facing response, and the
   output skill it builds on, apply from the first response a user reads in the session, whether or
@@ -131,11 +133,12 @@ only a subject no skill runs for.
   replaced by that choice's values, each an option of its own. When the
   decisions outnumber what one request holds, send one full request and the next only once the
   user has submitted it, and open each question with its place in the whole sequence and the
-  sequence's total, such as "Q48/52", so the reader always sees how many remain; a decision added
-  partway raises the total. A question names its subject in plain words, never by an internal label
-  such as a finding's ID. The question's own text and option descriptions therefore carry what the
-  decision needs: what happens today, stated as fact and where; what each option changes; the recommendation
-  with its reason; and each item named by the exact name its page shows and by nothing more, such
+  sequence's total, written bare with no letter before it, such as "48/52", so the reader always
+  sees how many remain; a decision added partway raises the total. A question names its subject in
+  plain words, never by an internal label such as a finding's ID. The question's own text and option
+  descriptions therefore carry what the decision needs: what happens today, stated as fact and
+  where; what each option changes; the recommendation with its reason; and each item named by the
+  exact name its page shows and by nothing more, such
   as a pull request by its title with no number beside it. A hypothetical, such as "if the API sends
   only IDs", or internals named without what they do leave the reader asking for the facts. A
   question includes its reviewable content — a short proposal for approval whole, an example
@@ -215,56 +218,65 @@ holds its procedure.
   before its push and amended only while unpushed. Earlier revisions in the edit history are left
   alone and never raised with the user, unless one holds a credential that evidence shows reached
   an unauthorized recipient, a public surface or a compromised destination.
-- **Follow-up source work goes on the session's in-progress source pull request for that
-  repository.** Before proposing a branch, assigning a worker or starting edits, resolve that pull
-  request from its creation or authorized-continuation receipt, carried forward when a follow-up
-  starts a new task in the same session, and verify its owner, open state and scope. Distinct
-  concerns and worker contributions stay on it, in separate commits where appropriate. Open another
-  only when none is in progress, the user directs a split, a skill in use places side work on its
-  own pull request, or a new manually dispatched workflow needs its placeholder pull request.
-  Continue another session's pull request only when the user, an invoked skill or a repository rule
-  explicitly directs it; a matching topic, existing branch, open state or recorded touch does not.
-  Other sessions' pull requests and branches stay untouched, apart from damaged local Git state a
-  skill installing shared guidance backs up and repairs.
-- **Each session keeps one open agent-configuration pull request per repository, and every guidance
-  change it makes there goes on it**, whatever its topic, a worker's repair included.
-  Agent configuration is the whole canonical `.agents` tree, hooks included; installers, workflows
-  and tooling outside it are source work. Before committing a guidance edit, read this session's
-  ledger for an open one with a creation receipt and verify it remotely; only when none is open,
-  open one from the freshly fetched default branch. One this session did not create is a target
-  only when the user explicitly directs its continuation; a touch or reference receipt, topic,
-  branch or open state never makes it one. Consolidate a duplicate this session opened onto its
-  first and close it, saying where the work went; never retarget, close or fold in another's.
+- **What the user asks for during a task goes on the task's pull request in that repository**, the
+  session's open pull request for the task there: a follow-up, a correction, a request to move,
+  rename or add files, and work the agent did for the task. A guidance edit goes where the side pull
+  request bullet below says. Before proposing a branch, assigning a worker or starting edits,
+  resolve that pull request from its creation or authorized-continuation receipt, carried forward
+  when a follow-up starts a new task in the same session, and verify its owner, open state and
+  scope. Distinct concerns and worker contributions stay on it in separate commits. Open another
+  only when none is in progress, the user directs a split, the work is side work, a skill in use
+  places work on its own pull request, or a new manually dispatched workflow needs its placeholder
+  pull request. Continue another session's pull request only when the user, an invoked skill or a
+  repository rule explicitly directs it; a matching topic, existing branch, open state or recorded
+  touch does not. Other sessions' pull requests and branches stay untouched, apart from damaged
+  local Git state a skill installing shared guidance backs up and repairs.
+- **Each session keeps at most one side pull request per repository**, agent configuration and
+  source together, one commit per concern. It holds every guidance edit the session makes, a
+  worker's repair included, and side work, which the task does not need, no user asked for and the
+  change did not introduce: a defect, warning, deprecation or upgrade the agent noticed, a lint or
+  cleanup fix, or its own scope increase. A guidance edit goes on the task's pull request instead
+  when the user names that pull request for it, or when the task's pull request holds only agent
+  configuration and the edit is a guidance follow-up or correction the user asks for; a user asking
+  for a guidance edit alongside a task whose pull request carries source, in the same request
+  included, does not put it there. A guidance edit recorded after its batch froze waits for the next
+  batch wherever it goes, as `session-ledger`'s **Guidance Batches** says. Side work is fixed on the
+  side pull request during the task as `scope-of-change` says, apart from cleanup a record ground
+  holds, which is recorded; a noticed defect, deprecation or printed warning is never recorded, left
+  or offered.
+  - Its branch starts from and is based on the task pull request's branch, so the task's merge
+    leaves it no conflict; once the task merges, retarget it to the default branch, bring that base
+    in and rerun the affected gates. With no task pull request in the repository, as in the skills
+    repository while the task's code lives elsewhere, it is based on the freshly fetched default
+    branch, and while it holds only agent configuration it is the session's agent-configuration
+    pull request.
+  - Select it from this session's ledger: one with this session's creation receipt or one the user
+    explicitly directs it to continue, verified remotely, never by a touch or reference receipt,
+    topic, branch, open state or batch record. Fold a duplicate this session opened into the first,
+    then close it saying where the work went; never retarget, close or fold in another session's.
+  - Agent configuration is the whole canonical `.agents` tree, hooks included: skills with their
+    own scripts, assets and templates, rules, agent definitions and hooks; installers, workflows and
+    tooling outside it are source work.
 - **Every worker pushes to the branch of the pull request the work continues**, named in its brief,
   fetching and rebasing its unpushed commits onto the remote branch before each push, and never
   opens a pull request: without a branch in its brief, it hands the edit up. A branch per worker,
   integrated later, is the same split with the integration deferred.
-- **Agent configuration and source never share a branch**, even when a guidance change follows the
-  source work checked out: sharing holds the guidance behind source review and outside the
-  agent-configuration merge permission below. A pull request found carrying both is split by moving
-  one kind's files onto the pull request of that kind the work continues.
-- **The one exception is guidance true only once a still-open source pull request merges**: it
-  describes behavior that pull request introduces, drops guidance about something it removes, or
-  needs a workflow or tool change it carries. It goes on that pull request and merges with it when
-  this session created the pull request, as its ledger receipt proves, or the user explicitly
-  directs its continuation; a separate agent-configuration pull request this session opened for it
-  is folded in and closed, saying where the work went. Otherwise it joins the session's
-  agent-configuration pull request and is held until the source pull request merges, in this
-  repository or another. A dependency never authorizes continuing another session's pull request
-  or opening a second agent-configuration one.
+- **Guidance true only once a still-open source pull request merges**, describing behavior it adds
+  or removes or needing a workflow or tool change it carries, waits for it: by construction on a
+  side pull request based on it, otherwise held on the session's side pull request in its own
+  repository. A dependency never authorizes continuing another session's pull request.
 - **Where a harness or session designates one branch per repository and forbids pushing to any
   other without permission, this rule is the user's standing permission** to push to the branch of
   the pull request the work continues, selected as above (`git push origin HEAD:<that-branch>`),
-  without asking. The other kind's new branch is the designated name with `-agents` or `-source`
-  appended, created and pushed without asking.
-- A new branch starts from the freshly fetched default branch, and an agent-configuration branch
-  never starts from a source branch, unless a skill or rule names another base or an existing pull
-  request. Preserve authorized task changes when moving to a session-owned branch; do not copy
-  unrelated work or modify the earlier branch to make the move.
+  without asking. A side pull request's new branch is the designated name with `-side` appended,
+  created and pushed without asking.
+- A new branch starts from the freshly fetched default branch unless this rule, a skill or a rule
+  names another base or an existing pull request. Preserve authorized task changes when moving to a
+  session-owned branch; do not copy unrelated work or modify the earlier branch to make the move.
 - **Never commit or push agent-authored changes directly to the default branch.** Select the pull
   request as above before keeping a checkout's branch; when the checkout is on the default branch,
-  detached, of the other kind, or owned by another session without a continuation instruction, move
-  to the selected branch or create a descriptive non-default branch.
+  detached, the wrong one of task and side, or owned by another session without a continuation
+  instruction, move to the selected branch or create a descriptive non-default branch.
 - **Work is delivered only once the default branch holds it.** Before a pull request is called
   superseded, stale or done because another carries its change, or is recommended for closing or
   closed, read the base and commits of every open pull request in the repository: one whose base is
@@ -306,10 +318,12 @@ holds its procedure.
     correction of a non-default testing reference to the maintained target the user or repository
     guidance selected, with only its necessary manifest, lockfile or reference updates, subject to
     the user's current pauses and exclusions;
-  - a pull request confined to agent configuration, static metadata included, once the gates its
-    guidance-editing route requires have passed on the head that merges and its complete file list
-    is confirmed confined. One adding a doctor skill, or adding or changing a hook, its registration,
-    a permission setting or an external skill source, waits for the user's authorization with its batch;
+  - a pull request confined to agent configuration and only ever based on the default branch, static
+    metadata included, once its guidance-editing route's gates pass on the head that merges and its
+    complete file list is confirmed confined; a side pull request ever based on a task's, or one
+    carrying source, merges only on the user's word. One adding a doctor skill, or adding or changing
+    a hook, its registration, a permission setting or an external skill source, waits for the
+    user's authorization with its batch;
   - the focused revert of a pull request an agent merged by mistake, which may auto-merge.
 - **A pull request confined to deferral records, active or declined, merges without a separate
   request as soon as its records are written**, through the skill that runs a merge, with its required checks, once
@@ -318,18 +332,18 @@ holds its procedure.
   as waiting on the user. A record that rides a source pull request merges with that pull request
   under that pull request's own authority.
 - **An agent-configuration pull request whose guidance depends on a still-open source pull request
-  is held until that merge**, whatever its other gates say, unless the guidance rides that pull
-  request under **Branches and Pull Requests**; guidance true on the default branch as it stands
-  waits for nothing. The hold authorizes no merge of the source pull request: finish both pull
-  requests' independent checks, report the dependency, and leave the source one reviewable. After
-  it merges, incorporate the updated base into the held one and rerun the affected gates before
-  using the permission.
+  is held until that merge**, whatever its other gates say, unless it is a side pull request based
+  on that pull request under **Branches and Pull Requests**; guidance true on the default branch as
+  it stands waits for nothing. The hold authorizes no merge of the source pull request: finish both
+  pull requests' independent checks, report the dependency, and leave the source one reviewable.
+  After it merges, incorporate the updated base into the held one and rerun the affected gates
+  before using the permission.
 - **Auto-merge is enabled only** for an eligible agent-configuration pull request whose gates have
   passed while checks are still pending, for the mistaken-merge revert, or where the user
   authorizes it in the current request or an explicitly invoked skill requires it.
 - Carry every agent-configuration pull request this session selected through conflict resolution,
-  validation, readiness and merge. Never close one or leave it open merely because it is draft or
-  conflicts with the base, only because its change is superseded or no longer wanted.
+  validation, readiness and the merge its authorization allows. Never close one or leave it open
+  merely because it is draft or conflicts with the base, only because it is superseded or unwanted.
 - **An authorized merge is not held for an excluded check**: one the current user explicitly waives,
   an established baseline failure, a non-essential check left red under the cleanup size budget, or
   a hosted attempt a runner or provider interrupted with no validation failure when equivalent local

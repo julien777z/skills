@@ -43,7 +43,7 @@ build-backend = "poetry.core.masonry.api"
 - Prefer PEP 695 generic syntax when it improves an interface and the repository's minimum Python version is 3.12 or newer; otherwise use modern typing syntax supported across the declared range.
 - Give every function and class a one-line imperative docstring followed by a blank line.
 - Services may be plain functions. Pass clients and sessions explicitly rather than storing module-level runtime globals; settings are read from the settings object where they are used, as the Python boundaries rule's **Configuration** section says.
-- Use `aiohttp` for HTTP I/O, inject a `ClientSession`, create long-lived sessions at application startup, enable `raise_for_status` when appropriate, and parse responses asynchronously with `json()` or `text()`.
+- Use `httpx` for HTTP I/O, inject an `httpx.AsyncClient`, create long-lived clients at application startup, call `raise_for_status()` when appropriate, and parse responses with `json()` or `text`. A provider SDK whose own client runs on another library is given an `httpx`-based client through its supported client interface when it has one, keeping the SDK's own timeout as the HTTP rule's **Clients** says.
 - Keep HTTP-style error types in `core/errors.py` and import the project's canonical error type under its own name; create the missing canonical type rather than adding runtime import or compatibility fallbacks.
 - Configure logging centrally and use it instead of `print()`.
 

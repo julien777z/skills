@@ -58,6 +58,10 @@ globs:
   and never leave the override a bare number: the SDK's or the provider's behavior goes in a comment
   beside the value, and a reason this code owns, such as a user-facing deadline, goes in the value's
   name. This holds over general advice to put a timeout on every network call.
+- A transport or client the code hands an SDK in place of its own keeps the timeout and retries the
+  SDK's own client uses, read from its documentation or its source, as a value whose name says so,
+  such as `PROVIDER_SDK_TIMEOUT`, with no comment: that is the SDK's setting standing, not an
+  override. The comment above is only for a value that departs from it.
 - A client the code builds itself, with no SDK behind it, sets its own timeout, since no default a
   general HTTP library ships is tuned for that service.
 - Prefer the repository's shared HTTP helper or client abstraction over spawning ad-hoc clients deep in application code.
