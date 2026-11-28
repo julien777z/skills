@@ -866,12 +866,14 @@ TAB_SHAPE: Final[ObjectShape] = ObjectShape(
     fields={"label": TEXT, "sections": SECTIONS},
     required=frozenset({"label", "sections"}),
 )
+
 TIMELINE_BAR_SHAPE: Final[ObjectShape] = ObjectShape(
     name="TimelineBar",
     fields={"start": MOMENT, "end": MOMENT, "tone": TONE, "label": TEXT},
     required=frozenset({"start", "end"}),
     relations=check_span,
 )
+
 TIMELINE_LANE_SHAPE: Final[ObjectShape] = ObjectShape(
     name="TimelineLane",
     fields={
@@ -887,12 +889,14 @@ TIMELINE_LANE_SHAPE: Final[ObjectShape] = ObjectShape(
     },
     required=frozenset({"label", "bars"}),
 )
+
 TIMELINE_GAP_SHAPE: Final[ObjectShape] = ObjectShape(
     name="TimelineGap",
     fields={"start": MOMENT, "end": MOMENT, "label": TEXT},
     required=frozenset({"start", "end", "label"}),
     relations=check_lasting_span,
 )
+
 NOTICE_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Notice",
     fields={"title": TEXT, "body": TEXT, "tone": TONE},
