@@ -1,7 +1,6 @@
+import { cn } from 'cn';
 import type { ReactNode } from 'react';
-
 import { PULL_REQUESTS } from '@/lib/tone';
-import { cn } from '@/lib/utils';
 import type { PullRequestState } from '@/spec';
 
 export function PullRequestIcon({ state, className }: { state: PullRequestState; className?: string }): ReactNode {

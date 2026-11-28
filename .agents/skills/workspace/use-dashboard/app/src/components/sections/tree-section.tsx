@@ -3,7 +3,9 @@ import { type ReactNode, useRef, useState } from 'react';
 
 import { DialogOpener, RichText, StatusBadge, ToneDot } from '@/components';
 import { Stack, Text } from '@/components/primitives';
-import { cn, withKeys } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { withKeys } from '@/lib/utils';
 import type { TreeNode, TreeSection as TreeSectionSpec } from '@/spec';
 import { SectionCard } from './section-card';
 import { SectionDialog } from './section-dialog';
@@ -27,72 +29,79 @@ function TreeItem({ node, depth, openDepth }: { node: TreeNode; depth: number; o
   const children = node.children ?? [];
 
   return (
-    <li>
-      <Stack direction="row" align="start" gap="sm">
-        {children.length > 0 ? (
-          <button
-            type="button"
-            aria-expanded={open}
-            aria-label={node.label}
-            onClick={() => setOpen(!open)}
-            className="mt-0.5 rounded-sm text-muted-foreground hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-          >
-            <ChevronRight className={cn('size-4 transition-transform', open && 'rotate-90')} />
-          </button>
-        ) : null}
-        {(node.tone || children.length === 0) && <ToneDot tone={node.tone} offset />}
-        <Stack gap="none" grow>
-          <Text size="sm" breakAnywhere>
-            {node.details ? (
-              <DialogOpener
-                opener={opener}
-                onOpen={() => setShowDetails(true)}
-                className="text-left focus-visible:underline focus-visible:outline-none"
+    <Collapsible asChild open={open} onOpenChange={setOpen}>
+      <li>
+        <Stack direction="row" align="start" gap="sm">
+          {children.length > 0 ? (
+            <CollapsibleTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label={node.label}
+                className="size-5 text-muted-foreground [&_svg]:transition-transform data-[state=open]:[&_svg]:rotate-90"
               >
-                {node.label}
-              </DialogOpener>
-            ) : (
-              <Text as="span" size="sm" weight="medium">
-                <RichText text={node.label} />
-              </Text>
-            )}
-            {node.tag && (
-              <>
-                {' '}
-                <StatusBadge label={node.tag} dot={false} />
-              </>
-            )}
-            {node.figure && (
-              <>
-                {' '}
-                <StatusBadge label={node.figure} dot={false} />
-              </>
-            )}
-            {node.status && (
-              <>
-                {' '}
-                <StatusBadge label={node.status.label} tone={node.status.tone} />
-              </>
-            )}
-            {node.meta && (
-              <Text as="span" size="sm" tone="muted" numeric>
-                {' '}
-                <RichText text={node.meta} />
-              </Text>
-            )}
-          </Text>
-          {node.detail && (
-            <Text size="sm" tone="muted" breakAnywhere>
-              <RichText text={node.detail} />
+                <ChevronRight />
+              </Button>
+            </CollapsibleTrigger>
+          ) : null}
+          {(node.tone || children.length === 0) && <ToneDot tone={node.tone} offset />}
+          <Stack gap="none" grow>
+            <Text size="sm" breakAnywhere>
+              {node.details ? (
+                <DialogOpener
+                  opener={opener}
+                  onOpen={() => setShowDetails(true)}
+                  className="text-left focus-visible:underline focus-visible:outline-none"
+                >
+                  {node.label}
+                </DialogOpener>
+              ) : (
+                <Text as="span" size="sm" weight="medium">
+                  <RichText text={node.label} />
+                </Text>
+              )}
+              {node.tag && (
+                <>
+                  {' '}
+                  <StatusBadge label={node.tag} dot={false} />
+                </>
+              )}
+              {node.figure && (
+                <>
+                  {' '}
+                  <StatusBadge label={node.figure} dot={false} />
+                </>
+              )}
+              {node.status && (
+                <>
+                  {' '}
+                  <StatusBadge label={node.status.label} tone={node.status.tone} />
+                </>
+              )}
+              {node.meta && (
+                <Text as="span" size="sm" tone="muted" numeric>
+                  {' '}
+                  <RichText text={node.meta} />
+                </Text>
+              )}
             </Text>
-          )}
+            {node.detail && (
+              <Text size="sm" tone="muted" breakAnywhere>
+                <RichText text={node.detail} />
+              </Text>
+            )}
+          </Stack>
         </Stack>
-      </Stack>
-      {open && children.length > 0 && <TreeBranch nodes={children} depth={depth + 1} openDepth={openDepth} />}
-      {node.details && (
-        <SectionDialog section={node.details} open={showDetails} onOpenChange={setShowDetails} opener={opener} />
-      )}
-    </li>
+        {children.length > 0 && (
+          <CollapsibleContent>
+            <TreeBranch nodes={children} depth={depth + 1} openDepth={openDepth} />
+          </CollapsibleContent>
+        )}
+        {node.details && (
+          <SectionDialog section={node.details} open={showDetails} onOpenChange={setShowDetails} opener={opener} />
+        )}
+      </li>
+    </Collapsible>
   );
 }
 

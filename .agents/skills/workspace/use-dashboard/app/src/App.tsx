@@ -48,7 +48,7 @@ export function App({ dashboard: initial }: { dashboard: Dashboard }): ReactNode
         current={current}
         onSelectPage={handleSelectPage}
       />
-      <Stack as="main" gap="xl" frame="page" block="page">
+      <Stack as="main" gap="page" frame="page" block="page">
         <Stack gap="xs" inset="page">
           <Text as="h1" size="title" weight="bold">
             {page.title}
