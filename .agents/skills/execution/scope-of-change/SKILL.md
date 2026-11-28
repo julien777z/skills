@@ -44,23 +44,25 @@ theirs.
   never asks the worker to fix a baseline failure. A baseline failure's cause, even one only the
   user could remove such as a provider setting or credential, is never put to the user as a gate or
   a request, apart from that rejection.
-- **Only essential checks have to pass: the test suites, and only for what the change answers for.**
-  A non-essential check, such as lint, formatting or other static analysis, that fails on findings
-  in code the change did not write may stay red. That holds whether the findings predate the change
-  or the change brought them to light, such as a new lint rule meeting existing code or a
-  changed-file lint run meeting older code in a file the change edits. Fix the findings in lines the
-  change writes, and the other findings in a file the requested work itself edits, the callers and
-  consumers it must update included, while they fit the size budget in force below, measured as it
-  measures cleanup. Leave the rest for later work on that code: it is not deferred work, so it is
-  neither recorded nor reported. Never fix past that to turn the check green, and never loosen, disable,
-  rescope or ignore the check. A status report covers only the checks the change answers for, so it
-  neither names this red check nor asks about it, apart from a merge branch protection rejects for
-  it, reported as the bullet above says. A finding that
-  shows a defect, such as deprecated usage or a vulnerability, stays one, fixed as the bullets below
-  say. A finding the change's own code or contract change causes is the change's wherever it points:
-  a changed signature whose untouched callers no longer type-check is fixed in those callers, as
-  `pre-production`'s **Target Contract** requires. An essential check that already fails on the
-  default branch is a baseline failure, handled as the bullet above says.
+- **Only essential checks have to pass: the test suites, and only for what the change answers for,
+  and every check the repository requires before a merge.** A required check, such as one branch
+  protection lists, is essential for that pull request whatever it checks: its findings are fixed so
+  the pull request can merge, on it or wherever the side-work and comparable-size rules below place
+  them, never left red. A non-essential check, one the repository does not require, such as lint,
+  formatting or other static analysis, that fails on findings in code the change did not write may
+  stay red. That holds whether the findings predate the change or the change brought them to light,
+  such as a new lint rule meeting existing code or a changed-file lint run meeting older code in a
+  file the change edits. Fix the findings in lines the change writes, and the other findings in a
+  file the requested work itself edits, the callers and consumers it must update included, while
+  they fit the size budget in force below, measured as it measures cleanup. Leave the rest for later
+  work on that code: it is not deferred work, so it is neither recorded nor reported. Never fix past
+  that to turn the check green, and never loosen, disable, rescope or ignore the check. A status
+  report covers only the checks the change answers for, so it neither names this red check nor asks
+  about it. A finding that shows a defect, such as deprecated usage or a vulnerability, stays one,
+  fixed as the bullets below say. A finding the change's own code or contract change causes is the
+  change's wherever it points: a changed signature whose untouched callers no longer type-check is
+  fixed in those callers, as `pre-production`'s **Target Contract** requires. An essential check
+  that already fails on the default branch is a baseline failure, handled as the bullet above says.
 
 Fix and validate every defect that remains in the task, even when it predates the task or sits
 outside the initial file set; cleanup that fixes no defect follows the size budget below.
