@@ -108,6 +108,7 @@ These run only when you ask for them by name, such as `/code-slop-doctor`.
 - [`execute-defer-scope`](.agents/skills/deferrals/execute-defer-scope/SKILL.md) — Review and resolve recorded deferred work for a chosen issue, path, or pull request.
 - [`finish-pr`](.agents/skills/git/finish-pr/SKILL.md) — Review and fix the whole pull request, then merge it.
 - [`handoff`](.agents/skills/workspace/handoff/SKILL.md) — Move the current session's work to another session with nothing lost and nothing left for the user to do.
+- [`improve-dashboards`](.agents/skills/workspace/improve-dashboards/SKILL.md) — Render, use and improve every dashboard skill until satisfied.
 - [`interface-doctor`](.agents/skills/doctors/interface-doctor/SKILL.md) — Find and fix interface copy, form and layout defects across a product, and pages that draw one thing two ways.
 - [`lock-revision`](.agents/skills/python/lock-revision/SKILL.md) — Lock the current migration revisions before a test deploy; revision changes are held unpushed until the user unlocks.
 - [`merge-now`](.agents/skills/git/merge-now/SKILL.md) — Merge finished pull requests now, then review what merged unreviewed.
@@ -179,6 +180,7 @@ An agent reaches for these on its own whenever the work calls for them.
 - [`run-site`](.agents/skills/workspace/run-site/SKILL.md) — Start an application stack and perform browser verification where applicable.
 - [`scope-of-change`](.agents/skills/execution/scope-of-change/SKILL.md) — Decide what a change fixes, carries and leaves, and which of its choices go to the user.
 - [`security-audit`](.agents/skills/review/security-audit/SKILL.md) — Security guidance for writing code and reviewing a change for exploitable vulnerabilities.
+- [`self-improvement-protocol`](.agents/skills/authoring/self-improvement-protocol/SKILL.md) — Judge and fix the agent's own interfaces, process and guidance from evidence.
 - [`session-ledger`](.agents/skills/workspace/session-ledger/SKILL.md) — Keep verified task artifacts in one private task file.
 - [`share-media`](.agents/skills/media/share-media/SKILL.md) — Show captures, option previews, spoken replies and the material a reply relies on where the user reads.
 - [`skill-pass`](.agents/skills/authoring/skill-pass/SKILL.md) — Apply the writing, placement, conflict and source checks to agent guidance.
