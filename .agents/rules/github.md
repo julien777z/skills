@@ -34,59 +34,51 @@ alwaysApply: true
   before its push and amended only while unpushed. Earlier revisions in the edit history are left
   alone and never raised with the user, unless one holds a credential that evidence shows reached
   an unauthorized recipient, a public surface or a compromised destination.
-- **Everything the user asks for during a task is the task's work and goes on the task's pull
-  request in that repository**, the session's in-progress source pull request there: a follow-up,
-  a correction, a request to move, rename or add files, and work the agent began for the task and
-  the user then asks to change. Before proposing a branch, assigning a worker or starting edits,
-  resolve that pull request from its creation or authorized-continuation receipt, carried forward
-  when a follow-up starts a new task in the same session, and verify its owner, open state and
-  scope. Distinct concerns and worker contributions stay on it, in separate commits where
-  appropriate. Open another only when none is in progress, the user directs a split, the work is
-  side work below, or a new manually dispatched workflow needs its placeholder pull request.
-  Continue another session's pull request only when the user, an invoked skill or a repository rule
-  explicitly directs it; a matching topic, existing branch, open state or recorded touch does not.
-  Other sessions' pull requests and branches stay untouched, apart from damaged local Git state a
-  skill installing shared guidance backs up and repairs.
-- **Each session keeps at most one side pull request per repository, based on the task's pull
-  request.** Side work is what the agent takes on that no user request asked for: an incidental
-  lint, type or cleanup fix, or a scope increase of its own. It and every guidance edit the session
-  makes in that repository, whether or not the user asked for the edit, go on that one side pull
-  request, in separate commits per concern: agent configuration and source share it. Its branch
-  starts from the task pull request's branch and its base is that branch, so the task's merge
-  never leaves it conflicting with work it could not see; when the task merges, retarget it onto
-  the default branch. A guidance edit therefore never rides the task's pull request unless the user
-  directs it there or the task itself is that guidance change. Agent configuration is the canonical
-  `.agents` tree: skills with their own scripts, assets and templates, rules and agent definitions,
-  plus nonbehavioral text and guidance-reference corrections in agent hooks and installers; a
-  change to execution, timing, installation, discovery, permissions or mutation scope is source
-  work, as is everything else.
-- **In a repository with no task pull request**, such as the skills repository while the task's
-  code lives elsewhere, the session's side pull request there is its agent-configuration pull
-  request, based on the freshly fetched default branch.
-- **Select the side pull request from this session's ledger**: one this session opened, as its
-  creation receipt proves, or one the user explicitly directs it to continue, verified remotely;
-  a touch or reference receipt, matching topic, branch, open state or batch record establishes
-  neither. If none qualifies, open one; later side work, guidance edits and worker tasks join it.
-  Consolidate a duplicate this session opened onto the first and close it, saying where the work
-  went; never retarget, close or fold in one this session did not open.
+- **What the user asks for during a task goes on the task's pull request in that repository**, the
+  session's open source pull request there: a follow-up, a correction, a request to move, rename or
+  add files, and work the agent did for the task. A guidance edit goes on the side pull request
+  below instead. Before proposing a branch, assigning a worker or starting edits, resolve that pull
+  request from its creation or authorized-continuation receipt, carried forward when a follow-up
+  starts a new task in the same session, and verify its owner, open state and scope. Distinct
+  concerns and worker contributions stay on it in separate commits. Open another only when none is
+  in progress, the user directs a split, the work is side work, or a new manually dispatched
+  workflow needs its placeholder pull request. Continue another session's pull request only when the
+  user, an invoked skill or a repository rule explicitly directs it; a matching topic, existing
+  branch, open state or recorded touch does not. Other sessions' pull requests and branches stay
+  untouched, apart from damaged local Git state a skill installing shared guidance backs up and
+  repairs.
+- **Each session keeps at most one side pull request per repository**, holding agent configuration
+  and source together in separate commits per concern: every guidance edit the session makes there,
+  asked for or not, unless the user directs it onto the task's pull request or the task is that
+  guidance change; and side work, which is what the agent takes on that the task does not need and
+  no user request asked for, such as an incidental lint or cleanup fix or its own scope increase.
+  - Its branch starts from and is based on the task pull request's branch, so the task's merge
+    leaves it no conflict; once the task merges, retarget it onto the default branch. In a
+    repository with no task pull request, such as the skills repository while the task's code lives
+    elsewhere, it is the session's agent-configuration pull request, based on the default branch.
+  - Select it from this session's ledger, as one it opened or one the user directs it to continue,
+    verified remotely; a touch or reference receipt, topic, branch, open state or batch record
+    establishes neither. Consolidate a duplicate this session opened onto the first and close it,
+    saying where the work went.
+  - Agent configuration is the canonical `.agents` tree: skills with their own scripts, assets and
+    templates, rules and agent definitions, plus nonbehavioral text and guidance-reference
+    corrections in agent hooks and installers; a change to execution, timing, installation,
+    discovery, permissions or mutation scope is source work.
 - **Every worker pushes to the branch of the pull request the work continues**, fetching and
   rebasing its unpushed commits onto the remote branch before each push. A branch per worker,
   integrated later, is the same split with the integration deferred.
-- **Guidance true only once a still-open source pull request merges** — describing behavior it
-  introduces, dropping guidance about something it removes, or needing a workflow or tool change
-  it carries — waits for that merge. On a side pull request based on that pull request it waits by
-  construction. Otherwise it joins the session's side pull request in its own repository and is
-  held until the source pull request merges, in this repository or another. A dependency never
-  authorizes continuing another session's pull request or opening a second side pull request.
+- **Guidance true only once a still-open source pull request merges**, describing behavior it adds
+  or removes or needing a workflow or tool change it carries, waits for it: by construction on a
+  side pull request based on it, otherwise held on the session's side pull request in its own
+  repository. A dependency never authorizes continuing another session's pull request.
 - **Where a harness or session designates one branch per repository and forbids pushing to any
   other without permission, this rule is the user's standing permission** to push to the branch of
   the pull request the work continues, selected as above (`git push origin HEAD:<that-branch>`),
   without asking. A side pull request's new branch is the designated name with `-side` appended,
   created and pushed without asking.
-- A new branch starts from the freshly fetched default branch, apart from a side pull request's,
-  which starts from the task pull request's branch, unless a skill or rule names another base or an
-  existing pull request. Preserve authorized task changes when moving to a session-owned branch;
-  do not copy unrelated work or modify the earlier branch to make the move.
+- A new branch starts from the freshly fetched default branch unless this rule, a skill or a rule
+  names another base or an existing pull request. Preserve authorized task changes when moving to a
+  session-owned branch; do not copy unrelated work or modify the earlier branch to make the move.
 - **Never commit or push agent-authored changes directly to the default branch.** Select the pull
   request as above before keeping a checkout's branch; when the checkout is on the default branch,
   detached, the wrong one of task and side, or owned by another session without a continuation
@@ -132,14 +124,12 @@ alwaysApply: true
     correction of a non-default testing reference to the maintained target the user or repository
     guidance selected, with only its necessary manifest, lockfile or reference updates, subject to
     the user's current pauses and exclusions;
-  - a pull request confined to agent configuration and based on the default branch in a repository
-    with no task pull request, static metadata included, once the gates its guidance-editing route
-    requires have passed on the head that merges and its complete file list is confirmed confined.
-    A side pull request based on a task's pull request, or one carrying source, merges only with
-    the user's authorization, like the task's code. One that adds a doctor skill waits instead for
-    the user's review together with everything in its batch, and a workflow, installer or
-    repository tooling outside a skill's folder is source work when its execution changes, even
-    under `.agents`;
+  - a pull request confined to agent configuration that the session opened on the default branch,
+    static metadata included, once the gates its guidance-editing route requires have passed on the
+    head that merges and its complete file list is confirmed confined; a side pull request opened
+    on a task's, even once retargeted, or one carrying source, merges only on the user's word. One
+    adding a doctor skill waits for the user's review with its batch, and a workflow, installer or
+    tooling outside a skill's folder is source work when its execution changes, even in `.agents`;
   - the focused revert of a pull request an agent merged by mistake, which may auto-merge.
 - **A pull request confined to deferral records, active or declined, merges without a separate
   request as soon as its records are written**, through the skill that runs a merge, with its required checks, once
@@ -158,9 +148,8 @@ alwaysApply: true
   passed while checks are still pending, for the mistaken-merge revert, or where the user
   authorizes it in the current request or an explicitly invoked skill requires it.
 - Carry every agent-configuration pull request this session selected through conflict resolution,
-  validation, readiness and, where the permission above covers it, merge. Never close one or leave
-  it open merely because it is draft or conflicts with the base, only because its change is
-  superseded or no longer wanted.
+  validation, readiness and the merge its authorization allows. Never close one or leave it open
+  merely because it is draft or conflicts with the base, only because it is superseded or unwanted.
 - **An authorized merge is not held for an excluded check**: one the current user explicitly
   waives, an established baseline failure, a non-essential check left red on findings the change
   did not write, or a hosted attempt a runner or provider interrupted with no validation failure

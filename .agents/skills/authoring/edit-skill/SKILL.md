@@ -206,14 +206,14 @@ small it looks.** Each route below is the gate set its batch passes on the head 
   result or a turn boundary.** At a checkpoint and before reporting its state, read the complete
   pull-request head and file list, not only the latest edit, and record the target repository's
   lifecycle, its current state, and its next transition. A draft confined to canonical agent
-  configuration and based on the default branch in a repository with no task pull request records
-  `agent-configuration exception` and `merge-gate` as its next action, which is invoked once its
-  route's gates and the file-list check pass, unless the GitHub rule's **Merge Authorization** holds
-  it; it never records `await user authorization` otherwise. A side pull request based on a task's
-  pull request, or one carrying source, records `await user authorization` once those gates pass.
-  Delivery continues through the Agent Sync result and the verification of generated output, and the
-  report names the merged state or a concrete documented gate with its evidence. A genuine gate
-  holds only its dependent step while repair or resolution remains active.
+  configuration that the session opened on the default branch records `agent-configuration
+  exception` and `merge-gate` as its next action, which is invoked once its route's gates and the
+  file-list check pass, unless the GitHub rule's **Merge Authorization** holds it; it never records
+  `await user authorization` otherwise. A side pull request opened on a task's pull request, before
+  or after its retarget, or one carrying source, records `await user authorization` once those gates
+  pass. Delivery continues through the Agent Sync result and the verification of generated output,
+  and the report names the merged state or a concrete documented gate with its evidence. A genuine
+  gate holds only its dependent step while repair or resolution remains active.
 
 ## Behavior
 
@@ -352,17 +352,17 @@ small it looks.** Each route below is the gate set its batch passes on the head 
      **Guidance Changes Proceed Automatically**.
    - Ambiguous scope is settled by **Identify the failure class**'s Scope Statement, shown and never asked.
 
-7. **Deliver the batch.** **Guidance Delivery** delivers the batch in this order, on the full route with `review-pass`
-   carrying **Check prose duplication** and **Brief `review-pass`'s final acceptance**. Ordinary
-   repairs and verification remain authorized throughout: resolve flagged gates under
-   `acceptance-gate`'s **Bounds** and failing skill-test runs under `test-skill`. A pull request
-   confined to agent configuration and based on the default branch in a repository with no task
-   pull request has merge authorization under the GitHub rule once its route's gate set has
-   passed, a skill's changed scripts' own checks included, unless its **Merge Authorization** holds
-   it; a side pull request based on a task's pull request, or one carrying source, merges only with
-   the user's authorization. Never ask to repeat that authorization or to continue an ordinary
-   repair. It settles no genuine unresolved product, scope, or authorization choice, which goes to
-   the user under **Bounds** while independent work continues, and it authorizes no release
+7. **Deliver the batch.** **Guidance Delivery** delivers the batch in this order, on the full route
+   with `review-pass` carrying **Check prose duplication** and **Brief `review-pass`'s final
+   acceptance**. Ordinary repairs and verification remain authorized throughout: resolve flagged
+   gates under `acceptance-gate`'s **Bounds** and failing skill-test runs under `test-skill`. A pull
+   request confined to agent configuration that the session opened on the default branch has merge
+   authorization under the GitHub rule once its route's gate set has passed, a skill's changed
+   scripts' own checks included, unless its **Merge Authorization** holds it; a side pull request
+   opened on a task's pull request, before or after its retarget, or one carrying source, merges
+   only with the user's authorization. Never ask to repeat that authorization or to continue an
+   ordinary repair. It settles no genuine unresolved product, scope, or authorization choice, which
+   goes to the user under **Bounds** while independent work continues, and it authorizes no release
    workflow.
    1. **Branch and commit.** Select the edit's pull request under the GitHub rule's **Branches
       and Pull Requests**: the session's one side pull request in the edit's repository, based on
@@ -421,16 +421,17 @@ small it looks.** Each route below is the gate set its batch passes on the head 
       that permission covers, a path outside `.agents` leaves this branch — dropped when it was
       never meant, moved to the pull request the GitHub rule selects for it when it was — and the
       new head goes back through **Brief `review-pass`'s final acceptance**. A side pull request
-      that permission does not cover is reported for the user's review once its gates pass.
-      Everything in `.agents`, merge it through `merge-gate` with the head `acceptance-gate`
-      accepted, which for a pull request in `review-pass`'s **Combined Review** set, and no other,
-      is also the head that review accepted — but first
-      ask whether any line it adds or drops is true only once a still-open source pull request
-      merges. Select where dependent guidance goes under the GitHub rule's **Branches and Pull Requests**,
-      and report any hold under its **Merge Authorization**. Otherwise a pull request carrying a
-      skill change merges once **Hold each changed output to its concrete example** found every changed output matching its concrete example, and
-      one carrying only rules has no example to match and merges once **Run `validate_sources.py check`** through **Run one `test-skill` round** pass, unless their **Merge
-      Authorization** holds it. Report a held pull request for the user's review.
+      that permission does not cover is reported for the user's review once its gates pass and never
+      merged here. Otherwise, with everything in `.agents`, merge it through `merge-gate` with the
+      head `acceptance-gate` accepted, which for a pull request in `review-pass`'s **Combined
+      Review** set, and no other, is also the head that review accepted — but first ask whether any
+      line it adds or drops is true only once a still-open source pull request merges. Select where
+      dependent guidance goes under the GitHub rule's **Branches and Pull Requests**, and report any
+      hold under its **Merge Authorization**. Otherwise a pull request carrying a skill change
+      merges once **Hold each changed output to its concrete example** found every changed output
+      matching its concrete example, and one carrying only rules has no example to match and merges
+      once **Run `validate_sources.py check`** through **Run one `test-skill` round** pass, unless
+      their **Merge Authorization** holds it. Report a held pull request for the user's review.
    8. **Nothing is copied by hand.** The skills repository is the only copy of a shared skill;
       sessions receive a merged edit through the refresh `merge-gate`'s **After Agent Sync** requires, never through a copy
       placed in another repository or install. A skill that reads generically but was written into one repository's `.agents` is

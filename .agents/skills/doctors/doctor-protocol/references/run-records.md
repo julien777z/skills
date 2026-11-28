@@ -26,8 +26,8 @@ is written from the repository root.
 run:
   doctor: "<doctor name>"
   scope: "<whole | the selection as the caller gave it>"
-  base: "<commit of the default branch the run's branch started from>"
-  branch: "<the run's branch for each kind>"
+  base: "<commit the run's branch started from>"
+  branch: "<the run's branch, and the session's side pull request's branch where it has one>"
   route: "<small | whole>"
   plan_shown: "<time the plan was shown, with `no open decision` or the decisions open then>"
   stages:
