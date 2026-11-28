@@ -133,7 +133,7 @@ or `~3h 10 min`.
   "Context", why the plan exists and what it starts from, one item per point; "Steps", one item per
   step titled "<n>. <step title>", `detail` what the step changes and how, `meta` "~<n> min" and
   `tone` its status's tone as the progress segments are, and `tag`, only when it has something to
-  say, what a blocked step waits on or Skipped, with "· added by agent" after it for a step whose
+  say, what a blocked step waits on, named as on the Plan tree, or Skipped, with "· added by agent" after it for a step whose
   origin is `agent`, or "Added by agent" alone;
   "Decisions", each choice the plan settled with the option taken and why; "Verification", how
   the result will be checked; and "After the plan", what it leaves to the user, such as reviewing
@@ -141,7 +141,7 @@ or `~3h 10 min`.
 - **`notice`**, only while something waits on the user: `tone` `warning`, `title` "<n> question(s)
   waiting on you" when a question is open, and `body` the first open question in a sentence and
   the step it blocks; otherwise, while a step is blocked, `tone` `critical`, `title` "<step title> is
-  blocked" and `body` what it waits for.
+  blocked" and `body` what it waits for, named as on the Plan tree.
 - **`board` "Work"**, three columns, with Up next and Done setting `page_size` 5 so each shows five cards at a time:
 
 | Column | `tone` | Cards |
