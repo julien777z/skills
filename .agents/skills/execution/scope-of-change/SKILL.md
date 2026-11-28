@@ -46,9 +46,10 @@ theirs.
   a request, apart from that rejection.
 - **Only essential checks have to pass: the test suites, and only for what the change answers for,
   and every check the repository requires before a merge.** A required check, such as one branch
-  protection lists, is essential for that pull request whatever it checks: its findings are fixed so
-  the pull request can merge, on it or wherever the side-work and comparable-size rules below place
-  them, never left red. A non-essential check, one the repository does not require, such as lint,
+  protection lists, is essential for that pull request whatever it checks: its findings are fixed on
+  that pull request at any size, never deferred and never sent to a side pull request, so it can
+  merge, apart from a baseline failure or an interrupted hosted attempt, which **Encountered
+  Issues** classifies. A non-essential check, one the repository does not require, such as lint,
   formatting or other static analysis, that fails on findings in code the change did not write may
   stay red. That holds whether the findings predate the change or the change brought them to light,
   such as a new lint rule meeting existing code or a changed-file lint run meeting older code in a
