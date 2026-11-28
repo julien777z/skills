@@ -157,9 +157,9 @@ small it looks.** Each route below is the gate set its batch passes on the head 
   repair goes back to a fresh gate over its delta and reruns its scenario. A batch that stops
   qualifying, when an entry joins it or a repair grows it, moves to the full route and keeps
   every verdict on what did not change.
-- **Full route.** Every other batch, through **Check the sources** to **Conclude the skill test**
-  below. One whose head its invoking workflow already reviewed and accepted skips **Review the
-  batch**'s `review-pass`, as the [edit criteria](references/edit-criteria.md)'s **Already Reviewed Batches** says.
+- **Full route.** Every other batch, through **Check the sources** to **Review the tested
+  batch once** below. One whose head its invoking workflow already reviewed and accepted skips **Review the
+  tested batch once**'s `review-pass`, as the [edit criteria](references/edit-criteria.md)'s **Already Reviewed Batches** says.
 - A batch that changes no instruction a reader follows, as `test-skill`'s **When It Runs**
   recognizes one, skips the skill test. It still passes the source check and one independent
   `acceptance-gate` read of its delta, briefed as **Brief `review-pass`'s final acceptance** says,
@@ -170,19 +170,23 @@ small it looks.** Each route below is the gate set its batch passes on the head 
    source pull request. The steps below
    cover the agent-configuration pull request.
 2. **Check the sources** as **Run `validate_sources.py check`** says.
-3. **Review the batch.** Run `review-pass` once over the batch, naming every head it carries. Give it each entry's Scope
-   Statement, with the user's words and evidence, as the intent statement, the brief **Brief
-   `review-pass`'s final acceptance** describes for its reviewer and acceptance gate, and **Check
-   prose duplication**'s checks for its simplification pass. Once that simplification pass is
-   done, start **Run one `test-skill` round** on the pushed head, beside review round 1 and never
-   behind it: its scenario writing, environment and readers need the failure class and the diff,
-   not the accepted head.
-4. **Conclude the skill test** on every head `review-pass` accepted: `test-skill` carries each
-   result whose inputs that head left unchanged and reruns the rest. It takes every entry's
-   reproduction scenario as an input, entries that share a failure class grouped into one
-   scenario; then **Hold each changed output to its concrete example** through **Read the merged text back before using it**. A guidance repair the skill-test round makes, here or on a source pull
-   request under **Resume the batch**, goes back through `review-pass` over its delta, and the skill-test round reruns
-   every scenario `test-skill` does not carry forward, on the head that review accepts. A batch
+3. **Test the batch first.** Run **Run one `test-skill` round** on the pushed head before any
+   review: it takes every entry's reproduction scenario as an input, entries that share a failure
+   class grouped into one scenario, and its scenario writing, environment and readers need the
+   failure class and the diff, never a reviewed head. A guidance repair the round makes, here or on
+   a source pull request under **Resume the batch**, is pushed once the **Pre-Push Gate** passes
+   and only the scenarios it invalidated rerun on that head at once; no repair waits for a review
+   or a gate before its rerun, since every repair of the round is reviewed together in the next
+   step. A round still failing after `test-skill`'s round limit goes to `council` as that skill
+   says.
+4. **Review the tested batch once.** Once the skill test passes, run `review-pass` once over the
+   batch at that head, naming every head it carries and the round's repairs among them. Give it
+   each entry's Scope Statement, with the user's words and evidence, as the intent statement, the
+   brief **Brief `review-pass`'s final acceptance** describes for its reviewer and acceptance gate,
+   and **Check prose duplication**'s checks for its simplification pass. Then **Hold each changed
+   output to its concrete example** through **Read the merged text back before using it**. A fix
+   that review or its gate makes reruns only the scenarios `test-skill` does not carry forward, on
+   the head that review accepts. A batch
    in the set `review-pass`'s **Set and timing** defines merges at a head its **Combined Review**
    accepted.
 5. **Record each stage.** After each completed or failed stage, record its exact head, stage result, and first

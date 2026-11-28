@@ -188,8 +188,9 @@ the invocation supplies all of these for the batch's complete `.agents` diff at 
 
 The route then runs **Run `validate_sources.py check`** and
 **Run one `test-skill` round** for the guidance the diff changed, started on that head, and no
-`review-pass`. A repair the skill-test round makes goes through `review-pass` over its delta, as
-**Guidance Delivery**'s **Conclude the skill test** says, and a head that moved since the acceptance for any other reason
+`review-pass`. The repairs the skill-test round makes are rerun at once and go through one
+`review-pass` over their delta once the round passes, as **Guidance Delivery**'s **Test the batch
+first** says, and a head that moved since the acceptance for any other reason
 is a batch like any other. The pull request then merges or holds as the handing workflow's
 delivery rule and the GitHub rule's **Merge Authorization** say.
 
@@ -216,7 +217,7 @@ one's answer.
 
 Read every entry in the frozen batch and resume at its recorded first
 nonterminal stage, rebuilding a lost or truncated entry from its backup
-comment as `session-ledger` accepts it; the comment's existence records that the correction was admitted under **Recording During A Task**, its Intended behavior stands as the recovered intent for **Guidance Delivery**'s **Review the batch** beside the user's words, taken from the conversation where they survive and otherwise named as missing in that intent, never replaced by that paraphrase, and **Run one `test-skill` round**
+comment as `session-ledger` accepts it; the comment's existence records that the correction was admitted under **Recording During A Task**, its Intended behavior stands as the recovered intent for **Guidance Delivery**'s **Review the tested batch once** beside the user's words, taken from the conversation where they survive and otherwise named as missing in that intent, never replaced by that paraphrase, and **Run one `test-skill` round**
 rebuilds the reproduction scenario from its failure class and invariant, with anything else
 unrecoverable handled as `session-ledger` incomplete retrieval. An entry with no recorded commit
 applies its edits under **Write the edit** and **Split a multi-item request**, on the branch **Branch and commit** selects; one with a

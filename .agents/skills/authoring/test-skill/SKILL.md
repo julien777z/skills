@@ -73,7 +73,10 @@ confuse those conclusions.
 
 ## Workflow
 
-Run after `code-simplify` completes its pass.
+Run on the pushed head before the edit's review and acceptance gate, which then read the tested
+result once. A repair a round makes is pushed and its invalidated scenarios rerun at once, never
+held for a review or gate first; the caller reviews every repair of the round together after it
+passes.
 
 1. **Have someone other than the edit's author define the behavior.** Record the observed miss, the
    outcome the user requires and the real case the miss came from. One fresh scenario writer,
