@@ -175,11 +175,14 @@ Dashboards look alike because they are built alike:
 - **The page is stock shadcn components on the neutral theme.** The navbar is text links with no
   icons or title, inactive ones muted and the open one in the foreground over a 2 px underline at
   the bar's bottom edge, never a filled background. A card is the background's color with a thin
-  border and `rounded-xl`, never a fill, gradient or shadow of its own; a section is a `Card` with
-  its plain semibold title and description in the card header, its count a muted secondary `Badge`
-  beside the title. A diagram's nodes are square boxes with a thin border, a semibold name and a
-  small muted detail line, its edge labels plain text. A table is a `Table` in a rounded bordered frame under a muted
-  header row, a pill an outline `Badge` whose tone shows only as a dot or icon inside it, apart from
+  border and `rounded-lg`, never a fill, gradient or shadow of its own; a section is one such `Card`
+  with its plain semibold title and description in the card header, its count a muted secondary
+  `Badge` beside the title, and everything inside it flat: no bordered or rounded box within a
+  section, its items rows split by thin dividers and a board's columns plain columns under a
+  divided heading row. Type is compact: 16 px section titles, 14 px body, 12–13 px muted secondary
+  lines, about 20 px card padding and 10 px row padding. A diagram's nodes are square boxes with a
+  thin border, a semibold name and a small muted detail line, its edge labels plain text. A table is
+  a frameless `Table` under a muted header row, a pill an outline `Badge` whose tone shows only as a dot or icon inside it, apart from
   the pull-request pill, and tabs, dialogs, collapsibles, tooltips, separators and the phone-width
   page menu are `Tabs` with the line variant, `Dialog`, `Collapsible`, `Tooltip`, `Separator` and
   `Sheet`. Spacing: `gap-4 md:gap-6` between parts, `px-4 sm:px-6 lg:px-10` at the page's sides and

@@ -5,6 +5,7 @@ const TEXT_VARIANTS = {
   size: {
     xs: 'text-xs',
     sm: 'text-sm',
+    detail: 'text-[0.8125rem] leading-5',
     figure: 'text-2xl @[250px]/card:text-3xl',
     title: 'text-2xl tracking-tight sm:text-3xl',
   },

@@ -24,8 +24,8 @@ function StatCard({
   children?: ReactNode;
 }): ReactNode {
   return (
-    <Card className={cn('@container/card shadow-none', wide && '@xl/main:col-span-2')}>
-      <CardHeader>
+    <Card className={cn('@container/card gap-4 rounded-lg py-5 shadow-none', wide && '@xl/main:col-span-2')}>
+      <CardHeader className="px-5">
         <CardDescription>
           <RichText text={label} />
         </CardDescription>
@@ -40,7 +40,7 @@ function StatCard({
           </CardAction>
         )}
       </CardHeader>
-      {children && <CardFooter className="flex-col items-stretch gap-1.5 text-sm">{children}</CardFooter>}
+      {children && <CardFooter className="flex-col items-stretch gap-1.5 px-5 text-sm">{children}</CardFooter>}
     </Card>
   );
 }

@@ -46,11 +46,11 @@ function ListRow({ icon, title, detail, aside, body }: ListRowContent): ReactNod
         </Stack>
       )}
       <Stack grow gap="xs">
-        <Text weight="medium" breakAnywhere>
+        <Text size="sm" weight="medium" breakAnywhere>
           {title}
         </Text>
         {detail && (
-          <Text size="sm" tone="muted" breakAnywhere>
+          <Text size="detail" tone="muted" breakAnywhere>
             {detail}
           </Text>
         )}

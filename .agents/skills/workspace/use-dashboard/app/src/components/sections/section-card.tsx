@@ -94,9 +94,13 @@ export function SectionCard({
   return (
     <Card
       {...sectionAnchor(title)}
-      className={cn('@container/card min-w-0 scroll-mt-20 shadow-none', wide && 'col-span-full', flush && 'gap-4 pb-2')}
+      className={cn(
+        '@container/card min-w-0 scroll-mt-20 gap-5 rounded-lg py-5 shadow-none',
+        wide && 'col-span-full',
+        flush && 'gap-3 pb-2',
+      )}
     >
-      <CardHeader>
+      <CardHeader className="px-5">
         <CardTitle className="flex items-center gap-2">
           <h2>
             <RichText text={title} />
@@ -114,7 +118,7 @@ export function SectionCard({
           </CardAction>
         )}
       </CardHeader>
-      <CardContent className={cn(flush && 'px-0')}>{children}</CardContent>
+      <CardContent className={cn('px-5', flush && 'px-0')}>{children}</CardContent>
     </Card>
   );
 }
