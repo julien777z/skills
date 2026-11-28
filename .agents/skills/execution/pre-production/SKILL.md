@@ -491,14 +491,15 @@ the issue should be ignored.
   or **Product State** establishes the affected records are disposable. A value read at request time
   from a related record some records lack, such as a time zone read from an optional preferences
   record, is one of these: the value is made required where the domain places it, on the record that
-  needs it or on the related record and the link to it, as the bullet above says. Neither what the
-  agent builds nor any option, plan or recommendation it puts to the user keeps the column nullable
-  for records without the value, proceeds without it, sends a provider less than the provider
-  requires, fills it at request time with a value that is not the record's own, such as another
-  actor's, or refuses or skips the records that lack it until they gain it, an error raised for them
-  included. Each is legacy support for those records. The migration writes every row's value as the
-  next bullet says. Released user data with no authoritative source is a retention question for the
-  user, asked before the design is offered, as **Product State** says.
+  needs it or on the related record and the link to it, the column aligned as the read-path bullet
+  above says. Neither what the agent builds nor any option, plan or recommendation it puts to the
+  user keeps the column nullable for records without the value, proceeds without it, sends a
+  provider less than the provider requires, fills it at request time with a value that is not the
+  record's own, such as another actor's, or refuses or skips the records that lack it until they
+  gain it, an error raised for them included. Each is legacy support for those records. The
+  migration writes every row's value as the next bullet says. Released user data with no
+  authoritative source is a retention question for the user, asked before the design is offered, as
+  **Product State** says.
 - For retained values, use the authoritative source where one exists. Where none exists, use a
   type-valid placeholder only when it expresses a legitimate domain state, or when the records are
   disposable pre-production data and the placeholder is a value describing the record, such as a
