@@ -169,12 +169,11 @@ sign-in genuinely cannot complete for a change that needs the real screen, repor
 not done.
 Sign in in the browser `use-browser` selected, keeping passwords and one-time tokens out of
 command arguments and transcripts. In the agent's headless browser, send each step that carries a
-secret to `agent-browser batch` as JSON on standard input and discard its standard output, which
-echoes an opened URL: the `open` of a one-time sign-in link, or the `fill` of a one-time token or
-of the test identity's password from the source `proton-pass` names for it. A signed-in
-session to reuse is the task's own headless session. In the user's browser, use the
-harness's credential entry or handoff route, and reuse an available signed-in session of the
-required identity. Never read saved passwords, cookies, local storage or session files.
+secret as `use-browser` says, the test identity's password taken from the source `proton-pass`
+names for it. A signed-in session to reuse is the task's own headless session. In the user's
+browser, use the harness's credential entry or handoff route, and reuse an available signed-in
+session of the required identity. Never read saved passwords, cookies, local storage or session
+files.
 
 ### Drive the change
 
