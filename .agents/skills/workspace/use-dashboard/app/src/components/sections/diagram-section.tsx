@@ -222,19 +222,21 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
                 <Button
                   variant="ghost"
                   size="icon-sm"
-                  aria-label="Download diagram as SVG"
+                  aria-label="Download diagram as PNG"
                   onClick={() => {
                     const svg = figure.current?.querySelector('svg');
 
                     if (svg) {
-                      downloadDiagram(svg, diagramFileName(section.title));
+                      downloadDiagram(svg, diagramFileName(section.title)).catch((error: unknown) =>
+                        console.error(error),
+                      );
                     }
                   }}
                 >
                   <Download />
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>Download diagram as SVG</TooltipContent>
+              <TooltipContent>Download diagram as PNG</TooltipContent>
             </Tooltip>
           </TooltipProvider>
         )

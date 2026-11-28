@@ -257,11 +257,14 @@ export function diagramFileName(title: string): string {
 
   const page = document.querySelector('[aria-current="page"]')?.textContent ?? '';
 
-  return `${[slug(document.title), slug(page), slug(title)].filter(Boolean).join('-') || 'diagram'}.svg`;
+  return `${[slug(document.title), slug(page), slug(title)].filter(Boolean).join('-') || 'diagram'}.png`;
 }
 
-/** Save a drawn diagram as a standalone SVG file, with the page's label styles and background baked in. */
-export function downloadDiagram(svg: SVGSVGElement, fileName: string): void {
+const PNG_SCALE: number = 2;
+
+const MAX_CANVAS_SIDE: number = 16384;
+
+function standaloneSvg(svg: SVGSVGElement): { markup: string; width: number; height: number } {
   const copy = svg.cloneNode(true) as SVGSVGElement;
   const originals = svg.querySelectorAll('*');
   const copies = copy.querySelectorAll('*');
@@ -299,7 +302,50 @@ export function downloadDiagram(svg: SVGSVGElement, fileName: string): void {
   copy.style.removeProperty('max-width');
   copy.style.removeProperty('width');
 
-  const blob = new Blob([new XMLSerializer().serializeToString(copy)], { type: 'image/svg+xml' });
+  return { markup: new XMLSerializer().serializeToString(copy), width, height };
+}
+
+function loadImage(source: string): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+
+    image.onload = () => resolve(image);
+    image.onerror = () => reject(new Error('The diagram could not be drawn as an image'));
+    image.src = source;
+  });
+}
+
+/** Save a drawn diagram as a PNG at twice its size, with the page's fonts, label styles and background baked in. */
+export async function downloadDiagram(svg: SVGSVGElement, fileName: string): Promise<void> {
+  const { markup, width, height } = standaloneSvg(svg);
+  const bytes = new TextEncoder().encode(markup);
+  let binary = '';
+
+  for (const byte of bytes) {
+    binary += String.fromCharCode(byte);
+  }
+
+  const image = await loadImage(`data:image/svg+xml;base64,${btoa(binary)}`);
+  const scale = Math.min(PNG_SCALE, MAX_CANVAS_SIDE / width, MAX_CANVAS_SIDE / height);
+  const canvas = document.createElement('canvas');
+
+  canvas.width = Math.round(width * scale);
+  canvas.height = Math.round(height * scale);
+
+  const context = canvas.getContext('2d');
+
+  if (!context) {
+    throw new Error('Canvas 2D is unavailable to save the diagram');
+  }
+
+  context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+  const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/png'));
+
+  if (!blob) {
+    throw new Error('The diagram could not be encoded as PNG');
+  }
+
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
 
