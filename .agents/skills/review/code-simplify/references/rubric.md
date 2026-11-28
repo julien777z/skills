@@ -77,15 +77,23 @@ review against an independent search:
 - **New** names what each candidate found cannot do; with none found, the search terms are the
   evidence. A receipt that names no search is no receipt.
 
-Before deciding whether to create a file, read the closest existing files and their callers.
-Treat similar names or overlapping responsibilities as a warning to check those files first.
-Record which existing file can own the addition and whether its current name describes the
-combined responsibility. When its name covers only part of the resulting work, rename it for the
-shared responsibility and update its callers. Handle any further consolidation under **Scope**.
-Create a separate file only when the receipt names the distinct responsibility or boundary it
-serves, such as a UI component, dependency boundary, or framework-required path. Report the
-candidates and why the file stands alone. Search within the file kind the repository requires,
-such as a model module for a model declaration.
+Before deciding whether to create, split or rename a file, read the closest existing files and
+their callers; a rename runs this check again. Treat similar names or overlapping responsibilities
+as a warning to check those files first. Record which existing file can own the addition and
+whether its current name describes the combined responsibility. When its name covers only part of
+the resulting work, rename it for the shared responsibility and update its callers. Handle any
+further consolidation under **Scope**. Create a separate file only when the receipt names the
+distinct responsibility or boundary it serves, such as a UI component, dependency boundary, or
+framework-required path. What the code does decides it, never who calls it: staff-only, internal or
+one page's use is no boundary, so `invoices.py` takes the staff listing it serves rather than a
+`staff_invoices.py` beside it. A file past a length limit is first refactored shorter, then has one
+whole responsibility moved to an existing owner, broadened and renamed if needed, and only as a
+last resort becomes a folder named for the same responsibility, holding modules named for what each
+holds, such as `invoices/` with `pricing.py` and `delivery.py`; a caller- or variant-named sibling
+file is never the answer. Files a framework or the repository's layout requires, such as routes,
+migrations or one test class per file, keep that layout. Report the candidates and why the file
+stands alone. Search within the file kind the repository requires, such as a model module for a
+model declaration.
 
 A workaround, or a design that changes a shared operation, guard, contract, subsystem, runtime
 boundary or independent consumer, also writes all three fields below, in the task record or
