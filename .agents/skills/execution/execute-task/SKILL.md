@@ -71,14 +71,16 @@ then apply **Product Constraints** and **Task Authorization**.
 
 Before choosing a design, and before the first edit on a path that takes no plan, apply
 `code-simplify`'s **Before Choosing A Design** check to everything the change will add, split or
-rename, and write its receipt in the task record, even for a small follow-up, a bug fix or a
-worker's task with no plan of its own; only an edit that adds, splits and renames nothing skips it.
+rename, and write its receipt line in the task record, the `plan` entry `session-ledger` keeps or,
+with none, a message before the edit, even for a small follow-up, a bug fix or a worker's task
+with no plan of its own; only an edit that adds, splits and renames nothing skips it.
 
 ### When A Plan Is Needed
 
 - **Every source or product change gets a plan shown to the user before its first edit, except a
   trivial change or a small, clearly specified follow-up to active work.** A trivial change has no
-  design choice in it: a typo, a one-line fix, a rename the user named. A small follow-up directly
+  design choice in it: a typo, a one-line fix, a symbol rename the user named; a file rename still
+runs the design check above first. A small follow-up directly
   extends the active task using an established behavior or component, with the user naming the
   desired outcome and no unresolved material product, scope, security or disclosure choice. Both
   go straight to **Execution**: the request authorizes their ordinary implementation and

@@ -28,7 +28,11 @@ fix, a delegated worker's task — and only an edit that adds, splits and rename
 typo fix, skips it.
 
 Make the search and write its receipt in the task record before the edit, as the rubric's
-[Reuse and removal](references/rubric.md#reuse-and-removal) says.
+[Reuse and removal](references/rubric.md#reuse-and-removal) says. A file is placed by what its code
+does, never by who calls it, so a test or module named for its caller is never the answer; a file
+past a length limit is refactored shorter, then has one responsibility moved to an existing owner,
+and becomes a folder only as a last resort. A rename runs the search again, the one the user names
+included, and its receipt names the owners the search found and the report says what it found.
 
 In planning, read and report evidence only. Apply the check again when a follow-up changes the
 proposed mechanism.
