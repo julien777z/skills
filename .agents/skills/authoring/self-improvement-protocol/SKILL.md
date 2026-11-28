@@ -65,6 +65,14 @@ an audit of a product's repository is a doctor skill's work.
 - Every guidance fix runs through the guidance-editing workflow, written for the class of the flaw
   as its Scope Statement sets, and placed as `skill-pass`'s **Where Guidance Lives** says.
 
+## Delivery
+
+The guidance fixes a pass makes go on the session's self-improvement pull request, held as the
+GitHub rule's **Merge Authorization** says: open it as a draft labeled `self-improvement` with the
+first fix, based on the branch the fixed guidance lives on, and push every later fix of the session
+to it. A change the user asks for during the pass is not a self-improvement fix and takes its usual
+route.
+
 ## Iterate
 
 Fix, re-render or re-run, and judge again. Stop when a whole pass finds nothing worth changing.

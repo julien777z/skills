@@ -113,6 +113,12 @@ alwaysApply: true
   every guidance edit the trial work makes rides that pull request, a rule governing the trial
   itself included, and the user's word on the capability decides all of it. Keeping it ends the
   hold and removes the label, and dropping it closes the pull request this session opened.
+- **A self-improvement pull request is held until the user runs `finish-pr` on it.** It carries the
+  fixes an agent found in its own work under `self-improvement-protocol`, never a change the user
+  asked for: one draft per session and repository, labeled `self-improvement`, apart from the task's,
+  the side and the session's agent-configuration pull requests, and every later self-improvement
+  fix of the session joins it. No review, gate, skill test, standing permission or auto-merge runs
+  on it until the user runs `finish-pr` on it, which starts them and merges once they pass.
 - **Classify the complete actual diff against the standing permissions** before reporting a pull
   request whose merge no instruction authorizes, by what it changes, never by a filename,
   extension, line count or change label, and never remove genuine edits to qualify. Each
