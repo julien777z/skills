@@ -1,6 +1,6 @@
 ---
 name: use-browser
-description: Show the user a page the agent made, such as a dashboard or report, in their browser, reloading its tab in the task group; or operate a browser — by default a headless one the agent runs itself, and the harness's or an MCP browser only when the user asks for it or gives a specific URL to inspect or debug — to open websites, fill forms, click, take screenshots, extract data, test web apps, QA and bug hunts, sign in, or automate Electron apps and Slack. Use whenever a task opens, shows, reloads or controls a browser page, before selecting a browser or binding a task tab, and when a browser or app surface reports an inventory or availability error.
+description: Show the user a page the agent made, such as a dashboard or report, in their browser, reloading its task tab; or operate a browser — by default a headless one the agent runs itself, and the harness's or an MCP browser only when the user asks for it or gives a specific URL to inspect or debug — to open websites, fill forms, click, take screenshots, extract data, test web apps, QA and bug hunts, sign in, or automate Electron apps and Slack. Use whenever a task opens, shows, reloads or controls a browser page, before selecting a browser or binding a task tab, and when a browser or app surface reports an inventory or availability error.
 short_description: 'Show a local page in the user''s browser, or operate a browser.'
 allowed-tools: Bash(agent-browser:*), Bash(npx agent-browser:*)
 ---
@@ -18,7 +18,7 @@ For a local page the user should look at, including a served page or an HTML fil
 such as a rendered dashboard. A `file://` preview needs the selected browser on the machine that holds
 the file; when it is not, such as a cloud session, serve the page to that browser instead.
 
-Open the page in a task group in the user's browser, selected and bound as **Selecting And Binding
+Open the page in a task tab in the user's browser, selected and bound as **Selecting And Binding
 A Tab** says for the user's browser. If a task tab already shows it, reload that tab. Bring the
 preview to the front only when the user asks to see it. If that browser cannot load the file, use
 a local URL served to it or report the preview blocker.
