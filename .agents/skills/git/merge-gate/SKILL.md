@@ -223,7 +223,7 @@ test jobs run once, on the head about to merge.
    current-user waiver naming the test or check, is excluded. Preserve established baseline classifications;
    classify a newly encountered possible baseline under `scope-of-change`'s **Encountered Issues**,
    without reentering that skill's active run. A non-essential check failing only on findings
-   `scope-of-change`'s essential-checks bullet leaves red is an exclusion too. Record an exclusion's
+   `scope-of-change`'s essential-checks bullet leaves red on a record ground is an exclusion too. Record an exclusion's
    evidence, remove it from required coverage, and do not repair, rerun, or wait for it. Apply
    **Validation Exclusions**' interrupted-check exclusion automatically: record a qualified check as skipped
    and do not rerun or wait for a green hosted result. For a canceled or otherwise interrupted
