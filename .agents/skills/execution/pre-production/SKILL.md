@@ -40,6 +40,14 @@ Build the clean target contract instead of preserving transitional behavior.
   consumer reads that one representation. A branch, probe, fallback, or helper that accepts an
   earlier representation downstream is compatibility: replace it by updating the adapter and its
   consumers.
+- **A fact about an actor or entity reaches a service on the operation for the resource it applies
+  to.** A consent, an identity or a setting a provider needs is read from the one place the domain
+  keeps it and sent where that resource is created or updated, never added as a field of an
+  operation on a different or child resource that happens to need it first: a member's accepted
+  newsletter terms go on the request that opens the member's mailing-list subscription, never on
+  the request that adds a delivery address, so any later feature that needs the same acceptance
+  reuses it. A value describing the operation's own resource, such as an address's lines on its
+  create, stays on that operation.
 - Keep resilience within the current supported contract: error handling, browser support, empty
   states, and provider-failure behavior the released product needs. Supporting an obsolete owned
   contract or revision is a compatibility shim even when described as resilience or repair.
