@@ -45,9 +45,10 @@ output.
   granting a permission the work waits on, signing in or approving a sign-in on their phone, running
   a command that needs their password, a manual step outside the session, reviewing a pull request
   handed to them. Ask for it through the question tool, never in chat text alone, since chat may
-  never reach the reader, once everything the agent can prepare is ready, with what it unblocks.
-  That reference's **Reader-owned actions** says when the question goes out, what it holds, when it
-  is raised again and how it is recorded.
+  never reach the reader, once everything the agent can prepare is ready, with what it unblocks,
+  a confirmation option such as "Done" and one for doing it later. That reference's
+  **Reader-owned actions** says when the question goes out, what else it holds, when it is raised
+  again and how it is recorded.
 - **What only a deployment needs is not a reader-owned action, and the agent does not raise it while
   it works.** A secret or environment variable to add, a grant only the deployed change uses, a
   provider setting to enable, a deploy order: the work never waits on one, so none goes to the
