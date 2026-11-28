@@ -183,7 +183,6 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
         drawing.svg.style.width = `${Math.round(drawing.width)}px`;
 
         target.replaceChildren(drawing.svg);
-        target.scrollLeft = (target.scrollWidth - target.clientWidth) / 2;
 
         function openDetails(details: Section, element: HTMLOrSVGElement, reference?: string) {
           opener.current = element;
@@ -225,7 +224,7 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
           )}
           <div
             ref={figure}
-            className="grid justify-items-center overflow-x-auto [&_.nodeLabel_a]:underline [&_.nodeLabel_b]:font-semibold [&_.nodeLabel_button]:underline [&_.nodeLabel_small]:text-muted-foreground [&_.cluster-label_div]:!max-w-none [&_.cluster-label_div]:!whitespace-nowrap [&_.cluster-label_foreignObject]:overflow-visible [&_svg]:h-auto"
+            className="grid justify-items-center-safe overflow-x-auto [&_.nodeLabel_a]:underline [&_.nodeLabel_b]:font-semibold [&_.nodeLabel_button]:underline [&_.nodeLabel_small]:text-muted-foreground [&_.cluster-label_div]:!max-w-none [&_.cluster-label_div]:!whitespace-nowrap [&_.cluster-label_foreignObject]:overflow-visible [&_svg]:h-auto"
           />
           {section.legend && (
             <Stack direction="row" gap="lg" wrap>
