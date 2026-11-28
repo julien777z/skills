@@ -135,7 +135,7 @@ pages, in order:
 - **Loops** (`list`). One `tree`: each workflow, then its rounds or groups, then the agents or
   assignments inside them, each broken down as **What happened** says. Every entry's `figure` is its
   time, or for work up next its estimate in `meta`; its `tone` and any `status` are as **States**
-  says; the model a reviewer ran on is its `tag`, named as `use-dashboard` names a model, and its
+  says; the model an agent ran on is its `tag`, named as `use-dashboard` names a model, and its
   label names its role without that model.
 - **Timeline** (`calendar`). First a `timeline` of when the work ran: one lane per top-level
   workflow, a repeated workflow labeled apart by its target, such as each review pass by its pull
