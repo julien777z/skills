@@ -97,8 +97,9 @@ Build the clean target contract instead of preserving transitional behavior.
   field through one mapping that covers every variant the domain has: a club whose members are
   people or organizations sends the provider `individual` or `business` from each member's own
   kind, never `business` for all. Its test asserts the outgoing request at the provider boundary
-  for each variant, since a mocked gateway and a provider's test mode accept a wrong value. A constant the provider fixes for every caller, such as the one currency a
-  single-currency product charges in, stays a constant.
+  for each variant, since a mocked gateway and a provider's test mode accept a wrong value. A
+  constant the provider fixes for every caller, such as the one currency a single-currency product
+  charges in, stays a constant.
 
 ## Retained Data
 
