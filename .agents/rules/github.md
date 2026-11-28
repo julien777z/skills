@@ -58,7 +58,8 @@ alwaysApply: true
   configuration and the edit is a guidance follow-up or correction the user asks for; a user asking
   for a guidance edit alongside a task whose pull request carries source, in the same request
   included, does not put it there. A guidance edit recorded after its batch froze waits for the next
-  batch wherever it goes, as `session-ledger`'s **Guidance Batches** says. Side work is fixed on the
+  batch wherever it goes, apart from a self-improvement fix, as `session-ledger`'s **Guidance
+  Batches** says. Side work is fixed on the
   side pull request during the task as `scope-of-change` says, apart from cleanup a record ground
   holds, which is recorded; a noticed defect, deprecation or printed warning is never recorded, left
   or offered.

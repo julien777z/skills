@@ -50,7 +50,7 @@ export function relativeTime(iso: string, now: number): string {
   }
 
   if (minutes < 60) {
-    return `Updated ${minutes}m ago`;
+    return `Updated ${minutes} min ago`;
   }
 
   if (minutes < MINUTES_PER_DAY) {
