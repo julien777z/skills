@@ -264,14 +264,14 @@ Otherwise write a decision-complete remediation plan from the ledger.
     depend on an answer wait for it.
   - **A departure from a rule rides the rule change.** Where the run judges a shape a rule
     prescribes or exempts worse than the departure, as `scope-of-change`'s **Trade-Offs Are
-    Surfaced, Never Enforced** asks of a rule, the rule change goes on the session's side pull request in the
-    rule's repository. Where that is the run's own repository, the source entry that departs under
-    it goes on the same side pull request, the one source entry the GitHub rule's **Branches and
-    Pull Requests** would otherwise keep on the run's pull request, and the two merge together on
-    the user's word. Where the rule lives in another repository, the source entry goes on the run's
-    repository's side pull request, held there until the rule change merges. Either way the run's
-    pull request keeps the rule's form, since code that departs from a rule still in force reads as
-    a defect to the next run.
+    Surfaced, Never Enforced** asks of a rule, the rule change goes on the session's side pull
+    request in the rule's repository. Where that is the run's own repository, the source entry that
+    departs under it goes on the same side pull request, the one source entry the GitHub rule's
+    **Branches and Pull Requests** would otherwise keep on the run's pull request, and the two merge
+    together on the user's word. Where the rule lives in another repository, the source entry goes
+    on the run's repository's side pull request, held there until the rule change merges. Either way
+    the run's pull request keeps the rule's form, since code that departs from a rule still in force
+    reads as a defect to the next run.
 - **The gated plan is shown, and its work starts in the same turn.** The user reads one line per
   area with its entry counts, the order, what waits on a decision and any path no reviewer read;
   the entries themselves go in the plan file sent with it, as the reference says. The message
@@ -355,10 +355,10 @@ configured rather than inventing one.
 
 Then take every measure again and rerun the mechanical pre-pass. Each instance a measure of defect
 candidates still counts is matched to a ledger entry that retains it: kept with a reason, declined,
-deferred or waiting on a reserved user decision, or carried with or held on a rule change on a
-side pull request. An instance with no such entry is a missed fix and goes back out as a fix step. Inventory
-totals, such as files, symbols, dependencies, documents and strings, and performance measures are
-compared before and after, never reconciled item by item.
+deferred or waiting on a reserved user decision, or carried with or held on a rule change on a side
+pull request. An instance with no such entry is a missed fix and goes back out as a fix step.
+Inventory totals, such as files, symbols, dependencies, documents and strings, and performance
+measures are compared before and after, never reconciled item by item.
 
 ## Review The Result
 

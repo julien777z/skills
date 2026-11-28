@@ -101,10 +101,11 @@ Build the clean target contract instead of preserving transitional behavior.
 - For retained values, use the authoritative source where one exists. Where none exists, use a
   type-valid placeholder only when it expresses a legitimate domain state, or when the records are
   disposable pre-production data and the placeholder is a value describing the record, such as a
-  placeholder terms-acceptance date and IP address for contractors created before acceptances were
-  stored: test data, never an invented entity, identity, ownership or scope. A disposable row that
-  needs one of those and has no source is deleted by the migration. Never overwrite a known retained value, fabricate a placeholder in runtime code, or
-  keep a permanent schema default solely to make a migration convenient.
+  placeholder consent date for library members created before consents were stored: test data, never
+  an invented entity, identity, ownership or scope. A disposable row that needs one of those and has
+  no source is deleted by the migration. Never overwrite a known retained value, fabricate a
+  placeholder in runtime code, or keep a permanent schema default solely to make a migration
+  convenient.
 - **A backfill writes each row's value under the new contract, never one chosen so existing rows
   keep behaving as before.** A flag set on every pre-change row so it keeps the old outcome, such as
   staying exempt from a new check, closed to a new path, or treated as the old kind, is a legacy

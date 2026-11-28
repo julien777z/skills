@@ -28,9 +28,10 @@
   what it holds. A name a framework or protocol defines keeps its own spelling.
 - **Name things for what they are, never for the caller, surface or task that uses them.** A
   qualifier naming who reads or calls a thing, such as `librarian_`, `kiosk_` or `partner_`, reads
-  as what the thing belongs to or what kind it is, and misleads most where the codebase already
-  uses the word for one of its own entities: with `librarian` meaning a staff account, the full
-  record of a branch's loans that librarians read is `list_loan_records`, never
-  `list_librarian_loans`, which reads as loans librarians took out. A thing that is itself the
-  surface, such as the router serving the kiosk pages, takes that surface's name. A test needing a table with a secret column names it for that — a record
-  with a secret — rather than borrowing the one real table the change was made for.
+  as what the thing belongs to or what kind it is, and misleads most where the codebase already uses
+  the word for one of its own entities: with `librarian` meaning a staff account, the full record of
+  a branch's loans that librarians read is `list_loan_records`, never `list_librarian_loans`, which
+  reads as loans librarians took out. A thing that is itself the surface, such as the router serving
+  the kiosk pages, takes that surface's name. A test needing a table with a secret column names it
+  for that — a record with a secret — rather than borrowing the one real table the change was made
+  for.

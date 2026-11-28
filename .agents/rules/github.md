@@ -36,17 +36,17 @@ alwaysApply: true
   an unauthorized recipient, a public surface or a compromised destination.
 - **What the user asks for during a task goes on the task's pull request in that repository**, the
   session's open pull request for the task there: a follow-up, a correction, a request to move,
-  rename or add files, and work the agent did for the task. A guidance edit goes where the side
-  pull request bullet below says. Before proposing a branch, assigning a worker or starting edits, resolve that pull
-  request from its creation or authorized-continuation receipt, carried forward when a follow-up
-  starts a new task in the same session, and verify its owner, open state and scope. Distinct
-  concerns and worker contributions stay on it in separate commits. Open another only when none is
-  in progress, the user directs a split, the work is side work, a skill in use places work on its
-  own pull request, or a new manually dispatched workflow needs its placeholder pull request.
-  Continue another session's pull request only when the user, an invoked skill or a repository rule
-  explicitly directs it; a matching topic, existing branch, open state or recorded touch does not.
-  Other sessions' pull requests and branches stay untouched, apart from damaged local Git state a
-  skill installing shared guidance backs up and repairs.
+  rename or add files, and work the agent did for the task. A guidance edit goes where the side pull
+  request bullet below says. Before proposing a branch, assigning a worker or starting edits,
+  resolve that pull request from its creation or authorized-continuation receipt, carried forward
+  when a follow-up starts a new task in the same session, and verify its owner, open state and
+  scope. Distinct concerns and worker contributions stay on it in separate commits. Open another
+  only when none is in progress, the user directs a split, the work is side work, a skill in use
+  places work on its own pull request, or a new manually dispatched workflow needs its placeholder
+  pull request. Continue another session's pull request only when the user, an invoked skill or a
+  repository rule explicitly directs it; a matching topic, existing branch, open state or recorded
+  touch does not. Other sessions' pull requests and branches stay untouched, apart from damaged
+  local Git state a skill installing shared guidance backs up and repairs.
 - **Each session keeps at most one side pull request per repository**, agent configuration and
   source together, one commit per concern: every guidance edit the session makes there, a worker's
   repair included, unless the user puts it on the task's pull request or the task is that guidance
