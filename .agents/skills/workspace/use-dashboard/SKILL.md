@@ -216,7 +216,7 @@ Dashboards look alike because they are built alike:
   earns its place by telling items apart: statuses that differ from item to item are worth a pill on
   every one, while a pill reading the same on most items has stopped meaning anything.
 - **A figure is a real quantity in a unit the reader knows.** A duration is clock time. Every
-  elapsed or estimated time on the page, in text as in figures, reads in its two largest units,
+  elapsed or estimated time a spec carries, in text as in figures, reads in its two largest units,
   starting from the largest that is not zero, so `2d 7h`, `5h 42 min` and `12 min`, never `55h` or
   `2d 7h 12 min`; a one-letter unit sits against its number and a longer one follows a space. A
   total over work that ran in parallel counts overlapping time once, so no total is longer than the
