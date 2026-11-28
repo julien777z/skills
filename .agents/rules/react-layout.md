@@ -52,10 +52,10 @@ paths:
   automatically in the background while it can still change, its settled view kept mounted as the
   bullet above says. An end-user page carries no control whose only job is to re-fetch or re-check,
   such as Check status, Refresh or Reload: a delivery shown as "Arriving soon" turns to "Delivered"
-  on its own. Where the reader needs to know something the page does not already show, a banner
-  says it under the boxed-banner bullet below. A control that retries an action the reader started after it failed, such as Try
-  again on a failed submission, the retry in a failed load's error banner, one that changes state,
-  and staff or admin tools are unaffected.
+  on its own. Where the reader needs to know something the page does not already show, a banner says
+  it under the boxed-banner bullet below. A control that retries an action the reader started after
+  it failed, such as Try again on a failed submission, the retry in a failed load's error banner,
+  one that changes state, and staff or admin tools are unaffected.
 - **Load available tabs, disclosures, and row actions with the page.** Start authorized display
   reads on page entry as soon as their prerequisites are met, including for inactive tabs and
   shared or inexpensive data needed by their row actions. Use the navigation rule below for
