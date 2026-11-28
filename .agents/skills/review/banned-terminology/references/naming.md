@@ -29,7 +29,8 @@
 - **Name things for what they are, never for the caller, surface or task that uses them.** A
   qualifier naming who reads or calls a thing, such as `admin_`, `public_` or `internal_`, reads as
   what the thing belongs to or what kind it is, and misleads most where the codebase already uses
-  the word for one of its own entities: with `admin` meaning a site admin, a full-detail listing of a
-  business's bank accounts is `list_bank_account_details`, never `list_admin_bank_accounts`, which
-  reads as bank accounts admins own. A test needing a table with a secret column names it for that —
-  a record with a secret — rather than borrowing the one real table the change was made for.
+  the word for one of its own entities: with `admin` meaning a site admin, a full-detail listing of
+  a shop's invoices is `list_invoice_details`, never `list_admin_invoices`, which reads as invoices
+  admins own. A thing that is itself the surface, such as the router serving the admin pages, takes
+  that surface's name. A test needing a table with a secret column names it for that — a record
+  with a secret — rather than borrowing the one real table the change was made for.
