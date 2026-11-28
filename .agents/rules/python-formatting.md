@@ -149,9 +149,12 @@ def ensure_tenant_member(user: User) -> None:
 
 - **Comments are only for third-party quirks** — an SDK bug, a library's surprising contract, a protocol's behavior the code cannot show — that a reader could not infer from our own code. If the reason lives in code you control, it is not a comment.
 - **A requirement behind a value the code states is not a quirk.** A minimum length, a format, a
-  header or a limit a standard or library requires is stated by the value and asserted by its test,
-  so `country_code: str = Field(min_length=2, max_length=2)` carries no comment citing the ISO
-  standard behind its length.
+  header or a limit a standard or library requires is stated by the value and asserted by a test,
+  which the change adds under `test-fixture` where none covers it, so
+  `country_code: str = Field(min_length=2, max_length=2)` carries no comment citing the ISO
+  standard behind its length. Nor is a workaround the code already makes evident: code that reads a
+  feed through a parser other than the one its vendor ships carries no comment naming the vendor's
+  parser or why it was replaced.
 - **If your own code needs a comment to be understood, the code is too complex — refactor it instead.** Rename the identifier, extract a well-named helper, split the function, or restructure until the intent is obvious without prose. Reach for a comment only after the code cannot be made clearer and the remaining "why" is genuinely external.
 - **Never explain behavior in a comment — tests assert behavior.** Do not narrate what a branch, guard, ordering, or invariant does or protects against; encode that in a test that fails when it regresses. The test is the durable, executable specification; the comment is not.
 - **Keep any comment to 1–2 lines**, factual, and about the external quirk only. A comment that runs longer is a signal the code (or the abstraction) needs restructuring, not more prose.

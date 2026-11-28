@@ -172,7 +172,9 @@ type Status = (typeof Status)[keyof typeof Status];
   reads: the reason lives outside this repository, so the code cannot state it and the next reader
   cannot derive it. One or two lines, factual, about the external behavior alone.
 - A requirement behind a value the code states — a minimum length, a format, a header a standard or
-  library requires — is not that exception: the value and its test state it.
+  library requires — is not that exception: the value and its test state it. Nor is a workaround
+  the code already makes evident, such as a comment naming the parser a vendor ships that the code
+  replaced.
 - Judge it by where the reason lives, never by how surprising the line looks. A branch that puzzles a
   reader because the code around it is tangled is a refactor; the same branch puzzling them because a
   protocol says something unexpected is the comment this exception is for.
