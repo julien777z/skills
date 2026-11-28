@@ -191,8 +191,8 @@ authorizes compatibility with an obsolete owned contract or revision.
   essential-checks bullet decides. A change to a skill edits that skill's whole folder, its
   `SKILL.md`, references, scripts and templates alike, and cleanup inside that folder is held to
   neither budget's size limits: an agent reads a skill as one unit, so a rule restated between two
-  of its files is tidied in the change that edits either one, keeping every criterion either copy
-  carries. Cleanup in another skill keeps the budget in force; a placement move the guidance
+  of its files is tidied whenever a change edits either one, placed as the side-work bullet above
+  says, keeping every criterion either copy carries. Cleanup in another skill keeps the budget in force; a placement move the guidance
   criteria require is part of the change, not cleanup.
   - **The default budget:** cleanup that fixes no defect — duplication, dead code, a misplaced
     helper, an abstraction with one implementation, layout — is done wherever the work met it,
