@@ -32,7 +32,8 @@ const STACK_VARIANTS = {
   height: { auto: '', bar: 'min-h-14' },
   block: { none: '', row: 'py-3', page: 'py-4 md:py-6' },
   push: { true: 'ml-auto shrink-0', false: '' },
-  show: { always: '', fromSm: 'hidden sm:flex', fromLg: 'hidden lg:flex', belowLg: 'lg:hidden' },
+  trail: { true: 'ml-auto max-w-[50%] text-right', false: '' },
+  show: { always: '', fromSm: 'hidden sm:flex', belowSm: 'sm:hidden', fromLg: 'hidden lg:flex', belowLg: 'lg:hidden' },
   marker: {
     none: 'list-none',
     bullet: 'list-disc pl-5 marker:text-muted-foreground',
@@ -58,6 +59,7 @@ const stackVariants: ReturnType<typeof cva<typeof STACK_VARIANTS>> = cva('flex m
     height: 'auto',
     block: 'none',
     push: false,
+    trail: false,
     show: 'always',
     marker: 'none',
   },
