@@ -7,21 +7,20 @@ short_description: 'Turn a dashboard spec into the shared HTML page and deliver 
 # Use Dashboard
 
 A caller describes its dashboard as a JSON spec; [scripts/render.py](scripts/render.py) validates it
-and fills the page built from [app/](app/), a React app on Tailwind CSS and shadcn/ui laid out as a
-standard shadcn site: a sticky top navbar with the dashboard's icon and title and a link to each
-page, the open page's title and subtitle under it, a row of stat cards, and each section in its own
-card. Every dashboard gets that layout without the caller writing any markup. The page is one
-self-contained file; its web font loads from Google Fonts and falls back to system fonts, and a
-diagram is drawn by Mermaid, loaded from jsDelivr, with its connections listed as text when Mermaid
-cannot load. The page is dark unless the host's viewer is explicitly set to light
-(`data-theme="light"` on the root element), and renders every value as text, so data never runs
-as markup or script. A dialog opens just below the entry, row or node that opened it, at most 640 px
+and fills the page built from [app/](app/), a React app on Tailwind CSS and stock shadcn/ui
+components laid out as shadcn's dashboard-01 block with a top navbar of pages: a slim sticky navbar
+with the dashboard's icon and title and a link to each page, the open page's title and subtitle
+under it, a row of metric cards, and each section in its own card. Every dashboard gets that layout
+without the caller writing any markup. The page is one self-contained file with its web font bundled
+in, and a diagram is drawn by Mermaid, loaded from jsDelivr, with its connections listed as text
+when Mermaid cannot load. The page is dark unless the host's viewer is explicitly set to light
+(`data-theme="light"` on the root element), and renders every value as text, so data never runs as
+markup or script. A dialog opens just below the entry, row or node that opened it, at most 640 px
 tall, or less when the frame or window it opens in is shorter, with its contents scrolling; apart
 from that cap, nothing on the page is sized by the viewport's height, so it shows whole in a frame
-that a harness sizes to its content. The
-navbar keeps the title whole and the page links beside it: the page spans up to 1920 px so a wide
-screen shows more links, the links scroll sideways with a visible scrollbar when they still do not
-fit, and they fold into a menu only below 1024 px.
+that a harness sizes to its content. The navbar keeps the title whole and the page links beside it:
+the page spans up to 1920 px so a wide screen shows more links, the links scroll sideways with a
+visible scrollbar when they still do not fit, and they fold into a menu only below 1024 px.
 
 ## Dependencies
 - `pages:write-page`
@@ -75,7 +74,7 @@ of a process, carries no count. Section types:
 | `table` | `title`, `columns`, `rows`, `details?` | each row a list of strings, one per column; `details`, one section per row, makes each row open a dialog holding that section, with its title and description as the dialog's |
 | `notes` | `title`, `items` | each item a string |
 | `changes` | `title`, `items`, `page_size?`, `group_label?` | `name`, `change` (`added`, `changed`, `removed`), `detail?`, `current?`, `proposed?`, `links?`, `group?`: a named part with its change as a colored badge; `current` and `proposed` say what the part does on each side of the change, each on its own line under the name behind a bold Current or Proposed label, the proposed line after the current one and after `detail`, which holds anything else; an added part sets only `proposed` and a removed part only `current` |
-| `outline` | `title`, `groups: [{title, items}]`, `expanded?` (every item starts open when true), `stacked?` (groups run in one column, each across the full width, for groups read in order), `collapsible?` (false shows every item in full with no toggle, its `title` as a muted label beside its `detail`, for a short write-up of facts read top to bottom) | `title`, `detail?`, `current?`, `proposed?`, `tone?`, `tag?`, `meta?`, `links?`, `points?`, with at least one of `detail`, `current` and `proposed`: a headline that opens to its detail, then `current` and `proposed` as a `changes` item shows them, with `points` as a bulleted list under them, with `tag` as a badge in the item's tone (neutral without one) and `meta` as small text; without `expanded`, a group of one or two items shows them open |
+| `outline` | `title`, `groups: [{title, items}]`, `expanded?` (every item starts open when true), `stacked?` (groups run in one column, each across the full width, for groups read in order), `collapsible?` (false shows every item in full with no toggle, its `title` as a muted label beside its `detail`, for a short write-up of facts read top to bottom) | `title`, `detail?`, `current?`, `proposed?`, `tone?`, `tag?`, `meta?`, `links?`, `points?`, with at least one of `detail`, `current` and `proposed`: a headline that opens to its detail, then `current` and `proposed` as a `changes` item shows them, with `points` as a bulleted list under them, with `tone` as the item's dot, `tag` as a neutral badge and `meta` as small text; without `expanded`, a group of one or two items shows them open |
 | `tree` | `title`, `items`, `open_depth?` (levels open on load, 1 by default) | `label`, `detail?`, `tag?`, `figure?`, `status?`, `meta?`, `tone?`, `children?`, `details?`: nested entries, each with children opening and closing from a chevron, `tag` a short label that tells otherwise alike entries apart, such as the warehouse each parcel left from, in a neutral pill beside its label, `figure` a short quantity, such as a count or a duration, in a neutral badge after that, `status` (`{label, tone?}`) a pill in its tone after the figure, `tone` alone coloring the entry's dot, whatever `status` holds: without it a leaf's dot is neutral and an entry with children shows none, `meta` beside them, and `details`, one section, opening in a dialog from the entry's label, which then shows as a link with an open icon; for a whole made of parts made of parts |
 | `tabs` | `title`, `tabs: [{label, sections}]` | each tab a `label` and the `sections` it shows: a bar of tab labels, read with the arrow keys as well as the pointer, over the selected tab's sections, which render inside this card in order; a tab whose `sections` is `[]` is left off the bar, and with one tab left no bar shows, only its sections; for one subject split into kinds the reader looks at one at a time |
 | `figures` | `title`, `items`, `stacked?` (one figure per row, each followed by its caption, for pictures read in order) | `image`, `alt`, `caption?`: `image` a base64 data URI of an SVG, PNG, JPEG, WebP or GIF image, a single figure taking the card's width and several two side by side on a wide page, or one per row at a readable width with `stacked`, with `alt` read out in its place and `caption` under it; for what the reader needs to see rather than read, such as a map, a mock-up or a screenshot |
@@ -171,6 +170,14 @@ with sections, and its tab labels are unique. A URL renders as a link only when 
 
 Dashboards look alike because they are built alike:
 
+- **The page is stock shadcn components laid out as dashboard-01.** A slim top navbar of pages,
+  metric cards as dashboard-01's section cards, and each section a `Card` with its title and
+  description in the card header. A table is a `Table` in a rounded bordered frame under a muted
+  header row, a pill an outline `Badge` whose tone shows only as a dot or icon inside it, apart from
+  the pull-request pill, and tabs, dialogs, collapsibles, tooltips, separators and the phone-width
+  page menu are `Tabs`, `Dialog`, `Collapsible`, `Tooltip`, `Separator` and `Sheet`. Spacing follows
+  dashboard-01: `gap-4 md:gap-6` between parts, `px-4 lg:px-6` at the page's sides and `py-4
+  md:py-6` above and below.
 - **Overview first, then one page per subject.** Every dashboard opens on `Overview`, the page
   that tells the reader where things stand: the `progress` and `metrics` stat cards, then sections
   that summarize, such as counts per subject
@@ -306,13 +313,15 @@ data exists, or a change to the app — runs on one made-up scenario, never on r
    open local copy checks it every few seconds and shows a new render's data in place, on the same
    page and scroll position, with no reload; only a render from a changed app reloads it.
 
-Change a delivered dashboard only by re-rendering its whole spec, never by editing the page's
-HTML, which skips the renderer's validation. Everything the reader can click, a table row or tree
-entry that opens a dialog included, shows the pointer cursor. Change the page itself only in `app/`: its shadcn
-components live in `app/src/components/ui/` and are added with the shadcn CLI. The spec is declared
-once, in `scripts/` (its enums in `models.py`, its shapes in `render.py`), and `render.py` writes the
-app's TypeScript types from it into the build. Run `npm ci` once and then `npm run check` in `app/`
-to write those types and type-check and lint the app.
+Change a delivered dashboard only by re-rendering its whole spec, never by editing the page's HTML,
+which skips the renderer's validation. Everything the reader can click, a table row or tree entry
+that opens a dialog included, shows the pointer cursor. Change the page itself only in `app/`. A new
+part of the page uses a stock shadcn component, added with the shadcn CLI (`npx shadcn@latest add
+<component>` in `app/`) into `app/src/components/ui/` and kept as the CLI wrote it; custom markup or
+CSS is written only for what no shadcn component covers, and goes once a stock component covers it.
+The spec is declared once, in `scripts/` (its enums in `models.py`, its shapes in `render.py`), and
+`render.py` writes the app's TypeScript types from it into the build. Run `npm ci` once and then
+`npm run check` in `app/` to write those types and type-check and lint the app.
 
 ## Delivery
 
