@@ -215,14 +215,14 @@ Dashboards look alike because they are built alike:
   its plan or its type, is plain text. A pill
   earns its place by telling items apart: statuses that differ from item to item are worth a pill on
   every one, while a pill reading the same on most items has stopped meaning anything.
-- **A figure is a real quantity in a unit the reader knows.** A duration is clock time. It reads in
-  its two largest units, starting from the largest that is not zero, so `2d 7h`, `5h 42 min` and
-  `12 min`, never `55h` or `2d 7h 12 min`; a one-letter unit sits against its number and a longer
-  one follows a space. A total over
-  work that ran in parallel counts overlapping time once, so no total is longer than the clock time
-  it spans. A figure summed over parallel work instead is agent time: its chart's `description`
-  says so, and it sets no `total`. A pie's parts never overlap, so its shares add up to its whole.
-  A figure never carries a label for how it was computed.
+- **A figure is a real quantity in a unit the reader knows.** A duration is clock time. Every
+  duration on the page, in text as in figures, reads in its two largest units, starting from the
+  largest that is not zero, so `2d 7h`, `5h 42 min` and `12 min`, never `55h` or `2d 7h 12 min`; a
+  one-letter unit sits against its number and a longer one follows a space. A total over work that
+  ran in parallel counts overlapping time once, so no total is longer than the clock time it spans.
+  A figure summed over parallel work instead is agent time: its chart's `description` says so, and
+  it sets no `total`. A pie's parts never overlap, so its shares add up to its whole. A figure never
+  carries a label for how it was computed.
 - **Text says what it means where it stands.** A line never sends the reader elsewhere to make
   sense of it, such as "at step 2" or "see above": it says what happens then, such as "after the
   batch is frozen". A numbered title keeps its number; the text about it never leans on one.
@@ -238,7 +238,8 @@ Dashboards look alike because they are built alike:
   next or still to do. A status takes the tone its meaning carries on every dashboard, never a
   color picked for one page. Leave it out for neutral; never tone an item only to decorate it.
 - **A model is named exactly.** A label, tag or figure naming the model an agent ran on gives its
-  name and version as the session's records show it, such as Corvid 2.4, never the family alone.
+  display name and version, read from the model ID the session's records show, such as Corvid 2.4
+  for `corvid-2-4`, never the family alone or the raw ID.
 - **Blue text is a link.** A reader clicks blue text, so only links take it, and a tone colors a
   dot, border, line or bar, never text. A figure, number or label meant to stand out sits in a
   neutral badge rather than taking a color or the weight its neighboring names already use.
