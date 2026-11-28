@@ -10,8 +10,11 @@ decision waiting on evidence is reported, and how an action the reader owns is h
 - An evidence-pending item states its pending work.
 - A ready item identifies the question-tool request already sent for it, in the turn its supporting
   material was ready, and the work depending on it.
-- An item with neither a sent request nor pending evidence work is asked in this turn, through the
-  question tool.
+- A queued item, next in a sequence that waits for the user's answer to a request already sent, as
+  the global rules' **Asking the user** says, states that it goes to the question tool once that
+  answer arrives, never as a request already sent.
+- An item with no sent request, pending evidence work or place in such a sequence is asked in this
+  turn, through the question tool.
 - Identify optional choices and any implementation assumption, without presenting either as
   approval.
 - A list longer than five items is grouped into blocks of at most five, omitting no optional or
@@ -62,6 +65,6 @@ decision waiting on evidence is reported, and how an action the reader owns is h
 ## Before sending
 
 Every unresolved decision, optional choices included, appears in the numbered list as an active
-question-tool request or as evidence-pending work, according to its readiness; an unconfirmed
-assumption appears as an assumption, never as a question. A chat question appears only where the harness has no question tool. A resolved or
+question-tool request, a queued item or evidence-pending work, according to its readiness; an
+unconfirmed assumption appears as an assumption, never as a question. A chat question appears only where the harness has no question tool. A resolved or
 superseded question does not reappear.
