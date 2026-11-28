@@ -121,8 +121,8 @@ or `~3h 10 min`.
   left", or
   `status` "Proposed" for a plan still waiting on a decision or an approval; under it one entry per step, in plan order, `label`
   "<n>. <step title>", `tone` its status's tone as its progress segment is, `status` only for a
-  blocked step, naming the very thing it waits on, such as the answer to which question, never a
-  bare "Waiting on your answer", toned `critical`, or a skipped one, Skipped, neutral, `meta`
+  blocked step, naming briefly the very thing it waits on, such as "Your answer: date format",
+  never a bare "Waiting on your answer", toned `critical`, or a skipped one, Skipped, neutral, `meta`
   "~<n> min" while it is not done or its measured duration once it is, none for a done step whose
   start or finish the ledger lacks, and `figure` "<done> of <n>
   parts" for a step with parts, counting parts not skipped; and under such a step one entry per

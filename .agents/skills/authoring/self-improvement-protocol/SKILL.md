@@ -84,11 +84,12 @@ they were judged, sends no worker back to rework what the task delivered, and do
 
 ## Iterate
 
-Apart from **End Of Task**, fix, re-render or re-run, and judge again. Stop when a whole pass finds nothing worth changing.
-Report what changed, grouped by skill, each line naming only what the reader now sees or what the
-agent now does. A line never says where something is now defined, how a page was built, or why it
-looked wrong before, such as which skill now depends on which or what a check now rejects; a skill
-with nothing the reader or agent now meets differently is reported as unchanged.
+Apart from **End Of Task**, fix, re-render or re-run, and judge again. Stop when a whole pass
+finds nothing worth changing. Report what changed, grouped by skill, each line naming what the
+reader now sees or what the agent now does, never how a page was built or why it looked wrong
+before. A part moved to its one shared owner is one plain clause saying what that gives the reader,
+such as "the Work board is one shared part, so both dashboards show the same cards". A skill whose
+files the pass did not edit is reported as unchanged.
 
 ## Output
 
