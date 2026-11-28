@@ -1126,12 +1126,13 @@ Serialize Studio sessions and fixture runs that share a place or profile, since 
 invalidates the evidence, and edit no source a running check reads. A Roblox Jest run that is
 rejected or canceled fails, in any runner, as failed results do.
 
-When the project has a Studio test runner, give it a bounded wait, structured current-run results, and cleanup
-in `finally`: restore the normal source tree and original test marker, remove all injected test and
-authoring trees/packages, and leave Play stopped. Disable an Edit-only test entry for ordinary Play
-so it cannot launch with insufficient permissions. Never parse a historical `all tests passed` console line, or one from an unrelated
-plugin, as the current result; Studio output can include old failures and passes. Keep result
-attributes and current run identity authoritative.
+When the project has a Studio test runner, give it a bounded wait, structured current-run results,
+and cleanup in `finally`: restore the normal source tree and original test marker, remove all
+injected test and authoring trees/packages, and leave Play stopped. Disable an Edit-only test entry
+for ordinary Play so it cannot launch with insufficient permissions. Never parse a historical
+`all tests passed` console line, or one from an unrelated plugin, as the current result; Studio
+output can include old failures and passes. Keep result attributes and current run identity
+authoritative.
 
 If using a separate test project, synchronize its complete explicitly mounted trees. Copying packages while omitting the suite can wait forever for an uninstalled runner. Verify the test entry before dispatch and
 prove fixture removal after restoring the game project. Delivery builds must reject all test trees.
