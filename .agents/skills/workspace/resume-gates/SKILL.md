@@ -32,11 +32,11 @@ stopped from building on.
      agent loads them.
    - Agreed but on no pull request: ask the user through the question tool whether to open one
      before resuming, recommending that. Ask even though the change is agreed and an agent may open
-     the pull request without approval: the user set this question for a resume, so it is their
-     standing instruction, not a settled remedy offered back, and nothing restarts until they
-     answer. Without one, the restarted work carries each change in
-     its brief, quoted with the installed text it amends, from the ledger, never from a harness's
-     memory.
+     the pull request without approval: it is the user's standing instruction for a resume, not a
+     settled remedy offered back, and nothing restarts until they answer. A guidance edit written
+     during the pause raises no question; one left on no pull request at a resume does. If the user
+     declines the pull request, the restarted work carries each change in its brief, quoted with the
+     installed text it amends, from the ledger, never from a harness's memory.
 4. **Tell the user what resumes differently**: a short list, one line per item whose restarted run
    changes, such as "the acceptance gate now judges the new head under the corrected rule". Omit items that restart unchanged, and the list when none change.
 5. **Close the pause**: mark the `hold` entry resumed, with the time and what will restart, so no
