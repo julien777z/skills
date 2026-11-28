@@ -104,7 +104,8 @@ recording or delivering a batch.
   session's branch. A brief to any worker whose task a pending entry's subject covers carries that
   entry's intended behavior, with the user's words quoted and the installed text it amends named.
 - Write the edit in the checkout **Resolve which repository owns the target** resolves, on the branch **Branch and commit** selects — the batch's own
-  branch while a batch is in flight and its pull request has not merged — commit it, and push it to
+  branch until that batch is frozen, an entry recorded later waiting as `session-ledger`'s **Guidance
+  Batches** says — commit it, and push it to
   that branch's pull request once the checks the GitHub rule's **Pre-Push Gate** defines pass, opening a draft when the branch has
   none, which a worker hands up instead; this holds for a source pull request **Branch and commit** selects as for an agent-configuration one.
   When the checkout holds the active task's uncommitted or source-branch work, write and commit the
@@ -118,18 +119,14 @@ recording or delivering a batch.
   publish. It then runs as **Guidance Delivery** says, beside the ongoing work and without the user
   asking, however long the surrounding task goes on; a session whose requests keep arriving never
   holds a recorded correction for the task's end. Until that milestone nothing else of delivery
-  runs: no review, gate, skill-test round, merge or worker, except the checks a batch in flight
-  reruns for an edit that joined it, as `session-ledger`'s **Guidance Batches** says. A standing
+  runs: no review, gate, skill-test round, merge or worker. A standing
   instruction about how guidance pull requests are reviewed or merged governs that delivery when it
   runs, never when. A gate result that arrives for a guidance pull request already open is recorded
   as its entry's stage result, and its repair waits with the rest.
 - **Every `guidance_correction` entry is backed up** as `session-ledger`'s **Backup** section says.
 - A related correction recorded before its batch is frozen joins the same entry or sits beside it
   in that batch; the batch is one pull request, apart from edits the GitHub rule puts on a source
-  pull request. One recorded once a batch's delivery has started, through **Guidance Delivery**
-  or a request to finish its pull request, never joins it: it waits in the ledger, still governing
-  the session at once, and starts the next batch, whose pull request opens once the in-flight one
-  merges, as
+  pull request. One recorded once the batch is frozen never joins it and starts the next batch, as
   `session-ledger`'s **Guidance Batches** says; tell the user which.
 - The task's next step is never held by a correction: record it and carry on.
 
@@ -177,10 +174,9 @@ small it looks.** Each route below is the gate set its batch passes on the head 
    class grouped into one scenario, and its scenario writing, environment and readers need the
    failure class and the diff, never a reviewed head. A guidance repair the round makes, here or on
    a source pull request under **Resume the batch**, is pushed once the **Pre-Push Gate** passes
-   and only the scenarios it invalidated rerun on that head at once; no repair waits for a review
-   or a gate before its rerun, since every repair of the round is reviewed together in the next
-   step. A round still failing after `test-skill`'s round limit goes to `council` as that skill
-   says.
+   and the scenarios `test-skill` does not carry forward rerun on that head at once; no repair
+   waits for a review or a gate before its rerun, since every repair of the round is reviewed
+   together in the next step.
 4. **Review the tested batch once.** Once the skill test passes, run `review-pass` once over the
    batch at that head, naming every head it carries and the round's repairs among them. Give it
    each entry's Scope Statement, with the user's words and evidence, as the intent statement, the

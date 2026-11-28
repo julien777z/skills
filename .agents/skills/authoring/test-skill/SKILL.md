@@ -37,9 +37,8 @@ confuse those conclusions.
   meaning or reachability changed.
 - **An invocation that names several heads is tested in one coordinated round.** Freeze the exact
   head and guidance package for every named pull request, and retain results per head. The round
-  runs when, and on the head the caller supplies. A caller may start it on a pushed head before
-  that head's review ends: the round concludes on the head the caller names as accepted, with
-  each result carried there or rerun as the carry-forward bullet below says.
+  runs when, and on the head the caller supplies; when that head later moves, each result is
+  carried to the new head or rerun as the carry-forward bullet below says.
 - **Each scenario gets its own reader for each variant it runs**, so its context holds that one
   task: one edited reader per scenario step 1 writes, plus its original control where the next
   bullet requires one. Add readers only for a distinct named risk. A round starts one scenario
@@ -73,10 +72,9 @@ confuse those conclusions.
 
 ## Workflow
 
-Run on the pushed head before the edit's review and acceptance gate, which then read the tested
-result once. A repair a round makes is pushed and its invalidated scenarios rerun at once, never
-held for a review or gate first; the caller reviews every repair of the round together after it
-passes.
+Run on the pushed head before the edit's review and acceptance gate. A repair a round makes is
+pushed and every scenario the carry-forward bullet does not carry reruns at once, never held for a
+review or gate first.
 
 1. **Have someone other than the edit's author define the behavior.** Record the observed miss, the
    outcome the user requires and the real case the miss came from. One fresh scenario writer,

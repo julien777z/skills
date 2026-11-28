@@ -188,9 +188,8 @@ the invocation supplies all of these for the batch's complete `.agents` diff at 
 
 The route then runs **Run `validate_sources.py check`** and
 **Run one `test-skill` round** for the guidance the diff changed, started on that head, and no
-`review-pass`. The repairs the skill-test round makes are rerun at once and go through one
-`review-pass` over their delta once the round passes, as **Guidance Delivery**'s **Test the batch
-first** says, and a head that moved since the acceptance for any other reason
+`review-pass`. A repair the skill-test round makes follows **Guidance Delivery**'s **Test the
+batch first**, and a head that moved since the acceptance for any other reason
 is a batch like any other. The pull request then merges or holds as the handing workflow's
 delivery rule and the GitHub rule's **Merge Authorization** say.
 
