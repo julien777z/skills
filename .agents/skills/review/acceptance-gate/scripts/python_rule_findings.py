@@ -18,18 +18,16 @@ from ast import (
     If,
     Import,
     ImportFrom,
-    List,
     Module,
     Name,
     Raise,
     Return,
-    Set,
     Try,
     TryStar,
-    Tuple,
     While,
     With,
     get_docstring,
+    literal_eval,
     match_case,
     parse,
     stmt,
@@ -308,13 +306,15 @@ def states_requirement(node: Assign | AnnAssign) -> bool:
 
     value = node.value
 
-    if isinstance(value, Constant):
-        return True
+    if isinstance(value, Call):
+        return any(keyword.arg in CONSTRAINT_KEYWORDS for keyword in value.keywords)
 
-    if isinstance(value, Tuple | List | Set):
-        return all(isinstance(element, Constant) for element in value.elts)
+    try:
+        literal_eval(value)
+    except (ValueError, TypeError):
+        return False
 
-    return isinstance(value, Call) and any(keyword.arg in CONSTRAINT_KEYWORDS for keyword in value.keywords)
+    return True
 
 
 def standard_citation_findings(path: Path, module: Module, source: str) -> list[str]:
