@@ -85,13 +85,15 @@ they were judged, sends no worker back to rework what the task delivered, and do
 ## Iterate
 
 Apart from **End Of Task**, fix, re-render or re-run, and judge again. Stop when a whole pass finds nothing worth changing.
-Report what changed, grouped by skill, with each change stated as what the reader now sees or what
-the agent now does, never as how the guidance is wired, such as which skill now depends on which.
+Report what changed, grouped by skill, each line naming only what the reader now sees or what the
+agent now does. A line never says where something is now defined, how a page was built, or why it
+looked wrong before, such as which skill now depends on which or what a check now rejects; a skill
+with nothing the reader or agent now meets differently is reported as unchanged.
 
 ## Output
 
 ```markdown
-**<skill>:** <each change, one line, as what the reader sees or the agent does now>
+**<skill>:** <each change, one line, as what the reader sees or the agent does now, or unchanged>
 **<skill>:** ...
 **Passes:** <n>, the last finding nothing worth changing, or 1 at the end of a task
 ```
