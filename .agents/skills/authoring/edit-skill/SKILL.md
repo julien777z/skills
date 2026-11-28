@@ -105,18 +105,20 @@ recording or delivering a batch.
   the user's own words: a merge, a deployment, a publication, a comment, or a push to another
   session's branch. A brief to any worker whose task a pending entry's subject covers carries that
   entry's intended behavior, with the user's words quoted and the installed text it amends named.
-- Write the edit in the checkout **Resolve which repository owns the target** resolves, on the branch **Branch and commit** selects — the batch's own
-  branch until that batch is frozen; an entry recorded after the freeze is recorded now, and its
-  edit is written when and where `session-ledger`'s **Guidance Batches** says — commit it, and
-  push it to
-  that branch's pull request once the checks the GitHub rule's **Pre-Push Gate** defines pass, opening a draft when the branch has
-  none, which a worker hands up instead; this holds for whichever pull request **Branch and commit** selects.
-  When the checkout holds the active task's uncommitted or source-branch work, write and commit the
-  edit from a separate worktree on the selected branch, leave the task's tree untouched, and stage
-  only the guidance files. Record the branch, the `commits` list and the pull request in the entry's
-  `data`, bring that pull request's description up to date at the milestone, then run `update-skills` at once for eligible edits under its **What Takes Effect**, so the installed
-  copy every agent loads, subagents included, carries them. A running agent keeps the text it
-  already read: tell each running worker this session started, as `subagent-matrix`'s **Dispatch** says.
+- Write the edit in the checkout **Resolve which repository owns the target** resolves, on the
+  branch **Branch and commit** selects — the batch's own branch until that batch is frozen; an entry
+  recorded after the freeze is recorded now, and its edit is written when and where
+  `session-ledger`'s **Guidance Batches** says — commit it, and push it to that branch's pull
+  request once the checks the GitHub rule's **Pre-Push Gate** defines pass, opening a draft when the
+  branch has none, which a worker hands up instead; this holds for whichever pull request **Branch
+  and commit** selects. When the checkout holds the active task's uncommitted or source-branch work,
+  write and commit the edit from a separate worktree on the selected branch, leave the task's tree
+  untouched, and stage only the guidance files. Record the branch, the `commits` list and the pull
+  request in the entry's `data`, bring that pull request's description up to date at the milestone,
+  then run `update-skills` at once for eligible edits under its **What Takes Effect**, so the
+  installed copy every agent loads, subagents included, carries them. A running agent keeps the text
+  it already read: tell each running worker this session started, as `subagent-matrix`'s
+  **Dispatch** says.
 - **Delivery starts at the next milestone of the work in hand and Completion delivers whatever is left**, never later: a
   finished plan step or worker task whose checks pass, a round of fixes the user asked for, or a
   publish. It then runs as **Guidance Delivery** says, beside the ongoing work and without the user
