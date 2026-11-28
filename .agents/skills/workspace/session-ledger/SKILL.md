@@ -195,7 +195,9 @@ This skill authorizes those comments and their edits under the GitHub rule's **C
   commit owe no backup. Any other plan, decision or question owes one until its list has an item;
   any other `guidance_correction` until its list holds a comment URL of its own.
 - **The installed turn-end hook `ledger` checks the ledgers this session writes and holds the turn
-  back at most once in a row**, so do what it names in the turn it reopens.
+  back at most once in a row**, so do what it names in the turn it reopens, then end that turn with
+  the reply the user was owed, given again in full and naming no ledger, since its last message is
+  the one the user reads.
   - It reads each ledger under `agent-ledgers/` that changed at or after the session's first
     recorded timestamp, or at any time when the transcript records none, and that the session's
     transcript names or whose `sessions` lists the session's ID. A ledger whose text holds the ID
