@@ -231,6 +231,10 @@ small it looks.** Each route below is the gate set its batch passes on the head 
      read its wording as naming something else. When only part of the premise holds, act on
      that part alone. This is different from a real miss that existing text already covers, which
      **Identify the failure class**'s causal diagnosis still repairs.
+   - **Read each fact the correction rests on at its source before writing it**, and record what
+     was read in the entry: whether a check is required is read from the repository's branch
+     protection, what a job runs from its workflow, what a setting does from its configuration.
+     A scenario, a worker's report or a remembered default is never that source.
    - Apply the standing-guidance comparison in the [edit criteria](references/edit-criteria.md)'s
      **Scope Statement** before recording an edit. When the comparison finds the desired behavior
      covered and working, report the evidence and end that item. Continue any other requested work.
