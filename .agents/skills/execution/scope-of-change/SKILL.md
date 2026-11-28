@@ -8,7 +8,7 @@ user-invocable: false
 # Scope Of Change
 
 A change takes on the whole shape of the problem it repairs, fixes every defect it meets, carries
-its side work where one careful review can read it, and puts to the user only the choices that are
+its side work on the session's side pull request, and puts to the user only the choices that are
 theirs.
 
 ## Dependencies
@@ -55,11 +55,10 @@ theirs.
   test suite nor required, such as lint, formatting or other static analysis, that fails on findings
   in code the change did not write, whether they predate the change or the change brought them to
   light, such as a new lint rule meeting existing code, makes those findings incidental cleanup
-  under the size budget in force below, placed as the side-work bullet says: fixed on the change's
-  pull request while the two read in one careful review, as a small change and a sweep as large as
-  it still do, and on the side pull request past that, or recorded where a record ground holds.
-  Where the findings are not fixed on the change's pull request, because they go to the side pull
-  request or are recorded, the check is left red on the change's pull request, and in no other case.
+  under the size budget in force below, placed as the side-work bullet says: fixed on the side pull
+  request, or recorded where a record ground holds, and the check is left red on the change's pull
+  request. Findings in lines the change writes are the change's own and are fixed on its pull
+  request.
   Never loosen, disable, rescope or ignore the check to turn it green. A status report's checks
   leave such a check out, and its records are reported as the size budget says. A finding that shows
   a defect, such as deprecated usage or a vulnerability, stays one, fixed as the bullets below say.
@@ -173,35 +172,30 @@ authorizes compatibility with an obsolete owned contract or revision.
   rotating a credential they hold, is reported as a gate with its owner and saved next action. It is never put to the user as something to
   consider or an option, recorded as deferred, left as a hardening note, or answered with a
   recommendation to run an audit of any kind later.
-- **Side work rides the change's pull request while the two read in one careful review, and goes
-  on its own pull request past that.** Side work is a defect the work notices that the change
-  neither introduced nor needs, incidental cleanup outside the files the requested work edits, a
-  skill folder it edits counting as one file, and maintenance a standing rule asks for that the
-  change does not need, such as a runtime or dependency upgrade.
-  - While the change and its side work together are not too large for one careful read, as with a
-    small change and a cleanup as large as it, the side work rides the change's pull request in
-    separate commits per concern.
-  - Past that, as with a change across hundreds of files, it goes on one side pull request per
-    repository for the task, in separate commits per concern. That pull request starts from the
-    freshly fetched default branch when it does not need the change, or from the change's branch,
-    stacked on it, when it does; a worker builds it while the change goes on, and it is reviewed
-    and gated on its own.
-  - **No more than one pull request per repository holds a task's change and its side work where a
-    consumer must test them together, whatever their size**, such as a package other repositories
-    test through a branch reference while the change is unmerged: a consumer's manifest points at
-    one branch of the package.
-  - Side work in agent configuration rides the session's one agent-configuration pull request in
-    its own commits, as the GitHub rule's **Branches and Pull Requests** keeps one per repository.
+- **Side work goes on the session's one side pull request in its repository, never on the change's
+  own pull request**, in separate commits per concern, as the GitHub rule's **Branches and Pull
+  Requests** says: based on the task pull request's branch, so the task's merge leaves it no
+  conflict, and carrying agent configuration and source together. Side work is what the task does
+  not need, no user asked for and the change did not introduce: a defect the work notices, a
+  warning, deprecation or upgrade, incidental cleanup outside the lines the change writes, and the
+  agent's own scope increase. What the user asks for during the task, apart from a guidance edit the
+  GitHub rule's side pull request bullet places on the side pull request, and a defect the change
+  introduced or needs stay on the task's pull request. The task's ready-for-review message never
+  waits for the side pull request.
+  - **A consumer that must test the change and its side work together**, such as a repository
+    testing a package through a branch reference while the change is unmerged, points at the side
+    pull request's branch, which holds both.
 - **Incidental cleanup has a size budget, measured against the scope the user set and the size of
   the change in flight**, never against a fixed file count or only the files the change happened to
   edit. Incidental cleanup is everything the request did not ask for that fixes no defect, outside
   the change's own design, the defect's shape above and the required checks' findings the
-  essential-checks bullet decides. A change to a skill edits that skill's whole folder, its
-  `SKILL.md`, references, scripts and templates alike, and cleanup inside that folder is held to
-  neither budget's size limits: an agent reads a skill as one unit, so a rule restated between two
-  of its files is tidied in the change that edits either one, keeping every criterion either copy
-  carries. Cleanup in another skill keeps the budget in force; a placement move the guidance
-  criteria require is part of the change, not cleanup.
+  essential-checks bullet decides. A skill's whole folder, its `SKILL.md`, references, scripts and
+  templates alike, counts as one unit for the budget, and cleanup inside a folder a change edits is
+  held to neither budget's size limits: an agent reads a skill as one unit, so a rule restated
+  between two of its files is tidied whenever a change edits either one, placed as the side-work
+  bullet above says, keeping every criterion either copy carries. Cleanup in another skill keeps
+  the budget in force; a placement move the guidance criteria require is part of the change, not
+  cleanup.
   - **The default budget:** cleanup that fixes no defect — duplication, dead code, a misplaced
     helper, an abstraction with one implementation, layout — is done wherever the work met it,
     placed as the side-work bullet above says, unless a record ground below holds: a few files of

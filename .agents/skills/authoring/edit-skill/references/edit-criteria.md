@@ -166,14 +166,14 @@ When the sync tool cannot reach an imported skill's source repository, that is a
 refusal, not a blocker: attach or clone the repository, and when the tool
 fetches through a path the environment refuses, fix the tool to use one it serves.
 
-When the guidance needs a change in an unreleased tool owned by another repository, point
-the draft consuming workflow at that tool's active branch and validate against it, without
-waiting for the tool's review loop. That workflow change is source work under **Branch and commit**'s source
-route; its delivery follows `merge-gate`'s dependency gate rather than merging a testing reference.
-The guidance rides that workflow's source pull request, as the GitHub rule's **Branches and
-Pull Requests** says, and merges with it; that pull request waits for the tool through the
-same gate. After the tool merges, the consumer adopts and validates its maintained target under **Tools And
-Dependency References**. No merge here authorizes a release.
+When the guidance needs a change in an unreleased tool owned by another repository, point the draft
+consuming workflow at that tool's active branch and validate against it, without waiting for the
+tool's review loop. That workflow change is source work under **Branch and commit**'s source route;
+its delivery follows `merge-gate`'s dependency gate rather than merging a testing reference. The
+guidance goes where the GitHub rule's **Branches and Pull Requests** puts guidance that depends on
+that workflow's pull request, and waits for its merge; that pull request waits for the tool through
+the same gate. After the tool merges, the consumer adopts and validates its maintained target under
+**Tools And Dependency References**. No merge here authorizes a release.
 
 ## Already Reviewed Batches
 
@@ -226,7 +226,8 @@ against the base from the host, which override the entry's and the comment's rec
 and delivery stage; a merged or closed pull request resumes at verifying the merged text, never
 at review. An edit **Branch and commit** puts on a source pull request this session drives is pushed there and
 passes **Run `validate_sources.py check`**'s source check on the head carrying it before that pull request's source stream
-proceeds, and **Run one `test-skill` round**'s skill-test round on the head that pull request's review pass accepted, before the source review and delivery. It carries **Check prose duplication**'s checks into that
+proceeds, and **Run one `test-skill` round**'s skill-test round on the pushed head carrying it,
+before the source review and delivery. It carries **Check prose duplication**'s checks into that
 pull request's simplification pass and **Brief `review-pass`'s final acceptance**'s incident vocabulary into its final acceptance. An edit **Branch and commit** selects on
 another session's source pull request runs **Run `validate_sources.py check`** through **Run one `test-skill` round** here on the head it pushed, and the
 delivery report says the push moved that pull request's head past its owner's acceptance. An

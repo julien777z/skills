@@ -264,10 +264,14 @@ Otherwise write a decision-complete remediation plan from the ledger.
     depend on an answer wait for it.
   - **A departure from a rule rides the rule change.** Where the run judges a shape a rule
     prescribes or exempts worse than the departure, as `scope-of-change`'s **Trade-Offs Are
-    Surfaced, Never Enforced** asks of a rule, the rule change goes on the run's
-    agent-configuration pull request, and the code keeps the rule's form until that change merges,
-    since code that departs from a rule still in force reads as a defect to the next run. The
-    dependent source entry is recorded as held on that pull request's merge, which is the user's.
+    Surfaced, Never Enforced** asks of a rule, the rule change goes on the session's side pull
+    request in the rule's repository. Where that is the run's own repository, the source entry that
+    departs under it goes on the same side pull request, the one source entry the GitHub rule's
+    **Branches and Pull Requests** would otherwise keep on the run's pull request, and the two merge
+    together on the user's word. Where the rule lives in another repository, the source entry goes
+    on the run's repository's side pull request, held there until the rule change merges. Either way
+    the run's pull request keeps the rule's form, since code that departs from a rule still in force
+    reads as a defect to the next run.
 - **The gated plan is shown, and its work starts in the same turn.** The user reads one line per
   area with its entry counts, the order, what waits on a decision and any path no reviewer read;
   the entries themselves go in the plan file sent with it, as the reference says. The message
@@ -277,13 +281,13 @@ Otherwise write a decision-complete remediation plan from the ledger.
   ones open then, and when. Showing it starts implementation and verification only; a merge still
   waits for what **Deliver** names.
 
-**The plan schedules order, never branches.** Every entry lands in the branch the run is driving for
-its kind — agent configuration or source, the one split the GitHub rule's **Branches and Pull
-Requests** makes — whatever lens found it, however unrelated two entries look and however many
+**The plan schedules order, never branches.** Every entry lands on the run's pull request, or on the
+session's side pull request for what the GitHub rule's **Branches and Pull Requests** puts there and
+for that source entry, whatever lens found it, however unrelated two entries look and however many
 there are. A plan that gives a group its own branch has split one instruction into several
-deliveries, and the ones after the first are what get dropped. Size is a reason to sequence a
-group late and describe it clearly in the pull request, never a reason for a second branch; beyond
-that split, only the user asking to hold work apart puts an entry anywhere else. The plan may name
+deliveries, and the ones after the first are what get dropped. Size is a reason to sequence a group
+late and describe it clearly in the pull request, never a reason for a second branch; beyond those
+two, only the user asking to hold work apart puts an entry anywhere else. The plan may name
 checkpoints that group related entries on the same draft pull request.
 
 ## Guard Recurrences
@@ -350,11 +354,11 @@ analysis, tests, builds, code generation, and contract checks. Report a check ca
 configured rather than inventing one.
 
 Then take every measure again and rerun the mechanical pre-pass. Each instance a measure of defect
-candidates still counts is matched to a ledger entry that retains it: kept with a reason, declined, deferred or
-waiting on a reserved user decision or held on a rule change's merge. An instance with no such
-entry is a missed fix and goes back out as a fix step. Inventory totals, such as files, symbols,
-dependencies, documents and strings, and performance measures are compared before and after, never
-reconciled item by item.
+candidates still counts is matched to a ledger entry that retains it: kept with a reason, declined,
+deferred or waiting on a reserved user decision, or carried with or held on a rule change on a side
+pull request. An instance with no such entry is a missed fix and goes back out as a fix step.
+Inventory totals, such as files, symbols, dependencies, documents and strings, and performance
+measures are compared before and after, never reconciled item by item.
 
 ## Review The Result
 
@@ -420,14 +424,17 @@ Nothing the run leaves unfixed lives only in chat, the plan or the report.
 Keep each repository's run on its draft pull request for the user's review: no doctor pull request
 is merged or set to auto-merge by the run, whatever standing merge exception would otherwise cover
 it, because the merge is where the owner reads the decisions the run made on its own. A later
-explicit user instruction naming the target may authorize merge. A run that changes both agent configuration and source carries each on its own pull
-request, except guidance the GitHub rule puts on the source pull request it depends on, and each
-kind stays on one pull request however many fixes the run makes. Complete
-every planned entry continuously; checkpoints sequence work on those drafts and never wait for a
-merge. The one exception is a source entry held on a rule change's merge under **Gate And Show The
-Plan**: the run completes its independent work and reports that entry as held. Run **Run
-Repository-Native Checks**, **Review The Result**, and **Accept The Complete Diff** over the completed work before reporting it for the user's review. Confirm that every planned
-disposition landed.
+explicit user instruction naming the target may authorize merge. A run that changes both agent
+configuration and source carries its source fixes on the run's pull request and its guidance on the
+session's side pull request, as the GitHub rule's **Branches and Pull Requests** says, and each
+stays on one pull request however many fixes the run makes. Complete every planned entry
+continuously; checkpoints sequence work on those drafts and never wait for a merge, a source entry
+that rides a rule change on a side pull request under **Gate And Show The Plan** included, apart
+from one held on another repository's rule change, which the run completes there and reports as
+held. Run
+**Run Repository-Native Checks**, **Review The Result**, and **Accept The Complete Diff** over the
+completed work before reporting it for the user's review. Confirm that every planned disposition
+landed.
 
 **A run's guidance fixes are reviewed once.** Where the run changed agent configuration, **Review
 The Result** and **Accept The Complete Diff** are that change's delivery review and acceptance,
@@ -451,7 +458,8 @@ The final report names:
 - the baseline and final check results and any category not configured;
 - every decision the run made, each council ruling, and each reserved decision with the user's
   answer or as still open;
-- each source entry held on a rule change's merge, with that pull request;
+- each source entry carried with a rule change on a side pull request, or held there on one in
+  another repository, with that pull request;
 - remaining external blockers.
 
 Per-entry detail, each applied correction with its evidence and commit, goes in a file sent with

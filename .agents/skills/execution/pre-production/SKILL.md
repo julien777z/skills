@@ -1,6 +1,6 @@
 ---
 name: pre-production
-description: "The product state before it ships, applied to implementation, review and operational data tasks, maintenance, cleanup, tooling and CI repairs included: build only the target contract, never adding a compatibility shim or keeping support for an obsolete owned contract or revision; update its owned consumers and migrate retained data. Also covers which contracts, environments and records a project's guidance marks as having users or as disposable, what retained data obliges, configuration as an owned contract, deliberate breaks of owned contracts across repositories, adapting to a third-party provider's contract, and what a requiredness change and a backfill owe retained data."
+description: "The product state before it ships, applied to implementation, review and operational data tasks, maintenance, cleanup, tooling and CI repairs included: build only the target contract, never adding a compatibility shim or keeping support for an obsolete owned contract or revision; update its owned consumers and migrate retained data. Also covers which contracts, environments and records a project's guidance marks as having users or as disposable, what retained data obliges, configuration as an owned contract, deliberate breaks of owned contracts across repositories, adapting to a third-party provider's contract, and what a requiredness change and a backfill owe retained data, including before building anything that needs a value some existing records lack, such as a field a provider newly requires."
 short_description: 'Build the target contract for the product before it ships, with no compatibility for obsolete owned shapes.'
 user-invocable: false
 ---
@@ -80,9 +80,30 @@ Build the clean target contract instead of preserving transitional behavior.
 - For a requiredness change, establish the affected data's retention scope under **Product State**
   before deciding what its revision keeps or clears; required columns do not themselves create an
   obligation to preserve disposable or nonexistent rows.
-- For retained values, use the authoritative source where one exists and a type-valid placeholder
-  only where none exists and the placeholder expresses a legitimate domain state. Never invent an
-  identity, ownership or scope to fill one. Never overwrite a known retained value, fabricate a
+- **A value a design needs that existing records lack is required and backfilled, never made
+  optional for them**, where its absence is no supported domain state and the value can be derived
+  or **Product State** establishes the affected records are disposable. A value read at request time
+  from a related record some records lack, such as a time zone read from an optional preferences
+  record, is one of these. It is made required where the domain places it: on the related record and
+  the link to it only where the domain gives every record that related record, and otherwise on the
+  record that needs it, its column, wire field and model all required to match; this placement is
+  settled here and never put to the user, so a related record the domain does not give every record
+  is never made required to carry the value. Either way the
+  migration gives every existing record the value from its source or a placeholder the next bullet
+  allows, and removes only a row the next bullet deletes. Neither what the agent builds nor any
+  option, plan or recommendation it puts to the user keeps the column nullable for records without
+  the value, proceeds without it, sends a provider less than the provider requires, fills it at
+  request time with a value that is not the record's own, such as another actor's, or refuses, skips
+  or deletes the records that lack it where a source or such a placeholder can supply it, an error
+  raised for them included. Each keeps legacy support for those records, or drops them where the
+  migration owes them a value. Released user data with no authoritative source is a retention
+  question for the user, asked before the design is offered, as **Product State** says.
+- For retained values, use the authoritative source where one exists. Where none exists, use a
+  type-valid placeholder only when it expresses a legitimate domain state, or when the records are
+  disposable pre-production data and the placeholder is a value describing the record, such as a
+  placeholder consent date for library members created before consents were stored: test data, never
+  an invented entity, identity, ownership or scope. A disposable row that needs one of those and has
+  no source is deleted by the migration. Never overwrite a known retained value, fabricate a
   placeholder in runtime code, or keep a permanent schema default solely to make a migration
   convenient.
 - **A backfill writes each row's value under the new contract, never one chosen so existing rows

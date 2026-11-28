@@ -310,7 +310,9 @@ review.
   independent, one whose merge is withheld or held included. An agent-configuration pull request
   is in it only when its guidance depends on or describes behavior another pull request in the set
   changes; one whose guidance holds on the default branch as it stands is outside the set, and its
-  review and merge wait on no other pull request. The round runs once, after its own review has
+  review and merge wait on no other pull request. The session's side pull request is outside its
+  task pull request's set: it is based on that branch, and once the task merges its retarget
+  brings that base in and reruns its gates. The round runs once, after its own review has
   accepted a head of every pull request in the set and before any of them merges. A pull request
   whose own review ends with its change reverted or the pull request closed, under the ruling the
   round limit calls for, leaves the set, and the round runs over the rest. A set of one does not run.

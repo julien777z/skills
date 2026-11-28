@@ -16,6 +16,7 @@ and deliver the same dashboard again on every request so the user keeps one page
 - `scope-of-change`
 - `execute-task`
 - `merge-gate`
+- `user-facing-output`
 
 ## Workflow
 
@@ -108,8 +109,9 @@ or `~3h 10 min`.
   to merge", the `diagram` "Merge and deploy order", then the `outline` sections "Between merges",
   "Deploy" and "Once live", each only when it has something in it. Its `status` is "<n> need you"
   (`warning`) while anything on it waits on the user — a pull request held on their review or
-  answer, or an action under Between merges or Deploy that only they can take — and is
-  left out once nothing does.
+  answer, an action under Between merges that only they can take, or a Deploy item that
+  `user-facing-output`'s rule for deploy-only steps makes a reader-owned action — and is left out
+  once nothing does.
 - **`table` "Plans"**: one row per plan that is not withdrawn, with the columns Plan, Steps done
   ("<done> of <n>"), Active, Waiting on you and Time left, the summary of what the board shows step
   by step, and `details` holding each row's plan write-up, so a row opens the plan.
@@ -170,17 +172,17 @@ or `~3h 10 min`.
   arrows it releases; pull requests with no order between them share a step.
 - **`outline` "Between merges"**: each action a merge needs done before the next one can go, grouped
   by the step it follows, such as `After garden-api#119 merges`: repointing a dependency to the branch it
-  merged into, regenerating the lock, publishing a build.
+  merged into, regenerating the lock, publishing a build. Its `tone` is `critical` when skipping the
+  item breaks the next step and `warning` otherwise.
 - **`outline` "Deploy"**: per environment, what reaching it needs that the pull requests do not
   carry — a secret or setting to set, a grant, a build to publish, a migration to run by hand — and
-  what deploying sets off, such as a migration running.
+  what deploying sets off, such as a migration running. Its items are presented as
+  `user-facing-output`'s rule for deploy-only steps says: one that rule makes a reader-owned action
+  takes Between merges' `tone` rule, and every other carries no `tone`.
 - **`outline` "Once live"**: per environment, what the user can check after it deploys to know the
   change works there, such as a page to open, a job to watch or a log line to look for, each with a
-  link where one exists; the agent checks none of it and nothing waits on it, as `merge-gate`'s
-  **No Verification Or Deploy Work** says, so its items carry no `tone`: these outlines tell the
-  user what their own deploy needs and are the one place a deploy step is named. In Between merges
-  and Deploy, `tone` is `critical` when skipping the item breaks the next step and `warning`
-  otherwise.
+  link where one exists; the agent checks none of it, as `merge-gate`'s **No Verification Or Deploy
+  Work** says, so its items carry no `tone`.
 - **`links` "Pull requests"**: each open and draft pull request, leaving out merged and closed
   ones, which need nothing more from the reader, with `group_label` "Repository". `label` its
   `<repository>#<number>`, `url`, `group` "<owner>/<repo>", `detail` its short title, then the

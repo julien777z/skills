@@ -205,4 +205,4 @@ done
 ```
 
 - Report Docker as unavailable only when the CLI is missing or `docker info` still fails after the explicit start attempt, and include the daemon log in that report.
-- After a browser-control restart, rebind to the selected task tab through `use-browser`.
+- After a browser-control restart, rebind to the task's selected browser session or tab through `use-browser`.

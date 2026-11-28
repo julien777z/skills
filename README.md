@@ -55,7 +55,10 @@ the `session-start-hook` skill a Claude cloud session supplies.
 Other artifact types retain their owned-link pruning and conflict checks.
 
 The installer needs `python3` to validate installation roots. Hook registration needs Python 3.11
-or newer; with an older version the installer links the hooks, warns, and registers none. The `ledger` hook needs PyYAML. When a ledger the
+or newer; with an older version the installer links the hooks, warns, and registers none. The `ledger` hook needs PyYAML to check a ledger
+anything has been recorded in. When no ledger records the session at turn end, it creates
+`session-<session ID>.yaml` in the private `agent-ledgers/` state directory and names it once, and at
+session end it deletes that file while it holds nothing but the session's ID. When a ledger the
 session writes lacks a backup comment, it keeps the turn going in Claude Code and Codex and submits
 a follow-up message in Cursor. Codex runs a newly registered hook once it has been reviewed and
 trusted there.
@@ -79,7 +82,7 @@ values they replaced.
 | `.agents/skills/<category>/<name>/` | One skill: `SKILL.md`, with `references/`, `scripts/`, `assets/`, or `resources/` beside it. The categories sort the skills and reach no provider — each one still installs as `<name>`, so a name is unique across the whole tree. |
 | `.agents/agents/` | Subagent definitions; the tier each runs on is stated by the skill that launches it. |
 | `.agents/rules/` | Reconciled reusable rules; technology-specific rules retain their file scopes. |
-| `.agents/hooks/<name>/` | One hook: its `main.py` entry point and supporting modules, linked into each user-level root under `hooks/<name>/`. `ledger/` is the turn-end check that every task ledger entry owing a backup comment has one. `session-skills/` starts each session with one installed skill's text loaded, and is registered once each for `i-have-adhd` and `user-facing-output`; for a skill longer than 10,000 characters it names the installed file to read instead, and for one that is not installed it does nothing. |
+| `.agents/hooks/<name>/` | One hook: its `main.py` entry point and supporting modules, linked into each user-level root under `hooks/<name>/`. `ledger/` creates each session's ledger at turn end when none records the session, checks that every task ledger entry owing a backup comment has one, and at session end deletes the session's ledger while nothing was recorded in it. `session-skills/` starts each session with one installed skill's text loaded, and is registered once each for `i-have-adhd` and `user-facing-output`; for a skill longer than 10,000 characters it names the installed file to read instead, and for one that is not installed it does nothing. |
 | `.agents/hooks/hooks.json` | The event each hook runs on, with any arguments it takes. Agent Sync turns it into each provider's registrations: Claude's `settings.json` and Codex's and Cursor's `hooks.json`. The installer reconciles those into each user-level root, pointing them at the linked hooks: it adds new registrations, replaces its earlier ones, and removes its own that no longer have a hook. |
 | `.agents/external_resources.json` | Third-party skills and reference directories vendored by the workflow. |
 | `.agents/resources/<name>/` | Vendored reference files, linked into each supported user-level root under `resources/<name>/`. |

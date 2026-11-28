@@ -1,6 +1,6 @@
 ---
 name: user-facing-output
-description: "Apply before the first user-facing response and to every response the user reads, without waiting for an invocation. On top of `i-have-adhd` it owns the list of open decisions shown after each user message, evidence-pending questions, putting decisions and reader-owned actions to the question tool, the closing line, reporting an issue fixed on the way, and what the text says: a link for anything the reader might open, a proposal never reading as done, a web product's views called pages, text written for the user rather than for reviewers or workers, and new behavior named as new."
+description: "Apply before the first user-facing response and to every response the user reads, without waiting for an invocation. On top of `i-have-adhd` it owns the list of open decisions shown after each user message, evidence-pending questions, putting decisions and reader-owned actions to the question tool, the closing line, reporting as fixed an issue the work met, and side work apart from the task's pull request, and what the text says: a link for anything the reader might open, a proposal never reading as done, a web product's views called pages, text written for the user rather than for reviewers or workers, and new behavior named as new."
 short_description: 'Keep open decisions visible, ask through the question tool, and word every reply for its reader.'
 user-invocable: false
 ---
@@ -18,6 +18,7 @@ output.
 - `engineering-conventions`
 - `session-ledger`
 - `share-media`
+- `merge-gate`
 
 ## Open Decisions
 
@@ -43,12 +44,21 @@ output.
   the question is about, the decision stays unresolved and its item reports the pending work; that
   reference's **Evidence-pending decisions** says how.
 - **An action the reader owns is not a decision and never joins the list**: renewing a certificate,
-  granting a permission, signing in or approving a sign-in on their phone, running a command that
-  needs their password, a manual step outside the session, reviewing a pull request handed to them.
-  Ask for it through the question tool, never in chat text alone, since chat may never reach the
-  reader, once everything the agent can prepare is ready, with what it unblocks. That reference's
-  **Reader-owned actions** says when the question goes out, what it holds, when it is raised again
-  and how it is recorded.
+  granting a permission the work waits on, signing in or approving a sign-in on their phone, running
+  a command that needs their password, a manual step outside the session, reviewing a pull request
+  handed to them. Ask for it through the question tool, never in chat text alone, since chat may
+  never reach the reader, once everything the agent can prepare is ready, with what it unblocks,
+  a confirmation option such as "Done" and one for doing it later. That reference's
+  **Reader-owned actions** says when the question goes out, what else it holds, when it is raised
+  again and how it is recorded.
+- **What only a deployment needs is not a reader-owned action, and the agent does not raise it while
+  it works.** A secret or environment variable to add, a grant only the deployed change uses, a
+  provider setting to enable, a deploy order: the work never waits on one, so none goes to the
+  question tool, a plan, a status update or a list of what is the reader's to do while tasks remain.
+  It is named only in the **Before deploy** line of each pull request's ready-for-review message, as
+  plain text, never earlier and never in a question's text or options. A dashboard the reader asks
+  for may list it as a plain fact. The exception is a task `merge-gate`'s **No Verification Or
+  Deploy Work** follows past the merge: a step its outcome waits on is then a reader-owned action.
 - Restating a decision already asked is not a duplicate approval request, and restating a pending
   request opens no second one. Never ask for routine continuation, and never repeat the list on a
   background poll or an unchanged status update that follows no new user message. Continue
@@ -77,13 +87,34 @@ output.
   closing action alike, over any `i-have-adhd` example that hands the reader such a step. The
   reader gets such steps only when they asked how to do something themselves.
 - **An issue the work met is fixed and named once as fixed**, as `scope-of-change`'s **Encountered
-  Issues** says, never offered as a follow-up: "Also fixed on the way: the stale dependency the
-  build pulled in", never "there is also a stale dependency. Want me to handle that next?".
+  Issues** says, never offered as a follow-up: "- **Side work, not holding this review:** [the side
+  pull request](https://github.com/example/garden-api/pull/43) — the stale dependency the build
+  pulled in — draft", never "there is also a stale dependency. Want me to handle that next?". In a
+  ready-for-review message it goes inside **What landed** when the change needed it and on the
+  **Side work** line otherwise, never on a line or paragraph of its own.
+- **A ready-for-review message, a follow-up's included, opens with its **Ready for review** line and
+  uses its template's labels and no others**, the side pull request only on its **Side work** line;
+  `i-have-adhd`'s lead-with-the-action and end-with-one-next-action are met by the template's
+  closing **Next:** line, and state restated for the reader goes on the template's own lines.
 - **Report work that is happening or affects the requested outcome.** A status such as “pending”
   requires an actual queue entry, active run, or documented wait within an authorized workflow.
   Leave out actions that never started when they are outside the request. Name a concrete blocker
   when it prevents the requested outcome, and answer directly when the reader asks about an
   action's status. This applies to progress updates and final replies.
+- **A merge, publication or release the work depends on is reported as its state, never handed to
+  the reader.** The report names the open pull request, or the publication or release not yet made,
+  and what the work does once it lands, such as "the site follows the theme pull request's branch
+  until it merges, then the theme's default branch", never a heading, line or step giving it to the
+  reader to do, such as a "Left for you" list holding "land the theme pull request, then the site's"
+  or "after you tag version 2 of the theme", since the global rules reserve each to the reader's own
+  words. This governs how the depending work reports what it waits on; the depended-on pull
+  request's own ready-for-review message keeps its closing line.
+- **A report keeps the task's pull request apart from side work.** Once the task's pull request
+  has finished its own work, review and gate, the report says it is ready for review first, never
+  waiting for a side pull request, guidance delivery or skill test. A progress report or status
+  update lists what remains on the task's pull request under its own heading and side work under
+  a heading naming it side work, never both under one heading such as "Still running", so nothing
+  still running on side work reads as the task unfinished.
 - **State is the work's progress, never a reassurance.** A limit or correction the reader set —
   what the agent will not do, such as publish, merge or touch something; how it works from then on;
   that it understood — is confirmed once, in the reply to the message that set it. After that the
@@ -126,7 +157,8 @@ output.
   request description or a capture's caption that shows the product behaving differently under
   some condition states that behavior and where it applies, such as "photo galleries now become
   carousels past six photos on every page", never folds it into the fix it arrived with, so the
-  reader can tell a new layout, control or flow from a repair.
+  reader can tell a new layout, control or flow from a repair. In a ready-for-review message it is
+  named as new inside its **What landed** clause, never on a line of its own.
 - Replies follow `engineering-conventions`' **Language** and **Examples And Paths**: American
   English, and no value the user gave as an example reproduced.
 - A capture or file a reply relies on is read whole and shown as `share-media` says.

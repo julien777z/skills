@@ -60,7 +60,9 @@ the task. Where it owns a stage, return its result to this run rather than start
 ## Plan
 
 Every task that changes files starts here, and so does every follow-up that arrives while one runs.
-Before drafting a plan or selecting targets, apply **Product Constraints** and **Task Authorization**.
+Before reading code for a plan or selecting targets, load `pre-production`, `scope-of-change` and
+`engineering-conventions` whole, each once per task, then apply
+**Product Constraints** and **Task Authorization**.
 
 Before choosing a design, and before the first edit on a path that takes no plan, apply
 `code-simplify`'s **Before Choosing A Design** check to everything the change will add and write
@@ -121,7 +123,8 @@ plan of its own; only an edit that adds nothing skips it.
 - **An estimate is the executing agent's own wall-clock, never the effort the same work would
   take a person.** Build each step's from [plan estimates](references/plan-estimates.md), and list
   what the plan needs from the user — a review, a merge, a manual action — separately and
-  outside the total, with no time, since the agent cannot know how long the user takes.
+  outside the total, with no time, since the agent cannot know how long the user takes; a step
+  only a deployment needs follows `user-facing-output`'s rule for it.
 - Schedule steps by `subagent-matrix`'s **Dispatch**: coupled work stays sequential, and
   independent scopes with separate owners, files and resources overlap once their inputs are
   settled. Estimate the elapsed time with that overlap, totaled as `session-ledger` totals a plan.
@@ -303,18 +306,18 @@ guidance already answers.
 Apply [working environment](references/environment.md): its **Working Files** puts everything
 the run writes for itself or its workers in `.agent_sources/` at the worktree's root; its **Copies A
 Sync Service Left Behind** deletes each such copy before anything stages, stashes or snapshots the
-tree; its **Browser Access** selects the browser; its **Installed Apps** reads an app's version from its files, never by running it; its **Environment Refusals** treats an environment refusal as a route to find, and what a permission check refuses as not attempted again;
+tree; its **Browser Access** runs browser work in the browser `use-browser` selects; its **Installed Apps** reads an app's version from its files, never by running it; its **Environment Refusals** treats an environment refusal as a route to find, and what a permission check refuses as not attempted again;
 and its **Steps That Cannot Be Taken Back** runs a deletion, overwrite, push, merge or post only
 after its gating check has been read, outside the command, chain or batch that runs the check.
 
 ### Product Constraints
 
-`pre-production`, `scope-of-change` and `engineering-conventions` are active in every change task: read
-each whole and invoke it before the first edit. Read the product state from project guidance
+`pre-production`, `scope-of-change` and `engineering-conventions` are active in every change task,
+loaded whole as **Plan** says, before the first edit. Read the product state from project guidance
 before changing a contract or stored value.
 
-Before drafting a plan or selecting targets, as **Plan** says, and again before recommending an
-implementation, asking a question that presupposes one, or delegating its edits, apply [product
+Before reading code for a plan or selecting targets, as **Plan** says, and again before recommending
+an implementation, asking a question that presupposes one, or delegating its edits, apply [product
 constraints](references/product-constraints.md) and **Task Authorization**: resolve the request's
 targets in the named outcome's context, trace the requested behavior through its runtime path into
 the target receipt, and read the rules and analogous files governing every surface an edit reaches.
@@ -327,13 +330,15 @@ Before an edit that crosses a trust boundary `security-audit` names, invoke it a
 ### Encountered Issues
 
 Apply `scope-of-change`'s **Encountered Issues** while making the change, as [encountered
-issues](references/encountered-issues.md) says: its **Disposition** says what is fixed in the change
-in flight and what is recorded with `defer-scope`, how an instruction one agent passes another is
-checked against the standing guidance before it is sent and before it is acted on, and when a
-correction is asked about, offering a fix to the user being no disposition; its **CI Gates And
-Deliberate Breaks**, how a required check that detects deliberate changes, red on an intentional
-break, is reported, never suppressed or designed around; its **Widened Scope**, the borderline-item
-triage.
+issues](references/encountered-issues.md) says; a deprecation or warning a run prints is fixed
+during the task, as `scope-of-change`'s deprecated-usage bullet places it, on the side pull request
+when the change neither introduced nor needs it, never left or offered. Its **Disposition** says
+what is fixed in the change in flight and what is recorded with `defer-scope`, how an instruction
+one agent passes another is checked against the standing guidance before it is sent and before it is
+acted on, and when a correction is asked about, offering a fix to the user being no disposition; its
+**CI Gates And Deliberate Breaks**, how a required check that detects deliberate changes, red on an
+intentional break, is reported, never suppressed or designed around; its **Widened Scope**, the
+borderline-item triage.
 
 ### Ongoing Simplification
 
@@ -453,15 +458,20 @@ Review** once each has its accepted head.
 
 - **Guidance stream.** Invoke `process-ledger` for the task's private ledger. It sends the
   `guidance_correction` batch it freezes to `edit-skill`'s **Guidance Delivery** route, which the
-  primary agent coordinates so its review and checks never wait on the source stream. Before a source pull request's **Review the pull request**,
-  every pending `guidance_correction` entry the GitHub rule's **Branches and Pull Requests** puts
-  on it, in the batch in flight or the one after it, is pushed to it and passes its source check,
-  as **Guidance Delivery**'s **Resume the batch** says, so its review pass, history and ready message cover them. An entry recorded after the batch in flight froze is delivered in the batch frozen
-  once that one is done, so the source stream then waits for that delivery too, and for nothing
-  else before **Review the pull request**. Each such entry's skill-test round runs on the head **Review the pull request** accepted, before
-  **Shape the history**, and the round's repairs, each rerun at once, return to review together once it passes, as **Guidance Delivery**'s **Test the batch first** says. A task with none has no guidance stream.
+  primary agent coordinates so its review and checks never wait on the source stream. Before a
+  source pull request's **Review the pull request**, every pending `guidance_correction` entry the
+  GitHub rule's **Branches and Pull Requests** puts on it, in the batch in flight, or in the next
+  one once `session-ledger`'s **Guidance Batches** lets its edit be written, is pushed to it and
+  passes its source check, as **Guidance Delivery**'s **Resume the batch** says, so its review pass,
+  history and ready message cover them. An entry recorded after the batch in flight froze is
+  delivered in the next batch once the batch in flight merges or leaves flight on a recorded hold,
+  as **Guidance Batches** says, so the source stream then waits for that delivery too, and for
+  nothing else before **Review the pull request**. Each such entry's skill-test round runs on the
+  pushed head before **Review the pull request**, as **Guidance Delivery**'s **Test the batch
+  first** says, and the round's repairs, each rerun at once, return to review together once it
+  passes. A task with none has no guidance stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
-  request belongs to the guidance stream:
+  request belongs to the guidance stream, and a side pull request carrying both kinds to this one:
 
 1. **Review the pull request.** Invoke `review-pass` on the pull request with the
    intent statement. It runs its review loop and one final `acceptance-gate` over the changes no
@@ -477,7 +487,7 @@ Review** once each has its accepted head.
    cover each of them and every simplification, confirm intentional contract changes are reflected
    in the expected behavior, and confirm multi-repository delivery artifacts describe only their
    owning repository. Then build this pull request's ready-for-review message, in the shape below,
-   from `list-prs`, what the run did and `review-pass`'s **Output**.
+   from `list-prs`, what the run did and `review-pass`'s **Output**; side work never holds it.
 4. **Merge when authorized.** When **Task Authorization** finds the merge authorized, send **Reconcile the result**'s message together with the
    invocation of `merge-gate`, passing the accepted head, `review-pass`'s **Checks** results with their
    commands and head as the behaviors local tests already cover, every exclusion it returned with
@@ -488,21 +498,30 @@ Review** once each has its accepted head.
    result it read: the merge, or the gate that holds it. Otherwise send **Reconcile the result**'s message; the pull
    request stays draft.
 
-The ready-for-review message takes exactly this shape, one message per pull request, leaving out
-**Deferred** when nothing was deferred and **Still running** when no work is active. Its **Next:**
-review is an action the reader owns. Use the message as the material for the review request in
-the question tool, as `user-facing-output` directs:
+The ready-for-review message takes exactly this shape, one message per pull request, in every report
+that hands a pull request to the reader for review, a follow-up's included, whether or not the steps
+before it ran; a step that did not run is left out of **Review** as that line says, never reported
+under another label. Its line
+labels are these and no others: each requested outcome, each new behavior worded as new and each
+defect the change needed go in **What landed**, and a fix the change did not need goes in **Side
+work** with the side pull request carrying it. It leaves out
+**Deferred** when nothing was deferred, **Before deploy** when the change needs nothing outside the
+code to deploy, **Still running** when none of this pull request's own work is active, and **Side
+work** when none is open. Use the message as the material for the review request in the question
+tool, as `user-facing-output` directs; the question asks for the review alone, and its own text
+leaves out the **Before deploy** line:
 
 ```markdown
 **Ready for review:** <pull request URL>
 
-- **What landed:** <each requested outcome, one clause each>
+- **What landed:** <each requested outcome, each new behavior named as new, and each defect fixed because the change needed it, one clause each>
 - **Review:** <full | delta `<reviewed head>..<head>` | nothing new> · review loop <n> round(s), <n> finding(s) fixed · acceptance passed on `<head>` — leave out each count `review-pass` did not run
 - **History:** <n> commits (<subject> · <subject> · …)
-- **Fixed on the way:** <each incidental fix, or none>
 - **Deferred:**
   1. <item> — <ground> — <record link>
-- **Still running:** <the authorized merge through `merge-gate` (CI ~<n> min) | active validation or delivery of the guidance fixes from this task (<n> correction(s))>
+- **Before deploy:** <each step only a deployment needs, such as a secret to add, in plain text>
+- **Still running:** <only this pull request's work: the authorized merge through `merge-gate` (CI ~<n> min)>
+- **Side work, not holding this review:** <each side pull request, guidance delivery or skill test still open: link — each incidental fix or other change it carries — its state>
 
 **Next:** <review the pull request; send follow-ups here, `/finish-pr` to review what this pass has not and merge, or `/merge-now` to merge first and review after | review the pull request; it merges once its checks pass>
 ```

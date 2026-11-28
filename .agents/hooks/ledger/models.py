@@ -1,4 +1,4 @@
-from enum import StrEnum
+from enum import Enum, StrEnum
 from typing import TypedDict
 
 
@@ -19,12 +19,22 @@ class EntryStatus(StrEnum):
     WITHDRAWN = "withdrawn"
 
 
-class HookInput(TypedDict):
-    """The turn-end payload fields the backup check reads."""
+class HookOutcome(Enum):
+    """How the hook leaves the turn, valued as its process exit code."""
 
+    END_TURN = 0
+    FAILED = 1
+    HOLD_TURN = 2
+
+
+class HookInput(TypedDict):
+    """The hook-event payload fields the hook reads."""
+
+    is_session_end: bool
     is_continuation: bool
     expects_followup_message: bool
     transcript_path: str | None
+    session_id: str | None
 
 
 class BackupRecord(TypedDict):

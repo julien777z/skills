@@ -27,16 +27,17 @@ This is the user's standing instruction and holds over a harness default against
   workflow runs those. Something wrong, odd or unclear goes to the worker as a queued question or
   a request to look into it, and its answer is read when it arrives.
 - **Pull-request spot check:** each 30-minute check also lists, from the host, the open pull
-  requests in every repository the session's workers push to. It compares them with the
-  session's own creation receipts and its workers' briefs, never with the ledger alone. A pull
-  request a worker opened carries no receipt, and the comparison is how the coordinator sees one.
-  It spot-checks the session's pull requests against the GitHub rule's **Branches and Pull
-  Requests**. Each repository should have at most one open agent-configuration pull request for
-  the session.
-  No branch should mix guidance and source. No pull request should be outside its brief, and none
-  should be another session's pull request carrying the session's commits. A miss goes to the
-  running worker that made it, or the coordinator fixes its own, with the consolidation that rule
-  requires. Like the look-over, this is a quick read, never a review pass.
+  requests in every repository the session's workers push to. It compares them with the session's
+  own creation receipts and its workers' briefs, never with the ledger alone. A pull request a
+  worker opened carries no receipt, and the comparison is how the coordinator sees one. It
+  spot-checks the session's pull requests against the GitHub rule's **Branches and Pull Requests**.
+  Each repository should have at most one open side pull request for the session, based on the
+  task's pull request where the repository has one. Nothing the user asked for should sit on the
+  side pull request, and no guidance edit on either pull request, apart from where the GitHub rule's
+  side pull request bullet places it. No pull request should be outside its brief, and none should
+  be another session's pull request carrying the session's commits. A miss goes to the running
+  worker that made it, or the coordinator fixes its own, with the consolidation that rule requires.
+  Like the look-over, this is a quick read, never a review pass.
 - **Finished:** a worker has finished once it reports its own task done and awaits nothing that
   task needs, even while its thread stays open, as much as when the host shows it ended. One that
   handed up a step its task needs, such as a review or gate it could not launch, waits for that

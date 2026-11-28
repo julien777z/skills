@@ -124,6 +124,12 @@ class Roster(BaseModel):
 def team_cache(session: Session) -> Cache:
     """Return the cache this session carries."""
 ```
+- **A docstring or comment describes the normal path and hedges for no other.** A path normal users
+  never take, such as an order imported from an older system or a carrier's rare missing scan, is
+  handled in code and covered by tests; naming it in prose, as "when one exists", reads as a flaw
+  in the normal path. A shipping label every order gets is described by
+  `"""Return the shipping label printed for the order."""`, never "…for the order, when one
+  exists". A docstring for an optional field still says the value may be absent.
 - Prose written for a person — a docstring, a comment, a log message — must not spell out an internal role, permission, or scope identifier (the literal string a provider or authorization system checks against, such as `tenant:member` or `scope:read_billing`). Name the concept in readable words instead. The identifier belongs in the code that evaluates it, where renaming it is a change the type checker and tests can see; repeated in prose it is a second copy nothing keeps honest.
 
 ```python
@@ -141,11 +147,13 @@ def ensure_tenant_member(user: User) -> None:
     logger.info("Checking tenant membership for %s", user.id)
 ```
 
-- **Comments are only for third-party quirks** — an SDK bug, a library's surprising contract, a spec oddity, a protocol requirement — that a reader could not infer from our own code. If the reason lives in code you control, it is not a comment.
-- **A limit or format a standard sets is no quirk once the value states it.** The value and a test
-  asserting it carry the requirement, the test added where none covers it, so
-  `country_code: str = Field(min_length=2, max_length=2)` carries no comment citing the ISO
-  standard behind its length.
+- **Comments are only for third-party quirks** — an SDK bug, a library's surprising contract, a protocol's behavior the code cannot show — that a reader could not infer from our own code. If the reason lives in code you control, it is not a comment.
+- **A limit, format or header a standard or library sets is no quirk once the value states it.** The
+  value and a test asserting it carry the requirement, the test added where none covers it, so
+  `country_code: str = Field(min_length=2, max_length=2)` carries no comment citing the ISO standard
+  behind its length. Nor is a workaround the code already makes evident: code that reads a feed
+  through a parser other than the one its vendor ships carries no comment naming the vendor's
+  parser; a vendor bug that forced the change stays the quirk comment above.
 - **If your own code needs a comment to be understood, the code is too complex — refactor it instead.** Rename the identifier, extract a well-named helper, split the function, or restructure until the intent is obvious without prose. Reach for a comment only after the code cannot be made clearer and the remaining "why" is genuinely external.
 - **Never explain behavior in a comment — tests assert behavior.** Do not narrate what a branch, guard, ordering, or invariant does or protects against; encode that in a test that fails when it regresses. The test is the durable, executable specification; the comment is not.
 - **Keep any comment to 1–2 lines**, factual, and about the external quirk only. A comment that runs longer is a signal the code (or the abstraction) needs restructuring, not more prose.

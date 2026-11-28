@@ -31,8 +31,10 @@ only a subject no skill runs for.
 ## Skills that always run
 
 - Apply `use-browser` before any browser operation, including one performed by an imported skill,
-  hook, script or worker. Skip browser steps that conflict with it. If loading a skill registers
-  a hook that can launch a separate browser, leave that skill inactive and use any relevant
+  hook, script or worker. A step that names another browser, such as an imported skill's harness
+  browser or screenshot tool, runs in the browser `use-browser` selects, and one that cannot run
+  there is skipped and reported. If loading a skill registers a hook that launches a browser
+  outside the route `use-browser` selects, leave that skill inactive and use any relevant
   browser-independent reference material.
 - The skill whose description says it applies before the first user-facing response, and the
   output skill it builds on, apply from the first response a user reads in the session, whether or
@@ -130,11 +132,12 @@ only a subject no skill runs for.
   replaced by that choice's values, each an option of its own. When the
   decisions outnumber what one request holds, send one full request and the next only once the
   user has submitted it, and open each question with its place in the whole sequence and the
-  sequence's total, such as "Q48/52", so the reader always sees how many remain; a decision added
-  partway raises the total. A question names its subject in plain words, never by an internal label
-  such as a finding's ID. The question's own text and option descriptions therefore carry what the
-  decision needs: what happens today, stated as fact and where; what each option changes; the recommendation
-  with its reason; and each item named by the exact name its page shows and by nothing more, such
+  sequence's total, written bare with no letter before it, such as "48/52", so the reader always
+  sees how many remain; a decision added partway raises the total. A question names its subject in
+  plain words, never by an internal label such as a finding's ID. The question's own text and option
+  descriptions therefore carry what the decision needs: what happens today, stated as fact and
+  where; what each option changes; the recommendation with its reason; and each item named by the
+  exact name its page shows and by nothing more, such
   as a pull request by its title with no number beside it. A hypothetical, such as "if the API sends
   only IDs", or internals named without what they do leave the reader asking for the facts. A
   question includes its reviewable content — a short proposal for approval whole, an example

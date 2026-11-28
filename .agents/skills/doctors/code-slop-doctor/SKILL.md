@@ -313,8 +313,9 @@ confirms it reads zero, and re-runs each rewrite's covering check.
   removed; each package held back with the failure that holds it;
 - each app's hand-written styling count before and after, and each variant or prop added to a shared
   component in its place;
-- each shape **Reads As Slop** rewrote, by check, each rule change it made on its agent-configuration pull request for a
-  shape a rule keeps, and the test that carries each deleted comment's behavioral guarantee;
+- each shape **Reads As Slop** rewrote, by check, each rule change it made on the session's side
+  pull request for a shape a rule keeps, and the test that carries each deleted comment's behavioral
+  guarantee;
 - each rewrite's covering check with its result before and after, and each test written first
   because none reached the code;
 - each test removed or repaired with the layer it exercised;
