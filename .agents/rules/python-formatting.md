@@ -154,7 +154,7 @@ def ensure_tenant_member(user: User) -> None:
   `country_code: str = Field(min_length=2, max_length=2)` carries no comment citing the ISO
   standard behind its length. Nor is a workaround the code already makes evident: code that reads a
   feed through a parser other than the one its vendor ships carries no comment naming the vendor's
-  parser or why it was replaced.
+  parser; a vendor bug that forced the change stays the quirk comment above.
 - **If your own code needs a comment to be understood, the code is too complex — refactor it instead.** Rename the identifier, extract a well-named helper, split the function, or restructure until the intent is obvious without prose. Reach for a comment only after the code cannot be made clearer and the remaining "why" is genuinely external.
 - **Never explain behavior in a comment — tests assert behavior.** Do not narrate what a branch, guard, ordering, or invariant does or protects against; encode that in a test that fails when it regresses. The test is the durable, executable specification; the comment is not.
 - **Keep any comment to 1–2 lines**, factual, and about the external quirk only. A comment that runs longer is a signal the code (or the abstraction) needs restructuring, not more prose.
