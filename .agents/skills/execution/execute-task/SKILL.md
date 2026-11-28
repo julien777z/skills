@@ -483,7 +483,8 @@ The ready-for-review message takes exactly this shape, one message per pull requ
 **Deferred** when nothing was deferred, **Before deploy** when the change needs nothing outside the
 code to deploy, **Still running** when none of this pull request's own work is active, and **Side
 work** when none is open. Use the message as the material for the review request in the question
-tool, as `user-facing-output` directs; the question asks for the review alone:
+tool, as `user-facing-output` directs; the question asks for the review alone, and its own text
+leaves out the **Before deploy** line:
 
 ```markdown
 **Ready for review:** <pull request URL>

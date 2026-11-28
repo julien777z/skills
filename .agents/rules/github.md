@@ -35,9 +35,9 @@ alwaysApply: true
   alone and never raised with the user, unless one holds a credential that evidence shows reached
   an unauthorized recipient, a public surface or a compromised destination.
 - **What the user asks for during a task goes on the task's pull request in that repository**, the
-  session's open source pull request there: a follow-up, a correction, a request to move, rename or
-  add files, and work the agent did for the task. A guidance edit goes on the side pull request
-  below instead. Before proposing a branch, assigning a worker or starting edits, resolve that pull
+  session's open pull request for the task there: a follow-up, a correction, a request to move,
+  rename or add files, and work the agent did for the task. A guidance edit goes where the side
+  pull request bullet below says. Before proposing a branch, assigning a worker or starting edits, resolve that pull
   request from its creation or authorized-continuation receipt, carried forward when a follow-up
   starts a new task in the same session, and verify its owner, open state and scope. Distinct
   concerns and worker contributions stay on it in separate commits. Open another only when none is
@@ -55,8 +55,8 @@ alwaysApply: true
   - Its branch starts from and is based on the task pull request's branch, so the task's merge
     leaves it no conflict; once the task merges, retarget it to the default branch, bring that base
     in and rerun the affected gates. With no task pull request in the repository, as in the skills
-    repository while the task's code lives elsewhere, it is the session's agent-configuration pull
-    request, on the default branch.
+    repository while the task's code lives elsewhere, it is based on the default branch, and while
+    it holds only agent configuration it is the session's agent-configuration pull request.
   - Select it from this session's ledger: one it opened or the user directs it to continue,
     verified remotely, never by a touch or reference receipt, topic, branch, open state or batch
     record. Fold a duplicate this session opened into the first, then close it saying so.

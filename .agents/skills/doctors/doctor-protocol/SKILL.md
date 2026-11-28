@@ -262,11 +262,14 @@ Otherwise write a decision-complete remediation plan from the ledger.
     depend on an answer wait for it.
   - **A departure from a rule rides the rule change.** Where the run judges a shape a rule
     prescribes or exempts worse than the departure, as `pre-production`'s **Trade-Offs Are Surfaced,
-    Never Enforced** asks of a rule, the rule change and the source entry that departs under it both
-    go on the session's side pull request, the one source entry the GitHub rule's **Branches and
-    Pull Requests** would otherwise keep on the run's pull request, merging together on the user's
-    word, and the run's pull request keeps the rule's form, since code that departs from a rule
-    still in force reads as a defect to the next run.
+    Never Enforced** asks of a rule, the rule change goes on the session's side pull request in the
+    rule's repository. Where that is the run's own repository, the source entry that departs under
+    it goes on the same side pull request, the one source entry the GitHub rule's **Branches and
+    Pull Requests** would otherwise keep on the run's pull request, and the two merge together on
+    the user's word. Where the rule lives in another repository, the source entry goes on the run's
+    repository's side pull request, held there until the rule change merges. Either way the run's
+    pull request keeps the rule's form, since code that departs from a rule still in force reads as
+    a defect to the next run.
 - **The gated plan is shown, and its work starts in the same turn.** The user reads one line per
   area with its entry counts, the order, what waits on a decision and any path no reviewer read;
   the entries themselves go in the plan file sent with it, as the reference says. The message
@@ -350,8 +353,8 @@ configured rather than inventing one.
 
 Then take every measure again and rerun the mechanical pre-pass. Each instance a measure of defect
 candidates still counts is matched to a ledger entry that retains it: kept with a reason, declined,
-deferred or waiting on a reserved user decision or carried with a rule change on the side pull
-request. An instance with no such entry is a missed fix and goes back out as a fix step. Inventory
+deferred or waiting on a reserved user decision, or carried with or held on a rule change on a
+side pull request. An instance with no such entry is a missed fix and goes back out as a fix step. Inventory
 totals, such as files, symbols, dependencies, documents and strings, and performance measures are
 compared before and after, never reconciled item by item.
 
@@ -420,11 +423,13 @@ Keep each repository's run on its draft pull request for the user's review: no d
 is merged or set to auto-merge by the run, whatever standing merge exception would otherwise cover
 it, because the merge is where the owner reads the decisions the run made on its own. A later
 explicit user instruction naming the target may authorize merge. A run that changes both agent
-configuration and source carries its source fixes on the task's pull request and its guidance on the
+configuration and source carries its source fixes on the run's pull request and its guidance on the
 session's side pull request, as the GitHub rule's **Branches and Pull Requests** says, and each
 stays on one pull request however many fixes the run makes. Complete every planned entry
 continuously; checkpoints sequence work on those drafts and never wait for a merge, a source entry
-that rides a rule change on the side pull request under **Gate And Show The Plan** included. Run
+that rides a rule change on a side pull request under **Gate And Show The Plan** included, apart
+from one held on another repository's rule change, which the run completes there and reports as
+held. Run
 **Run Repository-Native Checks**, **Review The Result**, and **Accept The Complete Diff** over the
 completed work before reporting it for the user's review. Confirm that every planned disposition
 landed.
@@ -451,7 +456,8 @@ The final report names:
 - the baseline and final check results and any category not configured;
 - every decision the run made, each council ruling, and each reserved decision with the user's
   answer or as still open;
-- each source entry carried with a rule change on the side pull request, with that pull request;
+- each source entry carried with a rule change on a side pull request, or held there on one in
+  another repository, with that pull request;
 - remaining external blockers.
 
 Per-entry detail, each applied correction with its evidence and commit, goes in a file sent with

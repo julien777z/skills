@@ -366,7 +366,9 @@ small it looks.** Each route below is the gate set its batch passes on the head 
       checks the GitHub rule's **Pre-Push Gate** defines pass. Open the pull request as a draft; it
       stays draft until `merge-gate` marks it ready as the last step before its merge. An open pull
       request leaves the current guidance in use. A source fix **Include the underlying issue**
-      requires is the task's work, on the task's pull request, merging as that work does.
+      requires goes where the GitHub rule's **Branches and Pull Requests** places it: on the task's
+      pull request when the task needs it or the user asked for it, otherwise on the session's side
+      pull request.
    2. **Run `validate_sources.py check`**, the source check `skill-pass`'s **Source Check**
       describes, before the pull request merges, and again whenever the branch changes after that
       run. Nothing on a pull request runs the sync: the workflow runs on the default branch after
