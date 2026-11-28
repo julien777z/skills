@@ -141,9 +141,9 @@ an earlier deferred pull request is open or still being implemented.
 
 - Before starting, check both the session's queued work and its open deferred pull requests for one
   on the scope's subject.
-- A scope that joins does so on the branch of its kind: agent configuration and source stay apart,
-  except guidance the GitHub rule's **Branches and Pull Requests** puts on the source pull request it
-  depends on.
+- A scope that joins does so on the pull request the GitHub rule's **Branches and Pull Requests**
+  selects for it: requested source work on the task's pull request, guidance and the agent's own
+  side work on the session's one side pull request in that repository.
 - A same-subject scope that arrives before the first pull request opens joins the same future
   branch.
 - Update the pull request body to cover the added work when appending. A body describing half of a

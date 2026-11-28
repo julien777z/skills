@@ -418,14 +418,15 @@ Nothing the run leaves unfixed lives only in chat, the plan or the report.
 Keep each repository's run on its draft pull request for the user's review: no doctor pull request
 is merged or set to auto-merge by the run, whatever standing merge exception would otherwise cover
 it, because the merge is where the owner reads the decisions the run made on its own. A later
-explicit user instruction naming the target may authorize merge. A run that changes both agent configuration and source carries each on its own pull
-request, except guidance the GitHub rule puts on the source pull request it depends on, and each
-kind stays on one pull request however many fixes the run makes. Complete
-every planned entry continuously; checkpoints sequence work on those drafts and never wait for a
-merge. The one exception is a source entry held on a rule change's merge under **Gate And Show The
-Plan**: the run completes its independent work and reports that entry as held. Run **Run
-Repository-Native Checks**, **Review The Result**, and **Accept The Complete Diff** over the completed work before reporting it for the user's review. Confirm that every planned
-disposition landed.
+explicit user instruction naming the target may authorize merge. A run that changes both agent
+configuration and source carries its source fixes on the task's pull request and its guidance on the
+session's side pull request, as the GitHub rule's **Branches and Pull Requests** says, and each
+stays on one pull request however many fixes the run makes. Complete every planned entry
+continuously; checkpoints sequence work on those drafts and never wait for a merge. The one
+exception is a source entry held on a rule change's merge under **Gate And Show The Plan**: the run
+completes its independent work and reports that entry as held. Run **Run Repository-Native Checks**,
+**Review The Result**, and **Accept The Complete Diff** over the completed work before reporting it
+for the user's review. Confirm that every planned disposition landed.
 
 **A run's guidance fixes are reviewed once.** Where the run changed agent configuration, **Review
 The Result** and **Accept The Complete Diff** are that change's delivery review and acceptance,

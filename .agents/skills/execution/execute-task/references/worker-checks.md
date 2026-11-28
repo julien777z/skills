@@ -31,9 +31,10 @@ This is the user's standing instruction and holds over a harness default against
   session's own creation receipts and its workers' briefs, never with the ledger alone. A pull
   request a worker opened carries no receipt, and the comparison is how the coordinator sees one.
   It spot-checks the session's pull requests against the GitHub rule's **Branches and Pull
-  Requests**. Each repository should have at most one open agent-configuration pull request for
-  the session.
-  No branch should mix guidance and source. No pull request should be outside its brief, and none
+  Requests**. Each repository should have at most one open side pull request for the session,
+  based on the task's pull request where the repository has one. Nothing the user asked for should
+  sit on the side pull request, and no guidance edit on the task's pull request unless the user put
+  it there. No pull request should be outside its brief, and none
   should be another session's pull request carrying the session's commits. A miss goes to the
   running worker that made it, or the coordinator fixes its own, with the consolidation that rule
   requires. Like the look-over, this is a quick read, never a review pass.

@@ -452,7 +452,8 @@ Review** once each has its accepted head.
   else before **Review the pull request**. Each such entry's skill-test round runs on the head **Review the pull request** accepted, before
   **Shape the history**, and a repair it makes returns to review as **Guidance Delivery**'s **Conclude the skill test** says. A task with none has no guidance stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
-  request belongs to the guidance stream:
+  request belongs to the guidance stream, and a side pull request carrying both kinds runs this
+  stream for its source and **Guidance Delivery** for its guidance:
 
 1. **Review the pull request.** Invoke `review-pass` on the pull request with the
    intent statement. It runs its review loop and one final `acceptance-gate` over the changes no

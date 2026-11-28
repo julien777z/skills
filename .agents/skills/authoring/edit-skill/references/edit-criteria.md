@@ -159,14 +159,14 @@ When the sync tool cannot reach an imported skill's source repository, that is a
 refusal, not a blocker: attach or clone the repository, and when the tool
 fetches through a path the environment refuses, fix the tool to use one it serves.
 
-When the guidance needs a change in an unreleased tool owned by another repository, point
-the draft consuming workflow at that tool's active branch and validate against it, without
-waiting for the tool's review loop. That workflow change is source work under **Branch and commit**'s source
-route; its delivery follows `merge-gate`'s dependency gate rather than merging a testing reference.
-The guidance rides that workflow's source pull request, as the GitHub rule's **Branches and
-Pull Requests** says, and merges with it; that pull request waits for the tool through the
-same gate. After the tool merges, the consumer adopts and validates its maintained target under **Tools And
-Dependency References**. No merge here authorizes a release.
+When the guidance needs a change in an unreleased tool owned by another repository, point the draft
+consuming workflow at that tool's active branch and validate against it, without waiting for the
+tool's review loop. That workflow change is source work under **Branch and commit**'s source route;
+its delivery follows `merge-gate`'s dependency gate rather than merging a testing reference. The
+guidance goes where the GitHub rule's **Branches and Pull Requests** puts guidance that depends on
+that workflow's pull request, and waits for its merge; that pull request waits for the tool through
+the same gate. After the tool merges, the consumer adopts and validates its maintained target under
+**Tools And Dependency References**. No merge here authorizes a release.
 
 ## Already Reviewed Batches
 

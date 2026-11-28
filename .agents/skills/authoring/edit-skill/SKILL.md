@@ -106,7 +106,7 @@ recording or delivering a batch.
 - Write the edit in the checkout **Resolve which repository owns the target** resolves, on the branch **Branch and commit** selects — the batch's own
   branch while a batch is in flight and its pull request has not merged — commit it, and push it to
   that branch's pull request once the checks the GitHub rule's **Pre-Push Gate** defines pass, opening a draft when the branch has
-  none; this holds for a source pull request **Branch and commit** selects as for an agent-configuration one.
+  none; this holds for whichever pull request **Branch and commit** selects.
   When the checkout holds the active task's uncommitted or source-branch work, write and commit the
   edit from a separate worktree on the selected branch, leave the task's tree untouched, and stage
   only the guidance files. Record the branch, the `commits` list and the pull request in the entry's
@@ -202,16 +202,18 @@ small it looks.** Each route below is the gate set its batch passes on the head 
   choice to the user or describes a pending batch as waiting on them; one that does is corrected,
   never carried forward. A policy change **Identify the failure class** sends to the user, dropping it
   included, and a user-review hold stay theirs, the policy change asked through the question tool.
-- **A draft agent-configuration pull request is an intermediate delivery state, never this
-  skill's result or a turn boundary.** At a checkpoint and before reporting its state, read the
-  complete pull-request head and file list, not only the latest edit, and record the target
-  repository's lifecycle, its current state, and its next transition. A draft confined to
-  canonical agent configuration records `agent-configuration exception` and `merge-gate` as its
-  next action, which is invoked once its route's gates and the file-list check pass, unless the
-  GitHub rule's **Merge Authorization** holds it; it never records `await user authorization`
-  otherwise. Delivery continues through the Agent Sync result and the verification of generated
-  output, and the report names the merged state or a concrete documented gate with its evidence.
-  A genuine gate holds only its dependent step while repair or resolution remains active.
+- **A draft agent-configuration pull request is an intermediate delivery state, never this skill's
+  result or a turn boundary.** At a checkpoint and before reporting its state, read the complete
+  pull-request head and file list, not only the latest edit, and record the target repository's
+  lifecycle, its current state, and its next transition. A draft confined to canonical agent
+  configuration and based on the default branch in a repository with no task pull request records
+  `agent-configuration exception` and `merge-gate` as its next action, which is invoked once its
+  route's gates and the file-list check pass, unless the GitHub rule's **Merge Authorization** holds
+  it; it never records `await user authorization` otherwise. A side pull request based on a task's
+  pull request, or one carrying source, records `await user authorization` once those gates pass.
+  Delivery continues through the Agent Sync result and the verification of generated output, and the
+  report names the merged state or a concrete documented gate with its evidence. A genuine gate
+  holds only its dependent step while repair or resolution remains active.
 
 ## Behavior
 
@@ -354,19 +356,24 @@ small it looks.** Each route below is the gate set its batch passes on the head 
    carrying **Check prose duplication** and **Brief `review-pass`'s final acceptance**. Ordinary
    repairs and verification remain authorized throughout: resolve flagged gates under
    `acceptance-gate`'s **Bounds** and failing skill-test runs under `test-skill`. A pull request
-   confined to agent configuration has merge authorization under the GitHub rule once its route's
-   gate set has passed, a skill's changed scripts' own checks included, unless its **Merge
-   Authorization** holds it; never ask to repeat that authorization or to continue an ordinary
+   confined to agent configuration and based on the default branch in a repository with no task
+   pull request has merge authorization under the GitHub rule once its route's gate set has
+   passed, a skill's changed scripts' own checks included, unless its **Merge Authorization** holds
+   it; a side pull request based on a task's pull request, or one carrying source, merges only with
+   the user's authorization. Never ask to repeat that authorization or to continue an ordinary
    repair. It settles no genuine unresolved product, scope, or authorization choice, which goes to
    the user under **Bounds** while independent work continues, and it authorizes no release
    workflow.
-   1. **Branch and commit.** Select the edit's pull request under the GitHub rule's **Branches and Pull Requests** — never put it onto a
-      source branch, the one checked out included, except guidance that rule puts on the source pull
-      request it depends on, which merges with it. Commit the `.agents` files, never a provider
-      mirror, and push each step once the checks the GitHub rule's **Pre-Push Gate** defines pass. Open the pull
-      request as a draft; it stays draft until `merge-gate` marks it ready as the last step before its merge. An
-      open pull request leaves the current guidance in use. A source fix **Include the underlying issue** requires is source work: it goes onto the source pull request
-      the work continues in its repository under the same rule and merges as that work does.
+   1. **Branch and commit.** Select the edit's pull request under the GitHub rule's **Branches
+      and Pull Requests**: the session's one side pull request in the edit's repository, based on
+      the task's pull request where that repository has one and on the default branch where it has
+      none. Never put the edit onto the task's pull request, the branch checked out included, unless
+      the user directs it there or the task is that guidance change. Commit the `.agents` files,
+      never a provider mirror, and push each step once the checks the GitHub rule's **Pre-Push
+      Gate** defines pass. Open the pull request as a draft; it stays draft until `merge-gate` marks
+      it ready as the last step before its merge. An open pull request leaves the current guidance
+      in use. A source fix **Include the underlying issue** requires is the task's work: it goes on
+      the task's pull request in its repository under the same rule and merges as that work does.
    2. **Run `validate_sources.py check`**, the source check `skill-pass`'s **Source Check**
       describes, before the pull request merges, and again whenever the branch changes after that
       run. Nothing on a pull request runs the sync: the workflow runs on the default branch after
@@ -410,10 +417,14 @@ small it looks.** Each route below is the gate set its batch passes on the head 
       rerun; review and the acceptance gate validate the replacement shape before merge.
    7. **Check the diff file list against the default branch, then merge.** The authorization covers
       a pull request carrying only `.agents` files, and the file outside them that slips in is never
-      announced. Read the changed paths, never your memory of what you edited. A path outside
-      `.agents` leaves this branch — dropped when it was never meant, moved to the source pull
-      request the work continues under **Branch and commit** when it was — and the new head goes back through **Brief `review-pass`'s final acceptance**. Everything
-      in `.agents`, merge it through `merge-gate` with the head `acceptance-gate` accepted, which for a pull request in `review-pass`'s **Combined Review** set, and no other, is also the head that review accepted — but first
+      announced. Read the changed paths, never your memory of what you edited. On a pull request
+      that permission covers, a path outside `.agents` leaves this branch — dropped when it was
+      never meant, moved to the pull request the GitHub rule selects for it when it was — and the
+      new head goes back through **Brief `review-pass`'s final acceptance**. A side pull request
+      that permission does not cover is reported for the user's review once its gates pass.
+      Everything in `.agents`, merge it through `merge-gate` with the head `acceptance-gate`
+      accepted, which for a pull request in `review-pass`'s **Combined Review** set, and no other,
+      is also the head that review accepted — but first
       ask whether any line it adds or drops is true only once a still-open source pull request
       merges. Select where dependent guidance goes under the GitHub rule's **Branches and Pull Requests**,
       and report any hold under its **Merge Authorization**. Otherwise a pull request carrying a
