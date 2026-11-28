@@ -306,6 +306,9 @@ def states_requirement(node: Assign | AnnAssign) -> bool:
 
     value = node.value
 
+    if value is None:
+        return False
+
     if isinstance(value, Call):
         return any(keyword.arg in CONSTRAINT_KEYWORDS for keyword in value.keywords)
 
@@ -342,7 +345,7 @@ def standard_citation_findings(path: Path, module: Module, source: str) -> list[
             following += 1
 
         if following in assignments:
-            findings.append(f"{path}:{line}: comment cites a standard above the value that states it")
+            findings.append(f"{path}:{line}: standard citation candidate, above a value that may state it")
 
     return findings
 

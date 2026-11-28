@@ -143,7 +143,7 @@ def ensure_tenant_member(user: User) -> None:
 
 - **Comments are only for third-party quirks** — an SDK bug, a library's surprising contract, a spec oddity, a protocol requirement — that a reader could not infer from our own code. If the reason lives in code you control, it is not a comment.
 - **A limit or format a standard sets is no quirk once the value states it.** The value and a test
-  asserting it carry the requirement, the test added under `test-fixture` where none covers it, so
+  asserting it carry the requirement, the test added where none covers it, so
   `country_code: str = Field(min_length=2, max_length=2)` carries no comment citing the ISO
   standard behind its length.
 - **If your own code needs a comment to be understood, the code is too complex — refactor it instead.** Rename the identifier, extract a well-named helper, split the function, or restructure until the intent is obvious without prose. Reach for a comment only after the code cannot be made clearer and the remaining "why" is genuinely external.

@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit anything under `.agents` — a skill, rule, agent definition, hook, setting, reference or project guidance — including when the user points out a mistake in how an agent followed or wrote guidance, or questions where guidance was placed, even with no request to edit a skill, and when carrying a guidance batch through delivery to its merge or hold. Fix the underlying issue and the guidance path that allowed it, writing the change for the class of failure the user plainly meant, no narrower and no broader, classified before the change is first described, proposed or edited anywhere and shown to them as a Scope Statement first. A correction that encodes a new process waits until that process has worked on the work in hand, which a merged change that carried it has; every other correction is recorded and written at once.
+description: Add or edit anything under `.agents` — a skill, rule, agent definition, hook, setting, reference or project guidance — including when the user points out a mistake in how an agent followed or wrote guidance, or questions where guidance was placed, even with no request to edit a skill, and when carrying a guidance batch through delivery to its merge or hold. Fix the underlying issue and the guidance path that allowed it, writing the change for the class of failure the user plainly meant, no narrower and no broader, classified before the change is first described, proposed or edited anywhere and shown to them as a Scope Statement first. A correction that encodes a new process waits until that process has worked on the work in hand, which a merged change that carried it has; every other correction is recorded at once and written at once, apart from one recorded after a guidance batch froze, which waits for the next batch.
 short_description: 'Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.'
 ---
 
@@ -19,7 +19,8 @@ run, so its guidance is written from the merged work, never held for a fresh run
 Documentation, a plan, a worker's proposal or the request's own description of the process is the
 source to try, never the text to encode. Every other correction — a gap a guidance failure exposed,
 a rule the user states — depends on nothing the current work does: record it and write its edit at
-once under **Recording During A Task**, which sets when it is delivered, while the current work is
+once under **Recording During A Task**, which sets when it is delivered and when one recorded after
+a batch froze waits for the next, while the current work is
 corrected beside it; a problem the current work meets never holds or drops such a correction.
 
 **A gap you notice yourself starts this skill, exactly as a request does.** Guidance that let a miss
@@ -105,8 +106,8 @@ recording or delivering a batch.
   session's branch. A brief to any worker whose task a pending entry's subject covers carries that
   entry's intended behavior, with the user's words quoted and the installed text it amends named.
 - Write the edit in the checkout **Resolve which repository owns the target** resolves, on the branch **Branch and commit** selects — the batch's own
-  branch until that batch is frozen; an entry recorded after the freeze is recorded and backed up
-  now, and its edit is written on the next batch's branch once the in-flight pull request merges,
+  branch until that batch is frozen; an entry recorded after the freeze is recorded now, and its
+  edit is written on the next batch's branch once the in-flight pull request merges,
   as `session-ledger`'s **Guidance Batches** says — commit it, and push it to
   that branch's pull request once the checks the GitHub rule's **Pre-Push Gate** defines pass, opening a draft when the branch has
   none, which a worker hands up instead; this holds for a source pull request **Branch and commit** selects as for an agent-configuration one.
@@ -355,7 +356,8 @@ small it looks.** Each route below is the gate set its batch passes on the head 
    it, creating one only when none governs the item's subject, under **Guidance Changes Proceed
    Automatically**. Ambiguous scope is settled by the Scope Statement, shown and never asked.
 
-7. **Deliver the batch.** **Guidance Delivery** delivers the batch in this order, on the full route with `review-pass`
+7. **Deliver the batch.** **Guidance Delivery** sets the order the batch is delivered in, and the
+   steps below are the ones it names, on the full route with `review-pass`
    carrying **Check prose duplication** and **Brief `review-pass`'s final acceptance**. Ordinary
    repairs and verification remain authorized throughout: resolve flagged gates under
    `acceptance-gate`'s **Bounds** and failing skill-test runs under `test-skill`. A pull request

@@ -130,8 +130,9 @@ after them say:
    own guidance and conventions, and a shared rule's standard is no flag there.
    **The pre-gate check runs before every gate.** When the Python rules apply, the caller runs
    `scripts/python_rule_findings.py` with the project's Python interpreter on the in-scope Python
-   files before dispatch, fixes each finding, and each paragraph candidate `engineering-conventions`' **Code
-   Layout** makes a boundary, in the lines the change writes or edits, then runs it again. Supply the
+   files before dispatch, fixes each finding, each paragraph candidate `engineering-conventions`' **Code
+   Layout** makes a boundary, and each standard citation candidate the shared Python formatting
+   rule's comment bullets rule out, in the lines the change writes or edits, then runs it again. Supply the
    file list and every finding that run prints, including an explicit empty result. The reader
    verifies each reported shape against the source and rule;
 5. exactly one question from the list below.

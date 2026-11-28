@@ -13,7 +13,6 @@ confuse those conclusions.
 
 ## Dependencies
 - `subagent-matrix`
-- `code-simplify`
 - `session-ledger`
 - `council`
 
@@ -72,8 +71,7 @@ confuse those conclusions.
 
 ## Workflow
 
-Run where the caller's delivery route places the round. On a guidance batch's full delivery route
-that is the pushed head before any review, each repair rerun at once, as that route says.
+Run where the caller's delivery route places the round.
 
 1. **Have someone other than the edit's author define the behavior.** Record the observed miss, the
    outcome the user requires and the real case the miss came from. One fresh scenario writer,
