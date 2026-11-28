@@ -1,5 +1,5 @@
 {
-  "description": "Load the i-have-adhd and user-facing-output skills at session start, at turn end create the session's ledger when none records it and check that every task ledger entry owing a backup comment has one, and at session end remove the session's ledger when nothing was recorded in it.",
+  "description": "Load the i-have-adhd and user-facing-output skills at session start, at turn end create the session's ledger when none records it and check that every task ledger entry owing a backup comment has one, and at session end remove the ledger it created for the session while that ledger lists only the session and holds no entries.",
   "hooks": {
     "SessionStart": [
       {

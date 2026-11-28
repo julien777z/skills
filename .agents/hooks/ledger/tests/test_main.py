@@ -134,22 +134,24 @@ class LedgerHookTest(unittest.TestCase):
 
         ledger = self.directory / f"session-{self.session_id}.yaml"
         rewritten = f"session_ledger:\n  entries: []\n  sessions: [{self.session_id}]\n"
+        joined = rewritten.replace(f"{self.session_id}]", f"{self.session_id}, {uuid.uuid4()}]")
         recorded = rewritten.replace("entries: []", "entries: [{id: kept}]")
+        claude = {"hook_event_name": "SessionEnd"}
+        cursor = {"conversation_id": self.session_id, "hook_event_name": "sessionEnd"}
 
-        for event, text, kept in (
-            ("SessionEnd", None, False),
-            ("SessionEnd", rewritten, False),
-            ("sessionEnd", recorded, True),
+        for payload, text, kept in (
+            (claude, None, False),
+            (claude, rewritten, False),
+            (claude, joined, True),
+            (cursor, recorded, True),
         ):
-            with self.subTest(event=event, text=text):
+            with self.subTest(payload=payload, text=text):
                 self.run_hook()
 
                 if text is not None:
                     ledger.write_text(text)
 
-                result = self.run_hook(
-                    session_id=None, conversation_id=self.session_id, hook_event_name=event
-                )
+                result = self.run_hook(**payload)
 
                 self.assertEqual((result.returncode, result.stderr), (0, ""))
                 self.assertEqual(ledger.exists(), kept)

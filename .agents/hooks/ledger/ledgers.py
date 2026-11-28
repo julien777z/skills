@@ -140,4 +140,3 @@ def create_session_ledger(session_id: str) -> Path | None:
         os.unlink(temporary)
 
     return path
-
