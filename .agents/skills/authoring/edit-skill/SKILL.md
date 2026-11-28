@@ -27,7 +27,8 @@ corrected beside it; a problem the current work meets never holds or drops such 
 through, a skill whose trigger did not fire when it should have, one that says nothing about the case
 in hand, a step you found yourself doing that no skill describes: each is this skill's input, and
 noticing it is the whole trigger. Waiting to be told is what leaves the next session to rediscover
-the same gap, and the session that hit it is the only one holding the evidence.
+the same gap, and the session that hit it is the only one holding the evidence. What counts as a
+flaw, how it is judged and where its fix goes follow `self-improvement-protocol`.
 
 The tell is a sentence you are about to write to the user about your own process — that you skipped
 a step, that a check did not apply, that you should have done something earlier. Diagnose the route
@@ -60,6 +61,7 @@ When a separate source task is active, or a guidance batch is in flight, preserv
 follow **Recording During A Task** for the edit's timing.
 
 ## Dependencies
+- `self-improvement-protocol`
 - `skill-pass`
 - `code-simplify`
 - `acceptance-gate`
