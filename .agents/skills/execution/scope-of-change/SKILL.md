@@ -291,7 +291,10 @@ authorizes compatibility with an obsolete owned contract or revision.
   instance copes, the job finishes overnight, nobody has complained.
 - **Judge the mechanism, not the environment it currently runs in.** Ask whether the work grows with
   the data and whether anything bounds it — not whether this month's instance survives it. Resizing is
-  a number somebody revisits under pressure; a design that scales with the work is not.
+  a number somebody revisits under pressure; a design that scales with the work is not. A mechanism
+  whose work grows with the data and that nothing bounds is a defect, fixed in the change as **A
+  defect the work notices is always fixed** says, with its owned consumers updated in the same work;
+  it is never cleanup for the widened budget's triage.
 - Where the environment genuinely limits what can be *demonstrated* — a single-node database that
   cannot show contention, a dataset too small to produce a rate — say so plainly and build for the
   target anyway. A design that cannot yet be proven here is still the right design; one that cannot
