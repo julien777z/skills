@@ -26,6 +26,10 @@
   date helpers is `dates.py`, never `helpers.py` or `misc.py`. The one generic container name is
   the category package a language rule assigns, such as `utils/`, whose topic-named modules carry
   what it holds. A name a framework or protocol defines keeps its own spelling.
-- Name things for the shape being exercised, not for whichever caller happened to prompt the work.
-  A test needing a table with a secret column names it for that — a record with a secret — rather
-  than borrowing the one real table the change was made for.
+- **Name things for what they are, never for the caller, surface or task that uses them.** A
+  qualifier naming who reads or calls a thing, such as `admin_`, `public_` or `internal_`, reads as
+  what the thing belongs to or what kind it is, and misleads most where the codebase already uses
+  the word for one of its own entities: with `admin` meaning a site admin, a full-detail listing of a
+  business's bank accounts is `list_bank_account_details`, never `list_admin_bank_accounts`, which
+  reads as bank accounts admins own. A test needing a table with a secret column names it for that —
+  a record with a secret — rather than borrowing the one real table the change was made for.
