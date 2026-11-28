@@ -321,7 +321,7 @@ def states_requirement(node: Assign | AnnAssign) -> bool:
 
 
 def standard_citation_findings(path: Path, module: Module, source: str) -> list[str]:
-    """Find comments citing a standard directly above a value that states the requirement itself."""
+    """List comments citing a standard directly above a value that may state the requirement itself."""
 
     assignments = {
         node.lineno for node in walk(module) if isinstance(node, (Assign, AnnAssign)) and states_requirement(node)
@@ -376,7 +376,7 @@ def python_findings(path: Path) -> list[str]:
 
 
 def main() -> None:
-    """Print the Python rule findings and paragraph candidates for the given source files."""
+    """Print the Python rule findings and candidates for the given source files."""
 
     parser = ArgumentParser(description="List Python rule shapes and adjacent statements that may need a blank line.")
 
