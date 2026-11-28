@@ -64,10 +64,11 @@ Before reading code for a plan or selecting targets, load `pre-production`, `sco
 `engineering-conventions` whole, each once per task, then apply
 **Product Constraints** and **Task Authorization**.
 
-Before choosing a design, and before the first edit on a path that takes no plan, apply
-`code-simplify`'s **Before Choosing A Design** check to everything the change will add, split or
-rename and write its receipt in the task record, even for a small follow-up, a bug fix or a
-worker's task with no plan of its own; only an edit that adds, splits and renames nothing skips it.
+Before choosing a design, and before the first edit on a path that takes no plan, load
+`code-simplify` and apply its **Before Choosing A Design** check to everything the change will add,
+split or rename, and write its receipt in the task record, even for a small follow-up, a bug fix
+or a worker's task with no plan of its own; only an edit that adds, splits and renames nothing
+skips it.
 
 ### When A Plan Is Needed
 

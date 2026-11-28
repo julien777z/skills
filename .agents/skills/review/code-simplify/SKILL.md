@@ -22,9 +22,10 @@ it whole before the pass.
 ## Before Choosing A Design
 
 **Search for an existing owner before writing anything a change adds**: a function, component,
-hook, type, constant set, fixture, configuration entry or block of inline logic. This holds on
-every path — a planned design, a small follow-up, a bug fix, a delegated worker's task — and only
-an edit that adds nothing, such as a typo fix or a rename, skips it.
+hook, type, constant set, fixture, configuration entry, block of inline logic, or a file it
+creates, splits or renames. This holds on every path — a planned design, a small follow-up, a bug
+fix, a delegated worker's task — and only an edit that adds, splits and renames nothing, such as a
+typo fix, skips it.
 
 Make the search and write its receipt in the task record before the edit, as the rubric's
 [Reuse and removal](references/rubric.md#reuse-and-removal) says.
