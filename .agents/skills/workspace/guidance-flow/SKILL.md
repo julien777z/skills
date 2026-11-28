@@ -206,17 +206,21 @@ pages it reaches. Pages follow the categories as the sources stand when they are
      `details` is an `outline` titled with the rule's name, its `description` when the rule's
      frontmatter says to read it, with one item per section of the rule: `title` the heading,
      `detail` what the section governs in a sentence, and `meta` the skills that cite that section.
-   - Each category page, `layout` `rows`: a `diagram` `Flow` whose nodes are the skills the
-     page's starting skills reach directly, each labeled with its name and given its role in a few
-     words as its `detail`, and one node per launch labeled with the short name of the subagents it
-     starts, such as `Draft reviewers`, with how many and how often, such as "×3 per round", in its
-     `detail`, and one node per rule the page's skills read, labeled with the rule's name as
+   - Each category page, `layout` `rows`: a `diagram` `Flow` drawn in levels, as the work nests:
+     every skill the page's starting skills reach, at any depth, is a node joined to the skill
+     that runs it, never to the starting skill when another skill runs it, such as a gate a review
+     skill runs inside a task's completion step; each node is labeled with its name and given its
+     role in a few words as its `detail`, and one node per launch hangs off the skill or subagent
+     that starts it, such as a review a worker starts, labeled with the short name of the
+     subagents it starts, such as `Draft reviewers`, with how many and how often, such as "×3 per
+     round", in its `detail`. A skill several branches reach is one node with an edge from each.
+     Work that runs in parallel streams, such as a task's guidance and source streams at
+     completion, branches from the step that starts both. One node per rule the page's skills read is labeled with the rule's name as
      words, such as `GitHub rule` or `Global rules`, with what it governs in a few words as its
      `detail`. Edges are labeled `invokes`,
-     `launches` (from the skill to its launch node), `borrows` or `reads` (from a skill to a rule
-     it cites), and `steps` say in order how the
-     work moves through them; a skill reached only further down appears in the `Skills` table
-     alone. A rule keeps the diagram readable by appearing once: one that most of the page's skills
+     `launches` (from the skill or subagent to its launch node), `borrows` or `reads` (from a skill
+     to a rule it cites), and `steps` say in order how the work moves through them, level by
+     level. A rule keeps the diagram readable by appearing once: one that most of the page's skills
      cite, or that loads always and none of them cites, such as the global rules, has a single
      `reads` edge from the page's first starting skill, and the `steps` say it applies throughout;
      a rule that loads by file pattern and that no skill on the page cites stays on the `Rules`
