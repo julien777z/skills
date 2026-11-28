@@ -18,12 +18,15 @@ from ast import (
     If,
     Import,
     ImportFrom,
+    List,
     Module,
     Name,
     Raise,
     Return,
+    Set,
     Try,
     TryStar,
+    Tuple,
     While,
     With,
     get_docstring,
@@ -57,7 +60,9 @@ CONSTRAINT_KEYWORDS: Final[set[str]] = {
     "multiple_of",
 }
 
-STANDARD_CITATION: Final[Pattern[str]] = compile(r"\b(?:RFC|ISO|IEC|NIST|IEEE|ECMA|FIPS)[ -]?\d")
+STANDARD_CITATION: Final[Pattern[str]] = compile(
+    r"\b(?:RFC|ISO|IEC|IEEE|ECMA|FIPS(?: PUB)?|NIST(?: SP)?)[ -]?\d"
+)
 
 
 class ParagraphCandidateKind(StrEnum):
@@ -306,6 +311,9 @@ def states_requirement(node: Assign | AnnAssign) -> bool:
     if isinstance(value, Constant):
         return True
 
+    if isinstance(value, Tuple | List | Set):
+        return all(isinstance(element, Constant) for element in value.elts)
+
     return isinstance(value, Call) and any(keyword.arg in CONSTRAINT_KEYWORDS for keyword in value.keywords)
 
 
@@ -317,7 +325,9 @@ def standard_citation_findings(path: Path, module: Module, source: str) -> list[
     }
 
     comments = {
-        token.start[0]: token.string for token in generate_tokens(StringIO(source).readline) if token.type == COMMENT
+        token.start[0]: token.string
+        for token in generate_tokens(StringIO(source).readline)
+        if token.type == COMMENT and not token.line[: token.start[1]].strip()
     }
 
     findings: list[str] = []
