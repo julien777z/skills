@@ -114,8 +114,8 @@ alwaysApply: true
   itself included, and the user's word on the capability decides all of it. Keeping it ends the
   hold and removes the label, and dropping it closes the pull request this session opened.
 - **A self-improvement pull request is held until the user runs `finish-pr` on it.** It carries the
-  fixes an agent found in its own work under `self-improvement-protocol`, never a change the user
-  asked for: one draft per session and repository, labeled `self-improvement`, apart from the task's,
+  fixes an agent found in its own work under `self-improvement-protocol`, and every change the user
+  asks for about that same work, so the two are reviewed and tested together: one draft per session and repository, labeled `self-improvement`, apart from the task's,
   the side and the session's agent-configuration pull requests, and every later self-improvement
   fix of the session joins it. No review, gate, skill test, standing permission or auto-merge runs
   on it until the user runs `finish-pr` on it, which starts them and merges once they pass.
