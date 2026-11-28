@@ -12,7 +12,7 @@ export function FiguresSection({ section }: { section: FiguresSectionSpec }): Re
       <Grid columns={section.stacked || section.items.length === 1 ? 'single' : 'pair'} gap="lg">
         {withKeys(section.items, (figure) => figure.alt).map(({ key, item: figure }) => (
           <Stack key={key} as="figure" gap="sm" frame={section.stacked ? 'readable' : 'none'}>
-            <img src={figure.image} alt={figure.alt} className="block h-auto w-full rounded-lg border" />
+            <img src={figure.image} alt={figure.alt} className="block h-auto w-full border" />
             {figure.caption && (
               <Text as="figcaption" size="sm" tone="muted">
                 <RichText text={figure.caption} />

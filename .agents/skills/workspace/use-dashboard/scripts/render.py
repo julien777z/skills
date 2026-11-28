@@ -3,6 +3,7 @@ import gzip
 import logging
 import math
 import os
+import re
 import shutil
 import subprocess
 from argparse import ArgumentParser
@@ -40,6 +41,11 @@ APP_ROOT: Final[Path] = Path(__file__).resolve().parent.parent / "app"
 APP_BUILD_OUTPUTS: Final[tuple[str, ...]] = ("node_modules", "dist")
 APP_LOCKFILE: Final[str] = "package-lock.json"
 APP_TYPES_PATH: Final[str] = "src/spec.ts"
+BROWSER_MOMENT: Final[re.Pattern[str]] = re.compile(
+    r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:\d{2})"
+)
+
+MAX_TIMELINE_GAPS: Final[int] = 10
 CACHE_ROOT: Final[Path] = (
     Path(os.environ.get("XDG_CACHE_HOME") or Path.home() / ".cache") / "use-dashboard"
 )
@@ -218,6 +224,42 @@ def check_timestamp(value: object, path: str) -> None:
         datetime.fromisoformat(str(value))
     except ValueError as error:
         raise DashboardSpecError(f"{path} must be an ISO 8601 timestamp") from error
+
+
+def check_moment(value: object, path: str) -> None:
+    """Require an ISO 8601 timestamp with its UTC offset, in the extended form browsers parse."""
+
+    check_timestamp(value, path)
+
+    if not BROWSER_MOMENT.fullmatch(str(value)):
+        raise DashboardSpecError(f"{path} must read like 2026-11-10T10:00:00+00:00")
+
+
+def check_timeline(section: dict[str, object], path: str) -> None:
+    """Require gaps that never overlap."""
+
+    gaps = sorted(
+        (datetime.fromisoformat(str(gap["start"])), datetime.fromisoformat(str(gap["end"])), index)
+        for index, gap in enumerate(section.get("gaps", []))
+    )
+
+    for (_, previous_end, previous), (start, _, index) in zip(gaps, gaps[1:], strict=False):
+        if start < previous_end:
+            raise DashboardSpecError(f"{path}.gaps[{index}] overlaps {path}.gaps[{previous}]")
+
+
+def check_lasting_span(span: dict[str, object], path: str) -> None:
+    """Require a span to end later than it starts."""
+
+    if datetime.fromisoformat(str(span["end"])) <= datetime.fromisoformat(str(span["start"])):
+        raise DashboardSpecError(f"{path}.end must be later than {path}.start")
+
+
+def check_span(span: dict[str, object], path: str) -> None:
+    """Require a span to end no earlier than it starts."""
+
+    if datetime.fromisoformat(str(span["end"])) < datetime.fromisoformat(str(span["start"])):
+        raise DashboardSpecError(f"{path}.end must not be earlier than {path}.start")
 
 
 def check_object(value: object, path: str, shape: ObjectShape) -> dict[str, object]:
@@ -534,6 +576,7 @@ TIMESTAMP: Final[Field] = Field(check=check_timestamp, typescript="string")
 FRACTION: Final[Field] = Field(check=partial(check_number, maximum=1), typescript="number")
 WHOLE_NUMBER: Final[Field] = Field(check=check_whole_number, typescript="number")
 FLAG: Final[Field] = Field(check=check_flag, typescript="boolean")
+MOMENT: Final[Field] = Field(check=check_moment, typescript="string")
 AMOUNT: Final[Field] = Field(check=check_number, typescript="number")
 SECTIONS: Final[Field] = Field(check=check_sections, typescript="Section[]")
 TONE: Final[Field] = Field(
@@ -824,6 +867,37 @@ TAB_SHAPE: Final[ObjectShape] = ObjectShape(
     fields={"label": TEXT, "sections": SECTIONS},
     required=frozenset({"label", "sections"}),
 )
+
+TIMELINE_BAR_SHAPE: Final[ObjectShape] = ObjectShape(
+    name="TimelineBar",
+    fields={"start": MOMENT, "end": MOMENT, "tone": TONE, "label": TEXT},
+    required=frozenset({"start", "end"}),
+    relations=check_span,
+)
+
+TIMELINE_LANE_SHAPE: Final[ObjectShape] = ObjectShape(
+    name="TimelineLane",
+    fields={
+        "label": TEXT,
+        "tag": TEXT,
+        "tone": TONE,
+        "details": Field(check=check_section, typescript="Section"),
+        "bars": Field(
+            check=partial(check_objects, shape=TIMELINE_BAR_SHAPE),
+            typescript="TimelineBar[]",
+            shape=TIMELINE_BAR_SHAPE,
+        ),
+    },
+    required=frozenset({"label", "bars"}),
+)
+
+TIMELINE_GAP_SHAPE: Final[ObjectShape] = ObjectShape(
+    name="TimelineGap",
+    fields={"start": MOMENT, "end": MOMENT, "label": TEXT},
+    required=frozenset({"start", "end", "label"}),
+    relations=check_lasting_span,
+)
+
 NOTICE_SHAPE: Final[ObjectShape] = ObjectShape(
     name="Notice",
     fields={"title": TEXT, "body": TEXT, "tone": TONE},
@@ -937,6 +1011,23 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
             "stacked": FLAG,
         },
         frozenset({"items"}),
+    ),
+    SectionType.TIMELINE: section_shape(
+        SectionType.TIMELINE,
+        {
+            "lanes": Field(
+                check=partial(check_objects, shape=TIMELINE_LANE_SHAPE, unique="label"),
+                typescript="TimelineLane[]",
+                shape=TIMELINE_LANE_SHAPE,
+            ),
+            "gaps": Field(
+                check=partial(check_objects, shape=TIMELINE_GAP_SHAPE, max_entries=MAX_TIMELINE_GAPS),
+                typescript="TimelineGap[]",
+                shape=TIMELINE_GAP_SHAPE,
+            ),
+        },
+        frozenset({"lanes"}),
+        check_timeline,
     ),
     SectionType.CHART: section_shape(
         SectionType.CHART,

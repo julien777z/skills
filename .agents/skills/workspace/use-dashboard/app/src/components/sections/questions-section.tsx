@@ -1,8 +1,8 @@
-import { Check, CircleHelp } from 'lucide-react';
+import { CircleCheck, CircleHelp } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 import { ItemMeta, RichText } from '@/components';
-import { Stack, Text } from '@/components/primitives';
+import { Text } from '@/components/primitives';
 import { QuestionStatus, type QuestionsSection as QuestionsSectionSpec } from '@/spec';
 import { ListSection } from './list-section';
 import { TextList } from './text-list';
@@ -25,9 +25,7 @@ export function QuestionsSection({ section }: { section: QuestionsSectionSpec })
 
         return {
           icon: answered ? (
-            <Stack align="center" justify="center" badge="goodFilled">
-              <Check className="size-3" aria-label="Answered" />
-            </Stack>
+            <CircleCheck className="size-5 text-good" aria-label="Answered" />
           ) : (
             <CircleHelp className="size-5 text-warning" aria-label="Waiting on you" />
           ),

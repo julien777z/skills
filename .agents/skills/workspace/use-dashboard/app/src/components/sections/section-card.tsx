@@ -1,10 +1,11 @@
+import { cn } from 'cn';
 import { type Context, createContext, type ReactNode, useContext } from 'react';
-
 import { RichText } from '@/components';
 import { Stack, Text } from '@/components/primitives';
+import { Badge } from '@/components/ui/badge';
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { cn, sectionAnchor } from '@/lib/utils';
+import { sectionAnchor } from '@/lib/utils';
 
 export const InDialogContext: Context<boolean> = createContext(false);
 
@@ -13,10 +14,27 @@ export const InTabPanelContext: Context<boolean> = createContext(false);
 interface SectionCardProps {
   title: string;
   description?: string;
-  summary?: ReactNode;
+  summary?: number | string;
   wide?: boolean;
   flush?: boolean;
+  action?: ReactNode;
   children: ReactNode;
+}
+
+function Count({ summary }: { summary?: number | string }): ReactNode {
+  return typeof summary === 'number' ? (
+    <Badge variant="secondary" className="px-1.5 font-normal text-muted-foreground tabular-nums">
+      {summary}
+    </Badge>
+  ) : null;
+}
+
+function Summary({ summary }: { summary?: number | string }): ReactNode {
+  return typeof summary === 'string' ? (
+    <Text size="sm" tone="muted" numeric>
+      {summary}
+    </Text>
+  ) : null;
 }
 
 export function SectionCard({
@@ -25,6 +43,7 @@ export function SectionCard({
   summary,
   wide = false,
   flush = false,
+  action,
   children,
 }: SectionCardProps): ReactNode {
   const inDialog = useContext(InDialogContext);
@@ -36,20 +55,22 @@ export function SectionCard({
         <Stack gap="lg">
           <Stack direction="row" align="start" justify="between" gap="md">
             <Stack gap="xs">
-              <Text as="h3" size="sm" weight="semibold">
-                <RichText text={title} />
-              </Text>
+              <Stack direction="row" align="center" gap="sm">
+                <Text as="h3" size="sm" weight="semibold">
+                  <RichText text={title} />
+                </Text>
+                <Count summary={summary} />
+              </Stack>
               {description && (
                 <Text size="sm" tone="muted">
                   <RichText text={description} />
                 </Text>
               )}
             </Stack>
-            {summary === undefined ? null : (
-              <Text size="sm" tone="muted" numeric>
-                {summary}
-              </Text>
-            )}
+            <Stack direction="row" align="center" gap="sm">
+              <Summary summary={summary} />
+              {action}
+            </Stack>
           </Stack>
           {children}
         </Stack>
@@ -61,7 +82,8 @@ export function SectionCard({
     return (
       <Stack gap="lg">
         <DialogHeader>
-          <DialogTitle>
+          {action && <div className="absolute top-3 right-12">{action}</div>}
+          <DialogTitle className={cn(action && 'pr-20')}>
             <RichText text={title} />
           </DialogTitle>
           {description && (
@@ -78,28 +100,32 @@ export function SectionCard({
   return (
     <Card
       {...sectionAnchor(title)}
-      className={cn('@container/card min-w-0 scroll-mt-20', wide && 'col-span-full', flush && 'gap-4 pb-2')}
+      className={cn(
+        '@container/card min-w-0 scroll-mt-20 gap-5 rounded-lg py-5 shadow-none',
+        wide && 'col-span-full',
+        flush && 'gap-3 pb-2',
+      )}
     >
-      <CardHeader>
-        <CardTitle>
+      <CardHeader className="px-5">
+        <CardTitle className="flex items-center gap-2">
           <h2>
             <RichText text={title} />
           </h2>
+          <Count summary={summary} />
         </CardTitle>
         {description && (
           <CardDescription>
             <RichText text={description} />
           </CardDescription>
         )}
-        {summary === undefined ? null : (
-          <CardAction>
-            <Text size="sm" tone="muted" numeric>
-              {summary}
-            </Text>
+        {(typeof summary === 'string' || action) && (
+          <CardAction className="flex items-center gap-2">
+            <Summary summary={summary} />
+            {action}
           </CardAction>
         )}
       </CardHeader>
-      <CardContent className={cn(flush && 'px-0')}>{children}</CardContent>
+      <CardContent className={cn('px-5', flush && 'px-0')}>{children}</CardContent>
     </Card>
   );
 }

@@ -10,6 +10,7 @@ short_description: 'Show where session working time went, as a dashboard.'
 
 - `use-dashboard`
 - `session-ledger`
+- `progress`
 
 Explain where this session's agents spent their working time, what they touched and read, and what
 came of it, from the session's own evidence, so the reader can judge it for waste. By default cover the whole current session through invocation, including
@@ -58,21 +59,23 @@ anything else carries no assessment.
 
 ### States
 
-Each workflow, agent, assignment and plan step is in one state, with its pill and tone: **Active**,
-`accent`, running now; **Blocked**, `critical`, started and waiting on something; **Up next**,
-`next`, not started yet; **Done**, `good`, finished. A reviewer's verdict, such as Approved, Changes
-or Flag, takes the place of Done on a review, and a finished workflow's Rework, Detour or Avoidable,
-`warning`, takes its place where the evidence supports one; finished work with nothing standing out
-shows Done, which the user keeps although it repeats, and an assessment that says nothing, such as
-necessary, is never shown. Read the plans of every ledger this session wrote through
-`session-ledger`, leaving out withdrawn and complete plans: a step or part `active` is Active,
-`blocked` is Blocked, `next` is Up next, `done` is Done and `skipped` is left out, and a step with
-parts is read part by part. A plan still waiting on a decision or approval keeps its steps, each
-tagged Proposed. Work not started goes under the workflow that ran its plan's earlier steps, or
-under an entry of its own named for the plan when none has run. Its estimate is shown in `meta`,
-marked `~`, never as a `figure`, and never counts toward working time or the longest workflow; a
-total of remaining work is totaled as `session-ledger` totals a plan. A ledger that cannot be read
-is a gap the dashboard names, never an empty plan.
+Each workflow, round or group, phase, stage, group of commands, agent, assignment and plan step is
+in one state, a group's from its members as `use-dashboard` says: **Active**, running now;
+**Blocked**, started and waiting on something; **Up next**, not started yet; **Done**, finished,
+whatever its verdict or assessment. Its entry's dot and pill follow `use-dashboard`'s **Making A
+Dashboard**, and a table cell names the state in words. The pills that stay are a reviewer's verdict
+asking for a look, such as Changes or Flag, and a finished workflow's Rework, Detour or Avoidable
+where the evidence supports one, all `warning`, and what a blocked entry waits on; finished work
+with nothing standing out shows a Done pill in `good`, which the user keeps although it repeats its
+dot, and an assessment that says nothing, such as necessary, is never shown. Read the plans of every
+ledger this session wrote through `session-ledger`, leaving out withdrawn and complete plans: a step
+or part `active` is Active, `blocked` is Blocked, `next` is Up next, `done` is Done and `skipped` is
+left out, and a step with parts is read part by part. A plan still waiting on a decision or approval
+keeps its steps, each tagged Proposed. Work not started goes under the workflow that ran its plan's
+earlier steps, or under an entry of its own named for the plan when none has run. Its estimate is
+shown in `meta`, marked `~`, never as a `figure`, and never counts toward working time or the
+longest workflow; a total of remaining work is totaled as `session-ledger` totals a plan. A ledger
+that cannot be read is a gap the dashboard names, never an empty plan.
 
 ## Dashboard
 
@@ -103,12 +106,9 @@ pages, in order:
   shows it. A cause an observation states is traced, as the global rules require: one that says the
   agents ignored guidance first reads when that guidance took effect, since a rule merged late in
   the session governed only the work after it.
-- **Now and next** (`board`). One `board` with the columns Active (`accent`) and Up next (`next`).
-  Each card is one plan step, or one part of a step with parts, or a running agent no plan step
-  holds, saying what the work does, in plan order. Active holds active and blocked ones, a blocked
-  card carrying `status` Blocked in `critical` and an active one no pill. Up next holds those not
-  started, with no pill, since the column says it, each with its estimate in `meta` and, when the
-  session has several plans, the plan it belongs to in `tag`.
+- **Now and next** (`board`). The Active and Up next columns of `progress`'s `board` "Work", built
+  as that skill builds them from the same plans, so both dashboards show the same cards; Active also
+  holds each running agent no plan step holds, saying what it does.
 - **Activity** (`chart`). Charts of the same working time cut other ways, each a whole as a pie
   or a comparison as bars: time by kind of activity — the model thinking and writing, running
   tests, waiting on other commands, Git and the hosting service, lint and type checks, reading
@@ -134,12 +134,19 @@ pages, in order:
   read the change or the whole tree.
 - **Loops** (`list`). One `tree`: each workflow, then its rounds or groups, then the agents or
   assignments inside them, each broken down as **What happened** says. Every entry's `figure` is its
-  time, or for work up next its estimate in `meta`; its `status` is a pill as **States**
-  says, in the matching tone; the model a reviewer ran on is its `tag`.
-- **Timeline** (`calendar`). One `tree` of the session's phases in order, each labeled by the work
+  time, or for work up next its estimate in `meta`; its `tone` and any `status` are as **States**
+  says; the model an agent ran on is its `tag`, named as `use-dashboard` names a model, and its
+  label names its role without that model.
+- **Timeline** (`calendar`). First a `timeline` of when the work ran: one lane per top-level
+  workflow, a repeated workflow labeled apart by its target, such as each review pass by its pull
+  request, tagged with its model when one agent ran it, a bar per stretch it worked toned as its
+  state, and each pause longer than an hour, such as a rate-limit wait or the user away, a gap
+  labeled with its length; pauses that overlap are one gap, and past the renderer's limit only the
+  longest stay gaps. Then one `tree` of the session's phases in order, each labeled by the work
   done in it with its time as `figure`. Its children are the agents, assignments and reviewers that
-  worked in that phase, in the order they started, each with its time in the phase, its `status` and
-  `tag`, and its work in the phase broken down as **What happened** says.
+  worked in that phase, in the order they started, each with its time in the phase, its `tone`,
+  `status` and `tag` as on the Loops page, and its work in the phase broken down as **What
+  happened** says.
 
 ### What happened
 

@@ -43,6 +43,7 @@ class SectionType(StrEnum):
     TREE = "tree"
     TABS = "tabs"
     FIGURES = "figures"
+    TIMELINE = "timeline"
     CHART = "chart"
 
 

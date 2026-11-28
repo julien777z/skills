@@ -1,13 +1,14 @@
+import { cn } from 'cn';
 import { type ReactNode, useRef, useState } from 'react';
-
 import { DialogOpener, RichText } from '@/components';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { cn, withKeys } from '@/lib/utils';
+import { withKeys } from '@/lib/utils';
 import type { TableSection as TableSectionSpec } from '@/spec';
 import { SectionCard } from './section-card';
 import { SectionDialog } from './section-dialog';
 
 const PROSE_CELL_LENGTH: number = 40;
+const SHORT_CELL_LENGTH: number = 30;
 
 export function TableSection({ section }: { section: TableSectionSpec }): ReactNode {
   const [open, setOpen] = useState(false);
@@ -18,6 +19,9 @@ export function TableSection({ section }: { section: TableSectionSpec }): ReactN
   const openedDetails = details?.[rows.findIndex(({ key }) => key === openedRow)];
   const proseColumns = section.columns.map((_, column) =>
     section.rows.some((cells) => cells[column].length > PROSE_CELL_LENGTH),
+  );
+  const shortColumns = section.columns.map((_, column) =>
+    section.rows.every((cells) => cells[column].length <= SHORT_CELL_LENGTH),
   );
 
   if (openedRow && !openedDetails) {
@@ -39,48 +43,53 @@ export function TableSection({ section }: { section: TableSectionSpec }): ReactN
       summary={section.counted ? section.rows.length : undefined}
       wide
     >
-      <div className="overflow-hidden rounded-lg border">
-        <Table>
-          <TableHeader className="bg-muted">
-            <TableRow>
-              {withKeys(section.columns, (column) => column).map(({ key, item: column }, index) => (
-                <TableHead key={key} className={cn('px-4', proseColumns[index] && 'min-w-64')}>
-                  <RichText text={column} />
-                </TableHead>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            {withKeys(section.columns, (column) => column).map(({ key, item: column }, index) => (
+              <TableHead
+                key={key}
+                className={cn('px-3 text-muted-foreground first:pl-0', proseColumns[index] && 'min-w-64')}
+              >
+                <RichText text={column} />
+              </TableHead>
+            ))}
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {rows.map(({ key: rowKey, item: cells }) => (
+            <TableRow
+              key={rowKey}
+              className={
+                details &&
+                'relative focus-within:bg-muted/50 [&_a]:relative [&_a]:z-10 [&_[data-reference]]:relative [&_[data-reference]]:z-10'
+              }
+            >
+              {withKeys(cells, (cell) => cell).map(({ key, item: cell }, column) => (
+                <TableCell
+                  key={key}
+                  className={cn(
+                    'px-3 align-top tabular-nums first:pl-0',
+                    proseColumns[column] && 'min-w-64',
+                    shortColumns[column] ? 'whitespace-nowrap' : 'whitespace-normal',
+                  )}
+                >
+                  {details && column === 0 ? (
+                    <DialogOpener
+                      onOpen={(button) => handleOpenRow(rowKey, button)}
+                      className="text-left after:absolute after:inset-0 focus-visible:outline-none"
+                    >
+                      {cell}
+                    </DialogOpener>
+                  ) : (
+                    <RichText text={cell} />
+                  )}
+                </TableCell>
               ))}
             </TableRow>
-          </TableHeader>
-          <TableBody>
-            {rows.map(({ key: rowKey, item: cells }) => (
-              <TableRow
-                key={rowKey}
-                className={
-                  details &&
-                  'relative focus-within:bg-muted/50 [&_a]:relative [&_a]:z-10 [&_[data-reference]]:relative [&_[data-reference]]:z-10'
-                }
-              >
-                {withKeys(cells, (cell) => cell).map(({ key, item: cell }, column) => (
-                  <TableCell
-                    key={key}
-                    className={cn('px-4 align-top whitespace-normal tabular-nums', proseColumns[column] && 'min-w-64')}
-                  >
-                    {details && column === 0 ? (
-                      <DialogOpener
-                        onOpen={(button) => handleOpenRow(rowKey, button)}
-                        className="text-left after:absolute after:inset-0 focus-visible:outline-none"
-                      >
-                        {cell}
-                      </DialogOpener>
-                    ) : (
-                      <RichText text={cell} />
-                    )}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+          ))}
+        </TableBody>
+      </Table>
       {openedDetails && <SectionDialog section={openedDetails} open={open} onOpenChange={setOpen} opener={opener} />}
     </SectionCard>
   );

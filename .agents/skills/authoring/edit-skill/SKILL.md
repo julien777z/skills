@@ -1,6 +1,6 @@
 ---
 name: edit-skill
-description: Add or edit anything under `.agents` — a skill, rule, agent definition, hook, setting, reference or project guidance — including when the user points out a mistake in how an agent followed or wrote guidance, or questions where guidance was placed, even with no request to edit a skill, and when carrying a guidance batch through delivery to its merge or hold. Fix the underlying issue and the guidance path that allowed it, writing the change for the class of failure the user plainly meant, no narrower and no broader, classified before the change is first described, proposed or edited anywhere and shown to them as a Scope Statement first. A correction that encodes a new process waits until that process has worked on the work in hand, which a merged change that carried it has; every other correction is recorded at once and written at once, apart from one recorded after a guidance batch froze, which waits for the next batch.
+description: Add or edit anything under `.agents` — a skill, rule, agent definition, hook, setting, reference or project guidance — including when the user points out a mistake in how an agent followed or wrote guidance, or questions where guidance was placed, even with no request to edit a skill, and when carrying a guidance batch through delivery to its merge or hold. Fix the underlying issue and the guidance path that allowed it, writing the change for the class of failure the user plainly meant, no narrower and no broader, classified before the change is first described, proposed or edited anywhere and shown to them as a Scope Statement first. A correction that encodes a new process waits until that process has worked on the work in hand, which a merged change that carried it has; every other correction is recorded at once and written at once, apart from one recorded after a guidance batch froze, which waits for the next batch unless it is a self-improvement fix, which goes on its held pull request at once.
 short_description: 'Edit a skill, rule, or agent file and fix the guidance gap that prompted the change.'
 ---
 
@@ -27,7 +27,8 @@ corrected beside it; a problem the current work meets never holds or drops such 
 through, a skill whose trigger did not fire when it should have, one that says nothing about the case
 in hand, a step you found yourself doing that no skill describes: each is this skill's input, and
 noticing it is the whole trigger. Waiting to be told is what leaves the next session to rediscover
-the same gap, and the session that hit it is the only one holding the evidence.
+the same gap, and the session that hit it is the only one holding the evidence. What counts as a
+flaw, how it is judged and where its fix goes follow `self-improvement-protocol`.
 
 The tell is a sentence you are about to write to the user about your own process — that you skipped
 a step, that a check did not apply, that you should have done something earlier. Diagnose the route
@@ -60,6 +61,7 @@ When a separate source task is active, or a guidance batch is in flight, preserv
 follow **Recording During A Task** for the edit's timing.
 
 ## Dependencies
+- `self-improvement-protocol`
 - `skill-pass`
 - `code-simplify`
 - `acceptance-gate`
@@ -80,6 +82,12 @@ follow **Recording During A Task** for the edit's timing.
 Honor the selected workflow's verification sequence and any delivery or installation hold when
 recording or delivering a batch.
 
+- A guidance fix for a flaw the agent found in its own work, during a task or at its completion,
+  goes on the session's held self-improvement pull request as the GitHub rule's **Merge
+  Authorization** says. It is recorded as the bullet below on recording says, backed up as every
+  entry is, and marked for that pull request, which keeps it out of every batch as `session-ledger`'s
+  **Guidance Batches** says; it then runs **Validate input** through **Branch and commit** there at
+  once. A gap in how guidance handles anything else follows the bullets below unchanged.
 - A process correction waits for its verified run or merge to be written, as **A process is encoded
   only once it has worked** says, never to be classified; any other is recorded once diagnosed.
 - A direct request to change guidance, such as "use edit-skill to reflect that", is recorded the
@@ -137,8 +145,10 @@ recording or delivering a batch.
 
 ## Guidance Delivery
 
-This route delivers the frozen batch of `guidance_correction` entries its invocation names,
-beside the source stream. It holds the source pull request only for the checks its ridden edits
+This route delivers the frozen batch of `guidance_correction` entries its invocation names
+beside the source stream, or the held self-improvement pull request the user's finishing run
+hands it, whose fixes it never delivers before that run, as the GitHub rule's **Merge
+Authorization** says. It holds the source pull request only for the checks its ridden edits
 need and the delivery of the batch carrying them; only an edit on that pull request, or one the GitHub rule's **Merge Authorization** holds for a source pull request, waits for that merge. **The primary agent coordinates it**, starting its
 reviewer, gate and skill-test agents in the background so the user's review of the source pull
 request overlaps it. Coordination needs no independent reader, so the route goes whole to a

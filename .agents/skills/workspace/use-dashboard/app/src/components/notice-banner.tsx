@@ -10,12 +10,12 @@ export function NoticeBanner({ notice }: { notice: Notice }): ReactNode {
   const Icon = style.icon;
 
   return (
-    <Alert className={style.alert}>
+    <Alert className={style.alertIcon}>
       <Icon />
       <AlertTitle className="line-clamp-none">
         <RichText text={notice.title} />
       </AlertTitle>
-      <AlertDescription className="text-foreground/80">
+      <AlertDescription>
         <p>
           <RichText text={notice.body} />
         </p>

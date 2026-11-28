@@ -1,7 +1,7 @@
 import { ArrowUpRight } from 'lucide-react';
 import type { ReactNode } from 'react';
 
-import { Stack } from '@/components/primitives';
+import { Stack, Text } from '@/components/primitives';
 import { Badge } from '@/components/ui/badge';
 import { linkAttributes } from '@/lib/references';
 import { PULL_REQUESTS } from '@/lib/tone';
@@ -30,13 +30,11 @@ function PullRequestPill({ label, url, state }: { label: string; url: string; st
   );
 
   return attributes ? (
-    <Badge variant="pullRequest" className={PULL_REQUESTS[state].pill} asChild>
+    <Badge className={PULL_REQUESTS[state].pill} asChild>
       <a {...attributes}>{content}</a>
     </Badge>
   ) : (
-    <Badge variant="pullRequest" className={PULL_REQUESTS[state].pill}>
-      {content}
-    </Badge>
+    <Badge className={PULL_REQUESTS[state].pill}>{content}</Badge>
   );
 }
 
@@ -51,11 +49,9 @@ function PillContent({
 }): ReactNode {
   return (
     <>
-      <span className="bg-muted px-1.5 py-0.5 font-medium text-foreground">{KIND_LABELS[kind]}</span>
-      <span className="flex items-center gap-1 px-1.5 py-0.5">
-        {label}
-        {linked && <ArrowUpRight className="size-3" />}
-      </span>
+      <Text weight="medium">{KIND_LABELS[kind]}</Text>
+      <Text tone="muted">{label}</Text>
+      {linked && <ArrowUpRight />}
     </>
   );
 }
@@ -71,13 +67,13 @@ export function SourceLinks({ links }: { links: SourceLink[] }): ReactNode {
         const attributes = linkAttributes(link.url);
 
         return attributes ? (
-          <Badge key={key} variant="source" asChild>
+          <Badge key={key} variant="outline" asChild>
             <a {...attributes}>
               <PillContent kind={link.kind} label={link.label} linked />
             </a>
           </Badge>
         ) : (
-          <Badge key={key} variant="source">
+          <Badge key={key} variant="outline">
             <PillContent kind={link.kind} label={link.label} linked={false} />
           </Badge>
         );

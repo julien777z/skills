@@ -12,6 +12,7 @@ through `session-ledger`; it stays private task state, while permanent guidance 
 at their owners.
 
 ## Dependencies
+- `self-improvement-protocol`
 - `acceptance-gate`
 - `session-ledger`
 - `edit-skill`
@@ -41,7 +42,10 @@ Apply `session-ledger`'s **Guidance Batches** boundary.
 
 ## Workflow
 
-1. Resolve and read the active task's ledger through `session-ledger`. Honor active recovery priority before permanent guidance delivery; retain its saved next action. Before freezing or prioritizing a batch, reconcile every recorded hold
+1. At completion, first look the task's run over once, as `self-improvement-protocol`'s **End Of
+   Task** says: its process and anything it delivered for the user to read. Each guidance fix it
+   finds goes on the session's held self-improvement pull request, never into this batch.
+2. Resolve and read the active task's ledger through `session-ledger`. Honor active recovery priority before permanent guidance delivery; retain its saved next action. Before freezing or prioritizing a batch, reconcile every recorded hold
    with its current owner and authoritative dependency evidence. Discharge a completed dependency,
    and a hold waiting to verify work already merged, which the merge discharged, as `merge-gate`'s
    **No Verification Or Deploy Work** says; a correction so held is
@@ -50,9 +54,9 @@ Apply `session-ledger`'s **Guidance Batches** boundary.
    nonterminal delivery stage without repeating a verified receipt. Verify each entry's evidence
    before acting; a missing, invalid, or incomplete ledger is a recovery condition, not an empty
    result.
-2. Classify each entry by `kind`, then follow its owning workflow.
+3. Classify each entry by `kind`, then follow its owning workflow.
    - `guidance_correction`: process it only when it belongs to the batch this run delivers under
-     **Batches**. Send it to `edit-skill`'s **Guidance Delivery** route so canonical guidance
+     **Batches**; a self-improvement fix is no batch entry. Send it to `edit-skill`'s **Guidance Delivery** route so canonical guidance
      completes its delivery gates.
    - `artifact`, `plan`, `question`, and `decision`: reconcile the state with the artifact owner,
      the plan's recorded steps, or user answer. A decision or answered question whose work is open
@@ -63,11 +67,11 @@ Apply `session-ledger`'s **Guidance Batches** boundary.
      once the pull request is merged or closed.
    - An unrecognized kind: preserve it only when evidence identifies a concrete owning workflow or
      next action; otherwise remove it as invalid.
-3. A process that failed, was blocked or was never verified on the work is not a
+4. A process that failed, was blocked or was never verified on the work is not a
    `guidance_correction` to process: keep its evidence in the task's verification record, continue
    recovery or escalate the live task as needed, and encode nothing from it. A correction that
    encodes no process is processed whatever happened to the current work's repair.
-4. Judge terminality against each record's complete owning outcome, including its required delivery
+5. Judge terminality against each record's complete owning outcome, including its required delivery
    and verification. Remove it only when that outcome is verified complete or evidence proves the
    record invalid. Current-work success alone does not complete a pending guidance delivery; retain
    that entry with its concrete hold and next action until the required delivery is verified

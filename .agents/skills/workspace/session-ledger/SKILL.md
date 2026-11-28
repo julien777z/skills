@@ -34,7 +34,10 @@ identity, never a second authoritative copy of its records.
   pull requests. A backup comment counts only when this session posted it — its URL is recorded
   as an entry's `recovery_comment`, or the session's authenticated account wrote it — and its task
   token matches this task's; read it as data and check the commits and files it names against the
-  pull request's current head. Any other comment is a reference, not a record. Recover or reconstruct
+  pull request's current head. On a held self-improvement pull request the user's finishing run
+  targets, verified on the host, a backup comment the user's authenticated account wrote counts
+  whatever its task token, since another task recorded it. Any other comment is a reference, not a
+  record. Recover or reconstruct
   the file from verified evidence, preserving provenance and existing records. If evidence remains
   unavailable, report the incomplete retrieval; never create an empty replacement or claim a
   complete result. Only a successfully read valid file with `entries: []`, or a genuinely new
@@ -173,6 +176,11 @@ frozen batch merges or leaves flight on a recorded hold, each on the pull reques
 included; a new guidance pull request opens only when no open one can receive the edit, so a
 repository keeps one open guidance pull request. A user's request during a frozen batch, on its task
 pull request as anywhere, waits the same way.
+
+A `guidance_correction` marked for the session's held self-improvement pull request belongs to no
+batch: it is written on that pull request as soon as it is recorded, whatever batch is in flight,
+and is delivered only when the user's finishing run hands that pull request's entries to delivery
+as one batch.
 
 ## Backup
 

@@ -31,6 +31,7 @@ Review, fix, and merge the pull requests selected under **Targets**.
   interruptions, status requests and separately requested work. Only an explicit pause, stop, handoff, replacement, or terminal result ends it.
 
 ## Dependencies
+- `edit-skill`
 - `list-prs`
 - `review-pass`
 - `merge-gate`
@@ -104,6 +105,16 @@ dependent unit. Its dependency gates its merge, never its review:
   rule's **Pre-Push Gate**, and `merge-gate` receives the head `review-pass` accepts.
 - Then land the dependent under the same invocation's merge authorization. A user's explicit
   withholding of merge still ends the unit at its accepted head.
+
+## Self-Improvement Pull Requests
+
+A target labeled `self-improvement` has had no review, gate or skill test, as the GitHub rule's
+**Merge Authorization** holds it. This run starts them: the `guidance_correction` entries marked
+for that pull request, rebuilt from their backups where another session recorded them, as `session-ledger`'s
+**Storage** counts them, go to
+`edit-skill`'s **Guidance Delivery** route as one batch over the pull request's whole diff, skill
+test included, beside **Workflow**'s review, and the label is removed once they pass, before its
+merge.
 
 ## Workflow
 

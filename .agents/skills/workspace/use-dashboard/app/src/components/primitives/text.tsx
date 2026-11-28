@@ -3,9 +3,9 @@ import type { ReactNode } from 'react';
 
 const TEXT_VARIANTS = {
   size: {
-    xxs: 'text-[11px]',
     xs: 'text-xs',
     sm: 'text-sm',
+    detail: 'text-[0.8125rem] leading-5',
     figure: 'text-2xl @[250px]/card:text-3xl',
     title: 'text-2xl tracking-tight sm:text-3xl',
   },
@@ -13,6 +13,7 @@ const TEXT_VARIANTS = {
   weight: { medium: 'font-medium', semibold: 'font-semibold', bold: 'font-bold' },
   numeric: { true: 'tabular-nums', false: '' },
   breakAnywhere: { true: '[overflow-wrap:anywhere]', false: '' },
+  nowrap: { true: 'shrink-0 whitespace-nowrap', false: '' },
   measure: { true: 'max-w-[75ch]', false: '' },
   srOnly: { true: 'sr-only', false: '' },
 } as const;
@@ -23,6 +24,7 @@ const textVariants: ReturnType<typeof cva<typeof TEXT_VARIANTS>> = cva('', {
     tone: 'default',
     numeric: false,
     breakAnywhere: false,
+    nowrap: false,
     measure: false,
     srOnly: false,
   },
