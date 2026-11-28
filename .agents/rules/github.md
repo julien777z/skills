@@ -52,7 +52,8 @@ alwaysApply: true
   repair included, unless the user puts it on the task's pull request or the task is that guidance
   change, and side work, which the task does not need, no user asked for and the change did not
   introduce: a defect, warning, deprecation or upgrade the agent noticed, a lint or cleanup fix, or
-  its own scope increase.
+  its own scope increase. Each is fixed there during the task, as `scope-of-change` requires; a
+  warning a run prints is never silenced, left or offered.
   - Its branch starts from and is based on the task pull request's branch, so the task's merge
     leaves it no conflict; once the task merges, retarget it to the default branch, bring that base
     in and rerun the affected gates. With no task pull request in the repository, as in the skills

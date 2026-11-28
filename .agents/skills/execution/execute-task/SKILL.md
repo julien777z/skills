@@ -330,8 +330,9 @@ Before an edit that crosses a trust boundary `security-audit` names, invoke it a
 ### Encountered Issues
 
 Apply `scope-of-change`'s **Encountered Issues** while making the change, as [encountered
-issues](references/encountered-issues.md) says: its **Disposition** says what is fixed in the change
-in flight and what is recorded with `defer-scope`, how an instruction one agent passes another is
+issues](references/encountered-issues.md) says; a defect, deprecation or warning a run prints is
+fixed during the task, on the side pull request when the change does not need it, never silenced,
+left or offered. Its **Disposition** says what is fixed in the change in flight and what is recorded with `defer-scope`, how an instruction one agent passes another is
 checked against the standing guidance before it is sent and before it is acted on, and when a
 correction is asked about, offering a fix to the user being no disposition; its **CI Gates And
 Deliberate Breaks**, how a required check that detects deliberate changes, red on an intentional
