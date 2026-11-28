@@ -318,8 +318,8 @@ after its gating check has been read, outside the command, chain or batch that r
 ### Product Constraints
 
 `pre-production`, `scope-of-change` and `engineering-conventions` are active in every change task,
-loaded whole as this skill's opening says, before the first edit. Read the product state from project guidance
-before changing a contract or stored value.
+loaded whole as this skill's opening says, before the first edit. Read the product state from
+project guidance before changing a contract or stored value.
 
 Before reading code for a plan or selecting targets, as **Plan** says, and again before recommending
 an implementation, asking a question that presupposes one, or delegating its edits, apply [product

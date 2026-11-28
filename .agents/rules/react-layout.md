@@ -54,9 +54,9 @@ paths:
   such as Check status, Refresh or Reload: a delivery shown as "Arriving soon" turns to "Delivered"
   on its own. Where the reader needs to know something the page does not already show, a banner says
   it under the boxed-banner bullet below; a state a section's own status already shows, such as a
-  document "Under review", gets no banner repeating it. A control that retries an action the reader started after
-  it failed, such as Try again on a failed submission, the retry in a failed load's error banner,
-  one that changes state, and staff or admin tools are unaffected.
+  document "Under review", gets no banner repeating it. A control that retries an action the reader
+  started after it failed, such as Try again on a failed submission, the retry in a failed load's
+  error banner, one that changes state, and staff or admin tools are unaffected.
 - **Load available tabs, disclosures, and row actions with the page.** Start authorized display
   reads on page entry as soon as their prerequisites are met, including for inactive tabs and
   shared or inexpensive data needed by their row actions. Use the navigation rule below for
