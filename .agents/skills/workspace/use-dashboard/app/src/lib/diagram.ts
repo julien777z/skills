@@ -264,6 +264,8 @@ const PNG_SCALE: number = 2;
 
 const MAX_CANVAS_SIDE: number = 16384;
 
+const DOWNLOAD_URL_LIFETIME_MS: number = 60_000;
+
 function standaloneSvg(svg: SVGSVGElement): { markup: string; width: number; height: number } {
   const copy = svg.cloneNode(true) as SVGSVGElement;
   const originals = svg.querySelectorAll('*');
@@ -351,6 +353,10 @@ export async function downloadDiagram(svg: SVGSVGElement, fileName: string): Pro
 
   link.href = url;
   link.download = fileName;
+  link.hidden = true;
+  document.body.append(link);
   link.click();
-  setTimeout(() => URL.revokeObjectURL(url), 0);
+  link.remove();
+  // Safari reads the file after this task ends, so the address stays valid until it has.
+  setTimeout(() => URL.revokeObjectURL(url), DOWNLOAD_URL_LIFETIME_MS);
 }
