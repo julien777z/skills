@@ -313,11 +313,11 @@ after its gating check has been read, outside the command, chain or batch that r
 ### Product Constraints
 
 `pre-production`, `scope-of-change` and `engineering-conventions` are active in every change task,
-invoked and read whole as **Plan** says, before the first edit. Read the product state from project guidance
+loaded whole as **Plan** says, before the first edit. Read the product state from project guidance
 before changing a contract or stored value.
 
-Before reading code for a plan or selecting targets, as **Plan** says, and again before recommending an
-implementation, asking a question that presupposes one, or delegating its edits, apply [product
+Before reading code for a plan or selecting targets, as **Plan** says, and again before recommending
+an implementation, asking a question that presupposes one, or delegating its edits, apply [product
 constraints](references/product-constraints.md) and **Task Authorization**: resolve the request's
 targets in the named outcome's context, trace the requested behavior through its runtime path into
 the target receipt, and read the rules and analogous files governing every surface an edit reaches.
