@@ -17,13 +17,15 @@ identity, never a second authoritative copy of its records.
   the only files the turn-end hook under **Backup** reads. Resolve its locator from the active
   task's metadata before every retrieval or update, and record the absolute locator and stable task
   identity in task context before using it.
-  - When a turn ends and no ledger records the session, that hook creates `session-<session
-    ID>.yaml` there, listing the ID under `sessions`, and names it to the agent: that file is the
-    session's ledger, so resolve that locator rather than creating another.
-  - A session that needs its ledger before its first turn ends creates `<task>.yaml` there itself.
-  - A session that continues a task whose ledger exists adds its session ID, as the file the hook
-    created for it lists it, to that ledger's `sessions`, moves what it recorded in that file
-    there, and deletes the file.
+  - When a turn ends and no ledger records the session, as **Backup** says, that hook creates
+    `session-<session ID>.yaml` there, listing the ID under `sessions`, and names it to the agent.
+    That file is the ledger of the session's current task when the task has none: resolve that
+    locator rather than creating another.
+  - A new task with no prior ledger, before that file exists or while it holds another task's
+    records, creates `<task>.yaml` there.
+  - A session that continues a task whose ledger exists copies the ID the hook's file lists into
+    that ledger's `sessions`, moves what it recorded in the hook's file there, and deletes that
+    file.
   - Keep the directory private to its owner and the file owner-readable and writable only.
 - An established task's missing locator, absent file, unreadable file, or invalid content is a
   recovery condition, not an empty ledger. Reconcile available canonical artifact receipts,
@@ -192,17 +194,19 @@ This skill authorizes those comments and their edits under the GitHub rule's **C
   `complete` or `withdrawn`, a question not yet `answered`, and a `guidance_correction` with no
   commit owe no backup. Any other plan, decision or question owes one until its list has an item;
   any other `guidance_correction` until its list holds a comment URL of its own.
-- The installed turn-end hook `ledger` checks each ledger this session writes: one under
-  `agent-ledgers/` that changed at or after the session's first recorded timestamp, or at any time
-  when the transcript records none, and that the session's transcript names or whose text holds the
-  session's ID, which the harness passes as `session_id` or, in Cursor, `conversation_id`. When it
-  finds none, it creates the session's ledger as **Storage** says and names it. While one owes a
-  backup or cannot be read, the hook lists each entry and what it lacks. In Claude Code and Codex
-  it refuses to end the turn; in Cursor it submits its message as the next one. It holds a turn
-  back at most once in a row, so record what the session's work owes a created ledger, post or edit
-  the comment and record its URL, or repair the ledger, in the turn it reopens. It runs only where
-  `python3` is Python 3.11 or newer; it creates a ledger without PyYAML, but without PyYAML it
-  reports every turn that the backups were not checked.
+- **The installed turn-end hook `ledger` checks the ledgers this session writes and holds the turn
+  back at most once in a row**, so do what it names in the turn it reopens.
+  - It reads each ledger under `agent-ledgers/` that changed at or after the session's first
+    recorded timestamp, or at any time when the transcript records none, and that the session's
+    transcript names or whose `sessions` lists the session's ID.
+  - When it finds none, it creates the session's ledger as **Storage** says and names it: record
+    there whatever this section and **Workflow** keep from the session's work so far.
+  - While one owes a backup or cannot be read, it lists each entry and what it lacks: post or edit
+    the comment and record its URL, or repair the ledger.
+  - In Claude Code and Codex it refuses to end the turn; in Cursor it submits its message as the
+    next one.
+  - It runs where `python3` is Python 3.11 or newer. Without PyYAML it still creates a ledger, but
+    reports every turn that the backups were not checked.
 
 ## Output
 
@@ -215,7 +219,7 @@ Keep `id` stable and unique within the task. Use `observations: []` when none ha
 ```yaml
 session_ledger:
   sessions:
-    - "<harness session ID>"
+    - "<session ID the turn-end hook wrote>"
   entries:
     - id: "<stable task-local identifier>"
       kind: "<record kind>"
@@ -227,16 +231,21 @@ session_ledger:
           data: {}
 ```
 
-`sessions` lists the ID of each session that has written the ledger, in the order each took it
-over. An empty ledger is `session_ledger: {sessions: ["<harness session ID>"], entries: []}`. Add record-specific fields within `data`, not
-new top-level collections or an envelope per kind.
+`sessions` lists the IDs the turn-end hook under **Backup** finds the ledger by. The hook writes
+the first when it creates the file, and a session that moves off the hook's file copies the ID
+from it, as **Storage** says; a ledger an agent creates lists only an ID read from such a file, or
+none. An empty ledger is `session_ledger: {sessions: [], entries: []}`, with the hook's ID in
+`sessions` when the hook created it. Add record-specific fields within `data`, not new top-level
+collections or an envelope per kind.
 
 ## Guardrails
 
 - Do not commit a ledger file or its private evidence, or infer a record from a transcript. Never record
   credentials, tokens, request bodies, other secrets, or unrelated session details. Remove task
   ledger files, retained evidence and transfer copies after the task ends and no receiver or active
-  worker still needs them; a handoff continues the task and is not its end.
+  worker still needs them; a handoff continues the task and is not its end. A ledger whose
+  `sessions` lists the running session is kept with the ended task's entries removed, so the
+  turn-end hook does not create it again.
 - Never infer a record from a repository directory, local branch, remembered pull-request number,
   or search result alone.
 - A missing record is not permission to broaden a query. Ask for the target when the current task

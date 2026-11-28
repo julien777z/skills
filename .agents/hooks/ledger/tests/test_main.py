@@ -50,23 +50,32 @@ class LedgerHookTest(unittest.TestCase):
         return sorted(path.name for path in self.directory.iterdir())
 
     def test_creates_private_session_file_once(self):
-        """Test that a session no ledger records gets one private file, named to it only once."""
+        """Test that a session no ledger lists gets one private file, named to it only once."""
 
         ledger = self.directory / f"session-{self.session_id}.yaml"
+        mentioning = self.directory / "mentioning-task.yaml"
+        observation = {"event": "handoff", "evidence": self.session_id, "data": {}}
+        review = {"id": "review-1", "kind": "review", "summary": "s", "data": {}}
+        entries = [review | {"observations": [observation]}]
+
+        self.directory.mkdir()
+        mentioning.write_text(json.dumps({"session_ledger": {"sessions": [], "entries": entries}}))
 
         first = self.run_hook()
-        second = self.run_hook()
 
         self.assertEqual(first.returncode, BLOCK_EXIT)
         self.assertIn(str(ledger), first.stderr)
+
         self.assertEqual(stat.S_IMODE(ledger.stat().st_mode), 0o600)
-        self.assertEqual(stat.S_IMODE(self.directory.stat().st_mode), 0o700)
         self.assertIn(f'- "{self.session_id}"', ledger.read_text())
+
+        second = self.run_hook()
+
         self.assertEqual((second.returncode, second.stderr), (0, ""))
-        self.assertEqual(self.ledger_files(), [ledger.name])
+        self.assertEqual(self.ledger_files(), [mentioning.name, ledger.name])
 
     def test_followup_message_names_created_file(self):
-        """Test that Cursor's conversation ID keys the file and its follow-up message names it."""
+        """Test that Cursor's conversation ID keys a private file its follow-up message names."""
 
         result = self.run_hook(
             session_id=None, conversation_id=self.session_id, hook_event_name="stop"
@@ -76,6 +85,7 @@ class LedgerHookTest(unittest.TestCase):
 
         self.assertEqual(result.returncode, 0)
         self.assertIn(f"session-{self.session_id}.yaml", message)
+        self.assertEqual(stat.S_IMODE(self.directory.stat().st_mode), 0o700)
 
     def test_skips_unusable_id_and_continuation(self):
         """Test that a missing or unsafe session ID, or a reopened turn, creates nothing."""

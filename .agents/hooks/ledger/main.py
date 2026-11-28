@@ -1,53 +1,48 @@
 #!/usr/bin/env python3
 import json
+import logging
+import os
 import re
 import sys
+from pathlib import Path
 from types import ModuleType
 from typing import Final
 
 from backups import ledger_findings
 from ledgers import create_session_ledger, session_ledgers
-from models import HookInput, LedgerFormatError
+from models import HookInput, HookOutcome, LedgerFormatError
 
 try:
     import yaml
 except ImportError:
     yaml: ModuleType | None = None
 
-BLOCK_EXIT: Final[int] = 2
-UNCHECKED_EXIT: Final[int] = 1
+logger = logging.getLogger(__name__)
+
 FOLLOWUP_EVENT_NAME: Final[str] = "stop"
 SESSION_ID_FIELDS: Final[tuple[str, ...]] = ("session_id", "conversation_id")
 SESSION_ID_PATTERN: Final[re.Pattern[str]] = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}")
-CREATED_LEDGER_STEP: Final[str] = (
-    "No ledger recorded this session, so {path} was created as its ledger, as "
-    "session-ledger's Storage says. Record in it whatever session-ledger's Workflow keeps from "
-    "this session's work so far, if anything. When this session continues a task whose ledger "
-    "already exists, add the session ID this file lists under sessions to that ledger instead, "
-    "move anything recorded here into it and delete this file. Then end the turn."
-)
+PROMPTS_DIRECTORY: Final[Path] = Path(os.path.abspath(__file__)).parent / "prompts"
+CREATED_LEDGER_PROMPT_FILENAME: Final[str] = "created-ledger.md"
+MISSING_BACKUPS_PROMPT_FILENAME: Final[str] = "missing-backups.md"
+UNREADABLE_LEDGERS_PROMPT_FILENAME: Final[str] = "unreadable-ledgers.md"
 
-MISSING_BACKUPS_STEP: Final[str] = (
-    "Post or edit each backup comment as session-ledger's Backup section says, "
-    "record its URL in the entry, and then end the turn."
-)
 
-UNREADABLE_LEDGERS_STEP: Final[str] = (
-    "Repair each unreadable ledger so it follows session-ledger's Output format, "
-    "and then end the turn."
-)
+def prompt(filename: str) -> str:
+    """Read one of the hook's prompts to the agent."""
+
+    return (PROMPTS_DIRECTORY / filename).read_text(encoding="utf-8").strip()
 
 
 def session_identity(payload: dict[object, object]) -> str | None:
-    """Read the session's ID from the harness's field for it, when it is safe in a file name."""
+    """Read the session's file-name-safe ID from the harness payload."""
 
-    for field in SESSION_ID_FIELDS:
-        value = payload.get(field)
+    value = next(
+        (payload[field] for field in SESSION_ID_FIELDS if isinstance(payload.get(field), str)),
+        None,
+    )
 
-        if isinstance(value, str):
-            return value if SESSION_ID_PATTERN.fullmatch(value) else None
-
-    return None
+    return value if isinstance(value, str) and SESSION_ID_PATTERN.fullmatch(value) else None
 
 
 def read_hook_input() -> HookInput:
@@ -70,49 +65,49 @@ def read_hook_input() -> HookInput:
     )
 
 
-def deliver(hook_input: HookInput, message: str) -> int:
-    """Hand the agent a message it must act on before the turn ends."""
+def deliver(hook_input: HookInput, message: str) -> HookOutcome:
+    """Hand the agent a message it acts on before the turn ends."""
 
     if hook_input["expects_followup_message"]:
         print(json.dumps({"followup_message": message}))
 
-        return 0
+        return HookOutcome.END_TURN
 
     print(message, file=sys.stderr)
 
-    return BLOCK_EXIT
+    return HookOutcome.HOLD_TURN
 
 
-def main() -> int:
-    """Create the session's ledger when none records it, then hold the turn for missing backups."""
+def main() -> HookOutcome:
+    """Give the session a ledger and hold the turn while one the session writes owes a backup."""
 
     hook_input = read_hook_input()
 
     if hook_input["is_continuation"]:
-        return 0
+        return HookOutcome.END_TURN
 
     ledgers = session_ledgers(hook_input)
 
     if not ledgers:
         if hook_input["session_id"] is None:
-            return 0
+            return HookOutcome.END_TURN
 
         try:
             created = create_session_ledger(hook_input["session_id"])
         except OSError as error:
-            print(f"The session's ledger could not be created: {error}", file=sys.stderr)
+            logger.error("The session's ledger could not be created: %s", error)
 
-            return UNCHECKED_EXIT
+            return HookOutcome.UNCHECKED
 
         if created is None:
-            return 0
+            return HookOutcome.END_TURN
 
-        return deliver(hook_input, CREATED_LEDGER_STEP.format(path=created))
+        return deliver(hook_input, prompt(CREATED_LEDGER_PROMPT_FILENAME).format(path=created))
 
     if yaml is None:
-        print("Ledger backups were not checked: PyYAML is not installed", file=sys.stderr)
+        logger.error("Ledger backups were not checked: PyYAML is not installed")
 
-        return UNCHECKED_EXIT
+        return HookOutcome.UNCHECKED
 
     unreadable: list[str] = []
     missing: list[str] = []
@@ -133,16 +128,16 @@ def main() -> int:
     reports = unreadable + missing
 
     if not reports:
-        return 0
+        return HookOutcome.END_TURN
 
     if unreadable:
-        reports.append(UNREADABLE_LEDGERS_STEP)
+        reports.append(prompt(UNREADABLE_LEDGERS_PROMPT_FILENAME))
 
     if missing:
-        reports.append(MISSING_BACKUPS_STEP)
+        reports.append(prompt(MISSING_BACKUPS_PROMPT_FILENAME))
 
     return deliver(hook_input, "\n\n".join(reports))
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    sys.exit(main().value)

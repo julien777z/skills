@@ -1,4 +1,4 @@
-from enum import StrEnum
+from enum import Enum, StrEnum
 from typing import TypedDict
 
 
@@ -17,6 +17,14 @@ class EntryStatus(StrEnum):
     ANSWERED = "answered"
     COMPLETE = "complete"
     WITHDRAWN = "withdrawn"
+
+
+class HookOutcome(Enum):
+    """How the hook leaves the turn, valued as its process exit code."""
+
+    END_TURN = 0
+    UNCHECKED = 1
+    HOLD_TURN = 2
 
 
 class HookInput(TypedDict):
