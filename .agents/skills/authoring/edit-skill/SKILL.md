@@ -126,8 +126,10 @@ recording or delivering a batch.
 - **Every `guidance_correction` entry is backed up** as `session-ledger`'s **Backup** section says.
 - A related correction recorded before its batch is frozen joins the same entry or sits beside it
   in that batch; the batch is one pull request, apart from edits the GitHub rule puts on a source
-  pull request. One recorded while a batch is in flight joins that
-  batch, and one recorded after the batch's pull request merged starts the next, as
+  pull request. One recorded once a batch's delivery has started, through **Guidance Delivery**
+  or a request to finish its pull request, never joins it: it waits in the ledger, still governing
+  the session at once, and starts the next batch, whose pull request opens once the in-flight one
+  merges, as
   `session-ledger`'s **Guidance Batches** says; tell the user which.
 - The task's next step is never held by a correction: record it and carry on.
 
