@@ -51,10 +51,10 @@ theirs.
   runs on pull requests is not. A required check is essential for that pull request whatever it
   checks: its findings are fixed on that pull request at any size, never deferred and never sent to
   a side pull request, so it can merge, apart from a baseline failure or an interrupted hosted
-  attempt, which **Encountered Issues** classifies. A check other than a test suite that the
-  repository does not require, such as lint, formatting or other static analysis, that fails on
-  findings in code the change did not write may stay red. That holds whether the findings predate
-  the change or the change brought them to light, such as a new lint rule meeting existing code or a
+  attempt, which **Encountered Issues** classifies. A non-essential check, one that is neither a
+  test suite nor required, such as lint, formatting or other static analysis, that fails on findings
+  in code the change did not write may stay red. That holds whether the findings predate the change
+  or the change brought them to light, such as a new lint rule meeting existing code or a
   changed-file lint run meeting older code in a file the change edits. Fix the findings in lines the
   change writes, and the other findings in a file the requested work itself edits, the callers and
   consumers it must update included, while they fit the size budget in force below, measured as it
