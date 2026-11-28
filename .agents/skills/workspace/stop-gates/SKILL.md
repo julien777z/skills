@@ -35,16 +35,17 @@ merge or resume something.
 Run it only when the user asks for the pause in their own words; another skill reads the pause and
 runs **Asking While Paused**, never this procedure.
 
-1. **Stop each running item.** Stop your own work on the task at once and write nothing further
-   for it: commit and push what is already written where the push's fast checks pass, and otherwise
-   leave it uncommitted in the worktree with the `hold` entry naming the files. Tell each worker to push what it has and stop, then end it; cancel
-   each running review, gate and check run. Never discard a worker's unpushed work: wait for its
-   push or copy its worktree's changes to the task's working-files folder first.
+1. **Stop each running item.** Stop your own work on the task at once and write nothing further for
+   it: commit and push what is already written where the push's fast checks pass; otherwise it stays
+   where it is, uncommitted or unpushed, with the `hold` entry naming its files. Tell each worker to
+   push what it has and stop, then end it; cancel each running review, gate and check run. Never
+   discard a worker's unpushed work: wait for its push or copy its worktree's changes to the task's
+   working-files folder first.
 2. **Record the pause** in the task ledger through `session-ledger`, as a `hold` entry whose open
-   state is the session's gates-off flag: when it
-   started, the user's words, the task's saved step, and one line per stopped or queued item with its pull request or
-   scope, head, stage reached, brief location and next action, so the resume can restart each
-   from where it stopped. A result that arrives after the stop is kept in the entry and not acted on.
+   state is the session's gates-off flag: when it started, the user's words, the task's saved step,
+   and one line per stopped or queued item with its pull request or scope, head, stage reached,
+   files left unpushed, brief location and next action, so the resume can restart each from where it
+   stopped. A result that arrives after the stop is kept in the entry and not acted on.
 3. **Report it**: one line per item stopped, then answer what the user raised.
 
 ## While Paused
