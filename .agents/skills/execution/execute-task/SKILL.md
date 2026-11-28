@@ -11,6 +11,12 @@ decides what will be built; canonical guidance changes enter **Execution** direc
 validated by the gate set `edit-skill`'s **Guidance Delivery** selects for an
 agent-configuration pull request.
 
+**Load the skills the run's first steps apply before reading code or editing**, each whole and
+once per task: `pre-production`, `scope-of-change` and `engineering-conventions` for every change;
+`code-simplify` before anything is added or a file is created, split or renamed; `test-fixture`
+before a test is written, moved or run; `session-ledger` before a ledger is written. A rule one of
+them holds binds only once it is read, so work started without them repeats what they forbid.
+
 ## Dependencies
 - `review-proposal`
 - `pre-production`
@@ -60,15 +66,13 @@ the task. Where it owns a stage, return its result to this run rather than start
 ## Plan
 
 Every task that changes files starts here, and so does every follow-up that arrives while one runs.
-Before reading code for a plan or selecting targets, load `pre-production`, `scope-of-change` and
-`engineering-conventions` whole, each once per task, then apply
-**Product Constraints** and **Task Authorization**.
+Before reading code for a plan or selecting targets, load the skills this skill's opening names,
+then apply **Product Constraints** and **Task Authorization**.
 
-Before choosing a design, and before the first edit on a path that takes no plan, load
-`code-simplify` and apply its **Before Choosing A Design** check to everything the change will add,
-split or rename, and write its receipt in the task record, even for a small follow-up, a bug fix
-or a worker's task with no plan of its own; only an edit that adds, splits and renames nothing
-skips it.
+Before choosing a design, and before the first edit on a path that takes no plan, apply
+`code-simplify`'s **Before Choosing A Design** check to everything the change will add, split or
+rename, and write its receipt in the task record, even for a small follow-up, a bug fix or a
+worker's task with no plan of its own; only an edit that adds, splits and renames nothing skips it.
 
 ### When A Plan Is Needed
 
@@ -314,7 +318,7 @@ after its gating check has been read, outside the command, chain or batch that r
 ### Product Constraints
 
 `pre-production`, `scope-of-change` and `engineering-conventions` are active in every change task,
-loaded whole as **Plan** says, before the first edit. Read the product state from project guidance
+loaded whole as this skill's opening says, before the first edit. Read the product state from project guidance
 before changing a contract or stored value.
 
 Before reading code for a plan or selecting targets, as **Plan** says, and again before recommending
