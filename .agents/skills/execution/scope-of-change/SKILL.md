@@ -178,7 +178,8 @@ authorizes compatibility with an obsolete owned contract or revision.
   conflict, and carrying agent configuration and source together. Side work is what the task does
   not need, no user asked for and the change did not introduce: a defect the work notices, a
   warning, deprecation or upgrade, incidental cleanup outside the lines the change writes, and the
-  agent's own scope increase. What the user asks for during the task and a defect the change
+  agent's own scope increase. What the user asks for during the task, apart from a guidance edit the
+  GitHub rule's side pull request bullet places on the side pull request, and a defect the change
   introduced or needs stay on the task's pull request. The task's ready-for-review message never
   waits for the side pull request.
   - **A consumer that must test the change and its side work together**, such as a repository
