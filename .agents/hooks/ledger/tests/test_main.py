@@ -137,6 +137,7 @@ class LedgerHookTest(unittest.TestCase):
         named = self.directory / "named-task.yaml"
         recording = self.directory / "recording-task.yaml"
         broken = self.directory / "broken-task.yaml"
+        repeated = self.directory / "repeated-task.yaml"
 
         named.write_text(json.dumps({"session_ledger": {"entries": [plan]}}))
         recording.write_text(
@@ -144,6 +145,10 @@ class LedgerHookTest(unittest.TestCase):
         )
 
         broken.write_text(f"session_ledger: [{self.session_id}\n")
+        repeated.write_text(
+            f"session_ledger:\n  entries: [{{id: kept}}]\n  entries: []\n"
+            f"  sessions: [{self.session_id}]\n"
+        )
 
         self.transcript.write_text(
             self.transcript.read_text() + json.dumps({"path": str(named)}) + "\n"
@@ -155,9 +160,12 @@ class LedgerHookTest(unittest.TestCase):
         self.assertIn(f"{named} has entries missing", result.stderr)
         self.assertIn(f"{recording} has entries missing", result.stderr)
         self.assertIn(f"{broken} could not be read", result.stderr)
+        self.assertIn(f"{repeated} could not be read", result.stderr)
         self.assertEqual(result.stderr.count(REPLY_PROMPT), 1)
         self.assertTrue(result.stderr.rstrip().endswith(REPLY_PROMPT))
-        self.assertEqual(self.ledger_files(), [broken.name, named.name, recording.name])
+        self.assertEqual(
+            self.ledger_files(), [broken.name, named.name, recording.name, repeated.name]
+        )
 
     def test_session_end_removes_only_untouched_file(self):
         """Test that session end deletes the hook's file only while nothing is recorded in it."""

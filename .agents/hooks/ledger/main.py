@@ -114,8 +114,8 @@ def create_ledger(hook_input: HookInput) -> HookOutcome:
 
     try:
         created = create_session_ledger(hook_input["session_id"])
-    except OSError as error:
-        logger.error("The session's ledger could not be created: %s", error)
+    except OSError:
+        logger.exception("The session's ledger could not be created")
 
         return HookOutcome.FAILED
 
@@ -123,18 +123,6 @@ def create_ledger(hook_input: HookInput) -> HookOutcome:
         return HookOutcome.END_TURN
 
     return deliver(hook_input, prompt(CREATED_LEDGER_PROMPT_FILENAME).format(path=created))
-
-
-def is_untouched(text: str, session_id: str) -> bool:
-    """Tell whether a ledger's text holds nothing but the session's ID."""
-
-    if text == session_ledger_text(session_id):
-        return True
-
-    if yaml is None:
-        raise ImportError("PyYAML is not installed")
-
-    return is_untouched_session_ledger(yaml.load(text, UniqueKeyLoader), session_id)
 
 
 def end_session(hook_input: HookInput) -> HookOutcome:
@@ -152,21 +140,30 @@ def end_session(hook_input: HookInput) -> HookOutcome:
         text = path.read_text()
     except FileNotFoundError:
         return HookOutcome.END_TURN
-    except (OSError, UnicodeDecodeError) as error:
-        logger.error("The session's ledger could not be read: %s", error)
+    except (OSError, UnicodeDecodeError):
+        logger.exception("The session's ledger could not be read")
+
+        return HookOutcome.FAILED
+
+    is_template = text == session_ledger_text(session_id)
+
+    if not is_template and yaml is None:
+        logger.error("The session's ledger was kept: PyYAML is not installed")
 
         return HookOutcome.FAILED
 
     try:
-        if not is_untouched(text, session_id):
+        if not is_template and not is_untouched_session_ledger(
+            yaml.load(text, UniqueKeyLoader), session_id
+        ):
             return HookOutcome.END_TURN
 
         after = path.stat()
 
         if (after.st_ino, after.st_mtime_ns) == (before.st_ino, before.st_mtime_ns):
             path.unlink()
-    except (OSError, ImportError, *YAML_ERRORS, LedgerFormatError) as error:
-        logger.error("The session's ledger was kept: %s", error)
+    except (OSError, *YAML_ERRORS):
+        logger.exception("The session's ledger was kept")
 
         return HookOutcome.FAILED
 
@@ -208,7 +205,7 @@ def main() -> HookOutcome:
 
                 return HookOutcome.FAILED
 
-            document = yaml.safe_load(text)
+            document = yaml.load(text, UniqueKeyLoader)
 
             if ledger in mentioning and session_id not in ledger_sessions(document):
                 continue
