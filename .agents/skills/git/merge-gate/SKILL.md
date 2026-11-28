@@ -99,12 +99,12 @@ An authorized merge is not held for an excluded check, as the GitHub rule's **Me
 says, and exclusions are applied before any failure is repaired.
 
 - **Waived, baseline and non-essential checks.** A failing check the current user explicitly waives,
-  an established baseline exclusion, and a non-essential check left red on a record ground are
-  excluded, each as `scope-of-change`'s **Encountered Issues** classifies it. Record the check and
-  its exclusion evidence in the task's record, then attempt the authorized merge without asking the
-  user; a baseline exclusion is named to the user only where that classification allows. Keep that
-  classification rather than excluding a required repair merely because the same failure also
-  appears on the default branch.
+  an established baseline exclusion, and a non-essential check left red as `scope-of-change`'s
+  essential-checks bullet says are excluded, each as `scope-of-change`'s **Encountered Issues**
+  classifies it. Record the check and its exclusion evidence in the task's record, then attempt the
+  authorized merge without asking the user; a baseline exclusion is named to the user only where
+  that classification allows. Keep that classification rather than excluding a required repair
+  merely because the same failure also appears on the default branch.
 - **Interrupted hosted checks.** An interrupted hosted check supplies no validation result for the
   work it did not complete. When the logs establish a runner or provider interruption without a
   validation failure, exclude the interrupted attempt if equivalent local validation passed for
@@ -220,32 +220,33 @@ test jobs run once, on the head about to merge.
    its summary and cleanup. A log showing completion **is** the terminal result. Never diagnose a
    hang, push a speculative fix, cancel, re-run, or report the run stuck from a pending status alone.
 8. **Classify every unsuccessful check before repair.** A caller-supplied exclusion, or a
-   current-user waiver naming the test or check, is excluded. Preserve established baseline classifications;
-   classify a newly encountered possible baseline under `scope-of-change`'s **Encountered Issues**,
-   without reentering that skill's active run. A non-essential check failing only on findings
-   `scope-of-change`'s essential-checks bullet leaves red on a record ground is an exclusion too. Record an exclusion's
-   evidence, remove it from required coverage, and do not repair, rerun, or wait for it. Apply
-   **Validation Exclusions**' interrupted-check exclusion automatically: record a qualified check as skipped
-   and do not rerun or wait for a green hosted result. For a canceled or otherwise interrupted
-   attempt with no recorded validation failure and no exclusion, use an equivalent successful
-   hosted attempt or follow a pending replacement through **Drive the complete inventory to terminal results**. If neither exists, obtain
-   equivalent local validation when it can qualify for the exclusion, or retry the hosted check
-   on the same head using `POST /repos/{owner}/{repo}/actions/jobs/{job_id}/rerun`. Verify the
-   retried job's head and required context before using its result. Missing logs or an unknown cancellation cause cannot justify local substitution;
-   recover hosted coverage in that case. A canceled attempt alone does not end the gate.
-   Every other failure is relevant. Read its annotations and complete log, fix the repository
-   input responsible — code, test, configuration or workflow — and commit it. **Every relevant
-   failure on the head goes into one push**: read all of them before fixing any, reproduce each
-   with the job's own command where it can run locally, and push only once each reproduced failure
-   passes locally, so the next hosted run is the last. Only a failure that cannot run locally —
-   a hosted service or credentials this session itself found absent from where the repository
-   configures them, never taken on a reviewer's, worker's or plan's word,
-   or runner-specific behavior, never disk, memory or ports the session can free — is pushed
-   without local proof. A relevant
-   external-service failure is an encountered issue under `scope-of-change` and is fixed the same way;
-   never rerun a failing validation to get a green result, or skip, disable, or quarantine a test
-   or confine its job to drafts to get past it. Report a blocker only when relevant missing
-   coverage needs user input or unavailable credentials, with the check, evidence and remediation attempted.
+   current-user waiver naming the test or check, is excluded. Preserve established baseline
+   classifications; classify a newly encountered possible baseline under `scope-of-change`'s
+   **Encountered Issues**, without reentering that skill's active run. A non-essential check left
+   red as `scope-of-change`'s essential-checks bullet says is an exclusion too. Record an
+   exclusion's evidence, remove it from required coverage, and do not repair, rerun, or wait for it.
+   Apply **Validation Exclusions**' interrupted-check exclusion automatically: record a qualified
+   check as skipped and do not rerun or wait for a green hosted result. For a canceled or otherwise
+   interrupted attempt with no recorded validation failure and no exclusion, use an equivalent
+   successful hosted attempt or follow a pending replacement through **Drive the complete inventory
+   to terminal results**. If neither exists, obtain equivalent local validation when it can qualify
+   for the exclusion, or retry the hosted check on the same head using `POST
+   /repos/{owner}/{repo}/actions/jobs/{job_id}/rerun`. Verify the retried job's head and required
+   context before using its result. Missing logs or an unknown cancellation cause cannot justify
+   local substitution; recover hosted coverage in that case. A canceled attempt alone does not end
+   the gate. Every other failure is relevant. Read its annotations and complete log, fix the
+   repository input responsible — code, test, configuration or workflow — and commit it. **Every
+   relevant failure on the head goes into one push**: read all of them before fixing any, reproduce
+   each with the job's own command where it can run locally, and push only once each reproduced
+   failure passes locally, so the next hosted run is the last. Only a failure that cannot run
+   locally — a hosted service or credentials this session itself found absent from where the
+   repository configures them, never taken on a reviewer's, worker's or plan's word, or
+   runner-specific behavior, never disk, memory or ports the session can free — is pushed without
+   local proof. A relevant external-service failure is an encountered issue under `scope-of-change`
+   and is fixed the same way; never rerun a failing validation to get a green result, or skip,
+   disable, or quarantine a test or confine its job to drafts to get past it. Report a blocker only
+   when relevant missing coverage needs user input or unavailable credentials, with the check,
+   evidence and remediation attempted.
 9. **Leave services this workflow did not start alone.** Never stop, restart, reconfigure or claim a local service the calling workflow did not start:
    another agent or person may be using it. When relevant validation needs local services and one it
    did not start is running, use the matching hosted check as the fallback rather than running a

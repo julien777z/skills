@@ -66,8 +66,7 @@ The GitHub rule's **Pre-Push Gate** states what every push passes and what may h
   verification at the end and is named in the report. Recover local shortages of disk, memory or
   ports as `run-site`'s **Local Stacks And Development Data** says and run the job locally. **Suites
   And Failures**' cannot-run bullet decides when a job may be left to its hosted run. A
-  non-essential check left red on a record ground, as `scope-of-change`'s essential-checks bullet
-  classifies it, holds no push.
+  non-essential check left red as `scope-of-change`'s essential-checks bullet says holds no push.
 - **A local variant of a CI check is not that check**, and each of these passes locally and fails
   in CI: lint or type checks scoped to the changed files, where CI's whole-tree run finds an
   untouched caller of a signature the change altered; a formatter or linter in write mode, which
