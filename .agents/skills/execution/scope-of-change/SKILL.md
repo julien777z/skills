@@ -57,15 +57,16 @@ theirs.
   light, such as a new lint rule meeting existing code, makes those findings incidental cleanup
   under the size budget in force below, placed as the side-work bullet says: fixed on the change's
   pull request while the two read in one careful review, as a small change and a sweep as large as
-  it still do, and on the side pull request past that, unless a record ground holds, when the
-  finding is recorded. The check is then left red on the change's pull request, on no other ground.
-  Never loosen, disable, rescope or ignore the check to turn it green. A status report's checks
-  leave such a check out, and its records are reported as the size budget says. A finding that shows
-  a defect, such as deprecated usage or a vulnerability, stays one, fixed as the bullets below say.
-  A finding the change's own code or contract change causes is the change's wherever it points: a
-  changed signature whose untouched callers no longer type-check is fixed in those callers, as
-  `pre-production`'s **Target Contract** requires. An essential check that already fails on the
-  default branch is a baseline failure, handled as the bullet above says.
+  it still do, and on the side pull request past that, or recorded where a record ground holds. Past
+  that, whether the findings go to the side pull request or are recorded, the check is left red on
+  the change's pull request, and in no other case. Never loosen, disable, rescope or ignore the
+  check to turn it green. A status report's checks leave such a check out, and its records are
+  reported as the size budget says. A finding that shows a defect, such as deprecated usage or a
+  vulnerability, stays one, fixed as the bullets below say. A finding the change's own code or
+  contract change causes is the change's wherever it points: a changed signature whose untouched
+  callers no longer type-check is fixed in those callers, as `pre-production`'s **Target Contract**
+  requires. An essential check that already fails on the default branch is a baseline failure,
+  handled as the bullet above says.
 
 Fix and validate every defect that remains in the task, even when it predates the task or sits
 outside the initial file set; cleanup that fixes no defect follows the size budget below.

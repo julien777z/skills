@@ -149,11 +149,11 @@ alwaysApply: true
 - Carry every agent-configuration pull request this session selected through conflict resolution,
   validation, readiness and merge. Never close one or leave it open merely because it is draft or
   conflicts with the base, only because its change is superseded or no longer wanted.
-- **An authorized merge is not held for an excluded check**: one the current user explicitly
-  waives, an established baseline failure, a non-essential check left red under the cleanup size budget,
-  or a hosted attempt a runner or provider interrupted with no validation failure
-  when equivalent local validation passed on the merge head. Each is recorded with its evidence,
-  and none is rerun or waited on to get a green result. Never bypass branch protection.
+- **An authorized merge is not held for an excluded check**: one the current user explicitly waives,
+  an established baseline failure, a non-essential check left red under the cleanup size budget, or
+  a hosted attempt a runner or provider interrupted with no validation failure when equivalent local
+  validation passed on the merge head. Each is recorded with its evidence, and none is rerun or
+  waited on to get a green result. Never bypass branch protection.
 
 ## Comments
 
