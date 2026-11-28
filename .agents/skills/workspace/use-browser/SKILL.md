@@ -34,10 +34,7 @@ a local URL served to it or report the preview blocker.
   from the CLI, which matches the installed version: `agent-browser skills get core`, adding
   `--full` for the command reference. The headless route takes nothing from the user's browser:
   `--auto-connect`, `--profile` naming one of the user's browser profiles, and `connect` or `--cdp`
-  aimed at a browser the user runs are the user's-browser route below. Send each step that carries
-  a secret, such as the `open` of a one-time sign-in link or the `fill` of a one-time token or a
-  password, to `agent-browser batch` as JSON on standard input and discard its standard output,
-  which echoes an opened URL, so no secret reaches a command's arguments or a transcript.
+  aimed at a browser the user runs are the user's-browser route below.
 - **Electron desktop apps and Slack**: the agent launches the app itself where it opens no window
   on the user's desktop, such as an isolated runner or a virtual display, with a DevTools port on
   127.0.0.1 (`--remote-debugging-port=<port>`) and a test profile and test data where the app takes
@@ -63,6 +60,11 @@ In the agent's headless browser:
   the task in it. A restarted session keeps its name but loses its pages and sign-in, so after
   reconnecting or restarting browser control, read `agent-browser --session <name> get url` and a
   `snapshot` before the next action, then sign in again and return to the page when they were lost.
+- Send each step that carries a secret, such as the `open` of a one-time sign-in link or the
+  `fill` of a one-time token or a password, to `agent-browser batch` as JSON on standard input and
+  discard its standard output, which echoes an opened URL, so no secret reaches a command's
+  arguments or a transcript. This holds for every session the agent drives, an app it launched and
+  attached included.
 
 In the user's browser:
 
