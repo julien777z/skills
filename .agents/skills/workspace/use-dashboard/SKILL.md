@@ -76,7 +76,7 @@ of a process, carries no count. Section types:
 | `notes` | `title`, `items` | each item a string |
 | `changes` | `title`, `items`, `page_size?`, `group_label?` | `name`, `change` (`added`, `changed`, `removed`), `detail?`, `current?`, `proposed?`, `links?`, `group?`: a named part with its change as a colored badge; `current` and `proposed` say what the part does on each side of the change, each on its own line under the name behind a bold Current or Proposed label, the proposed line after the current one and after `detail`, which holds anything else; an added part sets only `proposed` and a removed part only `current` |
 | `outline` | `title`, `groups: [{title, items}]`, `expanded?` (every item starts open when true), `stacked?` (groups run in one column, each across the full width, for groups read in order), `collapsible?` (false shows every item in full with no toggle, its `title` as a muted label beside its `detail`, for a short write-up of facts read top to bottom) | `title`, `detail?`, `current?`, `proposed?`, `tone?`, `tag?`, `meta?`, `links?`, `points?`, with at least one of `detail`, `current` and `proposed`: a headline that opens to its detail, then `current` and `proposed` as a `changes` item shows them, with `points` as a bulleted list under them, with `tag` as a badge in the item's tone (neutral without one) and `meta` as small text; without `expanded`, a group of one or two items shows them open |
-| `tree` | `title`, `items`, `open_depth?` (levels open on load, 1 by default) | `label`, `detail?`, `tag?`, `figure?`, `status?`, `meta?`, `tone?`, `children?`, `details?`: nested entries, each with children opening and closing from a chevron, `tag` a short label that tells otherwise alike entries apart, such as the warehouse each parcel left from, in a neutral pill beside its label, `figure` a short quantity, such as a count or a duration, in a neutral badge after that, `status` (`{label, tone?}`) a pill in its tone after the figure, `tone` alone coloring the entry's dot, which is neutral without it whatever `status` holds, `meta` beside them, and `details`, one section, opening in a dialog from the entry's label, which then shows as a link with an open icon; for a whole made of parts made of parts |
+| `tree` | `title`, `items`, `open_depth?` (levels open on load, 1 by default) | `label`, `detail?`, `tag?`, `figure?`, `status?`, `meta?`, `tone?`, `children?`, `details?`: nested entries, each with children opening and closing from a chevron, `tag` a short label that tells otherwise alike entries apart, such as the warehouse each parcel left from, in a neutral pill beside its label, `figure` a short quantity, such as a count or a duration, in a neutral badge after that, `status` (`{label, tone?}`) a pill in its tone after the figure, `tone` alone coloring the entry's dot, whatever `status` holds: without it a leaf's dot is neutral and an entry with children shows none, `meta` beside them, and `details`, one section, opening in a dialog from the entry's label, which then shows as a link with an open icon; for a whole made of parts made of parts |
 | `tabs` | `title`, `tabs: [{label, sections}]` | each tab a `label` and the `sections` it shows: a bar of tab labels, read with the arrow keys as well as the pointer, over the selected tab's sections, which render inside this card in order; a tab whose `sections` is `[]` is left off the bar, and with one tab left no bar shows, only its sections; for one subject split into kinds the reader looks at one at a time |
 | `figures` | `title`, `items`, `stacked?` (one figure per row, each followed by its caption, for pictures read in order) | `image`, `alt`, `caption?`: `image` a base64 data URI of an SVG, PNG, JPEG, WebP or GIF image, a single figure taking the card's width and several two side by side on a wide page, or one per row at a readable width with `stacked`, with `alt` read out in its place and `caption` under it; for what the reader needs to see rather than read, such as a map, a mock-up or a screenshot |
 | `diagram` | `title`, `nodes`, `edges`, `prs?`, `steps?`, `legend?` (`[{tone, label}]`, a line in each tone beside what it means) | node: `id`, `label`, `detail?`, `pr?`, `change?`, `tone?`, `details?`, `target?`; edge: `from`, `to`, `label?`, `step?`, `change?`, `tone?`, `details?`; pr: `ref`, `url`; each step a string |
@@ -199,20 +199,22 @@ Dashboards look alike because they are built alike:
 - **Detail opens in place.** A tree entry's parts are its `children`, opened from its chevron,
   never a dialog; a dialog through `details` holds what is not a part of the entry, such as a
   write-up about it, a table or a diagram.
-- **A pill is for a state the reader scans for.** A status, a mark such as Matches or Out of date,
-  or a pull request's state takes a pill — in a tree, the entry's `status` — never words trailing
-  the entry in `meta`; a short label that tells otherwise alike entries apart takes a tree entry's
-  `tag`. A longer label saying what kind of thing an item is or which group it belongs to, such as
-  its plan or its type, is plain text. A pill
-  earns its place by telling items apart: one reading the same on most items has stopped meaning
-  anything.
-- **A dot shows where the work stands, and no pill repeats it.** A tree entry's `tone` colors its
-  dot by its state — `good` done, `accent` active, `critical` blocked, `next` not started — whatever
-  pill it carries, so a finished review with a Flag pill still has a green dot. A pill that only
-  restates what the entry's dot, its board column or its pull request's state icon shows, such as
-  Done, Active, Up next or Open, is left out; one that tells the reader what to look at, such as a
-  verdict asking for changes, a detour or rework, or what a blocked entry waits on, stays, in the
-  `warning` or `critical` tone its meaning carries.
+- **A pill is for a state the reader scans for that nothing else on the entry shows.** A status,
+  a mark such as Matches or Out of date, or a pull request's state where no state icon is drawn
+  takes a pill — in a tree, the entry's `status` — never words trailing the entry in `meta`; a
+  short label that tells otherwise alike entries apart takes a tree entry's `tag`. A longer label
+  saying what kind of thing an item is or which group it belongs to, such as its plan or its type,
+  is plain text. A pill earns its place by telling items apart: one reading the same on most items
+  has stopped meaning anything, and one that only restates the entry's dot, its board column or
+  its pull request's state icon, such as Done, Active, Up next or Open, is left out. One that tells
+  the reader what to look at, such as a Damaged or Held at customs mark, stays, in the `warning` or
+  `critical` tone its meaning carries.
+- **A piece of work's dot shows where it stands.** A tree entry that stands for work, such as a
+  step, a delivery run or a group of them, takes the `tone` of its state — `good` done, `accent`
+  active, `critical` blocked, `next` not started — whatever pill it carries, so a delivered parcel
+  marked Damaged still has a green dot; a group's state comes from its members, active while any
+  runs, blocked while one waits and done once all are finished. Every other tree keeps its tones
+  as **Tone means the same everywhere** defines them.
 - **A figure is a real quantity in a unit the reader knows.** A duration is clock time. A total over
   work that ran in parallel counts overlapping time once, so no total is longer than the clock time
   it spans. A figure never carries a label for how it was computed.
@@ -224,7 +226,7 @@ Dashboards look alike because they are built alike:
   the reader already has them, so a progress segment is labeled with its step, such as "Offer
   rules", never "Plot waitlist: Offer rules", an outline group is headed with the area it covers,
   never with the task's name, and an entry tagged with its model is labeled with its role, such as
-  "Final review", never "Final review (Corvid 2.4)".
+  "Copy editor", never "Copy editor (Corvid 2.4)".
 - **A model is named exactly.** Wherever a dashboard names a model, such as the one an agent ran
   on, it gives the model and its version as the provider names it, such as Corvid 2.4, never the
   family alone, such as Corvid, and never the alias a launch passed: read the model the run used

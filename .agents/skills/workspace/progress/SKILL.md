@@ -113,7 +113,9 @@ and deliver the same dashboard again on every request so the user keeps one page
   ("<done> of <n>"), Active, Waiting on you and Time left, the summary of what the board shows step
   by step, and `details` holding each row's plan write-up, so a row opens the plan.
 - **`tree` "Plan tree"**, with `open_depth` 2: one entry per plan that is not withdrawn, in
-  the order they were shown or approved, `label` the plan's title, `figure` "<done> of <n> steps" and `meta` "~<n> min left", or
+  the order they were shown or approved, `label` the plan's title, `tone` its state's, from its
+  steps as `use-dashboard` gives a group's, `figure` "<done> of <n> steps" and `meta` "~<n> min
+  left", or
   `status` "Proposed" for a plan still waiting on a decision or an approval; under it one entry per step, in plan order, `label`
   "<n>. <step title>", `tone` its status's tone as its progress segment is, `status` only for a
   blocked step, what it waits on, toned `critical`, or a skipped one, Skipped, neutral, `meta`

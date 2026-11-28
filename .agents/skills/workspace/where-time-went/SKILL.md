@@ -57,7 +57,8 @@ anything else carries no assessment.
 
 ### States
 
-Each workflow, agent, assignment and plan step is in one state: **Active**, running now;
+Each workflow, round or group, phase, stage, group of commands, agent, assignment and plan step is
+in one state, a group's from its members as `use-dashboard` says: **Active**, running now;
 **Blocked**, started and waiting on something; **Up next**, not started yet; **Done**, finished,
 whatever its verdict or assessment. Its entry's dot and pill follow `use-dashboard`'s **Making A
 Dashboard**, and a table cell names the state in words. The pills that stay are a reviewer's verdict
@@ -92,13 +93,13 @@ pages, in order:
 - **Now and next** (`board`). One `board` with the columns Active (`accent`) and Up next (`next`).
   Each card is one plan step, or one part of a step with parts, or a running agent no plan step
   holds, saying what the work does, in plan order. Active holds active and blocked ones, a blocked
-  card's `status` naming what it waits on in `critical` and an active one no pill. Up next holds
+  card carrying `status` Blocked in `critical` and an active one no pill. Up next holds
   those not started, with no pill, since the column says it, each with its estimate in `meta` and,
   when the session has several plans, the plan it belongs to in `tag`.
 - **Loops** (`list`). One `tree`: each workflow, then its rounds or groups, then the agents or
   assignments inside them, each broken down as **What happened** says. Every entry's `figure` is its
   time, or for work up next its estimate in `meta`; its `tone` and any `status` are as **States**
-  says; the model an agent ran on is its `tag`, named as `use-dashboard` names a model, and its
+  says; the model a reviewer ran on is its `tag`, named as `use-dashboard` names a model, and its
   label names its role without that model.
 - **Timeline** (`calendar`). One `tree` of the session's phases in order, each labeled by the work
   done in it with its time as `figure`. Its children are the agents, assignments and reviewers that
