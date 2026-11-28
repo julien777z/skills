@@ -82,6 +82,10 @@ follow **Recording During A Task** for the edit's timing.
 Honor the selected workflow's verification sequence and any delivery or installation hold when
 recording or delivering a batch.
 
+- A guidance fix for a flaw the agent found in its own work, during a task or at its completion,
+  is no batch entry: it goes on the session's held self-improvement pull request as the GitHub
+  rule's **Merge Authorization** says, and runs **Validate input** through **Branch and commit**
+  there. A gap in how guidance handles anything else follows the bullets below.
 - A process correction waits for its verified run or merge to be written, as **A process is encoded
   only once it has worked** says, never to be classified; any other is recorded once diagnosed.
 - A direct request to change guidance, such as "use edit-skill to reflect that", is recorded the
@@ -140,8 +144,9 @@ recording or delivering a batch.
 ## Guidance Delivery
 
 This route delivers the frozen batch of `guidance_correction` entries its invocation names
-beside the source stream, or the held self-improvement pull request the user's finishing run hands it,
-whose fixes it never delivers before that run, as the GitHub rule's **Merge Authorization** says. It holds the source pull request only for the checks its ridden edits
+beside the source stream, or the held self-improvement pull request the user's finishing run
+hands it, whose fixes it never delivers before that run, as the GitHub rule's **Merge
+Authorization** says. It holds the source pull request only for the checks its ridden edits
 need and the delivery of the batch carrying them; only an edit on that pull request, or one the GitHub rule's **Merge Authorization** holds for a source pull request, waits for that merge. **The primary agent coordinates it**, starting its
 reviewer, gate and skill-test agents in the background so the user's review of the source pull
 request overlaps it. Coordination needs no independent reader, so the route goes whole to a

@@ -238,15 +238,12 @@ def check_moment(value: object, path: str) -> None:
 
 
 def check_timeline(section: dict[str, object], path: str) -> None:
-    """Require gaps that last, never overlap, and leave the work most of the axis."""
+    """Require gaps that last and never overlap."""
 
     gaps = sorted(
         (datetime.fromisoformat(str(gap["start"])), datetime.fromisoformat(str(gap["end"])), index)
         for index, gap in enumerate(section.get("gaps", []))
     )
-
-    if len(gaps) > MAX_TIMELINE_GAPS:
-        raise DashboardSpecError(f"{path}.gaps holds at most {MAX_TIMELINE_GAPS} gaps")
 
     for start, end, index in gaps:
         if end <= start:
@@ -1019,7 +1016,7 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
                 shape=TIMELINE_LANE_SHAPE,
             ),
             "gaps": Field(
-                check=partial(check_objects, shape=TIMELINE_GAP_SHAPE),
+                check=partial(check_objects, shape=TIMELINE_GAP_SHAPE, max_entries=MAX_TIMELINE_GAPS),
                 typescript="TimelineGap[]",
                 shape=TIMELINE_GAP_SHAPE,
             ),

@@ -1,5 +1,6 @@
 import { type ReactNode, useEffect, useState } from 'react';
-import { Stack, Text } from '@/components/primitives';
+import { Stack } from '@/components/primitives/stack';
+import { Text } from '@/components/primitives/text';
 import { relativeTime } from '@/lib/time';
 import { RichText } from './rich-text';
 

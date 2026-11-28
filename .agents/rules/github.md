@@ -12,7 +12,8 @@ alwaysApply: true
   passed, so its test jobs run once, on the head about to merge. Never mark one ready to start its
   tests, to show it finished, or to hand it to the user. With no merge authorized, a pull request
   is complete as a reviewable draft whose local checks under **Pre-Push Gate** and completion review
-  have passed, or, for a held self-improvement pull request, whose local checks have passed; its hosted test jobs are required only at the merge. A check that does run on a
+  have passed, or, for a held self-improvement pull request, whose local checks have passed; its
+  hosted test jobs are required only at the merge. A check that does run on a
   draft is read whenever the pull request's state is reported, its own or a worker's push alike,
   and one that fails is fixed in that pull request at once like any defect, a failure in setup the
   change did not write included, never set aside because the draft's tests run only at the merge.
@@ -50,9 +51,9 @@ alwaysApply: true
 - **Each session keeps at most one side pull request per repository**, agent configuration and
   source together, one commit per concern. It holds every guidance edit the session makes, a
   worker's repair included, apart from the self-improvement fixes the **Merge Authorization** hold
-  below puts on their own pull request, and side work, which the task does not need, no user asked for and the
-  change did not introduce: a defect, warning, deprecation or upgrade the agent noticed, a lint or
-  cleanup fix, or its own scope increase. A guidance edit goes on the task's pull request instead
+  below puts on their own pull request, and side work, which the task does not need, no user asked
+  for and the change did not introduce: a defect, warning, deprecation or upgrade the agent noticed,
+  a lint or cleanup fix, or its own scope increase. A guidance edit goes on the task's pull request instead
   when the user names that pull request for it, or when the task's pull request holds only agent
   configuration and the edit is a guidance follow-up or correction the user asks for; a user asking
   for a guidance edit alongside a task whose pull request carries source, in the same request

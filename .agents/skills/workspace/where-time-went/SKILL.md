@@ -138,9 +138,11 @@ pages, in order:
   says; the model a reviewer ran on is its `tag`, named as `use-dashboard` names a model, and its
   label names its role without that model.
 - **Timeline** (`calendar`). First a `timeline` of when the work ran: one lane per top-level
-  workflow, tagged with its model when one agent ran it, a bar per stretch it worked toned as its
+  workflow, a repeated workflow labeled apart by its target, such as each review pass by its pull
+  request, tagged with its model when one agent ran it, a bar per stretch it worked toned as its
   state, and each pause longer than an hour, such as a rate-limit wait or the user away, a gap
-  labeled with its length. Then one `tree` of the session's phases in order, each labeled by the work
+  labeled with its length; pauses that overlap are one gap, and past the renderer's limit only the
+  longest stay gaps. Then one `tree` of the session's phases in order, each labeled by the work
   done in it with its time as `figure`. Its children are the agents, assignments and reviewers that
   worked in that phase, in the order they started, each with its time in the phase, its `tone`,
   `status` and `tag` as on the Loops page, and its work in the phase broken down as **What

@@ -1,6 +1,6 @@
 ---
 name: self-improvement-protocol
-description: How an agent improves its own work and guidance — the interface it delivers, such as a dashboard, its own process, such as wasted effort, repeated or empty review rounds and subagents that cost more than they found, and the guidance that let either through — judged from evidence as the person the work is for, fixed at the owner every case shares, and repeated until a pass finds nothing worth changing. Read from a skill that declares it, such as a skill that improves dashboards, a look-over before delivering a page, or the end-of-task look-over; never invoked on its own.
+description: How an agent improves its own work and guidance — the interface it delivers, such as a dashboard, its own process, such as wasted effort, repeated or empty review rounds and subagents that cost more than they found, and the guidance that let either through — judged from evidence as the person the work is for, fixed at the owner every case shares, and repeated until a pass finds nothing worth changing, apart from the single end-of-task pass. Read from a skill that declares it, such as a skill that improves dashboards, a look-over before delivering a page, or the end-of-task look-over; never invoked on its own.
 short_description: 'Judge and fix the agent''s own interfaces, process and guidance from evidence.'
 user-invocable: false
 ---
@@ -93,5 +93,5 @@ the agent now does.
 ```markdown
 **<skill>:** <each change, one line, as what the reader sees or the agent does now>
 **<skill>:** ...
-**Passes:** <n>, the last finding nothing worth changing
+**Passes:** <n>, the last finding nothing worth changing, or 1 at the end of a task
 ```

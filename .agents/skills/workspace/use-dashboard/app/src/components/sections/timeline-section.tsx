@@ -1,7 +1,8 @@
 import { cn } from 'cn';
 import { type ReactNode, useContext } from 'react';
 
-import { Stack, Text } from '@/components/primitives';
+import { Stack } from '@/components/primitives/stack';
+import { Text } from '@/components/primitives/text';
 import { RichText } from '@/components/rich-text';
 import { StatusBadge } from '@/components/status-badge';
 import { ToneDot } from '@/components/tone-dot';
@@ -43,7 +44,9 @@ const GAP_PERCENT: number = 5;
 
 const EDGE_PERCENT: number = 6;
 
-const MIN_TICK_SPACING_PERCENT: number = 8;
+const BREAK_CLEARANCE_PERCENT: number = 4;
+
+const PERCENT_PER_LABEL_CHARACTER: number = 1.4;
 
 interface Segment {
   start: number;
@@ -138,8 +141,12 @@ function spaced(scale: Scale, ticks: Tick[]): Tick[] {
 
   for (const tick of ticks) {
     const at = offset(scale, tick.at);
-    const nearBreak = breakEdges.some((edge) => Math.abs(edge - at) < MIN_TICK_SPACING_PERCENT / 2);
-    const nearPrevious = kept.length > 0 && at - offset(scale, kept[kept.length - 1].at) < MIN_TICK_SPACING_PERCENT;
+    const previous = kept[kept.length - 1];
+    const nearBreak = breakEdges.some((edge) => Math.abs(edge - at) < BREAK_CLEARANCE_PERCENT);
+    const nearPrevious =
+      previous !== undefined &&
+      at - offset(scale, previous.at) <
+        (Math.max(previous.label.length, tick.label.length) + 2) * PERCENT_PER_LABEL_CHARACTER;
 
     if (!nearBreak && !nearPrevious) {
       kept.push(tick);
