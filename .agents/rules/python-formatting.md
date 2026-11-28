@@ -125,11 +125,11 @@ def team_cache(session: Session) -> Cache:
     """Return the cache this session carries."""
 ```
 - **A docstring or comment describes the normal path and hedges for no other.** A path normal users
-  never take, such as an account an admin created, an import or a provider's rare omission, is
-  handled in code and covered by tests; naming it in prose, as "if they gave one", reads as a flaw
-  in the normal path. A delivery address every checkout requires is recorded by
-  `"""Record the delivery address the customer gave at checkout."""`, never "…at checkout, if they
-  gave one". A docstring for an optional field still says the value may be absent.
+  never take, such as an order imported from an older system or a carrier's rare missing scan, is
+  handled in code and covered by tests; naming it in prose, as "when one exists", reads as a flaw
+  in the normal path. A shipping label every order gets is described by
+  `"""Return the shipping label printed for the order."""`, never "…for the order, when one
+  exists". A docstring for an optional field still says the value may be absent.
 - Prose written for a person — a docstring, a comment, a log message — must not spell out an internal role, permission, or scope identifier (the literal string a provider or authorization system checks against, such as `tenant:member` or `scope:read_billing`). Name the concept in readable words instead. The identifier belongs in the code that evaluates it, where renaming it is a change the type checker and tests can see; repeated in prose it is a second copy nothing keeps honest.
 
 ```python
@@ -151,8 +151,7 @@ def ensure_tenant_member(user: User) -> None:
 - **A requirement behind a value the code states is not a quirk.** A minimum length, a format, a
   header or a limit a standard or library requires is stated by the value and asserted by its test,
   so `country_code: str = Field(min_length=2, max_length=2)` carries no comment citing the ISO
-  standard behind its length. Nor is a workaround the code already makes evident, such as naming the
-  deprecated path a client no longer takes.
+  standard behind its length.
 - **If your own code needs a comment to be understood, the code is too complex — refactor it instead.** Rename the identifier, extract a well-named helper, split the function, or restructure until the intent is obvious without prose. Reach for a comment only after the code cannot be made clearer and the remaining "why" is genuinely external.
 - **Never explain behavior in a comment — tests assert behavior.** Do not narrate what a branch, guard, ordering, or invariant does or protects against; encode that in a test that fails when it regresses. The test is the durable, executable specification; the comment is not.
 - **Keep any comment to 1–2 lines**, factual, and about the external quirk only. A comment that runs longer is a signal the code (or the abstraction) needs restructuring, not more prose.

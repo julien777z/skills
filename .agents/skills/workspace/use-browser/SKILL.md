@@ -34,7 +34,8 @@ a local URL served to it or report the preview blocker.
   from the CLI, which matches the installed version: `agent-browser skills get core`, adding
   `--full` for the command reference. The headless route takes nothing from the user's browser:
   `--auto-connect`, `--profile` naming one of the user's browser profiles, and `connect` or `--cdp`
-  aimed at a browser the user runs are the user's-browser route below.
+  aimed at a browser the user runs are the user's-browser route below. A skill's script that
+  starts its own headless browser with a fresh profile is on this route.
 - **Electron desktop apps and Slack**: the agent launches the app itself where it opens no window
   on the user's desktop, such as an isolated runner or a virtual display, with a DevTools port on
   127.0.0.1 (`--remote-debugging-port=<port>`) and a test profile and test data where the app takes
@@ -49,8 +50,8 @@ a local URL served to it or report the preview blocker.
   the user names Chrome, an `@Chrome` mention included, or the task selects their existing Chrome
   session, use the bundled Browser plugin's Chrome backend and follow the plugin's setup and Chrome
   troubleshooting for the selected profile. If that backend stays unavailable after supported
-  recovery, report the plugin blocker and continue independent work. Never enable or request
-  Chrome remote debugging, attach a debugger or automation CLI to Chrome, launch a debug browser,
+  recovery, report the plugin blocker and continue independent work. On that backend, never enable
+  or request Chrome remote debugging, attach a debugger or automation CLI to Chrome, launch a debug browser,
   or substitute another browser or backend for that operation.
 - If the headless browser cannot run, report the blocked browser step with its error and continue
   any work that can be verified independently. Never move to the user's browser or a harness
@@ -63,7 +64,8 @@ Bind the task's browser before reading, navigating or interacting.
 In the agent's headless browser:
 
 - Run one named session per task (`--session <name>`), record its name, and keep every action of
-  the task in it. A restarted session keeps its name but loses its pages and sign-in, so after
+  the task in it; a parallel worker takes its own session, named after the task's with a suffix
+  of its own. A restarted session keeps its name but loses its pages and sign-in, so after
   reconnecting or restarting browser control, read `agent-browser --session <name> get url` and a
   `snapshot` before the next action, then sign in again and return to the page when they were lost.
 - Send each step that carries a secret, such as the `open` of a one-time sign-in link or the

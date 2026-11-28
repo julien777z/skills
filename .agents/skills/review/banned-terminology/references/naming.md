@@ -27,10 +27,10 @@
   the category package a language rule assigns, such as `utils/`, whose topic-named modules carry
   what it holds. A name a framework or protocol defines keeps its own spelling.
 - **Name things for what they are, never for the caller, surface or task that uses them.** A
-  qualifier naming who reads or calls a thing, such as `admin_`, `public_` or `internal_`, reads as
-  what the thing belongs to or what kind it is, and misleads most where the codebase already uses
-  the word for one of its own entities: with `admin` meaning a site admin, a full-detail listing of
-  a shop's invoices is `list_invoice_details`, never `list_admin_invoices`, which reads as invoices
-  admins own. A thing that is itself the surface, such as the router serving the admin pages, takes
-  that surface's name. A test needing a table with a secret column names it for that — a record
+  qualifier naming who reads or calls a thing, such as `librarian_`, `kiosk_` or `partner_`, reads
+  as what the thing belongs to or what kind it is, and misleads most where the codebase already
+  uses the word for one of its own entities: with `librarian` meaning a staff account, the full
+  record of a branch's loans that librarians read is `list_loan_records`, never
+  `list_librarian_loans`, which reads as loans librarians took out. A thing that is itself the
+  surface, such as the router serving the kiosk pages, takes that surface's name. A test needing a table with a secret column names it for that — a record
   with a secret — rather than borrowing the one real table the change was made for.

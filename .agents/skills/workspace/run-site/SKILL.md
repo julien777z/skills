@@ -258,8 +258,8 @@ paragraph below says and skips the recording; the cloud walkthrough and one the 
 record as follows. Record the flow until the feature is exercised to its end — the form submitted
 and its result read back, the item seen in its list, the setting confirmed after a reload. Record
 in the selected browser's existing session or tab, preserving its authenticated state, through
-that browser's own recording: the CLI's `agent-browser record start <path>` and `record stop` in
-the headless browser, and the harness's recording only when the walkthrough runs in the user's
+that browser's own recording: in the headless browser, the recording its CLI guide from
+`use-browser` gives, and the harness's recording only when the walkthrough runs in the user's
 browser. Deliver it with `share-media`. If recording is unavailable, capture stills and report the
 recording gap.
 
