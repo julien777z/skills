@@ -50,8 +50,8 @@ alwaysApply: true
 - **Each session keeps at most one side pull request per repository**, agent configuration and
   source together, one commit per concern: every guidance edit the session makes there, unless the
   user puts it on the task's pull request or the task is that guidance change, and side work, which
-  the task does not need and no user asked for: a defect, warning, deprecation or upgrade the agent
-  noticed and the change did not introduce, a lint or cleanup fix, or its own scope increase.
+  the task does not need, no user asked for and the change did not introduce: a defect, warning,
+  deprecation or upgrade the agent noticed, a lint or cleanup fix, or its own scope increase.
   - Its branch starts from and is based on the task pull request's branch, so the task's merge
     leaves it no conflict; once the task merges, retarget it to the default branch, bring that base
     in and rerun the affected gates. With no task pull request in the repository, as in the skills
@@ -124,12 +124,12 @@ alwaysApply: true
     correction of a non-default testing reference to the maintained target the user or repository
     guidance selected, with only its necessary manifest, lockfile or reference updates, subject to
     the user's current pauses and exclusions;
-  - a pull request confined to agent configuration and opened on the default branch, static metadata
-    included, once its guidance-editing route's gates pass on the head that merges and its complete
-    file list is confirmed confined; a side pull request opened on a task's, even once retargeted,
-    or one carrying source, merges only on the user's word. One adding a doctor skill waits for the
-    user's review with its batch, and a workflow, installer or tooling outside a skill's folder is
-    source work when its execution changes, even in `.agents`;
+  - a pull request confined to agent configuration and only ever based on the default branch, static
+    metadata included, once its guidance-editing route's gates pass on the head that merges and its
+    complete file list is confirmed confined; a side pull request ever based on a task's, or one
+    carrying source, merges only on the user's word. One adding a doctor skill waits for the user's
+    review with its batch, and a workflow, installer or tooling outside a skill's folder is source
+    work when its execution changes, even in `.agents`;
   - the focused revert of a pull request an agent merged by mistake, which may auto-merge.
 - **A pull request confined to deferral records, active or declined, merges without a separate
   request as soon as its records are written**, through the skill that runs a merge, with its required checks, once

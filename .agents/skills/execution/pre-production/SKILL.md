@@ -208,17 +208,14 @@ with an obsolete owned contract or revision.
   change that edits either one, keeping every criterion either copy carries. Cleanup in another
   skill keeps the budget in force.
   - **The default budget:** cleanup that fixes no defect — duplication, dead code, a misplaced
-    helper, an abstraction with one implementation, layout — is done in the change wherever the
-    work met it while it is small beside the change in flight, such as a few files of cleanup met
-    by a change of dozens.
+    helper, an abstraction with one implementation, layout — is done wherever the work met it,
+    placed under the GitHub rule's **Branches and Pull Requests**, while it is small beside the
+    change in flight, such as a few files of cleanup met by a change of dozens.
   - **The widened budget** holds instead under a broad scope, where the user named the whole
     product, the whole codebase or everything, and while a decision the user scoped to the whole
     session widens it, until they withdraw it: every cleanup the work meets is in scope and done,
     whatever its file count, bar the record grounds below, and the one-hop limit above does not
     bound it. Each such fix gets its own commit, named for what it repairs.
-  - Under either budget a cleanup that would reach a repository the change does not already edit is
-    placed in that repository under the GitHub rule's **Branches and Pull Requests**, as a defect
-    fix is above, so the requested change stays reviewable as itself.
   - **A deferral record for incidental cleanup is reserved for three grounds:** cleanup comparable
     in size to the change in flight, such as a sweep as large again as the work it came from; work
     an external blocker holds, something outside every repository the user owns that the fix cannot

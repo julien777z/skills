@@ -488,7 +488,7 @@ tool, as `user-facing-output` directs; the question asks for the review alone:
 ```markdown
 **Ready for review:** <pull request URL>
 
-- **What landed:** <each requested outcome, one clause each>
+- **What landed:** <each requested outcome, and each defect fixed because the change needed it, one clause each>
 - **Review:** <full | delta `<reviewed head>..<head>` | nothing new> · review loop <n> round(s), <n> finding(s) fixed · acceptance passed on `<head>` — leave out each count `review-pass` did not run
 - **History:** <n> commits (<subject> · <subject> · …)
 - **Deferred:**

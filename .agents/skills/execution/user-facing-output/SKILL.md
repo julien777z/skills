@@ -1,6 +1,6 @@
 ---
 name: user-facing-output
-description: "Apply before the first user-facing response and to every response the user reads, without waiting for an invocation. On top of `i-have-adhd` it owns the list of open decisions shown after each user message, evidence-pending questions, putting decisions and reader-owned actions to the question tool, the closing line, reporting an issue fixed on the way, and what the text says: a link for anything the reader might open, a proposal never reading as done, a web product's views called pages, text written for the user rather than for reviewers or workers, and new behavior named as new."
+description: "Apply before the first user-facing response and to every response the user reads, without waiting for an invocation. On top of `i-have-adhd` it owns the list of open decisions shown after each user message, evidence-pending questions, putting decisions and reader-owned actions to the question tool, the closing line, reporting an issue fixed on the way and side work apart from the task's pull request, and what the text says: a link for anything the reader might open, a proposal never reading as done, a web product's views called pages, text written for the user rather than for reviewers or workers, and new behavior named as new."
 short_description: 'Keep open decisions visible, ask through the question tool, and word every reply for its reader.'
 ---
 
@@ -85,8 +85,9 @@ output.
   closing action alike, over any `i-have-adhd` example that hands the reader such a step. The
   reader gets such steps only when they asked how to do something themselves.
 - **An issue the work met is fixed and named once as fixed**, as `pre-production`'s **Encountered
-  Issues** says, never offered as a follow-up: "Also fixed on the way: the stale dependency the
-  build pulled in", never "there is also a stale dependency. Want me to handle that next?".
+  Issues** says, never offered as a follow-up: "Also fixed, on the side pull request: the stale
+  dependency the build pulled in", never "there is also a stale dependency. Want me to handle that
+  next?".
 - **Report work that is happening or affects the requested outcome.** A status such as “pending”
   requires an actual queue entry, active run, or documented wait within an authorized workflow.
   Leave out actions that never started when they are outside the request. Name a concrete blocker
