@@ -31,6 +31,10 @@
       {
         "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/guidance-changes/main.py\"",
         "timeout": 3
+      },
+      {
+        "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/ledger/main.py\"",
+        "timeout": 3
       }
     ]
   }
