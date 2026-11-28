@@ -177,10 +177,10 @@ with an obsolete owned contract or revision.
   the user alone can take, such as supplying an identifier the session cannot read, goes to them,
   as that step.
 - **A defect the work notices is always fixed.** The hop limit above does not bound it, and neither
-  does its home: a shared component, an owned library or another owned repository. Use the GitHub
-  rule's **Branches and Pull Requests** to place the fix in each affected repository. Keep distinct
-  concerns reviewable in separate commits. A defect the change introduced or the requested
-  behavior cannot work without stays part of the change at any size. Use the GitHub rule's
+  does its home: a shared component, an owned library or another owned repository. A fix the
+  change neither introduced nor needs, a warning, deprecation or upgrade included, goes on that
+  repository's side pull request under the GitHub rule's **Branches and Pull Requests**, one commit
+  per concern; a defect the change introduced or needs stays on the task's pull request. Use the GitHub rule's
   **Pre-Push Gate** for a dependency it needs. A defect is never deferred, left as a note or offered
   to the user as a question. **A suspected defect whose confirmation is in the agent's reach** — a
   run, a walk through the product, a measurement with its own tools — is investigated now and, if

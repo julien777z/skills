@@ -47,19 +47,19 @@ alwaysApply: true
   branch, open state or recorded touch does not. Other sessions' pull requests and branches stay
   untouched, apart from damaged local Git state a skill installing shared guidance backs up and
   repairs.
-- **Each session keeps at most one side pull request per repository**, holding agent configuration
-  and source together in separate commits per concern: every guidance edit the session makes there,
-  asked for or not, unless the user directs it onto the task's pull request or the task is that
-  guidance change; and side work, which is what the agent takes on that the task does not need and
-  no user request asked for, such as an incidental lint or cleanup fix or its own scope increase.
+- **Each session keeps at most one side pull request per repository**, agent configuration and
+  source together, one commit per concern: every guidance edit the session makes there, unless the
+  user puts it on the task's pull request or the task is that guidance change, and side work, what
+  the agent takes on that the task does not need and no user request asked for: a defect, warning,
+  deprecation or upgrade it noticed and the change did not introduce, a lint or cleanup fix, or its
+  own scope increase.
   - Its branch starts from and is based on the task pull request's branch, so the task's merge
     leaves it no conflict; once the task merges, retarget it onto the default branch. In a
     repository with no task pull request, such as the skills repository while the task's code lives
     elsewhere, it is the session's agent-configuration pull request, based on the default branch.
-  - Select it from this session's ledger, as one it opened or one the user directs it to continue,
-    verified remotely; a touch or reference receipt, topic, branch, open state or batch record
-    establishes neither. Consolidate a duplicate this session opened onto the first and close it,
-    saying where the work went.
+  - Select it from this session's ledger: one it opened or the user directs it to continue,
+    verified remotely, never by a touch or reference receipt, topic, branch, open state or batch
+    record. Fold a duplicate this session opened into the first, then close it saying so.
   - Agent configuration is the canonical `.agents` tree: skills with their own scripts, assets and
     templates, rules and agent definitions, plus nonbehavioral text and guidance-reference
     corrections in agent hooks and installers; a change to execution, timing, installation,
