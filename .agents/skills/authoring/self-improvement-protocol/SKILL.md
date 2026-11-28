@@ -70,8 +70,9 @@ an audit of a product's repository is a doctor skill's work.
 The guidance fixes a pass makes go on the session's self-improvement pull request, held as the
 GitHub rule's **Merge Authorization** says: open it as a draft labeled `self-improvement` with the
 first fix, based on the branch the fixed guidance lives on, and push every later fix of the session
-to it. A change the user asks for during the pass is not a self-improvement fix and takes its usual
-route.
+to it. A change the user asks for about the same self-improvement work, such as a different look
+for the dashboards a pass is fixing, joins that pull request too, so the changes to the same files
+are reviewed and tested together; a request about anything else takes its usual route.
 
 ## Iterate
 
