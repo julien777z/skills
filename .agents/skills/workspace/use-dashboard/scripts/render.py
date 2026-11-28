@@ -44,6 +44,7 @@ APP_TYPES_PATH: Final[str] = "src/spec.ts"
 BROWSER_MOMENT: Final[re.Pattern[str]] = re.compile(
     r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:\d{2})"
 )
+
 MAX_TIMELINE_GAPS: Final[int] = 10
 CACHE_ROOT: Final[Path] = (
     Path(os.environ.get("XDG_CACHE_HOME") or Path.home() / ".cache") / "use-dashboard"
