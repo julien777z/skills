@@ -1,7 +1,6 @@
+import { cn } from 'cn';
 import type { ReactNode } from 'react';
-
 import { TONES, ToneName } from '@/lib/tone';
-import { cn } from '@/lib/utils';
 
 export function ToneDot({ tone = ToneName.NEUTRAL, offset = false }: { tone?: ToneName; offset?: boolean }): ReactNode {
   return (

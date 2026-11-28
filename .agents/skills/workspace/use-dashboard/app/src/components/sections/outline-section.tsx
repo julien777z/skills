@@ -3,6 +3,7 @@ import { Fragment, type ReactNode, useId, useState } from 'react';
 import { RichText, SourceLinks, StatusBadge, ToneDot } from '@/components';
 import { Grid, Stack, Text } from '@/components/primitives';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Separator } from '@/components/ui/separator';
 import { withKeys } from '@/lib/utils';
 import type { OutlineGroup, OutlineSection as OutlineSectionSpec } from '@/spec';
 import { SectionCard } from './section-card';
@@ -57,7 +58,8 @@ function splitColumns(groups: OutlineGroup[], expanded: boolean): OutlineGroup[]
 
 function PlainGroup({ group, first }: { group: OutlineGroup; first: boolean }): ReactNode {
   return (
-    <Grid gap="sm" divider={first ? 'none' : 'top'}>
+    <Grid gap="sm">
+      {!first && <Separator />}
       <Text as="h3" size="sm" weight="medium" tone="muted">
         <RichText text={group.title} />
       </Text>
@@ -75,7 +77,7 @@ function PlainGroup({ group, first }: { group: OutlineGroup; first: boolean }): 
             <dd>
               <Stack gap="xs">
                 <Stack direction="row" align="start" gap="sm" wrap>
-                  {item.tag && <StatusBadge label={item.tag} tone={item.tone} dot={false} />}
+                  {item.tag && <StatusBadge label={item.tag} dot={false} />}
                   {(item.detail || item.meta) && (
                     <Text size="sm" breakAnywhere>
                       {item.detail && <RichText text={item.detail} />}
@@ -146,7 +148,7 @@ function Group({ group, expanded }: { group: OutlineGroup; expanded: boolean }):
               <Stack direction="row" align="start" gap="md" block="row">
                 <Stack direction="row" align="start" gap="sm" grow>
                   <ToneDot tone={item.tone} offset />
-                  {item.tag && <StatusBadge label={item.tag} tone={item.tone} dot={false} />}
+                  {item.tag && <StatusBadge label={item.tag} dot={false} />}
                   <Stack gap="xs" grow>
                     <Text labelFor={id} weight="medium" size="sm" breakAnywhere>
                       <RichText text={item.title} />

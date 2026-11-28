@@ -3,7 +3,6 @@ import type { ReactNode } from 'react';
 
 const TEXT_VARIANTS = {
   size: {
-    xxs: 'text-[11px]',
     xs: 'text-xs',
     sm: 'text-sm',
     figure: 'text-2xl @[250px]/card:text-3xl',
