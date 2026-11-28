@@ -8,6 +8,7 @@ import { SectionCard } from './section-card';
 import { SectionDialog } from './section-dialog';
 
 const PROSE_CELL_LENGTH: number = 40;
+const SHORT_CELL_LENGTH: number = 30;
 
 export function TableSection({ section }: { section: TableSectionSpec }): ReactNode {
   const [open, setOpen] = useState(false);
@@ -18,6 +19,9 @@ export function TableSection({ section }: { section: TableSectionSpec }): ReactN
   const openedDetails = details?.[rows.findIndex(({ key }) => key === openedRow)];
   const proseColumns = section.columns.map((_, column) =>
     section.rows.some((cells) => cells[column].length > PROSE_CELL_LENGTH),
+  );
+  const shortColumns = section.columns.map((_, column) =>
+    section.rows.every((cells) => cells[column].length <= SHORT_CELL_LENGTH),
   );
 
   if (openedRow && !openedDetails) {
@@ -62,7 +66,11 @@ export function TableSection({ section }: { section: TableSectionSpec }): ReactN
                 {withKeys(cells, (cell) => cell).map(({ key, item: cell }, column) => (
                   <TableCell
                     key={key}
-                    className={cn('px-4 align-top whitespace-normal tabular-nums', proseColumns[column] && 'min-w-64')}
+                    className={cn(
+                      'px-4 align-top tabular-nums',
+                      proseColumns[column] && 'min-w-64',
+                      shortColumns[column] ? 'whitespace-nowrap' : 'whitespace-normal',
+                    )}
                   >
                     {details && column === 0 ? (
                       <DialogOpener

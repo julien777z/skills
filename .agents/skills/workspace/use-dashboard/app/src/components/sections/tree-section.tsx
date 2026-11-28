@@ -89,16 +89,25 @@ function TreeItem({ node, depth, openDepth, alignWithBranches }: TreeItemProps):
                 <RichText text={node.detail} />
               </Text>
             )}
-          </Stack>
-          {(node.meta || node.figure) && (
-            <Stack direction="row" gap="md" justify="end" push>
-              {node.meta && (
+            {node.meta && (
+              <Stack show="belowSm">
                 <Text size="sm" tone="muted" numeric>
                   <RichText text={node.meta} />
                 </Text>
+              </Stack>
+            )}
+          </Stack>
+          {(node.meta || node.figure) && (
+            <Stack direction="row" gap="md" justify="end" trail>
+              {node.meta && (
+                <Stack show="fromSm">
+                  <Text size="sm" tone="muted" numeric>
+                    <RichText text={node.meta} />
+                  </Text>
+                </Stack>
               )}
               {node.figure && (
-                <Text size="sm" tone="muted" numeric>
+                <Text size="sm" tone="muted" numeric nowrap>
                   {node.figure}
                 </Text>
               )}
