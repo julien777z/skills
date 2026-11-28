@@ -79,8 +79,9 @@ Run these against a selected story before implementing it:
   each beat; a character who uses a name, place or fact before it could be known, or a reveal stated
   before its beat, or hinted so plainly that the player can no longer doubt it, is a defect; so is a
   line or objective that names a character, place or threat the player cannot yet place under
-  `roblox-gameplay`'s naming rule, even when the speaker knows it; a clue that sets up the reveal
-  while leaving it uncertain, or a line that explains the name itself, is foreshadowing.
+  `roblox-gameplay`'s **First session** rule on naming only what the player can place, even when
+  the speaker knows it; a clue that sets up the reveal while leaving it uncertain, or a line that
+  explains the name itself, is foreshadowing.
 - **Setups and payoffs.** Every object, place or mechanism the climax relies on is set up earlier,
   and every setup pays off.
 - **Arithmetic.** Sum rewards per beat and check them against every threshold the design states.

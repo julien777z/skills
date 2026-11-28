@@ -44,7 +44,10 @@ for an agent-configuration change, Agent Sync handling before this skill finishe
   Report that gate.
 - An authorized merge includes the repository's automatic merge-triggered workflows. Their
   publication, rollout, and serving-state checks belong to separately authorized release or
-  deployment work.
+  deployment work. For a source-only merge in pre-production, apply `pre-production`'s target
+  contract to the source and retained data. Follow **Check Gate** and keep rollout sequencing in
+  the release procedure. Do not investigate live deployment or cutover readiness, change automatic
+  release settings, ask for a rollout decision, or hold the merge on those grounds.
 - Dispatching a release workflow or creating a deployment is a separate action with its own
   authorization. A request for CI tests authorizes test workflows only: inspect a workflow's jobs
   and triggers before dispatching it, since one that builds and publishes artifacts or deploys is a
@@ -68,6 +71,7 @@ for an agent-configuration change, Agent Sync handling before this skill finishe
 ## Dependencies
 - `stop-gates`
 - `merge-conflict`
+- `pre-production`
 - `scope-of-change`
 - `engineering-conventions`
 - `update-skills`
