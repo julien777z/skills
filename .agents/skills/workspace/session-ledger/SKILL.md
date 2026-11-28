@@ -198,15 +198,19 @@ This skill authorizes those comments and their edits under the GitHub rule's **C
   back at most once in a row**, so do what it names in the turn it reopens.
   - It reads each ledger under `agent-ledgers/` that changed at or after the session's first
     recorded timestamp, or at any time when the transcript records none, and that the session's
-    transcript names or whose `sessions` lists the session's ID.
+    transcript names or whose `sessions` lists the session's ID. A ledger whose text holds the ID
+    but cannot be read counts, and is reported.
   - When it finds none, it creates the session's ledger as **Storage** says and names it: record
     there whatever this section and **Workflow** keep from the session's work so far.
   - While one owes a backup or cannot be read, it lists each entry and what it lacks: post or edit
     the comment and record its URL, or repair the ledger.
   - In Claude Code and Codex it refuses to end the turn; in Cursor it submits its message as the
     next one.
-  - It runs where `python3` is Python 3.11 or newer. Without PyYAML it still creates a ledger, but
-    reports every turn that the backups were not checked.
+  - When the session ends, the same hook deletes the file it created for the session if nothing
+    was recorded in it; a file holding records stays for whoever continues the task.
+  - It runs where `python3` is Python 3.11 or newer. Without PyYAML, a ledger whose text holds the
+    session's ID counts as the session's, the hook still creates one when none does, and it reports
+    every turn that the backups were not checked.
 
 ## Output
 

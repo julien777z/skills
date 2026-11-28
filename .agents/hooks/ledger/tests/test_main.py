@@ -102,17 +102,20 @@ class LedgerHookTest(unittest.TestCase):
                 self.assertEqual(self.ledger_files(), [])
 
     def test_checks_recorded_files_without_creating(self):
-        """Test that files the transcript names or that hold the session ID are checked."""
+        """Test that files the transcript names, list the session or fail to parse are checked."""
 
         self.directory.mkdir()
         plan = {"id": "plan-1", "kind": "plan", "summary": "s", "data": {"status": "shown"}}
         named = self.directory / "named-task.yaml"
         recording = self.directory / "recording-task.yaml"
+        broken = self.directory / "broken-task.yaml"
 
         named.write_text(json.dumps({"session_ledger": {"entries": [plan]}}))
         recording.write_text(
             json.dumps({"session_ledger": {"sessions": [self.session_id], "entries": [plan]}})
         )
+
+        broken.write_text(f"session_ledger: [{self.session_id}\n")
 
         self.transcript.write_text(
             self.transcript.read_text() + json.dumps({"path": str(named)}) + "\n"
@@ -123,7 +126,24 @@ class LedgerHookTest(unittest.TestCase):
         self.assertEqual(result.returncode, BLOCK_EXIT)
         self.assertIn(f"{named} has entries missing", result.stderr)
         self.assertIn(f"{recording} has entries missing", result.stderr)
-        self.assertEqual(self.ledger_files(), [named.name, recording.name])
+        self.assertIn(f"{broken} could not be read", result.stderr)
+        self.assertEqual(self.ledger_files(), [broken.name, named.name, recording.name])
+
+    def test_session_end_removes_untouched_file(self):
+        """Test that session end deletes the hook's file only while nothing is recorded in it."""
+
+        ledger = self.directory / f"session-{self.session_id}.yaml"
+
+        self.run_hook()
+        untouched = self.run_hook(hook_event_name="SessionEnd")
+
+        self.assertEqual((untouched.returncode, ledger.exists()), (0, False))
+
+        self.run_hook()
+        ledger.write_text(ledger.read_text().replace("entries: []", "entries: [{id: kept}]"))
+        recorded = self.run_hook(hook_event_name="sessionEnd")
+
+        self.assertEqual((recorded.returncode, ledger.exists()), (0, True))
 
 
 if __name__ == "__main__":

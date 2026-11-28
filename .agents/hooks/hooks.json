@@ -1,5 +1,5 @@
 {
-  "description": "Load the i-have-adhd and user-facing-output skills at session start, and at turn end create the session's ledger when none records it and check that every task ledger entry owing a backup comment has one.",
+  "description": "Load the i-have-adhd and user-facing-output skills at session start, at turn end create the session's ledger when none records it and check that every task ledger entry owing a backup comment has one, and at session end remove the session's ledger when nothing was recorded in it.",
   "hooks": {
     "SessionStart": [
       {
@@ -17,6 +17,17 @@
             "type": "command",
             "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/session-skills/main.py\" user-facing-output",
             "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.agents/hooks/ledger/main.py\"",
+            "timeout": 3
           }
         ]
       }

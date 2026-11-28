@@ -5,15 +5,9 @@ import stat
 import tempfile
 from datetime import UTC, datetime
 from pathlib import Path
-from types import ModuleType
 from typing import Final
 
 from models import HookInput
-
-try:
-    import yaml
-except ImportError:
-    yaml: ModuleType | None = None
 
 LEDGER_DIRECTORY_NAME: Final[str] = "agent-ledgers"
 LEDGER_SUFFIXES: Final[frozenset[str]] = frozenset({".yaml", ".yml"})
@@ -80,71 +74,64 @@ def is_written_since(path: Path, started: datetime | None) -> bool:
     return stat.S_ISREG(status.st_mode) and is_recent
 
 
-def lists_session(path: Path, session_id: str) -> bool:
-    """Tell whether a ledger's sessions list holds the session's ID."""
+def names_session(path: Path, session_id: str) -> bool:
+    """Tell whether a ledger file's text holds the session's ID."""
 
     try:
-        text = path.read_bytes()
+        return session_id.encode() in path.read_bytes()
     except OSError:
         return False
 
-    if session_id.encode() not in text:
-        return False
 
-    # A ledger naming the session that cannot be parsed is its own, reported rather than replaced.
-    if yaml is None:
-        return True
-
-    try:
-        document = yaml.safe_load(text)
-    except yaml.YAMLError:
-        return True
-
-    ledger = document.get("session_ledger") if isinstance(document, dict) else None
-    sessions = ledger.get("sessions") if isinstance(ledger, dict) else None
-
-    return isinstance(sessions, list) and session_id in sessions
-
-
-def session_ledgers(hook_input: HookInput) -> list[Path]:
-    """Return the ledgers changed since the session began that its transcript names or list it."""
+def session_ledgers(hook_input: HookInput) -> tuple[set[Path], set[Path]]:
+    """Return the ledgers changed since the session began: named by its transcript, then by ID."""
 
     directory = ledger_directory()
 
     if not directory.is_dir():
-        return []
+        return set(), set()
 
     names, started = transcript_ledgers(hook_input["transcript_path"])
     session_id = hook_input["session_id"]
-    named = {directory / os.fsdecode(name) for name in names}
-    listed = set(directory.iterdir()) if session_id is not None else set()
-    written = (path for path in named | listed if is_written_since(path, started))
+    candidates = (directory / os.fsdecode(name) for name in names)
+    named = {path for path in candidates if is_written_since(path, started)}
 
-    return sorted(
+    if session_id is None:
+        return named, set()
+
+    mentioning = {
         path
-        for path in written
-        if path in named
-        or (
-            session_id is not None
-            and path.suffix in LEDGER_SUFFIXES
-            and lists_session(path, session_id)
-        )
-    )
+        for path in directory.iterdir()
+        if path.suffix in LEDGER_SUFFIXES
+        and path not in named
+        and is_written_since(path, started)
+        and names_session(path, session_id)
+    }
+
+    return named, mentioning
+
+
+def session_ledger_path(session_id: str) -> Path:
+    """Return where the hook keeps the ledger it creates for a session."""
+
+    return ledger_directory() / f"session-{session_id}.yaml"
 
 
 def create_session_ledger(session_id: str) -> Path | None:
     """Create the session's empty ledger file unless it exists."""
 
-    directory = ledger_directory()
+    path = session_ledger_path(session_id)
+    directory = path.parent
 
     directory.mkdir(mode=0o700, parents=True, exist_ok=True)
 
-    path = directory / f"session-{session_id}.yaml"
     descriptor, temporary = tempfile.mkstemp(dir=directory, prefix=".session-", suffix=".tmp")
 
     try:
         with os.fdopen(descriptor, "w") as handle:
             handle.write(SESSION_LEDGER_TEMPLATE.format(session_id=session_id))
+            handle.flush()
+            os.fsync(handle.fileno())
 
         os.link(temporary, path)
     except FileExistsError:
@@ -153,3 +140,15 @@ def create_session_ledger(session_id: str) -> Path | None:
         os.unlink(temporary)
 
     return path
+
+
+def remove_untouched_session_ledger(session_id: str) -> None:
+    """Delete the ledger the hook created for a session while it still holds only the session."""
+
+    path = session_ledger_path(session_id)
+
+    try:
+        if path.read_text() == SESSION_LEDGER_TEMPLATE.format(session_id=session_id):
+            path.unlink()
+    except FileNotFoundError:
+        return

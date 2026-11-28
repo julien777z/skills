@@ -8,8 +8,8 @@ from pathlib import Path
 from types import ModuleType
 from typing import Final
 
-from backups import ledger_findings
-from ledgers import create_session_ledger, session_ledgers
+from backups import ledger_findings, ledger_sessions
+from ledgers import create_session_ledger, remove_untouched_session_ledger, session_ledgers
 from models import HookInput, HookOutcome, LedgerFormatError
 
 try:
@@ -20,6 +20,7 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 FOLLOWUP_EVENT_NAME: Final[str] = "stop"
+SESSION_END_EVENT_NAMES: Final[frozenset[str]] = frozenset({"SessionEnd", "sessionEnd"})
 SESSION_ID_FIELDS: Final[tuple[str, ...]] = ("session_id", "conversation_id")
 SESSION_ID_PATTERN: Final[re.Pattern[str]] = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}")
 PROMPTS_DIRECTORY: Final[Path] = Path(os.path.abspath(__file__)).parent / "prompts"
@@ -46,7 +47,7 @@ def session_identity(payload: dict[object, object]) -> str | None:
 
 
 def read_hook_input() -> HookInput:
-    """Read the turn-end payload the harness writes to standard input."""
+    """Read the turn-end or session-end payload the harness writes to standard input."""
 
     payload: object = json.load(sys.stdin)
 
@@ -57,6 +58,7 @@ def read_hook_input() -> HookInput:
     loop_count = payload.get("loop_count")
 
     return HookInput(
+        is_session_end=payload.get("hook_event_name") in SESSION_END_EVENT_NAMES,
         is_continuation=payload.get("stop_hook_active") is True
         or (isinstance(loop_count, int) and loop_count > 0),
         expects_followup_message=payload.get("hook_event_name") == FOLLOWUP_EVENT_NAME,
@@ -78,52 +80,89 @@ def deliver(hook_input: HookInput, message: str) -> HookOutcome:
     return HookOutcome.HOLD_TURN
 
 
+def create_ledger(hook_input: HookInput) -> HookOutcome:
+    """Create the session's ledger and name it to the agent."""
+
+    if hook_input["session_id"] is None:
+        return HookOutcome.END_TURN
+
+    try:
+        created = create_session_ledger(hook_input["session_id"])
+    except OSError as error:
+        logger.error("The session's ledger could not be created: %s", error)
+
+        return HookOutcome.FAILED
+
+    if created is None:
+        return HookOutcome.END_TURN
+
+    return deliver(hook_input, prompt(CREATED_LEDGER_PROMPT_FILENAME).format(path=created))
+
+
+def end_session(hook_input: HookInput) -> HookOutcome:
+    """Remove the session's ledger when nothing was recorded in it."""
+
+    if hook_input["session_id"] is None:
+        return HookOutcome.END_TURN
+
+    try:
+        remove_untouched_session_ledger(hook_input["session_id"])
+    except OSError as error:
+        logger.error("The session's ledger could not be removed: %s", error)
+
+        return HookOutcome.FAILED
+
+    return HookOutcome.END_TURN
+
+
 def main() -> HookOutcome:
     """Give the session a ledger and hold the turn while one the session writes owes a backup."""
 
     hook_input = read_hook_input()
 
+    if hook_input["is_session_end"]:
+        return end_session(hook_input)
+
     if hook_input["is_continuation"]:
         return HookOutcome.END_TURN
 
-    ledgers = session_ledgers(hook_input)
+    named, mentioning = session_ledgers(hook_input)
 
-    if not ledgers:
-        if hook_input["session_id"] is None:
-            return HookOutcome.END_TURN
-
-        try:
-            created = create_session_ledger(hook_input["session_id"])
-        except OSError as error:
-            logger.error("The session's ledger could not be created: %s", error)
-
-            return HookOutcome.UNCHECKED
-
-        if created is None:
-            return HookOutcome.END_TURN
-
-        return deliver(hook_input, prompt(CREATED_LEDGER_PROMPT_FILENAME).format(path=created))
+    if not named and not mentioning:
+        return create_ledger(hook_input)
 
     if yaml is None:
         logger.error("Ledger backups were not checked: PyYAML is not installed")
 
-        return HookOutcome.UNCHECKED
+        return HookOutcome.FAILED
 
+    checked = False
     unreadable: list[str] = []
     missing: list[str] = []
 
-    for ledger in ledgers:
+    for ledger in sorted(named | mentioning):
         try:
-            findings = ledger_findings(yaml.safe_load(ledger.read_text()))
+            document = yaml.safe_load(ledger.read_text())
+
+            if ledger in mentioning and hook_input["session_id"] not in ledger_sessions(document):
+                continue
+
+            findings = ledger_findings(document)
         except (OSError, UnicodeDecodeError, yaml.YAMLError, LedgerFormatError) as error:
+            checked = True
             unreadable.append(f"{ledger} could not be read: {error}")
 
             continue
+
+        checked = True
 
         if findings:
             missing.append(
                 f"{ledger} has entries missing their backup comment:\n" + "\n".join(findings)
             )
+
+    if not checked:
+        return create_ledger(hook_input)
 
     reports = unreadable + missing
 

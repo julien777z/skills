@@ -87,13 +87,30 @@ def entry_record(entry: object, location: str) -> BackupRecord | None:
     )
 
 
-def ledger_records(document: object) -> list[BackupRecord]:
-    """Read the backup facts of every backed-up entry in a ledger document."""
+def ledger_mapping(document: object) -> dict[object, object]:
+    """Read a ledger document's session_ledger mapping."""
 
     if not isinstance(document, dict) or not isinstance(document.get("session_ledger"), dict):
         raise LedgerFormatError("it has no session_ledger mapping")
 
-    entries = document["session_ledger"].get("entries")
+    return document["session_ledger"]
+
+
+def ledger_sessions(document: object) -> list[str]:
+    """Read the session IDs a ledger document lists."""
+
+    sessions = ledger_mapping(document).get("sessions", [])
+
+    if not isinstance(sessions, list) or not all(isinstance(item, str) for item in sessions):
+        raise LedgerFormatError("session_ledger has sessions that are not a list of IDs")
+
+    return sessions
+
+
+def ledger_records(document: object) -> list[BackupRecord]:
+    """Read the backup facts of every backed-up entry in a ledger document."""
+
+    entries = ledger_mapping(document).get("entries")
 
     if not isinstance(entries, list):
         raise LedgerFormatError("session_ledger has no entries list")
