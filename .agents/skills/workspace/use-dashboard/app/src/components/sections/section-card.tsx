@@ -83,7 +83,7 @@ export function SectionCard({
       <Stack gap="lg">
         <DialogHeader>
           {action && <div className="absolute top-3 right-12">{action}</div>}
-          <DialogTitle>
+          <DialogTitle className={cn(action && 'pr-20')}>
             <RichText text={title} />
           </DialogTitle>
           {description && (

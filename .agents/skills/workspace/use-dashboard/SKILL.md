@@ -8,9 +8,9 @@ short_description: 'Turn a dashboard spec into the shared HTML page and deliver 
 
 A caller describes its dashboard as a JSON spec; [scripts/render.py](scripts/render.py) validates it
 and fills the page built from [app/](app/), a React app on Tailwind CSS and stock shadcn/ui
-components: a slim sticky navbar of plain text page links, the open one underlined, then the
-dashboard's title, the subtitle and when it was updated, a row of metric cards, and each section in
-its own card, all on a near-black neutral surface. Every dashboard gets that layout
+components: a slim sticky navbar of page links, then the dashboard's title, the subtitle and when
+it was updated, a row of metric cards, and each section in its own card, all on a near-black
+neutral surface. Every dashboard gets that layout
 without the caller writing any markup. The page is one self-contained file with its web font bundled
 in, and a diagram is drawn by Mermaid, loaded from jsDelivr, with its connections listed as text
 when Mermaid cannot load. The page is dark unless the host's viewer is explicitly set to light
@@ -37,7 +37,7 @@ split it between the two.
 Top level: `title`, `topic`, `icon`, `updated_at` (ISO 8601) and `pages` are required. `title` is
 the dashboard's name followed by "Dashboard", such as `Garden Dashboard`; `topic` names what this
 render covers in a few words, such as `Bulk export`, and `subtitle` can say more. The navbar shows
-a link to each page, the open one underlined, and the `status` badge; every page opens with `title`
+a link to each page and the `status` badge; every page opens with `title`
 as its heading, then its subtitle and how long ago `updated_at` was. The phone-width page menu shows
 `title` beside `icon` and each page's icon beside its name. The page's own name, which a browser tab or a
 published artifact shows, is "`title` - `topic`", such as "Garden Dashboard - Bulk export".
@@ -87,7 +87,7 @@ of a process, carries no count. Section types:
 | `figures` | `title`, `items`, `stacked?` (one figure per row, each followed by its caption, for pictures read in order) | `image`, `alt`, `caption?`: `image` a base64 data URI of an SVG, PNG, JPEG, WebP or GIF image, a single figure taking the card's width and several two side by side on a wide page, or one per row at a readable width with `stacked`, with `alt` read out in its place and `caption` under it; for what the reader needs to see rather than read, such as a map, a mock-up or a screenshot |
 | `timeline` | `title`, `lanes: [{label, tag?, tone?, details?, bars}]`, `gaps?: [{start, end, label}]` | bar: `start`, `end`, `tone?`, `label?`, both times ISO 8601 with their UTC offset and `end` no earlier than `start`: a Gantt chart of when work ran in clock time, one row per lane with its label, its `tag` as an outline badge and a dot in its `tone` as a tree leaf's, and each bar placed on one time axis across the card in its `tone`, or neutral without one, the axis ticked in the viewer's local time with the date where the span crosses days; a `gap` is a hatched band across every lane with its label above, such as a pause while a provider throttled requests, drawn as a short break of fixed width whatever its length, so a long pause never squeezes the work around it, with its length in its label; idle time between bars stays empty; resting the pointer on a bar shows its lane, label, start, end and duration; a lane with `details`, one section, opens it in a dialog from its label; lane labels are unique and each lane holds at least one bar; on a narrow screen the chart scrolls sideways inside its card |
 | `chart` | `title`, `kind` (`pie`, `bar`), `items`, `total?` | `label`, `value`, `figure`, `detail?`, `tone?`, `details?`: `value` a number of at least 0 that sizes the item's slice or bar, at least one above 0; `figure` the value as the reader reads it, such as `3h 20 min`, shown beside the label with, in a pie, its share of the whole; `detail` a line under it; `tone` colors an item whose meaning is that tone's, such as a late shipment in `warning`; `details`, one section, opens in a dialog when the item's label or its pie slice is clicked; a bar itself is not clickable, since its label beside it already opens the same dialog, for what lies behind that amount, such as the agents or runs it sums. Every untoned item in a pie takes the next series color, distinct hues that are never a gray, taking those close to a tone the chart uses last, and every untoned bar one color, so only a tone stands out. Pointing at an item, or walking a pie's ring with the arrow keys, dims the rest. A pie's slice shows its label, figure and share in a popup, and its label and share in the ring's middle, so a reader reads it off the ring without matching colors; a bar, whose label and figure sit beside it, has no popup. A pie is a ring with `total` in its middle and a legend beside it; bars run one per item scaled to the largest; labels are unique |
-| `diagram` | `title`, `nodes`, `edges`, `prs?`, `steps?`, `legend?` (`[{tone, label}]`, a line in each tone beside what it means) | node: `id`, `label`, `detail?`, `pr?`, `change?`, `tone?`, `details?`, `target?`; edge: `from`, `to`, `label?`, `step?`, `change?`, `tone?`, `details?`; pr: `ref`, `url`; each step a string; a drawing is centered in its card when it fits and otherwise scrolls sideways from its left edge, where the flow starts; a download button at the card's top right, shown once the drawing is drawn, saves it as a PNG at twice its drawn size, named for the dashboard, the page and the section, with the page's fonts, label styles and background baked in |
+| `diagram` | `title`, `nodes`, `edges`, `prs?`, `steps?`, `legend?` (`[{tone, label}]`, a line in each tone beside what it means) | node: `id`, `label`, `detail?`, `pr?`, `change?`, `tone?`, `details?`, `target?`; edge: `from`, `to`, `label?`, `step?`, `change?`, `tone?`, `details?`; pr: `ref`, `url`; each step a string; a drawing is centered in its card when it fits and otherwise scrolls sideways from its left edge, where the flow starts; a download button at the card's top right, shown once the drawing is drawn, saves it as a PNG at twice its full size, scaled down only past the largest canvas a browser draws, named for the dashboard, the page and the section, with the page's fonts, label styles and background baked in |
 
 A diagram draws each node as a box inside a frame titled with the `ref` its `pr` names, and each
 edge as an arrow numbered with its `step`; the numbered `steps` are listed beside or under it.
@@ -180,20 +180,16 @@ with sections, and its tab labels are unique. A URL renders as a link only when 
 Dashboards look alike because they are built alike:
 
 - **The page is stock shadcn components on the neutral theme.** The navbar is text links with no
-  icons or title, inactive ones muted and the open one in the foreground over a 2 px underline at
-  the bar's bottom edge, never a filled background. A card is the background's color with a thin
-  border and `rounded-lg`, never a fill, gradient or shadow of its own; a section is one such `Card`
-  with its plain semibold title and description in the card header, its count a muted secondary
-  `Badge` beside the title, and everything inside it flat: no bordered or rounded box within a
-  section, its items rows split by thin dividers and a board's columns plain columns under a
-  divided heading row. Type is compact: 16 px section titles, 14 px body, 12–13 px muted secondary
-  lines, about 20 px card padding and 10 px row padding. A diagram's nodes are square boxes with a
-  thin border, a semibold name and a small muted detail line, its edge labels plain text. A table is
-  a frameless `Table` under a muted header row, a pill an outline `Badge` whose tone shows only as a dot or icon inside it, apart from
-  the pull-request pill, and tabs, dialogs, collapsibles, tooltips, separators and the phone-width
-  page menu are `Tabs` with the line variant, `Dialog`, `Collapsible`, `Tooltip`, `Separator` and
-  `Sheet`. Spacing: `gap-4 md:gap-6` between parts, `px-4 sm:px-6 lg:px-10` at the page's sides and
-  `py-6 md:py-10` above and below.
+  icons or title, the open one in the foreground over an underline, never a filled background. A
+  card is the background's color with a thin border, never a fill, gradient or shadow of its own; a
+  section is one such `Card` with its plain title and description in its header and its count a
+  muted `Badge` beside the title, and everything inside it flat: no bordered or rounded box within
+  a section, its items rows split by thin dividers and a board's columns plain columns. Type and
+  spacing are compact, as the app sets them. A diagram's nodes are square boxes with a thin border,
+  a name and a small muted detail line. A table is a frameless `Table`, a pill an outline `Badge`
+  whose tone shows only as a dot or icon inside it, apart from the pull-request pill, and tabs,
+  dialogs, collapsibles, tooltips, separators and the phone-width page menu are `Tabs`, `Dialog`,
+  `Collapsible`, `Tooltip`, `Separator` and `Sheet`.
 - **Overview first, then one page per subject.** Every dashboard opens on `Overview`, the page
   that tells the reader where things stand: the `progress` and `metrics` stat cards, then sections
   that summarize, such as counts per subject
@@ -232,7 +228,8 @@ Dashboards look alike because they are built alike:
   saying what kind of thing an item is or which group it belongs to, such as its plan or its type,
   is plain text. A pill earns its place by telling items apart: one reading the same on most items
   has stopped meaning anything, and one that only restates the entry's dot, its board column or
-  its pull request's state icon, such as Done, Active, Up next or Open, is left out. One that tells
+  its pull request's state icon, such as Done, Active, Up next or Open, is left out, unless the
+  dashboard's own skill keeps one at the user's word. One that tells
   the reader what to look at, such as a Damaged or Held at customs mark, stays, in the `warning` or
   `critical` tone its meaning carries.
 - **A piece of work's dot shows where it stands.** A tree entry that stands for work, such as a

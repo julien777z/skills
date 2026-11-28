@@ -1,14 +1,14 @@
 import { ChevronRight } from 'lucide-react';
-import { type ReactNode, useRef, useState } from 'react';
+import { type ReactNode, useState } from 'react';
 
-import { DialogOpener, RichText, StatusBadge, ToneDot } from '@/components';
+import { RichText, StatusBadge, ToneDot } from '@/components';
 import { Stack, Text } from '@/components/primitives';
 import { Button } from '@/components/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { withKeys } from '@/lib/utils';
 import type { TreeNode, TreeSection as TreeSectionSpec } from '@/spec';
+import { DetailsLabel } from './details-label';
 import { SectionCard } from './section-card';
-import { SectionDialog } from './section-dialog';
 
 const DEFAULT_OPEN_DEPTH: number = 1;
 
@@ -33,8 +33,6 @@ interface TreeItemProps {
 
 function TreeItem({ node, depth, openDepth, alignWithBranches }: TreeItemProps): ReactNode {
   const [open, setOpen] = useState(depth < openDepth);
-  const [showDetails, setShowDetails] = useState(false);
-  const opener = useRef<HTMLButtonElement | null>(null);
   const children = node.children ?? [];
 
   return (
@@ -58,19 +56,7 @@ function TreeItem({ node, depth, openDepth, alignWithBranches }: TreeItemProps):
           {(node.tone || children.length === 0) && <ToneDot tone={node.tone} offset />}
           <Stack gap="none" grow>
             <Text size="sm" breakAnywhere>
-              {node.details ? (
-                <DialogOpener
-                  opener={opener}
-                  onOpen={() => setShowDetails(true)}
-                  className="text-left focus-visible:underline focus-visible:outline-none"
-                >
-                  {node.label}
-                </DialogOpener>
-              ) : (
-                <Text as="span" size="sm" weight="medium">
-                  <RichText text={node.label} />
-                </Text>
-              )}
+              <DetailsLabel label={node.label} details={node.details} />
               {node.tag && (
                 <>
                   {' '}
@@ -118,9 +104,6 @@ function TreeItem({ node, depth, openDepth, alignWithBranches }: TreeItemProps):
           <CollapsibleContent>
             <TreeBranch nodes={children} depth={depth + 1} openDepth={openDepth} />
           </CollapsibleContent>
-        )}
-        {node.details && (
-          <SectionDialog section={node.details} open={showDetails} onOpenChange={setShowDetails} opener={opener} />
         )}
       </li>
     </Collapsible>

@@ -1,6 +1,7 @@
 import { type ReactNode, useMemo, useState } from 'react';
 
-import { NoticeBanner, PageHeader, SectionCards, SiteHeader } from '@/components';
+import { NoticeBanner, SectionCards, SiteHeader } from '@/components';
+import { PageHeader } from '@/components/page-header';
 import { Grid, Stack } from '@/components/primitives';
 import { DashboardSection } from '@/components/sections';
 import { useDashboardUpdates } from '@/hooks/page-refresh';

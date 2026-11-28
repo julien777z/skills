@@ -37,6 +37,29 @@ const RANK_SPACING: Record<Direction, string> = {
   TB: '%%{init: {"flowchart": {"rankSpacing": 60}}}%%',
 };
 
+const SVG_NAMESPACE: string = 'http://www.w3.org/2000/svg';
+
+const XHTML_NAMESPACE: string = 'http://www.w3.org/1999/xhtml';
+
+const INLINED_TEXT_STYLES: readonly string[] = [
+  'color',
+  'font-family',
+  'font-size',
+  'font-weight',
+  'line-height',
+  'text-decoration-line',
+  'max-width',
+  'white-space',
+];
+
+const PNG_SCALE: number = 2;
+
+const MAX_CANVAS_SIDE: number = 16384;
+
+const MAX_CANVAS_AREA: number = 16_000_000;
+
+const DOWNLOAD_URL_LIFETIME_MS: number = 60_000;
+
 let mermaidReady: Promise<{ mermaid: Mermaid; colors: Colors }> | null = null;
 
 let diagramCount: number = 0;
@@ -204,19 +227,6 @@ export async function drawDiagram(section: DiagramSection, container: HTMLElemen
   return { svg: chosen.svg, width: chosen.width * Math.max(chosen.scale, MIN_DIAGRAM_SCALE) };
 }
 
-const SVG_NAMESPACE: string = 'http://www.w3.org/2000/svg';
-
-const XHTML_NAMESPACE: string = 'http://www.w3.org/1999/xhtml';
-
-const INLINED_TEXT_STYLES: readonly string[] = [
-  'color',
-  'font-family',
-  'font-size',
-  'font-weight',
-  'line-height',
-  'text-decoration-line',
-];
-
 function opaqueBackground(element: Element): string {
   for (let current: Element | null = element; current; current = current.parentElement) {
     const color = getComputedStyle(current).backgroundColor;
@@ -239,15 +249,17 @@ function fontFaces(): string {
           rules.push(rule.cssText);
         }
       }
-    } catch {
+    } catch (error) {
       // A cross-origin stylesheet hides its rules; the page's own fonts are bundled inline.
+      if (!(error instanceof DOMException && error.name === 'SecurityError')) {
+        throw error;
+      }
     }
   }
 
   return rules.join('\n');
 }
 
-/** A file name for a diagram, from the dashboard's title, the open page's and the section's. */
 export function diagramFileName(title: string): string {
   const slug = (text: string): string =>
     text
@@ -255,16 +267,16 @@ export function diagramFileName(title: string): string {
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-|-$/g, '');
 
-  const page = document.querySelector('[aria-current="page"]')?.textContent ?? '';
+  const current = document.querySelector('[aria-current="page"]')?.cloneNode(true) as Element | undefined;
+
+  current?.querySelectorAll('.sr-only').forEach((hidden) => {
+    hidden.remove();
+  });
+
+  const page = current?.textContent ?? '';
 
   return `${[slug(document.title), slug(page), slug(title)].filter(Boolean).join('-') || 'diagram'}.png`;
 }
-
-const PNG_SCALE: number = 2;
-
-const MAX_CANVAS_SIDE: number = 16384;
-
-const DOWNLOAD_URL_LIFETIME_MS: number = 60_000;
 
 function standaloneSvg(svg: SVGSVGElement): { markup: string; width: number; height: number } {
   const copy = svg.cloneNode(true) as SVGSVGElement;
@@ -282,6 +294,10 @@ function standaloneSvg(svg: SVGSVGElement): { markup: string; width: number; hei
     for (const property of INLINED_TEXT_STYLES) {
       target.style.setProperty(property, computed.getPropertyValue(property));
     }
+  });
+
+  copy.querySelectorAll('foreignObject').forEach((foreign) => {
+    foreign.setAttribute('overflow', 'visible');
   });
 
   const { x, y, width, height } = svg.viewBox.baseVal;
@@ -317,7 +333,6 @@ function loadImage(source: string): Promise<HTMLImageElement> {
   });
 }
 
-/** Save a drawn diagram as a PNG at twice its size, with the page's fonts, label styles and background baked in. */
 export async function downloadDiagram(svg: SVGSVGElement, fileName: string): Promise<void> {
   const { markup, width, height } = standaloneSvg(svg);
   const bytes = new TextEncoder().encode(markup);
@@ -328,7 +343,12 @@ export async function downloadDiagram(svg: SVGSVGElement, fileName: string): Pro
   }
 
   const image = await loadImage(`data:image/svg+xml;base64,${btoa(binary)}`);
-  const scale = Math.min(PNG_SCALE, MAX_CANVAS_SIDE / width, MAX_CANVAS_SIDE / height);
+  const scale = Math.min(
+    PNG_SCALE,
+    MAX_CANVAS_SIDE / width,
+    MAX_CANVAS_SIDE / height,
+    Math.sqrt(MAX_CANVAS_AREA / (width * height)),
+  );
   const canvas = document.createElement('canvas');
 
   canvas.width = Math.round(width * scale);

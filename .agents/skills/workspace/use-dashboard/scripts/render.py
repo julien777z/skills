@@ -3,6 +3,7 @@ import gzip
 import logging
 import math
 import os
+import re
 import shutil
 import subprocess
 from argparse import ArgumentParser
@@ -40,6 +41,10 @@ APP_ROOT: Final[Path] = Path(__file__).resolve().parent.parent / "app"
 APP_BUILD_OUTPUTS: Final[tuple[str, ...]] = ("node_modules", "dist")
 APP_LOCKFILE: Final[str] = "package-lock.json"
 APP_TYPES_PATH: Final[str] = "src/spec.ts"
+BROWSER_MOMENT: Final[re.Pattern[str]] = re.compile(
+    r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:\d{2})"
+)
+MAX_TIMELINE_GAPS: Final[int] = 10
 CACHE_ROOT: Final[Path] = (
     Path(os.environ.get("XDG_CACHE_HOME") or Path.home() / ".cache") / "use-dashboard"
 )
@@ -221,12 +226,35 @@ def check_timestamp(value: object, path: str) -> None:
 
 
 def check_moment(value: object, path: str) -> None:
-    """Require an ISO 8601 timestamp with its UTC offset."""
+    """Require an ISO 8601 timestamp with its UTC offset, in the extended form browsers parse."""
 
     check_timestamp(value, path)
 
+    if not BROWSER_MOMENT.fullmatch(str(value)):
+        raise DashboardSpecError(f"{path} must read like 2026-11-10T10:00:00+00:00")
+
     if datetime.fromisoformat(str(value)).tzinfo is None:
         raise DashboardSpecError(f"{path} must give its UTC offset, such as +00:00")
+
+
+def check_timeline(section: dict[str, object], path: str) -> None:
+    """Require gaps that last, never overlap, and leave the work most of the axis."""
+
+    gaps = sorted(
+        (datetime.fromisoformat(str(gap["start"])), datetime.fromisoformat(str(gap["end"])), index)
+        for index, gap in enumerate(section.get("gaps", []))
+    )
+
+    if len(gaps) > MAX_TIMELINE_GAPS:
+        raise DashboardSpecError(f"{path}.gaps holds at most {MAX_TIMELINE_GAPS} gaps")
+
+    for start, end, index in gaps:
+        if end <= start:
+            raise DashboardSpecError(f"{path}.gaps[{index}].end must be later than its start")
+
+    for (_, previous_end, previous), (start, _, index) in zip(gaps, gaps[1:], strict=False):
+        if start < previous_end:
+            raise DashboardSpecError(f"{path}.gaps[{index}] overlaps {path}.gaps[{previous}]")
 
 
 def check_span(span: dict[str, object], path: str) -> None:
@@ -997,6 +1025,7 @@ SECTION_SHAPES: Final[dict[SectionType, ObjectShape]] = {
             ),
         },
         frozenset({"lanes"}),
+        check_timeline,
     ),
     SectionType.CHART: section_shape(
         SectionType.CHART,

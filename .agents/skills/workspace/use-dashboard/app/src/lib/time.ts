@@ -1,10 +1,10 @@
-const MINUTE_MS: number = 60_000;
+export const MINUTE_MS: number = 60_000;
 
 const MINUTES_PER_DAY: number = 1_440;
 
-const CLOCK: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
+export const CLOCK: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
 
-const DATE_AND_CLOCK: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', ...CLOCK };
+export const DATE_AND_CLOCK: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', ...CLOCK };
 
 export function formatMoment(iso: string, now: number): string {
   const then = new Date(iso);

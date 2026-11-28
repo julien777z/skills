@@ -1,18 +1,18 @@
 import { cn } from 'cn';
-import { type ReactNode, useContext, useRef, useState } from 'react';
+import { type ReactNode, useContext } from 'react';
 
-import { DialogOpener, RichText, StatusBadge, ToneDot } from '@/components';
 import { Stack, Text } from '@/components/primitives';
+import { RichText } from '@/components/rich-text';
+import { StatusBadge } from '@/components/status-badge';
+import { ToneDot } from '@/components/tone-dot';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { formatDuration, formatSpan } from '@/lib/time';
+import { CLOCK, DATE_AND_CLOCK, formatDuration, formatSpan, MINUTE_MS } from '@/lib/time';
 import { TONES, ToneName } from '@/lib/tone';
 import { withKeys } from '@/lib/utils';
 import type { TimelineBar, TimelineGap, TimelineLane, TimelineSection as TimelineSectionSpec } from '@/spec';
+import { DetailsLabel } from './details-label';
 import { InDialogContext, SectionCard } from './section-card';
-import { SectionDialog } from './section-dialog';
-
-const MINUTE_MS: number = 60_000;
 
 const HOUR_MS: number = 60 * MINUTE_MS;
 
@@ -37,11 +37,13 @@ const TICK_INTERVALS_MS: readonly number[] = [
 
 const MAX_TICKS: number = 6;
 
-const CLOCK_TICK: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
-
-const DATED_TICK: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric', ...CLOCK_TICK };
-
 const DATE_TICK: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric' };
+
+const GAP_PERCENT: number = 5;
+
+const EDGE_PERCENT: number = 6;
+
+const MIN_TICK_SPACING_PERCENT: number = 8;
 
 interface Segment {
   start: number;
@@ -59,8 +61,6 @@ interface Tick {
   at: number;
   label: string;
 }
-
-const GAP_PERCENT: number = 5;
 
 function scaleOf(lanes: TimelineLane[], gaps: TimelineGap[]): Scale {
   const moments = [...lanes.flatMap((lane) => lane.bars), ...gaps].flatMap((span) => [
@@ -107,8 +107,6 @@ function scaleOf(lanes: TimelineLane[], gaps: TimelineGap[]): Scale {
   };
 }
 
-const EDGE_PERCENT: number = 6;
-
 function offset(scale: Scale, at: number): number {
   const segment = scale.segments.find((candidate) => at <= candidate.end) ?? scale.segments[scale.segments.length - 1];
   const fraction = (at - segment.start) / Math.max(1, segment.end - segment.start);
@@ -132,6 +130,25 @@ function firstTickAt(start: number, interval: number): number {
   return midnight.getTime() + Math.ceil((start - midnight.getTime()) / interval) * interval;
 }
 
+function spaced(scale: Scale, ticks: Tick[]): Tick[] {
+  const breakEdges = scale.segments
+    .filter((segment) => segment.collapsed)
+    .flatMap((segment) => [segment.left, segment.left + segment.width]);
+  const kept: Tick[] = [];
+
+  for (const tick of ticks) {
+    const at = offset(scale, tick.at);
+    const nearBreak = breakEdges.some((edge) => Math.abs(edge - at) < MIN_TICK_SPACING_PERCENT / 2);
+    const nearPrevious = kept.length > 0 && at - offset(scale, kept[kept.length - 1].at) < MIN_TICK_SPACING_PERCENT;
+
+    if (!nearBreak && !nearPrevious) {
+      kept.push(tick);
+    }
+  }
+
+  return kept;
+}
+
 function ticksOf(scale: Scale): Tick[] {
   const active = scale.segments.filter((segment) => !segment.collapsed);
   const first = scale.segments[0].start;
@@ -151,14 +168,14 @@ function ticksOf(scale: Scale): Tick[] {
       const moment = new Date(at);
       const day = moment.toDateString();
       const dated = crossesDays && day !== previousDay;
-      const format = interval >= DAY_MS ? DATE_TICK : dated ? DATED_TICK : CLOCK_TICK;
+      const format = interval >= DAY_MS ? DATE_TICK : dated ? DATE_AND_CLOCK : CLOCK;
 
       ticks.push({ at, label: moment.toLocaleString(undefined, format) });
       previousDay = day;
     }
   }
 
-  return ticks;
+  return spaced(scale, ticks);
 }
 
 function placement(scale: Scale, span: { start: string; end: string }): { left: string; width: string } {
@@ -200,31 +217,13 @@ function BarMark({ lane, bar, scale }: { lane: TimelineLane; bar: TimelineBar; s
 }
 
 function LaneLabel({ lane }: { lane: TimelineLane }): ReactNode {
-  const [showDetails, setShowDetails] = useState(false);
-  const opener = useRef<HTMLButtonElement | null>(null);
-
   return (
     <div className="flex h-8 min-w-0 items-center gap-2">
       <ToneDot tone={lane.tone} />
       <span className="min-w-0 truncate text-sm" title={lane.label}>
-        {lane.details ? (
-          <DialogOpener
-            opener={opener}
-            onOpen={() => setShowDetails(true)}
-            className="cursor-pointer text-left focus-visible:underline focus-visible:outline-none"
-          >
-            {lane.label}
-          </DialogOpener>
-        ) : (
-          <Text as="span" size="sm" weight="medium">
-            <RichText text={lane.label} />
-          </Text>
-        )}
+        <DetailsLabel label={lane.label} details={lane.details} className="cursor-pointer" />
       </span>
       {lane.tag && <StatusBadge label={lane.tag} dot={false} />}
-      {lane.details && (
-        <SectionDialog section={lane.details} open={showDetails} onOpenChange={setShowDetails} opener={opener} />
-      )}
     </div>
   );
 }

@@ -162,6 +162,8 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
   const [status, setStatus] = useState<DrawStatus>(DrawStatus.DRAWING);
   const [split, setSplit] = useState(false);
   const [opened, setOpened] = useState<OpenedDetails | null>(null);
+  const [exporting, setExporting] = useState(false);
+  const [exportFailed, setExportFailed] = useState(false);
   const opener = useRef<HTMLOrSVGElement | null>(null);
   const labels = new Map(section.nodes.map((node) => [node.id, node.label]));
   const used = new Set([...section.nodes, ...section.edges].map((part) => part.change).filter(Boolean));
@@ -216,29 +218,44 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
       wide
       action={
         status === DrawStatus.DRAWN && (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon-sm"
-                  aria-label="Download diagram as PNG"
-                  onClick={() => {
-                    const svg = figure.current?.querySelector('svg');
+          <Stack direction="row" align="center" gap="sm">
+            {exportFailed && (
+              <Text size="xs" tone="muted">
+                The image could not be saved.
+              </Text>
+            )}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    aria-label="Download diagram as PNG"
+                    disabled={exporting}
+                    onClick={() => {
+                      const svg = figure.current?.querySelector('svg');
 
-                    if (svg) {
-                      downloadDiagram(svg, diagramFileName(section.title)).catch((error: unknown) =>
-                        console.error(error),
-                      );
-                    }
-                  }}
-                >
-                  <Download />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>Download diagram as PNG</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+                      if (!svg) {
+                        return;
+                      }
+
+                      setExporting(true);
+                      setExportFailed(false);
+                      downloadDiagram(svg, diagramFileName(section.title))
+                        .catch((error: unknown) => {
+                          console.error(error);
+                          setExportFailed(true);
+                        })
+                        .finally(() => setExporting(false));
+                    }}
+                  >
+                    <Download />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>Download diagram as PNG</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </Stack>
         )
       }
     >
