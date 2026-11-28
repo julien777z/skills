@@ -107,8 +107,8 @@ recording or delivering a batch.
   entry's intended behavior, with the user's words quoted and the installed text it amends named.
 - Write the edit in the checkout **Resolve which repository owns the target** resolves, on the branch **Branch and commit** selects — the batch's own
   branch until that batch is frozen; an entry recorded after the freeze is recorded now, and its
-  edit is written on the next batch's branch once the in-flight pull request merges,
-  as `session-ledger`'s **Guidance Batches** says — commit it, and push it to
+  edit is written when and where `session-ledger`'s **Guidance Batches** says —
+  commit it, and push it to
   that branch's pull request once the checks the GitHub rule's **Pre-Push Gate** defines pass, opening a draft when the branch has
   none, which a worker hands up instead; this holds for whichever pull request **Branch and commit** selects.
   When the checkout holds the active task's uncommitted or source-branch work, write and commit the

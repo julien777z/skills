@@ -468,8 +468,7 @@ Review** once each has its accepted head.
   for nothing else before **Review the pull request**. Each such entry's skill-test round runs on
   the pushed head before **Review the pull request**, as **Guidance Delivery**'s **Test the batch
   first** says, and the round's repairs, each rerun at once, return to review together once it
-  passes, as **Guidance Delivery**'s **Test the batch first** says. A task with none has no guidance
-  stream.
+  passes. A task with none has no guidance stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
   request belongs to the guidance stream, and a side pull request carrying both kinds to this one:
 

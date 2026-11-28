@@ -226,7 +226,7 @@ against the base from the host, which override the entry's and the comment's rec
 and delivery stage; a merged or closed pull request resumes at verifying the merged text, never
 at review. An edit **Branch and commit** puts on a source pull request this session drives is pushed there and
 passes **Run `validate_sources.py check`**'s source check on the head carrying it before that pull request's source stream
-proceeds, and **Run one `test-skill` round**'s skill-test round on the head that pull request's review pass accepted, before the source review and delivery. It carries **Check prose duplication**'s checks into that
+proceeds, and **Run one `test-skill` round**'s skill-test round on the pushed head carrying it, before the source review and delivery. It carries **Check prose duplication**'s checks into that
 pull request's simplification pass and **Brief `review-pass`'s final acceptance**'s incident vocabulary into its final acceptance. An edit **Branch and commit** selects on
 another session's source pull request runs **Run `validate_sources.py check`** through **Run one `test-skill` round** here on the head it pushed, and the
 delivery report says the push moved that pull request's head past its owner's acceptance. An

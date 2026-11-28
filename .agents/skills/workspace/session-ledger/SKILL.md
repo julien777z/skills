@@ -161,14 +161,13 @@ identity, never a second authoritative copy of its records.
 One guidance batch is in flight at a time. It is frozen when delivery starts, through the guidance
 delivery route or a request to finish its pull request, and takes no entry after that. An entry
 admitted while it is in flight waits in the ledger, governing the session at once, and starts the
-next batch, whose pull request opens once the in-flight one merges, so a repository keeps one open
-guidance pull request. A batch is in flight from its freeze until every entry has a verified
-delivery or a recorded hold; a held entry does not keep it in flight. The next batch's pull request
-is the one the GitHub rule's **Branches and Pull Requests** selects: while the frozen batch's pull
-request is open, the next batch's edits are written once that batch merges, or onto that same pull
-request once the batch leaves flight on a hold, a side pull request awaiting the user's word
-included, so a user's request during a frozen batch, on its task pull request as anywhere, waits for
-the same.
+next batch. A batch is in flight from its freeze until every entry has a verified delivery or a
+recorded hold; a held entry does not keep it in flight. The next batch's edits are written once the
+frozen batch merges or leaves flight on a recorded hold, each on the pull request the GitHub rule's
+**Branches and Pull Requests** selects for it, a held side or agent-configuration pull request
+included; a new guidance pull request opens only when no open one can receive the edit, so a
+repository keeps one open guidance pull request. A user's request during a frozen batch, on its task
+pull request as anywhere, waits the same way.
 
 ## Backup
 
