@@ -12,6 +12,7 @@ short_description: 'Apply every time actively modifying a Roblox game, including
 - `roblox-worldbuilding`
 - `roblox-characters`
 - `luau`
+- `self-improvement-protocol`
 
 ## Make success clear and satisfying
 
@@ -40,6 +41,8 @@ Every line a player reads while playing speaks to them in the game's voice: a hi
 ## Judge the game as a player meets it
 
 Every result is judged in the game as a player would meet it, whether you built it or a worker did: from a capture or a playtest, not from the brief, the code or a report. Ask of each thing in view whether it makes sense in this world, not only whether it is broken: an object reads as what it is meant to be, a room's furnishings fit its purpose, a character holds what it holds, a creature belongs in its area's level band, a label sits where it can be read, a rule agrees with the game's other rules. Something that reads wrong is fixed, whoever made it and whenever, even when no brief, check or request mentioned it.
+
+**A flaw a capture shows is also checked against the guidance.** When a capture shows something that reads wrong, fix the game as this section says and, at that moment, check whether the Roblox skills already require what would have prevented it; where they do not, record a guidance fix for that class of flaw through `self-improvement-protocol`. At the end of the task, that protocol's look-over sweeps the run's captures only for flaws seen without a recorded fix, records those, and sends no worker back to fix the game.
 
 **Something new on the screen is judged as a player meets it before it is built.** A marker, label, number, outline, arrow or overlay added to make something readable is first pictured in the scene where it would appear, such as an edited copy of a capture or a runtime toggle, at play distance, in a busy moment and beside everything else on screen. It is weighed against simpler routes the world already offers: the thing itself responding when the player points at or picks it, by lighting up, turning or lifting; a sound; a camera move; or a cue the existing HUD gives. Build the route that makes the moment clear with the least added to the screen. An addition that labels what the player could act on directly is the weaker option, such as a floating tag over each door naming the room behind it, where the room's light and furnishings seen through the doorway already say what it is.
 

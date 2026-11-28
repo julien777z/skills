@@ -39,6 +39,9 @@ an audit of a product's repository is a doctor skill's work.
   - work redone, traced to the decision that caused it, such as a reviewer's suggestion followed
     literally or a step run in the wrong environment;
   - waits and stalls, such as a run lost to a rate limit, and what would have avoided them.
+- **Captures of what the agent built**, such as screenshots and recordings of a game, a page or an
+  app: each flaw judged in one is also checked against the skills governing that product, and a
+  flaw those skills would not have prevented is recorded as a guidance fix for its class.
 - **Guidance**: a rule restated in several skills, a rule that let a miss through, a trigger that
   did not fire, a step the agent performed that no skill describes.
 
