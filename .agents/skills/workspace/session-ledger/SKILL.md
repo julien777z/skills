@@ -106,8 +106,9 @@ identity, never a second authoritative copy of its records.
      `answered` or `withdrawn`), and the user's answer in their words with when it was given.
      Keep an assumption made without the user as an assumption, never as an answer. A decision
      found that the user must make is put to them through the question tool, as the global rules'
-     **Asking the user** says, before its entry is recorded; one not yet asked is never recorded as
-     a `question`.
+     **Asking the user** says, before its entry is recorded; one not yet asked, such as the next in a
+     sequence that waits for the current answer, is never recorded as a `question` and stays in the
+     `next_action` of the work it holds until it is asked.
    - For a decision the user states without a recorded question — how a surface looks or reads,
      what a feature does, a scope — record a `decision` entry when it is given: the surface it
      governs and the user's words with when they were given. A later decision on that surface is
