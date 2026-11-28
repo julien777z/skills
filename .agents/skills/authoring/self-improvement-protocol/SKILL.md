@@ -2,6 +2,7 @@
 name: self-improvement-protocol
 description: How an agent improves its own work and guidance — the interface it delivers, such as a dashboard, its own process, such as wasted effort, repeated or empty review rounds and subagents that cost more than they found, and the guidance that let either through — judged from evidence as the person the work is for, fixed at the owner every case shares, and repeated until a pass finds nothing worth changing. Read from a skill that declares it, such as a skill that improves dashboards, a look-over before delivering a page, or the end-of-task look-over; never invoked on its own.
 short_description: 'Judge and fix the agent''s own interfaces, process and guidance from evidence.'
+user-invocable: false
 ---
 
 # Self-Improvement Protocol
@@ -13,7 +14,7 @@ an audit of a product's repository is a doctor skill's work.
 ## Dependencies
 - `skill-pass`
 - `use-browser`
-- `scope-of-change`
+- `session-ledger`
 
 ## What To Look For
 
@@ -70,16 +71,20 @@ an audit of a product's repository is a doctor skill's work.
 
 ## Delivery
 
-The guidance fixes a pass makes go on the session's self-improvement pull request, held as the
-GitHub rule's **Merge Authorization** says: open it as a draft labeled `self-improvement` with the
-first fix, based on the branch the fixed guidance lives on, and push every later fix of the session
-to it. A change the user asks for about the same self-improvement work, such as a different look
-for the dashboards a pass is fixing, joins that pull request too, so the changes to the same files
-are reviewed and tested together; a request about anything else takes its usual route.
+The guidance fixes a pass makes go on the session's self-improvement pull request, which the GitHub
+rule's **Merge Authorization** holds and says what joins: open it with the first fix, based on the
+freshly fetched default branch, or on the task pull request's branch when a fixed file is changed
+there, and record its creation receipt through `session-ledger`.
+
+## End Of Task
+
+The look-over a task's ledger processing runs at its completion is one pass that records guidance fixes
+only: it sweeps the run for flaws, such as those in captures, that no guidance fix recorded when
+they were judged, sends no worker back to rework what the task delivered, and does not iterate.
 
 ## Iterate
 
-Fix, re-render or re-run, and judge again. Stop when a whole pass finds nothing worth changing.
+Apart from **End Of Task**, fix, re-render or re-run, and judge again. Stop when a whole pass finds nothing worth changing.
 Report what changed, grouped by skill, with each change stated as what the reader now sees or what
 the agent now does.
 

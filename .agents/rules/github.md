@@ -12,7 +12,7 @@ alwaysApply: true
   passed, so its test jobs run once, on the head about to merge. Never mark one ready to start its
   tests, to show it finished, or to hand it to the user. With no merge authorized, a pull request
   is complete as a reviewable draft whose local checks under **Pre-Push Gate** and completion review
-  have passed; its hosted test jobs are required only at the merge. A check that does run on a
+  have passed, or, for a held self-improvement pull request, whose local checks have passed; its hosted test jobs are required only at the merge. A check that does run on a
   draft is read whenever the pull request's state is reported, its own or a worker's push alike,
   and one that fails is fixed in that pull request at once like any defect, a failure in setup the
   change did not write included, never set aside because the draft's tests run only at the merge.
@@ -49,7 +49,8 @@ alwaysApply: true
   local Git state a skill installing shared guidance backs up and repairs.
 - **Each session keeps at most one side pull request per repository**, agent configuration and
   source together, one commit per concern. It holds every guidance edit the session makes, a
-  worker's repair included, and side work, which the task does not need, no user asked for and the
+  worker's repair included, apart from the self-improvement fixes the **Merge Authorization** hold
+  below puts on their own pull request, and side work, which the task does not need, no user asked for and the
   change did not introduce: a defect, warning, deprecation or upgrade the agent noticed, a lint or
   cleanup fix, or its own scope increase. A guidance edit goes on the task's pull request instead
   when the user names that pull request for it, or when the task's pull request holds only agent
@@ -123,12 +124,17 @@ alwaysApply: true
   every guidance edit the trial work makes rides that pull request, a rule governing the trial
   itself included, and the user's word on the capability decides all of it. Keeping it ends the
   hold and removes the label, and dropping it closes the pull request this session opened.
-- **A self-improvement pull request is held until the user runs `finish-pr` on it.** It carries the
-  fixes an agent found in its own work under `self-improvement-protocol`, and every change the user
-  asks for about that same work, so the two are reviewed and tested together: one draft per session and repository, labeled `self-improvement`, apart from the task's,
-  the side and the session's agent-configuration pull requests, and every later self-improvement
-  fix of the session joins it. No review, gate, skill test, standing permission or auto-merge runs
-  on it until the user runs `finish-pr` on it, which starts them and merges once they pass.
+- **A self-improvement pull request is held until the user runs `finish-pr` on it.** It carries
+  every guidance fix an agent makes for a flaw it found in its own work under
+  `self-improvement-protocol`, and every change the user asks for about that same work, so the two
+  are reviewed and tested together; a guidance failure the user reports about anything else takes
+  the side pull request's route. It is one draft per session and repository, labeled
+  `self-improvement`, apart from the task's, the side and the session's agent-configuration pull
+  requests, selected as the side pull request is, by this session's creation receipt verified
+  remotely, never by its label; every later self-improvement fix of the session joins it. Each push
+  still passes **Pre-Push Gate**'s local checks, but no review, gate, skill test, standing permission
+  or auto-merge runs on it until the user runs `finish-pr` on it, which starts them and merges once
+  they pass.
 - **Classify the complete actual diff against the standing permissions** before reporting a pull
   request whose merge no instruction authorizes, by what it changes, never by a filename,
   extension, line count or change label, and never remove genuine edits to qualify. Each

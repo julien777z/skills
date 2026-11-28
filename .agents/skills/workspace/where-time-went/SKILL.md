@@ -65,8 +65,9 @@ in one state, a group's from its members as `use-dashboard` says: **Active**, ru
 whatever its verdict or assessment. Its entry's dot and pill follow `use-dashboard`'s **Making A
 Dashboard**, and a table cell names the state in words. The pills that stay are a reviewer's verdict
 asking for a look, such as Changes or Flag, and a finished workflow's Rework, Detour or Avoidable
-where the evidence supports one, all `warning`, and what a blocked entry waits on; an approving
-verdict and an assessment that says nothing, such as necessary, take none. Read the plans of every
+where the evidence supports one, all `warning`, and what a blocked entry waits on; finished work
+with nothing standing out shows a Done pill in `good`, which the user keeps although it repeats its
+dot, and an assessment that says nothing, such as necessary, is never shown. Read the plans of every
 ledger this session wrote through `session-ledger`, leaving out withdrawn and complete plans: a step
 or part `active` is Active, `blocked` is Blocked, `next` is Up next, `done` is Done and `skipped` is
 left out, and a step with parts is read part by part. A plan still waiting on a decision or approval
@@ -136,7 +137,10 @@ pages, in order:
   time, or for work up next its estimate in `meta`; its `tone` and any `status` are as **States**
   says; the model a reviewer ran on is its `tag`, named as `use-dashboard` names a model, and its
   label names its role without that model.
-- **Timeline** (`calendar`). One `tree` of the session's phases in order, each labeled by the work
+- **Timeline** (`calendar`). First a `timeline` of when the work ran: one lane per top-level
+  workflow, tagged with its model when one agent ran it, a bar per stretch it worked toned as its
+  state, and each pause longer than an hour, such as a rate-limit wait or the user away, a gap
+  labeled with its length. Then one `tree` of the session's phases in order, each labeled by the work
   done in it with its time as `figure`. Its children are the agents, assignments and reviewers that
   worked in that phase, in the order they started, each with its time in the phase, its `tone`,
   `status` and `tag` as on the Loops page, and its work in the phase broken down as **What

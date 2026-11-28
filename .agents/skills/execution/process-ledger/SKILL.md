@@ -42,9 +42,9 @@ Apply `session-ledger`'s **Guidance Batches** boundary.
 
 ## Workflow
 
-1. At completion, first look the task's run over as `self-improvement-protocol` says, its process and
-   anything it delivered for the user to read, and record each finding as a `guidance_correction`
-   for this batch.
+1. At completion, first look the task's run over once, as `self-improvement-protocol`'s **End Of
+   Task** says: its process and anything it delivered for the user to read. Each guidance fix it
+   finds goes on the session's held self-improvement pull request, never into this batch.
 2. Resolve and read the active task's ledger through `session-ledger`. Honor active recovery priority before permanent guidance delivery; retain its saved next action. Before freezing or prioritizing a batch, reconcile every recorded hold
    with its current owner and authoritative dependency evidence. Discharge a completed dependency,
    and a hold waiting to verify work already merged, which the merge discharged, as `merge-gate`'s
@@ -56,7 +56,7 @@ Apply `session-ledger`'s **Guidance Batches** boundary.
    result.
 3. Classify each entry by `kind`, then follow its owning workflow.
    - `guidance_correction`: process it only when it belongs to the batch this run delivers under
-     **Batches**. Send it to `edit-skill`'s **Guidance Delivery** route so canonical guidance
+     **Batches**; a self-improvement fix is no batch entry. Send it to `edit-skill`'s **Guidance Delivery** route so canonical guidance
      completes its delivery gates.
    - `artifact`, `plan`, `question`, and `decision`: reconcile the state with the artifact owner,
      the plan's recorded steps, or user answer. A decision or answered question whose work is open

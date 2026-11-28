@@ -18,7 +18,8 @@ specific to dashboards.
 
 ## Which Dashboards
 
-Every skill that declares `use-dashboard` as a dependency, unless the user names fewer.
+Every skill that declares `use-dashboard` as a dependency, unless the user names fewer. Invoking
+this skill is the user's request for each of them, a skill that runs only when asked included.
 
 ## Data
 
@@ -34,16 +35,9 @@ Every skill that declares `use-dashboard` as a dependency, unless the user names
 
 ## Run
 
-1. Render every dashboard, then go through each page in a headless browser as its reader: read it,
-   and hover, click and open one or two of each kind of item, dialog and tab, enough to see how that
-   kind behaves, never every item, then check a phone width.
-2. Judge each against its skill's purpose and against the others, as `self-improvement-protocol`
-   says. Dashboards are consistent with each other: the same fact is drawn, named and formatted the
-   same way on every dashboard, and a part two skills each define, such as a board of plan steps or
-   a list of pull requests, is defined once and reused.
-3. Fix where the protocol places each fix: a flaw every dashboard would have, a missing kind of
-   section or a part several skills build goes to `use-dashboard`, its rules and its app; a flaw in
-   one dashboard's data or pages goes to that skill; a wrong value in this run's spec is fixed in
-   the spec too.
-4. Re-render and repeat from step 1 until a whole pass finds nothing worth changing.
-5. Deliver each final dashboard through `use-dashboard` and report the protocol's **Output**.
+Run `self-improvement-protocol` over every dashboard, rendered as its skill builds it, and judge
+the dashboards against each other as well as each against its own skill's purpose: the same fact
+is drawn, named and formatted the same way on every dashboard, and a part two skills each define,
+such as a board of plan steps or a list of pull requests, is defined once in `use-dashboard` and
+reused. A wrong value in this run's spec is fixed in the spec too. Deliver each final dashboard
+through `use-dashboard` and report the protocol's **Output**.
