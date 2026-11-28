@@ -458,13 +458,18 @@ Review** once each has its accepted head.
 
 - **Guidance stream.** Invoke `process-ledger` for the task's private ledger. It sends the
   `guidance_correction` batch it freezes to `edit-skill`'s **Guidance Delivery** route, which the
-  primary agent coordinates so its review and checks never wait on the source stream. Before a source pull request's **Review the pull request**,
-  every pending `guidance_correction` entry the GitHub rule's **Branches and Pull Requests** puts
-  on it, in the batch in flight or the one after it, is pushed to it and passes its source check,
-  as **Guidance Delivery**'s **Resume the batch** says, so its review pass, history and ready message cover them. An entry recorded after the batch in flight froze is delivered in the batch frozen
-  once that one is done, so the source stream then waits for that delivery too, and for nothing
-  else before **Review the pull request**. Each such entry's skill-test round runs on the head **Review the pull request** accepted, before
-  **Shape the history**, and the round's repairs, each rerun at once, return to review together once it passes, as **Guidance Delivery**'s **Test the batch first** says. A task with none has no guidance stream.
+  primary agent coordinates so its review and checks never wait on the source stream. Before a
+  source pull request's **Review the pull request**, every pending `guidance_correction` entry the
+  GitHub rule's **Branches and Pull Requests** puts on it, in the batch in flight, or in the next
+  one once `session-ledger`'s **Guidance Batches** lets it join, is pushed to it and passes its
+  source check, as **Guidance Delivery**'s **Resume the batch** says, so its review pass, history
+  and ready message cover them. An entry recorded after the batch in flight froze is delivered in
+  the batch frozen once that one is done, so the source stream then waits for that delivery too, and
+  for nothing else before **Review the pull request**. Each such entry's skill-test round runs on
+  the pushed head before **Review the pull request**, as **Guidance Delivery**'s **Test the batch
+  first** says, and the round's repairs, each rerun at once, return to review together once it
+  passes, as **Guidance Delivery**'s **Test the batch first** says. A task with none has no guidance
+  stream.
 - **Source stream**, in this order for each source pull request; an agent-configuration pull
   request belongs to the guidance stream, and a side pull request carrying both kinds to this one:
 
