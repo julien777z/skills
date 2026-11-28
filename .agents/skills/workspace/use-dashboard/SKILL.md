@@ -8,9 +8,9 @@ short_description: 'Turn a dashboard spec into the shared HTML page and deliver 
 
 A caller describes its dashboard as a JSON spec; [scripts/render.py](scripts/render.py) validates it
 and fills the page built from [app/](app/), a React app on Tailwind CSS and stock shadcn/ui
-components laid out as shadcn's dashboard-01 block with a top navbar of pages: a slim sticky navbar
-with the dashboard's icon and title and a link to each page, the open page's title and subtitle
-under it, a row of metric cards, and each section in its own card. Every dashboard gets that layout
+components: a slim sticky navbar of plain text page links, the open one underlined, then the
+dashboard's title, the subtitle and when it was updated, a row of metric cards, and each section in
+its own card, all on a near-black neutral surface. Every dashboard gets that layout
 without the caller writing any markup. The page is one self-contained file with its web font bundled
 in, and a diagram is drawn by Mermaid, loaded from jsDelivr, with its connections listed as text
 when Mermaid cannot load. The page is dark unless the host's viewer is explicitly set to light
@@ -18,9 +18,9 @@ when Mermaid cannot load. The page is dark unless the host's viewer is explicitl
 markup or script. A dialog opens just below the entry, row or node that opened it, at most 640 px
 tall, or less when the frame or window it opens in is shorter, with its contents scrolling; apart
 from that cap, nothing on the page is sized by the viewport's height, so it shows whole in a frame
-that a harness sizes to its content. The navbar keeps the title whole and the page links beside it:
-the page spans up to 1920 px so a wide screen shows more links, the links scroll sideways with a
-visible scrollbar when they still do not fit, and they fold into a menu only below 1024 px.
+that a harness sizes to its content. Content runs left-aligned up to 72rem wide; the navbar's links
+scroll sideways with a visible scrollbar when they do not fit, and below 1024 px they fold into a
+menu, with the open page's name beside its button.
 
 ## Dependencies
 - `pages:write-page`
@@ -31,25 +31,26 @@ visible scrollbar when they still do not fit, and they fold into a menu only bel
 Top level: `title`, `topic`, `icon`, `updated_at` (ISO 8601) and `pages` are required. `title` is
 the dashboard's name followed by "Dashboard", such as `Garden Dashboard`; `topic` names what this
 render covers in a few words, such as `Bulk export`, and `subtitle` can say more. The navbar shows
-`title` beside `icon`, then a link to each page, how long ago `updated_at` was and the `status`
-badge, and each page opens with its own title. The page's own name, which a browser tab or a
+a link to each page, the open one underlined, and the `status` badge; every page opens with `title`
+as its heading, then its subtitle and how long ago `updated_at` was. The phone-width page menu shows
+`title` beside `icon` and each page's icon beside its name. The page's own name, which a browser tab or a
 published artifact shows, is "`title` - `topic`", such as "Garden Dashboard - Bulk export".
 Every other field is optional, and an absent one leaves its part of the page out.
 
 | Field | Shape |
 | --- | --- |
-| `subtitle` | One line under the first page's title only; every other page shows its own `subtitle` or none. |
+| `subtitle` | One line under the dashboard's title on the first page only; every other page shows its own `subtitle` or none. |
 | `status` | `{label, tone?}`: the badge at the right of the navbar. While any question is `open`, the renderer shows `Waiting on you` in the `warning` tone there and as the `Proposals` page's `status`, and a spec that sets either then is refused. |
-| `notice` | `{title, body, tone?}`: a banner with an icon for its tone under every page's title, for the one thing the reader must see first wherever they are. |
+| `notice` | `{title, body, tone?}`: a banner with an icon for its tone under every page's heading, for the one thing the reader must see first wherever they are. |
 | `progress` | `{value: 0–1, label, detail?, segments?}`: a stat card twice as wide as the others, with the percentage, `detail` as its badge, and a bar. `segments` is `[{label, details?, tone?, weight?}]`, one block per unit of work in order, each as wide as its `weight`, a whole number of at least 1, relative to the others, a missing weight counting as 1, and its `label`, with each of `details` on a line under it, shown in a tooltip while the pointer rests on it; without `segments` the bar is a plain fill. |
 | `metrics` | `[{label, value, detail?}]`: at most four stat cards beside the progress, `detail` under the figure. |
-| `pages` | `[{title, icon, layout?, subtitle?, status?, progress?, locked?, sections}]`: one navbar link each, a page's `subtitle` under its title, on the first page in place of the dashboard's, a page's `progress`, in the shape above, shown at its top, with `status` (`{label, tone?}`) shown as a dot in its tone after the page's name, and its label read out to screen readers, for the page's current state, such as something that needs the reader. A `locked` page sets `sections` to `[]` until it has content: its link shows a lock in place of its icon and cannot be opened. The first is always `Overview` with `icon` `overview`, and the progress and metrics show on it. A page titled `Proposals` always has `icon` `proposals` and comes directly after `Overview`, and it is the only page that holds `questions` sections, in tabs and dialogs as well. `sections` render in order; with `layout` `columns`, the default, boards, tables, outlines, trees, tabs, diagrams, figures and timelines take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
-| `references` | `[{text, url?, details?}]`, each with exactly one of `url` and `details`: every whole-word occurrence of `text` in any page's text becomes a link to `url`, or opens `details`, one section, in a dialog, apart from the navbar, page titles, stat card figures, badges, progress segment tooltips and the first cell of a table row that opens a dialog, which stay plain. |
+| `pages` | `[{title, icon, layout?, subtitle?, status?, progress?, locked?, sections}]`: one navbar link each, a page's `subtitle` under the heading, on the first page in place of the dashboard's, a page's `progress`, in the shape above, shown at its top, with `status` (`{label, tone?}`) shown as a dot in its tone after the page's name, and its label read out to screen readers, for the page's current state, such as something that needs the reader. A `locked` page sets `sections` to `[]` until it has content: its link shows a lock and cannot be opened. The first is always `Overview` with `icon` `overview`, and the progress and metrics show on it. A page titled `Proposals` always has `icon` `proposals` and comes directly after `Overview`, and it is the only page that holds `questions` sections, in tabs and dialogs as well. `sections` render in order; with `layout` `columns`, the default, boards, tables, outlines, trees, tabs, diagrams, figures and timelines take the full row and the rest flow into columns, and with `rows` every section takes its own row. |
+| `references` | `[{text, url?, details?}]`, each with exactly one of `url` and `details`: every whole-word occurrence of `text` in any page's text becomes a link to `url`, or opens `details`, one section, in a dialog, apart from the navbar, the page heading, stat card figures, badges, progress segment tooltips and the first cell of a table row that opens a dialog, which stay plain. |
 
 An `icon` is one of `overview`, `proposals`, `progress`, `board`, `checklist`, `list`, `chart`, `activity`,
 `compare`, `diagram`, `document`, `guide`, `legal`, `shield`, `people`, `data`, `package`, `release`,
 `pull-request`, `settings`, `alert`, `check` or `calendar`. The dashboard's icon and each page's icon
-all differ, so no glyph appears twice in the navbar.
+all differ, so no glyph appears twice in the page menu.
 
 `tone` is `good`, `warning`, `critical`, `accent` or `next`, as **Making A Dashboard** defines
 them; omit it for neutral. `links` is `[{kind, label, url, state?}]`: pills under the item that open its sources,
@@ -171,14 +172,18 @@ with sections, and its tab labels are unique. A URL renders as a link only when 
 
 Dashboards look alike because they are built alike:
 
-- **The page is stock shadcn components laid out as dashboard-01.** A slim top navbar of pages,
-  metric cards as dashboard-01's section cards, and each section a `Card` with its title and
-  description in the card header. A table is a `Table` in a rounded bordered frame under a muted
+- **The page is stock shadcn components on the neutral theme.** The navbar is text links with no
+  icons or title, inactive ones muted and the open one in the foreground over a 2 px underline at
+  the bar's bottom edge, never a filled background. A card is the background's color with a thin
+  border and `rounded-xl`, never a fill, gradient or shadow of its own; a section is a `Card` with
+  its plain semibold title and description in the card header, its count a muted secondary `Badge`
+  beside the title. A diagram's nodes are square boxes with a thin border, a semibold name and a
+  small muted detail line, its edge labels plain text. A table is a `Table` in a rounded bordered frame under a muted
   header row, a pill an outline `Badge` whose tone shows only as a dot or icon inside it, apart from
   the pull-request pill, and tabs, dialogs, collapsibles, tooltips, separators and the phone-width
-  page menu are `Tabs`, `Dialog`, `Collapsible`, `Tooltip`, `Separator` and `Sheet`. Spacing follows
-  dashboard-01: `gap-4 md:gap-6` between parts, `px-4 lg:px-6` at the page's sides and `py-4
-  md:py-6` above and below.
+  page menu are `Tabs` with the line variant, `Dialog`, `Collapsible`, `Tooltip`, `Separator` and
+  `Sheet`. Spacing: `gap-4 md:gap-6` between parts, `px-4 sm:px-6 lg:px-10` at the page's sides and
+  `py-6 md:py-10` above and below.
 - **Overview first, then one page per subject.** Every dashboard opens on `Overview`, the page
   that tells the reader where things stand: the `progress` and `metrics` stat cards, then sections
   that summarize, such as counts per subject
@@ -227,7 +232,7 @@ Dashboards look alike because they are built alike:
 - **Figures line up.** A quantity siblings are compared by, such as a tree entry's `figure`, sits
   right-aligned at the end of its row, never in a badge like a tag, so the reader reads them down a
   column.
-- **The dashboard's subtitle shows once**, under the first page's title; every other page shows its
+- **The dashboard's subtitle shows once**, under the heading on the first page; every other page shows its
   own `subtitle` or none.
 - **A figure is a real quantity in a unit the reader knows.** A duration is clock time. A total over
   work that ran in parallel counts overlapping time once, so no total is longer than the clock time

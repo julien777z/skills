@@ -1,7 +1,7 @@
 import { type ReactNode, useMemo, useState } from 'react';
 
-import { NoticeBanner, RichText, SectionCards, SiteHeader } from '@/components';
-import { Grid, Stack, Text } from '@/components/primitives';
+import { NoticeBanner, PageHeader, SectionCards, SiteHeader } from '@/components';
+import { Grid, Stack } from '@/components/primitives';
 import { DashboardSection } from '@/components/sections';
 import { useDashboardUpdates } from '@/hooks/page-refresh';
 import { References, ReferencesContext } from '@/lib/references';
@@ -44,22 +44,12 @@ export function App({ dashboard: initial }: { dashboard: Dashboard }): ReactNode
         title={dashboard.title}
         icon={dashboard.icon}
         status={dashboard.status}
-        updatedAt={dashboard.updated_at}
         pages={dashboard.pages}
         current={current}
         onSelectPage={handleSelectPage}
       />
       <Stack as="main" gap="page" frame="page" block="page">
-        <Stack gap="xs" inset="page">
-          <Text as="h1" size="title" weight="bold">
-            {page.title}
-          </Text>
-          {subtitle && (
-            <Text as="p" tone="muted" measure>
-              <RichText text={subtitle} />
-            </Text>
-          )}
-        </Stack>
+        <PageHeader title={dashboard.title} subtitle={subtitle} updatedAt={dashboard.updated_at} />
         {dashboard.notice && (
           <Stack inset="page">
             <NoticeBanner notice={dashboard.notice} />

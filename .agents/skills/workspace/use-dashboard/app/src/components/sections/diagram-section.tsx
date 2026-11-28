@@ -225,7 +225,7 @@ export function DiagramSection({ section }: { section: DiagramSectionSpec }): Re
           )}
           <div
             ref={figure}
-            className="grid justify-items-center overflow-x-auto [&_.cluster-label_div]:!max-w-none [&_.cluster-label_div]:!whitespace-nowrap [&_.cluster-label_foreignObject]:overflow-visible [&_svg]:h-auto"
+            className="grid justify-items-center overflow-x-auto [&_.nodeLabel_a]:underline [&_.nodeLabel_b]:font-semibold [&_.nodeLabel_button]:underline [&_.nodeLabel_small]:text-muted-foreground [&_.cluster-label_div]:!max-w-none [&_.cluster-label_div]:!whitespace-nowrap [&_.cluster-label_foreignObject]:overflow-visible [&_svg]:h-auto"
           />
           {section.legend && (
             <Stack direction="row" gap="lg" wrap>

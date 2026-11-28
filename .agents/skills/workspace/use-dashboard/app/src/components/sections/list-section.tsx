@@ -23,7 +23,7 @@ interface GroupedItem {
 interface ListSectionProps<Item extends GroupedItem> {
   title: string;
   description?: string;
-  summary: (items: Item[]) => ReactNode;
+  summary: (items: Item[]) => number | string | undefined;
   items: Item[];
   pageSize?: number;
   groupLabel?: string;

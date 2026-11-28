@@ -24,12 +24,7 @@ function StatCard({
   children?: ReactNode;
 }): ReactNode {
   return (
-    <Card
-      className={cn(
-        '@container/card bg-gradient-to-t from-primary/5 to-card shadow-xs dark:bg-card',
-        wide && '@xl/main:col-span-2',
-      )}
-    >
+    <Card className={cn('@container/card shadow-none', wide && '@xl/main:col-span-2')}>
       <CardHeader>
         <CardDescription>
           <RichText text={label} />

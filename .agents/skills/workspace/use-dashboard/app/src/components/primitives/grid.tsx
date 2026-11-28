@@ -23,7 +23,7 @@ const GRID_VARIANTS = {
     loose: 'gap-x-8 gap-y-6',
     pairs: 'gap-x-6 gap-y-1 sm:gap-y-2',
   },
-  inset: { none: '', page: 'px-4 lg:px-6' },
+  inset: { none: '', page: 'px-4 sm:px-6 lg:px-10' },
   align: { start: 'items-start', stretch: 'items-stretch' },
   divider: { none: '', top: 'border-t pt-4', side: 'border-t pt-4 lg:border-t-0 lg:border-l lg:pt-0 lg:pl-7' },
 } as const;

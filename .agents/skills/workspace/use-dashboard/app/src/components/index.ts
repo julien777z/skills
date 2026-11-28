@@ -1,6 +1,7 @@
 export { ExternalLink } from './external-link';
 export { ItemMeta } from './item-meta';
 export { NoticeBanner } from './notice-banner';
+export { PageHeader } from './page-header';
 export { PullRequestIcon } from './pull-request-icon';
 export { DialogOpener, RichText } from './rich-text';
 export { SectionCards } from './section-cards';

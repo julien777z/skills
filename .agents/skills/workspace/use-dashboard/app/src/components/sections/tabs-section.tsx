@@ -38,7 +38,7 @@ export function TabsSection({ section }: { section: TabsSectionSpec }): ReactNod
   return (
     <SectionCard title={section.title} description={section.description} wide>
       <Tabs value={selected} onValueChange={setChosen} className="gap-4">
-        <TabsList aria-label={section.title} className="max-w-full justify-start overflow-x-auto">
+        <TabsList variant="line" aria-label={section.title} className="max-w-full justify-start overflow-x-auto">
           {tabs.map(({ key, item: tab }) => (
             <TabsTrigger key={key} value={key} className="flex-none">
               {tab.label}
