@@ -14,4 +14,5 @@ export { SectionDialog } from './section-dialog';
 export { TableSection } from './table-section';
 export { TabsSection } from './tabs-section';
 export { TextList } from './text-list';
+export { TimelineSection } from './timeline-section';
 export { TreeSection } from './tree-section';

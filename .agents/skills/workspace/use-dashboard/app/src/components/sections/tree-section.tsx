@@ -13,16 +13,25 @@ import { SectionDialog } from './section-dialog';
 const DEFAULT_OPEN_DEPTH: number = 1;
 
 function TreeBranch({ nodes, depth, openDepth }: { nodes: TreeNode[]; depth: number; openDepth: number }): ReactNode {
+  const alignWithBranches = nodes.some((node) => (node.children ?? []).length > 0);
+
   return (
     <Stack as="ul" gap="xs" inset={depth > 0 ? 'branch' : 'none'}>
       {withKeys(nodes, (node) => node.label).map(({ key, item: node }) => (
-        <TreeItem key={key} node={node} depth={depth} openDepth={openDepth} />
+        <TreeItem key={key} node={node} depth={depth} openDepth={openDepth} alignWithBranches={alignWithBranches} />
       ))}
     </Stack>
   );
 }
 
-function TreeItem({ node, depth, openDepth }: { node: TreeNode; depth: number; openDepth: number }): ReactNode {
+interface TreeItemProps {
+  node: TreeNode;
+  depth: number;
+  openDepth: number;
+  alignWithBranches: boolean;
+}
+
+function TreeItem({ node, depth, openDepth, alignWithBranches }: TreeItemProps): ReactNode {
   const [open, setOpen] = useState(depth < openDepth);
   const [showDetails, setShowDetails] = useState(false);
   const opener = useRef<HTMLButtonElement | null>(null);
@@ -43,7 +52,9 @@ function TreeItem({ node, depth, openDepth }: { node: TreeNode; depth: number; o
                 <ChevronRight />
               </Button>
             </CollapsibleTrigger>
-          ) : null}
+          ) : (
+            alignWithBranches && <span aria-hidden="true" className="size-5 shrink-0" />
+          )}
           {(node.tone || children.length === 0) && <ToneDot tone={node.tone} offset />}
           <Stack gap="none" grow>
             <Text size="sm" breakAnywhere>
@@ -66,23 +77,11 @@ function TreeItem({ node, depth, openDepth }: { node: TreeNode; depth: number; o
                   <StatusBadge label={node.tag} dot={false} />
                 </>
               )}
-              {node.figure && (
-                <>
-                  {' '}
-                  <StatusBadge label={node.figure} dot={false} />
-                </>
-              )}
               {node.status && (
                 <>
                   {' '}
                   <StatusBadge label={node.status.label} tone={node.status.tone} />
                 </>
-              )}
-              {node.meta && (
-                <Text as="span" size="sm" tone="muted" numeric>
-                  {' '}
-                  <RichText text={node.meta} />
-                </Text>
               )}
             </Text>
             {node.detail && (
@@ -91,6 +90,20 @@ function TreeItem({ node, depth, openDepth }: { node: TreeNode; depth: number; o
               </Text>
             )}
           </Stack>
+          {(node.meta || node.figure) && (
+            <Stack direction="row" gap="md" justify="end" push>
+              {node.meta && (
+                <Text size="sm" tone="muted" numeric>
+                  <RichText text={node.meta} />
+                </Text>
+              )}
+              {node.figure && (
+                <Text size="sm" tone="muted" numeric>
+                  {node.figure}
+                </Text>
+              )}
+            </Stack>
+          )}
         </Stack>
         {children.length > 0 && (
           <CollapsibleContent>
