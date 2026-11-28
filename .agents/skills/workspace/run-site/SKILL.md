@@ -187,9 +187,9 @@ files.
   every screen that mounts it, or on the page the agent builds for a change **Principles** confines
   to a component, then read the state it was meant to leave — where the element landed,
   what the field holds, whether the list closed up — and reload where it persists something. A drag
-  is several moves, not one jump:
-
-
+  is several moves, not one jump: move to the start, press, move to the end, release, through the
+  browser's own mouse commands, as its CLI guide from `use-browser` gives them in the headless
+  browser.
 - A library doing the work is a reason to exercise it, never an exemption: the arguments handed to it
   and the state handed back belong to the change.
 - Distinguish tool success from application success: confirm the intended request happened, then read
