@@ -37,9 +37,8 @@ identity, never a second authoritative copy of its records.
   pull request's current head. Any other comment is a reference, not a record. Recover or reconstruct
   the file from verified evidence, preserving provenance and existing records. If evidence remains
   unavailable, report the incomplete retrieval; never create an empty replacement or claim a
-  complete result. Only a successfully read valid file with `entries: []`, a genuinely new
-  task's initialized file, or a hook-created `session-<session ID>.yaml` a handoff names that its
-  session ended with nothing recorded in, establishes an empty ledger.
+  complete result. Only a successfully read valid file with `entries: []`, or a genuinely new
+  task's initialized file, establishes an empty ledger.
 - Keep local evidence needed to resume work or reuse a verdict in private task storage with the
   ledger's restart and handoff durability. Before recording a local locator, retain and read back
   its required scenarios, frozen inputs, reports or logs there, recording their provenance and

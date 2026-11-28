@@ -1,3 +1,4 @@
+import importlib
 import json
 import os
 import stat
@@ -7,8 +8,11 @@ import tempfile
 import unittest
 import uuid
 from pathlib import Path
+from unittest import mock
 
 HOOK = Path(__file__).resolve().parents[1] / "main.py"
+sys.path.insert(0, str(HOOK.parent))
+ledgers = importlib.import_module("ledgers")
 REPLY_PROMPT = (HOOK.parent / "prompts" / "reply.md").read_text(encoding="utf-8").strip()
 BLOCK_EXIT = 2
 
@@ -79,8 +83,8 @@ class LedgerHookTest(unittest.TestCase):
         """Test that a session file with records, older than the session and naming no ID, stays."""
 
         ledger = self.directory / f"session-{self.session_id}.yaml"
-        artifact = {"id": "pr-1", "kind": "artifact", "summary": "s", "data": {}}
-        text = json.dumps({"session_ledger": {"sessions": [], "entries": [artifact]}})
+        plan = {"id": "plan-1", "kind": "plan", "summary": "s", "data": {"status": "shown"}}
+        text = json.dumps({"session_ledger": {"sessions": [], "entries": [plan]}})
 
         self.directory.mkdir()
         ledger.write_text(text)
@@ -88,7 +92,13 @@ class LedgerHookTest(unittest.TestCase):
 
         result = self.run_hook()
 
-        self.assertEqual((result.returncode, result.stderr), (0, ""))
+        self.assertEqual(result.returncode, BLOCK_EXIT)
+        self.assertIn(f"{ledger} has entries missing", result.stderr)
+        self.assertEqual(ledger.read_text(), text)
+
+        with mock.patch.dict(os.environ, {"XDG_STATE_HOME": str(self.state_home)}):
+            self.assertIsNone(ledgers.create_session_ledger(self.session_id))
+
         self.assertEqual(ledger.read_text(), text)
 
     def test_followup_message_names_created_file(self):

@@ -2,6 +2,7 @@ import mmap
 import os
 import re
 import stat
+import tempfile
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Final
@@ -131,15 +132,22 @@ def create_session_ledger(session_id: str) -> Path | None:
     """Create the session's ledger, or return None when the file already exists."""
 
     path = session_ledger_path(session_id)
+    directory = path.parent
 
-    path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+    directory.mkdir(mode=0o700, parents=True, exist_ok=True)
+
+    descriptor, temporary = tempfile.mkstemp(dir=directory, prefix=".session-", suffix=".tmp")
 
     try:
-        descriptor = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
+        with os.fdopen(descriptor, "w") as handle:
+            handle.write(session_ledger_text(session_id))
+            handle.flush()
+            os.fsync(handle.fileno())
+
+        os.link(temporary, path)
     except FileExistsError:
         return None
-
-    with os.fdopen(descriptor, "w") as handle:
-        handle.write(session_ledger_text(session_id))
+    finally:
+        os.unlink(temporary)
 
     return path
